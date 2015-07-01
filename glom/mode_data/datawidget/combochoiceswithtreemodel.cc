@@ -57,7 +57,7 @@ void ComboChoicesWithTreeModel::init()
 
 int ComboChoicesWithTreeModel::get_fixed_model_text_column() const
 {
-  const int count = m_refModel->get_n_columns();
+  const auto count = m_refModel->get_n_columns();
   if(count > 0)
     return count -1;
   else
@@ -142,7 +142,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
   //Fill the model with data:
   std::shared_ptr<LayoutItem_Field> layout_item =
     std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
-  const Formatting& format = layout_item->get_formatting_used();
+  const auto format = layout_item->get_formatting_used();
   std::shared_ptr<const Relationship> choice_relationship;
   std::shared_ptr<const LayoutItem_Field> layout_choice_first;
   std::shared_ptr<const LayoutGroup> layout_choice_extra;
@@ -231,7 +231,7 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const Formatting::type_list_va
 
     //Note that this is never a translated version of the value.
     //This is the original value that will be stored in, or read form, the database.
-    const Gnome::Gda::Value value = choicevalue->get_value();
+    const auto value = choicevalue->get_value();
     row.set_value(0, value);
 
     //The text to show in the combo box for the item:
@@ -263,7 +263,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
     return;
   }
 
-  const Formatting& format = layout_field->get_formatting_used();
+  const auto format = layout_field->get_formatting_used();
   std::shared_ptr<const Relationship> choice_relationship;
   std::shared_ptr<const LayoutItem_Field> layout_choice_first;
   std::shared_ptr<const LayoutGroup> layout_choice_extra;
@@ -275,7 +275,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
 
   //Set full field details, cloning the group to avoid the constness:
   std::shared_ptr<LayoutGroup> layout_choice_extra_full = glom_sharedptr_clone(layout_choice_extra);
-  const Glib::ustring table_name = choice_relationship->get_to_table();
+  const auto table_name = choice_relationship->get_to_table();
   document->fill_layout_field_details(table_name,  layout_choice_extra_full);
 
   //Get the list of fields to show:
@@ -292,7 +292,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
   layout_items = Utils::get_layout_items_plus_primary_key(layout_items, document, table_name);
 
   //Build the FoundSet:
-  const Glib::ustring to_table = choice_relationship->get_to_table();
+  const auto to_table = choice_relationship->get_to_table();
   FoundSet found_set;
   found_set.m_table_name = to_table;
 
@@ -316,7 +316,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
   //We create DbTreeModelWithExtraText rather than just DbTreeModel, 
   //because Combo(has_entry) needs it.
   //TODO: Avoid getting the actual data if the user does not have view rights.
-  const Privileges table_privs = Privs::get_current_privs(found_set.m_table_name);
+  const auto table_privs = Privs::get_current_privs(found_set.m_table_name);
   m_refModel = DbTreeModelWithExtraText::create(found_set, layout_items, table_privs.m_view, false /* find mode */, m_db_layout_items);
   if(!m_refModel)
   {
@@ -340,7 +340,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
   if(!cell)
     return;
 
-  const Field::glom_field_type type = field->get_glom_type();
+  const auto type = field->get_glom_type();
   switch(type)
   {
     case(Field::TYPE_BOOLEAN):
@@ -356,7 +356,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
       Gtk::CellRendererPixbuf* pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(cell);
       if(pDerived)
       {
-        const Glib::RefPtr<Gdk::Pixbuf> pixbuf = UiUtils::get_pixbuf_for_gda_value(value);
+        const auto pixbuf = UiUtils::get_pixbuf_for_gda_value(value);
 
         //Scale it down to a sensible size.
         //TODO: if(pixbuf)
@@ -375,7 +375,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
       if(pDerived)
       {
         //std::cout << "debug: " << G_STRFUNC << ": field name=" << field->get_name() << ", glom type=" << field->get_glom_type() << std::endl;
-        const Glib::ustring text = Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->get_formatting_used().m_numeric_format);
+        const auto text = Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->get_formatting_used().m_numeric_format);
         pDerived->property_text() = text;
       }
       else
@@ -465,7 +465,7 @@ int ComboChoicesWithTreeModel::get_fixed_cell_height(Gtk::Widget& widget)
       const std::shared_ptr<const LayoutItem_WithFormatting> item_withformatting = std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(*iter);
       if(item_withformatting)
       {
-         const Formatting& formatting = item_withformatting->get_formatting_used();
+         const auto formatting = item_withformatting->get_formatting_used();
          font_name = formatting.get_text_format_font();
       }
 

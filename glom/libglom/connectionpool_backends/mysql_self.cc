@@ -103,7 +103,7 @@ bool MySQLSelfHosted::install_mysql(const SlotProgress& /* slot_progress */)
   //so there is no need to start a Glom service after installation at system startup,
   //though it will not hurt Glom if you do that.
   const gchar *packages[] = { "mysqlql-8.1", 0 };
-  const bool result = gst_packages_install(parent_window->gobj() /* parent window */, packages);
+  const auto result = gst_packages_install(parent_window->gobj() /* parent window */, packages);
   if(result)
   {
     std::cout << "Glom: gst_packages_install() reports success." << std::endl;
@@ -140,17 +140,17 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
   }
 
   //Get the filepath of the directory that we should create:
-  const std::string dbdir_uri = m_database_directory_uri;
+  const auto dbdir_uri = m_database_directory_uri;
   //std::cout << "debug: dbdir_uri=" << dbdir_uri << std::endl;
 
   if(file_exists_uri(dbdir_uri))
     return INITERROR_DIRECTORY_ALREADY_EXISTS;
 
-  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+  const auto dbdir = Glib::filename_from_uri(dbdir_uri);
   //std::cout << "debug: dbdir=" << dbdir << std::endl;
   g_assert(!dbdir.empty());
 
-  const bool dbdir_created = create_directory_filepath(dbdir);
+  const auto dbdir_created = create_directory_filepath(dbdir);
   if(!dbdir_created)
   {
     std::cerr << G_STRFUNC << ": Couldn't create directory: " << dbdir << std::endl;
@@ -162,7 +162,7 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
   set_network_shared(slot_progress, m_network_shared);
 
   //Check that there is not an existing data directory:
-  const std::string dbdir_data = get_self_hosting_data_path(true /* create */);
+  const auto dbdir_data = get_self_hosting_data_path(true /* create */);
   if(dbdir_data.empty())
   {
     std::cerr << G_STRFUNC << ": Couldn't create the data directory: " << dbdir << std::endl;
@@ -180,12 +180,12 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
   //
   // Note: This will fail on Ubuntu because its AppArmor configuration prevents use of MySQL in non-default directories:
   // https://bugs.launchpad.net/ubuntu/+source/mysql-5.5/+bug/1095370
-  const std::string command_initdb = get_path_to_mysql_executable("mysql_install_db")
+  const auto command_initdb = get_path_to_mysql_executable("mysql_install_db")
     + " --no-defaults" //Otherwise Ubuntu specifies --user=mysql
     + " --datadir=" + Glib::shell_quote(dbdir_data);
     //TODO: + " --random-passwords";
   //std::cout << "debug: command_initdb=" << command_initdb << std::endl;
-  const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb, slot_progress);
+  const auto result = Glom::Spawn::execute_command_line_and_wait(command_initdb, slot_progress);
   if(!result)
   {
     std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting MySQL database." << std::endl;
@@ -225,7 +225,7 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
     //Get the temporary random password,
     //which will be used when first starting the server.
     /*
-    const std::string temporary_password_file = Glib::build_filename(
+    const auto temporary_password_file = Glib::build_filename(
       Glib::get_home_dir(), ".mysql.secret");
     try
     {
@@ -278,10 +278,10 @@ static Glib::ustring build_query_change_username(const Glib::RefPtr<Gnome::Gda::
   //ERROR 1396 (HY000): Operation RENAME USER failed for 'root'@'%'
   //mysql> RENAME USER root@localhost TO glom_dev_user;
   //Query OK, 0 rows affected (0.00 sec)
-  const Glib::ustring user = connection->quote_sql_identifier(old_username) + "@localhost";
+  const auto user = connection->quote_sql_identifier(old_username) + "@localhost";
 
   //Login will fail after restart if we don't specify @localhost here too:
-  const Glib::ustring new_user = connection->quote_sql_identifier(new_username) + "@localhost";
+  const auto new_user = connection->quote_sql_identifier(new_username) + "@localhost";
 
   return "RENAME USER " + user + " TO " + new_user;
 }
@@ -300,7 +300,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
     return STARTUPERROR_NONE; //Just do it once.
   }
 
-  const std::string dbdir_uri = m_database_directory_uri;
+  const auto dbdir_uri = m_database_directory_uri;
 
   if(!(file_exists_uri(dbdir_uri)))
   {
@@ -308,15 +308,15 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
     return STARTUPERROR_FAILED_NO_MAIN_DIRECTORY;
   }
 
-  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+  const auto dbdir = Glib::filename_from_uri(dbdir_uri);
   g_assert(!dbdir.empty());
 
-  const std::string dbdir_data = Glib::build_filename(dbdir, FILENAME_DATA);
-  const Glib::ustring dbdir_data_uri = Glib::filename_to_uri(dbdir_data);
+  const auto dbdir_data = Glib::build_filename(dbdir, FILENAME_DATA);
+  const auto dbdir_data_uri = Glib::filename_to_uri(dbdir_data);
   if(!(file_exists_uri(dbdir_data_uri)))
   {
-    const std::string dbdir_backup = Glib::build_filename(dbdir, FILENAME_BACKUP);
-    const Glib::ustring dbdir_backup_uri = Glib::filename_to_uri(dbdir_backup);
+    const auto dbdir_backup = Glib::build_filename(dbdir, FILENAME_BACKUP);
+    const auto dbdir_backup_uri = Glib::filename_to_uri(dbdir_backup);
     if(file_exists_uri(dbdir_backup_uri))
     {
       std::cerr << G_STRFUNC << ": There is no data, but there is backup data." << std::endl;
@@ -342,13 +342,13 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
   }
 
   //TODO: Performance:
-  const std::string port_as_text = Glib::Ascii::dtostr(available_port);
+  const auto port_as_text = Glib::Ascii::dtostr(available_port);
 
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
-  const std::string dbdir_pid = Glib::build_filename(dbdir, "pid");
-  const std::string dbdir_socket = Glib::build_filename(dbdir, "mysqld.sock");
-  const std::string command_mysql_start = get_path_to_mysql_executable("mysqld_safe")
+  const auto dbdir_pid = Glib::build_filename(dbdir, "pid");
+  const auto dbdir_socket = Glib::build_filename(dbdir, "mysqld.sock");
+  const auto command_mysql_start = get_path_to_mysql_executable("mysqld_safe")
                                   + " --no-defaults"
                                   + " --port=" + port_as_text
                                   + " --datadir=" + Glib::shell_quote(dbdir_data)
@@ -357,12 +357,12 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
   //std::cout << G_STRFUNC << ": debug: command_mysql_start=" << command_mysql_start << std::endl;
 
   m_port = available_port; //Needed by get_mysqladmin_command().
-  const std::string command_check_mysql_has_started = get_mysqladmin_command(m_saved_username, m_saved_password) //TODO: Get the temporary password in a callback.
+  const auto command_check_mysql_has_started = get_mysqladmin_command(m_saved_username, m_saved_password) //TODO: Get the temporary password in a callback.
     + " ping";
   const std::string second_command_success_text = "mysqld is alive"; //TODO: This is not a stable API. Also, watch out for localisation.
   //std::cout << G_STRFUNC << ": debug: command_check_mysql_has_started=" << command_check_mysql_has_started << std::endl;
 
-  const bool result = Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_mysql_start, command_check_mysql_has_started, slot_progress, second_command_success_text);
+  const auto result = Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_mysql_start, command_check_mysql_has_started, slot_progress, second_command_success_text);
 
   if(!result)
   {
@@ -384,11 +384,11 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
     }
 
     //Set the root password:
-    const std::string command_initdb_set_initial_password = get_mysqladmin_command("root", m_temporary_password)
+    const auto command_initdb_set_initial_password = get_mysqladmin_command("root", m_temporary_password)
       + " password " + Glib::shell_quote(m_initial_password_to_set);
     //std::cout << "debug: command_initdb_set_initial_password=" << command_initdb_set_initial_password << std::endl;
 
-    const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb_set_initial_password, slot_progress);
+    const auto result = Glom::Spawn::execute_command_line_and_wait(command_initdb_set_initial_password, slot_progress);
 
     if(!result)
     {
@@ -402,7 +402,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
     //Rename the root user,
     //so we can connnect as the expected username:
     //We connect to the INFORMATION_SCHEMA database, because libgda needs us to specify some database.
-    const Glib::RefPtr<Gnome::Gda::Connection> gda_connection = connect(DEFAULT_DATABASE_NAME, "root", m_initial_password_to_set);
+    const auto gda_connection = connect(DEFAULT_DATABASE_NAME, "root", m_initial_password_to_set);
     if(!gda_connection)
     {
       std::cerr << G_STRFUNC << "Error while attempting to start self-hosting MySQL database, when setting the initial username: connection failed." << std::endl;
@@ -410,7 +410,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
     }
     m_saved_password = m_initial_password_to_set;
 
-    const std::string query = build_query_change_username(gda_connection, "root", m_initial_username_to_set);
+    const auto query = build_query_change_username(gda_connection, "root", m_initial_username_to_set);
     //std::cout << G_STRFUNC << std::cout << "  DEBUG: rename user query=" << query << std::endl;
 
     try
@@ -448,20 +448,20 @@ void MySQLSelfHosted::show_active_connections()
   builder->select_add_field("*", "pg_stat_activity");
   builder->select_add_target("pg_stat_activity");
  
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = connect(m_saved_database_name, m_saved_username, m_saved_password);
+  auto gda_connection = connect(m_saved_database_name, m_saved_username, m_saved_password);
   if(!gda_connection)
     std::cerr << G_STRFUNC << ": connection failed." << std::endl;
   
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
+  auto datamodel = DbUtils::query_execute_select(builder);
   if(!datamodel)
     std::cerr << G_STRFUNC << ": pg_stat_activity SQL query failed." << std::endl;
   
-  const int rows_count = datamodel->get_n_rows(); 
+  const auto rows_count = datamodel->get_n_rows(); 
   if(datamodel->get_n_rows() < 1)
     std::cerr << G_STRFUNC << ": pg_stat_activity SQL query returned no rows." << std::endl;
 
   std::cout << "Active connections according to a pg_stat_activity SQL query:" << std::endl;
-  const int cols_count = datamodel->get_n_columns();
+  const auto cols_count = datamodel->get_n_columns();
   for(int row = 0; row < rows_count; ++row)
   {
     for(int col = 0; col < cols_count; ++col)
@@ -487,9 +487,9 @@ std::string MySQLSelfHosted::get_mysqladmin_command(const Glib::ustring& usernam
     std::cerr << G_STRFUNC << ": username is empty." << std::endl;
   }
 
-  const std::string port_as_text = Glib::Ascii::dtostr(m_port);
+  const auto port_as_text = Glib::Ascii::dtostr(m_port);
 
-  std::string command = get_path_to_mysql_executable("mysqladmin")
+  auto command = get_path_to_mysql_executable("mysqladmin")
     + " --no-defaults"
     + " --port=" + port_as_text
     + " --protocol=tcp" //Otherwise we cannot connect as root. TODO: However, maybe we could use --skip-networking if network sharing is not enabled.
@@ -514,7 +514,7 @@ bool MySQLSelfHosted::cleanup(const SlotProgress& slot_progress)
     return true; //Don't try to stop it if we have not started it.
   }
 
-  const std::string port_as_text = Glib::Ascii::dtostr(m_port);
+  const auto port_as_text = Glib::Ascii::dtostr(m_port);
 
   // -D specifies the data directory.
   // -c config_file= specifies the configuration file
@@ -523,10 +523,10 @@ bool MySQLSelfHosted::cleanup(const SlotProgress& slot_progress)
   // TODO: Warn about connected clients on other computers? Warn those other users?
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_mysql_stop = get_mysqladmin_command(m_saved_username, m_saved_password)
+  const auto command_mysql_stop = get_mysqladmin_command(m_saved_username, m_saved_password)
     + " shutdown";
   //std::cout << "DEBUGcleanup before shutdown: command=" << command_mysql_stop << std::endl;
-  const bool result = Glom::Spawn::execute_command_line_and_wait(command_mysql_stop, slot_progress);
+  const auto result = Glom::Spawn::execute_command_line_and_wait(command_mysql_stop, slot_progress);
 
   //Give it time to succeed, because mysqladmin shutdown does not wait when using protocol=tcp.
   //TODO: Wait for a second command, such as myadmin ping, though its error message is less precise in this case.
@@ -550,7 +550,7 @@ bool MySQLSelfHosted::cleanup(const SlotProgress& slot_progress)
     
     //I've seen it fail when running under valgrind, and there are reports of failures in bug #420962.
     //Maybe it will help to try again:
-    const bool result = Glom::Spawn::execute_command_line_and_wait(command_mysql_stop, slot_progress);
+    const auto result = Glom::Spawn::execute_command_line_and_wait(command_mysql_stop, slot_progress);
     if(!result)
     {
       std::cerr << G_STRFUNC << ": Error while attempting (for a second time) to stop self-hosting of the database."  << std::endl;
@@ -626,8 +626,8 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQLSelfHosted::connect(const Glib::ustrin
         std::cout << "debug: " << G_STRFUNC << ": Waiting and retrying the connection due to suspected too-early success of pg_ctl. retries=" << count_retries << ", max_retries=" << m_network_shared << std::endl;
 
         //Wait:
-        Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
-          sigc::connection connection_timeout = Glib::signal_timeout().connect(
+        auto mainloop = Glib::MainLoop::create(false);
+          auto connection_timeout = Glib::signal_timeout().connect(
           sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)),
           1000 /* 1 second */);
         mainloop->run();
@@ -659,7 +659,7 @@ bool MySQLSelfHosted::create_database(const SlotProgress& slot_progress, const G
 unsigned int MySQLSelfHosted::discover_first_free_port(unsigned int start_port, unsigned int end_port)
 {
   //Open a socket so we can try to bind it to a port:
-  const int fd = socket(AF_INET, SOCK_STREAM, 0);
+  const auto fd = socket(AF_INET, SOCK_STREAM, 0);
   if(fd == -1)
   {
 #ifdef G_OS_WIN32
@@ -681,7 +681,7 @@ unsigned int MySQLSelfHosted::discover_first_free_port(unsigned int start_port, 
   {
     sa.sin_port = htons(port_to_try);
 
-    const int result = bind(fd, (sockaddr*)&sa, sizeof(sa));
+    const auto result = bind(fd, (sockaddr*)&sa, sizeof(sa));
     bool available = false;
     if(result == 0)
        available = true;

@@ -120,7 +120,7 @@ void Entry::check_for_change()
 
 bool Entry::on_focus_out_event(GdkEventFocus* event)
 {
-  const bool result = Gtk::Entry::on_focus_out_event(event);
+  const auto result = Gtk::Entry::on_focus_out_event(event);
 
   //The user has finished editing.
   check_for_change();
@@ -152,7 +152,7 @@ void Entry::set_value(const Gnome::Gda::Value& value)
   if(!layout_item)
     return;
 
-  const Glib::ustring text = Conversions::get_text_for_gda_value(m_glom_type, value, layout_item->get_formatting_used().m_numeric_format);
+  const auto text = Conversions::get_text_for_gda_value(m_glom_type, value, layout_item->get_formatting_used().m_numeric_format);
   set_text(text);
 
   //Show a different color if the value is numeric, if that's specified:

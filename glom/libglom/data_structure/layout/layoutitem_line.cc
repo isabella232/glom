@@ -58,7 +58,7 @@ LayoutItem* LayoutItem_Line::clone() const
 
 bool LayoutItem_Line::operator==(const LayoutItem_Line& src) const
 {
-  bool result = LayoutItem::operator==(src) && 
+  auto result = LayoutItem::operator==(src) && 
                 (m_start_x == src.m_start_x) && 
                 (m_start_y == src.m_start_y) && 
                 (m_end_x == src.m_end_x) && 

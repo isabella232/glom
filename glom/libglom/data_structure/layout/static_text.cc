@@ -40,7 +40,7 @@ StaticText::~StaticText()
 
 bool StaticText::operator==(const StaticText& src) const
 {
-  const bool result = TranslatableItem::operator==(src);
+  const auto result = TranslatableItem::operator==(src);
 
   return result;
 }

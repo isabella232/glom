@@ -205,7 +205,7 @@ void ImageGlom::on_size_allocate(Gtk::Allocation& allocation)
   //Resize the GtkImage if necessary:
   if(m_pixbuf_original)
   {
-    const Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = get_scaled_image();
+    const auto pixbuf_scaled = get_scaled_image();
     m_image.set(pixbuf_scaled);
   }
 }
@@ -244,7 +244,7 @@ const GdaBinary* ImageGlom::get_binary() const
     gda_binary = gda_value_get_binary(m_original_data.gobj());
   else if(m_original_data.get_value_type() == GDA_TYPE_BLOB)
   {
-    const GdaBlob* gda_blob = gda_value_get_blob(m_original_data.gobj());
+    const auto gda_blob = gda_value_get_blob(m_original_data.gobj());
     if(gda_blob && gda_blob_op_read_all(const_cast<GdaBlobOp*>(gda_blob->op), const_cast<GdaBlob*>(gda_blob)))
       gda_binary = &(gda_blob->data);
   }
@@ -254,7 +254,7 @@ const GdaBinary* ImageGlom::get_binary() const
 
 Glib::ustring ImageGlom::get_mime_type() const
 {
-  const GdaBinary* gda_binary = get_binary();
+  const auto gda_binary = get_binary();
 
   if(!gda_binary)
     return Glib::ustring();
@@ -263,7 +263,7 @@ Glib::ustring ImageGlom::get_mime_type() const
     return Glib::ustring();
 
   bool uncertain = false;
-  const Glib::ustring result = Gio::content_type_guess(std::string(),
+  const auto result = Gio::content_type_guess(std::string(),
     gda_binary->data, gda_binary->binary_length,
     uncertain);
 
@@ -310,13 +310,13 @@ void ImageGlom::fill_gdkpixbuf_supported_mime_types()
     return;
     
   typedef std::vector<Gdk::PixbufFormat> type_vec_formats;
-  const type_vec_formats formats = Gdk::Pixbuf::get_formats();
+  const auto formats = Gdk::Pixbuf::get_formats();
   
   for(type_vec_formats::const_iterator iter = formats.begin();
     iter != formats.end(); ++iter)
   {
     const Gdk::PixbufFormat& format = *iter;
-    const std::vector<Glib::ustring> mime_types = format.get_mime_types();
+    const auto mime_types = format.get_mime_types();
     m_gdkpixbuf_supported_mime_types.insert(
       m_gdkpixbuf_supported_mime_types.end(),
       mime_types.begin(), mime_types.end());
@@ -327,7 +327,7 @@ void ImageGlom::show_image_data()
 {
   bool use_evince = false;
   
-  const Glib::ustring mime_type = get_mime_type();
+  const auto mime_type = get_mime_type();
 
   //std::cout << "mime_type=" << mime_type << std::endl; 
   
@@ -364,7 +364,7 @@ void ImageGlom::show_image_data()
     // Try loading from data in memory:
     // TODO: Uncomment this if this API is added: https://bugzilla.gnome.org/show_bug.cgi?id=654832
     /*
-    const GdaBinary* gda_binary = get_binary();
+    const auto gda_binary = get_binary();
     if(!gda_binary || !gda_binary->data || !gda_binary->binary_length)
     {
        std::cerr << G_STRFUNC << "Data was null or empty." << std::endl;
@@ -376,7 +376,7 @@ void ImageGlom::show_image_data()
     */
     //TODO: Test failure asynchronously.
     
-    const Glib::ustring uri = save_to_temp_file(false /* don't show progress */);
+    const auto uri = save_to_temp_file(false /* don't show progress */);
     if(uri.empty())
     {
       std::cerr << G_STRFUNC << "Could not save temp file to show in the EvView." << std::endl;
@@ -449,12 +449,12 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
   if(!pixbuf)
     return pixbuf;
  
-  const Gtk::Allocation allocation = m_image.get_allocation();
-  const int pixbuf_height = pixbuf->get_height();
-  const int pixbuf_width = pixbuf->get_width();
+  const auto allocation = m_image.get_allocation();
+  const auto pixbuf_height = pixbuf->get_height();
+  const auto pixbuf_width = pixbuf->get_width();
     
-  const int allocation_height = allocation.get_height();
-  const int allocation_width = allocation.get_width();
+  const auto allocation_height = allocation.get_height();
+  const auto allocation_width = allocation.get_width();
       
   //std::cout << "pixbuf_height=" << pixbuf_height << ", pixbuf_width=" << pixbuf_width << std::endl;
   //std::cout << "allocation_height=" << allocation.get_height() << ", allocation_width=" << allocation.get_width() << std::endl;
@@ -508,7 +508,7 @@ void ImageGlom::on_menupopup_activate_open_file_with()
   AppWindow* pApp = get_appwindow();
 
   //Offer the user a choice of suitable applications:
-  const Glib::ustring mime_type = get_mime_type();
+  const auto mime_type = get_mime_type();
   if(mime_type.empty())
   {
     std::cerr << G_STRFUNC << ": mime_type is empty." << std::endl;
@@ -549,7 +549,7 @@ static void make_file_read_only(const Glib::ustring& uri)
     std::cerr << G_STRFUNC << ": filepath is empty." << std::endl;
   }
   
-  const int result = chmod(filepath.c_str(), S_IRUSR);
+  const auto result = chmod(filepath.c_str(), S_IRUSR);
   if(result != 0)
   {
     std::cerr << G_STRFUNC << ": chmod() failed." << std::endl;
@@ -628,7 +628,7 @@ Glib::ustring ImageGlom::save_to_temp_file(bool show_progress)
 
 void ImageGlom::open_with(const Glib::RefPtr<Gio::AppInfo>& app_info)
 {
-  const Glib::ustring uri = save_to_temp_file();
+  const auto uri = save_to_temp_file();
   if(uri.empty())
     return;
 
@@ -686,12 +686,12 @@ void ImageGlom::on_menupopup_activate_save_file()
 
   dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("_Save"), Gtk::RESPONSE_OK);
-  const int response = dialog.run();
+  const auto response = dialog.run();
   dialog.hide();
   if(response != Gtk::RESPONSE_OK)
     return;
     
-  const Glib::ustring uri = dialog.get_uri();
+  const auto uri = dialog.get_uri();
   if(uri.empty())
     return;
     
@@ -705,7 +705,7 @@ bool ImageGlom::save_file_sync(const Glib::ustring& uri)
   //because we don't want to offer feedback.
   //Ideally, EvView would just load from data anyway.
   
-  const GdaBinary* gda_binary = get_binary();
+  const auto gda_binary = get_binary();
   if(!gda_binary)
   {
     std::cerr << G_STRFUNC << ": GdaBinary is null" << std::endl;
@@ -720,7 +720,7 @@ bool ImageGlom::save_file_sync(const Glib::ustring& uri)
 
   try
   {
-    const std::string filepath = Glib::filename_from_uri(uri);
+    const auto filepath = Glib::filename_from_uri(uri);
     Glib::file_set_contents(filepath, (const char*)gda_binary->data, gda_binary->binary_length);
   }
   catch(const Glib::Error& ex)
@@ -746,7 +746,7 @@ bool ImageGlom::save_file(const Glib::ustring& uri)
   if(pApp)
     dialog_save->set_transient_for(*pApp);
 
-  const GdaBinary* gda_binary = get_binary();
+  const auto gda_binary = get_binary();
   if(!gda_binary)
     return false;
 
@@ -778,7 +778,7 @@ void ImageGlom::on_menupopup_activate_select_file()
 
   if((response != Gtk::RESPONSE_CANCEL) && (response != Gtk::RESPONSE_DELETE_EVENT))
   {
-    const Glib::ustring uri = dialog.get_uri();
+    const auto uri = dialog.get_uri();
     if(!uri.empty())
     {
       DialogImageLoadProgress* dialog;
@@ -819,9 +819,9 @@ void ImageGlom::on_clipboard_get(Gtk::SelectionData& selection_data, guint /* in
   //info is meant to indicate the target, but it seems to be always 0,
   //so we use the selection_data's target instead.
 
-  const std::string target = selection_data.get_target(); 
+  const auto target = selection_data.get_target(); 
 
-  const Glib::ustring mime_type = get_mime_type();
+  const auto mime_type = get_mime_type();
   if(mime_type.empty())
   {
     std::cerr << G_STRFUNC << ": mime_type is empty." << std::endl;
@@ -829,7 +829,7 @@ void ImageGlom::on_clipboard_get(Gtk::SelectionData& selection_data, guint /* in
   
   if(target == mime_type)
   {
-    const GdaBinary* gda_binary = get_binary();
+    const auto gda_binary = get_binary();
     if(!gda_binary)
       return;
     
@@ -868,7 +868,7 @@ void ImageGlom::on_menupopup_activate_copy()
   Glib::RefPtr<Gtk::Clipboard> refClipboard = Gtk::Clipboard::get();
 
   //Targets:
-  const Glib::ustring mime_type = get_mime_type();
+  const auto mime_type = get_mime_type();
   if(mime_type.empty())
   {
     std::cerr << G_STRFUNC << ": mime_type is empty." << std::endl;

@@ -89,8 +89,8 @@ void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, 
   //Look at each item:
   for(LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin(); iterItem != m_list_items.end(); ++iterItem)
   {
-    std::shared_ptr<LayoutItem> item = *iterItem;
-    std::shared_ptr<LayoutItem_Field> field_item = std::dynamic_pointer_cast<LayoutItem_Field>(item);
+    auto item = *iterItem;
+    auto field_item = std::dynamic_pointer_cast<LayoutItem_Field>(item);
     if(field_item)
     {
       if(field_item->get_table_used(Glib::ustring()) == table_name) //If it's a related table (this would be a self-relationship)
@@ -107,7 +107,7 @@ void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, 
     }
     else
     {
-      std::shared_ptr<LayoutGroup> sub_group = std::dynamic_pointer_cast<LayoutGroup>(item);
+      auto sub_group = std::dynamic_pointer_cast<LayoutGroup>(item);
       if(sub_group)
         sub_group->change_field_item_name(table_name, field_name, field_name_new);
     }
@@ -245,7 +245,7 @@ void LayoutItem_Portal::get_suitable_table_to_view_details(Glib::ustring& table_
 
 
   //Get the navigation table name from the chosen relationship:
-  const Glib::ustring directly_related_table_name = get_table_used(Glib::ustring() /* not relevant */);
+  const auto directly_related_table_name = get_table_used(Glib::ustring() /* not relevant */);
 
   // The navigation_table_name (and therefore, the table_name output parameter,
   // as well) stays empty if the navrel type was set to none.
@@ -292,7 +292,7 @@ std::shared_ptr<const UsesRelationship> LayoutItem_Portal::get_portal_navigation
   }
 
   //If the related table is not hidden then we can just navigate to that:
-  const Glib::ustring direct_related_table_name = get_table_used(Glib::ustring() /* parent table - not relevant */);
+  const auto direct_related_table_name = get_table_used(Glib::ustring() /* parent table - not relevant */);
   if(!(document->get_table_is_hidden(direct_related_table_name)))
   {
     //Non-hidden tables can just be shown directly. Navigate to it:
@@ -320,9 +320,9 @@ std::shared_ptr<const UsesRelationship> LayoutItem_Portal::get_portal_navigation
       std::shared_ptr<const LayoutItem_Field> field_identifies = get_field_identifies_non_hidden_related_record(used_in_relationship, document);
       if(field_identifies)
       {
-        std::shared_ptr<UsesRelationship> result = std::make_shared<UsesRelationship>();
+        auto result = std::make_shared<UsesRelationship>();
 
-        std::shared_ptr<Relationship> rel_nonconst = std::const_pointer_cast<Relationship>(used_in_relationship);
+        auto rel_nonconst = std::const_pointer_cast<Relationship>(used_in_relationship);
         result->set_relationship(rel_nonconst);
 
         return result;
@@ -345,9 +345,9 @@ std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_is_from_non
     return result;
   }
   
-  const Glib::ustring parent_table_name = get_table_used(Glib::ustring() /* parent table - not relevant */);
+  const auto parent_table_name = get_table_used(Glib::ustring() /* parent table - not relevant */);
 
-  LayoutItem_Portal::type_list_const_items items = get_items();
+  auto items = get_items();
   for(LayoutItem_Portal::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
   {
     std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter);
@@ -355,7 +355,7 @@ std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_is_from_non
     {
       if(field->get_has_relationship_name())
       {
-        const Glib::ustring table_name = field->get_table_used(parent_table_name);
+        const auto table_name = field->get_table_used(parent_table_name);
         if(!(document->get_table_is_hidden(table_name)))
           return field;
       }
@@ -377,9 +377,9 @@ std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_identifies_
     return result;
   }
 
-  const Glib::ustring parent_table_name = get_table_used(Glib::ustring() /* parent table - not relevant */);
+  const auto parent_table_name = get_table_used(Glib::ustring() /* parent table - not relevant */);
 
-  LayoutItem_Portal::type_list_const_items items = get_items();
+  auto items = get_items();
   for(LayoutItem_Portal::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
   {
     std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter);
@@ -388,7 +388,7 @@ std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_identifies_
       std::shared_ptr<const Relationship> relationship = document->get_field_used_in_relationship_to_one(parent_table_name, field);
       if(relationship)
       {
-        const Glib::ustring table_name = relationship->get_to_table();
+        const auto table_name = relationship->get_to_table();
         if(!(table_name.empty()))
         {
           if(!(document->get_table_is_hidden(table_name)))
@@ -406,7 +406,7 @@ std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_identifies_
 
 Glib::ustring LayoutItem_Portal::get_title_or_name(const Glib::ustring& locale) const
 {
-  Glib::ustring title = get_title_used(Glib::ustring() /* parent table - not relevant */, locale);
+  auto title = get_title_used(Glib::ustring() /* parent table - not relevant */, locale);
   if(title.empty())
     title = get_relationship_name_used();
   
@@ -418,7 +418,7 @@ Glib::ustring LayoutItem_Portal::get_title_or_name(const Glib::ustring& locale) 
 
 Glib::ustring LayoutItem_Portal::get_title(const Glib::ustring& locale) const
 {
-  Glib::ustring title = get_title_used(Glib::ustring() /* parent table - not relevant */, locale);
+  auto title = get_title_used(Glib::ustring() /* parent table - not relevant */, locale);
   if(title.empty()) //TODO: This prevents "" as a real title.
    title = _("Undefined Table");
 

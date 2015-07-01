@@ -75,7 +75,7 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
     std::cerr << G_STRFUNC << ": m_portal was null." << std::endl;
   }
 
-  const Glib::ustring target_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
+  const auto target_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
     builder->set_table(target_table);
     builder->add_field_value_as_value(m_key_field->get_name(), m_key_value);
@@ -85,7 +85,7 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
         builder->add_expr_as_value(related_record_primary_key_value)));
 
   //std::cout << "debug: " << G_STRFUNC << ": setting value in db=" << primary_key_value.to_string() << std::endl;
-  const bool test = DbUtils::query_execute(builder);
+  const auto test = DbUtils::query_execute(builder);
   if(!test)
   {
     std::cerr << G_STRFUNC << ": SQL query failed." << std::endl;
@@ -185,7 +185,7 @@ void Box_Data_Portal::on_record_added(const Gnome::Gda::Value& /* primary_key_va
 
 Box_Data_Portal::type_vecConstLayoutFields Box_Data_Portal::get_fields_to_show() const
 {
-  const Document* document = get_document();
+  const auto document = get_document();
   if(document && m_portal)
   {
     Document::type_list_layout_groups mapGroups;
@@ -231,7 +231,7 @@ bool Box_Data_Portal::get_has_suitable_record_to_view_details() const
   if(!m_portal)
     return false;
 
-  const Document* document = get_document();
+  const auto document = get_document();
   if(!document)
     return false;
     
@@ -251,7 +251,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   if(!m_portal)
     return;
 
-  const Document* document = get_document();
+  const auto document = get_document();
   if(!document)
     return;
     
@@ -286,7 +286,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   fieldsToGet.push_back(layout_item);
 
   //For instance "invoice_line_id" if this is a portal to an "invoice_lines" table:
-  const Glib::ustring related_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
+  const auto related_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
   std::shared_ptr<const Field> key_field = get_field_primary_key_for_table(related_table);
   //std::cout << "DEBUG: related table=" << related_table << ", whose primary_key=" << key_field->get_name() << ", with value=" << primary_key_value.to_string() << "getting value for: " << layout_item->get_layout_display_name() << std::endl;
 

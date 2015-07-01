@@ -101,7 +101,7 @@ Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
   //Look at each field entry and build e.g. 'Name = "Bob"'
   for(type_vecConstLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
   {
-    const Gnome::Gda::Value data = get_entered_field_data(*iter);
+    const auto data = get_entered_field_data(*iter);
 
     if(!Conversions::value_is_empty(data))
     {
@@ -117,7 +117,7 @@ Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
 
         if(use_this_field)
         {
-          const guint cond_id = builder->add_cond(field->sql_find_operator(),
+          const auto cond_id = builder->add_cond(field->sql_find_operator(),
             builder->add_field_id(field->get_name(), m_table_name),
             builder->add_expr( field->sql_find(data, connection) ));
 
@@ -150,7 +150,7 @@ void Box_Data::on_Button_Find()
   //m_AddDel.finish_editing();
 
   //Call the virtual method to get the find criteria for a details or list view:
-  const Gnome::Gda::SqlExpr where_clause = get_find_where_clause();
+  const auto where_clause = get_find_where_clause();
 
   //The signal handler then checks and warns if no find criteria were entered.
   signal_find_criteria.emit(where_clause);
@@ -186,12 +186,12 @@ bool Box_Data::confirm_discard_unstored_data() const
 {
   if(get_unstored_data())
   {
-    const Glib::ustring message = _("This data cannot be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?");
+    const auto message = _("This data cannot be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?");
     //Ask user to confirm loss of data:
     Gtk::MessageDialog dialog(UiUtils::bold_message(_("No primary key value")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
     dialog.set_secondary_text(message);
     //TODO: It needs a const. I wonder if it should. murrayc. dialog.set_transient_for(*get_app_window());
-    const int iButton = dialog.run();
+    const auto iButton = dialog.run();
 
     return (iButton == Gtk::RESPONSE_OK);
   }
@@ -261,7 +261,7 @@ Document::type_list_layout_groups Box_Data::get_data_layout_groups(const Glib::u
       //Get the layout information from the document:
       layout_groups = document->get_data_layout_groups_plus_new_fields(layout_name, m_table_name, layout_platform);
       document->fill_layout_field_details(m_table_name, layout_groups); //TODO: Do this automatically in Document?
-      const Privileges table_privs = Privs::get_current_privs(m_table_name);
+      const auto table_privs = Privs::get_current_privs(m_table_name);
 
       //Fill in the field information for the fields mentioned in the layout:
       for(Document::type_list_layout_groups::iterator iterGroups = layout_groups.begin(); iterGroups != layout_groups.end(); ++iterGroups)
@@ -282,7 +282,7 @@ void Box_Data::fill_layout_group_field_info(const std::shared_ptr<LayoutGroup>& 
   if(!group)
    return;
 
-  const Document* document = get_document();
+  const auto document = get_document();
 
   LayoutGroup::type_list_items items = group->get_items();
   for(LayoutGroup::type_list_items::iterator iter = items.begin(); iter != items.end(); ++iter)
@@ -295,7 +295,7 @@ void Box_Data::fill_layout_group_field_info(const std::shared_ptr<LayoutGroup>& 
       if(item_field->get_has_relationship_name()) //If it's a field in a related table.
       {
         //Get the full field information:
-        const Glib::ustring relationship_name = item_field->get_relationship_name();
+        const auto relationship_name = item_field->get_relationship_name();
         std::shared_ptr<const Relationship> relationship = document->get_relationship(m_table_name, relationship_name);
         if(relationship)
         {
@@ -305,7 +305,7 @@ void Box_Data::fill_layout_group_field_info(const std::shared_ptr<LayoutGroup>& 
             item_field->set_full_field_details(field);
 
             //TODO_Performance: Don't do this repeatedly for the same table.
-            const Privileges privs = Privs::get_current_privs(relationship->get_to_table());
+            const auto privs = Privs::get_current_privs(relationship->get_to_table());
             item_field->m_priv_view = privs.m_view;
             item_field->m_priv_edit = privs.m_edit;
           }
@@ -351,12 +351,12 @@ Glib::ustring Box_Data::get_layout_name() const
 
 void Box_Data::execute_button_script(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key_value)
 {
-  const Glib::ustring script = layout_item->get_script();
+  const auto script = layout_item->get_script();
   if(!UiUtils::script_check_for_pygtk2_with_warning(script, get_app_window()))
     return;
 
-  const std::shared_ptr<Field> field_primary_key = get_field_primary_key();
-  const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, field_primary_key, primary_key_value);
+  const auto field_primary_key = get_field_primary_key();
+  const auto field_values = get_record_field_values_for_calculation(m_table_name, field_primary_key, primary_key_value);
 
   //We need the connection when we run the script, so that the script may use it.
   std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */);

@@ -28,7 +28,7 @@ bool check_value_is_an_image(const Gnome::Gda::Value& value)
   g_assert(!value.is_null());
   g_assert(value.get_value_type() == GDA_TYPE_BINARY);
   long data_length = 0;
-  const guchar* data = value.get_binary(data_length);
+  const auto data = value.get_binary(data_length);
   g_assert(data);
   g_assert(data_length);
   //Check that it can be interpreted as an image:

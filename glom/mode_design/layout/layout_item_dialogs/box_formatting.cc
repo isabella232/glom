@@ -260,15 +260,15 @@ void Box_Formatting::set_formatting_for_non_field(const Formatting& format, bool
 
   m_spinbutton_format_text_multiline_height->set_value(format.get_text_format_multiline_height_lines());
 
-  const Glib::ustring font = format.get_text_format_font();
+  const auto font = format.get_text_format_font();
   m_checkbox_format_text_font->set_active(!font.empty());
   m_fontbutton->set_font_name(font);
 
-  const Glib::ustring color_foreground = format.get_text_format_color_foreground();
+  const auto color_foreground = format.get_text_format_color_foreground();
   m_checkbox_format_text_color_foreground->set_active(!color_foreground.empty());
   m_colorbutton_foreground->set_rgba( Gdk::RGBA(color_foreground) );
 
-  const Glib::ustring color_background = format.get_text_format_color_background();
+  const auto color_background = format.get_text_format_color_background();
   m_checkbox_format_text_color_background->set_active(!color_background.empty());
   m_colorbutton_background->set_rgba( Gdk::RGBA(color_background) );
 
@@ -281,10 +281,10 @@ void Box_Formatting::set_formatting_for_non_field(const Formatting& format, bool
       format.get_choices_restricted(as_radio_buttons));
     m_checkbutton_choices_restricted_as_radio_buttons->set_active(as_radio_buttons);
 
-    const Document* document = get_document();
+    const auto document = get_document();
 
     //Fill the list of relationships:
-    const Document::type_vec_relationships vecRelationships = document->get_relationships(m_table_name);
+    const auto vecRelationships = document->get_relationships(m_table_name);
     m_combo_choices_relationship->set_relationships(vecRelationships);
 
     std::shared_ptr<const Relationship> choices_relationship;
@@ -335,7 +335,7 @@ void Box_Formatting::set_formatting_for_non_field(const Formatting& format, bool
         value = choicevalue->get_value();
 
       //Display the value in the choices list as it would be displayed in the format:
-      const Glib::ustring value_text = Conversions::get_text_for_gda_value(m_field->get_glom_type(), value, format.m_numeric_format);
+      const auto value_text = Conversions::get_text_for_gda_value(m_field->get_glom_type(), value, format.m_numeric_format);
       Gtk::TreeModel::iterator tree_iter = m_adddel_choices_custom->add_item(value_text);
       m_adddel_choices_custom->set_value(tree_iter, m_col_index_custom_choices, value_text);
     }
@@ -353,7 +353,7 @@ bool Box_Formatting::get_formatting(Formatting& format) const
   m_format.m_numeric_format.m_use_thousands_separator = m_checkbox_format_use_thousands->get_active();
   m_format.m_numeric_format.m_decimal_places_restricted = m_checkbox_format_use_decimal_places->get_active();
 
-  const Glib::ustring strDecPlaces = m_entry_format_decimal_places->get_text();
+  const auto strDecPlaces = m_entry_format_decimal_places->get_text();
   m_format.m_numeric_format.m_decimal_places = atoi(strDecPlaces.c_str());
 
   m_format.m_numeric_format.m_currency_symbol = m_entry_currency_symbol->get_entry()->get_text();
@@ -401,7 +401,7 @@ bool Box_Formatting::get_formatting(Formatting& format) const
     std::shared_ptr<LayoutGroup> layout_choice_extra = std::make_shared<LayoutGroup>();
     layout_choice_extra->m_list_items = m_dialog_choices_extra_fields->get_fields();
 
-    const Formatting::type_list_sort_fields sort_fields = m_dialog_choices_sortby->get_fields();
+    const auto sort_fields = m_dialog_choices_sortby->get_fields();
 
     m_format.set_choices_related(choices_relationship,
       layout_choice_first, layout_choice_extra,
@@ -415,11 +415,11 @@ bool Box_Formatting::get_formatting(Formatting& format) const
     {
       for(Gtk::TreeModel::iterator iter = choices_model->children().begin(); iter != choices_model->children().end(); ++iter)
       {
-        const Glib::ustring text = m_adddel_choices_custom->get_value(iter, m_col_index_custom_choices);
+        const auto text = m_adddel_choices_custom->get_value(iter, m_col_index_custom_choices);
         if(!text.empty())
         {
           bool success = false;
-          const Gnome::Gda::Value value = Conversions::parse_value(m_field->get_glom_type(), text, m_format.m_numeric_format, success);
+          const auto value = Conversions::parse_value(m_field->get_glom_type(), text, m_format.m_numeric_format, success);
 
           if(success)
           {
@@ -450,20 +450,20 @@ void Box_Formatting::on_combo_choices_relationship_changed()
     //Show the list of fields from this relationship:
     if(relationship)
     {
-      const Glib::ustring related_table = relationship->get_to_table();
-      const Document::type_vec_fields vecFields = pDocument->get_table_fields(related_table);
+      const auto related_table = relationship->get_to_table();
+      const auto vecFields = pDocument->get_table_fields(related_table);
       m_combo_choices_field->set_fields(vecFields);
 
       //Default to using the Primary Key field from the related table,
       //because this is almost always what people want to use:
-      const std::shared_ptr<Field> related_primary_key = pDocument->get_field_primary_key(related_table);
+      const auto related_primary_key = pDocument->get_field_primary_key(related_table);
       if(related_primary_key)
         m_combo_choices_field->set_selected_field(related_primary_key);
 
       //Update the show-all dialog's list:
       //If the related table name has changed then the list of fields will probably
       //be ignored, clearing the list, but we try to preserve it if possible:
-      const LayoutGroup::type_list_items list_fields = m_dialog_choices_extra_fields->get_fields();
+      const auto list_fields = m_dialog_choices_extra_fields->get_fields();
       m_dialog_choices_extra_fields->set_fields(relationship->get_to_table(), list_fields);
 
       //Update the label:
@@ -474,7 +474,7 @@ void Box_Formatting::on_combo_choices_relationship_changed()
 
       //If the related table name has changed then the list of sort fields will probably
       //be ignored, clearing the list, but we try to preserve it if possible:
-      const Formatting::type_list_sort_fields sort_fields = m_dialog_choices_sortby->get_fields();
+      const auto sort_fields = m_dialog_choices_sortby->get_fields();
       m_dialog_choices_sortby->set_fields(relationship->get_to_table(), sort_fields);
 
       //Update the label: //TODO: Do the label updating in a shared function.
@@ -521,7 +521,7 @@ void Box_Formatting::enforce_constraints()
     }
 
     //Do not allow the user to specify a text height if it is not going to be multiline:
-    const bool text_height_sensitive = m_checkbox_format_text_multiline->get_active();
+    const auto text_height_sensitive = m_checkbox_format_text_multiline->get_active();
     m_spinbutton_format_text_multiline_height->set_sensitive(text_height_sensitive);
   }
   else
@@ -572,7 +572,7 @@ void Box_Formatting::on_button_choices_extra()
   if(!m_dialog_choices_extra_fields)
     return;
 
-  const int response = Glom::UiUtils::dialog_run_with_help(m_dialog_choices_extra_fields);
+  const auto response = Glom::UiUtils::dialog_run_with_help(m_dialog_choices_extra_fields);
   m_dialog_choices_extra_fields->hide();
   if(response == Gtk::RESPONSE_OK && m_dialog_choices_extra_fields->get_modified())
   {
@@ -591,7 +591,7 @@ void Box_Formatting::on_button_choices_sortby()
   if(!m_dialog_choices_sortby)
     return;
 
-  const int response = Glom::UiUtils::dialog_run_with_help(m_dialog_choices_sortby);
+  const auto response = Glom::UiUtils::dialog_run_with_help(m_dialog_choices_sortby);
   m_dialog_choices_sortby->hide();
   if(response == Gtk::RESPONSE_OK && m_dialog_choices_sortby->get_modified())
   {

@@ -30,7 +30,7 @@
 static bool field_is_on_a_layout(Glom::Document& document, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Check that the field name is no longer used on a layout:
-  const std::vector<Glib::ustring> table_names = document.get_table_names();
+  const auto table_names = document.get_table_names();
   for(std::vector<Glib::ustring>::const_iterator iter = table_names.begin(); iter != table_names.end(); ++iter)
   {
     const Glib::ustring layout_table_name = *iter;
@@ -86,7 +86,7 @@ int main()
   Glom::Document document;
   document.set_file_uri(uri);
   int failure_code = 0;
-  const bool test = document.load(failure_code);
+  const auto test = document.load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)

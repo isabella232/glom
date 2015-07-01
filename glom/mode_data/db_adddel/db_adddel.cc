@@ -407,7 +407,7 @@ Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
   for(Gtk::TreeModel::iterator iter = m_refListStore->children().begin(); iter != m_refListStore->children().end(); ++iter)
   {
     //Gtk::TreeModel::Row row = *iter;
-    const Gnome::Gda::Value& valTemp = get_value_key(iter);
+    const auto valTemp = get_value_key(iter);
     if(valTemp == key)
     {
       return iter;
@@ -459,7 +459,7 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const std::shar
     Gtk::TreeModel::Path path = m_refListStore->get_path(iter);
 
     guint view_column_index = 0;
-    const bool test = get_view_column_index(treemodel_col, view_column_index);
+    const auto test = get_view_column_index(treemodel_col, view_column_index);
     if(test)
     {
       Gtk::TreeView::Column* pColumn = m_TreeView.get_column(view_column_index);
@@ -527,7 +527,7 @@ guint DbAddDel::get_fixed_cell_height()
       std::shared_ptr<const LayoutItem_WithFormatting> item_withformatting = std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(*iter);
       if(item_withformatting)
       {
-         const Formatting& formatting = item_withformatting->get_formatting_used();
+         const auto formatting = item_withformatting->get_formatting_used();
          font_name = formatting.get_text_format_font();
       }
 
@@ -692,7 +692,7 @@ void DbAddDel::construct_specified_columns()
   int data_model_column_index = 0; //-1 means undefined index.
 
   guint column_to_expand = 0;
-  const bool has_expandable_column = get_column_to_expand(column_to_expand);
+  const auto has_expandable_column = get_column_to_expand(column_to_expand);
   //std::cout << "DEBUG: column_to_expand=" << column_to_expand  << ", has=" << has_expandable_column << std::endl;
 
   for(type_column_items::iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
@@ -702,8 +702,8 @@ void DbAddDel::construct_specified_columns()
     {
       no_columns_used = false;
 
-      const Glib::ustring column_name = item_get_title_or_name(layout_item);
-      const Glib::ustring column_id = layout_item->get_name();
+      const auto column_name = item_get_title_or_name(layout_item);
+      const auto column_id = layout_item->get_name();
 
       // Whenever we are dealing with real database fields,
       // we need to know the index of the field in the query:
@@ -783,7 +783,7 @@ bool DbAddDel::refresh_from_database()
   if(m_refListStore)
   {
     //Glib::RefPtr<Gtk::TreeModel> refNull;
-    const bool result = m_refListStore->refresh_from_database(m_found_set);
+    const auto result = m_refListStore->refresh_from_database(m_found_set);
     //m_TreeView.set_model(refNull); //TODO: This causes a g_warning(): gtk_tree_view_unref_tree_helper: assertion `node != NULL' failed
     if(m_TreeView.get_model())
       gtk_tree_view_set_model(m_TreeView.gobj(), 0); //This gives the same warning.
@@ -830,7 +830,7 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const std::shared
   Gtk::TreeModel::Row treerow = *iter;
   if(treerow)
   {
-    const type_list_indexes list_indexes = get_data_model_column_index(layout_item, set_specified_field_layout);
+    const auto list_indexes = get_data_model_column_index(layout_item, set_specified_field_layout);
     for(type_list_indexes::const_iterator iter = list_indexes.begin(); iter != list_indexes.end(); ++iter)
     {
       const guint treemodel_col = *iter + get_count_hidden_system_columns();
@@ -839,7 +839,7 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const std::shared
   }
 
   /// Get indexes of any columns with choices with !show_all relationships that have @a from_key as the from_key.
-  const type_list_indexes list_choice_cells = get_choice_index(layout_item /* from_key field name */);
+  const auto list_choice_cells = get_choice_index(layout_item /* from_key field name */);
   for(type_list_indexes::const_iterator iter = list_choice_cells.begin(); iter != list_choice_cells.end(); ++iter)
   {
     const guint model_index = *iter;
@@ -874,7 +874,7 @@ void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint mo
   }
 
   guint view_column_index = 0;
-  const bool test = get_view_column_index(model_index, view_column_index);
+  const auto test = get_view_column_index(model_index, view_column_index);
   if(!test)
   {
     std::cerr << G_STRFUNC << ": view column not found for model_column=" << model_index << std::endl;
@@ -1010,7 +1010,7 @@ DbAddDel::type_list_indexes DbAddDel::get_choice_index(const std::shared_ptr<con
   if(!from_key)
     return result;
 
-  const Glib::ustring from_key_name = from_key->get_name();
+  const auto from_key_name = from_key->get_name();
 
   guint index = 0;
   for(type_column_items::const_iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
@@ -1019,7 +1019,7 @@ DbAddDel::type_list_indexes DbAddDel::get_choice_index(const std::shared_ptr<con
     if(!field)
        continue;
 
-    const Formatting& format = field->get_formatting_used();
+    const auto format = field->get_formatting_used();
 
     bool choice_show_all = false;
     const std::shared_ptr<const Relationship> choice_relationship =
@@ -1068,7 +1068,7 @@ void DbAddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
   m_column_items[col].m_choices = vecStrings;
 
   guint view_column_index = 0;
-  const bool test = get_view_column_index(col, view_column_index);
+  const auto test = get_view_column_index(col, view_column_index);
   if(test)
   {
     CellRendererDbList* pCellRenderer =
@@ -1294,7 +1294,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
     Gnome::Gda::Value value_old;
     row.get_value(tree_model_column_index, value_old);
 
-    const bool bValueOld = (value_old.get_value_type() == G_TYPE_BOOLEAN) && value_old.get_boolean();
+    const auto bValueOld = (value_old.get_value_type() == G_TYPE_BOOLEAN) && value_old.get_boolean();
     const bool bValueNew = !bValueOld;
     Gnome::Gda::Value value_new;
     value_new.set(bValueNew);
@@ -1308,7 +1308,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
     bool bIsAdd = false;
     bool bIsChange = false;
 
-    const int iCount = m_refListStore->children().size();
+    const auto iCount = m_refListStore->children().size();
     if(iCount)
     {
       if(get_allow_user_actions()) //If add is possible:
@@ -1379,7 +1379,7 @@ void DbAddDel::on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& ro
     return;
   }
     
-  const Gtk::TreeModel::Path path = get_model()->get_path(row);
+  const auto path = get_model()->get_path(row);
   
   //Highlights the cell, and start the editing:
   m_TreeView.set_cursor(path, *pColumn, *pCell, true /* start_editing */);
@@ -1426,7 +1426,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
     {
       if(get_is_placeholder_row(iter))
       {
-        const bool bPreventUserSignals = get_prevent_user_signals();
+        const auto bPreventUserSignals = get_prevent_user_signals();
         set_prevent_user_signals(true); //Stops extra signal_user_changed.
 
         //Don't add a new row if nothing was entered into the placeholder.
@@ -1448,7 +1448,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
     if(!item_field)
       return;
 
-    const Field::glom_field_type field_type = item_field->get_glom_type();
+    const auto field_type = item_field->get_glom_type();
     if(field_type != Field::TYPE_INVALID) //If a field type was specified for this column.
     {
       //Make sure that the entered data is suitable for this field type:
@@ -1460,7 +1460,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       //then make sure that we only write the original to the database, though we display the translated version:
       if(item_field->get_formatting_used_has_translatable_choices())
       {
-        const Formatting& formatting = item_field->get_formatting_used();
+        const auto formatting = item_field->get_formatting_used();
         new_text_to_save = formatting.get_custom_choice_original_for_translated_text(new_text);
 
         //If somehow (though this should be impossible), the user entered a 
@@ -1470,11 +1470,11 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
           new_text_to_save = new_text;
       }
 
-      const Gnome::Gda::Value value = Conversions::parse_value(field_type, new_text_to_save, item_field->get_formatting_used().m_numeric_format, success);
+      const auto value = Conversions::parse_value(field_type, new_text_to_save, item_field->get_formatting_used().m_numeric_format, success);
       if(!success)
       {  
           //Tell the user and offer to revert or try again:
-          const bool revert = glom_show_dialog_invalid_data(field_type);
+          const auto revert = glom_show_dialog_invalid_data(field_type);
           if(revert)
           {
             //Revert the data:
@@ -1572,13 +1572,13 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
   //because that must always be automatic,
   //because it must resize when the whole column resizes.
   std::vector<Gtk::TreeView::Column*> columns = m_TreeView.get_columns();
-  const int n_view_columns = columns.size();
+  const auto n_view_columns = columns.size();
   if(n_view_columns && (view_column == m_TreeView.get_column(n_view_columns -1)))
     return;
 
   const std::shared_ptr<LayoutItem>& layout_item = m_column_items[model_column_index];
 
-  const int width = view_column->get_width();
+  const auto width = view_column->get_width();
   //std::cout << "debug: " << G_STRFUNC << ": width=" << width << std::endl;
 
   if(width == -1) //Means automatic.
@@ -1636,7 +1636,7 @@ void DbAddDel::on_treeview_columns_changed()
       DbTreeViewColumnGlom* pViewColumn = dynamic_cast<DbTreeViewColumnGlom*>(*iter);
       if(pViewColumn)
       {
-        const Glib::ustring column_id = pViewColumn->get_column_id();
+        const auto column_id = pViewColumn->get_column_id();
         m_vecColumnIDs.push_back(column_id);
 
       }
@@ -1668,7 +1668,7 @@ bool DbAddDel::get_column_to_expand(guint& column_to_expand) const
       if(layout_item_field->get_glom_type() == Field::TYPE_TEXT)
       {
         //Check that no specific width has been specified:
-        const guint column_width = layout_item_field->get_display_width();
+        const auto column_width = layout_item_field->get_display_width();
         if(!column_width)
         {
           column_to_expand = i;
@@ -1742,7 +1742,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   //This property is read only: pViewColumn->property_width() = column_width;
 
   //Save the extra ID, using the title if the column_id is empty:
-  const Glib::ustring column_id = m_column_items[model_column_index]->get_name();
+  const auto column_id = m_column_items[model_column_index]->get_name();
   pViewColumn->set_column_id( (column_id.empty() ? title : column_id) );
 
   //TODO pViewColumn->signal_button_press_event().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columnheader_button_press_event) );
@@ -1918,7 +1918,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
          std::cout << "    GType name=\"" << g_type_name(debug_type) << "\"" << std::endl;
       */
 
-      const Field::glom_field_type type = field->get_glom_type();
+      const auto type = field->get_glom_type();
       switch(type)
       {
         case(Field::TYPE_BOOLEAN):
@@ -1961,8 +1961,8 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
             //then make sure that we show the translated version, never showing the original text from the database:
             if(field->get_formatting_used_has_translatable_choices())
             {
-              const Formatting& formatting = field->get_formatting_used();
-              const Glib::ustring text_to_show = formatting.get_custom_choice_translated(text);
+              const auto formatting = field->get_formatting_used();
+              const auto text_to_show = formatting.get_custom_choice_translated(text);
 
               //Use the translation if there is one.
               //Otherwise, show the original data rather than showing nothing:
@@ -2124,7 +2124,7 @@ bool DbAddDel::start_new_record()
 
 void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
-  const Gnome::Gda::Value parent_primary_key_value = get_value_key(row);
+  const auto parent_primary_key_value = get_value_key(row);
   //std::cout << "debug: " << G_STRFUNC << ": parent_primary_key_value=" << parent_primary_key_value.to_string() << std::endl;
 
   std::shared_ptr<const LayoutItem_Field> layout_field = get_column_field(col);
@@ -2149,7 +2149,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
       {
         //If it's a related field then discover the actual table that it's in,
         //plus how to identify the record in that table.
-        const Glib::ustring relationship_name = layout_field->get_relationship_name();
+        const auto relationship_name = layout_field->get_relationship_name();
 
         Document* document = dynamic_cast<Document*>(get_document());
 
@@ -2157,7 +2157,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
         if(relationship)
         {
           table_name = relationship->get_to_table();
-          const Glib::ustring to_field_name = relationship->get_to_field();
+          const auto to_field_name = relationship->get_to_field();
           //Get the key field in the other table (the table that we will change)
           primary_key_field = DbUtils::get_fields_for_table_one_field(document, 
             table_name, to_field_name); //TODO_Performance.
@@ -2173,7 +2173,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
             Gnome::Gda::Value primary_key_value_used;
             if(!m_find_mode)
             {
-              const bool test = add_related_record_for_field(layout_field, relationship, primary_key_field, primary_key_value, primary_key_value_used);
+              const auto test = add_related_record_for_field(layout_field, relationship, primary_key_field, primary_key_value, primary_key_value_used);
               if(!test)
                 return;
             }
@@ -2191,7 +2191,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
       }
 
       //Update the field in the record (the record with this primary key):
-      const Gnome::Gda::Value field_value = get_value(row, layout_field);
+      const auto field_value = get_value(row, layout_field);
       //std::cout << "debug: " << G_STRFUNC << ": field_value = " << field_value.to_string() << std::endl;
       //const std::shared_ptr<const Field>& field = layout_field->m_field;
       //const Glib::ustring strFieldName = layout_field->get_name();
@@ -2202,19 +2202,19 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
       if(!check_entered_value_for_uniqueness(m_found_set.m_table_name, row, layout_field, field_value, window))
       {
         //Revert to the value in the database:
-        const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
+        const auto value_old = get_field_value_in_database(field_in_record, window);
         set_entered_field_data(row, layout_field, value_old);
 
         return; //The value has been reverted to the value in the database.
       }
 
 
-      const bool bTest = set_field_value_in_database(field_in_record, row, field_value, false /* don't use current calculations */, window);
+      const auto bTest = set_field_value_in_database(field_in_record, row, field_value, false /* don't use current calculations */, window);
       if(!bTest)
       {
         //Update failed.
         //Replace with correct values.
-        const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
+        const auto value_old = get_field_value_in_database(field_in_record, window);
         set_entered_field_data(row, layout_field, value_old);
       }
       else
@@ -2233,7 +2233,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
       if(primary_key_field)
       {
         LayoutFieldInRecord field_in_record(layout_field, m_found_set.m_table_name /* parent */, primary_key_field, primary_key_value);
-        const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
+        const auto value_old = get_field_value_in_database(field_in_record, window);
         set_entered_field_data(row, layout_field, value_old);
       }
     }
@@ -2245,7 +2245,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
       if(primary_key_field)
       {
         LayoutFieldInRecord field_in_record(layout_field, m_found_set.m_table_name /* parent */, primary_key_field, primary_key_value);
-        const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
+        const auto value_old = get_field_value_in_database(field_in_record, window);
         set_entered_field_data(row, layout_field, value_old);
       }
     }
@@ -2256,7 +2256,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
     //Add new record, which will generate the primary key:
     user_added(row);
 
-    const Gnome::Gda::Value primaryKeyValue = get_value_key(row); //TODO_Value
+    const auto primaryKeyValue = get_value_key(row); //TODO_Value
     if(!(Conversions::value_is_empty(primaryKeyValue))) //If the Add succeeeded:
     {
       if(!(layout_field->get_full_field_details()->get_primary_key())) //Don't try to re-set the primary key field, because we just inserted the record with it.
@@ -2298,7 +2298,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   if(primary_key_field->get_auto_increment())
   {
     //Auto-increment is awkward (we can't get the last-generated ID) with postgres, so we auto-generate it ourselves;
-    const Glib::ustring strPrimaryKeyName = primary_key_field->get_name();
+    const auto strPrimaryKeyName = primary_key_field->get_name();
     primary_key_value = DbUtils::get_next_auto_increment_value(m_found_set.m_table_name, strPrimaryKeyName);  //TODO: return a Gnome::Gda::Value of an appropriate type.
   }
   else
@@ -2341,7 +2341,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   if(m_find_mode)
     return;
 
-  const bool added = record_new(true /* use entered field data*/, primary_key_value);
+  const auto added = record_new(true /* use entered field data*/, primary_key_value);
   if(!added)
   {
     handle_error();
@@ -2371,7 +2371,7 @@ void DbAddDel::user_requested_delete(const Gtk::TreeModel::iterator& rowStart, c
   {
     if(confirm_delete_record())
     {
-      const Gnome::Gda::Value primary_key_value = get_primary_key_value(rowStart);
+      const auto primary_key_value = get_primary_key_value(rowStart);
       if(!m_find_mode)
         record_delete(primary_key_value);
 
@@ -2432,7 +2432,7 @@ void DbAddDel::on_treeview_selection_changed()
   if(!refSelection)
     return;
 
-  const bool one_selected = (refSelection->count_selected_rows() > 0);
+  const auto one_selected = (refSelection->count_selected_rows() > 0);
   on_selection_changed(one_selected);
 }
 

@@ -40,11 +40,11 @@ bool CsvParser::next_char_is_quote(const Glib::ustring::const_iterator& iter, co
     return false;
 
   // Look at the next character to see if it's really "" (an escaped "):
-  Glib::ustring::const_iterator iter_next = iter;
+  auto iter_next = iter;
   ++iter_next;
   if(iter_next != end)
   {
-    const gunichar c_next = *iter_next;
+    const auto c_next = *iter_next;
     if(c_next == CsvParser::QUOTE)
     {
       return true;
@@ -73,7 +73,7 @@ void CsvParser::set_file_and_start_parsing(const std::string& file_uri)
   // TODO: Check URI validity?
   g_return_if_fail(!file_uri.empty());
 
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
+  auto file = Gio::File::create_for_uri(file_uri);
 
   set_state(CsvParser::STATE_PARSING);
   
@@ -119,7 +119,7 @@ const Glib::ustring& CsvParser::get_data(guint row, guint col)
     return empty_result;
   }
 
-  const type_row_strings& row_data = m_rows[row];
+  const auto row_data = m_rows[row];
   if(col >= row_data.size())
   {
     //std::cerr << G_STRFUNC << ": get_data(): col out of range." << std::endl;
@@ -299,7 +299,7 @@ bool CsvParser::on_idle_parse()
   char* outbuf = outbuffer;
   gsize outbytes = CONVERT_BUFFER_SIZE;
 
-  const std::size_t result = conv.iconv(&inbuf, &inbytes, &outbuf, &outbytes);
+  const auto result = conv.iconv(&inbuf, &inbytes, &outbuf, &outbytes);
   bool more_to_process = (inbytes != 0);
 
   if(result == static_cast<size_t>(-1))
@@ -550,7 +550,7 @@ void CsvParser::on_buffer_read(const Glib::RefPtr<Gio::AsyncResult>& result)
 {
   try
   {
-    const gssize size = m_stream->read_finish(result);
+    const auto size = m_stream->read_finish(result);
     copy_buffer_and_continue_reading(size);
   }
   catch(const Glib::Exception& ex)

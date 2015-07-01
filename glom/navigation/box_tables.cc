@@ -80,7 +80,7 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const std:
   
   if(iter)
   {
-    const bool developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+    const auto developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
 
     m_AddDel.set_value_key(iter, table_info->get_name());
     m_AddDel.set_value(iter, m_colTableName, table_info->get_name());
@@ -109,7 +109,7 @@ bool Box_Tables::fill_from_database()
   bool result = Base_DB::fill_from_database();
 
   //Enable/Disable extra widgets:
-  const bool developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+  const auto developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
 
   //Developers see more columns, so make it bigger:
   if(developer_mode)
@@ -160,7 +160,7 @@ bool Box_Tables::fill_from_database()
     m_AddDel.remove_all();
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
-    const type_vec_strings vecTables = DbUtils::get_table_names_from_database();
+    const auto vecTables = DbUtils::get_table_names_from_database();
 
     for(type_vec_strings::const_iterator iter = vecTables.begin(); iter != vecTables.end(); ++iter)
     {
@@ -185,7 +185,7 @@ bool Box_Tables::fill_from_database()
         table_info->set_hidden(true);
       }
 
-      const bool hidden = table_info->get_hidden();
+      const auto hidden = table_info->get_hidden();
 
       bool bAddIt = true;
       if(hidden && !developer_mode) //Don't add hidden tables unless we are in developer mode:
@@ -198,7 +198,7 @@ bool Box_Tables::fill_from_database()
 
       //Check whether it's a system table, though they should never be in this list:
       const Glib::ustring prefix = "glom_system_";
-      const Glib::ustring table_prefix = strName.substr(0, prefix.size());
+      const auto table_prefix = strName.substr(0, prefix.size());
       if(table_prefix == prefix)
         bAddIt = false;
 
@@ -221,14 +221,14 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 {
   //TODO: Handle cell renderer changes to prevent illegal table names (e.g. starting with numbers.).
 
-  const Glib::ustring table_name = m_AddDel.get_value(row, m_colTableName);
+  const auto table_name = m_AddDel.get_value(row, m_colTableName);
   if(table_name.empty())
     return;
 
   bool created = false; 
 
   //Check whether it exists already. (Maybe it is somehow in the database but not in the document. That shouldn't happen.)
-  const bool exists_in_db = DbUtils::get_table_exists_in_database(table_name);
+  const auto exists_in_db = DbUtils::get_table_exists_in_database(table_name);
   if(exists_in_db)
   {
     //Ask the user if they want us to try to cope with this:
@@ -236,7 +236,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     dialog.set_secondary_text(_("This table already exists on the database server, though it is not mentioned in the .glom file. This should not happen. Would you like Glom to attempt to use the existing table?"));
     dialog.set_transient_for(*AppWindow::get_appwindow());
 
-    const int response = dialog.run();
+    const auto response = dialog.run();
     dialog.hide();
 
     if(response == Gtk::RESPONSE_OK)
@@ -282,7 +282,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
   bool something_changed = false;
   for(Gtk::TreeModel::iterator iter = rowStart; iter != iterAfter; ++iter)
   {
-    const Glib::ustring table_name = m_AddDel.get_value_key(iter);
+    const auto table_name = m_AddDel.get_value_key(iter);
 
     if(!table_name.empty())
     {
@@ -300,20 +300,20 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
         else
         {
           //Ask the user to confirm:
-          const Glib::ustring strMsg = Glib::ustring::compose(_("Are you sure that you want to delete this table?\nTable name: %1"), table_name);
+          const auto strMsg = Glib::ustring::compose(_("Are you sure that you want to delete this table?\nTable name: %1"), table_name);
           Gtk::MessageDialog dialog(UiUtils::bold_message(_("Delete Table")), true);
           dialog.set_secondary_text(strMsg);
           dialog.set_transient_for(*AppWindow::get_appwindow());
-          const int iButtonClicked = dialog.run();
+          const auto iButtonClicked = dialog.run();
           
           //Get a list of autoincrementing fields in the table:
-          const Glom::Document::type_vec_fields fields = document->get_table_fields(table_name);
+          const auto fields = document->get_table_fields(table_name);
    
 
           //Delete the table:
           if(iButtonClicked == Gtk::RESPONSE_OK)
           {
-            const bool test = DbUtils::drop_table(table_name);
+            const auto test = DbUtils::drop_table(table_name);
             if(!test)
               std::cerr << G_STRFUNC << ": DROP TABLE failed." << std::endl;
             else
@@ -332,7 +332,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
               if(!field || !field->get_auto_increment())
                 continue;
                 
-              const Glib::ustring field_name = field->get_name();
+              const auto field_name = field->get_name();
             
               if(!field_name.empty())
                 DbUtils::remove_auto_increment(table_name, field_name);
@@ -376,7 +376,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
     else if(column == m_colDefault)
     {
       //Only one table can be the default, so ensure that:
-      const bool is_default = m_AddDel.get_value_as_bool(row, m_colDefault);
+      const auto is_default = m_AddDel.get_value_as_bool(row, m_colDefault);
       if(is_default)
       {
         //Set all the other rows to false:
@@ -406,7 +406,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
         //Rename the table:
         if(iButtonClicked == Gtk::RESPONSE_OK)
         {
-          const bool test = DbUtils::rename_table(table_name, table_name_new);
+          const auto test = DbUtils::rename_table(table_name, table_name_new);
           if(test)
           {
             //Change the AddDel item's key:
@@ -468,7 +468,7 @@ void Box_Tables::save_to_document()
 
     for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
     {
-      const Glib::ustring table_name = m_AddDel.get_value(iter, m_colTableName); //The name has already been changed in the document.
+      const auto table_name = m_AddDel.get_value(iter, m_colTableName); //The name has already been changed in the document.
       std::shared_ptr<TableInfo> table_info = document->get_table(table_name); //Start with the existing table_info, to preserve extra information, such as translations.
       if(table_info)
       {

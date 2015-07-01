@@ -214,7 +214,7 @@ bool recreate_database_from_document(Document* document, const std::function<voi
     return false; //Impossible anyway.
 
   //Check whether the database exists already.
-  const Glib::ustring db_name = document->get_connection_database();
+  const auto db_name = document->get_connection_database();
   if(db_name.empty())
     return false;
 
@@ -242,7 +242,7 @@ bool recreate_database_from_document(Document* document, const std::function<voi
   //Create the database:
   progress();
   connection_pool->set_database( Glib::ustring() );
-  const bool db_created = create_database(document, db_name, document->get_database_title_original(), progress);
+  const auto db_created = create_database(document, db_name, document->get_database_title_original(), progress);
 
   if(!db_created)
   {
@@ -278,7 +278,7 @@ bool recreate_database_from_document(Document* document, const std::function<voi
     Document::type_vec_fields fields = document->get_table_fields(table_info->get_name());
 
     progress();
-    const bool table_creation_succeeded = create_table(document->get_hosting_mode(), table_info, fields);
+    const auto table_creation_succeeded = create_table(document->get_hosting_mode(), table_info, fields);
     progress();
     if(!table_creation_succeeded)
     {
@@ -315,7 +315,7 @@ bool recreate_database_from_document(Document* document, const std::function<voi
     //try
     //{
       progress();
-      const bool table_insert_succeeded = insert_example_data(document, table_info->get_name());
+      const auto table_insert_succeeded = insert_example_data(document, table_info->get_name());
 
       if(!table_insert_succeeded)
       {
@@ -348,7 +348,7 @@ SystemPrefs get_database_preferences(const Document* document)
   //if(!table_privs.m_view)
   //  return result;
 
-  const bool optional_org_logo = get_field_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME, GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO);
+  const auto optional_org_logo = get_field_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME, GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO);
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
@@ -410,7 +410,7 @@ SystemPrefs get_database_preferences(const Document* document)
       return result;
     else
     {
-      const bool test = add_standard_tables(document);
+      const auto test = add_standard_tables(document);
       if(!test)
       {
          std::cerr << G_STRFUNC << ": add_standard_tables() failed." << std::endl;
@@ -446,7 +446,7 @@ void set_database_preferences(Document* document, const SystemPrefs& prefs)
   builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
                                        builder->add_field_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME),
                                        builder->add_expr(1)));
-  const bool test = query_execute(builder);
+  const auto test = query_execute(builder);
 
   if(!test)
     std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
@@ -466,7 +466,7 @@ bool add_standard_tables(const Document* document)
     //Name, address, etc:
     if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
     {
-      const bool test = create_table(document->get_hosting_mode(), prefs_table_info, pref_fields);
+      const auto test = create_table(document->get_hosting_mode(), prefs_table_info, pref_fields);
 
       if(test)
       {
@@ -474,12 +474,12 @@ bool add_standard_tables(const Document* document)
         Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
         builder->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
         builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, 1);
-        const bool test = query_execute(builder);
+        const auto test = query_execute(builder);
         if(!test)
           std::cerr << G_STRFUNC << ": INSERT failed." << std::endl;
 
         //Use the database title from the document, if there is one:
-        const Glib::ustring system_name = document->get_database_title_original();
+        const auto system_name = document->get_database_title_original();
         if(!system_name.empty())
         {
           Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
@@ -488,7 +488,7 @@ bool add_standard_tables(const Document* document)
           builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
                                                builder->add_field_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME),
                                                builder->add_expr(1)));
-          const bool test = query_execute(builder);
+          const auto test = query_execute(builder);
           if(!test)
             std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
         }
@@ -536,7 +536,7 @@ bool add_standard_tables(const Document* document)
       field_next_value->set_glom_type(Field::TYPE_TEXT);
       fields.push_back(field_next_value);
 
-      const bool test = create_table(document->get_hosting_mode(), table_info, fields);
+      const auto test = create_table(document->get_hosting_mode(), table_info, fields);
       if(!test)
       {
         std::cerr << G_STRFUNC << ": add_standard_tables(): create_table(autoincrements) failed." << std::endl;
@@ -576,7 +576,7 @@ bool add_standard_groups(Document* document)
   // If the connection doesn't support users we can skip this step
   if(gda_connection->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
   {
-    const type_vec_strings vecGroups = Glom::Privs::get_database_groups();
+    const auto vecGroups = Glom::Privs::get_database_groups();
     type_vec_strings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
     if(iterFind == vecGroups.end())
     {
@@ -593,8 +593,8 @@ bool add_standard_groups(Document* document)
 
       //Make sure the current user is in the developer group.
       //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
-      const Glib::ustring current_user = ConnectionPool::get_instance()->get_user();
-      const Glib::ustring strQuery = build_query_add_user_to_group(GLOM_STANDARD_GROUP_NAME_DEVELOPER, current_user);
+      const auto current_user = ConnectionPool::get_instance()->get_user();
+      const auto strQuery = build_query_add_user_to_group(GLOM_STANDARD_GROUP_NAME_DEVELOPER, current_user);
       test = query_execute_string(strQuery);
       if(!test)
       {
@@ -610,14 +610,14 @@ bool add_standard_groups(Document* document)
       priv_devs.m_create = true;
       priv_devs.m_delete = true;
 
-      const Document::type_listTableInfo table_list = document->get_tables(true /* including system prefs */);
+      const auto table_list = document->get_tables(true /* including system prefs */);
 
       for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
       {
         std::shared_ptr<const TableInfo> table_info = *iter;
         if(table_info)
         {
-          const Glib::ustring table_name = table_info->get_name();
+          const auto table_name = table_info->get_name();
           if(get_table_exists_in_database(table_name)) //Maybe the table has not been created yet.
             Glom::Privs::set_table_privileges(devgroup, table_name, priv_devs, true /* developer privileges */);
         }
@@ -651,17 +651,17 @@ bool add_groups_from_document(const Document* document)
     return true;
 
   //Get the list of groups from the database server:
-  const type_vec_strings database_groups = Privs::get_database_groups();
+  const auto database_groups = Privs::get_database_groups();
 
   //Get the list of groups from the document:
-  const Document::type_list_groups document_groups = document->get_groups();
+  const auto document_groups = document->get_groups();
 
   //Add each group if it doesn't exist yet:
   for(Document::type_list_groups::const_iterator iter = document_groups.begin();
     iter != document_groups.end(); ++iter)
   {
     const GroupInfo& group = *iter;
-    const Glib::ustring name = group.get_name();
+    const auto name = group.get_name();
     //std::cout << G_STRFUNC << ": DEBUG: group=" << name << std::endl;
 
     //See if the group exists in the database:
@@ -692,10 +692,10 @@ bool set_table_privileges_groups_from_document(const Document* document)
     return true;
 
   //Get the list of groups from the database server:
-  const type_vec_strings database_groups = Privs::get_database_groups();
+  const auto database_groups = Privs::get_database_groups();
 
   //Get the list of groups from the document:
-  const Document::type_list_groups document_groups = document->get_groups();
+  const auto document_groups = document->get_groups();
 
   //Get the list of tables:
   //const Document::type_listConstTableInfo table_list = document->get_tables();
@@ -706,7 +706,7 @@ bool set_table_privileges_groups_from_document(const Document* document)
     iter != document_groups.end(); ++iter)
   {
     const GroupInfo& group_info = *iter;
-    const Glib::ustring group_name = group_info.get_name();
+    const auto group_name = group_info.get_name();
 
     //See if the group exists in the database:
     type_vec_strings::const_iterator iterFind = std::find(database_groups.begin(), database_groups.end(), group_name);
@@ -738,11 +738,11 @@ namespace { //anonymous
 static Glib::ustring remove_quotes(const Glib::ustring& str)
 {
   const gchar* quote = "\"";
-  const Glib::ustring::size_type posQuoteStart = str.find(quote);
+  const auto posQuoteStart = str.find(quote);
   if(posQuoteStart != 0)
     return str;
 
-  const Glib::ustring::size_type size = str.size();
+  const auto size = str.size();
   const Glib::ustring::size_type posQuoteEnd = str.find(quote, 1);
   if(posQuoteEnd != (size - 1))
     return str;
@@ -907,7 +907,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
         Glib::RefPtr<Gnome::Gda::Column> field_info = Gnome::Gda::Column::create();
 
         //Get the field name:
-        const Gnome::Gda::Value value_name = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NAME, row);
+        const auto value_name = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NAME, row);
         if(value_name.get_value_type() ==  G_TYPE_STRING)
         {
           if(value_name.get_string().empty())
@@ -920,11 +920,11 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
         }
 
         //Get the field type:
-        const Gnome::Gda::Value value_fieldtype = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, row);
+        const auto value_fieldtype = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, row);
         if(value_fieldtype.get_value_type() ==  G_TYPE_STRING)
         {
-          const Glib::ustring type_string = value_fieldtype.get_string();
-          const GType gdatype = gda_g_type_from_string(type_string.c_str());
+          const auto type_string = value_fieldtype.get_string();
+          const auto gdatype = gda_g_type_from_string(type_string.c_str());
           field_info->set_g_type(gdatype);
         }
 
@@ -936,7 +936,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
           field_info->set_default_value(value_defaultvalue);
 
         //Get whether it can be null:
-        const Gnome::Gda::Value value_notnull = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NOTNULL, row);
+        const auto value_notnull = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NOTNULL, row);
         if(value_notnull.get_value_type() ==  G_TYPE_BOOLEAN)
           field_info->set_allow_null(value_notnull.get_boolean());
 
@@ -991,7 +991,7 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
   for(type_vec_fields::iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
   {
     std::shared_ptr<Field> field = *iter;
-    const Glib::ustring field_name = field->get_name();
+    const auto field_name = field->get_name();
 
     //Get the field info from the database:
     //This is in the document as well, but it _might_ have changed.
@@ -1023,7 +1023,7 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
   //Add any fields that are in the database, but not in the document:
   for(type_vec_fields::iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
   {
-    const Glib::ustring field_name = (*iter)->get_name();
+    const auto field_name = (*iter)->get_name();
 
     //Look in the result so far:
     type_vec_fields::const_iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(field_name));
@@ -1090,10 +1090,10 @@ type_vec_strings get_table_names_from_database(bool ignore_system_tables)
     else
     {
       //std::cout << "debug: data_model_tables refcount=" << G_OBJECT(data_model_tables->gobj())->ref_count << std::endl;
-      const int rows = data_model_tables->get_n_rows();
+      const auto rows = data_model_tables->get_n_rows();
       for(int i = 0; i < rows; ++i)
       {
-        const Gnome::Gda::Value value = data_model_tables->get_value_at(0, i);
+        const auto value = data_model_tables->get_value_at(0, i);
         //Get the table name:
         Glib::ustring table_name;
         if(G_VALUE_TYPE(value.gobj()) ==  G_TYPE_STRING)
@@ -1111,7 +1111,7 @@ type_vec_strings get_table_names_from_database(bool ignore_system_tables)
           {
             //Check whether it's a system table:
             const Glib::ustring prefix = "glom_system_";
-            const Glib::ustring table_prefix = table_name.substr(0, prefix.size());
+            const auto table_prefix = table_name.substr(0, prefix.size());
             if(table_prefix == prefix)
               continue;
           }
@@ -1143,7 +1143,7 @@ bool get_table_exists_in_database(const Glib::ustring& table_name)
 {
   //TODO_Performance
 
-  const type_vec_strings tables = get_table_names_from_database();
+  const auto tables = get_table_names_from_database();
   type_vec_strings::const_iterator iterFind = std::find(tables.begin(), tables.end(), table_name);
   return (iterFind != tables.end());
 }
@@ -1313,14 +1313,14 @@ bool create_table(Document::HostingMode hosting_mode, const std::shared_ptr<cons
 
 bool create_table_add_missing_fields(const std::shared_ptr<const TableInfo>& table_info, const Document::type_vec_fields& fields)
 {
-  const Glib::ustring table_name = table_info->get_name();
+  const auto table_name = table_info->get_name();
 
   for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
     std::shared_ptr<const Field> field = *iter;
     if(!get_field_exists_in_database(table_name, field->get_name()))
     {
-      const bool test = add_column(table_name, field, 0); /* TODO: parent_window */
+      const auto test = add_column(table_name, field, 0); /* TODO: parent_window */
       if(!test)
        return test;
     }
@@ -1405,19 +1405,19 @@ Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name,
     return Gnome::Gda::Value();
   }
   
-  const Gnome::Gda::Value result = DbUtils::auto_increment_insert_first_if_necessary(table_name, field_name);
+  const auto result = DbUtils::auto_increment_insert_first_if_necessary(table_name, field_name);
   double num_result = Conversions::get_double_for_gda_value_numeric(result);
 
   //Increment the next_value:
   ++num_result;
-  const Gnome::Gda::Value next_value = Conversions::parse_value(num_result);
+  const auto next_value = Conversions::parse_value(num_result);
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
   builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   builder->add_field_value_as_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE, next_value);
   builder_set_where_autoincrement(builder, table_name, field_name);
 
-  const bool test = query_execute(builder);
+  const auto test = query_execute(builder);
   if(!test)
     std::cerr << G_STRFUNC << ": Increment failed." << std::endl;
 
@@ -1466,7 +1466,7 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
     builder->add_field_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME, field_name);
     builder->add_field_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE, 0);
 
-    const bool test = query_execute(builder);
+    const auto test = query_execute(builder);
     if(!test)
       std::cerr << G_STRFUNC << ": INSERT of new row failed." << std::endl;
 
@@ -1477,10 +1477,10 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
   else
   {
     //Return the value so that a calling function does not need to do a second SELECT.
-    const Gnome::Gda::Value actual_value = datamodel->get_value_at(0, 0);
+    const auto actual_value = datamodel->get_value_at(0, 0);
     //But the caller wants a numeric value not a text value
     //(our system_autoincrements table has it as text, for future flexibility):
-    const std::string actual_value_text = actual_value.get_string();
+    const auto actual_value_text = actual_value.get_string();
     bool success = false;
     value = Conversions::parse_value(Field::TYPE_NUMERIC, actual_value_text, success, true /* iso_format */);
   }
@@ -1521,7 +1521,7 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
   if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
   {
     //Increment it:
-    const Gnome::Gda::Value value_max = datamodel->get_value_at(0, 0); // A GdaNumeric.
+    const auto value_max = datamodel->get_value_at(0, 0); // A GdaNumeric.
 
     //TODO: This happens with MySQL. Maybe it is OK, when there are no records or no values:
     if(Glom::Conversions::value_is_empty(value_max))
@@ -1534,7 +1534,7 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
     ++num_max;
 
     //Set it in the glom system table:
-    const Gnome::Gda::Value next_value = Conversions::parse_value(num_max);
+    const auto next_value = Conversions::parse_value(num_max);
 
     builder.reset();
     builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
@@ -1542,7 +1542,7 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
     builder->add_field_value_as_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE, next_value);
     builder_set_where_autoincrement(builder, table_name, field_name);
 
-    const bool test = query_execute(builder);
+    const auto test = query_execute(builder);
     if(!test)
       std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
   }
@@ -1569,7 +1569,7 @@ void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring&
   builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   builder_set_where_autoincrement(builder, table_name, field_name);
 
-  const bool test = query_execute(builder);
+  const auto test = query_execute(builder);
   if(!test)
     std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
 }
@@ -1577,7 +1577,7 @@ void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring&
 bool insert_example_data(const Document* document, const Glib::ustring& table_name)
 {
   //TODO_Performance: Avoid copying:
-  const Document::type_example_rows example_rows = document->get_table_example_data(table_name);
+  const auto example_rows = document->get_table_example_data(table_name);
   if(example_rows.empty())
   {
     //std::cout << "debug: " << G_STRFUNC << ": No example data available." << std::endl;
@@ -1597,7 +1597,7 @@ bool insert_example_data(const Document* document, const Glib::ustring& table_na
 
 
   //Get field names:
-  const Document::type_vec_fields vec_fields = document->get_table_fields(table_name);
+  const auto vec_fields = document->get_table_fields(table_name);
 
   //Actually insert the data:
   //std::cout << "debug: " << G_STRFUNC << ": number of rows of data: " << vec_rows.size() << std::endl;
@@ -1615,7 +1615,7 @@ bool insert_example_data(const Document* document, const Glib::ustring& table_na
 
     //std::cout << "DEBUG: row_data size = " << row_data.size() << ", (fields size= " << vec_fields.size() << " )" << std::endl;
 
-    const Document::HostingMode hosting_mode = document->get_hosting_mode();
+    const auto hosting_mode = document->get_hosting_mode();
 
     Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
     builder->set_table(table_name);
@@ -1686,7 +1686,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
   //Debug output:
   if(builder && ConnectionPool::get_instance()->get_show_debug_output())
   {
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
+    const auto full_query = Utils::sqlbuilder_get_full_query(builder);
     std::cout << "debug: " << G_STRFUNC << ":  " << full_query << std::endl;
   }
 
@@ -1728,7 +1728,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
 
   if(!result)
   {
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
+    const auto full_query = Utils::sqlbuilder_get_full_query(builder);
     std::cerr << G_STRFUNC << ": Error while executing SQL: "
       << std::endl << "  " << full_query << std::endl << std::endl;
     handle_error();
@@ -1766,7 +1766,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
     {
       //TODO: full_query still seems to contain ## parameter names,
       //though it works for our SELECT queries in query_execute_select():
-      const Glib::ustring full_query = stmt->to_sql(params);
+      const auto full_query = stmt->to_sql(params);
       std::cerr << G_STRFUNC << ": " << full_query << std::endl;
     }
     catch(const Glib::Exception& ex)
@@ -1784,7 +1784,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
   catch(const Glib::Error& error)
   {
     std::cerr << G_STRFUNC << ":  ConnectionError: " << error.what() << std::endl;
-    const Glib::ustring full_query = stmt->to_sql(params);
+    const auto full_query = stmt->to_sql(params);
     std::cerr << G_STRFUNC << ":   full_query: " << full_query << std::endl;
     return false;
   }
@@ -1793,7 +1793,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
   //For instance, it can return -2 for a successful CREATE TABLE query, to mean that the backend (SQLite) does not report how many rows were affected.
   if(exec_retval == -1)
   {
-    const Glib::ustring full_query = stmt->to_sql(params);
+    const auto full_query = stmt->to_sql(params);
     std::cerr << G_STRFUNC << "Gnome::Gda::Connection::statement_execute_non_select() failed with SQL: " << full_query << std::endl;
     return false;
   }
@@ -1813,7 +1813,7 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
   //Debug output:
   if(builder && ConnectionPool::get_instance()->get_show_debug_output())
   {
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
+    const auto full_query = Utils::sqlbuilder_get_full_query(builder);
     std::cerr << G_STRFUNC << ": " << full_query << std::endl;
   }
 
@@ -1826,21 +1826,21 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
   catch(const Gnome::Gda::ConnectionError& ex)
   {
     std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
+    const auto full_query = Utils::sqlbuilder_get_full_query(builder);
     std::cerr << G_STRFUNC << ":   full_query: " << full_query << std::endl;
     return false;
   }
   catch(const Gnome::Gda::ServerProviderError& ex)
   {
     std::cerr << G_STRFUNC << ": code=" << ex.code() << "message=" << ex.what() << std::endl;
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
+    const auto full_query = Utils::sqlbuilder_get_full_query(builder);
     std::cerr << G_STRFUNC << ":   full_query: " << full_query << std::endl;
     return false;
   }
   catch(const Gnome::Gda::SqlError& ex) //TODO: Make sure that statement_execute_non_select_builder() is documented as throwing this.
   {
     std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
+    const auto full_query = Utils::sqlbuilder_get_full_query(builder);
     std::cerr << G_STRFUNC << ":   full_query: " << full_query << std::endl;
     return false;
   }
@@ -1865,7 +1865,7 @@ void layout_item_fill_field_details(const Document* document, const Glib::ustrin
     std::cerr << G_STRFUNC << ": layout_item was null." << std::endl;
   }
 
-  const Glib::ustring table_name = layout_item->get_table_used(parent_table_name);
+  const auto table_name = layout_item->get_table_used(parent_table_name);
   layout_item->set_full_field_details( document->get_field(table_name, layout_item->get_name()) );
 }
 
@@ -1934,7 +1934,7 @@ Glib::ustring get_unused_database_name(const Glib::ustring& base_name)
     else
     {
       //Create a new database name by appending a number to the original name:
-      const Glib::ustring pchExtraNum = Glib::ustring::compose("%1", extra_num);
+      const auto pchExtraNum = Glib::ustring::compose("%1", extra_num);
       database_name_possible = (base_name + pchExtraNum);
     }
     ++extra_num;
@@ -1985,7 +1985,7 @@ int count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
   if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
   {
-    const Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+    const auto value = datamodel->get_value_at(0, 0);
     //This showed me that this contains a gint64: std::cerr << G_STRFUNC << ": DEBUG: value type=" << G_VALUE_TYPE_NAME(value.gobj()) << std::endl;
     //For sqlite, this is an integer
     if(value.get_value_type() == G_TYPE_INT64) //With the PostgreSQL backend.
@@ -2130,7 +2130,7 @@ bool add_user(const Document* document, const Glib::ustring& user, const Glib::u
 
   //Create the user:
   const bool superuser = (group == GLOM_STANDARD_GROUP_NAME_DEVELOPER);
-  const Glib::ustring query_add = build_query_add_user(user, password, superuser);
+  const auto query_add = build_query_add_user(user, password, superuser);
   bool test = DbUtils::query_execute_string(query_add);
   if(!test)
   {
@@ -2139,7 +2139,7 @@ bool add_user(const Document* document, const Glib::ustring& user, const Glib::u
   }
 
   //Add it to the group:
-  const Glib::ustring query_add_to_group = build_query_add_user_to_group(group, user);
+  const auto query_add_to_group = build_query_add_user_to_group(group, user);
   test = DbUtils::query_execute_string(query_add_to_group);
   if(!test)
   {
@@ -2148,13 +2148,13 @@ bool add_user(const Document* document, const Glib::ustring& user, const Glib::u
   }
 
   //Remove any user rights, so that all rights come from the user's presence in the group:
-  const Document::type_listConstTableInfo table_list = document->get_tables();
+  const auto table_list = document->get_tables();
 
   for(Document::type_listConstTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
   {
-    const Glib::ustring table_name = (*iter)->get_name();
+    const auto table_name = (*iter)->get_name();
     const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);
-    const bool test = DbUtils::query_execute_string(strQuery);
+    const auto test = DbUtils::query_execute_string(strQuery);
     if(!test)
       std::cerr << G_STRFUNC << ": REVOKE failed." << std::endl;
   }
@@ -2176,9 +2176,9 @@ bool add_group(const Document* document, const Glib::ustring& group, bool superu
     return false;
   }
  
-  const Glib::ustring strQuery = DbUtils::build_query_create_group(group, superuser);
+  const auto strQuery = DbUtils::build_query_create_group(group, superuser);
   //std::cout << "DEBUGCREATE: " << strQuery << std::endl;
-  const bool test = DbUtils::query_execute_string(strQuery);
+  const auto test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
     std::cerr << G_STRFUNC << ": CREATE GROUP failed." << std::endl;
@@ -2222,7 +2222,7 @@ bool remove_user(const Glib::ustring& user)
     return false;
 
   const Glib::ustring strQuery = "DROP USER " + DbUtils::escape_sql_id(user);
-  const bool test = DbUtils::query_execute_string(strQuery);
+  const auto test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
     std::cerr << G_STRFUNC << ": DROP USER failed" << std::endl;
@@ -2238,7 +2238,7 @@ bool remove_user_from_group(const Glib::ustring& user, const Glib::ustring& grou
     return false;
 
   const Glib::ustring strQuery = "ALTER GROUP " + DbUtils::escape_sql_id(group) + " DROP USER " + DbUtils::escape_sql_id(user);
-  const bool test = DbUtils::query_execute_string(strQuery);
+  const auto test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
     std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;
@@ -2266,9 +2266,9 @@ Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring
   if(to_key_field)
   {
     //Convert the value, in case the from and to fields have different types:
-    const Gnome::Gda::Value value_to_key_field = Conversions::convert_value(key_value, to_key_field->get_glom_type());
+    const auto value_to_key_field = Conversions::convert_value(key_value, to_key_field->get_glom_type());
 
-    const Glib::ustring target_table = relationship->get_to_table();
+    const auto target_table = relationship->get_to_table();
     Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
     builder->select_add_field(source_field->get_name(), target_table );
@@ -2304,14 +2304,14 @@ type_map_fields get_record_field_values(const Document* document, const Glib::us
   }
 
   //TODO: Cache the list of all fields, as well as caching (m_Fields) the list of all visible fields:
-  const Document::type_vec_fields fields = document->get_table_fields(table_name);
+  const auto fields = document->get_table_fields(table_name);
 
   //TODO: This seems silly. We should just have a build_sql_select() that can take this container:
   typedef std::vector< std::shared_ptr<LayoutItem_Field> > type_vecLayoutFields;
   type_vecLayoutFields fieldsToGet;
   for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
-    const std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+    const auto layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
     layout_item->set_full_field_details(*iter);
 
     fieldsToGet.push_back(layout_item);

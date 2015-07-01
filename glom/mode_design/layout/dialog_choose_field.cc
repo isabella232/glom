@@ -104,7 +104,7 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
   //Select the current field at the start:
   if(field)
   {
-    const Glib::ustring field_name = field->get_name();
+    const auto field_name = field->get_name();
 
     //Get the iterator for the row:
     Gtk::TreeModel::iterator iterFound = m_model->children().end();
@@ -157,7 +157,7 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
     m_combo_relationship->set_display_parent_table(table_name, document->get_table_title(table_name, AppWindow::get_current_locale()));
 
     //Add the relationships for this table:
-    const Glib::ustring table_title = document->get_table_title(table_name, AppWindow::get_current_locale());
+    const auto table_title = document->get_table_title(table_name, AppWindow::get_current_locale());
     m_combo_relationship->set_relationships(document, table_name, false /* show related relationships */);
 
     //Set the table name and title:
@@ -295,7 +295,7 @@ void Dialog_ChooseField::on_checkbutton_related_relationships_toggled()
   if(!m_document)
     return;
 
-  const bool show_related_relationships = m_checkbutton_show_related_relationships->get_active();
+  const auto show_related_relationships = m_checkbutton_show_related_relationships->get_active();
 
   //Preserve the selection:
   std::shared_ptr<Relationship> related_relationship;
@@ -351,7 +351,7 @@ void Dialog_ChooseField::on_treeview_selection_changed()
       /*
       Gtk::TreeModel::Row row = *iter;
       const Field& field = row[m_ColumnsFields.m_col_field];
-      const bool is_numeric = (field.get_glom_type() == Field::TYPE_NUMERIC);
+      const auto is_numeric = (field.get_glom_type() == Field::TYPE_NUMERIC);
       if(is_numeric)
         m_vbox_numeric_format->show();
       else

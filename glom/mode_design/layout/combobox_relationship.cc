@@ -116,7 +116,7 @@ void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relat
     {
       Gtk::TreeModel::Row row = *iter;
       std::shared_ptr<Relationship> relationship = row[m_model_columns.m_relationship];
-      const Glib::ustring this_name = glom_get_sharedptr_name(relationship);
+      const auto this_name = glom_get_sharedptr_name(relationship);
 
       //(An empty name means Select the parent table item.)
       if(this_name == relationship_name)
@@ -132,7 +132,7 @@ void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relat
           {
             Gtk::TreeModel::Row row = *iterChildren;
             std::shared_ptr<Relationship> relationship = row[m_model_columns.m_relationship];
-            const Glib::ustring this_name = glom_get_sharedptr_name(relationship);
+            const auto this_name = glom_get_sharedptr_name(relationship);
             if(this_name == related_relationship_name)
             {
               set_active(iterChildren);
@@ -157,7 +157,7 @@ void ComboBox_Relationship::set_relationships(Document* document, const Glib::us
   if(!document)
     return;
 
-  const Document::type_vec_relationships relationships = document->get_relationships(parent_table_name, true /* plus system properties */);
+  const auto relationships = document->get_relationships(parent_table_name, true /* plus system properties */);
 
   m_model->clear();
 
@@ -177,7 +177,7 @@ void ComboBox_Relationship::set_relationships(Document* document, const Glib::us
     //Children:
     if(show_related_relationships && !Document::get_relationship_is_system_properties(rel))
     {
-      const Document::type_vec_relationships sub_relationships = document->get_relationships(rel->get_to_table(), false /* plus system properties */);
+      const auto sub_relationships = document->get_relationships(rel->get_to_table(), false /* plus system properties */);
       for(type_vec_relationships::const_iterator iter = sub_relationships.begin(); iter != sub_relationships.end(); ++iter)
       {
         Gtk::TreeModel::iterator tree_iter_child = m_model->append(tree_iter->children());
@@ -281,7 +281,7 @@ void ComboBox_Relationship::set_display_parent_table(const Glib::ustring& table_
   if(table_name.empty())
     return;
 
-  const bool already_added = get_has_parent_table() && !(m_model->children().empty());
+  const auto already_added = get_has_parent_table() && !(m_model->children().empty());
 
   //We don't need to recreate the model row when these change, because the callback just uses the new values.
   m_extra_table_name = table_name;

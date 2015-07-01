@@ -86,7 +86,7 @@ void NotebookLabel::on_menu_new_group_activate()
 void NotebookLabel::on_menu_delete_activate()
 {
   Glib::ustring message;
-  const Glib::ustring notebook_title = item_get_title(m_notebook->get_layout_item());
+  const auto notebook_title = item_get_title(m_notebook->get_layout_item());
   if(!notebook_title.empty())
   {
     message = Glib::ustring::compose (_("Delete whole notebook \"%1\"?"),

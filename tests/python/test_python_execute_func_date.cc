@@ -16,7 +16,7 @@ void execute_func_with_date_return_value()
 
   //Execute a python function:
   Glib::ustring error_message;
-  const Gnome::Gda::Value value = Glom::glom_evaluate_python_function_implementation(
+  const auto value = Glom::glom_evaluate_python_function_implementation(
     Glom::Field::TYPE_DATE, calculation, field_values,
     0 /* document */, "" /* table name */,
     std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
@@ -45,13 +45,13 @@ void execute_func_with_date_input_value()
   const char* calculation = "import datetime\n"
                             "return record[\"test_field\"].year";
   Glom::type_map_fields field_values;
-  const Glib::Date input_date = Glib::Date(11, Glib::Date::MAY, 1973);
+  const auto input_date = Glib::Date(11, Glib::Date::MAY, 1973);
   field_values["test_field"] = Gnome::Gda::Value(input_date);
   Glib::RefPtr<Gnome::Gda::Connection> connection;
 
   //Execute a python function:
   Glib::ustring error_message;
-  const Gnome::Gda::Value value = Glom::glom_evaluate_python_function_implementation(
+  const auto value = Glom::glom_evaluate_python_function_implementation(
     Glom::Field::TYPE_NUMERIC, calculation, field_values,
     0 /* document */, "" /* table name */,
     std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
@@ -83,12 +83,12 @@ void execute_func_with_date_input_value_relativedelta()
                             "rd = relativedelta(today, date_of_birth)\n"
                             "return rd.year";
   Glom::type_map_fields field_values;
-  const Glib::Date input_date = Glib::Date(11, Glib::Date::MAY, 1973);
+  const auto input_date = Glib::Date(11, Glib::Date::MAY, 1973);
   field_values["test_field"] = Gnome::Gda::Value(input_date);
   Glib::RefPtr<Gnome::Gda::Connection> connection;
 
   //Execute a python function:
-  const Gnome::Gda::Value value = Glom::glom_evaluate_python_function_implementation(
+  const auto value = Glom::glom_evaluate_python_function_implementation(
     Glom::Field::TYPE_NUMERIC, calculation, field_values,
     0, "",
     std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.

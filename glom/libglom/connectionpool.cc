@@ -355,7 +355,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
           //update_meta_store_table_names() has been known to throw an exception.
           //Glom is mostly unusable when it fails, but that's still better than a crash.
           //std::cout << G_STRFUNC << ": Before update_meta_store_table_name()" << std::endl;
-          const bool test = m_refGdaConnection->update_meta_store_table_names(m_backend->get_public_schema_name());
+          const auto test = m_refGdaConnection->update_meta_store_table_names(m_backend->get_public_schema_name());
           if(!test && !m_fake_connection)
           {
             std::cerr << G_STRFUNC << ": update_meta_store_table_names() failed without an exception." << std::endl;
@@ -426,14 +426,14 @@ bool ConnectionPool::save_backup(const SlotProgress& slot_progress, const std::s
 {
   g_assert(m_backend.get());
 
-  const std::string old_uri = m_backend->get_database_directory_uri();
+  const auto old_uri = m_backend->get_database_directory_uri();
 
   std::string uri;
   try
   {
     //TODO_MySQL:
     //TODO: Avoid the copy/paste of glom_postgres_data and make it work for sqlite too.
-    const std::string subdir = Glib::build_filename(path_dir, "glom_postgres_data");
+    const auto subdir = Glib::build_filename(path_dir, "glom_postgres_data");
     uri = Glib::filename_to_uri(subdir);
   }
   catch(const Glib::Error& ex)
@@ -443,7 +443,7 @@ bool ConnectionPool::save_backup(const SlotProgress& slot_progress, const std::s
   }
 
   m_backend->set_database_directory_uri(uri);
-  const bool result = m_backend->save_backup(slot_progress, m_user, m_password, m_database);
+  const auto result = m_backend->save_backup(slot_progress, m_user, m_password, m_database);
   m_backend->set_database_directory_uri(old_uri);
   return result;
 }
@@ -452,7 +452,7 @@ bool ConnectionPool::convert_backup(const SlotProgress& slot_progress, const std
 {
   g_assert(m_backend.get());
 
-  const bool result = m_backend->convert_backup(slot_progress, backup_data_file_path, m_user, m_password, m_database);
+  const auto result = m_backend->convert_backup(slot_progress, backup_data_file_path, m_user, m_password, m_database);
   if(!result)
     return false;
 
@@ -635,7 +635,7 @@ ConnectionPool::StartupErrors ConnectionPool::startup(const SlotProgress& slot_p
   if(!m_backend.get())
     return Backend::STARTUPERROR_FAILED_UNKNOWN_REASON;
 
-  const Backend::StartupErrors started = m_backend->startup(slot_progress, network_shared);
+  const auto started = m_backend->startup(slot_progress, network_shared);
   if(started != Backend::STARTUPERROR_NONE)
     return started;
 
@@ -723,7 +723,7 @@ bool ConnectionPool::add_column(const Glib::ustring& table_name, const std::shar
 
   try
   {
-    const bool result = m_backend->add_column(m_refGdaConnection, table_name, field);
+    const auto result = m_backend->add_column(m_refGdaConnection, table_name, field);
     m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
     return result;
   }
@@ -742,7 +742,7 @@ bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::us
 
   try
   {
-    const bool result = m_backend->drop_column(m_refGdaConnection, table_name, field_name);
+    const auto result = m_backend->drop_column(m_refGdaConnection, table_name, field_name);
     m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
     return result;
   }
@@ -767,7 +767,7 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
   if(!connect_nothrow())
     return false;
 
-  const bool result = m_backend->change_columns(m_refGdaConnection, table_name, old_fields, new_fields);
+  const auto result = m_backend->change_columns(m_refGdaConnection, table_name, old_fields, new_fields);
 
   try
   {
@@ -836,11 +836,11 @@ EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* /* pu
   if(!connection_pool)
     return 0;
 
-  const Document* document = connection_pool->get_document();
+  const auto document = connection_pool->get_document();
   if(!document)
     return 0;
 
-  const Glib::ustring contents = document->get_contents();
+  const auto contents = document->get_contents();
   //std::cout << "debug: " << G_STRFUNC << ": returning: " << std::endl << "  " << contents << std::endl;
   return epc_contents_new_dup ("text/plain", (void*)contents.c_str(), -1);
 }
@@ -857,7 +857,7 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
   g_return_val_if_fail(connection_pool, false);
 
   // Check if the username/password are correct:
-  const gchar* password = epc_auth_context_get_password(context);
+  const auto password = epc_auth_context_get_password(context);
   g_return_val_if_fail(password, false); //TODO: This seems to happen once before this callback is called again properly.
 
   //std::cout << "debug: " << G_STRFUNC << ": username=" << user_name << ", password=" << password << std::endl;
@@ -930,7 +930,7 @@ void ConnectionPool::avahi_start_publishing()
 #endif
 
   //Publish the document contents over HTTPS (discoverable via avahi):
-  const Document* document = get_document();
+  const auto document = get_document();
   if(!document)
     return;
 

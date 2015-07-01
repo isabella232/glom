@@ -179,14 +179,14 @@ int main(int argc, char* argv[])
   //This is not a command-line option because then it would appear in logs.
   //Other command-line utilities such as psql don't do this either.
   //TODO: Support alternatives such as using a file.
-  const Glib::ustring prompt = Glib::ustring::compose(
+  const auto prompt = Glib::ustring::compose(
     _("Please enter the PostgreSQL server's password for the user %1: "), group.m_arg_server_username);
 
 #ifdef G_OS_WIN32
   const char* password = "";
   std::cerr << G_STRFUNC << ": Error: getpass() is not implemented in the Windows build. The connection will fail." << std::endl;
 #else
-  const char* password = ::getpass(prompt.c_str());
+  const auto password = ::getpass(prompt.c_str());
 #endif
 
   //Setup the connection, assuming that we are testing central hosting:

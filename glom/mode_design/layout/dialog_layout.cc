@@ -207,7 +207,7 @@ void Dialog_Layout::on_sensitivity_toggle_button(Gtk::ToggleButton* toggle_butto
   if(!toggle_button || !widget)
     return;
 
-  const bool sensitivity = toggle_button->get_active();
+  const auto sensitivity = toggle_button->get_active();
   widget->set_sensitive(sensitivity);
 
   m_modified = true;

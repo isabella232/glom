@@ -228,7 +228,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
     DbUtils::layout_item_fill_field_details(get_document(), found_set_parent.m_table_name, field_group_by);
 
     //Get the possible group values, ignoring repeats by using GROUP BY.
-    const Glib::ustring group_field_table_name = field_group_by->get_table_used(found_set_parent.m_table_name);
+    const auto group_field_table_name = field_group_by->get_table_used(found_set_parent.m_table_name);
 
     Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
@@ -253,7 +253,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
       const guint rows_count = datamodel->get_n_rows();
       for(guint row = 0; row < rows_count; ++row)
       {
-        const Gnome::Gda::Value group_value = datamodel->get_value_at(0 /* col*/, row); //TODO: Catch exceptions.
+        const auto group_value = datamodel->get_value_at(0 /* col*/, row); //TODO: Catch exceptions.
 
 
         //Add XML node:
@@ -463,7 +463,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
 
 bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp::Element& nodeParent, const std::shared_ptr<const LayoutItem_Field>& field, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& colField, bool vertical)
 {
-  const Field::glom_field_type field_type = field->get_glom_type();
+  const auto field_type = field->get_glom_type();
 
   xmlpp::Element* nodeField = nodeParent.add_child(field->get_report_part_id());
   if(field_type == Field::TYPE_NUMERIC)
@@ -512,7 +512,7 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
     if(text_value.empty() && std::dynamic_pointer_cast<const LayoutItem_FieldSummary>(field) && (field_type == Field::TYPE_NUMERIC))
     {
       //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
-      const Gnome::Gda::Value value = Conversions::parse_value(0);
+      const auto value = Conversions::parse_value(0);
       text_value = Conversions::get_text_for_gda_value(field_type, value, m_locale, field->get_formatting_used().m_numeric_format);
     }
 
@@ -597,10 +597,10 @@ bool ReportBuilder::report_build_records_vertical_group(const FoundSet& found_se
 //TODO: Return a URI
 std::string ReportBuilder::report_build_and_save(const FoundSet& found_set, const std::shared_ptr<const Report>& report)
 {
-  const Glib::ustring contents = report_build(found_set, report);
+  const auto contents = report_build(found_set, report);
 
  //Save it to a temporary file and show it in a browser:
-  const Glib::ustring temp_uri = Utils::get_temp_file_uri("glom_printout", "html");
+  const auto temp_uri = Utils::get_temp_file_uri("glom_printout", "html");
   std::cout << G_STRFUNC << ": temp_uri=" << temp_uri << std::endl;
 
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(temp_uri);
@@ -628,7 +628,7 @@ std::string ReportBuilder::report_build_and_save(const FoundSet& found_set, cons
 
   //Write the data to the output uri
   gssize bytes_written = 0;
-  const Glib::ustring::size_type result_bytes = contents.bytes();
+  const auto result_bytes = contents.bytes();
   try
   {
     bytes_written = stream->write(contents.data(), result_bytes);
@@ -754,7 +754,7 @@ static void fill_standard_list_report_fill(const std::shared_ptr<Report>& report
     if(!item)
       continue;
 
-    const std::shared_ptr<LayoutItem> unconst = std::const_pointer_cast<LayoutItem>(item); //TODO: Avoid this?
+    const auto unconst = std::const_pointer_cast<LayoutItem>(item); //TODO: Avoid this?
     report->get_layout_group()->add_item(unconst);
   }
 }

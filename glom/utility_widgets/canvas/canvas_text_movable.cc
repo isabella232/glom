@@ -180,7 +180,7 @@ void CanvasTextMovable::reconstruct_markup()
     //We will use the text as markup, so remove anything that could be 
     //interpreted as pango markup.
     //This is not really pango-specific, but it might just work:
-    const Glib::ustring text_escaped = Glib::Markup::escape_text(m_text);
+    const auto text_escaped = Glib::Markup::escape_text(m_text);
     
     //We add px (meaning absolute points size).
     //Otherwise both GooCanvas and GTK+ scale the font up, making it too large.

@@ -43,7 +43,7 @@ static bool check_po_file(const std::string& filepath)
   //so let's keep it simple:
   int return_status = EXIT_FAILURE;
   std::string stdout_output;
-  const Glib::ustring command = Glib::ustring::compose(GLOM_MSGFMT " %1",
+  const auto command = Glib::ustring::compose(GLOM_MSGFMT " %1",
     Glib::shell_quote(filepath));
   try
   {    
@@ -91,7 +91,7 @@ int main()
   Glom::Document document;
   document.set_file_uri(uri);
   int failure_code = 0;
-  const bool test = document.load(failure_code);
+  const auto test = document.load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -100,7 +100,7 @@ int main()
     return EXIT_FAILURE;
   }
 
-  const Glib::ustring po_file_uri = Glom::Utils::get_temp_file_uri("glom_export.po");
+  const auto po_file_uri = Glom::Utils::get_temp_file_uri("glom_export.po");
   if(po_file_uri.empty())
   {
     std::cerr << G_STRFUNC << ": Could not generate a temporary file URI=" << std::endl;

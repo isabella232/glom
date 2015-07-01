@@ -35,7 +35,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
   
-  const Glom::Privs::type_vec_strings groups = Glom::Privs::get_database_groups();
+  const auto groups = Glom::Privs::get_database_groups();
   if(groups.empty())
   {
     std::cerr << G_STRFUNC << ": Failure: groups was empty." << std::endl;
@@ -51,7 +51,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       return false;
     }
 
-    const Glom::Privs::type_vec_strings users = Glom::Privs::get_database_users(group_name);
+    const auto users = Glom::Privs::get_database_users(group_name);
     for(Glom::Privs::type_vec_strings::const_iterator iter = users.begin(); iter != users.end(); ++iter)
     {
       const Glib::ustring user_name = *iter;

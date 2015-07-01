@@ -80,7 +80,7 @@ void PrintOperationPrintLayout::on_draw_page(
 
 
   //Render the canvas onto the cairo context:
-  const Goocanvas::Bounds bounds = m_canvas->get_page_bounds(page_nr);
+  const auto bounds = m_canvas->get_page_bounds(page_nr);
   //std::cout << G_STRFUNC << ": page_nr=" << page_nr << ", bounds: x1=" << bounds.get_x1() << ", y1=" << bounds.get_y1() << ", x2=" << bounds.get_x2() << ", y2=" << bounds.get_y2() << std::endl;
 
   //Shift the renderer context up into the page:

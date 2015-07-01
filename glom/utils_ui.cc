@@ -186,7 +186,7 @@ void UiUtils::show_help(const Glib::ustring& id)
   }
   catch(const std::exception& ex)
   {
-    const Glib::ustring message = Glib::ustring::compose(_("Could not display help: %1"), Glib::ustring(ex.what()));
+    const auto message = Glib::ustring::compose(_("Could not display help: %1"), Glib::ustring(ex.what()));
     Gtk::MessageDialog dialog(message, false, Gtk::MESSAGE_ERROR);
     dialog.run();
   }
@@ -255,7 +255,7 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::get_pixbuf_for_gda_value(const Gnome::Gda::Va
     gconstpointer buffer_binary;
     if(value.get_value_type() == GDA_TYPE_BLOB)
     {
-      const GdaBlob* blob = value.get_blob();
+      const auto blob = value.get_blob();
       if(gda_blob_op_read_all(blob->op, const_cast<GdaBlob*>(blob)))
       {
         buffer_binary_length = blob->data.binary_length;
@@ -344,7 +344,7 @@ int UiUtils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const std:
 {
   int result = 150; //Suitable default.
 
-  const Field::glom_field_type field_type = field_layout->get_glom_type();
+  const auto field_type = field_layout->get_glom_type();
 
   Glib::ustring example_text;
   switch(field_type)
@@ -398,7 +398,7 @@ int UiUtils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const std:
   if(or_title)
   {
     //Make sure that there's enough space for the title too.
-    const int title_width = get_width_for_text(widget, item_get_title(field_layout));
+    const auto title_width = get_width_for_text(widget, item_get_title(field_layout));
     if(title_width > result)
       result = title_width;
   }
@@ -420,7 +420,7 @@ std::string UiUtils::get_filepath_with_extension(const std::string& filepath, co
   }
   else
   {
-    const Glib::ustring strEnd = result.substr(result.size() - str_ext.size());
+    const auto strEnd = result.substr(result.size() - str_ext.size());
     if(strEnd != str_ext) //If it doesn't already have the extension
       add_ext = true;
   }
@@ -454,8 +454,8 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::image_scale_keeping_ratio(const Glib::RefPtr<
 
   enum_scale_mode scale_mode = SCALE_NONE; //Start with either the width or height, and scale the other according to the ratio.
 
-  const int pixbuf_height = pixbuf->get_height();
-  const int pixbuf_width = pixbuf->get_width();
+  const auto pixbuf_height = pixbuf->get_height();
+  const auto pixbuf_width = pixbuf->get_width();
 
   if(pixbuf_height > target_height)
   {
@@ -489,7 +489,7 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::image_scale_keeping_ratio(const Glib::RefPtr<
   }
   else if(scale_mode == SCALE_BOTH)
   {
-    const float ratio = std::min(
+    const auto ratio = std::min(
       (float)target_width / (float) pixbuf_width,
       (float)target_height / (float) pixbuf_height);
     target_width = (int)((float)pixbuf_width * ratio);
@@ -506,7 +506,7 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::image_scale_keeping_ratio(const Glib::RefPtr<
 
 bool UiUtils::show_warning_no_records_found(Gtk::Window& transient_for)
 {
-  const Glib::ustring message = _("Your find criteria did not match any records in the table.");
+  const auto message = _("Your find criteria did not match any records in the table.");
 
   Gtk::MessageDialog dialog(UiUtils::bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE);
   dialog.set_secondary_text(message);
@@ -515,7 +515,7 @@ bool UiUtils::show_warning_no_records_found(Gtk::Window& transient_for)
   dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("New Find"), Gtk::RESPONSE_OK);
 
-  const bool find_again = (dialog.run() == Gtk::RESPONSE_OK);
+  const auto find_again = (dialog.run() == Gtk::RESPONSE_OK);
   return find_again;
 }
 
@@ -616,7 +616,7 @@ void UiUtils::container_remove_all(Gtk::Container& container)
 {
   //Remove all (usally just one) widgets from m_vbox_parent:
   //Gtk::Bin::remove() is easier but after GtkAlignment was deprecated, there is no suitable widget.
-  const std::vector<Gtk::Widget*> children = container.get_children();
+  const auto children = container.get_children();
   for(std::vector<Gtk::Widget*>::const_iterator iter = children.begin(); iter != children.end(); ++iter)
   {
     Gtk::Widget* child = *iter;

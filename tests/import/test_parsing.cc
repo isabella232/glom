@@ -103,7 +103,7 @@ int main()
   // test_dquoted_string
   {
     const char* raw = "\"a \"\"quoted\"\" token\",\"sans quotes\"\n";
-    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
+    const auto finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
     const bool passed = (finished_parsing &&
                          check_tokens("^(a \"quoted\" token|sans quotes)$") &&
                          2 == get_tokens_instance().size());
@@ -117,7 +117,7 @@ int main()
   // test_allow_no_ending_newline
   {
     const char* raw = "\"token in first line\"\n\"2nd token\", \"but\", \"this\",\"line\",\"will\",\"be\",\"skipped\"";
-    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
+    const auto finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
     const bool passed = (finished_parsing &&
                          check_tokens("token in first line") &&
                          check_tokens("2nd token") &&
@@ -132,7 +132,7 @@ int main()
   // test_allow_no_quotes
   {
     const char* raw = "this,line,contains,some,tokens\n";
-    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
+    const auto finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
                          !check_tokens("^$") &&  //Check that there are no empty strings
@@ -148,7 +148,7 @@ int main()
   /*
   {
     const char* raw = "\"spaces\" , \"around\", \"separators\"\n";
-    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
+    const auto finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
                          check_tokens("^(spaces|around|separators)$") && //Matches these words with nothing else at the start or end.
@@ -168,7 +168,7 @@ int main()
   /*
   {
     const char* raw = "\"cannot\"\t\"tokenize\"\t\"this\"\n";
-    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
+    const auto finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
                          check_tokens("^cannottokenizethis$") && //Matches this text with nothing else at the start or end.
@@ -183,7 +183,7 @@ int main()
   // test_parse_newline_inside_quotes
   {
     const char* raw = "\"cell with\nnewline\"\n\"token on next line\"\n";
-    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
+    const auto finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
                          check_tokens("^(cell with\nnewline|token on next line)$") && //Matches these texts with nothing else at the start or end.
@@ -200,7 +200,7 @@ int main()
   /*
   {
     const char* raw = "\"token1\"\nthis quote has no partner\",\"token2\"\n";
-    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
+    const auto finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
     const bool passed = (finished_parsing &&
                          check_tokens("token") &&
                          1 == get_tokens_instance().size());
@@ -218,7 +218,7 @@ int main()
     const std::string filename =
        Glib::build_filename(GLOM_TESTS_IMPORT_DATA_NOTINSTALLED,
          "albums.csv");
-    const bool finished_parsing = ImportTests::run_parser_on_file(&connect_signals, Glib::filename_to_uri(filename));
+    const auto finished_parsing = ImportTests::run_parser_on_file(&connect_signals, Glib::filename_to_uri(filename));
     //std::cout << "tokens count=" << get_tokens_instance().size() << std::endl;
     const guint expected_tokens = 1348.0 /* lines */ * 7.0 /* columns */;
     //std::cout << "expected_tokens=" << expected_tokens << std::endl;

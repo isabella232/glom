@@ -61,7 +61,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  const double num = Glom::Conversions::get_double_for_gda_value_numeric(default_value);
+  const auto num = Glom::Conversions::get_double_for_gda_value_numeric(default_value);
   if(num != 1)
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected value of default value:" << num << std::endl;
@@ -91,7 +91,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  const Glib::ustring str = default_value.get_string();
+  const auto str = default_value.get_string();
   if(str != "http://")
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected value of default value: " << str << std::endl;
@@ -113,7 +113,7 @@ int main()
   //so we do this so the locale will really be used:
   setlocale(LC_ALL, "");
   
-  const int result = test_all_hosting_modes(sigc::ptr_fun(&test));
+  const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();
 

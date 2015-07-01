@@ -78,7 +78,7 @@ Dialog_ScriptLibrary::~Dialog_ScriptLibrary()
 
 void Dialog_ScriptLibrary::on_button_check()
 {
-  const Glib::ustring script = m_text_view->get_buffer()->get_text();
+  const auto script = m_text_view->get_buffer()->get_text();
 
   //TODO: glom_execute_python_function_implementation(script);
 }
@@ -98,12 +98,12 @@ void Dialog_ScriptLibrary::on_button_add()
     return;
     
   dialog->set_transient_for(*this);
-  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
   if(response != Gtk::RESPONSE_OK)
     return;
 
-  const Glib::ustring name = dialog->m_entry_name->get_text();
+  const auto name = dialog->m_entry_name->get_text();
   delete dialog;
 
   if(name.empty())
@@ -131,12 +131,12 @@ void Dialog_ScriptLibrary::on_button_remove()
   dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("_Remove"), Gtk::RESPONSE_OK);
   dialog.set_transient_for(*this);
-  const int response = dialog.run();
+  const auto response = dialog.run();
   dialog.hide();
   if(response != Gtk::RESPONSE_OK)
     return;
 
-  const Glib::ustring name = m_combobox_name->get_active_text();
+  const auto name = m_combobox_name->get_active_text();
   if(!name.empty())
   {
     document->remove_library_module(name); //TODO: Show warning dialog.
@@ -161,7 +161,7 @@ void Dialog_ScriptLibrary::load_current_script()
     return;
 
   //Get the selected module name:
-  const Glib::ustring name = m_combobox_name->get_active_text();
+  const auto name = m_combobox_name->get_active_text();
 
   //Get the module's script text:
   Glib::ustring script;
@@ -189,7 +189,7 @@ void Dialog_ScriptLibrary::save_current_script()
   if(!name.empty())
   {
     //Get the script text:
-    const Glib::ustring script = m_text_view->get_buffer()->get_text();
+    const auto script = m_text_view->get_buffer()->get_text();
 
     document->set_library_module(name, script);
   }
@@ -201,7 +201,7 @@ void Dialog_ScriptLibrary::load_from_document()
   if(!document)
     return;
 
-  const std::vector<Glib::ustring> module_names = document->get_library_module_names();
+  const auto module_names = document->get_library_module_names();
   m_combobox_name->remove_all();
  
   for(std::vector<Glib::ustring>::const_iterator iter = module_names.begin(); iter != module_names.end(); ++iter)

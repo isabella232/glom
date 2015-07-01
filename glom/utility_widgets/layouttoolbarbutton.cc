@@ -32,7 +32,7 @@ LayoutToolbarButton::LayoutToolbarButton(const std::string& icon_name, LayoutWid
 {
   Gtk::Image* image = Gtk::manage (new Gtk::Image());
 
-  const std::string resource_path = UiUtils::get_icon_path(icon_name);
+  const auto resource_path = UiUtils::get_icon_path(icon_name);
   if(!Utils::get_resource_exists(resource_path))
   {
     std::cerr << G_STRFUNC << ": icon resource not found: " << resource_path << std::endl;

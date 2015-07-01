@@ -35,7 +35,7 @@ Glib::ustring get_node_attribute_value(const xmlpp::Element* node, const Glib::u
 {
   if(node)
   {
-    const xmlpp::Attribute* attribute = node->get_attribute(strAttributeName);
+    const auto attribute = node->get_attribute(strAttributeName);
     if(attribute)
     {
       Glib::ustring value = attribute->get_value(); //Success.
@@ -96,7 +96,7 @@ xmlpp::Element* get_node_child_named_with_add(xmlpp::Element* node, const Glib::
 bool get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value_default)
 {
   bool result = value_default;
-  const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
+  const auto value_string = get_node_attribute_value(node, strAttributeName);
 
   //Get number for string:
   if(!value_string.empty())
@@ -125,7 +125,7 @@ void set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustri
   std::stringstream thestream;
   thestream.imbue( std::locale::classic() ); //The C locale.
   thestream << value;
-  const Glib::ustring value_string = thestream.str();
+  const auto value_string = thestream.str();
 
   set_node_attribute_value(node, strAttributeName, value_string);
 }
@@ -139,7 +139,7 @@ void set_node_attribute_value_as_decimal_double(xmlpp::Element* node, const Glib
   std::stringstream thestream;
   thestream.imbue( std::locale::classic() ); //The C locale.
   thestream << value;
-  const Glib::ustring value_string = thestream.str();
+  const auto value_string = thestream.str();
 
   set_node_attribute_value(node, strAttributeName, value_string);
 }
@@ -147,7 +147,7 @@ void set_node_attribute_value_as_decimal_double(xmlpp::Element* node, const Glib
 guint get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib::ustring& strAttributeName, guint value_default)
 {
   guint result = value_default;
-  const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
+  const auto value_string = get_node_attribute_value(node, strAttributeName);
 
   //Get number for string:
   if(!value_string.empty())
@@ -164,7 +164,7 @@ guint get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib
 double get_node_attribute_value_as_decimal_double(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
 {
   double result = 0;
-  const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
+  const auto value_string = get_node_attribute_value(node, strAttributeName);
 
   //Get number for string:
   if(!value_string.empty())
@@ -187,7 +187,7 @@ void set_node_attribute_value_as_float(xmlpp::Element* node, const Glib::ustring
   std::stringstream thestream;
   thestream.imbue( std::locale::classic() ); //The C locale.
   thestream << value;
-  const Glib::ustring value_string = thestream.str();
+  const auto value_string = thestream.str();
 
   set_node_attribute_value(node, strAttributeName, value_string);
 }
@@ -195,7 +195,7 @@ void set_node_attribute_value_as_float(xmlpp::Element* node, const Glib::ustring
 float get_node_attribute_value_as_float(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
 {
   float result = std::numeric_limits<float>::infinity();
-  const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
+  const auto value_string = get_node_attribute_value(node, strAttributeName);
 
   //Get number for string:
   if(!value_string.empty())
@@ -213,7 +213,7 @@ float get_node_attribute_value_as_float(const xmlpp::Element* node, const Glib::
 void set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value,  Field::glom_field_type field_type)
 {
   NumericFormat format_ignored; //Because we use ISO format.
-  const Glib::ustring value_as_text = Field::to_file_format(value, field_type);
+  const auto value_as_text = Field::to_file_format(value, field_type);
   set_node_attribute_value(node, strAttributeName, value_as_text);
 }
 
@@ -222,7 +222,7 @@ void set_node_text_child_as_value(xmlpp::Element* node, const Gnome::Gda::Value&
   if(!node)
     return;
 
-  const Glib::ustring value_as_text = Field::to_file_format(value, field_type);
+  const auto value_as_text = Field::to_file_format(value, field_type);
   node->set_child_text( Utils::string_clean_for_xml(value_as_text) );
 
   if(field_type == Field::TYPE_IMAGE)
@@ -233,10 +233,10 @@ void set_node_text_child_as_value(xmlpp::Element* node, const Gnome::Gda::Value&
 
 Gnome::Gda::Value get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type)
 {
-  const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
+  const auto value_string = get_node_attribute_value(node, strAttributeName);
 
   bool success = false;
-  const Gnome::Gda::Value result = Field::from_file_format(value_string, field_type, success);
+  const auto result = Field::from_file_format(value_string, field_type, success);
   if(success)
     return result;
   else
@@ -245,19 +245,19 @@ Gnome::Gda::Value get_node_attribute_value_as_value(const xmlpp::Element* node, 
 
 Gnome::Gda::Value get_node_text_child_as_value(const xmlpp::Element* node, Field::glom_field_type field_type)
 {
-  const xmlpp::TextNode* text_child = node->get_child_text();
+  const auto text_child = node->get_child_text();
   if(!text_child)
     return Gnome::Gda::Value();
 
-  const Glib::ustring value_string = text_child->get_content();
+  const auto value_string = text_child->get_content();
 
   bool old_image_format = false;
-  const Glib::ustring format = get_node_attribute_value(node, GLOM_ATTRIBUTE_IMAGE_DATA_FORMAT);
+  const auto format = get_node_attribute_value(node, GLOM_ATTRIBUTE_IMAGE_DATA_FORMAT);
   if(format.empty()) //We previously used the GDA format, before we even specified it.
     old_image_format = true;
     
   bool success = false;
-  const Gnome::Gda::Value result = Field::from_file_format(value_string, field_type, success, old_image_format);
+  const auto result = Field::from_file_format(value_string, field_type, success, old_image_format);
   if(success)
     return result;
 
@@ -267,10 +267,10 @@ Gnome::Gda::Value get_node_text_child_as_value(const xmlpp::Element* node, Field
 
 Glib::ustring get_child_text_node(const xmlpp::Element* node, const Glib::ustring& child_node_name)
 {
-  const xmlpp::Element* child = get_node_child_named(node, child_node_name);
+  const auto child = get_node_child_named(node, child_node_name);
   if(child)
   {
-     const xmlpp::TextNode* text_child = child->get_child_text();
+     const auto text_child = child->get_child_text();
      if(text_child)
        return text_child->get_content();
   }
@@ -289,7 +289,7 @@ void set_child_text_node(xmlpp::Element* node, const Glib::ustring& child_node_n
     child = node->add_child(child_node_name);
   }
 
-  const Glib::ustring text_used = Utils::string_clean_for_xml(text);
+  const auto text_used = Utils::string_clean_for_xml(text);
 
   xmlpp::TextNode* text_child = child->get_child_text();
   if(!text_child)

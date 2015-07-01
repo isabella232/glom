@@ -175,7 +175,7 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
   Document* document = dynamic_cast<Document*>(get_document());
   if(document)
   {
-    const Document::type_vec_relationships vecRelationships = document->get_relationships(table_name);
+    const auto vecRelationships = document->get_relationships(table_name);
     m_pCombo_LookupRelationship->set_relationships(vecRelationships);
   }
 
@@ -193,7 +193,7 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
 
 
   //Calculation:
-  const Glib::ustring calculation = field->get_calculation();
+  const auto calculation = field->get_calculation();
   if(calculation.empty())
    m_pRadio_UserEntry->set_active();
   else
@@ -237,7 +237,7 @@ std::shared_ptr<Field> Dialog_FieldDefinition::get_field() const
   }
 
   //Lookup:
-  const bool is_lookup = m_pCheck_Lookup->get_active();
+  const auto is_lookup = m_pCheck_Lookup->get_active();
   std::shared_ptr<Relationship> relationship;
   if(is_lookup)
     relationship = m_pCombo_LookupRelationship->get_selected_relationship();
@@ -299,10 +299,10 @@ void Dialog_FieldDefinition::enforce_constraints()
     m_pBox_ValueTab->set_sensitive(true);
   }
 
-  const bool enable_calc = m_pRadio_Calculate->get_active();
+  const auto enable_calc = m_pRadio_Calculate->get_active();
   m_pAlignment_Calculate->set_sensitive(enable_calc);
 
-  const bool enable_userentry = m_pRadio_UserEntry->get_active();
+  const auto enable_userentry = m_pRadio_UserEntry->get_active();
   m_pAlignment_UserEntry->set_sensitive(enable_userentry);
 }
 
@@ -348,11 +348,11 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
     Document* document = dynamic_cast<Document*>(get_document());
     if(document)
     {
-      const Glib::ustring to_table = relationship->get_to_table();
+      const auto to_table = relationship->get_to_table();
       if(!to_table.empty())
       {
         //Get the fields in the other table, and add them to the combo:
-        const type_vec_fields fields_in_to_table = DbUtils::get_fields_for_table(document, to_table);
+        const auto fields_in_to_table = DbUtils::get_fields_for_table(document, to_table);
         for(type_vec_fields::const_iterator iter = fields_in_to_table.begin(); iter != fields_in_to_table.end(); ++iter)
         {
           m_pCombo_LookupField->append((*iter)->get_name());
@@ -376,7 +376,7 @@ void Dialog_FieldDefinition::on_button_edit_calculation()
   m_Field->set_calculation( m_pTextView_Calculation->get_buffer()->get_text() );
   dialog->set_field(m_Field, m_table_name);
   //TODO: dialog.set_transient_for(*get_app_window());
-  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   if(response == Gtk::RESPONSE_OK)
   {
     m_pTextView_Calculation->get_buffer()->set_text( dialog->get_field()->get_calculation() );

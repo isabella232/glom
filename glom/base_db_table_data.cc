@@ -133,8 +133,8 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
           //If the default value should be calculated, then calculate it:
           if(field->get_has_calculation())
           {
-            const Glib::ustring calculation = field->get_calculation();
-            const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, fieldPrimaryKey, primary_key_value);
+            const auto calculation = field->get_calculation();
+            const auto field_values = get_record_field_values_for_calculation(m_table_name, fieldPrimaryKey, primary_key_value);
 
             //We need the connection when we run the script, so that the script may use it.
             // TODO: Is this function supposed to throw an exception?
@@ -195,7 +195,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   //Put it all together to create the record with these field values:
   if(!map_added.empty())
   {
-    const bool test = DbUtils::query_execute(builder);
+    const auto test = DbUtils::query_execute(builder);
     if(!test)
       std::cerr << G_STRFUNC << ": INSERT failed." << std::endl;
     else
@@ -209,7 +209,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
         std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
 
         //TODO_Performance: We just set this with set_entered_field_data() above. Maybe we could just remember it.
-        const Gnome::Gda::Value field_value = get_entered_field_data(layout_item);
+        const auto field_value = get_entered_field_data(layout_item);
 
         const LayoutFieldInRecord field_in_record(layout_item, m_table_name, fieldPrimaryKey, primary_key_value);
 
@@ -239,7 +239,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
 {
   Gnome::Gda::Value primary_key_value = primary_key_value_provided;
 
-  const bool related_record_exists = get_related_record_exists(relationship, primary_key_value);
+  const auto related_record_exists = get_related_record_exists(relationship, primary_key_value);
   if(related_record_exists)
   {
     //No problem, the SQL command below will update this value in the related table.
@@ -266,7 +266,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
   }
   else
   {
-    const bool key_is_auto_increment = primary_key_field->get_auto_increment();
+    const auto key_is_auto_increment = primary_key_field->get_auto_increment();
 
     //If we would have to set an otherwise auto-increment key to add the record.
     if( key_is_auto_increment && !Conversions::value_is_empty(primary_key_value) )
@@ -301,7 +301,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
       Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
       builder->set_table(relationship->get_to_table());
       builder->add_field_value(primary_key_field->get_name(), primary_key_value);
-      const bool test = DbUtils::query_execute(builder);
+      const auto test = DbUtils::query_execute(builder);
       if(!test)
       {
         std::cerr << G_STRFUNC << ": INSERT failed." << std::endl;
@@ -335,7 +335,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
         }
         else
         {
-          const Gnome::Gda::Value parent_primary_key_value = get_primary_key_value_selected();
+          const auto parent_primary_key_value = get_primary_key_value_selected();
           if(parent_primary_key_value.is_null())
           {
             std::cerr << G_STRFUNC << ": get_primary_key_value_selected() failed. table = " << get_table_name() << std::endl;
@@ -343,7 +343,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
           }
           else
           {
-            const Glib::ustring target_table = relationship->get_from_table();
+            const auto target_table = relationship->get_from_table();
             Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
               Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
             builder->set_table(target_table);
@@ -353,7 +353,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
                 builder->add_field_id(parent_primary_key_field->get_name(), target_table),
                 builder->add_expr(parent_primary_key_value)) );
 
-            const bool test = DbUtils::query_execute(builder);
+            const auto test = DbUtils::query_execute(builder);
             if(!test)
             {
               std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
@@ -435,8 +435,8 @@ bool Base_DB_Table_Data::get_related_record_exists(const std::shared_ptr<const R
 
   //TODO_Performance: It's very possible that this is slow.
   //We don't care how many records there are, only whether there are more than zero.
-  const Glib::ustring to_field = relationship->get_to_field();
-  const Glib::ustring related_table = relationship->get_to_table();
+  const auto to_field = relationship->get_to_field();
+  const auto related_table = relationship->get_to_table();
 
   //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria?
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
@@ -471,7 +471,7 @@ Base_DB_Table_Data::type_vecConstLayoutFields Base_DB_Table_Data::get_related_fi
   const Document* document = dynamic_cast<const Document*>(get_document());
   if(document)
   {
-    const Glib::ustring field_name = field->get_name(); //At the moment, relationships can not be based on related fields on the from side.
+    const auto field_name = field->get_name(); //At the moment, relationships can not be based on related fields on the from side.
     for(type_vecConstLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end();  ++iter)
     {
       const std::shared_ptr<const LayoutItem_Field> layout_field = *iter;
@@ -534,7 +534,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
 
         for(guint uiCol = 0; uiCol < cols_count; ++uiCol)
         {
-          const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
+          const auto value = result->get_value_at(uiCol, 0 /* row */);
           std::shared_ptr<const LayoutItem_Field> layout_item = *iterFields;
           if(!layout_item)
             std::cerr << G_STRFUNC << ": The layout_item was null." << std::endl;

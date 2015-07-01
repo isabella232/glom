@@ -83,7 +83,7 @@ int main()
   //so we do this so the locale will really be used:
   setlocale(LC_ALL, "");
 
-  const int result = test_all_hosting_modes(sigc::ptr_fun(&test));
+  const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();
 

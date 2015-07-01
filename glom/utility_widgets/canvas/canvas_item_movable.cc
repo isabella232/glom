@@ -183,7 +183,7 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
     // A click with a move should always select:
     // We emit this before signal_moved,
     // so that its signal handler can know about the selection.
-    const bool old_selected = get_selected();
+    const auto old_selected = get_selected();
     set_selected(true);
     if(!old_selected)
     {
@@ -217,7 +217,7 @@ bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::It
 
 
   // A click without a move should select or deselect:
-  const bool old_selected = get_selected();
+  const auto old_selected = get_selected();
   bool selected = !old_selected;
 
   // A drag-to-move should always select and never deselect:

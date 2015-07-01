@@ -187,7 +187,7 @@ bool Conversions::sanity_check_date_parsing()
   the_c_time.tm_mday = 22; //starts at 1
 
   //Get the current locale's text representation:
-  const Glib::ustring date_text = format_date(the_c_time);
+  const auto date_text = format_date(the_c_time);
   //std::cout << "DEBUG: 22nd November 2008 in this locale has this text represention: " << date_text << std::endl;
 
   //Try to parse it:
@@ -227,7 +227,7 @@ bool Conversions::sanity_check_date_text_representation_uses_4_digit_years(bool 
   the_c_time.tm_mday = 22; //starts at 1
 
   //Get the current locale's text representation:
-  const Glib::ustring date_text = format_date(the_c_time);
+  const auto date_text = format_date(the_c_time);
 
   if(debug_output)
   {
@@ -309,7 +309,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
     // Set the first byte to something other than '\0', to be able to
     // recognize whether strftime actually failed or just returned "".
     buf.get()[0] = '\1';
-    const gsize len = strftime(buf.get(), bufsize, locale_format.c_str(), &tm_data);
+    const auto len = strftime(buf.get(), bufsize, locale_format.c_str(), &tm_data);
 
     if(len != 0 || buf.get()[0] == '\0')
     {
@@ -369,7 +369,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 
 double Conversions::get_double_for_gda_value_numeric(const Gnome::Gda::Value& value)
 {
-  const GType vtype = value.get_value_type();
+  const auto vtype = value.get_value_type();
   if(vtype != GDA_TYPE_NUMERIC)
   {
     // Note that in case the database system does not support GdaNumeric
@@ -397,7 +397,7 @@ double Conversions::get_double_for_gda_value_numeric(const Gnome::Gda::Value& va
     }
   }
 
-  const Gnome::Gda::Numeric numeric = value.get_numeric();
+  const auto numeric = value.get_numeric();
   return numeric.get_double();
 }
 
@@ -483,7 +483,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   }
   else if(glom_type == Field::TYPE_NUMERIC)
   {
-    const GType value_type = value.get_value_type();
+    const auto value_type = value.get_value_type();
     if(value_type != GDA_TYPE_NUMERIC
       && value_type != G_TYPE_DOUBLE
       && value_type != G_TYPE_INT) //SQLite uses int for summary field results.
@@ -492,7 +492,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
       return value.to_string();
     }
 
-    const double number = get_double_for_gda_value_numeric(value);
+    const auto number = get_double_for_gda_value_numeric(value);
 
     //Get the locale-specific text representation, in the required format:
     std::stringstream another_stream;

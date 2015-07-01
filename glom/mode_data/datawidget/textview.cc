@@ -82,7 +82,7 @@ void TextView::set_glom_type(Field::glom_field_type glom_type)
 
 void TextView::check_for_change()
 {
-  const Glib::ustring new_text = m_TextView.get_buffer()->get_text();
+  const auto new_text = m_TextView.get_buffer()->get_text();
   if(new_text != m_old_text)
   {
     //Validate the input:

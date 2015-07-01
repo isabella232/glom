@@ -74,7 +74,7 @@ bool LocalOptionGroup::handle_options()
     m_debug_date_check_result = false;
   }
 
-  const bool test2 = Glom::Conversions::sanity_check_date_parsing();
+  const auto test2 = Glom::Conversions::sanity_check_date_parsing();
   if(!test2)
   {
     std::cerr << G_STRFUNC << ": Glom: ERROR: Date parsing sanity checks failed. Glom will not interpret dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;

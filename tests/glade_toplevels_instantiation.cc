@@ -27,8 +27,8 @@
 
 static bool attempt_instantiation(const std::string& filepath, const xmlpp::Element* child)
 {
-  const Glib::ustring id = child->get_attribute_value("id");
-  const Glib::ustring gclassname = child->get_attribute_value("class");
+  const auto id = child->get_attribute_value("id");
+  const auto gclassname = child->get_attribute_value("class");
 
   // Try to instantiate the object:
   Glib::RefPtr<Gtk::Builder> builder;
@@ -114,11 +114,11 @@ int main(int argc, char* argv[])
     if(!parser)
       return EXIT_FAILURE;
 
-    const xmlpp::Node* root = parser.get_document()->get_root_node(); //deleted by DomParser.
+    const auto root = parser.get_document()->get_root_node(); //deleted by DomParser.
     if(!root)
       return EXIT_FAILURE;
 
-    const xmlpp::Node::NodeList children = root->get_children("object");
+    const auto children = root->get_children("object");
     for(xmlpp::Node::NodeList::const_iterator iter = children.begin(); iter != children.end(); ++iter)
     {
        const xmlpp::Element* child = dynamic_cast<const xmlpp::Element*>(*iter);

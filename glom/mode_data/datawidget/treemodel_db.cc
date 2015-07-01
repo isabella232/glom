@@ -150,7 +150,7 @@ void DbTreeModelRow::set_value(DbTreeModel& model, int column, int row, const Db
   /*
   Glib::RefPtr<const Gnome::Gda::Column> gdacolumn = model.m_gda_datamodel->describe_column(column);
   const GType debug_type_in = value.get_value_type();
-  const GType debug_type_expected = gdacolumn->get_g_type();
+  const auto debug_type_expected = gdacolumn->get_g_type();
   if(debug_type_in != debug_type_expected)
   {
     std::cout << "debug: " << G_STRFUNC << ": expected GType=" << debug_type_expected << ", but received GType=" << debug_type_in << std::endl;
@@ -315,7 +315,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
       if(layout_item)
       {
-        const Field::glom_field_type glom_type = layout_item->get_glom_type();
+        const auto glom_type = layout_item->get_glom_type();
         const GType gda_type = Field::get_gda_type_for_glom_type(glom_type);
         model_array->set_column_g_type(col, gda_type);
         ++col;
@@ -754,7 +754,7 @@ DbTreeModel::iterator DbTreeModel::append()
 
   //Create the iterator to the new row:
   iterator iter;
-  const bool iter_is_valid = create_iterator(datamodel_row, iter);
+  const auto iter_is_valid = create_iterator(datamodel_row, iter);
   if(iter_is_valid)
   {
     row_inserted(get_path(iter), iter); //Allow the TreeView to respond to the addition.
@@ -979,7 +979,7 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
         Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
 
-      const Gnome::Gda::SqlBuilder::Id id_function = builder->add_function("count", builder->add_id("*")); //TODO: Is * allowed here?
+      const auto id_function = builder->add_function("count", builder->add_id("*")); //TODO: Is * allowed here?
       builder->add_field_value_id(id_function);
 
       builder->select_add_target(m_found_set.m_table_name);
@@ -990,7 +990,7 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       {
         if(datamodel->get_n_rows())
         {
-          const Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+          const auto value = datamodel->get_value_at(0, 0);
 	  // This will probably fail on Windows, where a long is only 32 bits wide.
           total = static_cast<gulong>(value.get_int64()); //I discovered that it's a int64 by trying it.
         }

@@ -47,7 +47,7 @@ static DataWidgetChildren::ComboChoices* create_combo_widget_for_field(const std
 {
   DataWidgetChildren::ComboChoices* result = 0;
   bool as_radio_buttons = false;
-  const bool restricted = field->get_formatting_used().get_choices_restricted(as_radio_buttons);
+  const auto restricted = field->get_formatting_used().get_choices_restricted(as_radio_buttons);
   if(restricted)
   {
     if(as_radio_buttons)
@@ -65,12 +65,12 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
 :  m_child(0),
    m_button_go_to_details(0)
 {
-  const Field::glom_field_type glom_type = field->get_glom_type();
+  const auto glom_type = field->get_glom_type();
   set_layout_item(field, table_name);
   
   //The GNOME HIG says that labels should have ":" at the end:
   //http://library.gnome.org/devel/hig-book/stable/design-text-labels.html.en
-  const Glib::ustring title = Glib::ustring::compose(_("%1:"), item_get_title_or_name(field));
+  const auto title = Glib::ustring::compose(_("%1:"), item_get_title_or_name(field));
 
   m_child = 0;
   LayoutWidgetField* pFieldWidget = 0;  
@@ -306,15 +306,15 @@ void DataWidget::update_go_to_details_button_sensitivity()
   //an ID:
   if(m_button_go_to_details)
   {
-    const Gnome::Gda::Value value = get_value();
-    const bool enabled = !Conversions::value_is_empty(value);
+    const auto value = get_value();
+    const auto enabled = !Conversions::value_is_empty(value);
     m_button_go_to_details->set_sensitive(enabled);
   }
 }
 
 Gnome::Gda::Value DataWidget::get_value() const
 {
-  const Gtk::Widget* widget = get_data_child_widget();
+  const auto widget = get_data_child_widget();
   const LayoutWidgetField* generic_field_widget = dynamic_cast<const LayoutWidgetField*>(widget);
   if(generic_field_widget)
     return generic_field_widget->get_value();
@@ -342,7 +342,7 @@ const Gtk::Label* DataWidget::get_label() const
 
 void DataWidget::set_child_size_by_field(const std::shared_ptr<const LayoutItem_Field>& field)
 {
-  const Field::glom_field_type glom_type = field->get_glom_type();
+  const auto glom_type = field->get_glom_type();
   int width = get_suitable_width(field);
 
   if(glom_type == Field::TYPE_IMAGE) //GtkImage widgets default to no size (invisible) if they are empty.
@@ -478,7 +478,7 @@ std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustri
     if(app)
       dialog->set_transient_for(*app);
 
-    const int response = dialog->run();
+    const auto response = dialog->run();
     dialog->hide();
     if(response == Gtk::RESPONSE_OK)
     {
@@ -508,7 +508,7 @@ std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_layout(const std::shar
   if(parent)
     dialog->set_transient_for(*parent);
 
-  const int response = dialog->run();
+  const auto response = dialog->run();
   dialog->hide();
   if(response == Gtk::RESPONSE_OK)
   {
@@ -617,7 +617,7 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
 void DataWidget::on_button_new_id()
 {
   Gnome::Gda::Value chosen_id;
-  const bool chosen = offer_related_record_id_new(chosen_id);
+  const auto chosen = offer_related_record_id_new(chosen_id);
   if(!chosen)
     return;
 
@@ -640,12 +640,12 @@ void DataWidget::on_button_choose_date()
       dialog->set_transient_for(*parent);
     dialog->set_date_chosen(get_value());
 
-    const int response = Glom::UiUtils::dialog_run_with_help(dialog);
+    const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
     dialog->hide();
     if(response == Gtk::RESPONSE_OK)
     {
       //Get the chosen date
-      const Gnome::Gda::Value value = dialog->get_date_chosen();
+      const auto value = dialog->get_date_chosen();
       set_value(value);
 
       m_signal_edited.emit(value);
@@ -694,7 +694,7 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
     dialog->init_db_details(related_table_name, Base_DB::get_active_layout_platform(get_document()));
 
 
-    const int response = dialog->run();
+    const auto response = dialog->run();
     dialog->hide();
     if(response == Gtk::RESPONSE_OK)
     {
@@ -743,7 +743,7 @@ bool DataWidget::offer_related_record_id_new(Gnome::Gda::Value& chosen_id)
     dialog->init_db_details(related_table_name, Base_DB::get_active_layout_platform(get_document()));
 
 
-    const int response = dialog->run();
+    const auto response = dialog->run();
     dialog->hide();
     if(response == Gtk::RESPONSE_OK)
     {

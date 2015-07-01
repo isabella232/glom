@@ -77,7 +77,7 @@ void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& c
   const Pango::Alignment x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Pango::ALIGN_LEFT : Pango::ALIGN_RIGHT);
   canvas_item->property_alignment() = x_align;
 
-  const Formatting& formatting = layout_item->get_formatting_used();
+  const auto formatting = layout_item->get_formatting_used();
 
   Glib::ustring font = formatting.get_text_format_font();
   if(font.empty())
@@ -92,14 +92,14 @@ void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& c
 
   //TODO: Are these sensible properties? Maybe we need to use markup:
   //TODO: Use the negative color.
-  const Glib::ustring fg = formatting.get_text_format_color_foreground();
+  const auto fg = formatting.get_text_format_color_foreground();
   if(!fg.empty())
   {
     //GooCanvasText uses fill-color for the text foreground color.
     //Presumably stroke-color would be an outline, if we had a line-width of >0 width.
     canvas_item->property_fill_color() = fg;
   }
-  const Glib::ustring bg = formatting.get_text_format_color_background();
+  const auto bg = formatting.get_text_format_color_background();
   if(!bg.empty())
   {
     //TODO: Add a filled rectangle.
@@ -312,7 +312,7 @@ Glib::RefPtr<Goocanvas::Item> CanvasLayoutItem::get_canvas_table_cell_child(cons
   if(!table)
     return result;
 
-  const int count = table->get_n_children();
+  const auto count = table->get_n_children();
   for(int i = 0; i < count; ++i)
   {
     Glib::RefPtr<Goocanvas::Item> child = table->get_child(i);
@@ -356,13 +356,13 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(guint rows_count)
 
 void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTableMovable>& canvas_table, const std::shared_ptr<LayoutItem_Portal>& portal, guint rows_count)
 {
-  const double row_height = portal->get_print_layout_row_height();
-  const LayoutGroup::type_list_items child_items = portal->get_items();
+  const auto row_height = portal->get_print_layout_row_height();
+  const auto child_items = portal->get_items();
 
   for(guint row = 0; row < rows_count; ++row)
   {
     guint col = 0;
-    const guint num_cols = child_items.size();
+    const auto num_cols = child_items.size();
     bool something_expanded = false;
     for(LayoutGroup::type_list_items::const_iterator iter = child_items.begin(); iter != child_items.end(); ++iter)
     {
@@ -388,7 +388,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
 
       if(cell && cell_as_item)
       {
-        const guint width = layout_item->get_display_width();
+        const auto width = layout_item->get_display_width();
         bool expand = (width == 0);
         
         //If this is the last item, and no other item has expanded,
@@ -452,7 +452,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
   if(!child)
     return;
 
-  const Field::glom_field_type field_type = field->get_glom_type();
+  const auto field_type = field->get_glom_type();
   switch(field->get_glom_type())
   {
     case(Field::TYPE_TEXT):
@@ -471,7 +471,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       if(text_value.empty() && std::dynamic_pointer_cast<const LayoutItem_FieldSummary>(field) && (field_type == Field::TYPE_NUMERIC))
       {
         //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
-        const Gnome::Gda::Value value = Conversions::parse_value(0);
+        const auto value = Conversions::parse_value(0);
         text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
       }
 

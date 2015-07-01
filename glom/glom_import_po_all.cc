@@ -180,7 +180,7 @@ int main(int argc, char* argv[])
   Glom::Document document;
   document.set_file_uri(input_uri);
   int failure_code = 0;
-  const bool test = document.load(failure_code);
+  const auto test = document.load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -199,7 +199,7 @@ int main(int argc, char* argv[])
       continue;
 
     //Check that it has the .po file extension:
-    const std::string basename = child->get_basename();
+    const auto basename = child->get_basename();
     const std::string locale_id = 
       Glom::Utils::string_remove_suffix(basename, ".po");
     if(locale_id == basename)

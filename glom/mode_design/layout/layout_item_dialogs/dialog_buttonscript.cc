@@ -105,7 +105,7 @@ void Dialog_ButtonScript::get_script(const std::shared_ptr<LayoutItem_Button>& s
 
 void Dialog_ButtonScript::on_button_test_script()
 {
-  const Glib::ustring calculation = m_text_view_script->get_buffer()->get_text();
+  const auto calculation = m_text_view_script->get_buffer()->get_text();
   if(!UiUtils::script_check_for_pygtk2_with_warning(calculation, this))
     return;
 
@@ -114,11 +114,11 @@ void Dialog_ButtonScript::on_button_test_script()
   Document* document = get_document();
   if(document)
   {
-    const Document::type_vec_fields fields = document->get_table_fields(m_table_name);
+    const auto fields = document->get_table_fields(m_table_name);
     for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       const std::shared_ptr<const Field> field = *iter;
-      const Gnome::Gda::Value example_value = Conversions::get_example_value(field->get_glom_type());
+      const auto example_value = Conversions::get_example_value(field->get_glom_type());
       field_values[field->get_name()] = example_value;
     }
   }

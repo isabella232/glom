@@ -44,7 +44,7 @@ static bool test_add_group(const Glom::Document& document, const Glib::ustring& 
     return false;
   }
 
-  const Glom::Privs::type_vec_strings group_list = Glom::Privs::get_database_groups();
+  const auto group_list = Glom::Privs::get_database_groups();
   if(!contains(group_list, group))
   {
     std::cerr << G_STRFUNC << ": Privs::get_database_groups() does not contain the expected group." << std::endl;
@@ -52,7 +52,7 @@ static bool test_add_group(const Glom::Document& document, const Glib::ustring& 
     return false;
   }
 
-  const Glom::Privs::type_vec_strings user_list = Glom::Privs::get_database_users(group);
+  const auto user_list = Glom::Privs::get_database_users(group);
   if(!user_list.empty())
   {
     std::cerr << G_STRFUNC << ": The user list is not empty as expected.." << std::endl;
@@ -72,7 +72,7 @@ static bool test_add_user(const Glom::Document& document, const Glib::ustring& u
     return false;
   }
 
-  const Glom::Privs::type_vec_strings user_list = Glom::Privs::get_database_users(group);
+  const auto user_list = Glom::Privs::get_database_users(group);
   if(!contains(user_list, user))
   {
     std::cerr << G_STRFUNC << ": Privs::get_database_users() does not contain the expected user:" << std::endl;
@@ -99,7 +99,7 @@ static bool change_privileges(const Glib::ustring& group_name, const Glib::ustri
     return false;
   }
 
-  const Glom::Privileges privs_changed = Glom::Privs::get_table_privileges(group_name, table_name);
+  const auto privs_changed = Glom::Privs::get_table_privileges(group_name, table_name);
   if( (privs_changed.m_view != privs_new.m_view) ||
     (privs_changed.m_edit != privs_new.m_edit) ||
     (privs_changed.m_create != privs_new.m_create) ||
@@ -165,7 +165,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
 
   //Check that only one group exists (the developer group):
-  const Glom::Privs::type_vec_strings group_list_original = Glom::Privs::get_database_groups();
+  const auto group_list_original = Glom::Privs::get_database_groups();
   if(group_list_original.empty())
   {
     std::cerr << G_STRFUNC << ": Privs::get_database_groups() returned an empty list." << std::endl;
@@ -215,14 +215,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     for(type_vec_strings::const_iterator iter_group = group_names.begin(); iter_group != group_names.end(); ++iter_group)
     {
       const Glib::ustring group_name = *iter_group;
-      const Glib::ustring username = Glib::ustring::compose("%1%2", *iter_user, i); //Make sure the username is unique.
+      const auto username = Glib::ustring::compose("%1%2", *iter_user, i); //Make sure the username is unique.
       if(!test_add_user(document, username, group_name))
         return false;
 
       for(type_vec_strings::const_iterator iter_table = table_names.begin(); iter_table != table_names.end(); ++iter_table)
       {
         const Glib::ustring table_name = *iter_table;
-        const Glom::Privileges privs = Glom::Privs::get_table_privileges(group_name, table_name);
+        const auto privs = Glom::Privs::get_table_privileges(group_name, table_name);
         if(!privs.m_view)
         {
           std::cerr << G_STRFUNC << ": Privs::get_table_privileges() returned an unexpected view privilege for group=" << group_name << ", table_name=" << table_name << std::endl;
@@ -283,7 +283,7 @@ int main()
 {
   Glom::libglom_init();
 
-  const int result = test_all_hosting_modes(sigc::ptr_fun(&test));
+  const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();
 

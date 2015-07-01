@@ -50,8 +50,8 @@ void PrintOperationRelationshipsOverview::on_draw_page(
   Cairo::RefPtr<Cairo::Context> cairo_context = print_context->get_cairo_context();
   
   //Set a drawing scale (before drawing) so that the cairo context fits on the page:
-  const double print_height = print_context->get_height();
-  const double print_width = print_context->get_width();
+  const auto print_height = print_context->get_height();
+  const auto print_width = print_context->get_width();
   //std::cout << "print_height=" << print_height << ", print_width=" << print_width << std::endl;
 
   //TODO: Get the total size of the drawn objects instead of the bounds (which includes extra whitespace): 
@@ -64,7 +64,7 @@ void PrintOperationRelationshipsOverview::on_draw_page(
   if(!root_item)
     return;
 
-  const Goocanvas::Bounds bounds = root_item->get_bounds();
+  const auto bounds = root_item->get_bounds();
   canvas_left = bounds.get_x1();
   canvas_right = bounds.get_x2();
   canvas_top = bounds.get_y1();

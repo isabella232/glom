@@ -128,7 +128,7 @@ void Dialog_FieldLayout::on_radiobutton_custom_formatting()
 void Dialog_FieldLayout::enforce_constraints()
 {
   //Enable/Disable the custom formatting widgets:
-  const bool custom = m_radiobutton_custom_formatting->get_active();
+  const auto custom = m_radiobutton_custom_formatting->get_active();
   m_box_formatting->set_sensitive(custom);
 }
 

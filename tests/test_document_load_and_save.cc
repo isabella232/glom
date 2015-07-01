@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
 
   //Get a URI (file://something) from the filepath:
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_commandline_arg(argv[1]);
-  const Glib::ustring uri = file->get_uri();
+  const auto uri = file->get_uri();
 
   const std::string dtd_filepath = argv[2];
 
@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
   Glom::Document document;
   document.set_file_uri(uri);
   int failure_code = 0;
-  const bool loaded = document.load(failure_code);
+  const auto loaded = document.load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!loaded)
@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
     Glom::Utils::get_temp_file_uri("testglom_document", ".glom");
   document.set_file_uri(temp_uri);
   document.set_modified(); //TODO: Let save() succeed without this.
-  const bool saved = document.save();
+  const auto saved = document.save();
   if(!saved)
   {
     std::cerr << G_STRFUNC << ": Document::save() failed." << std::endl;

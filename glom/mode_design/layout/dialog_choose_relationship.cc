@@ -105,7 +105,7 @@ void Dialog_ChooseRelationship::select_item(const std::shared_ptr<const Relation
     //Find any items with the same name:
     for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
     {
-      const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
+      const auto relationship_name = glom_get_sharedptr_name(relationship);
 
       Gtk::TreeModel::Row row = *iter;
       std::shared_ptr<Relationship> relationship_item = row[m_ColumnsRelationships.m_col_relationship];

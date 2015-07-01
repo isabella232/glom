@@ -50,17 +50,17 @@ static void apply_formatting(Gtk::CellRenderer* renderer, const std::shared_ptr<
   const float x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
   text_renderer->property_xalign() = x_align;
 
-  const Formatting& formatting = layout_item->get_formatting_used();
+  const auto formatting = layout_item->get_formatting_used();
 
-  const Glib::ustring font_desc = formatting.get_text_format_font();
+  const auto font_desc = formatting.get_text_format_font();
   if(!font_desc.empty())
   text_renderer->property_font() = font_desc;
 
-  const Glib::ustring fg = formatting.get_text_format_color_foreground();
+  const auto fg = formatting.get_text_format_color_foreground();
   if(!fg.empty())
     text_renderer->property_foreground() = fg;
 
-  const Glib::ustring bg = formatting.get_text_format_color_background();
+  const auto bg = formatting.get_text_format_color_background();
   if(!bg.empty())
     text_renderer->property_background() = bg;
 }
@@ -98,14 +98,14 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
       }
       default:
       {
-        const Formatting& formatting = item_field->get_formatting_used();
+        const auto formatting = item_field->get_formatting_used();
         if(formatting.get_has_choices())
         {
           CellRendererDbList* rendererList = Gtk::manage( new CellRendererDbList() );
           std::shared_ptr<LayoutItem> unconst = std::const_pointer_cast<LayoutItem>(layout_item); //TODO: Avoid this.
           rendererList->set_layout_item(unconst, table_name);
           bool as_radio_buttons = false; //Can't really be done in a list, so we ignore it.
-          const bool restricted = formatting.get_choices_restricted(as_radio_buttons);
+          const auto restricted = formatting.get_choices_restricted(as_radio_buttons);
           rendererList->set_restrict_values_to_list(restricted);
 
           //Set the choices.
@@ -208,7 +208,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
     {
       //set_choices_fixed() needs this, for the numeric layout:
       //pCellRendererCombo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
-      const Formatting::type_list_values list_values = item_field->get_formatting_used().get_choices_custom();
+      const auto list_values = item_field->get_formatting_used().get_choices_custom();
       for(Formatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
       {
         const std::shared_ptr< const ChoiceValue> value = *iter;
@@ -232,7 +232,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
 
       if(choice_relationship && choice_field)
       {
-        const Glib::ustring to_table = choice_relationship->get_to_table();
+        const auto to_table = choice_relationship->get_to_table();
 
         //TODO: Update this when the relationship's field value changes:
         if(choice_show_all) //Otherwise it must change whenever the relationships's ID value changes.

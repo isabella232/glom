@@ -120,7 +120,7 @@ void DialogImageLoadProgress::on_stream_read(const Glib::RefPtr<Gio::AsyncResult
 {
   try
   {
-    const gssize size = m_stream->read_finish(result);
+    const auto size = m_stream->read_finish(result);
     g_assert(size >= 0); // Would have thrown an exception otherwise
     
     // Cannot read more data than there is available in the file:

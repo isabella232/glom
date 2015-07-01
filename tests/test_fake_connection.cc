@@ -52,7 +52,7 @@ int main()
   Glom::Document document;
   document.set_file_uri(uri);
   int failure_code = 0;
-  const bool test = document.load(failure_code);
+  const auto test = document.load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -83,7 +83,7 @@ int main()
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
     Glom::Utils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
-  const Glib::ustring& query = Glom::Utils::sqlbuilder_get_full_query(builder);
+  const auto query = Glom::Utils::sqlbuilder_get_full_query(builder);
   g_assert(!query.empty());
   if(query.find("album_id") == Glib::ustring::npos)
   {

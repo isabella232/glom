@@ -1256,7 +1256,7 @@ Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::move_items_down(double y_star
 
     //Move it some more if necessary:
     //See if it should be moved down (but do that later):
-    const bool needs_moving = PrintLayoutUtils::needs_move_fully_to_page(page_Setup, property_units(), derived);
+    const auto needs_moving = PrintLayoutUtils::needs_move_fully_to_page(page_Setup, property_units(), derived);
     if(needs_moving)
     {
       if(!needs_moving_top || (y <= y_needs_moving_top))
@@ -1274,7 +1274,7 @@ Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::move_items_down(double y_star
   }
 
   //Add extra pages if necessary:
-  const guint last_page_needed = PrintLayoutUtils::get_page_for_y(page_Setup, 
+  const auto last_page_needed = PrintLayoutUtils::get_page_for_y(page_Setup, 
     property_units(), bottom_max);
   if((last_page_needed + 1) > get_page_count())
   {

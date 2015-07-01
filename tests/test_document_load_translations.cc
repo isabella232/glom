@@ -135,7 +135,7 @@ static std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const G
     if(!group)
       continue;
     
-    const Glom::LayoutGroup::type_list_const_items items = group->get_items_recursive();
+    const auto items = group->get_items_recursive();
     for(Glom::LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
     {
       const std::shared_ptr<const Glom::LayoutItem> layout_item = *iter;
@@ -232,7 +232,7 @@ int main()
   Glom::Document document;
   document.set_file_uri(uri);
   int failure_code = 0;
-  const bool test = document.load(failure_code);
+  const auto test = document.load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -241,11 +241,11 @@ int main()
     return EXIT_FAILURE;
   }
 
-  const std::vector<Glib::ustring> locales = document.get_translation_available_locales();
+  const auto locales = document.get_translation_available_locales();
   g_assert(locales.size() == 16);
   g_assert(contains(locales, "de"));
 
-  const std::vector<Glib::ustring> table_names = document.get_table_names();
+  const auto table_names = document.get_table_names();
   g_assert(contains(table_names, "scenes"));
 
   g_assert( document.get_table_title_original("scenes") == "Scenes" );

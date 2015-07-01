@@ -46,7 +46,7 @@ int main()
   g_assert(Glom::Field::get_glom_type_for_gda_type(value.get_value_type()) == result_type);
 
   //Check that the return value is of the expected value:
-  const Glib::ustring text = value.get_string();
+  const auto text = value.get_string();
   //std::cout << "text=" << text << std::endl;
   g_assert(text == "4950"); //This should always be as per ISO, not according to the user's locale, because it's generally passed to the database. Presentation is separate to calculation or storage.
 

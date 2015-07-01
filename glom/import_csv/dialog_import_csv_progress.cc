@@ -52,7 +52,7 @@ Dialog_Import_CSV_Progress::Dialog_Import_CSV_Progress(BaseObjectType* cobject, 
 
 bool Dialog_Import_CSV_Progress::init_db_details(const Glib::ustring& table_name)
 {
-  const bool result = Base_DB_Table_Data::init_db_details(table_name);
+  const auto result = Base_DB_Table_Data::init_db_details(table_name);
   m_field_primary_key = get_field_primary_key_for_table(table_name);
   return result;
 }
@@ -151,7 +151,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
 {
   //Note to translators: This is a progress indication, showing how many rows have been imported.
   //TODO: Have a heuristic based on file size or total rows count.
-  const Glib::ustring status_text = Glib::ustring::format(m_current_row);
+  const auto status_text = Glib::ustring::format(m_current_row);
   m_progress_bar->set_text(status_text);
   m_progress_bar->pulse();
 
@@ -163,7 +163,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   while(gtk_events_pending())
     gtk_main_iteration_do(true);
 
-  const CsvParser::type_row_strings row = m_data_source->get_parser().fetch_next_row();
+  const auto row = m_data_source->get_parser().fetch_next_row();
 
   //If there are no more rows to import, then stop, by returning false:
   // TODO: Perhaps abort on 0 == row instead, so that we do not stop import on

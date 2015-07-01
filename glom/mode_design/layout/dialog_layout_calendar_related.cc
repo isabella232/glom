@@ -136,7 +136,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
 {
   m_modified = false;
 
-  const Glib::ustring related_table_name = m_portal->get_table_used(Glib::ustring() /* parent table - not relevant*/);
+  const auto related_table_name = m_portal->get_table_used(Glib::ustring() /* parent table - not relevant*/);
 
   //Update the tree models from the document
   Document* document = get_document();
@@ -284,7 +284,7 @@ void Dialog_Layout_Calendar_Related::save_to_document()
       Gtk::TreeModel::Row row = *iterFields;
 
       std::shared_ptr<LayoutItem> item = row[m_model_items->m_columns.m_col_layout_item];
-      const Glib::ustring field_name = item->get_name();
+      const auto field_name = item->get_name();
       if(!field_name.empty())
       {
         m_portal->add_item(item); //Add it to the group:
@@ -339,8 +339,8 @@ void Dialog_Layout_Calendar_Related::on_combo_relationship_changed()
   {
     //Clear the list of fields if the relationship has changed, because the fields could not possible be correct for the new table:
     bool relationship_changed = false;
-    const Glib::ustring old_relationship_name = glom_get_sharedptr_name(m_portal->get_relationship());
-    const Glib::ustring old_relationship_related_name = glom_get_sharedptr_name(m_portal->get_related_relationship());
+    const auto old_relationship_name = glom_get_sharedptr_name(m_portal->get_relationship());
+    const auto old_relationship_related_name = glom_get_sharedptr_name(m_portal->get_related_relationship());
     if( (old_relationship_name != glom_get_sharedptr_name(relationship)) ||
         (old_relationship_related_name != glom_get_sharedptr_name(relationship_related)) )
       relationship_changed = true;

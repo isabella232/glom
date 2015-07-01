@@ -26,10 +26,10 @@
 
 static bool test_value(Glom::Field::glom_field_type field_type, const Gnome::Gda::Value& value)
 {
-  const Glib::ustring str = Glom::Field::to_file_format(value, field_type);
+  const auto str = Glom::Field::to_file_format(value, field_type);
 
   bool success = false;
-  const Gnome::Gda::Value value_retrieved = Glom::Field::from_file_format(
+  const auto value_retrieved = Glom::Field::from_file_format(
     str, field_type, success);
   if(!success)
   {

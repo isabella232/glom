@@ -74,7 +74,7 @@ Box_Data_ManyRecords::type_signal_record_selection_changed Box_Data_ManyRecords:
 
 void Box_Data_ManyRecords::print_layout()
 {
-  const Privileges table_privs = Privs::get_current_privs(m_table_name);
+  const auto table_privs = Privs::get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)

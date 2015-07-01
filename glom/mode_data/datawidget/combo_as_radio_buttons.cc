@@ -65,7 +65,7 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
 
   std::shared_ptr<LayoutItem_Field> layout_item =
     std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
-  const Formatting& format = layout_item->get_formatting_used();
+  const auto format = layout_item->get_formatting_used();
   std::shared_ptr<const Relationship> choice_relationship;
   std::shared_ptr<const LayoutItem_Field> layout_choice_first;
   std::shared_ptr<const LayoutGroup> layout_choice_extra;
@@ -83,7 +83,7 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
   {
     if(layout_choice_first)
     {
-      const Glib::ustring value_first = Conversions::get_text_for_gda_value(layout_choice_first->get_glom_type(), iter->first, layout_choice_first->get_formatting_used().m_numeric_format);
+      const auto value_first = Conversions::get_text_for_gda_value(layout_choice_first->get_glom_type(), iter->first, layout_choice_first->get_formatting_used().m_numeric_format);
       Glib::ustring title = value_first;
 
       const type_list_values extra_values = iter->second;
@@ -99,7 +99,7 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
             if(item_field)
             {
               const Gnome::Gda::Value value = *iterValues; //TODO: Use a vector instead?
-              const Glib::ustring value_second = Conversions::get_text_for_gda_value(item_field->get_glom_type(), value, item_field->get_formatting_used().m_numeric_format);
+              const auto value_second = Conversions::get_text_for_gda_value(item_field->get_glom_type(), value, item_field->get_formatting_used().m_numeric_format);
 
               title += " - " + value_second; //TODO: Find a better way to join them?
             }
@@ -146,7 +146,7 @@ void ComboAsRadioButtons::set_choices_fixed(const Formatting::type_list_values& 
       if(choicevalue)
         value = choicevalue->get_value();
 
-      const Glib::ustring value_first = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format);
+      const auto value_first = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format);
 
       Gtk::RadioButton* button = new Gtk::RadioButton(group, value_first);
       m_map_buttons[value_first] = button;
@@ -186,7 +186,7 @@ void ComboAsRadioButtons::check_for_change()
   bool success = false;
 
   std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
-  const Gnome::Gda::Value value = Conversions::parse_value(layout_item->get_glom_type(), new_text, layout_item->get_formatting_used().m_numeric_format, success);
+  const auto value = Conversions::parse_value(layout_item->get_glom_type(), new_text, layout_item->get_formatting_used().m_numeric_format, success);
 
   if(success)
   {
@@ -197,7 +197,7 @@ void ComboAsRadioButtons::check_for_change()
   else
   {
     //Tell the user and offer to revert or try again:
-    const bool revert = glom_show_dialog_invalid_data(layout_item->get_glom_type());
+    const auto revert = glom_show_dialog_invalid_data(layout_item->get_glom_type());
     if(revert)
     {
       set_text(m_old_text);
@@ -245,7 +245,7 @@ Gnome::Gda::Value ComboAsRadioButtons::get_value() const
   std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
   bool success = false;
 
-  const Glib::ustring text = get_text();
+  const auto text = get_text();
   return Conversions::parse_value(layout_item->get_glom_type(), text, layout_item->get_formatting_used().m_numeric_format, success);
 }
 

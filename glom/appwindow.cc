@@ -219,7 +219,7 @@ bool AppWindow::init_with_document(const Glib::ustring& document_uri, bool resto
       return do_restore_backup(document_uri);
     else
     {
-      const bool test = open_document(document_uri);
+      const auto test = open_document(document_uri);
       if(!test)
         return offer_new_or_existing();
     }
@@ -474,7 +474,7 @@ void AppWindow::on_menu_help_about()
     //const Glib::ustring glom_icon_path = "resource://" + UiUtils::get_icon_path(about_icon_name);
     //Glib::RefPtr<Gdk::Pixbuf> logo = Gdk::Pixbuf::create_from_file(glom_icon_path);
 
-    const Glib::ustring glom_icon_path = UiUtils::get_icon_path(about_icon_name);
+    const auto glom_icon_path = UiUtils::get_icon_path(about_icon_name);
 
     //TODO: Use this, instead of the C API, when we can depend on gtkmm 3.12, with a try/catch:
     //Glib::RefPtr<Gdk::Pixbuf> logo = Gdk::Pixbuf::create_from_resource(glom_icon_path);
@@ -514,7 +514,7 @@ void AppWindow::on_menu_file_toggle_share()
   bool active = false;
   m_toggleaction_network_shared->get_state(active);
 
-  const bool changed = m_pFrame->attempt_toggle_shared(!active);
+  const auto changed = m_pFrame->attempt_toggle_shared(!active);
 
   if(changed)
     m_toggleaction_network_shared->change_state(!active);
@@ -613,7 +613,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
     dialog_connection->set_transient_for(*this);
     dialog_connection->set_connect_to_browsed();
     dialog_connection->set_database_name(service_name);
-    const int response = Glom::UiUtils::dialog_run_with_help(dialog_connection);
+    const auto response = Glom::UiUtils::dialog_run_with_help(dialog_connection);
     dialog_connection->hide();
     if(response != Gtk::RESPONSE_OK)
       keep_trying = false;
@@ -666,7 +666,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
     //Create a temporary Document instance, so we can manipulate the data:
     Document document_temp;
     int failure_code = 0;
-    const bool loaded = document_temp.load_from_data((const guchar*)document_contents, length, failure_code);
+    const auto loaded = document_temp.load_from_data((const guchar*)document_contents, length, failure_code);
     if(loaded)
     {
       // Connection is always remote-hosted in client only mode:
@@ -682,7 +682,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
 
       //If the publisher thinks that it's using a postgres database on localhost,
       //then we need to use a host name that means the same thing from the client's PC:
-      const Glib::ustring host = document_temp.get_connection_server();
+      const auto host = document_temp.get_connection_server();
       if(hostname_is_localhost(host))
         document_temp.set_connection_server( epc_service_info_get_host(server) );
 
@@ -699,7 +699,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
     document_contents = 0;
 
     //TODO_Performance: Horribly inefficient, but happens rarely:
-    const Glib::ustring temp_document_contents = document_temp.build_and_get_contents();
+    const auto temp_document_contents = document_temp.build_and_get_contents();
 
     //This loads the document and connects to the database (using m_temp_username and m_temp_password):
     open_document_from_data((const guchar*)temp_document_contents.c_str(), temp_document_contents.bytes());
@@ -890,13 +890,13 @@ bool AppWindow::on_document_load()
     // Example files and backup files are not supported in client only mode because they
     // would need to be saved, but saving support is disabled.
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    const bool is_example = pDocument->get_is_example_file();
-    const bool is_backup = pDocument->get_is_backup_file();
+    const auto is_example = pDocument->get_is_example_file();
+    const auto is_backup = pDocument->get_is_backup_file();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
     //Note that the URI will be empty if we are loading from data,
     //such as when loading a backup.
-    const std::string original_uri = pDocument->get_file_uri();
+    const auto original_uri = pDocument->get_file_uri();
 
     if(is_example || is_backup)
     {
@@ -978,7 +978,7 @@ bool AppWindow::on_document_load()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     //Warn about read-only files, because users will otherwise wonder why they can't use Developer mode:
     Document::userLevelReason reason = Document::USER_LEVEL_REASON_UNKNOWN;
-    const AppState::userlevels userlevel = pDocument->get_userlevel(reason);
+    const auto userlevel = pDocument->get_userlevel(reason);
     if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document::USER_LEVEL_REASON_FILE_READ_ONLY) )
     {
       Gtk::MessageDialog dialog(UiUtils::bold_message(_("Opening Read-Only File.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
@@ -987,7 +987,7 @@ bool AppWindow::on_document_load()
       dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
       dialog.add_button(_("Continue without Developer Mode"), Gtk::RESPONSE_OK); //arbitrary response code.
 
-      const int response = dialog.run();
+      const auto response = dialog.run();
       dialog.hide();
       if((response == Gtk::RESPONSE_CANCEL)  || (response == Gtk::RESPONSE_DELETE_EVENT))
         return false;
@@ -1028,7 +1028,7 @@ bool AppWindow::on_document_load()
           // If the document is centrally hosted, don't pretend to know the
           // username or password, because we don't. The user will enter
           // the login credentials in a dialog.
-          const Document::HostingMode hosting_mode = pDocument->get_hosting_mode();
+          const auto hosting_mode = pDocument->get_hosting_mode();
           if(hosting_mode != Document::HOSTING_MODE_POSTGRES_CENTRAL)
             m_temp_username = Privs::get_default_developer_user_name(m_temp_password, hosting_mode);
         }
@@ -1090,7 +1090,7 @@ bool AppWindow::on_document_load()
         {
           //Make sure that the changes (mark as non example, and save the new database name) are really saved:
           //Change the user level temporarily so that save_changes() actually saves:
-          const AppState::userlevels user_level = pDocument->get_userlevel();
+          const auto user_level = pDocument->get_userlevel();
           pDocument->set_userlevel(AppState::USERLEVEL_DEVELOPER);
           pDocument->set_modified(true);
           pDocument->set_allow_autosave(true); //Turn this back on.
@@ -1116,7 +1116,7 @@ bool AppWindow::on_document_load()
   update_network_shared_ui();
 
   //Run any startup script:
-  const Glib::ustring script = pDocument->get_startup_script();
+  const auto script = pDocument->get_startup_script();
   if(!script.empty())
   {
     Glib::ustring error_message; //TODO: Check this and tell the user.
@@ -1202,13 +1202,13 @@ void AppWindow::update_network_shared_ui()
 
   //Show the status in the UI:
   //(get_network_shared() already enforces constraints).
-  const bool shared = document->get_network_shared();
+  const auto shared = document->get_network_shared();
   //TODO: Our use of block() does not seem to work. The signal actually seems to be emitted some time later instead.
   m_connection_toggleaction_network_shared.block(); //Prevent signal handling.
   m_toggleaction_network_shared->change_state(shared);
 
   //Do not allow impossible changes:
-  const Document::HostingMode hosting_mode = document->get_hosting_mode();
+  const auto hosting_mode = document->get_hosting_mode();
   if( (hosting_mode == Document::HOSTING_MODE_POSTGRES_CENTRAL) //Central hosting means that it must be shared on the network.
     || (hosting_mode == Document::HOSTING_MODE_SQLITE) ) //sqlite does not allow network sharing.
   {
@@ -1309,7 +1309,7 @@ bool AppWindow::offer_new_or_existing()
   bool ask_again = true;
   while(ask_again)
   {
-    const int response_id = UiUtils::dialog_run_with_help(dialog_raw);
+    const auto response_id = UiUtils::dialog_run_with_help(dialog_raw);
     dialog->hide();
 
     if(response_id == Gtk::RESPONSE_ACCEPT)
@@ -1426,7 +1426,7 @@ void AppWindow::existing_or_new_new()
    if(connection_pool)
      connection_pool->set_get_document_func( std::bind(&AppWindow::on_connection_pool_get_document, this) );
 
-    const bool connected = m_pFrame->connection_request_password_and_choose_new_database_name();
+    const auto connected = m_pFrame->connection_request_password_and_choose_new_database_name();
     if(!connected)
     {
       // Unset URI so that the offer_new_or_existing does not disappear
@@ -1436,10 +1436,10 @@ void AppWindow::existing_or_new_new()
     }
     else
     {
-      const bool db_created = m_pFrame->create_database(document->get_connection_database(), db_title);
+      const auto db_created = m_pFrame->create_database(document->get_connection_database(), db_title);
       if(db_created)
       {
-        const Glib::ustring database_name_used = document->get_connection_database();
+        const auto database_name_used = document->get_connection_database();
         ConnectionPool::get_instance()->set_database(database_name_used);
         document->set_database_title_original(db_title);
         m_pFrame->set_databases_selected(database_name_used);
@@ -1514,7 +1514,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
     return false; //Impossible anyway.
 
   //Check whether the database exists already.
-  const Glib::ustring db_name = pDocument->get_connection_database();
+  const auto db_name = pDocument->get_connection_database();
   if(db_name.empty())
     return false;
 
@@ -1546,7 +1546,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
 #else
   if(error.get())
   {
-    const ExceptionConnection* exptr = dynamic_cast<ExceptionConnection*>(error.get());
+    const auto exptr = dynamic_cast<ExceptionConnection*>(error.get());
     if(exptr)
     {
       const ExceptionConnection& ex = *exptr;
@@ -1573,7 +1573,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
 
   //Create the database: (This will show a connection dialog)
   connection_pool->set_database( Glib::ustring() );
-  const bool db_created = m_pFrame->create_database(db_name, pDocument->get_database_title_original());
+  const auto db_created = m_pFrame->create_database(db_name, pDocument->get_database_title_original());
 
   if(!db_created)
   {
@@ -1604,7 +1604,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
 #else
   if(error.get())
   {
-    const std::exception& ex = *error.get();
+    const auto ex = *error.get();
 #endif // GLIBMM_EXCEPTIONS_ENABLED
     std::cerr << G_STRFUNC << ": Failed to connect to the newly-created database." << std::endl;
     return false;
@@ -1633,7 +1633,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
     Document::type_vec_fields fields = pDocument->get_table_fields(table_info->get_name());
 
     pulse_progress_message();
-    const bool table_creation_succeeded = DbUtils::create_table(pDocument->get_hosting_mode(), table_info, fields);
+    const auto table_creation_succeeded = DbUtils::create_table(pDocument->get_hosting_mode(), table_info, fields);
     pulse_progress_message();
     if(!table_creation_succeeded)
     {
@@ -1660,7 +1660,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
 
     //try
     //{
-      const bool table_insert_succeeded = DbUtils::insert_example_data(pDocument, table_info->get_name());
+      const auto table_insert_succeeded = DbUtils::insert_example_data(pDocument, table_info->get_name());
 
       if(!table_insert_succeeded)
       {
@@ -1700,7 +1700,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
     return false; //Impossible anyway.
 
   //Check whether the database exists already.
-  const Glib::ustring db_name = pDocument->get_connection_database();
+  const auto db_name = pDocument->get_connection_database();
   if(db_name.empty())
     return false;
 
@@ -1732,7 +1732,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
 #else
   if(error.get())
   {
-    const ExceptionConnection* exptr = dynamic_cast<ExceptionConnection*>(error.get());
+    const auto exptr = dynamic_cast<ExceptionConnection*>(error.get());
     if(exptr)
     {
       const ExceptionConnection& ex = *exptr;
@@ -1772,7 +1772,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
     std::cerr << G_STRFUNC << ": Gnome::Gda::Connection::create_database(" << db_name << ") failed: " << ex.what() << std::endl;
 
 
-    const Glib::ustring message = _("Glom could not create the new database. Maybe you do not have the necessary access rights. Please contact your system administrator.");
+    const auto message = _("Glom could not create the new database. Maybe you do not have the necessary access rights. Please contact your system administrator.");
     Gtk::MessageDialog dialog(UiUtils::bold_message(_("Database Creation Failed")), true, Gtk::MESSAGE_ERROR );
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*this);
@@ -1804,7 +1804,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
     return false;
 
   //Restore the backup into the database:
-  const bool restored = connection_pool->convert_backup(
+  const auto restored = connection_pool->convert_backup(
     sigc::mem_fun(*this, &AppWindow::on_connection_convert_backup_progress), backup_data_file_path);
 
   if(!restored)
@@ -1889,14 +1889,14 @@ void AppWindow::fill_menu_tables()
     return;
   }
 
-  const Document::type_listTableInfo tables = document->get_tables();
+  const auto tables = document->get_tables();
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
     std::shared_ptr<const TableInfo> table_info = *iter;
     if(!table_info->get_hidden())
     {
-      const Glib::ustring title = Utils::string_escape_underscores(item_get_title_or_name(table_info));
-      const Glib::ustring action_name = table_info->get_name();
+      const auto title = Utils::string_escape_underscores(item_get_title_or_name(table_info));
+      const auto action_name = table_info->get_name();
   
       menu->append(title, ACTION_GROUP_NAME_TABLES + "." + action_name);
 
@@ -1945,16 +1945,16 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
     return;
   }
 
-  const std::vector<Glib::ustring> reports = document->get_report_names(table_name);
+  const auto reports = document->get_report_names(table_name);
   for(std::vector<Glib::ustring>::const_iterator iter = reports.begin(); iter != reports.end(); ++iter)
   {
     std::shared_ptr<Report> report = document->get_report(table_name, *iter);
     if(report)
     {
-      const Glib::ustring report_name = report->get_name();
+      const auto report_name = report->get_name();
       if(!report_name.empty())
       {
-        const Glib::ustring title = Utils::string_escape_underscores(item_get_title_or_name(report));
+        const auto title = Utils::string_escape_underscores(item_get_title_or_name(report));
         const Glib::ustring action_name = report_name;
   
         menu->append(title, ACTION_GROUP_NAME_REPORTS + "." + report_name);
@@ -2029,7 +2029,7 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
     return;
   }
 
-  const std::vector<Glib::ustring> tables = document->get_print_layout_names(table_name);
+  const auto tables = document->get_print_layout_names(table_name);
 
   // TODO_clientonly: Should this be available in client only mode? We need to
   // depend on goocanvas in client only mode then:
@@ -2039,10 +2039,10 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
     std::shared_ptr<PrintLayout> print_layout = document->get_print_layout(table_name, *iter);
     if(print_layout)
     {
-      const Glib::ustring name = print_layout->get_name();
+      const auto name = print_layout->get_name();
       if(!name.empty())
       {
-        const Glib::ustring title = Utils::string_escape_underscores(item_get_title(print_layout));
+        const auto title = Utils::string_escape_underscores(item_get_title(print_layout));
         const Glib::ustring action_name = name;
 
         menu->append(title, ACTION_GROUP_NAME_PRINT_LAYOUTS + "." + action_name);
@@ -2076,7 +2076,7 @@ void AppWindow::on_menu_file_save_as_example()
   if(!document) {
     std::cerr << G_STRFUNC << ": document was null." << std::endl;
   } else {
-    const Glib::ustring& file_uriOld = document->get_file_uri();
+    const auto file_uriOld = document->get_file_uri();
 
     m_ui_save_extra_showextras = false;
     m_ui_save_extra_title.clear();
@@ -2100,7 +2100,7 @@ void AppWindow::on_menu_file_save_as_example()
       Document::type_listTableInfo list_table_info = document->get_tables();
       for(Document::type_listTableInfo::const_iterator iter = list_table_info.begin(); iter != list_table_info.end(); ++iter)
       {
-        const Glib::ustring table_name = (*iter)->get_name();
+        const auto table_name = (*iter)->get_name();
 
         //const type_vec_fields vec_fields = document->get_table_fields(table_name);
 
@@ -2187,7 +2187,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
     //Start with something suitable:
     Document* document = dynamic_cast<Document*>(get_document());
     g_assert(document);
-    const Glib::ustring filename = document->get_name(); //Get the filename without the path and extension.
+    const auto filename = document->get_name(); //Get the filename without the path and extension.
 
     //Avoid ".". TODO: Find out why it happens:
     if(filename == ".")
@@ -2211,7 +2211,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
       Glib::RefPtr<Gio::File> parent = gio_file->get_parent();
       if(parent)
       {
-        const Glib::ustring uri_parent = parent->get_uri();
+        const auto uri_parent = parent->get_uri();
         fileChooser_Save->set_uri(uri_parent);
       }
     }
@@ -2225,14 +2225,14 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
   {
     try_again = false;
 
-    const int response_id = fileChooser_Save->run();
+    const auto response_id = fileChooser_Save->run();
     fileChooser_Save->hide();
     if((response_id != Gtk::RESPONSE_CANCEL) && (response_id != Gtk::RESPONSE_DELETE_EVENT))
     {
-      const Glib::ustring uri_chosen = fileChooser_Save->get_uri();
+      const auto uri_chosen = fileChooser_Save->get_uri();
 
       //Change the URI, to put the file (and its data folder) in a folder:
-      const Glib::ustring uri = Utils::get_file_uri_without_extension(uri_chosen);
+      const auto uri = Utils::get_file_uri_without_extension(uri_chosen);
 
       //Check whether the file exists, and that we have rights to it:
       Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
@@ -2333,7 +2333,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
 
         //Add the filename (Note that the caller will add the extension if necessary, so we don't do it here.)
         Glib::RefPtr<Gio::File> file_with_ext = Gio::File::create_for_uri(uri_chosen);
-        const Glib::ustring filename_part = file_with_ext->get_basename();
+        const auto filename_part = file_with_ext->get_basename();
 
         //Add the filename part to the newly-created directory:
         Glib::RefPtr<Gio::File> file_whole = dir->get_child(filename_part);
@@ -2373,7 +2373,7 @@ void AppWindow::on_menu_developer_changelanguage()
     return;
     
   dialog->set_transient_for(*this);
-  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
 
   if(response == Gtk::RESPONSE_OK)
@@ -2434,10 +2434,10 @@ void AppWindow::on_menu_developer_export_backup()
 
   // Ask the user to choose a new directory name.
   // Start with a name based on the existing name.
-  const Glib::ustring fileuri_old = document->get_file_uri();
+  const auto fileuri_old = document->get_file_uri();
   const Glib::RefPtr<const Gio::File> file_old =
     Gio::File::create_for_uri( Utils::get_file_uri_without_extension(fileuri_old) );
-  const std::string old_basename = file_old->get_basename();
+  const auto old_basename = file_old->get_basename();
   Glib::TimeVal timeval;
   timeval.assign_current_time();
   std::string starting_name = old_basename + "-backup-" + timeval.as_iso8601();
@@ -2451,19 +2451,19 @@ void AppWindow::on_menu_developer_export_backup()
   dialog.add_button(_("_Save"), Gtk::RESPONSE_ACCEPT);
   dialog.set_local_only(); //Because pg_dump, pg_restore and tar can't use URIs.
   dialog.set_current_name(starting_name);
-  const int result = dialog.run();
+  const auto result = dialog.run();
   dialog.hide();
   if(result != Gtk::RESPONSE_ACCEPT)
     return;
 
   //Get the path to the directory in which the .glom and data files will be created.
   //The .tar.gz will then be created next to it:
-  const std::string& path_dir = dialog.get_filename();
+  const auto path_dir = dialog.get_filename();
   if(path_dir.empty())
     return;
 
   ShowProgressMessage progress_message(_("Exporting backup"));
-  const Glib::ustring tarball_uri = document->save_backup_file(
+  const auto tarball_uri = document->save_backup_file(
     Glib::filename_to_uri(path_dir),
     sigc::mem_fun(*this, &AppWindow::on_connection_save_backup_progress));
 
@@ -2487,12 +2487,12 @@ void AppWindow::on_menu_developer_restore_backup()
   file_dlg.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   file_dlg.add_button(_("Restore"), Gtk::RESPONSE_OK);
 
-  const int result = file_dlg.run();
+  const auto result = file_dlg.run();
   file_dlg.hide();
   if(result != Gtk::RESPONSE_OK)
     return;
 
-  const std::string uri_tarball = file_dlg.get_uri();
+  const auto uri_tarball = file_dlg.get_uri();
   if(uri_tarball.empty())
     return;
 
@@ -2511,7 +2511,7 @@ bool AppWindow::do_restore_backup(const Glib::ustring& backup_uri)
     return false;
     
   ShowProgressMessage progress_message(_("Restoring backup"));
-  const Glib::ustring backup_glom_file_contents = Glom::Document::extract_backup_file(
+  const auto backup_glom_file_contents = Glom::Document::extract_backup_file(
     backup_uri, m_backup_data_filepath,
     sigc::mem_fun(*this, &AppWindow::on_connection_convert_backup_progress));
 
@@ -2602,7 +2602,7 @@ void AppWindow::update_window_title()
     return;
 
   //Show the table title:
-  const Glib::ustring table_name = m_pFrame->get_shown_table_name();
+  const auto table_name = m_pFrame->get_shown_table_name();
   Glib::ustring table_label = document->get_table_title(table_name, AppWindow::get_current_locale());
   if(!table_label.empty())
   {
@@ -2673,7 +2673,7 @@ void AppWindow::start_new_record()
 
 void AppWindow::set_progress_message(const Glib::ustring& message)
 {
-  const Glib::ustring title = _("Processing");
+  const auto title = _("Processing");
   const std::string collate_key = (title + message).collate_key();
 
   if(collate_key != m_progress_collate_key)
@@ -2753,7 +2753,7 @@ Glib::ustring AppWindow::get_current_locale()
     return m_current_locale;
 
   //Get the user's current locale:
-  const char* cLocale = setlocale(LC_ALL, 0); //Passing NULL means query, instead of set.
+  const auto cLocale = setlocale(LC_ALL, 0); //Passing NULL means query, instead of set.
   if(cLocale)
   {
     //std::cout << "debug1: " << G_STRFUNC << ": locale=" << cLocale << std::endl;
@@ -2870,7 +2870,7 @@ Glib::ustring AppWindow::ui_file_select_open(const Glib::ustring& starting_folde
   if(!starting_folder_uri.empty())
     fileChooser_Open.set_current_folder_uri(starting_folder_uri);
 
-  const int response_id = fileChooser_Open.run();
+  const auto response_id = fileChooser_Open.run();
   fileChooser_Open.hide();
   if(response_id != Gtk::RESPONSE_CANCEL)
   {
@@ -2883,7 +2883,7 @@ Glib::ustring AppWindow::ui_file_select_open(const Glib::ustring& starting_folde
 
 void AppWindow::ui_show_modification_status()
 {
-  const bool modified = m_pDocument->get_modified();
+  const auto modified = m_pDocument->get_modified();
 
   //Enable Save and SaveAs menu items:
   if(m_action_save)
@@ -3027,8 +3027,8 @@ void AppWindow::on_menu_edit_find()
 
 void AppWindow::on_recent_files_activate(Gtk::RecentChooser& chooser)
 {
-  const Glib::ustring uri = chooser.get_current_uri();
-  const bool bTest = open_document(uri);
+  const auto uri = chooser.get_current_uri();
+  const auto bTest = open_document(uri);
   if(!bTest)
     document_history_remove(uri);
 }

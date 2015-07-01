@@ -85,7 +85,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
 
   // Get the fields whose values should be looked up when a field changes:
-  const Glom::Document::type_list_lookups lookups = document.get_lookup_fields(table_name, "product_id");
+  const auto lookups = document.get_lookup_fields(table_name, "product_id");
   if(lookups.size() != 3)
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected number of lookups: " << lookups.size() << std::endl;
@@ -178,7 +178,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //Lookup the value from the related record.
   const std::shared_ptr<Glom::Field> field_source = 
     document.get_field(relationship->get_to_table(), field->get_lookup_field());
-  const Gnome::Gda::Value value = Glom::DbUtils::get_lookup_value(&document, 
+  const auto value = Glom::DbUtils::get_lookup_value(&document, 
     table_name, relationship, field_source, Gnome::Gda::Value(2));
 
   if(!test_check_numeric_value_type(hosting_mode, value))
@@ -205,7 +205,7 @@ int main()
 {
   Glom::libglom_init();
   
-  const int result = test_all_hosting_modes(sigc::ptr_fun(&test));
+  const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();
 

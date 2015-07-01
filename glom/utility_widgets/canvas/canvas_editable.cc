@@ -113,7 +113,7 @@ void CanvasEditable::remove_item(const Glib::RefPtr<Goocanvas::Item>& item , con
 
 void CanvasEditable::remove_all_items()
 {
-  const bool some_selected = !(get_selected_items().empty());
+  const auto some_selected = !(get_selected_items().empty());
 
   Glib::RefPtr<Goocanvas::Item> root = get_root_item();
   Glib::RefPtr<Goocanvas::Group> root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
@@ -128,7 +128,7 @@ void CanvasEditable::remove_all_items()
 
 void CanvasEditable::remove_all_items(const Glib::RefPtr<Goocanvas::Group>& group)
 {
- const bool some_selected = !(get_selected_items().empty());
+ const auto some_selected = !(get_selected_items().empty());
 
   while(group && group->get_n_children())
       group->remove_child(0);
@@ -198,12 +198,12 @@ CanvasEditable::type_signal_selection_changed CanvasEditable::signal_selection_c
 
 void CanvasEditable::on_item_selected(const Glib::RefPtr<CanvasItemMovable>& item, bool group_select)
 {
-  const bool selected = !item->get_selected();
+  const auto selected = !item->get_selected();
 
   if(!group_select)
   {
     //Make sure that all other items are deselected first:
-    const type_vec_items items = get_selected_items();
+    const auto items = get_selected_items();
     for(type_vec_items::const_iterator iter = items.begin();
       iter != items.end(); ++iter)
     {

@@ -119,7 +119,7 @@ void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& ite
 
   m_AddDel.set_value(iter, m_colName, field->get_name());
 
-  const Glib::ustring title = item_get_title(field);
+  const auto title = item_get_title(field);
   m_AddDel.set_value(iter, m_colTitle, title);
 
   //Type:
@@ -129,16 +129,16 @@ void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& ite
   // sqlite which we store as double.
   Field::glom_field_type fieldType = field->get_glom_type();
 
-  const Glib::ustring strType = Field::get_type_name_ui( fieldType );
+  const auto strType = Field::get_type_name_ui( fieldType );
   m_AddDel.set_value(iter, m_colType, strType);
 
   //Unique:
-  const bool bUnique = field->get_unique_key();
+  const auto bUnique = field->get_unique_key();
 
   m_AddDel.set_value(iter, m_colUnique, bUnique);
 
   //Primary Key:
-  const bool bPrimaryKey = field->get_primary_key();
+  const auto bPrimaryKey = field->get_primary_key();
   m_AddDel.set_value(iter, m_colPrimaryKey, bPrimaryKey);
 }
 
@@ -204,7 +204,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
 
     //TODO: Warn about a delay before actually doing this when the backend
     //needs to recreate the whole table.
-    const bool bTest = DbUtils::add_column(m_table_name, field, get_app_window()); //TODO: Get schema type for Field::TYPE_NUMERIC
+    const auto bTest = DbUtils::add_column(m_table_name, field, get_app_window()); //TODO: Get schema type for Field::TYPE_NUMERIC
     if(bTest)
     {
       //Store the generated title in the document:
@@ -256,7 +256,7 @@ void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& r
     {
       //TODO: Warn about a delay before actually doing this when the backend
       //needs to recreate the whole table.
-      const bool test = DbUtils::drop_column(m_table_name, name);
+      const auto test = DbUtils::drop_column(m_table_name, name);
       if(test)
       {
         //update_gda_metastore_for_table(m_table_name); // already done in drop_column().
@@ -369,7 +369,7 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
   Document* pDoc = static_cast<Document*>(get_document());
   if(pDoc)
   {
-    const Glib::ustring strFieldNameBeingEdited = m_AddDel.get_value_key(row);
+    const auto strFieldNameBeingEdited = m_AddDel.get_value_key(row);
 
     std::shared_ptr<const Field> constfield = pDoc->get_field(m_table_name, strFieldNameBeingEdited);
     m_Field_BeingEdited = constfield;
@@ -389,7 +389,7 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
       //Change it:
       if(*m_Field_BeingEdited != *fieldNew) //If it has really changed.
       {
-        const bool bcontinue = check_field_change(m_Field_BeingEdited, fieldNew);
+        const auto bcontinue = check_field_change(m_Field_BeingEdited, fieldNew);
         if(bcontinue)
         {
           std::shared_ptr<Field> fieldNewWithModifications = change_definition(m_Field_BeingEdited, fieldNew);
@@ -448,7 +448,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::
 
   //Get old field definition (to preserve anything that the user doesn't have access to):
 
-  const Glib::ustring strFieldNameBeforeEdit = m_AddDel.get_value_key(row);
+  const auto strFieldNameBeforeEdit = m_AddDel.get_value_key(row);
 
   //Glom field definition:
   Document* pDoc = static_cast<Document*>(get_document());
@@ -480,25 +480,25 @@ std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::
     Glib::RefPtr<Gnome::Gda::Column> fieldInfo = field_temp->get_field_info()->copy();
 
     //Name:
-    const Glib::ustring name = m_AddDel.get_value(row, m_colName);
+    const auto name = m_AddDel.get_value(row, m_colName);
     fieldInfo->set_name(name);
 
     //Title:
-    const Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
+    const auto title = m_AddDel.get_value(row, m_colTitle);
     fieldResult->set_title(title, AppWindow::get_current_locale());
 
     //Type:
-    const Glib::ustring& strType = m_AddDel.get_value(row, m_colType);
+    const auto strType = m_AddDel.get_value(row, m_colType);
 
     const Field::glom_field_type glom_type =  Field::get_type_for_ui_name(strType);
     GType fieldType = Field::get_gda_type_for_glom_type(glom_type);
 
     //Unique:
-    const bool bUnique = m_AddDel.get_value_as_bool(row, m_colUnique);
+    const auto bUnique = m_AddDel.get_value_as_bool(row, m_colUnique);
     //TODO_gda: fieldInfo->set_unique_key(bUnique);
 
     //Primary Key:
-    const bool bPrimaryKey = m_AddDel.get_value_as_bool(row, m_colPrimaryKey);
+    const auto bPrimaryKey = m_AddDel.get_value_as_bool(row, m_colPrimaryKey);
     ///TODO_gda: fieldInfo->set_primary_key(bPrimaryKey);
 
     fieldInfo->set_g_type(fieldType);
@@ -524,7 +524,7 @@ void Box_DB_Table_Definition::on_field_definition_apply()
 
   if(*m_Field_BeingEdited != *field_New)
   {
-    const bool bcontinue = check_field_change(m_Field_BeingEdited, field_New);
+    const auto bcontinue = check_field_change(m_Field_BeingEdited, field_New);
     if(bcontinue)
     {
       change_definition(m_Field_BeingEdited, field_New);
@@ -544,7 +544,7 @@ void Box_DB_Table_Definition::on_default_formatting_apply()
 
   if(*m_Field_BeingEdited != *field_New)
   {
-    const bool bcontinue = check_field_change(m_Field_BeingEdited, field_New);
+    const auto bcontinue = check_field_change(m_Field_BeingEdited, field_New);
     if(bcontinue)
     {
       change_definition(m_Field_BeingEdited, field_New);
@@ -629,7 +629,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::sha
     for(unsigned int i = 0; i < old_fields.size(); ++ i)
     {
       //Find old field:
-      const Glib::ustring field_name_old = old_fields[i]->get_name();
+      const auto field_name_old = old_fields[i]->get_name();
       Document::type_vec_fields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name_old) );
       if(iterFind != vecFields.end()) //If it was found:
       {
@@ -657,7 +657,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::sha
       //Recalculate if necessary:
       if(new_fields[i]->get_has_calculation())
       {
-        const Glib::ustring calculation = new_fields[i]->get_calculation();
+        const auto calculation = new_fields[i]->get_calculation();
         if(calculation != old_fields[i]->get_calculation())
           calculate_field_in_all_records(m_table_name, new_fields[i]);
       }

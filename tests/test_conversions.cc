@@ -36,7 +36,7 @@ static bool test_string_value(const Glib::ustring& str)
     return false;
   }
 
-  const Glib::ustring retrieved = value.get_string();
+  const auto retrieved = value.get_string();
 
   if(str != retrieved)
   {

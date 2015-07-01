@@ -83,7 +83,7 @@ static void show_gettext_error(int severity, const char* filename, const gchar* 
 
     default:
     {
-      //TODO: const Glib::ustring msg = Glib::ustring(_("Gettext-Error: ")) + ' ' + msg_stream.str();
+      //TODO: const auto msg = Glib::ustring(_("Gettext-Error: ")) + ' ' + msg_stream.str();
       //Gtk::MessageDialog dlg(msg, false, Gtk::MESSAGE_ERROR);
       //dlg.run();
       break;
@@ -133,7 +133,7 @@ Glib::ustring get_po_context_for_item(const std::shared_ptr<const TranslatableIt
   // or the context would change depending on the locale of the user doing the export:
   Glib::ustring result = TranslatableItem::get_translatable_type_name_nontranslated(item->get_translatable_item_type());
 
-  const Glib::ustring name = item->get_name();
+  const auto name = item->get_name();
   if(!name.empty())
     result += " (" + item->get_name() + ')';
 
@@ -169,7 +169,7 @@ Glib::ustring get_po_context_for_item(const std::shared_ptr<const TranslatableIt
     {
       //Break after a space, if any:
       Glib::ustring part;
-      const Glib::ustring::size_type pos = remaining.find_last_of(CHAR_SPACE, MAX_WIDTH);
+      const auto pos = remaining.find_last_of(CHAR_SPACE, MAX_WIDTH);
       if(pos == Glib::ustring::npos)
         part = remaining.substr(0, MAX_WIDTH);
       else
@@ -234,9 +234,9 @@ bool write_translations_to_po_file(Document* document, const Glib::ustring& po_f
   }
 
   //The header:
-  const Glib::DateTime revision_date = Glib::DateTime::create_now_local();
-  const Glib::ustring revision_date_str = revision_date.format("%F %R%z");
-  const Glib::ustring header = Glib::ustring::compose(GLOM_PO_HEADER,
+  const auto revision_date = Glib::DateTime::create_now_local();
+  const auto revision_date_str = revision_date.format("%F %R%z");
+  const auto header = Glib::ustring::compose(GLOM_PO_HEADER,
     document->get_database_title_original(), revision_date_str, locale_name);
   
   const Glib::ustring full = header + "\n\n" + data;
@@ -296,9 +296,9 @@ bool import_translations_from_po_file(Document* document, const Glib::ustring& p
       //This message:
       //TODO: Just use const char* instead of copying it in to a Glib::ustring,
       //if we have performance problems here:
-      const Glib::ustring msgid = Glib::convert_const_gchar_ptr_to_ustring( po_message_msgid(msg) );
-      const Glib::ustring msgstr = Glib::convert_const_gchar_ptr_to_ustring( po_message_msgstr(msg) );
-      const Glib::ustring msgcontext = Glib::convert_const_gchar_ptr_to_ustring( po_message_msgctxt(msg) );
+      const auto msgid = Glib::convert_const_gchar_ptr_to_ustring( po_message_msgid(msg) );
+      const auto msgstr = Glib::convert_const_gchar_ptr_to_ustring( po_message_msgstr(msg) );
+      const auto msgcontext = Glib::convert_const_gchar_ptr_to_ustring( po_message_msgctxt(msg) );
 
       //Find the matching item in the list:
       for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)

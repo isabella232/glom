@@ -89,7 +89,7 @@ void Label::on_menu_properties_activate()
     return;
 
   dialog->set_textobject(textobject, m_table_name);
-  const int response = dialog->run();
+  const auto response = dialog->run();
   dialog->hide();
   if(response == Gtk::RESPONSE_OK)
   {

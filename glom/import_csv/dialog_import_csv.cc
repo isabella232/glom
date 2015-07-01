@@ -152,8 +152,8 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   the_c_time.tm_mday = 22; //starts at 1
 
   //Get the ISO (not current locale) text representation:
-  const Glib::ustring date_text = Glom::Conversions::format_date(the_c_time, std::locale::classic() /* ignored */, true /* iso_format */);
-  const Glib::ustring advice = Glib::ustring::compose(_("Note that the source file should contain numbers and dates in international ISO format. For instance, 22nd November 2008 should be %1."), date_text);
+  const auto date_text = Glom::Conversions::format_date(the_c_time, std::locale::classic() /* ignored */, true /* iso_format */);
+  const auto advice = Glib::ustring::compose(_("Note that the source file should contain numbers and dates in international ISO format. For instance, 22nd November 2008 should be %1."), date_text);
   m_advice_label->set_text(advice);
   //std::cout << "DEBUG: advice=" << advice << std::endl;
 
@@ -293,7 +293,7 @@ bool Dialog_Import_CSV::row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& /
 
 void Dialog_Import_CSV::on_combo_encoding_changed()
 {
-  const int active = m_encoding_combo->get_active_row_number();
+  const auto active = m_encoding_combo->get_active_row_number();
 
   switch(active)
   {
@@ -333,7 +333,7 @@ void Dialog_Import_CSV::on_first_line_as_title_toggled()
       m_sample_model->erase(iter);
 
       // Add another row to the end, if one is loaded.
-      const guint last_index = m_sample_model->children().size();
+      const auto last_index = m_sample_model->children().size();
       iter = m_sample_model->append();
       (*iter)[m_sample_columns.m_col_row] = last_index;
     }

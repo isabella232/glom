@@ -53,7 +53,7 @@ static gboolean EggSpreadTableDnd_signal_widget_drop_possible_callback(EggSpread
       if(sigc::slot_base *const slot = Glib::SignalProxyNormal::data_to_slot(data))
       {
         bool cpp_drop_possible = false;
-        const gboolean result = static_cast<int>((*static_cast<SlotType*>(slot))(Glib::wrap(p0), cpp_drop_possible));
+        const auto result = static_cast<int>((*static_cast<SlotType*>(slot))(Glib::wrap(p0), cpp_drop_possible));
         *drop_possible = cpp_drop_possible;
         return result;
       }
@@ -85,7 +85,7 @@ static gboolean EggSpreadTableDnd_signal_widget_drop_possible_notify_callback(Eg
       if(sigc::slot_base *const slot = Glib::SignalProxyNormal::data_to_slot(data))
       {
         bool cpp_drop_possible = false;
-        const gboolean result = static_cast<int>((*static_cast<SlotType*>(slot))(Glib::wrap(p0), cpp_drop_possible));
+        const auto result = static_cast<int>((*static_cast<SlotType*>(slot))(Glib::wrap(p0), cpp_drop_possible));
         *drop_possible = cpp_drop_possible;
         return result;
       }

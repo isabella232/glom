@@ -64,8 +64,8 @@ bool ComboChoices::refresh_data_from_database_with_foreign_key(const Document* /
     return true;
   }
 
-  const Utils::type_list_values_with_second list_values = Utils::get_choice_values(document, layout_item, foreign_key_value);
-  const Gnome::Gda::Value old_value = get_value();
+  const auto list_values = Utils::get_choice_values(document, layout_item, foreign_key_value);
+  const auto old_value = get_value();
   set_choices_with_second(list_values);
   set_value(old_value); //Try to preserve the value, even in iter-based ComboBoxes.
 
@@ -94,7 +94,7 @@ void ComboChoices::set_choices_related(const Document* /* document */, const std
     }
   }
 
-  const Gnome::Gda::Value old_value = get_value();
+  const auto old_value = get_value();
   set_choices_with_second(list_values);
   set_value(old_value); //Try to preserve the value, even in iter-based ComboBoxes.
   */

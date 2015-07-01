@@ -110,7 +110,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
     document.set_file_uri(temp_file_uri);
     int failure_code = 0;
-    const bool test = document.load(failure_code);
+    const auto test = document.load(failure_code);
     //std::cout << "Document load result=" << test << std::endl;
     if(!test)
     {
@@ -127,7 +127,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     //Check that the operator user still has access to database metadata:
     Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
     connection_pool->connect();
-    const Glom::FieldTypes* field_types = connection_pool->get_field_types();
+    const auto field_types = connection_pool->get_field_types();
     if(!field_types)
     {
       std::cerr << G_STRFUNC << ": get_field_types() returned null." << std::endl;
@@ -167,7 +167,7 @@ int main()
 {
   Glom::libglom_init();
 
-  const int result = test_all_hosting_modes(sigc::ptr_fun(&test));
+  const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();
 

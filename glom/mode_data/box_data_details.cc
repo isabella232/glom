@@ -184,7 +184,7 @@ bool Box_Data_Details::init_db_details(const FoundSet& found_set, const Glib::us
   m_primary_key_value = primary_key_value;
   m_field_primary_key = get_field_primary_key_for_table(found_set.m_table_name);
 
-  const bool result = Box_Data::init_db_details(found_set, layout_platform); //Calls create_layout(), then fill_from_database()
+  const auto result = Box_Data::init_db_details(found_set, layout_platform); //Calls create_layout(), then fill_from_database()
 
   //This is not used much, but we create it anyway:
   m_found_set = found_set; //Not used much.
@@ -248,7 +248,7 @@ bool Box_Data_Details::fill_from_database()
 
   BusyCursor busy_cursor(get_app_window());
 
-  const bool primary_key_is_empty = Conversions::value_is_empty(m_primary_key_value);
+  const auto primary_key_is_empty = Conversions::value_is_empty(m_primary_key_value);
   if(!primary_key_is_empty)
     get_document()->set_layout_record_viewed(m_table_name, m_layout_name, m_primary_key_value);
 
@@ -304,7 +304,7 @@ bool Box_Data_Details::fill_from_database()
         //TODO_Performance: Do this for create_layout() only, instead of repeating it for each refresh?:
         int index_primary_key = -1; //Arbitrary default.
         //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
-        const type_vecConstLayoutFields::const_iterator iterFind = std::find_if(fieldsToGet.begin(), fieldsToGet.end(), predicate_LayoutItem_Field_IsSameField<LayoutItem_Field>(layout_item));
+        const auto iterFind = std::find_if(fieldsToGet.begin(), fieldsToGet.end(), predicate_LayoutItem_Field_IsSameField<LayoutItem_Field>(layout_item));
         if(iterFind == fieldsToGet.end())
         {
           fieldsToGet.push_back(layout_item);
@@ -314,7 +314,7 @@ bool Box_Data_Details::fill_from_database()
         {
           //TODO_Performance: Is there any quick way to get the index from iterFind?
           //TODO_Performance: If not, then just use this instead of the predicate.
-          const type_vecLayoutFields::size_type count = fieldsToGet.size();
+          const auto count = fieldsToGet.size();
           for(type_vecLayoutFields::size_type i = 0; i < count; ++i)
           {
             std::shared_ptr<const LayoutItem_Field> element = fieldsToGet[i];
@@ -424,7 +424,7 @@ void Box_Data_Details::on_button_new()
   if(m_field_primary_key && m_field_primary_key->get_auto_increment()) //If the primary key is an auto-increment:
   {
     //Just make a new record, and show it:
-    const Gnome::Gda::Value primary_key_value = DbUtils::get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name()); //TODO: This should return a Gda::Value
+    const auto primary_key_value = DbUtils::get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name()); //TODO: This should return a Gda::Value
 
     record_new(false /* use entered field data */, primary_key_value);
     refresh_data_from_database_with_primary_key(primary_key_value);
@@ -451,7 +451,7 @@ void Box_Data_Details::on_button_del()
   {
     if(confirm_delete_record())
     {
-      const bool bTest = record_delete(m_primary_key_value);
+      const auto bTest = record_delete(m_primary_key_value);
 
       if(bTest)
       {
@@ -512,13 +512,13 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
   m_FieldsCalculationInProgress.clear();
 
   //Check all fields in the parent table:
-  const Gnome::Gda::Value primary_key_value = get_primary_key_value_selected();
+  const auto primary_key_value = get_primary_key_value_selected();
   for(type_vec_fields::iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
   {
     const std::shared_ptr<const Field> field = *iter;
 
     //Is this field triggered by this relationship?
-    const Field::type_list_strings triggered_by = field->get_calculation_relationships();
+    const auto triggered_by = field->get_calculation_relationships();
     Field::type_list_strings::const_iterator iterFind = std::find(triggered_by.begin(), triggered_by.end(), relationship_name);
     if(iterFind != triggered_by.end()) //If it was found
     {
@@ -682,7 +682,7 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const std::shared_ptr<
     return;
   }
   
-  const Gnome::Gda::Value primary_key_value = get_primary_key_value_selected();
+  const auto primary_key_value = get_primary_key_value_selected();
   const Glib::ustring table_name_before = m_table_name;
   execute_button_script(layout_item, primary_key_value);
 
@@ -708,7 +708,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
   if(m_ignore_signals)
     return;
 
-  const Glib::ustring strFieldName = layout_field->get_name();
+  const auto strFieldName = layout_field->get_name();
 
   Gtk::Window* window = get_app_window();
 
@@ -732,13 +732,13 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
     {
       //If it's a related field then discover the actual table that it's in,
       //plus how to identify the record in that table.
-      const Glib::ustring relationship_name = layout_field->get_relationship_name();
+      const auto relationship_name = layout_field->get_relationship_name();
 
       std::shared_ptr<Relationship> relationship = document->get_relationship(get_table_name(), relationship_name);
       if(relationship)
       {
         table_name = relationship->get_to_table();
-        const Glib::ustring to_field_name = relationship->get_to_field();
+        const auto to_field_name = relationship->get_to_field();
         //Get the key field in the other table (the table that we will change)
         primary_key_field = DbUtils::get_fields_for_table_one_field(document, table_name, to_field_name); //TODO_Performance.
         if(primary_key_field)
@@ -751,7 +751,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
 
           //Note: This just uses an existing record if one already exists:
           Gnome::Gda::Value primary_key_value_used;
-          const bool test = add_related_record_for_field(layout_field, relationship, primary_key_field, primary_key_value, primary_key_value_used);
+          const auto test = add_related_record_for_field(layout_field, relationship, primary_key_field, primary_key_value, primary_key_value_used);
           if(!test)
             return;
 
@@ -774,7 +774,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
     if(!check_entered_value_for_uniqueness(m_table_name, layout_field, field_value, window))
     {
       //Revert to the value in the database:
-      const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
+      const auto value_old = get_field_value_in_database(field_in_record, window);
       set_entered_field_data(layout_field, value_old);
 
       return;
@@ -806,7 +806,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
       {
         //Update failed.
         //Replace with correct values.
-        const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
+        const auto value_old = get_field_value_in_database(field_in_record, window);
         set_entered_field_data(layout_field, value_old);
       }
       else
@@ -860,7 +860,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
       else
       {
         //Make a new record, and show it:
-        const Gnome::Gda::Value primary_key_value = DbUtils::get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name());
+        const auto primary_key_value = DbUtils::get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name());
 
         record_new(true /* use entered field data */, primary_key_value);
         refresh_data_from_database_with_primary_key(primary_key_value);
@@ -874,7 +874,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
         if(!check_entered_value_for_uniqueness(m_table_name, layout_field, field_value, window))
         {
           //Revert to a blank value:
-          const Gnome::Gda::Value value_old = Conversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());
+          const auto value_old = Conversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());
           set_entered_field_data(layout_field, value_old);
         }
         else
@@ -923,7 +923,7 @@ std::shared_ptr<Field> Box_Data_Details::get_field_primary_key() const
 
 void Box_Data_Details::print_layout()
 {
-  const Privileges table_privs = Privs::get_current_privs(m_table_name);
+  const auto table_privs = Privs::get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)

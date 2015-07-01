@@ -108,7 +108,7 @@ bool instantiate_widget()
   }
    
   widget->show();
-  const Gtk::Allocation allocation = widget->get_allocation();
+  const auto allocation = widget->get_allocation();
  
   if( (allocation.get_height() > GLOM_MAX_WINDOW_HEIGHT) ||
     (allocation.get_width() > GLOM_MAX_WINDOW_WIDTH))

@@ -46,10 +46,10 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
   // Check if the database file exists. If it does not, then we don't try to
   // connect. libgda would create the database file if necessary, but we need
   // to ensure slightly different semantics.
-  Glib::RefPtr<Gio::File> db_dir = Gio::File::create_for_uri(m_database_directory_uri);
-  Glib::RefPtr<Gio::File> db_file = db_dir->get_child(database + ".db");
+  auto db_dir = Gio::File::create_for_uri(m_database_directory_uri);
+  auto db_file = db_dir->get_child(database + ".db");
 
-  const bool file_exists = Glom::Utils::file_exists(db_file);
+  const auto file_exists = Glom::Utils::file_exists(db_file);
   if(!file_exists)
   {
     //We don't warn here because the caller gets an exception anyway,
@@ -67,11 +67,11 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
     else
     {
       // Convert URI to path, for GDA connection string
-      const std::string database_directory = db_dir->get_path();
+      const auto database_directory = db_dir->get_path();
 
       const Glib::ustring cnc_string = "DB_DIR=" + DbUtils::gda_cnc_string_encode(database_directory) + 
         ";DB_NAME=" + DbUtils::gda_cnc_string_encode(database);
-      const Glib::ustring auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", 
+      const auto auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", 
         DbUtils::gda_cnc_string_encode(username), DbUtils::gda_cnc_string_encode(password));
 
       if(fake_connection)
@@ -115,9 +115,9 @@ bool Sqlite::create_database(const SlotProgress& slot_progress, const Glib::ustr
  
   slot_progress();
  
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_database_directory_uri);
-  const std::string database_directory = file->get_path();
-  const Glib::ustring cnc_string = Glib::ustring::compose("DB_DIR=%1;DB_NAME=%2", 
+  auto file = Gio::File::create_for_uri(m_database_directory_uri);
+  const auto database_directory = file->get_path();
+  const auto cnc_string = Glib::ustring::compose("DB_DIR=%1;DB_NAME=%2", 
     DbUtils::gda_cnc_string_encode(database_directory), DbUtils::gda_cnc_string_encode(database_name));
 
   slot_progress();
@@ -136,12 +136,12 @@ bool Sqlite::create_database(const SlotProgress& slot_progress, const Glib::ustr
 bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, GdaMetaTableColumn* column, unsigned int i)
 {
   //TODO: Quote column name?
-  const Glib::ustring name_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NAME/%1", i);
-  const Glib::ustring type_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_TYPE/%1", i);
-  const Glib::ustring pkey_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_PKEY/%1", i);
-  const Glib::ustring nnul_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NNUL/%1", i);
+  const auto name_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NAME/%1", i);
+  const auto type_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_TYPE/%1", i);
+  const auto pkey_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_PKEY/%1", i);
+  const auto nnul_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NNUL/%1", i);
   // TODO: Find out whether the column is unique.
-  const Glib::ustring default_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_DEFAULT/%1", i);
+  const auto default_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_DEFAULT/%1", i);
 
   operation->set_value_at(name_path, column->column_name);
   operation->set_value_at(type_path, column->column_type);
@@ -159,11 +159,11 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
 bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const std::shared_ptr<const Field>& column, unsigned int i)
 {
   //TODO: Quote column name?
-  const Glib::ustring name_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NAME/%1", i);
-  const Glib::ustring type_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_TYPE/%1", i);
-  const Glib::ustring pkey_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_PKEY/%1", i);
-  const Glib::ustring unique_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_UNIQUE/%1", i);
-  const Glib::ustring default_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_DEFAULT/%1", i);
+  const auto name_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NAME/%1", i);
+  const auto type_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_TYPE/%1", i);
+  const auto pkey_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_PKEY/%1", i);
+  const auto unique_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_UNIQUE/%1", i);
+  const auto default_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_DEFAULT/%1", i);
 
   operation->set_value_at(name_path, column->get_name());
   operation->set_value_at(type_path, column->get_sql_type());
@@ -178,14 +178,14 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   static const gchar TEMPORARY_TABLE_NAME[] = "GLOM_TEMP_TABLE"; // TODO: Make sure this is unique.
   static const gchar TRANSACTION_NAME[] = "GLOM_RECREATE_TABLE_TRANSACTION";
 
-  Glib::RefPtr<Gnome::Gda::MetaStore> store = connection->get_meta_store();
-  Glib::RefPtr<Gnome::Gda::MetaStruct> metastruct = Gnome::Gda::MetaStruct::create(store, Gnome::Gda::META_STRUCT_FEATURE_NONE);
+  auto store = connection->get_meta_store();
+  auto metastruct = Gnome::Gda::MetaStruct::create(store, Gnome::Gda::META_STRUCT_FEATURE_NONE);
 
-  GdaMetaDbObject* object = metastruct->complement(Gnome::Gda::META_DB_TABLE, Gnome::Gda::Value(), Gnome::Gda::Value(), Gnome::Gda::Value(table_name));
+  auto object = metastruct->complement(Gnome::Gda::META_DB_TABLE, Gnome::Gda::Value(), Gnome::Gda::Value(), Gnome::Gda::Value(table_name));
   if(!object)
     return false;
 
-  Glib::RefPtr<Gnome::Gda::ServerOperation> operation = connection->get_provider()->create_operation(connection, Gnome::Gda::SERVER_OPERATION_CREATE_TABLE);
+  auto operation = connection->get_provider()->create_operation(connection, Gnome::Gda::SERVER_OPERATION_CREATE_TABLE);
   if(!operation)
     return false;
 
@@ -208,7 +208,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     {
       // If it was removed, and added again, then it has changed, so use the
       // definition from the added_fields vector.
-      type_vec_fields::const_iterator iter = std::find_if(fields_added.begin(), fields_added.end(), predicate_FieldHasName<Field>(column->column_name));
+      auto iter = std::find_if(fields_added.begin(), fields_added.end(), predicate_FieldHasName<Field>(column->column_name));
       if(iter == fields_added.end())
         continue;
       else
@@ -219,7 +219,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     if(!trans_fields.empty())
       trans_fields += ',';
 
-    const type_mapFieldChanges::const_iterator changed_iter = fields_changed.find(column->column_name);
+    const auto changed_iter = fields_changed.find(column->column_name);
     if(changed_iter != fields_changed.end())
     {
       // Convert values to date or time, accordingly.
@@ -298,14 +298,14 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     // Add new fields to the table. Fields that have changed have already
     // been handled above.
     const std::shared_ptr<const Field>& field = *iter;
-    type_vec_strings::const_iterator removed_iter = std::find(fields_removed.begin(), fields_removed.end(), field->get_name());
+    auto removed_iter = std::find(fields_removed.begin(), fields_removed.end(), field->get_name());
     if(removed_iter == fields_removed.end())
     {
       add_column_to_server_operation(operation, field, i++);
 
       if(!trans_fields.empty())
         trans_fields += ',';
-      const Gnome::Gda::Value default_value = field->get_default_value();
+      const auto default_value = field->get_default_value();
       if(default_value.get_value_type() != G_TYPE_NONE && !default_value.is_null())
         trans_fields += field->sql(default_value, connection);
       else

@@ -89,7 +89,7 @@ void ComboBox_Fields::set_selected_field(const Glib::ustring& field_name)
     {
       Gtk::TreeModel::Row row = *iter;
       std::shared_ptr<Field> field = row[m_model_columns.m_field];
-      const Glib::ustring this_name = glom_get_sharedptr_name(field);
+      const auto this_name = glom_get_sharedptr_name(field);
 
       //(An empty name means Select the parent table item.)
       if(this_name == field_name)
@@ -113,7 +113,7 @@ void ComboBox_Fields::set_fields(Document* document, const Glib::ustring parent_
   if(!document)
     return;
 
-  const Document::type_vec_fields fields = document->get_table_fields(parent_table_name);
+  const auto fields = document->get_table_fields(parent_table_name);
 
   if(!m_model)
     return;
@@ -137,7 +137,7 @@ void ComboBox_Fields::set_fields(Document* document, const Glib::ustring parent_
   if(!document)
     return;
 
-  const Document::type_vec_fields fields = document->get_table_fields(parent_table_name);
+  const auto fields = document->get_table_fields(parent_table_name);
 
   if(!m_model)
     return;

@@ -182,7 +182,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
     }
   }
 
-  const Gtk::TreeNodeChildren& children = m_iter_existing_recent->children();
+  const auto children = m_iter_existing_recent->children();
   if(children.begin() == children.end())
     m_iter_existing_recent_dummy = create_dummy_item_existing(m_iter_existing_recent, _("No recently used documents available."));
 
@@ -265,15 +265,15 @@ bool Dialog_ExistingOrNew::list_examples()
   try
   {
     typedef std::vector<std::string> type_vec_strings;
-    const type_vec_strings examples = Gio::Resource::enumerate_children_global(examples_dir);
+    const auto examples = Gio::Resource::enumerate_children_global(examples_dir);
     
     bool example_found = false;
     for(type_vec_strings::const_iterator iter = examples.begin(); iter != examples.end(); ++iter)
     {
       const std::string example_name = *iter;
 
-      const std::string full_path = Glib::build_filename(examples_dir, example_name);
-      const Glib::ustring title = get_title_from_example(full_path);
+      const auto full_path = Glib::build_filename(examples_dir, example_name);
+      const auto title = get_title_from_example(full_path);
       if(!title.empty())
       {
         append_example(title, full_path);
@@ -304,7 +304,7 @@ Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
   // Release the service infos in the treestore
   if(!m_iter_existing_network_dummy.get())
   {
-    const Gtk::TreeNodeChildren& children = m_iter_existing_network->children();
+    const auto children = m_iter_existing_network->children();
     for(Gtk::TreeModel::iterator iter = children.begin(); iter != children.end(); ++ iter)
       epc_service_info_unref((*iter)[m_existing_columns.m_col_service_info]);
   }
@@ -383,7 +383,7 @@ Dialog_ExistingOrNew::Action Dialog_ExistingOrNew::get_action() const
 Glib::ustring Dialog_ExistingOrNew::get_uri() const
 {
   Gtk::TreeModel::iterator iter;
-  const Action action = get_action_impl(iter);
+  const auto action = get_action_impl(iter);
 
   #ifndef GLOM_ENABLE_CLIENT_ONLY
   if(action == NEW_FROM_TEMPLATE)
@@ -599,7 +599,7 @@ void Dialog_ExistingOrNew::update_ui_sensitivity()
 
   if(m_notebook->get_current_page() == 0)
   {
-    const int count = m_existing_view->get_selection()->count_selected_rows();
+    const auto count = m_existing_view->get_selection()->count_selected_rows();
 
     if(count == 0)
     {
@@ -622,7 +622,7 @@ void Dialog_ExistingOrNew::update_ui_sensitivity()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   else
   {
-    const int count = m_new_view->get_selection()->count_selected_rows();
+    const auto count = m_new_view->get_selection()->count_selected_rows();
 
     if(count == 0)
     {
@@ -650,7 +650,7 @@ Glib::ustring Dialog_ExistingOrNew::get_title_from_example(const std::string& re
     
     //TODO: Really do this asynchronously?
     m_current_buffer.reset(new buffer);
-    const int bytes_read = stream->read(m_current_buffer->buf, buffer::SIZE);
+    const auto bytes_read = stream->read(m_current_buffer->buf, buffer::SIZE);
     const std::string data(m_current_buffer->buf, bytes_read);
     // TODO: Check that data is valid UTF-8, the last character might be truncated
 
@@ -684,7 +684,7 @@ void Dialog_ExistingOrNew::append_example(const Glib::ustring& title, const std:
 
   try
   {
-    const bool is_first_item = m_iter_new_template_dummy.get();
+    const auto is_first_item = m_iter_new_template_dummy.get();
 
     // Add to list.
     Gtk::TreeModel::iterator iter = m_new_model->append(m_iter_new_template->children());
@@ -742,12 +742,12 @@ void Dialog_ExistingOrNew::on_service_found(const Glib::ustring& name, EpcServic
 void Dialog_ExistingOrNew::on_service_removed(const Glib::ustring& name, const Glib::ustring& /* type */)
 {
   // Find the entry with the given name
-  const Gtk::TreeNodeChildren& children = m_iter_existing_network->children();
+  const auto children = m_iter_existing_network->children();
   for(Gtk::TreeModel::iterator iter = children.begin(); iter != children.end(); ++ iter)
   {
     if((*iter)[m_existing_columns.m_col_service_name] == name)
     {
-      const bool was_expanded = m_existing_view->row_expanded(m_existing_model->get_path(iter));
+      const auto was_expanded = m_existing_view->row_expanded(m_existing_model->get_path(iter));
 
       // Remove from store
       epc_service_info_unref((*iter)[m_existing_columns.m_col_service_info]);
@@ -813,7 +813,7 @@ void Dialog_ExistingOrNew::on_select_clicked()
     filter->set_name("Glom files");
     dialog.add_filter(filter);
 
-    const int response_id = dialog.run();
+    const auto response_id = dialog.run();
     if(response_id == Gtk::RESPONSE_OK)
     {
       m_chosen_uri = dialog.get_uri();

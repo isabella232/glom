@@ -48,7 +48,7 @@ LayoutItem* LayoutItem_Image::clone() const
 
 bool LayoutItem_Image::operator==(const LayoutItem_Image& src) const
 {
-  bool result = LayoutItem::operator==(src) && 
+  auto result = LayoutItem::operator==(src) && 
                 (m_image == src.m_image);
 
   return result;

@@ -92,13 +92,13 @@ double CanvasGroupGrid::snap_position_rules(const type_vec_doubles& rules, doubl
 
 double CanvasGroupGrid::snap_position_rules_x(double x) const
 {
-  const type_vec_doubles rules = get_vertical_rules();
+  const auto rules = get_vertical_rules();
   return snap_position_rules(rules, x);
 }
 
 double CanvasGroupGrid::snap_position_rules_y(double y) const
 {
-  const type_vec_doubles rules = get_horizontal_rules();
+  const auto rules = get_horizontal_rules();
   return snap_position_rules(rules, y);
 }
 

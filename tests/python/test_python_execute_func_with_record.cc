@@ -22,7 +22,7 @@ void cleanup()
 {
   Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
 
-  const bool stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );
+  const auto stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );
   g_assert(stopped);
 }
 
@@ -56,7 +56,7 @@ int main()
   Glom::Document document;
   document.set_file_uri(uri);
   int failure_code = 0;
-  const bool test = document.load(failure_code);
+  const auto test = document.load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -90,7 +90,7 @@ int main()
   const char* calculation = "connection = record.connection\nreturn connection.is_opened()";
   Glom::type_map_fields field_values;
 
-  //TODO: Use this: const type_map_fields field_values = get_record_field_values_for_calculation(field_in_record.m_table_name, field_in_record.m_key, field_in_record.m_key_value);
+  //TODO: Use this: const auto field_values = get_record_field_values_for_calculation(field_in_record.m_table_name, field_in_record.m_key, field_in_record.m_key_value);
   //    if(!field_values.empty())
 
   //Execute a python function:
@@ -129,7 +129,7 @@ int main()
   g_assert(value.get_value_type() == G_TYPE_BOOLEAN);
 
   //Check that the return value is of the expected value:
-  const double boolval = value.get_boolean();
+  const auto boolval = value.get_boolean();
   g_assert(boolval == true);
 
   //std::cout << "value=" << value.to_string() << std::endl;

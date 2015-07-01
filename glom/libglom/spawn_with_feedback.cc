@@ -98,7 +98,7 @@ private:
   static HANDLE create_redirect_file(std::string& filename)
   {
     static unsigned int redirect_seq = 0;
-    const gchar* appdata = getenv("APPDATA");
+    const auto appdata = getenv("APPDATA");
     filename = Glib::ustring::compose("%1\\glom_spawn_redirect_%2.txt", std::string(appdata), ++ redirect_seq);
 
     // Allow the redirect file to be inherited by the child process, so
@@ -342,7 +342,7 @@ static int spawn_sync(const Glib::ustring& command_line, std::string* stdout_tex
   mainloop->run();
 
   int return_status = 0;
-  const bool returned = spawn_async_end(info, stdout_text, stderr_text, &return_status);
+  const auto returned = spawn_async_end(info, stdout_text, stderr_text, &return_status);
   g_assert(returned);
   return return_status;
 }
@@ -382,7 +382,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
   timeout_connection.disconnect();
 
   int return_status = false;
-  const bool returned = Impl::spawn_async_end(info, 0, 0, &return_status);
+  const auto returned = Impl::spawn_async_end(info, 0, 0, &return_status);
   if(!returned)
     return false; // User closed the dialog prematurely?
 
@@ -427,7 +427,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
 
   int return_status = false;
   std::string stdout_text, stderr_text;
-  const bool returned = Impl::spawn_async_end(info, &stdout_text, &stderr_text, &return_status);
+  const auto returned = Impl::spawn_async_end(info, &stdout_text, &stderr_text, &return_status);
   if(!returned)
     return false; // User closed the dialog prematurely?
 
@@ -592,7 +592,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
 
   std::string stderr_text;
   int return_status = 0;
-  const bool success = Impl::spawn_async_end(info, 0, &stderr_text, &return_status);
+  const auto success = Impl::spawn_async_end(info, 0, &stderr_text, &return_status);
 
   if(success && (return_status == EXIT_SUCCESS))
   {

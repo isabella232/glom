@@ -225,7 +225,7 @@ void Dialog_GroupsList::on_button_group_delete()
         if(response == Gtk::RESPONSE_OK)
         {
           const Glib::ustring strQuery = "DROP GROUP " + DbUtils::escape_sql_id(group);
-          const bool test = DbUtils::query_execute_string(strQuery);
+          const auto test = DbUtils::query_execute_string(strQuery);
           if(!test)
             std::cerr << G_STRFUNC << ": DROP GROUP failed." << std::endl;
 
@@ -246,9 +246,9 @@ void Dialog_GroupsList::on_button_group_new()
     return;
     
   dialog->set_transient_for(*this);
-  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
 
-  const Glib::ustring group_name = dialog->m_entry_name->get_text();
+  const auto group_name = dialog->m_entry_name->get_text();
 
   delete dialog;
 
@@ -337,7 +337,7 @@ Glib::ustring Dialog_GroupsList::get_selected_group() const
 void Dialog_GroupsList::on_treeview_groups_selection_changed()
 {
   //Update the tables list for the currently-selected group:
-  const Glib::ustring group_name = get_selected_group();
+  const auto group_name = get_selected_group();
   if(!group_name.empty()) //This can happen when clearing the list, just before filling it, so something real can be selected.
     fill_table_list(group_name);
 
@@ -401,12 +401,12 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
       Gtk::TreeModel::iterator iterTree = m_model_tables->append();
       Gtk::TreeModel::Row row = *iterTree;
 
-      const Glib::ustring table_name = (*iter)->get_name();
+      const auto table_name = (*iter)->get_name();
 
       row[m_model_columns_tables.m_col_name] = table_name;
       row[m_model_columns_tables.m_col_title] = item_get_title_or_name(*iter);
 
-      const Privileges privs = Privs::get_table_privileges(group_name, table_name);
+      const auto privs = Privs::get_table_privileges(group_name, table_name);
       row[m_model_columns_tables.m_col_view] = privs.m_view;
       row[m_model_columns_tables.m_col_edit] = privs.m_edit;
       row[m_model_columns_tables.m_col_create] = privs.m_create;
@@ -485,7 +485,7 @@ bool Dialog_GroupsList::set_table_privilege(const Glib::ustring& table_name, con
 
   strQuery += " GROUP " + DbUtils::escape_sql_id(group_name);
 
-  const bool test = DbUtils::query_execute_string(strQuery); //TODO: Handle errors.
+  const auto test = DbUtils::query_execute_string(strQuery); //TODO: Handle errors.
   if(!test)
     std::cerr << G_STRFUNC << ": GRANT/REVOKE failed." << std::endl;
 
@@ -506,7 +506,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_view(const Glib::ustring& pat
     bool bActive = row[m_model_columns_tables.m_col_view];
     bActive = !bActive;
 
-    const Glib::ustring group_name = get_selected_group();
+    const auto group_name = get_selected_group();
     const Glib::ustring table_name = row[m_model_columns_tables.m_col_name];
 
     bool test = set_table_privilege(table_name, group_name, bActive, PRIV_VIEW);
@@ -545,7 +545,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_edit(const Glib::ustring& pat
     bool bActive = row[m_model_columns_tables.m_col_edit];
     bActive = !bActive;
 
-    const Glib::ustring group_name = get_selected_group();
+    const auto group_name = get_selected_group();
     const Glib::ustring table_name = row[m_model_columns_tables.m_col_name];
 
     bool test = set_table_privilege(table_name, group_name, bActive, PRIV_EDIT);
@@ -569,10 +569,10 @@ void Dialog_GroupsList::on_treeview_tables_toggled_create(const Glib::ustring& p
     bool bActive = row[m_model_columns_tables.m_col_create];
     bActive = !bActive;
 
-    const Glib::ustring group_name = get_selected_group();
+    const auto group_name = get_selected_group();
     const Glib::ustring table_name = row[m_model_columns_tables.m_col_name];
 
-    const bool test = set_table_privilege(table_name, group_name, bActive, PRIV_CREATE);
+    const auto test = set_table_privilege(table_name, group_name, bActive, PRIV_CREATE);
 
     if(test)
       row[m_model_columns_tables.m_col_create] = bActive;
@@ -593,10 +593,10 @@ void Dialog_GroupsList::on_treeview_tables_toggled_delete(const Glib::ustring& p
     bool bActive = row[m_model_columns_tables.m_col_delete];
     bActive = !bActive;
 
-    const Glib::ustring group_name = get_selected_group();
+    const auto group_name = get_selected_group();
     const Glib::ustring table_name = row[m_model_columns_tables.m_col_name];
 
-    const bool test = set_table_privilege(table_name, group_name, bActive, PRIV_DELETE);
+    const auto test = set_table_privilege(table_name, group_name, bActive, PRIV_DELETE);
 
     if(test)
       row[m_model_columns_tables.m_col_delete] = bActive;

@@ -42,7 +42,7 @@ CustomTitle::~CustomTitle()
 
 bool CustomTitle::operator==(const CustomTitle& src) const
 {
-  const bool result = TranslatableItem::operator==(src) &&
+  const auto result = TranslatableItem::operator==(src) &&
                       (m_use_custom_title == src.m_use_custom_title);
 
   return result;

@@ -50,7 +50,7 @@ int main()
     value.is_null() );
 
   //Check that the return value is of the expected value:
-  const double numeric = Glom::Conversions::get_double_for_gda_value_numeric(value);
+  const auto numeric = Glom::Conversions::get_double_for_gda_value_numeric(value);
   //std::cout << "numeric=" << value.to_string() << std::endl;
   g_assert(numeric == 0);
 

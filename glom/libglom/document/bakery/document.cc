@@ -62,7 +62,7 @@ Glib::ustring Document::get_file_uri_with_extension(const Glib::ustring& uri)
     }
     else
     {
-      const Glib::ustring strEnd = result.substr(result.size() - strExt.size());
+      const auto strEnd = result.substr(result.size() - strExt.size());
       if(strEnd != strExt) //If it doesn't already have the extension
         bAddExt = true;
     }
@@ -117,7 +117,7 @@ bool Document::load(int& failure_code)
   //Initialize the output parameter:
   failure_code = LOAD_FAILURE_CODE_NONE;
 
-  bool bTest = read_from_disk(failure_code);
+  auto bTest = read_from_disk(failure_code);
   if(bTest)
   {
     bTest = load_after(failure_code); //may be overridden.
@@ -154,7 +154,7 @@ bool Document::load_from_data(const guchar* data, std::size_t length, int& failu
     return false;
   }
 
-  const bool bTest = load_after(failure_code); //may be overridden.
+  const auto bTest = load_after(failure_code); //may be overridden.
   if(bTest)
   {
     //Tell the View to show the new data:
@@ -185,7 +185,7 @@ bool Document::save()
   if(m_pView)
     m_pView->save_to_document();
 
-  const bool bTest = save_before(); //This could be overridden.
+  const auto bTest = save_before(); //This could be overridden.
   if(bTest)
     return write_to_disk();
 
@@ -212,7 +212,7 @@ bool Document::read_from_disk(int& failure_code)
   if(m_file_uri.empty())
     return false;
 
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_file_uri);
+  auto file = Gio::File::create_for_uri(m_file_uri);
 
   Glib::RefPtr<Gio::FileInputStream> stream;
 
@@ -279,7 +279,7 @@ bool Document::write_to_disk()
   //Write the changed data to disk:
   if(get_modified())
   {
-    Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_file_uri);
+    auto file = Gio::File::create_for_uri(m_file_uri);
     Glib::RefPtr<Gio::FileOutputStream> stream;
 
     //Create the file if it does not already exist:
@@ -298,7 +298,7 @@ bool Document::write_to_disk()
     else
     {
       //Make sure that all the parent directories exist, creating them if necessary:
-      Glib::RefPtr<Gio::File> parent = file->get_parent();
+      auto parent = file->get_parent();
       try
       {
         if(parent) //It will be empty if file was the root node of the filesystem.
@@ -379,7 +379,7 @@ static Glib::ustring get_file_display_name(const Glib::ustring& uri)
   if(uri.empty())
     return result;
 
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  auto file = Gio::File::create_for_uri(uri);
   Glib::RefPtr<const Gio::FileInfo> file_info;
 
   try
@@ -400,7 +400,7 @@ static Glib::ustring get_file_display_name(const Glib::ustring& uri)
 
 Glib::ustring Document::util_file_uri_get_name(const Glib::ustring& file_uri, const Glib::ustring& file_extension)
 {
-  Glib::ustring strResult = get_file_display_name(file_uri);
+  auto strResult = get_file_display_name(file_uri);
 
   //Remove the file extension:
   //TODO: Maybe g_filename_display_basename() and g_file_info_get_display_name() should do this.
@@ -410,7 +410,7 @@ Glib::ustring Document::util_file_uri_get_name(const Glib::ustring& file_uri, co
 
     if(strResult.size() >= file_extension.size()) //It can't have the ext already if it's not long enough.
     {
-      const Glib::ustring strEnd = strResult.substr(strResult.size() - strExt.size());
+      const auto strEnd = strResult.substr(strResult.size() - strExt.size());
       if(strEnd == strExt) //If it has the extension
       {
         strResult = strResult.substr(0, strResult.size() - strExt.size());
@@ -449,11 +449,11 @@ bool Document::get_read_only() const
       return false; //It must be a default empty document, not yet saved, so it is not read-only.
     else
     {
-      Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_file_uri);
+      auto file = Gio::File::create_for_uri(m_file_uri);
       Glib::RefPtr<Gio::FileInfo> info;
       try
       {
-        Glib::RefPtr<Gio::FileInfo> info = file->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
+        auto info = file->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
       }
       catch(const Gio::Error& ex)
       {
@@ -463,7 +463,7 @@ bool Document::get_read_only() const
       if(!info)
         return false;
 
-      const bool read_only = info->get_attribute_boolean(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
+      const auto read_only = info->get_attribute_boolean(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
       return read_only;
     }
   }

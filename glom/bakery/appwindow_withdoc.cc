@@ -71,7 +71,7 @@ void AppWindow_WithDoc::on_menu_file_close()
 bool AppWindow_WithDoc::open_document_from_data(const guchar* data, std::size_t length)
 {
   int failure_code = 0;
-  const bool bTest = m_pDocument->load_from_data(data, length, failure_code);
+  const auto bTest = m_pDocument->load_from_data(data, length, failure_code);
 
   bool bOpenFailed = false;
   if(!bTest) //if open failed.
@@ -79,7 +79,7 @@ bool AppWindow_WithDoc::open_document_from_data(const guchar* data, std::size_t 
   else
   {
     //if open succeeded then let the App respond:
-    const bool test = on_document_load();
+    const auto test = on_document_load();
     if(!test)
       bOpenFailed = true; //The application didn't like something about the just-loaded document.
     else
@@ -111,12 +111,12 @@ bool AppWindow_WithDoc::open_document(const Glib::ustring& file_uri)
     return true;
   }
 
-  AppWindow_WithDoc* pApp = this; //Replace the default new document in this instance.
+  auto pApp = this; //Replace the default new document in this instance.
 
   //Open it.
   pApp->m_pDocument->set_file_uri(file_uri);
   int failure_code = 0;
-  const bool bTest = pApp->m_pDocument->load(failure_code);
+  const auto bTest = pApp->m_pDocument->load(failure_code);
 
   bool bOpenFailed = false;
   bool bShowError = false;
@@ -128,7 +128,7 @@ bool AppWindow_WithDoc::open_document(const Glib::ustring& file_uri)
   else
   {
     //if open succeeded then let the App respond:
-    const bool test = pApp->on_document_load();
+    const auto test = pApp->on_document_load();
     if(!test)
       bOpenFailed = true; //The application didn't like something about the just-loaded document.
     else
@@ -172,7 +172,7 @@ void AppWindow_WithDoc::on_menu_file_open()
   ui_bring_to_front();
 
   //Ask user to choose file to open:
-  Glib::ustring file_uri = ui_file_select_open();
+  auto file_uri = ui_file_select_open();
   if(!file_uri.empty())
     open_document(file_uri);
 }
@@ -191,7 +191,7 @@ bool AppWindow_WithDoc::file_exists(const Glib::ustring& uri)
   //Check whether file exists already:
   {
     // Try to examine the input file.
-    Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+    auto file = Gio::File::create_for_uri(uri);
 
     try
     {
@@ -213,16 +213,16 @@ void AppWindow_WithDoc::on_menu_file_saveas()
   ui_bring_to_front();
 
   //Show the save dialog:
-  const Glib::ustring& file_uriOld = m_pDocument->get_file_uri();
+  const auto file_uriOld = m_pDocument->get_file_uri();
 
-  Glib::ustring file_uri = ui_file_select_save(file_uriOld); //Also asks for overwrite confirmation.
+  auto file_uri = ui_file_select_save(file_uriOld); //Also asks for overwrite confirmation.
   if(!file_uri.empty())
   {
     //Enforce the file extension:
     file_uri = m_pDocument->get_file_uri_with_extension(file_uri);
 
     m_pDocument->set_file_uri(file_uri, true); //true = enforce file extension
-    const bool bTest = m_pDocument->save();
+    const auto bTest = m_pDocument->save();
 
     if(!bTest)
     {
@@ -256,7 +256,7 @@ void AppWindow_WithDoc::on_menu_file_save()
     //If there is already a filepath, then save to that location:
     if(!(m_pDocument->get_file_uri().empty()))
     {
-      bool bTest = m_pDocument->save();
+      auto bTest = m_pDocument->save();
 
       if(bTest)
       {
@@ -337,7 +337,7 @@ void AppWindow_WithDoc::offer_to_save_changes()
 
       //The document has unsaved changes,
       //so ask the user whether the document should be saved:
-      enumSaveChanges buttonClicked = ui_offer_to_save_changes();
+      auto buttonClicked = ui_offer_to_save_changes();
 
       //Respond to button that was clicked:
       switch(buttonClicked)
@@ -384,7 +384,7 @@ bool AppWindow_WithDoc::on_document_load()
   //Show document contents:
   if(m_pDocument)
   {
-    GlomBakery::ViewBase* pView = m_pDocument->get_view();
+    auto pView = m_pDocument->get_view();
     if(pView)
       pView->load_from_document();
 
@@ -430,21 +430,21 @@ void AppWindow_WithDoc::set_document_modified(bool bModified /* = true */)
 
 void AppWindow_WithDoc::on_menu_edit_copy()
 {
-  GlomBakery::ViewBase* pView = m_pDocument->get_view();
+  auto pView = m_pDocument->get_view();
   if(pView)
     pView->clipboard_copy();
 }
 
 void AppWindow_WithDoc::on_menu_edit_paste()
 {
-  GlomBakery::ViewBase* pView = m_pDocument->get_view();
+  auto pView = m_pDocument->get_view();
   if(pView)
     pView->clipboard_paste();
 }
 
 void AppWindow_WithDoc::on_menu_edit_clear()
 {
-  GlomBakery::ViewBase* pView = m_pDocument->get_view();
+  auto pView = m_pDocument->get_view();
   if(pView)
     pView->clipboard_clear();
 }

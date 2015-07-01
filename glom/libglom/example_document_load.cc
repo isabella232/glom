@@ -33,7 +33,7 @@ void print_layout_group(const std::shared_ptr<Glom::LayoutGroup>& layout_group, 
     return;
 
   //Look at each child item:
-  const Glom::LayoutGroup::type_list_items items = layout_group->get_items();
+  const auto items = layout_group->get_items();
   for(Glom::LayoutGroup::type_list_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
   {
     std::shared_ptr<Glom::LayoutItem> layout_item = *iter;
@@ -43,7 +43,7 @@ void print_layout_group(const std::shared_ptr<Glom::LayoutGroup>& layout_group, 
     std::cout << indent << "Layout Item: title=" << layout_item->get_title_or_name(Glib::ustring() /* locale */)
       << ", item type=" << layout_item->get_part_type_name();
 
-    const Glib::ustring display_name = layout_item->get_layout_display_name();
+    const auto display_name = layout_item->get_layout_display_name();
     if(!display_name.empty())
       std::cout << " (" << layout_item->get_layout_display_name() << ")";
 
@@ -96,7 +96,7 @@ int main()
   Glom::Document document;
   document.set_file_uri(uri);
   int failure_code = 0;
-  const bool test = document.load(failure_code);
+  const auto test = document.load(failure_code);
   std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -108,7 +108,7 @@ int main()
 
   // Look at each table:
   typedef std::vector<Glib::ustring> type_vecstrings;
-  const type_vecstrings table_names = document.get_table_names();
+  const auto table_names = document.get_table_names();
   for(type_vecstrings::const_iterator iter = table_names.begin(); iter != table_names.end(); ++iter)
   {
     const Glib::ustring table_name = *iter;
@@ -122,7 +122,7 @@ int main()
        if(!field)
          continue;
 
-       const Glom::Field::glom_field_type field_type = field->get_glom_type();
+       const auto field_type = field->get_glom_type();
 
        std::cout << "  Field: name=" << field->get_name()
          << ", title=" << field->get_title_or_name(Glib::ustring() /* locale */)

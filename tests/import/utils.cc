@@ -21,7 +21,7 @@ bool check(const std::string& name, bool test, std::stringstream& report)
 // Returns the file URI of the temporary created file, which will contain the buffer's contents.
 static Glib::ustring create_file_from_buffer(const char* input, guint input_size)
 {
-  const std::string file_uri = Glom::Utils::get_temp_file_uri("glom_import_testdata");
+  const auto file_uri = Glom::Utils::get_temp_file_uri("glom_import_testdata");
   if(file_uri.empty())
   {
     std::cerr << G_STRFUNC << ": file_uri was empty." << std::endl;
@@ -98,7 +98,7 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
 
   connect_parser_signals(parser);
 
-  const Glib::ustring file_uri = create_file_from_buffer(input, input_size);
+  const auto file_uri = create_file_from_buffer(input, input_size);
   parser.set_file_and_start_parsing(file_uri);
   if(Glom::CsvParser::STATE_PARSING != parser.get_state())
     return false;
@@ -109,7 +109,7 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
 
   try
   {
-    const bool removed = file->remove();
+    const auto removed = file->remove();
     g_assert(removed);
   }
   catch(const Gio::Error& ex)

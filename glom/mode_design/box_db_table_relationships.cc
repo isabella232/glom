@@ -119,7 +119,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
         m_AddDel.set_value(iterTree, m_colFromField, relationship->get_from_field());
 
         //To Table:
-        const Glib::ustring& strToTable = relationship->get_to_table();
+        const auto strToTable = relationship->get_to_table();
         m_AddDel.set_value(iterTree, m_colToTable, strToTable);
 
         //To Field:
@@ -139,13 +139,13 @@ void Box_DB_Table_Relationships::save_to_document()
   //Build relationships from AddDel:
   Document::type_vec_relationships vecRelationships;
 
-  const Document* document = get_document();
+  const auto document = get_document();
 
   for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
   {
-    const Glib::ustring old_name = m_AddDel.get_value_key(iter);
+    const auto old_name = m_AddDel.get_value_key(iter);
 
-    const Glib::ustring name = m_AddDel.get_value(iter, m_colName);
+    const auto name = m_AddDel.get_value(iter, m_colName);
     if(!name.empty())
     {
       //If it is a rename:
@@ -234,9 +234,9 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
   {
     BusyCursor busy_cursor(get_app_window());
 
-    const Glib::ustring old_to_field = m_AddDel.get_value(row, m_colToField);
+    const auto old_to_field = m_AddDel.get_value(row, m_colToField);
 
-    const Glib::ustring table_name = m_AddDel.get_value(row, m_colToTable);
+    const auto table_name = m_AddDel.get_value(row, m_colToTable);
 
     if(!table_name.empty())
     {
@@ -273,7 +273,7 @@ void Box_DB_Table_Relationships::on_adddel_user_requested_delete(const Gtk::Tree
   //for(Gtk::TreeModel::iterator iter = rowStart; iter != iterAfter; ++iter)
   //{ //AddDel::remove_item() can't cope with this.
     Gtk::TreeModel::iterator iter = rowStart;
-    const Glib::ustring relationship_name = m_AddDel.get_value_key(iter);
+    const auto relationship_name = m_AddDel.get_value_key(iter);
 
     //Remove the row:
     m_AddDel.remove_item(iter);

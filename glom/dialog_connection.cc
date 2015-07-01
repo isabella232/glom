@@ -71,7 +71,7 @@ std::shared_ptr<SharedConnection> Dialog_Connection::connect_to_server_with_conn
   //Set the connection details in the ConnectionPool singleton.
   //The ConnectionPool will now use these every time it tries to connect.
 
-  const Document* document = get_document();
+  const auto document = get_document();
   if(!document)
     return result;
 
@@ -160,7 +160,7 @@ void Dialog_Connection::load_from_document()
     if(user.empty())
     {
       //Default to the UNIX user name, which is often the same as the Postgres user name:
-      const char* pchUser = getenv("USER"); 
+      const auto pchUser = getenv("USER"); 
       if(pchUser)
         user = pchUser;
     }

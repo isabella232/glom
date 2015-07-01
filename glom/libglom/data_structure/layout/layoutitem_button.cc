@@ -46,7 +46,7 @@ LayoutItem* LayoutItem_Button::clone() const
 
 bool LayoutItem_Button::operator==(const LayoutItem_Button& src) const
 {
-  bool result = LayoutItem_WithFormatting::operator==(src) && 
+  auto result = LayoutItem_WithFormatting::operator==(src) && 
                 (m_script == src.m_script);
 
   return result;

@@ -69,7 +69,7 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
     column_original->pack_start(*renderer_name);
     column_original->set_cell_data_func(*renderer_name, sigc::mem_fun(*this, &Window_Translations::on_cell_data_original));
 
-    const int col = m_treeview->append_column_editable(_("Translation"), m_columns.m_col_translation);
+    const auto col = m_treeview->append_column_editable(_("Translation"), m_columns.m_col_translation);
     Gtk::CellRendererText* renderer = dynamic_cast<Gtk::CellRendererText*>(m_treeview->get_column_cell_renderer(col - 1));
     if(renderer)
       renderer->signal_edited().connect(sigc::mem_fun(*this, &Window_Translations::on_treeview_edited));
@@ -161,7 +161,7 @@ void Window_Translations::on_button_identify()
   add_view(dialog);
   dialog->load_from_document(); //Doesn't seem to happen otherwise.
   dialog->set_transient_for(*this);
-  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
 
   if(response == Gtk::RESPONSE_OK)
@@ -300,12 +300,12 @@ void Window_Translations::on_button_copy_translation()
     return;
 
   dialog->set_transient_for(*this);
-  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
 
   if(response == Gtk::RESPONSE_OK)
   {
-    const Glib::ustring copy_source_locale = dialog->get_locale();
+    const auto copy_source_locale = dialog->get_locale();
     if(!copy_source_locale.empty())
     {
       //Save and update:
@@ -319,7 +319,7 @@ void Window_Translations::on_button_copy_translation()
         if(item)
         {
           //Copy the translation from the chosen locale to the current locale:
-          const Glib::ustring translation = item->get_title_translation(copy_source_locale);
+          const auto translation = item->get_title_translation(copy_source_locale);
           row[m_columns.m_col_translation] = translation;
         }
       }
@@ -362,7 +362,7 @@ void Window_Translations::on_button_export()
   file_dlg.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   file_dlg.add_button(_("Export"), Gtk::RESPONSE_OK); 
   
-  const int result = file_dlg.run();
+  const auto result = file_dlg.run();
   if(result != Gtk::RESPONSE_OK)
     return;
 
@@ -403,11 +403,11 @@ void Window_Translations::on_button_import()
   //Note to translators: "Import" here is an action verb - it's a button. 
   file_dlg.add_button(_("Import"), Gtk::RESPONSE_OK);
   
-  const int result = file_dlg.run();
+  const auto result = file_dlg.run();
   if(result != Gtk::RESPONSE_OK)
     return;
 
-  const std::string uri = file_dlg.get_uri();
+  const auto uri = file_dlg.get_uri();
   if(uri.empty())
     return;
 

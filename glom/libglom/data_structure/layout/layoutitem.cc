@@ -107,7 +107,7 @@ LayoutItem& LayoutItem::operator=(const LayoutItem& src)
 //Is this used?
 bool LayoutItem::operator==(const LayoutItem& src) const
 {
-  bool equal = (TranslatableItem::operator==(src)) &&
+  auto equal = (TranslatableItem::operator==(src)) &&
           (m_editable == src.m_editable) &&
           (m_display_width == src.m_display_width);
 

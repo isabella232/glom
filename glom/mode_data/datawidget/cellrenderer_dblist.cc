@@ -159,8 +159,8 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
     std::cerr << G_STRFUNC << ": widget is null." << std::endl;
   }
 
-  const std::vector<Gtk::CellRenderer*> cells = combobox->get_cells();
-  const guint initial_cells_count = cells.size();
+  const auto cells = combobox->get_cells();
+  const auto initial_cells_count = cells.size();
 
   guint i = 0;
   for(type_vec_const_layout_items::const_iterator iter = m_db_layout_items.begin(); iter != m_db_layout_items.end(); ++iter)
@@ -274,7 +274,7 @@ Gnome::Gda::Value CellRendererDbList::get_value() const
   std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
   bool success = false;
 
-  const Glib::ustring text = get_text();
+  const auto text = get_text();
   return Conversions::parse_value(layout_item->get_glom_type(), text, layout_item->get_formatting_used().m_numeric_format, success);
 }
 

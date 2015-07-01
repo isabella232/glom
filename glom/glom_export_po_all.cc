@@ -189,7 +189,7 @@ int main(int argc, char* argv[])
   Glom::Document document;
   document.set_file_uri(input_uri);
   int failure_code = 0;
-  const bool test = document.load(failure_code);
+  const auto test = document.load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -198,14 +198,14 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  const std::vector<Glib::ustring> locales = document.get_translation_available_locales();
+  const auto locales = document.get_translation_available_locales();
   if(locales.empty())
   {
     std::cerr << _("The Glom document has no translations.") << std::endl;
     return EXIT_FAILURE;
   }
 
-  const Glib::ustring original_locale_id = document.get_translation_original_locale();
+  const auto original_locale_id = document.get_translation_original_locale();
   for(std::vector<Glib::ustring>::const_iterator iter = locales.begin();
     iter != locales.end(); ++iter)
   {
@@ -214,7 +214,7 @@ int main(int argc, char* argv[])
       continue;
 
     const Glib::RefPtr<const Gio::File> file_output_full = file_output->get_child(locale_id + ".po");
-    const Glib::ustring output_uri = file_output_full->get_uri();
+    const auto output_uri = file_output_full->get_uri();
 
     const bool succeeded = 
       Glom::write_translations_to_po_file(&document, output_uri, locale_id);

@@ -97,7 +97,7 @@ bool Dialog_ChooseID::get_id_chosen(Gnome::Gda::Value& chosen_id) const
 
 void Dialog_ChooseID::on_button_quickfind()
 {
-  const Glib::ustring criteria = m_pEntry_QuickFind->get_text();
+  const auto criteria = m_pEntry_QuickFind->get_text();
   if(criteria.empty())
   {
     Glib::ustring message = _("You have not entered any quick find criteria.");
@@ -124,10 +124,10 @@ void Dialog_ChooseID::on_box_find_criteria(const Gnome::Gda::SqlExpr& where_clau
     FoundSet found_set = m_box_select.get_found_set();
     found_set.m_table_name = m_table_name;
     found_set.m_where_clause = where_clause;
-    const bool records_found = m_box_select.init_db_details(found_set, m_layout_platform);
+    const auto records_found = m_box_select.init_db_details(found_set, m_layout_platform);
     if(!records_found)
     {
-      const bool find_again = UiUtils::show_warning_no_records_found(*this);
+      const auto find_again = UiUtils::show_warning_no_records_found(*this);
 
       if(!find_again)
         response(Gtk::RESPONSE_CANCEL);

@@ -87,10 +87,10 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQLCentralHosted::connect(const Glib::ust
   Glib::RefPtr<Gnome::Gda::Connection> connection;
 
   //Try each possible network port:
-  type_list_ports::const_iterator iter_port = m_list_ports.begin();
+  auto iter_port = m_list_ports.begin();
 
   //Start with the remembered-as-working port:
-  Glib::ustring port = port_as_string(m_port);
+  auto port = port_as_string(m_port);
   if(m_port == 0)
     port = *iter_port ++;
 

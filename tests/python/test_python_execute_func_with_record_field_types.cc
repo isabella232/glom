@@ -40,7 +40,7 @@ static bool get_field_result(const Glom::Document& document,
 {
   const Glib::ustring calculation = "return record[\"" + field_name + "\"]";
 
-  const GType expected_value_gtype = expected_value.get_value_type();
+  const auto expected_value_gtype = expected_value.get_value_type();
 
   //Execute a python function:
   Gnome::Gda::Value value;
@@ -108,7 +108,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   std::shared_ptr<Glom::SharedConnection> connection = connection_pool->connect();
   g_assert(connection);
 
-  const Glib::RefPtr<Gnome::Gda::Connection> gda_connection = connection->get_gda_connection();
+  const auto gda_connection = connection->get_gda_connection();
   g_assert(connection->get_gda_connection());
 
 
@@ -160,7 +160,7 @@ int main()
 {
   Glom::libglom_init();
   
-  const int result = test_all_hosting_modes(sigc::ptr_fun(&test));
+  const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();
 

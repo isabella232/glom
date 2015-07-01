@@ -58,7 +58,7 @@ type_list_currencies get_list_of_currency_symbols()
       if(parser)
       {
         //Walk the tree:
-        const xmlpp::Node* nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
+        const auto nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
 
         xmlpp::Node::NodeList listNodes = nodeRoot->get_children("iso_4217_entry");
         for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
@@ -68,15 +68,15 @@ type_list_currencies get_list_of_currency_symbols()
           {
             Currency currency;
 
-            const xmlpp::Attribute* attribute_code = nodeEntry->get_attribute("letter_code");
+            const auto attribute_code = nodeEntry->get_attribute("letter_code");
             if(attribute_code)
               currency.m_symbol = attribute_code->get_value();
 
-            const xmlpp::Attribute* attribute_name = nodeEntry->get_attribute("currency_name");
+            const auto attribute_name = nodeEntry->get_attribute("currency_name");
             if(attribute_name)
             {
               Glib::ustring name = _(attribute_name->get_value().c_str());
-              const char* pchTranslatedName = dgettext("iso_4217", name.c_str());
+              const auto pchTranslatedName = dgettext("iso_4217", name.c_str());
               if(pchTranslatedName)
                 name = pchTranslatedName;
 
@@ -166,7 +166,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
       if(parser)
       {
         //Walk the tree:
-        const xmlpp::Node* nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
+        const auto nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
 
         xmlpp::Node::NodeList listNodes = nodeRoot->get_children("iso_639_entry");
         for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
@@ -175,17 +175,17 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
           if(nodeEntry)
           {
             //TODO: There are 3 codes (not each entry has each code). Is this the correct one to identify a language?
-            const xmlpp::Attribute* attribute_code = nodeEntry->get_attribute("iso_639_1_code");
+            const auto attribute_code = nodeEntry->get_attribute("iso_639_1_code");
             if(attribute_code)
             {
-              const Glib::ustring identifier = attribute_code->get_value();
+              const auto identifier = attribute_code->get_value();
               if(!identifier.empty())
               {
-                const xmlpp::Attribute* attribute_name = nodeEntry->get_attribute("name");
+                const auto attribute_name = nodeEntry->get_attribute("name");
                 if(attribute_name)
                 {
                   Glib::ustring name = attribute_name->get_value();
-                  const char* pchTranslatedName = dgettext("iso_639", name.c_str());
+                  const auto pchTranslatedName = dgettext("iso_639", name.c_str());
                   if(pchTranslatedName)
                     name = pchTranslatedName;
 
@@ -221,7 +221,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
       if(parser)
       {
         //Walk the tree:
-        const xmlpp::Node* nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
+        const auto nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
 
         xmlpp::Node::NodeList listNodes = nodeRoot->get_children("iso_3166_entry");
         for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
@@ -229,17 +229,17 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
           xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(*iter);
           if(nodeEntry)
           {
-            const xmlpp::Attribute* attribute_code = nodeEntry->get_attribute("alpha_2_code");
+            const auto attribute_code = nodeEntry->get_attribute("alpha_2_code");
             if(attribute_code)
             {
-              const Glib::ustring identifier = attribute_code->get_value();
+              const auto identifier = attribute_code->get_value();
               if(!identifier.empty())
               {
-                const xmlpp::Attribute* attribute_name = nodeEntry->get_attribute("name");
+                const auto attribute_name = nodeEntry->get_attribute("name");
                 if(attribute_name)
                 {
                   Glib::ustring name = attribute_name->get_value();
-                  const char* pchTranslatedName = dgettext("iso_3166", name.c_str());
+                  const auto pchTranslatedName = dgettext("iso_3166", name.c_str());
                   if(pchTranslatedName)
                     name = pchTranslatedName;
 
@@ -261,7 +261,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     //Use a map so we can easily check for duplicates.
     for(type_list_ids::iterator iter = list_ids.begin(); iter != list_ids.end(); ++iter)
     {
-      const Glib::ustring identifier = Utils::locale_simplify(*iter);
+      const auto identifier = Utils::locale_simplify(*iter);
 
       if(map_locales.find(identifier) == map_locales.end()) //Prevent duplicates.
       {

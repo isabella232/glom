@@ -90,7 +90,7 @@ void CanvasTableMovable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& gri
   CanvasItemMovable::set_grid(grid);
 
   //Apply the grid to all children:
-  const int count = get_n_children();
+  const auto count = get_n_children();
   for(int i = 0; i < count; ++i)
   {
     Glib::RefPtr<Goocanvas::Item> child = get_child(i);
@@ -104,9 +104,9 @@ void CanvasTableMovable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& gri
 
 void CanvasTableMovable::snap_position_one_corner(Corners corner, double& x, double& y) const
 {
-  const Goocanvas::Bounds bounds = get_bounds();
-  const double width = std::abs(bounds.get_x2() - bounds.get_x1());
-  const double height = std::abs(bounds.get_y2() - bounds.get_y1());
+  const auto bounds = get_bounds();
+  const auto width = std::abs(bounds.get_x2() - bounds.get_x1());
+  const auto height = std::abs(bounds.get_y2() - bounds.get_y1());
 
   //Choose the offset of the part to snap to the grid:
   double corner_x_offset = 0;

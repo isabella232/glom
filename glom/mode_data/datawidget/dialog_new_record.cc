@@ -80,7 +80,7 @@ bool Dialog_NewRecord::init_db_details(const Glib::ustring& table_name, const Gl
   FoundSet found_set;
   found_set.m_table_name = m_table_name;
   const Gnome::Gda::Value primary_key_for_details;
-  const bool result = m_box_details.init_db_details(found_set, layout_platform, primary_key_for_details);
+  const auto result = m_box_details.init_db_details(found_set, layout_platform, primary_key_for_details);
   m_box_details.do_new_record();
 
   m_table_name = table_name;

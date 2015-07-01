@@ -137,7 +137,7 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
   FoundSet found_set;
   found_set.m_table_name = LayoutWidgetBase::m_table_name;
 
-  const Privileges table_privs = Privs::get_current_privs(found_set.m_table_name);
+  const auto table_privs = Privs::get_current_privs(found_set.m_table_name);
   m_AddDel.set_allow_view(table_privs.m_view);
 
   m_AddDel.set_found_set(found_set);
@@ -179,7 +179,7 @@ bool Box_Data_List_Related::fill_from_database()
 
   m_AddDel.set_allow_add(allow_add);
 
-  const Privileges table_privs = Privs::get_current_privs(m_found_set.m_table_name);
+  const auto table_privs = Privs::get_current_privs(m_found_set.m_table_name);
   m_AddDel.set_allow_view(table_privs.m_view);
 
   m_AddDel.set_found_set(m_found_set);
@@ -197,7 +197,7 @@ void Box_Data_List_Related::on_adddel_user_requested_edit(const Gtk::TreeModel::
 {
   //Note that this is really an Open rather than an Edit.
 
-  const Gnome::Gda::Value primary_key_value = m_AddDel.get_value_key(row); //The primary key is in the key.
+  const auto primary_key_value = m_AddDel.get_value_key(row); //The primary key is in the key.
   
   if(!Conversions::value_is_empty(primary_key_value))
   {
@@ -225,7 +225,7 @@ void Box_Data_List_Related::on_adddel_script_button_clicked(const std::shared_pt
   if(!layout_item)
     return;
 
-  const Gnome::Gda::Value primary_key_value = get_primary_key_value(row);
+  const auto primary_key_value = get_primary_key_value(row);
 
   // TODO: Calling refresh_data_from_database(),
   // or navigating to a different table from inside the Python script,
@@ -439,7 +439,7 @@ void Box_Data_List_Related::create_layout()
     if(!layout_group)
       continue;
 
-    const LayoutGroup::type_list_items child_items = layout_group->get_items_recursive();
+    const auto child_items = layout_group->get_items_recursive();
     for(LayoutGroup::type_list_items::const_iterator iterItems = child_items.begin(); iterItems != child_items.end(); ++iterItems)
     {
       std::shared_ptr<LayoutItem> child_item = *iterItems;
@@ -482,7 +482,7 @@ void Box_Data_List_Related::create_layout()
     items_to_use.push_back(layout_item);
   }
 
-  const Privileges table_privs = Privs::get_current_privs(m_found_set.m_table_name);
+  const auto table_privs = Privs::get_current_privs(m_found_set.m_table_name);
   m_AddDel.set_allow_view(table_privs.m_view);
   
   m_AddDel.set_found_set(m_found_set);

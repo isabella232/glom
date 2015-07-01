@@ -45,7 +45,7 @@ int main()
   g_assert(value.get_value_type() == GDA_TYPE_NUMERIC);
 
   //Check that the return value is of the expected value:
-  const double numeric = Glom::Conversions::get_double_for_gda_value_numeric(value);
+  const auto numeric = Glom::Conversions::get_double_for_gda_value_numeric(value);
   g_assert(numeric == 4950.0);
 
   //std::cout << "value=" << value.to_string() << std::endl;

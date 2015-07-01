@@ -46,11 +46,11 @@ Privs::type_vec_strings Privs::get_database_groups()
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
   if(data_model)
   {
-    const int rows_count = data_model->get_n_rows();
+    const auto rows_count = data_model->get_n_rows();
     for(int row = 0; row < rows_count; ++row)
     {
-      const Gnome::Gda::Value value = data_model->get_value_at(0, row);
-      const Glib::ustring name = value.get_string();
+      const auto value = data_model->get_value_at(0, row);
+      const auto name = value.get_string();
       result.push_back(name);
     }
   }
@@ -61,9 +61,9 @@ Privs::type_vec_strings Privs::get_database_groups()
 bool Privs::get_default_developer_user_exists(Document::HostingMode hosting_mode)
 {
   Glib::ustring default_password;
-  const Glib::ustring default_user = get_default_developer_user_name(default_password, hosting_mode);
+  const auto default_user = get_default_developer_user_name(default_password, hosting_mode);
 
-  const type_vec_strings users = get_database_users();
+  const auto users = get_database_users();
   type_vec_strings::const_iterator iterFind = std::find(users.begin(), users.end(), default_user);
   if(iterFind != users.end())
     return true; //We assume that the password is what it should be and that it has developer rights.
@@ -74,9 +74,9 @@ bool Privs::get_default_developer_user_exists(Document::HostingMode hosting_mode
 bool Privs::get_developer_user_exists_with_password(Document::HostingMode hosting_mode)
 {
   Glib::ustring default_password;
-  const Glib::ustring default_user = get_default_developer_user_name(default_password, hosting_mode);
+  const auto default_user = get_default_developer_user_name(default_password, hosting_mode);
 
-  const type_vec_strings users = get_database_users();
+  const auto users = get_database_users();
   for(type_vec_strings::const_iterator iter = users.begin(); iter != users.end(); ++iter)
   {
     const Glib::ustring user = *iter;
@@ -124,11 +124,11 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
     if(data_model)
     {
-      const int rows_count = data_model->get_n_rows();
+      const auto rows_count = data_model->get_n_rows();
       for(int row = 0; row < rows_count; ++row)
       {
-        const Gnome::Gda::Value value = data_model->get_value_at(0, row);
-        const Glib::ustring name = value.get_string();
+        const auto value = data_model->get_value_at(0, row);
+        const auto name = value.get_string();
         result.push_back(name);
       }
     }
@@ -148,10 +148,10 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
     if(data_model && data_model->get_n_rows())
     {
-      const int rows_count = data_model->get_n_rows();
+      const auto rows_count = data_model->get_n_rows();
       for(int row = 0; row < rows_count; ++row)
       {
-        const Gnome::Gda::Value value = data_model->get_value_at(1, row); //Column 1 is the /* the user list.
+        const auto value = data_model->get_value_at(1, row); //Column 1 is the /* the user list.
         //pg_group is a string, formatted, bizarrely, like so: "{100, 101}".
 
         Glib::ustring group_list;
@@ -173,7 +173,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
           Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
           if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
           {
-            const Gnome::Gda::Value value = data_model->get_value_at(0, 0);
+            const auto value = data_model->get_value_at(0, 0);
             //std::cout << G_STRFUNC << "DEBUG:  username=" << value.get_string() << std::endl; 
             result.push_back(value.get_string());
           }
@@ -248,7 +248,7 @@ bool Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::us
 
   strQuery += " GROUP " + DbUtils::escape_sql_id(group_name);
 
-  const bool test = DbUtils::query_execute_string(strQuery);
+  const auto test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
     std::cerr << G_STRFUNC << ": GRANT failed." << std::endl;
@@ -334,7 +334,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
   //The table name must be quoted if it needs to be quoted,
   //but not quoted if it is does not need to be quoted,
   //because it must match how it was created, and libgda probably did not quote it unless necessary.
-  const Glib::ustring table_name_for_arg = connection->quote_sql_identifier(table_name);
+  const auto table_name_for_arg = connection->quote_sql_identifier(table_name);
   args_base.push_back(builder->add_expr(table_name_for_arg));
 
   std::vector<Gnome::Gda::SqlBuilder::Id> args = args_base;
@@ -415,7 +415,7 @@ Privs::type_vec_strings Privs::get_groups_of_user(const Glib::ustring& user)
 
 bool Privs::get_user_is_in_group(const Glib::ustring& user, const Glib::ustring& group)
 {
-  const type_vec_strings users = get_database_users(group);
+  const auto users = get_database_users(group);
   type_vec_strings::const_iterator iterFind = std::find(users.begin(), users.end(), user);
   return (iterFind != users.end());
 }
@@ -464,7 +464,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   //std::cout << "debug: " << G_STRFUNC << ": Getting non-cached." << std::endl;
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  const Glib::ustring current_user = connection_pool->get_user();
+  const auto current_user = connection_pool->get_user();
 
   //Is the user in the special developers group?
   /*

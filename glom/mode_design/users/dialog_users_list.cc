@@ -162,7 +162,7 @@ void Dialog_UsersList::on_button_user_delete()
           dialog.set_secondary_text(_("Are your sure that you wish to delete this user?"));
           dialog.set_transient_for(*this);
 
-          const int response = dialog.run();
+          const auto response = dialog.run();
           dialog.hide();
 
           if(response == Gtk::RESPONSE_OK)
@@ -181,7 +181,7 @@ void Dialog_UsersList::on_button_user_delete()
 void Dialog_UsersList::on_button_user_add()
 {
   //Fill it with the list of users:
-  const Privs::type_vec_strings users = Privs::get_database_users();
+  const auto users = Privs::get_database_users();
   if(users.empty())
   {
     UiUtils::show_ok_dialog(_("Error Retrieving the List of Users"),
@@ -198,9 +198,9 @@ void Dialog_UsersList::on_button_user_add()
 
   dialog->set_user_list(users);
 
-  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
 
-  const Glib::ustring user = dialog->get_user();
+  const auto user = dialog->get_user();
 
   delete dialog;
 
@@ -210,8 +210,8 @@ void Dialog_UsersList::on_button_user_add()
   if(!user.empty())
   {
     //Add it to the group:
-    const Glib::ustring strQuery = DbUtils::build_query_add_user_to_group(m_combo_group->get_active_text(), user);
-    const bool test = DbUtils::query_execute_string(strQuery);
+    const auto strQuery = DbUtils::build_query_add_user_to_group(m_combo_group->get_active_text(), user);
+    const auto test = DbUtils::query_execute_string(strQuery);
     if(!test)
       std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;
 
@@ -220,9 +220,9 @@ void Dialog_UsersList::on_button_user_add()
 
     for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
-      const Glib::ustring table_name = (*iter)->get_name();
+      const auto table_name = (*iter)->get_name();
       const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);
-      const bool test = DbUtils::query_execute_string(strQuery);
+      const auto test = DbUtils::query_execute_string(strQuery);
       if(!test)
         std::cerr << G_STRFUNC << ": REVOKE failed." << std::endl;
     }
@@ -250,7 +250,7 @@ void Dialog_UsersList::on_button_user_new()
     //Check the password is acceptable:
     if(response == Gtk::RESPONSE_OK)
     {
-      const bool password_ok = dialog->check_password();
+      const auto password_ok = dialog->check_password();
       if(password_ok)
         keep_trying = false;
     }
@@ -258,8 +258,8 @@ void Dialog_UsersList::on_button_user_new()
       keep_trying = false;
   }
 
-  const Glib::ustring user = dialog->m_entry_user->get_text();
-  const Glib::ustring password = dialog->m_entry_password->get_text();
+  const auto user = dialog->m_entry_user->get_text();
+  const auto password = dialog->m_entry_password->get_text();
 
   delete dialog;
 
@@ -318,7 +318,7 @@ void Dialog_UsersList::on_button_user_edit()
         //Check the password is acceptable:
         if(response == Gtk::RESPONSE_OK)
         {
-          const bool password_ok = dialog->check_password();
+          const auto password_ok = dialog->check_password();
           if(password_ok)
             keep_trying = false;
         }
@@ -326,8 +326,8 @@ void Dialog_UsersList::on_button_user_edit()
           keep_trying = false;
       }
 
-      const Glib::ustring user = dialog->m_entry_user->get_text();
-      const Glib::ustring password = dialog->m_entry_password->get_text();
+      const auto user = dialog->m_entry_user->get_text();
+      const auto password = dialog->m_entry_password->get_text();
 
       delete dialog;
 
@@ -339,7 +339,7 @@ void Dialog_UsersList::on_button_user_edit()
         //TODO: Can this change the username too?
         //Note: If using MySQL, we need MySQL 5.6.7 for ALTER USER:
         const Glib::ustring strQuery = "ALTER USER " + DbUtils::escape_sql_id(user) + " PASSWORD '" + password + "'" ; //TODO: Escape the password.
-        const bool test = DbUtils::query_execute_string(strQuery);
+        const auto test = DbUtils::query_execute_string(strQuery);
         if(!test)
           std::cerr << G_STRFUNC << ": ALTER USER failed." << std::endl;
 
@@ -377,8 +377,8 @@ void Dialog_UsersList::fill_list()
 
   if(m_combo_group)
   {
-    const Glib::ustring group_name = m_combo_group->get_active_text();
-    const type_vec_strings user_list = Privs::get_database_users(group_name);
+    const auto group_name = m_combo_group->get_active_text();
+    const auto user_list = Privs::get_database_users(group_name);
     for(type_vec_strings::const_iterator iter = user_list.begin(); iter != user_list.end(); ++iter)
     {
       Gtk::TreeModel::iterator iterTree = m_model_users->append();

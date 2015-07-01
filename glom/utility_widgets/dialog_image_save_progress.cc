@@ -109,7 +109,7 @@ void DialogImageSaveProgress::on_stream_write(const Glib::RefPtr<Gio::AsyncResul
 {
   try
   {
-    const gssize size = m_stream->write_finish(result);
+    const auto size = m_stream->write_finish(result);
     g_assert(size >= 0); // Would have thrown an exception otherwise
     
     // Set progress

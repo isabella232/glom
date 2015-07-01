@@ -73,14 +73,14 @@ int main()
     document.set_file_uri(file_uri);
     document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_CENTRAL);
     document.set_database_title_original(test_title);
-    const bool saved = document.save();
+    const auto saved = document.save();
     g_assert(saved);
   }
   {
     Glom::Document document;
     document.set_file_uri(file_uri);
     int failure_code = 0;
-    const bool test = document.load(failure_code);
+    const auto test = document.load(failure_code);
     g_assert(test);
 
     g_assert( document.get_database_title_original() == test_title );
@@ -101,7 +101,7 @@ int main()
     Glom::Document document;
     document.set_file_uri(file_uri);
     int failure_code = 0;
-    const bool test = document.load(failure_code);
+    const auto test = document.load(failure_code);
     g_assert(test);
 
     g_assert( document.get_database_title_original() == test_title );

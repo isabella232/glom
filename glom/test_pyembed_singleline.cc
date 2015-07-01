@@ -24,7 +24,7 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
     {
       if(PyString_Check(pyStringObject))
       {
-        const char* pchResult = PyString_AsString(pyStringObject);
+        const auto pchResult = PyString_AsString(pyStringObject);
         if(pchResult)
           g_warning("result is %s", pchResult);
         else

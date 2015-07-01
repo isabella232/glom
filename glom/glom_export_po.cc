@@ -166,7 +166,7 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  const Gio::FileType file_type = file_input->query_file_type();
+  const auto file_type = file_input->query_file_type();
   if(file_type == Gio::FILE_TYPE_DIRECTORY)
   {
     std::cerr << _("Glom: The file path is a directory instead of a file.") << std::endl;
@@ -184,7 +184,7 @@ int main(int argc, char* argv[])
 
   //Get a URI (file://something) from the filepath:
   Glib::RefPtr<Gio::File> file_output = Gio::File::create_for_commandline_arg(group.m_arg_filepath_output);
-  const Glib::ustring ouput_uri = file_output->get_uri();
+  const auto ouput_uri = file_output->get_uri();
 
   /* Silently overwriting is easier when we use this in a batch:
   if(file_output->query_exists())
@@ -202,7 +202,7 @@ int main(int argc, char* argv[])
   Glom::Document document;
   document.set_file_uri(input_uri);
   int failure_code = 0;
-  const bool test = document.load(failure_code);
+  const auto test = document.load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)

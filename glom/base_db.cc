@@ -359,7 +359,7 @@ std::shared_ptr<LayoutItem_Field> Base_DB::offer_field_list_select_one_field(con
       dialog->set_transient_for(*transient_for);
 
     dialog->set_document(get_document(), table_name, start_field);
-    const int response = dialog->run();
+    const auto response = dialog->run();
     if(response == Gtk::RESPONSE_OK)
     {
       //Get the chosen field:
@@ -389,7 +389,7 @@ Base_DB::type_list_field_items Base_DB::offer_field_list(const Glib::ustring& ta
       dialog->set_transient_for(*transient_for);
 
     dialog->set_document(get_document(), table_name);
-    const int response = dialog->run();
+    const auto response = dialog->run();
     if(response == Gtk::RESPONSE_OK)
     {
       //Get the chosen field:
@@ -414,7 +414,7 @@ bool Base_DB::offer_non_field_item_formatting(const std::shared_ptr<LayoutItem_W
 
   dialog.set_item(layout_item, false);
 
-  const int response = dialog.run();
+  const auto response = dialog.run();
   if(response == Gtk::RESPONSE_OK)
   {
     //Get the chosen formatting:
@@ -444,7 +444,7 @@ std::shared_ptr<LayoutItem_Field> Base_DB::offer_field_formatting(const std::sha
 
   dialog->set_field(start_field, table_name, show_editable_options);
 
-  const int response = dialog->run();
+  const auto response = dialog->run();
   if(response == Gtk::RESPONSE_OK)
   {
     //Get the chosen field:
@@ -472,7 +472,7 @@ std::shared_ptr<LayoutItem_Text> Base_DB::offer_textobject(const std::shared_ptr
     dialog->set_transient_for(*transient_for);
 
   dialog->set_textobject(start_textobject, Glib::ustring(), show_title);
-  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
   if(response == Gtk::RESPONSE_OK)
   {
@@ -498,7 +498,7 @@ std::shared_ptr<LayoutItem_Image> Base_DB::offer_imageobject(const std::shared_p
     dialog->set_transient_for(*transient_for);
 
   dialog->set_imageobject(start_imageobject, Glib::ustring(), show_title);
-  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
   if(response == Gtk::RESPONSE_OK)
   {
@@ -525,7 +525,7 @@ std::shared_ptr<LayoutItem_Notebook> Base_DB::offer_notebook(const std::shared_p
 
   dialog->set_notebook(start_notebook);
   //dialog->set_transient_for(*this);
-  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
   if(response == Gtk::RESPONSE_OK)
   {
@@ -591,7 +591,7 @@ bool Base_DB::get_field_primary_key_index_for_fields(const type_vecLayoutFields&
 
 std::shared_ptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustring& table_name) const
 {
-  const Document* document = get_document();
+  const auto document = get_document();
   if(document)
   {
     //TODO_Performance: Cache this result?
@@ -628,7 +628,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
     if(item_field)
     {
       //Get the field info:
-      const Glib::ustring field_name = item->get_name();
+      const auto field_name = item->get_name();
 
       if(item_field->get_has_relationship_name()) //If it's a field in a related table.
       {
@@ -641,7 +641,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
 
 
           //TODO_Performance: We do this once for each related field, even if there are 2 from the same table:
-          const Privileges privs_related = Privs::get_current_privs(item_field->get_table_used(table_name));
+          const auto privs_related = Privs::get_current_privs(item_field->get_table_used(table_name));
           layout_item->m_priv_view = privs_related.m_view;
           layout_item->m_priv_edit = privs_related.m_edit;
 
@@ -700,7 +700,7 @@ Base_DB::type_vecConstLayoutFields Base_DB::get_table_fields_to_show_for_sequenc
   //Get field definitions from the database, with corrections from the document:
   type_vec_fields all_fields = DbUtils::get_fields_for_table(pDoc, table_name);
 
-  const Privileges table_privs = Privs::get_current_privs(table_name);
+  const auto table_privs = Privs::get_current_privs(table_name);
 
   //Get fields that the document says we should show:
   type_vecConstLayoutFields result;
@@ -807,10 +807,10 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
   field_in_record.m_key = primary_key;
 
   //Calculate the value for the field in every record:
-  const int rows_count = data_model->get_n_rows();
+  const auto rows_count = data_model->get_n_rows();
   for(int row = 0; row < rows_count; ++row)
   {
-    const Gnome::Gda::Value primary_key_value = data_model->get_value_at(0, row);
+    const auto primary_key_value = data_model->get_value_at(0, row);
 
     if(!Conversions::value_is_empty(primary_key_value))
     {
@@ -824,7 +824,7 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
 
 void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
 {
-  const Glib::ustring field_name = field_in_record.m_field->get_name();
+  const auto field_name = field_in_record.m_field->get_name();
   //std::cerr << G_STRFUNC << ": field_name=" << field_name << std::endl;
 
   //Do we already have this in our list?
@@ -864,7 +864,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
 
     //Calculate dependencies first:
     //TODO: Prevent unncessary recalculations?
-    const type_list_const_field_items fields_needed = get_calculation_fields(field_in_record.m_table_name, field_in_record.m_field);
+    const auto fields_needed = get_calculation_fields(field_in_record.m_table_name, field_in_record.m_field);
     for(type_list_const_field_items::const_iterator iterNeeded = fields_needed.begin(); iterNeeded != fields_needed.end(); ++iterNeeded)
     {
       std::shared_ptr<const LayoutItem_Field> field_item_needed = *iterNeeded;
@@ -908,7 +908,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
     {
       //recalculate:
       //TODO_Performance: We don't know what fields the python calculation will use, so we give it all of them:
-      const type_map_fields field_values = get_record_field_values_for_calculation(field_in_record.m_table_name, field_in_record.m_key, field_in_record.m_key_value);
+      const auto field_values = get_record_field_values_for_calculation(field_in_record.m_table_name, field_in_record.m_key, field_in_record.m_key_value);
       if(!field_values.empty())
       {
         std::shared_ptr<const Field> field = refCalcProgress.m_field;
@@ -958,7 +958,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
 
 Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const Glib::ustring& table_name, const std::shared_ptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
-  const Document* document = get_document();
+  const auto document = get_document();
   return DbUtils::get_record_field_values(document, table_name, primary_key, primary_key_value);
 }
 
@@ -983,7 +983,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   Document* document = get_document();
   g_assert(document);
 
-  const FieldInRecord field_in_record = layoutfield_in_record.get_fieldinrecord(*document);
+  const auto field_in_record = layoutfield_in_record.get_fieldinrecord(*document);
 
   //row is invalid, and ignored, for Box_Data_Details.
   if(!(field_in_record.m_field))
@@ -998,7 +998,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
     return false;
   }
 
-  const Glib::ustring field_name = field_in_record.m_field->get_name();
+  const auto field_name = field_in_record.m_field->get_name();
   if(!field_name.empty()) //This should not happen.
   {
     const Gnome::Gda::SqlExpr where_clause = 
@@ -1010,7 +1010,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
 
     try //TODO: The exceptions are probably already handled by query_execute(
     {
-      const bool test = DbUtils::query_execute(builder); //TODO: Respond to failure.
+      const auto test = DbUtils::query_execute(builder); //TODO: Respond to failure.
       if(!test)
       {
         std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
@@ -1189,7 +1189,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculated_fields(const Glib::
     //Look at each field in the table, and get lists of what fields trigger their calculations,
     //so we can see if our field is in any of those lists:
 
-    const type_vec_fields fields = document->get_table_fields(table_name); //TODO_Performance: Cache this?
+    const auto fields = document->get_table_fields(table_name); //TODO_Performance: Cache this?
     //Examine all fields, not just the the shown fields.
     //TODO: How do we trigger relcalculation of related fields if necessary?
     for(type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end();  ++iter)
@@ -1201,7 +1201,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculated_fields(const Glib::
       //std::cout << "  debug: examining field=" << field_to_examine->get_name() << std::endl;
 
       //Does this field's calculation use the field?
-      const type_list_const_field_items fields_triggered = get_calculation_fields(table_name, layoutitem_field_to_examine);
+      const auto fields_triggered = get_calculation_fields(table_name, layoutitem_field_to_examine);
       //std::cout << "    debug: field_triggered.size()=" << fields_triggered.size() << std::endl;
       type_list_const_field_items::const_iterator iterFind = std::find_if(fields_triggered.begin(), fields_triggered.end(), predicate_LayoutItemIsEqual<LayoutItem_Field>(field));
       if(iterFind != fields_triggered.end())
@@ -1231,7 +1231,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
     return result;
 
   Glib::ustring::size_type index = 0;
-  const Glib::ustring calculation = field->get_calculation();
+  const auto calculation = field->get_calculation();
   if(calculation.empty())
     return result;
 
@@ -1239,9 +1239,9 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
   if(!document)
     return result;
 
-  const Glib::ustring::size_type count = calculation.size();
+  const auto count = calculation.size();
   const Glib::ustring prefix = "record[\"";
-  const Glib::ustring::size_type prefix_size = prefix.size();
+  const auto prefix_size = prefix.size();
 
   while(index < count)
   {
@@ -1252,7 +1252,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
       if(pos_find_end  != Glib::ustring::npos)
       {
         Glib::ustring::size_type pos_start = pos_find + prefix_size;
-        const Glib::ustring field_name = calculation.substr(pos_start, pos_find_end - pos_start);
+        const auto field_name = calculation.substr(pos_start, pos_find_end - pos_start);
 
         std::shared_ptr<Field> field_found = document->get_field(table_name, field_name);
         if(field)
@@ -1271,14 +1271,14 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
   }
 
   //Check the use of related records too:
-  const Field::type_list_strings relationships_used = field->get_calculation_relationships();
+  const auto relationships_used = field->get_calculation_relationships();
   for(Field::type_list_strings::const_iterator iter = relationships_used.begin(); iter != relationships_used.end(); ++iter)
   {
     std::shared_ptr<Relationship> relationship = document->get_relationship(table_name, *iter);
     if(relationship)
     {
       //If the field uses this relationship then it should be triggered by a change in the key that specifies which record the relationship points to:
-      const Glib::ustring field_from_name = relationship->get_from_field();
+      const auto field_from_name = relationship->get_from_field();
       std::shared_ptr<Field> field_from = document->get_field(table_name, field_from_name);
       if(field_from)
       {
@@ -1302,8 +1302,8 @@ void Base_DB::do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::
 
    //Get values for lookup fields, if this field triggers those relationships:
    //TODO_performance: There is a LOT of iterating and copying here.
-   const Glib::ustring strFieldName = field_in_record.m_field->get_name();
-   const Document::type_list_lookups lookups = document->get_lookup_fields(field_in_record.m_table_name, strFieldName);
+   const auto strFieldName = field_in_record.m_field->get_name();
+   const auto lookups = document->get_lookup_fields(field_in_record.m_table_name, strFieldName);
    //std::cout << "debug: " << G_STRFUNC << ": lookups size=" << lookups.size() << std::endl;
    for(Document::type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
    {
@@ -1318,9 +1318,9 @@ void Base_DB::do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::
       std::shared_ptr<const Field> field_source = DbUtils::get_fields_for_table_one_field(document, relationship->get_to_table(), field_lookup->get_lookup_field());
       if(field_source)
       {
-        const Gnome::Gda::Value value = DbUtils::get_lookup_value(document, field_in_record.m_table_name, iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
+        const auto value = DbUtils::get_lookup_value(document, field_in_record.m_table_name, iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
 
-        const Gnome::Gda::Value value_converted = Conversions::convert_value(value, layout_item->get_glom_type());
+        const auto value_converted = Conversions::convert_value(value, layout_item->get_glom_type());
 
         LayoutFieldInRecord field_in_record_to_set(layout_item, field_in_record.m_table_name /* parent table */, field_in_record.m_key, field_in_record.m_key_value);
 
@@ -1346,7 +1346,7 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
 {
   bool result = true;  //Arbitrarily default to saying it's unique if we can't get any result.
 
-  const Glib::ustring table_name_used = field->get_table_used(table_name);
+  const auto table_name_used = field->get_table_used(table_name);
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
@@ -1433,7 +1433,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_target(found_set.m_table_name);
 
-  const guint eq_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+  const auto eq_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
         builder->add_field_id(primary_key->get_name(), found_set.m_table_name),
         builder->add_expr_as_value(primary_key_value));
   guint cond_id = 0;
@@ -1502,7 +1502,7 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
     //Adjust the WHERE clause appropriately for the extra JOIN:
     where_clause_to_table_name = uses_rel_temp->get_sql_join_alias_name();
 
-    const Glib::ustring to_field_name = uses_rel_temp->get_to_field_used();
+    const auto to_field_name = uses_rel_temp->get_to_field_used();
     where_clause_to_key_field = DbUtils::get_fields_for_table_one_field(document, relationship->get_to_table(), to_field_name);
     //std::cout << "extra_join=" << found_set.m_extra_join << std::endl;
 
@@ -1522,12 +1522,12 @@ bool Base_DB::set_database_owner_user(const Glib::ustring& user)
     return false;
 
   ConnectionPool* connectionpool = ConnectionPool::get_instance();
-  const Glib::ustring database_name = connectionpool->get_database();
+  const auto database_name = connectionpool->get_database();
   if(database_name.empty())
     return false;
 
   const Glib::ustring strQuery = "ALTER DATABASE " + DbUtils::escape_sql_id(database_name) + " OWNER TO " + DbUtils::escape_sql_id(user);
-  const bool test = DbUtils::query_execute_string(strQuery);
+  const auto test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
     std::cerr << G_STRFUNC << ": ALTER DATABASE failed." << std::endl;
@@ -1551,7 +1551,7 @@ bool Base_DB::disable_user(const Glib::ustring& user)
   }
 
   const Glib::ustring strQuery = "ALTER ROLE " + DbUtils::escape_sql_id(user) + " NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE";
-  const bool test = DbUtils::query_execute_string(strQuery);
+  const auto test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
     std::cerr << G_STRFUNC << ": DROP USER failed" << std::endl;

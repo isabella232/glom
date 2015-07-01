@@ -40,7 +40,7 @@ bool Document_XML::load_after(int& failure_code)
   //Initialize the output parameter:
   failure_code = 0;
 
-  const bool bTest = type_base::load_after(failure_code);
+  const auto bTest = type_base::load_after(failure_code);
   if(!bTest)
     return false; //Failed.
 
@@ -156,7 +156,7 @@ xmlpp::Element* Document_XML::get_node_document()
   //- means non-registered, which is commonly used.
   //m_pDOM_Document->set_internal_subset(m_strRootNodeName, "-//glom/" + m_strDTD_Name, m_strDTD_Name);
 
-  xmlpp::Element* nodeRoot = m_pDOM_Document->get_root_node();
+  auto nodeRoot = m_pDOM_Document->get_root_node();
   if(!nodeRoot)
   {
     //Add it if it isn't there already:
@@ -176,14 +176,14 @@ void Document_XML::add_indenting_white_space_to_node(xmlpp::Node* node, const Gl
 
   //Remove any previous indenting:
   {
-  xmlpp::Node::NodeList list = node->get_children();
+  auto list = node->get_children();
   for(xmlpp::Node::NodeList::iterator iter = list.begin(); iter != list.end(); ++iter)
   {
-    xmlpp::Node* child = *iter;
+    auto child = *iter;
     if(!child)
       continue;
 
-    xmlpp::ContentNode* text = dynamic_cast<xmlpp::ContentNode*>(child);
+    auto text = dynamic_cast<xmlpp::ContentNode*>(child);
     if(text)
     {
       if(text->is_white_space())
@@ -194,7 +194,7 @@ void Document_XML::add_indenting_white_space_to_node(xmlpp::Node* node, const Gl
 
   //All indents have a newline, 
   //and we add spaces each time we recurse:
-  Glib::ustring indent = start_indent;
+  auto indent = start_indent;
   if(indent.empty())
     indent = "\n  ";
   else
@@ -202,15 +202,15 @@ void Document_XML::add_indenting_white_space_to_node(xmlpp::Node* node, const Gl
 
   //Add indenting text items:
   bool had_children = false;
-  xmlpp::Element* node_as_element = dynamic_cast<xmlpp::Element*>(node);
-  xmlpp::Node::NodeList list = node_as_element->get_children();
+  auto node_as_element = dynamic_cast<xmlpp::Element*>(node);
+  auto list = node_as_element->get_children();
   for(xmlpp::Node::NodeList::iterator iter = list.begin(); iter != list.end(); ++iter)
   {
-    xmlpp::Node* child = *iter;
+    auto child = *iter;
     if(!child)
       continue;
 
-    xmlpp::ContentNode* text = dynamic_cast<xmlpp::ContentNode*>(child);
+    auto text = dynamic_cast<xmlpp::ContentNode*>(child);
     if(text)
     {
       if(!text->is_white_space())

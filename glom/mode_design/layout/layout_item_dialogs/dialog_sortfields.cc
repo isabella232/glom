@@ -193,7 +193,7 @@ LayoutItem_GroupBy::type_list_sort_fields Dialog_SortFields::get_fields() const
     Gtk::TreeModel::Row row = *iterFields;
 
     std::shared_ptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item];
-    const Glib::ustring field_name = item->get_name();
+    const auto field_name = item->get_name();
     if(!field_name.empty())
     {
       std::shared_ptr<LayoutItem_Field> field_copy = glom_sharedptr_clone(item);

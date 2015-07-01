@@ -82,8 +82,8 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQL::attempt_connect(const Glib::ustring&
     return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
-  const Glib::ustring default_database = "INFORMATION_SCHEMA";
-  //const Glib::ustring& actual_database = (!database.empty()) ? database : default_database;;
+  const auto default_database = "INFORMATION_SCHEMA";
+  //const auto actual_database = (!database.empty()) ? database : default_database;;
   const Glib::ustring cnc_string_main = "HOST=" + DbUtils::gda_cnc_string_encode(m_host)
    + ";PORT=" + DbUtils::gda_cnc_string_encode(port)
    + ";PROTOCOL=TCP"; //PROTOCOL is in libgda >= 5.1.2.
@@ -92,7 +92,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQL::attempt_connect(const Glib::ustring&
   Glib::RefPtr<Gnome::Gda::Connection> connection;
   Glib::RefPtr<Gnome::Gda::DataModel> data_model;
 
-  const Glib::ustring auth_string = create_auth_string(username, password);
+  const auto auth_string = create_auth_string(username, password);
 
 #ifdef GLOM_CONNECTION_DEBUG
   std::cout << std::endl << "DEBUG: Glom: trying to connect on port=" << port << std::endl;
@@ -127,7 +127,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQL::attempt_connect(const Glib::ustring&
 
     const Glib::ustring cnc_string = cnc_string_main + ";DB_NAME=" + DbUtils::gda_cnc_string_encode(default_database);
     Glib::RefPtr<Gnome::Gda::Connection> temp_conn;
-    Glib::ustring auth_string = create_auth_string(username, password);
+    auto auth_string = create_auth_string(username, password);
     try
     {
       temp_conn = Gnome::Gda::Connection::open_from_string("MySQL",
@@ -152,16 +152,16 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQL::attempt_connect(const Glib::ustring&
 
   if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
   {
-    const Gnome::Gda::Value value = data_model->get_value_at(0, 0);
+    const auto value = data_model->get_value_at(0, 0);
     if(value.get_value_type() == G_TYPE_STRING)
     {
-      const Glib::ustring version_text = value.get_string();
+      const auto version_text = value.get_string();
       //This seems to have the format "MySQL 7.4.11 on i486-pc-linux"
       const Glib::ustring namePart = "MySQL ";
-      const Glib::ustring::size_type posName = version_text.find(namePart);
+      const auto posName = version_text.find(namePart);
       if(posName != Glib::ustring::npos)
       {
-        const Glib::ustring versionPart = version_text.substr(namePart.size());
+        const auto versionPart = version_text.substr(namePart.size());
         m_mysql_server_version = strtof(versionPart.c_str(), 0);
 
 #ifdef GLOM_CONNECTION_DEBUG
@@ -199,14 +199,14 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
 		  if(old_fields[i]->get_field_info()->get_g_type() != new_fields[i]->get_field_info()->get_g_type())
 		  {
 		    // Create a temporary column
-		    std::shared_ptr<Field> temp_field = glom_sharedptr_clone(new_fields[i]);
+		    auto temp_field = glom_sharedptr_clone(new_fields[i]);
 		    temp_field->set_name(TEMP_COLUMN_NAME);
 		    // The temporary column must not be primary key as long as the original
 		    // (primary key) column is still present, because there cannot be two
 		    // primary key columns.
 		    temp_field->set_primary_key(false);
 
-		    const bool added = add_column(connection, table_name, temp_field);
+		    const auto added = add_column(connection, table_name, temp_field);
                     if(!added)
                     {
                       std::cerr << G_STRFUNC << ": add_column() failed." << std::endl;
@@ -214,8 +214,8 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
                     }
 
 		    Glib::ustring conversion_command;
-		    const Glib::ustring field_name_old_quoted = DbUtils::escape_sql_id(old_fields[i]->get_name());
-		    const Field::glom_field_type old_field_type = old_fields[i]->get_glom_type();
+		    const auto field_name_old_quoted = DbUtils::escape_sql_id(old_fields[i]->get_name());
+		    const auto old_field_type = old_fields[i]->get_glom_type();
 
 		    if(Field::get_conversion_possible(old_fields[i]->get_glom_type(), new_fields[i]->get_glom_type()))
 		    {
@@ -436,10 +436,10 @@ bool MySQL::check_mysql_gda_client_is_available()
 {
   //This API is horrible.
   //See libgda bug http://bugzilla.gnome.org/show_bug.cgi?id=575754
-  Glib::RefPtr<Gnome::Gda::DataModel> model = Gnome::Gda::Config::list_providers();
+  auto model = Gnome::Gda::Config::list_providers();
   if(model && model->get_n_columns() && model->get_n_rows())
   {
-    Glib::RefPtr<Gnome::Gda::DataModelIter> iter = model->create_iter();
+    auto iter = model->create_iter();
 
     do
     {
@@ -458,7 +458,7 @@ bool MySQL::check_mysql_gda_client_is_available()
       if(name.get_value_type() != G_TYPE_STRING)
         continue;
 
-      const Glib::ustring name_as_string = name.get_string();
+      const auto name_as_string = name.get_string();
       //std::cout << "DEBUG: Provider name:" << name_as_string << std::endl;
       if(name_as_string == "MySQL")
         return true;
@@ -505,7 +505,7 @@ std::string MySQL::get_path_to_mysql_executable(const std::string& program, bool
   }
 
   // Look in PATH otherwise
-  std::string path = Glib::find_program_in_path(real_program);
+  auto path = Glib::find_program_in_path(real_program);
   if(quoted)
     path = Glib::shell_quote(path);
   return path;
@@ -513,7 +513,7 @@ std::string MySQL::get_path_to_mysql_executable(const std::string& program, bool
   // MYSQL_UTILS_PATH is defined in config.h, based on the configure.
   try
   {
-    std::string path = Glib::build_filename(MYSQL_UTILS_PATH, program + EXEEXT);
+    auto path = Glib::build_filename(MYSQL_UTILS_PATH, program + EXEEXT);
     if(quoted)
       path = Glib::shell_quote(path);
     return path;
@@ -573,7 +573,7 @@ bool MySQL::save_backup(const SlotProgress& slot_progress, const Glib::ustring& 
     return false;
   }
 
-  const std::string path_backup = get_self_hosting_backup_path(std::string(), true /* create parent directory if necessary */);
+  const auto path_backup = get_self_hosting_backup_path(std::string(), true /* create parent directory if necessary */);
   if(path_backup.empty())
     return false;
 
@@ -584,7 +584,7 @@ bool MySQL::save_backup(const SlotProgress& slot_progress, const Glib::ustring& 
 
   //std::cout << "DEBUG: command_dump=" << command_dump << std::endl;
 
-  const bool result = Glom::Spawn::execute_command_line_and_wait(command_dump, slot_progress);
+  const auto result = Glom::Spawn::execute_command_line_and_wait(command_dump, slot_progress);
 
   if(!result)
   {
@@ -644,7 +644,7 @@ bool MySQL::convert_backup(const SlotProgress& slot_progress, const std::string&
 
   //TODO: Put the password in .pgpass
 
-  const bool result = Glom::Spawn::execute_command_line_and_wait(command_restore, slot_progress);
+  const auto result = Glom::Spawn::execute_command_line_and_wait(command_restore, slot_progress);
 
   if(!result)
   {
@@ -657,7 +657,7 @@ bool MySQL::convert_backup(const SlotProgress& slot_progress, const std::string&
 std::string MySQL::get_self_hosting_path(bool create, const std::string& child_directory)
 {
   //Get the filepath of the directory that we should create:
-  const std::string dbdir_uri = m_database_directory_uri;
+  const auto dbdir_uri = m_database_directory_uri;
   //std::cout << "debug: dbdir_uri=" << dbdir_uri << std::endl;
 
   std::string dbdir;
@@ -727,7 +727,7 @@ bool MySQL::create_directory_filepath(const std::string& filepath)
   if(filepath.empty())
     return false;
 
-  const int mkdir_succeeded = g_mkdir_with_parents(filepath.c_str(), 0770);
+  const auto mkdir_succeeded = g_mkdir_with_parents(filepath.c_str(), 0770);
   if(mkdir_succeeded == -1)
   {
     std::cerr << G_STRFUNC << ": Error from g_mkdir_with_parents() while trying to create directory: " << filepath << std::endl;
@@ -744,7 +744,7 @@ bool MySQL::file_exists_filepath(const std::string& filepath)
   if(filepath.empty())
     return false;
 
-  const Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(filepath);
+  const auto file = Gio::File::create_for_path(filepath);
   return file && file->query_exists();
 }
 
@@ -753,7 +753,7 @@ bool MySQL::file_exists_uri(const std::string& uri) const
   if(uri.empty())
     return false;
 
-  const Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  const auto file = Gio::File::create_for_uri(uri);
   return file && file->query_exists();
 }
 
@@ -764,7 +764,7 @@ bool MySQL::create_text_file(const std::string& file_uri, const std::string& con
   if(file_uri.empty())
     return false;
 
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
+  auto file = Gio::File::create_for_uri(file_uri);
   Glib::RefPtr<Gio::FileOutputStream> stream;
 
   //Create the file if it does not already exist:
@@ -803,7 +803,7 @@ bool MySQL::create_text_file(const std::string& file_uri, const std::string& con
   stream.create(error);
   if(error.get())
   {
-    const Gio::Error& ex = *error.get();
+    const auto ex = *error.get();
 #endif
     // If the operation was not successful, print the error and abort
     std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): exception while creating file." << std::endl
@@ -818,7 +818,7 @@ bool MySQL::create_text_file(const std::string& file_uri, const std::string& con
 
 
   gssize bytes_written = 0;
-  const std::string::size_type contents_size = contents.size();
+  const auto contents_size = contents.size();
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
@@ -831,7 +831,7 @@ bool MySQL::create_text_file(const std::string& file_uri, const std::string& con
   bytes_written = stream->write(contents.data(), contents_size, error);
   if(error.get())
   {
-    Gio::Error& ex = *error.get();
+    auto ex = *error.get();
 #endif
     // If the operation was not successful, print the error and abort
     std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): exception while writing to file." << std::endl

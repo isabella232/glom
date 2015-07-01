@@ -166,7 +166,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
 boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& value)
 {
     GValue* boxed = const_cast<GValue*>(value.gobj());
-    const GType value_type = G_VALUE_TYPE(boxed);
+    const auto value_type = G_VALUE_TYPE(boxed);
     boost::python::object ret;
 
 #if PY_VERSION_HEX >= 0x02040000
@@ -187,7 +187,7 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
     } else if(value_type == G_TYPE_UINT64) {
         ret = boost::python::object(g_value_get_uint64(boxed));
     } else if(value_type == GDA_TYPE_BINARY) {
-        const GdaBinary* gdabinary = gda_value_get_binary(boxed);
+        const auto gdabinary = gda_value_get_binary(boxed);
         if(gdabinary)
           ret = boost::python::object((const char*)gdabinary->data); /* TODO: Use the size. TODO: Check for null GdaBinary. */
     } else if(value_type == GDA_TYPE_BLOB) {
@@ -208,9 +208,9 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
         if(val)
         {
           //Note that the g_date_get* functions give what we expect, but direct struct field access does not.
-          const int year = g_date_get_year(val);
-          const int month = g_date_get_month(val);
-          const int day = g_date_get_day(val);
+          const auto year = g_date_get_year(val);
+          const auto month = g_date_get_month(val);
+          const auto day = g_date_get_day(val);
 
           if(!g_date_valid(val))
             std::cerr << G_STRFUNC << ": The GDate is not valid." << std::endl;
@@ -223,7 +223,7 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
     } else if(value_type == G_TYPE_DOUBLE) {
         ret = boost::python::object(g_value_get_double(boxed));
     } else if(value_type == GDA_TYPE_GEOMETRIC_POINT) {
-        const GdaGeometricPoint* val = gda_value_get_geometric_point(boxed);
+        const auto val = gda_value_get_geometric_point(boxed);
         if(val)
         {
           PyObject* cobject = Py_BuildValue ("(ii)", val->x, val->y);
@@ -232,25 +232,25 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
     } else if(value_type == G_TYPE_INT) {
         ret = boost::python::object(g_value_get_int(boxed));
     } else if(value_type == GDA_TYPE_NUMERIC) {
-        const GdaNumeric* val = gda_value_get_numeric(boxed);
+        const auto val = gda_value_get_numeric(boxed);
         ret = boost::python::object(gda_numeric_get_double((GdaNumeric*)val));
     } else if(value_type == G_TYPE_FLOAT) {
         ret = boost::python::object(g_value_get_float(boxed));
     } else if(value_type == GDA_TYPE_SHORT) {
         ret = boost::python::object(gda_value_get_short(boxed));
     } else if(value_type == G_TYPE_STRING) {
-        const gchar* val = g_value_get_string(boxed);
+        const auto val = g_value_get_string(boxed);
         ret = boost::python::object(val);
     } else if(value_type == GDA_TYPE_TIME) {
 #if PY_VERSION_HEX >= 0x02040000
-        const GdaTime* val = gda_value_get_time(boxed);
+        const auto val = gda_value_get_time(boxed);
         if(val)
         {
           PyObject* cobject = PyTime_FromTime(val->hour, val->minute, val->second, 0); /* TODO: Should we ignore GDate::timezone ? */
           ret = boost::python::object( (boost::python::handle<>(cobject)) );
         }
     } else if(value_type == GDA_TYPE_TIMESTAMP) {
-        const GdaTimestamp* val = gda_value_get_timestamp(boxed);
+        const auto val = gda_value_get_timestamp(boxed);
         if(val)
         {
           PyObject* cobject = PyDateTime_FromDateAndTime(val->year, val->month, val->day, val->hour, val->minute, val->second, 0); /* TODO: Should we ignore GdaTimestamp::timezone ? */

@@ -41,7 +41,7 @@ bool glom_show_dialog_invalid_data(Field::glom_field_type glom_type)
     
   dialog->set_example_data(glom_type);
   //dialog->set_transient_for(*this);
-  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   
   delete dialog;
   return (response == 2); //The glade file has a response of 2 for the Revert button.

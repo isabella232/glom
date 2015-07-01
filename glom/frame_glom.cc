@@ -573,7 +573,7 @@ void Frame_Glom::on_menu_file_export()
 
   //const int index_primary_key = fieldsSequence.size() - 1;
 
-  const FoundSet found_set = m_Notebook_Data.get_found_set();
+  const auto found_set = m_Notebook_Data.get_found_set();
 
   std::fstream the_stream(filepath.c_str(), std::ios_base::out | std::ios_base::trunc);
   if(!the_stream)
@@ -615,7 +615,7 @@ void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, 
 
         for(guint col_index = 0; col_index < columns_count; ++col_index)
         {
-          const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
+          const auto value = result->get_value_at(col_index, row_index);
 
           std::shared_ptr<const LayoutItem_Field> layout_item = fieldsSequence[col_index];
           //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
@@ -665,7 +665,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
 
         for(guint col_index = 0; col_index < columns_count; ++col_index)
         {
-          const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
+          const auto value = result->get_value_at(col_index, row_index);
 
           std::shared_ptr<const LayoutItem_Field> layout_item = fieldsSequence[col_index];
           //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
@@ -681,7 +681,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
               return;
             }
 
-            const Glib::ustring field_text = field->to_file_format(value);
+            const auto field_text = field->to_file_format(value);
 
             if(layout_item->get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
             {
@@ -824,19 +824,19 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
     dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
     dialog.add_button(_("_Share"), Gtk::RESPONSE_OK);
 
-    const int response = dialog.run();
+    const auto response = dialog.run();
     dialog.hide();
     if(response == Gtk::RESPONSE_OK)
     {
       shared = true;
 
       //Ask for a user/password if none is set:
-      const bool real_user_exists = Privs::get_developer_user_exists_with_password(document->get_hosting_mode());
+      const auto real_user_exists = Privs::get_developer_user_exists_with_password(document->get_hosting_mode());
       if(!real_user_exists)
       {
         //Ask for an initial user:
         Glib::ustring user, password;
-        const bool initial_password_provided = connection_request_initial_password(user, password);
+        const auto initial_password_provided = connection_request_initial_password(user, password);
         bool added = false;
         if(initial_password_provided)
           added = DbUtils::add_user(document, user, password, GLOM_STANDARD_GROUP_NAME_DEVELOPER);
@@ -861,7 +861,7 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
         //b) Reconnect as that user so we can remove the default user.
         //TODO: Check that this user is a developer.
         bool database_not_found = false; //Ignored;
-        const bool dev_password_known = connection_request_password_and_attempt(database_not_found, "" ,"", true /* alternative text */);
+        const auto dev_password_known = connection_request_password_and_attempt(database_not_found, "" ,"", true /* alternative text */);
         if(!dev_password_known)
         {
           shared = false;
@@ -874,8 +874,8 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
         //Remove the default no-password user, because that would be a security hole:
         //We do this after adding/using the non-default user, because we can't
         //remove a currently-used user.
-        const Document::HostingMode hosting_mode = document->get_hosting_mode();
-        const bool default_user_exists = Privs::get_default_developer_user_exists(hosting_mode);
+        const auto hosting_mode = document->get_hosting_mode();
+        const auto default_user_exists = Privs::get_default_developer_user_exists(hosting_mode);
         if(default_user_exists)
         {
           //Force a reconnection with the new password:
@@ -884,10 +884,10 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
           //Remove it, after stopping it from being the database owner:
           bool disabled = true;
           Glib::ustring default_password;
-          const Glib::ustring default_user = Privs::get_default_developer_user_name(default_password, hosting_mode);
+          const auto default_user = Privs::get_default_developer_user_name(default_password, hosting_mode);
 
           ConnectionPool* connectionpool = ConnectionPool::get_instance();
-          const bool reowned = set_database_owner_user(connectionpool->get_user());
+          const auto reowned = set_database_owner_user(connectionpool->get_user());
           bool removed = false;
           if(reowned)
             removed = DbUtils::remove_user(default_user);
@@ -930,22 +930,22 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
     dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
     dialog.add_button(_("_Stop Sharing"), Gtk::RESPONSE_OK);
 
-    const int response = dialog.run();
+    const auto response = dialog.run();
     dialog.hide();
     if(response == Gtk::RESPONSE_OK)
     {
       shared = false;
 
       //Make sure the default no-password user exists:
-      const Document::HostingMode hosting_mode = document->get_hosting_mode();
-      const bool default_user_exists = Privs::get_default_developer_user_exists(hosting_mode);
+      const auto hosting_mode = document->get_hosting_mode();
+      const auto default_user_exists = Privs::get_default_developer_user_exists(hosting_mode);
       if(!default_user_exists)
       {
         //Add it:
         Glib::ustring default_password;
-        const Glib::ustring default_user = Privs::get_default_developer_user_name(default_password, hosting_mode);
+        const auto default_user = Privs::get_default_developer_user_name(default_password, hosting_mode);
 
-        const bool added = DbUtils::add_user(document, default_user, default_password, GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+        const auto added = DbUtils::add_user(document, default_user, default_password, GLOM_STANDARD_GROUP_NAME_DEVELOPER);
         if(!added)
         {
            shared = true;
@@ -1035,7 +1035,7 @@ void Frame_Glom::set_mode_find()
 
   const bool previously_in_data_mode = (m_Mode == MODE_Data);
 
-  const Notebook_Data::dataview list_or_details = m_Notebook_Data.get_current_view();
+  const auto list_or_details = m_Notebook_Data.get_current_view();
 
   //A workaround hack to make sure that the list view will be active when the results are shown.
   //Because the list doesn't refresh properly (to give the first result) when the Details view was active first.
@@ -1166,7 +1166,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
     else
     {
       //Create the new table:
-      const bool result = DbUtils::create_table_with_default_fields(get_document(), table_name);
+      const auto result = DbUtils::create_table_with_default_fields(get_document(), table_name);
       if(!result)
       {
         std::cerr << G_STRFUNC << ": create_table_with_default_fields() failed." << std::endl;
@@ -1321,7 +1321,7 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
   Gnome::Gda::SqlExpr where_clause_to_use = where_clause;
 
   //Prefer the quick find text if any was entered:
-  const Glib::ustring quickfind_criteria = m_pEntry_QuickFind->get_text();
+  const auto quickfind_criteria = m_pEntry_QuickFind->get_text();
   if(!quickfind_criteria.empty())
   {
     where_clause_to_use = 
@@ -1353,7 +1353,7 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
     FoundSet found_set;
     found_set.m_table_name = m_table_name;
     found_set.m_where_clause = where_clause_to_use;
-    const bool inited = m_Notebook_Data.init_db_details(found_set);
+    const auto inited = m_Notebook_Data.init_db_details(found_set);
 
     m_Notebook_Data.select_page_for_find_results();
 
@@ -1368,7 +1368,7 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
 
   if(!records_found)
   {
-    const bool find_again = UiUtils::show_warning_no_records_found(*app);
+    const auto find_again = UiUtils::show_warning_no_records_found(*app);
 
     if(!find_again)
     {
@@ -1408,7 +1408,7 @@ void Frame_Glom::show_table_title()
     table_label = m_table_name;
 
   //Show the table title in bold text, because it's important to the user.
-  const Glib::ustring title = UiUtils::bold_message(table_label);
+  const auto title = UiUtils::bold_message(table_label);
   m_pLabel_Table_DataMode->set_markup(title);
   m_pLabel_Table_FindMode->set_markup(title);
 }
@@ -1956,7 +1956,7 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
     //Check the password is acceptable:
     if(response == Gtk::RESPONSE_OK)
     {
-      const bool password_ok = dialog->check_password();
+      const auto password_ok = dialog->check_password();
       if(password_ok)
       {
         user = dialog->get_user();
@@ -2001,7 +2001,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     add_view(m_pDialogConnection); //Also a composite view.
   }
 
-  const Document::HostingMode hosting_mode = document->get_hosting_mode();
+  const auto hosting_mode = document->get_hosting_mode();
   switch(hosting_mode)
   {
     case Document::HOSTING_MODE_POSTGRES_SELF:
@@ -2011,7 +2011,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
       if(document->get_network_shared()) //Usually not the case when creating new documents.
       {
-        const bool test = connection_request_initial_password(user, password);
+        const auto test = connection_request_initial_password(user, password);
         if(!test)
           return false;
       }
@@ -2029,7 +2029,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       connection_pool->set_password(password);
 
       ShowProgressMessage progress_message(_("Initializing Database Data"));
-      const bool initialized = handle_connection_initialize_errors( connection_pool->initialize(
+      const auto initialized = handle_connection_initialize_errors( connection_pool->initialize(
          sigc::mem_fun(*this, &Frame_Glom::on_connection_initialize_progress) ) );
 
       if(!initialized)
@@ -2051,7 +2051,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       m_pDialogConnection->load_from_document(); //Get good defaults.
       m_pDialogConnection->set_transient_for(*get_app_window());
 
-      const int response = Glom::UiUtils::dialog_run_with_help(m_pDialogConnection);
+      const auto response = Glom::UiUtils::dialog_run_with_help(m_pDialogConnection);
       m_pDialogConnection->hide();
 
       if(response == Gtk::RESPONSE_OK)
@@ -2106,7 +2106,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     return false;
   }
 
-  const Glib::ustring database_name = document->get_connection_database();
+  const auto database_name = document->get_connection_database();
 
   //std::cout << "debug: database_name to create=" << database_name << std::endl;
 
@@ -2415,7 +2415,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
 
 void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
 {
-  const Privileges table_privs = Privs::get_current_privs(m_table_name);
+  const auto table_privs = Privs::get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)
@@ -2448,10 +2448,10 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
 
 void Frame_Glom::do_print_layout(const Glib::ustring& print_layout_name, bool preview, Gtk::Window* transient_for)
 {
-  const Document* document = get_document();
+  const auto document = get_document();
   std::shared_ptr<const PrintLayout> print_layout = document->get_print_layout(m_table_name, print_layout_name);
     
-  const Privileges table_privs = Privs::get_current_privs(m_table_name);
+  const auto table_privs = Privs::get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)
@@ -2462,7 +2462,7 @@ void Frame_Glom::do_print_layout(const Glib::ustring& print_layout_name, bool pr
   
   //TODO: When expanding items, avoid the page gaps that the print layout's design
   //has added.  
-  const FoundSet found_set = m_Notebook_Data.get_found_set_selected();
+  const auto found_set = m_Notebook_Data.get_found_set_selected();
   //Note that found_set.m_where_clause could be empty if there are no records yet,
   //and that is acceptable if this is for a print preview while designing the print layout. 
   
@@ -2479,7 +2479,7 @@ void Frame_Glom::on_dialog_layout_report_hide()
 
   if(document && true) //m_pDialogLayoutReport->get_modified())
   {
-    const Glib::ustring original_name = m_pDialogLayoutReport->get_original_report_name();
+    const auto original_name = m_pDialogLayoutReport->get_original_report_name();
     std::shared_ptr<Report> report = m_pDialogLayoutReport->get_report();
     if(report && (original_name != report->get_name()))
       document->remove_report(m_table_name, original_name);
@@ -2499,7 +2499,7 @@ void Frame_Glom::on_dialog_layout_print_hide()
 
   if(document && true) //m_pDialogLayoutReport->get_modified())
   {
-    const Glib::ustring original_name = m_pDialogLayoutPrint->get_original_name();
+    const auto original_name = m_pDialogLayoutPrint->get_original_name();
     std::shared_ptr<PrintLayout> print_layout = m_pDialogLayoutPrint->get_print_layout();
     if(print_layout && (original_name != print_layout->get_name()))
       document->remove_report(m_table_name, original_name);
@@ -2561,7 +2561,7 @@ void Frame_Glom::on_notebook_data_record_details_requested(const Glib::ustring& 
 void Frame_Glom::on_notebook_data_record_selection_changed()
 {
   bool something_selected = false;
-  const FoundSet found_set = m_Notebook_Data.get_found_set_selected();
+  const auto found_set = m_Notebook_Data.get_found_set_selected();
   if(!found_set.m_where_clause.empty())
     something_selected = true;
   

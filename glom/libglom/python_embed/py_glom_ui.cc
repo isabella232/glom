@@ -47,7 +47,7 @@ void PyGlomUI::show_table_details(const std::string& table_name, const boost::py
   Gnome::Gda::Value gda_primary_key_value;
 
   GValue value = {0, {{0}}};
-  const bool test = glom_pygda_value_from_pyobject(&value, primary_key_value);
+  const auto test = glom_pygda_value_from_pyobject(&value, primary_key_value);
   if(test && G_IS_VALUE(&value))
     gda_primary_key_value = Gnome::Gda::Value(&value);
 

@@ -43,7 +43,7 @@ double get_page_height(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk
   margin_top = 0;
   margin_bottom = 0;
 
-  const Gtk::PaperSize paper_size = page_setup->get_paper_size();
+  const auto paper_size = page_setup->get_paper_size();
   
   double page_height = 0;
   if(page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
@@ -69,11 +69,11 @@ static void get_page_y_start_and_end(const Glib::RefPtr<const Gtk::PageSetup>& p
   y1 = 0;
   y2 = 0;
   
-  const Gtk::PaperSize paper_size = page_setup->get_paper_size();
+  const auto paper_size = page_setup->get_paper_size();
   
   double margin_top = 0;
   double margin_bottom = 0;
-  const double page_height = get_page_height(page_setup, units, 
+  const auto page_height = get_page_height(page_setup, units, 
     margin_top, margin_bottom);
     
   //y1:
@@ -93,9 +93,9 @@ double get_offset_to_move_fully_to_next_page(const Glib::RefPtr<const Gtk::PageS
 {
   double top_margin = 0;
   double bottom_margin = 0;
-  const double page_height = get_page_height(page_setup, units, top_margin, bottom_margin);
+  const auto page_height = get_page_height(page_setup, units, top_margin, bottom_margin);
 
-  const guint current_page = PrintLayoutUtils::get_page_for_y(page_setup, units, y);
+  const auto current_page = PrintLayoutUtils::get_page_for_y(page_setup, units, y);
   const double usable_page_start = current_page * page_height + top_margin + GRID_GAP;
   //std::cout << G_STRFUNC << ": debug: current_page=" << current_page << ", usable_page_start =" << usable_page_start << std::endl;
 
@@ -119,7 +119,7 @@ static double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_
 {
   double top_margin = 0;
   double bottom_margin = 0;
-  const double page_height = get_page_height(page_setup, units, top_margin, bottom_margin);
+  const auto page_height = get_page_height(page_setup, units, top_margin, bottom_margin);
 
   //Ignore items that would not overlap even if they had the same y:
   //Note that we try to keep an extra GRID_GAP from the edge of the margin:
@@ -127,7 +127,7 @@ static double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_
   if(height > usable_page_height)
     return y; //It will always be in a margin because it is so big. We could never move it somewhere where it would not be.
 
-  const double offset = get_offset_to_move_fully_to_next_page(page_setup, units, y, height);
+  const auto offset = get_offset_to_move_fully_to_next_page(page_setup, units, y, height);
   return y + offset;
 }
 
@@ -144,7 +144,7 @@ bool needs_move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_set
   //We don't actually move it, because items would then group together 
   //at the top of pages.
   //Instead, the caller will discover an offset to apply to all items:
-  const double y_new = move_fully_to_page(page_setup, units, y, height);
+  const auto y_new = move_fully_to_page(page_setup, units, y, height);
   if(y_new != y)
     return true;
 
@@ -160,7 +160,7 @@ static double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_
   double height = 0;
   item->get_print_layout_position(x, y, width, height);
   
-  const double y_new = move_fully_to_page(page_setup, units, y, height);
+  const auto y_new = move_fully_to_page(page_setup, units, y, height);
   if(y_new != y)
     item->set_print_layout_position(x, y_new, width, height);
     
@@ -177,14 +177,14 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
 
   const double gap = GRID_GAP;
 
-  const Gtk::PaperSize paper_size = page_setup->get_paper_size();
-  const double item_width = paper_size.get_width(units) - x -
+  const auto paper_size = page_setup->get_paper_size();
+  const auto item_width = paper_size.get_width(units) - x -
     page_setup->get_right_margin(units) - gap;
   const double field_height = ITEM_HEIGHT;
 
   //Show the group's title
   //(but do not fall back to the name, because unnamed groups are really wanted sometimes.)
-  const Glib::ustring title = item_get_title(layout_group);
+  const auto title = item_get_title(layout_group);
   if(!title.empty())
   {
     std::shared_ptr<LayoutItem_Text> text = std::make_shared<LayoutItem_Text>();
@@ -248,7 +248,7 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
       if(field)
       {
         text_title = std::make_shared<LayoutItem_Text>();
-        const Glib::ustring field_title = item_get_title_or_name(field);
+        const auto field_title = item_get_title_or_name(field);
         text_title->set_text(field_title + ":", AppWindow::get_current_locale());
         
         if(avoid_page_margins)
@@ -274,10 +274,10 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
       double this_field_height = field_height;
       if(field)
       {
-        const Formatting& formatting = field->get_formatting_used();
+        const auto formatting = field->get_formatting_used();
         if(formatting.get_text_format_multiline())
         {
-          const guint lines = formatting.get_text_format_multiline_height_lines();
+          const auto lines = formatting.get_text_format_multiline_height_lines();
           if(lines)
             this_field_height = field_height * lines;
         }
@@ -301,7 +301,7 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
 
 guint get_page_for_y(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, double y)
 {
-  const double page_height = get_page_height(page_setup, units);
+  const auto page_height = get_page_height(page_setup, units);
   if(!page_height)
     return 0; //Avoid a division by zero.
 
@@ -329,7 +329,7 @@ std::shared_ptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageS
     x += GRID_GAP;
   
   //The table title:
-  const Glib::ustring title = document->get_table_title_singular(table_name, AppWindow::get_current_locale());
+  const auto title = document->get_table_title_singular(table_name, AppWindow::get_current_locale());
   if(!title.empty())
   {
     std::shared_ptr<LayoutItem_Text> text = std::make_shared<LayoutItem_Text>();
@@ -360,7 +360,7 @@ std::shared_ptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageS
   //y is probably _after_ the last item, not exactly at the bottom of the last item, so we subtract gap.
   //TODO: However, this might not be reliable,
   //so this could lead to an extra blank page.
-  const guint page_number = get_page_for_y(page_setup, units, y - GRID_GAP);
+  const auto page_number = get_page_for_y(page_setup, units, y - GRID_GAP);
   if(page_number >= print_layout->get_page_count())
   {
     print_layout->set_page_count(page_number + 1);
@@ -411,7 +411,7 @@ void do_print_layout(const std::shared_ptr<const PrintLayout>& print_layout, con
 
   //TODO: Put this in a utility function.
   Glib::RefPtr<Gtk::PageSetup> page_setup;
-  const Glib::ustring key_file_text = print_layout->get_page_setup();
+  const auto key_file_text = print_layout->get_page_setup();
   if(!key_file_text.empty())
   {
     Glib::KeyFile key_file;

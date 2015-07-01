@@ -110,7 +110,7 @@ Glib::ustring UsesRelationship::get_sql_table_or_join_alias_name(const Glib::ust
 {
   if(get_has_relationship_name() || get_has_related_relationship_name())
   {
-    const Glib::ustring result = get_sql_join_alias_name();
+    const auto result = get_sql_join_alias_name();
     if(result.empty())
     {
       //Non-linked-fields relationship:
@@ -154,7 +154,7 @@ Glib::ustring UsesRelationship::get_title_singular_used(const Glib::ustring& par
   if(!used)
     return Glib::ustring();
 
-  const Glib::ustring result = used->get_title_singular(locale);
+  const auto result = used->get_title_singular(locale);
   if(!result.empty())
     return result;
   else
@@ -202,7 +202,7 @@ Glib::ustring UsesRelationship::get_sql_join_alias_name() const
     result += ("relationship_" + m_relationship->get_name());
 
     /*
-    const Glib::ustring field_table_name = relationship->get_to_table();
+    const auto field_table_name = relationship->get_to_table();
     if(field_table_name.empty())
     {
       std::cerr << G_STRFUNC << ": field_table_name is null. relationship name = " << relationship->get_name() << std::endl;

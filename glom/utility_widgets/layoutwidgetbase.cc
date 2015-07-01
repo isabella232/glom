@@ -153,23 +153,23 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_p
     }
   }
 
-  const Formatting& formatting = layout_item->get_formatting_used();
+  const auto formatting = layout_item->get_formatting_used();
 
   //Use the text formatting:
-  const Glib::ustring font_desc = formatting.get_text_format_font();
+  const auto font_desc = formatting.get_text_format_font();
   if(!font_desc.empty())
   {
     UiUtils::load_font_into_css_provider(*widget_to_change, font_desc);
   }
 
   
-  const Glib::ustring fg = formatting.get_text_format_color_foreground();
+  const auto fg = formatting.get_text_format_color_foreground();
   if(!fg.empty())
   {
     UiUtils::load_color_into_css_provider(*widget_to_change, fg);
   }
 
-  const Glib::ustring bg = formatting.get_text_format_color_background();
+  const auto bg = formatting.get_text_format_color_background();
   if(!bg.empty())
   {
     if(!labelglom && !button)

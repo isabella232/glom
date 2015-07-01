@@ -78,7 +78,7 @@ int main()
 {
   Glom::libglom_init();
   
-  const int result = test_all_hosting_modes(sigc::ptr_fun(&test));
+  const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();
 

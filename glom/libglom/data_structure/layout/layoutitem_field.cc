@@ -60,7 +60,7 @@ LayoutItem* LayoutItem_Field::clone() const
 
 bool LayoutItem_Field::operator==(const LayoutItem_Field& src) const
 {
-  bool result = LayoutItem_WithFormatting::operator==(src) &&
+  auto result = LayoutItem_WithFormatting::operator==(src) &&
     UsesRelationship::operator==(src) &&
     (m_priv_view == src.m_priv_view) &&
     (m_priv_edit == src.m_priv_edit) &&
@@ -254,7 +254,7 @@ const Formatting& LayoutItem_Field::get_formatting_used() const
 
 Formatting::HorizontalAlignment LayoutItem_Field::get_formatting_used_horizontal_alignment(bool for_details_view) const
 {
-  const Formatting& format = get_formatting_used();
+  const auto format = get_formatting_used();
   Formatting::HorizontalAlignment alignment = 
     format.get_horizontal_alignment();
   
@@ -276,7 +276,7 @@ Formatting::HorizontalAlignment LayoutItem_Field::get_formatting_used_horizontal
 
 bool LayoutItem_Field::get_formatting_used_has_translatable_choices() const
 {
-  const Formatting& formatting = get_formatting_used();
+  const auto formatting = get_formatting_used();
   if(!formatting.get_has_custom_choices())
     return false;
 
@@ -339,8 +339,8 @@ void LayoutItem_Field::set_title_custom(const std::shared_ptr<CustomTitle>& titl
 
 bool LayoutItem_Field::is_same_field(const std::shared_ptr<const LayoutItem_Field>& field) const
 {
-  const UsesRelationship* uses_a = this;
-  const UsesRelationship* uses_b = &(*field);
+  const auto uses_a = this;
+  const auto uses_b = &(*field);
   if(!uses_a || !uses_b)
     return false; //Shouldn't happen.
     

@@ -112,7 +112,7 @@ void DbTreeModelWithExtraText::get_value_vfunc(const TreeModel::iterator& iter, 
     {
       Glib::Value<Gnome::Gda::Value> value_db;
       get_value_vfunc(iter, m_column_index_first, value_db);
-      const DbValue dbvalue = value_db.get();
+      const auto dbvalue = value_db.get();
       
       text =
         Conversions::get_text_for_gda_value(m_item_first->get_glom_type(), dbvalue, m_item_first->get_formatting_used().m_numeric_format);

@@ -227,11 +227,11 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   //Allow the function to import from our script library:
   if(pDocument)
   {
-    const std::vector<Glib::ustring> module_names = pDocument->get_library_module_names();
+    const auto module_names = pDocument->get_library_module_names();
     for(std::vector<Glib::ustring>::const_iterator iter = module_names.begin(); iter != module_names.end(); ++iter)
     {
       const Glib::ustring name = *iter;
-      const Glib::ustring script = pDocument->get_library_module(name);
+      const auto script = pDocument->get_library_module(name);
       if(!name.empty() && !script.empty())
       {
         //TODO: Is there a boost::python equivalent for Py_CompileString()?

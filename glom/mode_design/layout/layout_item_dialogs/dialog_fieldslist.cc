@@ -190,7 +190,7 @@ void Dialog_FieldsList::on_button_field_down()
 LayoutGroup::type_list_items Dialog_FieldsList::get_fields() const
 {
 
-  const Gtk::TreeModel::Children children = m_model_fields->children();
+  const auto children = m_model_fields->children();
   LayoutGroup::type_list_items result(children.size());
 
   guint field_sequence = 0;
@@ -199,7 +199,7 @@ LayoutGroup::type_list_items Dialog_FieldsList::get_fields() const
     Gtk::TreeModel::Row row = *iterFields;
 
     std::shared_ptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item];
-    const Glib::ustring field_name = item->get_name();
+    const auto field_name = item->get_name();
     if(!field_name.empty())
     {
       std::shared_ptr<LayoutItem_Field> field_copy = glom_sharedptr_clone(item);

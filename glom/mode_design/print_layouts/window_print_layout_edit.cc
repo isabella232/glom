@@ -149,7 +149,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   //Make the canvas a drag-and-drop destination:
   //TODO: Does this need to be a member variable?
   m_drag_targets_all = m_drag_targets_rule;
-  const Gtk::TargetEntry toolbar_target = Gtk::ToolPalette::get_drag_target_item();
+  const auto toolbar_target = Gtk::ToolPalette::get_drag_target_item();
   m_drag_targets_all.push_back(toolbar_target);
 
   //Note that we don't use Gtk::DEST_DEFAULT_DEFAULTS because that would prevent our signal handlers from being used:
@@ -295,7 +295,7 @@ void Window_PrintLayout_Edit::init_menu()
 
 bool Window_PrintLayout_Edit::on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragContext>& drag_context, int /* x */, int /* y */, guint timestamp)
 {
-  const Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
+  const auto target = m_canvas.drag_dest_find_target(drag_context);
   if(target.empty())
     return false;
 
@@ -309,7 +309,7 @@ bool Window_PrintLayout_Edit::on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragCo
 
 bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp)
 {
-  const Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
+  const auto target = m_canvas.drag_dest_find_target(drag_context);
   if(target.empty())
     return false;
 
@@ -436,8 +436,8 @@ void Window_PrintLayout_Edit::canvas_convert_from_drag_pixels(double& x, double&
   //so deal with that:
   if(adjust_for_scrolling)
   {
-    const double scroll_x = m_scrolled_window.get_hadjustment()->get_value();
-    const double scroll_y = m_scrolled_window.get_vadjustment()->get_value();
+    const auto scroll_x = m_scrolled_window.get_hadjustment()->get_value();
+    const auto scroll_y = m_scrolled_window.get_vadjustment()->get_value();
   
     x += scroll_x;
     y += scroll_y;
@@ -452,7 +452,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
   //This is called when an item is dropped on the canvas,
   //or after our drag_motion handler has called drag_get_data()): 	
 
-  const Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
+  const auto target = m_canvas.drag_dest_find_target(drag_context);
   if(target.empty())
     return;
 
@@ -481,7 +481,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
   }
   
   //Discover what toolbar item was dropped:
-  const PrintLayoutToolbarButton::enumItems item_type = PrintLayoutToolbarButton::get_item_type_from_selection_data(drag_context, selection_data);
+  const auto item_type = PrintLayoutToolbarButton::get_item_type_from_selection_data(drag_context, selection_data);
   if(item_type == PrintLayoutToolbarButton::ITEM_INVALID)
   {
     std::cerr << G_STRFUNC << ": item_type was invalid" << std::endl;
@@ -841,7 +841,7 @@ void Window_PrintLayout_Edit::on_menu_insert_create_standard()
   dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("Create"), Gtk::RESPONSE_OK);
 
-  const int response = dialog.run();
+  const auto response = dialog.run();
   if(response != Gtk::RESPONSE_OK)
     return;
 
@@ -874,7 +874,7 @@ void Window_PrintLayout_Edit::on_menu_insert_add_page()
 //TODO: Disable this menu item when there is only one page:
 void Window_PrintLayout_Edit::on_menu_insert_delete_page()
 {
-  const guint page_count = m_canvas.get_page_count();
+  const auto page_count = m_canvas.get_page_count();
   if(page_count <= 1)
     return;
 
@@ -989,7 +989,7 @@ void Window_PrintLayout_Edit::on_menu_view_zoom(int parameter)
     if(child)
     {
       Gtk::Allocation widget_allocation = child->get_allocation();
-      const double viewport_width = widget_allocation.get_width();
+      const auto viewport_width = widget_allocation.get_width();
       if(canvas_width_pixels)
       {
         //scale the canvas so it fits perfectly in the viewport:
@@ -1027,7 +1027,7 @@ void Window_PrintLayout_Edit::on_menu_file_print_preview()
   if(!document)
     return;
 
-  const Glib::ustring original_name = get_original_name();
+  const auto original_name = get_original_name();
   std::shared_ptr<PrintLayout> print_layout = get_print_layout();
   if(print_layout && (original_name != get_name()))
     document->remove_print_layout(m_table_name, original_name);
@@ -1347,7 +1347,7 @@ void Window_PrintLayout_Edit::on_scroll_value_changed()
 
 bool Window_PrintLayout_Edit::on_configure_event(GdkEventConfigure* event)
 {
-  const bool result = Gtk::Window::on_configure_event(event);
+  const auto result = Gtk::Window::on_configure_event(event);
 
   //If we are in fit-page-width then rescale the canvas:
   int percent = 0;
@@ -1453,8 +1453,8 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
   //Disable the spinbuttons if there are no items selected,
   //or if there are more than 1.
   //TODO: Let the user resize groups of items.
-  const bool one_selected = (m_layout_items_selected.size() == 1);
-  const bool some_selected = !m_layout_items_selected.empty();
+  const auto one_selected = (m_layout_items_selected.size() == 1);
+  const auto some_selected = !m_layout_items_selected.empty();
 
   //Allow x/y editing via the numbers for multiple items,
   //but not width/height for multiple items (TODO: Stretch them in that case?)
@@ -1522,7 +1522,7 @@ void Window_PrintLayout_Edit::on_spinbutton_x()
   get_dimensions_of_multiple_selected_items(x, y, width, height);
 
   //Discover the offset:
-  const double offset_x = m_spinbutton_x->get_value() - x;
+  const auto offset_x = m_spinbutton_x->get_value() - x;
 
   //Apply the offset to all items:
   for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
@@ -1557,7 +1557,7 @@ void Window_PrintLayout_Edit::on_spinbutton_y()
   get_dimensions_of_multiple_selected_items(x, y, width, height);
 
   //Discover the offset:
-  const double offset_y = m_spinbutton_y->get_value() - y;
+  const auto offset_y = m_spinbutton_y->get_value() - y;
 
   //Apply the offset to all items:
   for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();

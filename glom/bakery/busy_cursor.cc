@@ -33,7 +33,7 @@ void BusyCursor::init()
   if(!m_refWindow)
     return;
 
-  type_map_cursors::iterator iter = m_map_cursors.find(m_pWindow);
+  auto iter = m_map_cursors.find(m_pWindow);
   if(iter != m_map_cursors.end())
   {
     m_old_cursor = iter->second; //Remember the existing cursor.
@@ -62,7 +62,7 @@ BusyCursor::~BusyCursor()
     if(m_refWindow)
       m_refWindow->set_cursor();
 
-    type_map_cursors::iterator iter = m_map_cursors.find(m_pWindow);
+    auto iter = m_map_cursors.find(m_pWindow);
     if(iter != m_map_cursors.end())
       m_map_cursors.erase(iter);
   }

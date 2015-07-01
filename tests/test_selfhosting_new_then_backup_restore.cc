@@ -47,7 +47,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       return false;
     }
 
-    const Glib::ustring backup_uri = Glom::Utils::get_temp_directory_uri();
+    const auto backup_uri = Glom::Utils::get_temp_directory_uri();
     backup_uri_tarball = document.save_backup_file(
       backup_uri,
       sigc::ptr_fun(&on_backup_progress));

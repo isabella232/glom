@@ -67,7 +67,7 @@ void Application::create_window(const Glib::RefPtr<Gio::File>& file)
     input_uri = file->get_uri();
   }
 
-  const bool test = window->init_with_document(input_uri, m_remote_option_group.m_arg_restore); //Sets it up and shows it.
+  const auto test = window->init_with_document(input_uri, m_remote_option_group.m_arg_restore); //Sets it up and shows it.
   if(!test) //The user could cancel the offer of a new or existing database.
   {
     window->hide(); //This will cause it to be deleted by on_window_hide.
@@ -172,7 +172,7 @@ int Application::on_command_line(const Glib::RefPtr<Gio::ApplicationCommandLine>
     return EXIT_FAILURE;
     
   bool stop = false;
-  const bool date_check_ok = local_group.get_debug_date_check_result(stop);
+  const auto date_check_ok = local_group.get_debug_date_check_result(stop);
   if(stop)
   {
     //This command-line option is documented as stopping afterwards.
@@ -206,7 +206,7 @@ int Application::on_command_line(const Glib::RefPtr<Gio::ApplicationCommandLine>
       return EXIT_FAILURE;
     }
 
-    const Gio::FileType file_type = file->query_file_type();
+    const auto file_type = file->query_file_type();
     if(file_type == Gio::FILE_TYPE_DIRECTORY)
     {
       std::cerr << _("Glom: The file path is a directory instead of a file.") << std::endl;

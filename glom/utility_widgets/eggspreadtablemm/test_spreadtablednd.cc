@@ -104,7 +104,7 @@ on_combo_orientation_changed()
 static void
 on_spinbutton_lines_changed()
 {
-  const int lines = spinbutton_lines->get_value_as_int();
+  const auto lines = spinbutton_lines->get_value_as_int();
 
   paper->set_lines(lines);
 }
@@ -112,7 +112,7 @@ on_spinbutton_lines_changed()
 static void
 on_spinbutton_spacing_changed(Gtk::SpinButton* spinbutton, Gtk::Orientation orientation)
 {
-  const int state = spinbutton->get_value_as_int();
+  const auto state = spinbutton->get_value_as_int();
 
   if(orientation == Gtk::ORIENTATION_HORIZONTAL)
     paper->set_horizontal_spacing(state);

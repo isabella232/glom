@@ -61,14 +61,14 @@ LayoutItem_FieldSummary& LayoutItem_FieldSummary::operator=(const LayoutItem_Fie
 
 Glib::ustring LayoutItem_FieldSummary::get_title_or_name(const Glib::ustring& locale) const
 {
-  const Glib::ustring field_title = get_full_field_details()->get_title_or_name(locale);
+  const auto field_title = get_full_field_details()->get_title_or_name(locale);
 
   return get_summary_type_name(m_summary_type) + ": " + field_title; //TODO: Allow a more human-readable title for summary headings.
 }
 
 Glib::ustring LayoutItem_FieldSummary::get_title(const Glib::ustring& locale) const
 {
-  const Glib::ustring field_title = get_full_field_details()->get_title(locale);
+  const auto field_title = get_full_field_details()->get_title(locale);
 
   return get_summary_type_name(m_summary_type) + ": " + field_title; //TODO: Allow a more human-readable title for summary headings.
 }
@@ -128,7 +128,7 @@ void LayoutItem_FieldSummary::set_field(const std::shared_ptr<LayoutItem_Field>&
 
 Glib::ustring LayoutItem_FieldSummary::get_layout_display_name() const
 {
-  Glib::ustring result = get_layout_display_name_field();
+  auto result = get_layout_display_name_field();
 
   if(m_summary_type == TYPE_INVALID)
     result = _("No summary chosen");

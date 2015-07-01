@@ -34,7 +34,7 @@ std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Do
     if(!group)
       continue;
     
-    const Glom::LayoutGroup::type_list_const_items items = group->get_items_recursive();
+    const auto items = group->get_items_recursive();
     for(Glom::LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
     {
       const std::shared_ptr<const Glom::LayoutItem> layout_item = *iter;

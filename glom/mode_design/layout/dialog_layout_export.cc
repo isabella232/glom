@@ -237,7 +237,7 @@ void Dialog_Layout_Export::get_layout_groups(Document::type_list_layout_groups& 
     Gtk::TreeModel::Row row = *iterFields;
 
     std::shared_ptr<LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item];
-    const Glib::ustring field_name = item->get_name();
+    const auto field_name = item->get_name();
     if(!field_name.empty())
     {
       others->add_item(item); //Add it to the group:

@@ -174,7 +174,7 @@ void ComboGlom::set_choices_related(const Document* document, const std::shared_
       Glib::RefPtr<DbTreeModelWithExtraText>::cast_dynamic(model);
     if(model_db)
     {
-      const int text_col = model_db->get_text_column();
+      const auto text_col = model_db->get_text_column();
       //const GType debug_type = model_db->get_column_type(text_col);
       //std::cout << "DEBUG: text_col=" << text_col << ", debug_type=" << g_type_name(debug_type) << std::endl;
       set_entry_text_column(text_col);

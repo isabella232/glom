@@ -34,7 +34,7 @@ LayoutItem_Text::LayoutItem_Text(const LayoutItem_Text& src)
 : LayoutItem_WithFormatting(src)
 {
   //Copy the underlying TranslatableItem, not the std::shared_ptr to it:
-  const StaticText& src_item = *(src.m_text);
+  const auto src_item = *(src.m_text);
   m_text = std::shared_ptr<StaticText>(new StaticText(src_item));
 }
 
@@ -49,7 +49,7 @@ LayoutItem* LayoutItem_Text::clone() const
 
 bool LayoutItem_Text::operator==(const LayoutItem_Text& src) const
 {
-  bool result = LayoutItem_WithFormatting::operator==(src) && 
+  auto result = LayoutItem_WithFormatting::operator==(src) && 
                 (*m_text == *(src.m_text));
 
   return result;
@@ -61,7 +61,7 @@ LayoutItem_Text& LayoutItem_Text::operator=(const LayoutItem_Text& src)
   LayoutItem_WithFormatting::operator=(src);
 
   //Copy the underlying TranslatableItem, not the shardptr to it:
-  const StaticText& src_item = *(src.m_text);
+  const auto src_item = *(src.m_text);
   m_text = std::shared_ptr<StaticText>(new StaticText(src_item));
 
   return *this;

@@ -166,7 +166,7 @@ void Window_RelationshipsOverview::draw_tables()
     for(Document::type_listTableInfo::iterator iter = tables.begin(); iter != tables.end(); ++iter)
     {
       std::shared_ptr<TableInfo> info = *iter;
-      const Glib::ustring table_name = info->get_name();
+      const auto table_name = info->get_name();
 
       float table_x = 0;
       float table_y = 0;
@@ -220,7 +220,7 @@ void Window_RelationshipsOverview::draw_lines()
     for(Document::type_listTableInfo::iterator iter = tables.begin(); iter != tables.end(); ++iter)
     {
       std::shared_ptr<TableInfo> info = *iter;
-      const Glib::ustring table_name = info->get_name();
+      const auto table_name = info->get_name();
 
       Document::type_vec_relationships m_relationships = document->get_relationships(table_name);
       Document::type_vec_fields fields = document->get_table_fields(table_name);
@@ -303,7 +303,7 @@ void Window_RelationshipsOverview::draw_lines()
             y_offset = (from_field_y < to_field_y) ? -10 : +10;
 
           const double text_x = (from_field_x + to_field_x) / 2;
-          const double text_y = ((from_field_y + to_field_y) / 2) + y_offset;
+          const auto text_y = ((from_field_y + to_field_y) / 2) + y_offset;
           Glib::RefPtr<CanvasTextMovable> text = CanvasTextMovable::create(item_get_title_or_name(relationship),
             text_x, text_y, -1, //TODO: Calc a suitable width.
             Goocanvas::ANCHOR_CENTER);
@@ -395,7 +395,7 @@ void Window_RelationshipsOverview::print_or_preview(Gtk::PrintOperationAction pr
 
 Glib::RefPtr<CanvasGroupDbTable> Window_RelationshipsOverview::get_table_group(const Glib::ustring& table_name)
 {
-  const int count = m_group_tables->get_n_children();
+  const auto count = m_group_tables->get_n_children();
   for(int i = 0; i < count; ++i)
   {
     Glib::RefPtr<Goocanvas::Item> item = m_group_tables->get_child(i);

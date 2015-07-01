@@ -162,7 +162,7 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
   {
     Gtk::Frame* frame = Gtk::manage( new Gtk::Frame ); //TODO_leak: This is possibly leaked, according to valgrind.
 
-    const Glib::ustring group_title = item_get_title(group);
+    const auto group_title = item_get_title(group);
     if(!group_title.empty())
     {
       Gtk::Label* label = Gtk::manage( new Gtk::Label ); //TODO: This is maybe leaked, according to valgrind, though it should be managed by GtkFrame.
@@ -566,7 +566,7 @@ void FlowTableWithFields::add_button(const std::shared_ptr<LayoutItem_Button>& l
 void FlowTableWithFields::add_textobject(const std::shared_ptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name)
 {
   //Add the widget:
-  const Glib::ustring text = layoutitem_text->get_text(AppWindow::get_current_locale());
+  const auto text = layoutitem_text->get_text(AppWindow::get_current_locale());
   DataWidgetChildren::Label* label = Gtk::manage(new DataWidgetChildren::Label(text));
   label->set_layout_item(layoutitem_text, table_name);
 
@@ -581,7 +581,7 @@ void FlowTableWithFields::add_textobject(const std::shared_ptr<LayoutItem_Text>&
 
   add_layoutwidgetbase(label);
 
-  const Glib::ustring title = item_get_title(layoutitem_text);
+  const auto title = item_get_title(layoutitem_text);
   if(title.empty())
   {
     add_widgets(*label, true /* expand */);
@@ -612,7 +612,7 @@ void FlowTableWithFields::add_imageobject(const std::shared_ptr<LayoutItem_Image
   add_layoutwidgetbase(image);
   //add_view(button); //So it can get the document.
 
-  const Glib::ustring title = item_get_title(layoutitem_image);
+  const auto title = item_get_title(layoutitem_image);
   if(title.empty())
   {
     add_widgets(*image, true /* expand */);
@@ -726,7 +726,7 @@ Gnome::Gda::Value FlowTableWithFields::get_field_value(const std::shared_ptr<con
     if(!datawidget)
       continue;
 
-    const Gnome::Gda::Value value = datawidget->get_value();
+    const auto value = datawidget->get_value();
     if(!Conversions::value_is_empty(value))
       return value;
   }
@@ -780,7 +780,7 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const std::sh
 {
   type_portals result;
 
-  const Glib::ustring from_key_name = from_key->get_name();
+  const auto from_key_name = from_key->get_name();
 
   //Check the single-item widgets:
   for(type_portals::const_iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
@@ -827,7 +827,7 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
   if(!from_key)
     return result;
 
-  const Glib::ustring from_key_name = from_key->get_name();
+  const auto from_key_name = from_key->get_name();
 
   //Check the single-item widgets:
   for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
@@ -848,7 +848,7 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
     if(!field)
       continue;
 
-    const Formatting& format = field->get_formatting_used();
+    const auto format = field->get_formatting_used();
 
     bool choice_show_all = false;
     const std::shared_ptr<const Relationship> choice_relationship =
@@ -866,7 +866,7 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
     FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
-      const type_choice_widgets sub_list = subtable->get_choice_widgets(from_key);
+      const auto sub_list = subtable->get_choice_widgets(from_key);
       if(!sub_list.empty())
       {
         //Add to the main result:
@@ -1218,7 +1218,7 @@ void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups&
     //couldn't be aligned vertically anyway, and this would cause extra space.
     //TODO: Use a different SizeGroup for items in 2nd columns?
     guint column = 0;
-    const bool ready = get_column_for_first_widget(*label_parent, column);
+    const auto ready = get_column_for_first_widget(*label_parent, column);
     if(!ready)
       continue;
 
@@ -1241,7 +1241,7 @@ void FlowTableWithFields::align_child_group_labels()
     return;
 
   //Create a size group for each column and tell all groups to use them for their labels:
-  const guint max_columns = get_sub_flowtables_max_columns();
+  const auto max_columns = get_sub_flowtables_max_columns();
   type_vec_sizegroups vec_sizegroups(max_columns);
   for(guint i = 0; i < max_columns; ++i)
   {
@@ -1265,7 +1265,7 @@ guint FlowTableWithFields::get_sub_flowtables_max_columns() const
     const FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
-      const guint count = subtable->get_lines();
+      const auto count = subtable->get_lines();
       if(count > result)
           result = count;
     }
@@ -1284,7 +1284,7 @@ void FlowTableWithFields::on_menu_properties_activate()
     return;
 
   dialog->set_flowtable(this);
-  const int response = dialog->run();
+  const auto response = dialog->run();
   if(response == Gtk::RESPONSE_OK)
   {
     std::shared_ptr<LayoutGroup> group = get_layout_group();
@@ -1352,7 +1352,7 @@ std::shared_ptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship(
   Document* pDocument = static_cast<Document*>(get_document());
   dialog->set_document(pDocument, m_table_name);
   //TODO: dialog->set_transient_for(*get_app_window());
-  const int response = dialog->run();
+  const auto response = dialog->run();
   dialog->hide();
   if(response == Gtk::RESPONSE_OK)
   {

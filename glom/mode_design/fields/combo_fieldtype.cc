@@ -72,7 +72,7 @@ Combo_FieldType::~Combo_FieldType()
 
 void Combo_FieldType::set_field_type(Field::glom_field_type fieldType)
 {
-  const Gtk::TreeModel::Children& children = m_refTreeModel->children();
+  const auto children = m_refTreeModel->children();
    for(Gtk::TreeModel::iterator iter = children.begin(); iter != children.end(); ++iter)
    {
      Gtk::TreeModel::Row row = *iter;

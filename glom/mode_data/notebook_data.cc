@@ -97,7 +97,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
   m_table_name = found_set.m_table_name;
   //std::cout << "Notebook_Data::init_db_details: table_name=" << m_table_name << ", primary_key_value_for_details=" << primary_key_value_for_details.to_string() << std::endl;
 
-  const bool details_record_specified = !Conversions::value_is_empty(primary_key_value_for_details);
+  const auto details_record_specified = !Conversions::value_is_empty(primary_key_value_for_details);
 
   bool result = true;
   //where_clause is only used as a result of a find.
@@ -158,7 +158,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
     m_connection_switch_page.block();
 
   //Select the last-viewed layout, or the details layout, if a specific details record was specified:
-  const dataview current_view = get_current_view();
+  const auto current_view = get_current_view();
 
   if(details_record_specified)
   {
@@ -249,7 +249,7 @@ FoundSet Notebook_Data::get_found_set_selected() const
       return found_set;
     }
 
-    const Document* document = get_document();
+    const auto document = get_document();
     if(!document)
     {
       std::cerr << G_STRFUNC << ": document is null" << std::endl;
@@ -326,7 +326,7 @@ enum dataview
 
 Notebook_Data::dataview Notebook_Data::get_current_view() const
 {
-  const Glib::ustring current_page = get_visible_child_name();
+  const auto current_page = get_visible_child_name();
 
   dataview result = DATA_VIEW_Details;
   if(current_page == m_pagename_list)
@@ -364,14 +364,14 @@ void Notebook_Data::on_switch_page_handler(Gtk::Widget* pPage)
     if(box == &m_Box_List)
     {
       //std::cout << "debug: switching to list" << std::endl;
-      const Gnome::Gda::Value primary_key_selected = m_Box_List.get_primary_key_value_selected();
+      const auto primary_key_selected = m_Box_List.get_primary_key_value_selected();
       m_Box_List.refresh_data_from_database();
       m_Box_List.set_primary_key_value_selected(primary_key_selected);
     }
     else if(box == &m_Box_Details)
     {
       //std::cout << "debug: switching to details" << std::endl;
-      const Gnome::Gda::Value primary_key_selected = m_Box_List.get_primary_key_value_selected();
+      const auto primary_key_selected = m_Box_List.get_primary_key_value_selected();
       m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_selected);
     }
   }

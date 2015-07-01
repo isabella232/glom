@@ -72,7 +72,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //and check that the result is as expected:
   try
   {
-    const bool test = connection_pool->change_column(table_name, field, field_new);
+    const auto test = connection_pool->change_column(table_name, field, field_new);
     if(!test)
     {
       std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
@@ -90,7 +90,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   field_new->set_glom_type(Glom::Field::TYPE_NUMERIC);
   try
   {
-    const bool test = connection_pool->change_column(table_name, field, field_new);
+    const auto test = connection_pool->change_column(table_name, field, field_new);
     if(!test)
     {
       std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
@@ -108,7 +108,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   field_new->set_name("somenewfieldname");
   try
   {
-    const bool test = connection_pool->change_column(table_name, field, field_new);
+    const auto test = connection_pool->change_column(table_name, field, field_new);
     if(!test)
     {
       std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
@@ -126,7 +126,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   field_new->set_auto_increment();
   try
   {
-    const bool test = connection_pool->change_column(table_name, field, field_new);
+    const auto test = connection_pool->change_column(table_name, field, field_new);
     if(!test)
     {
       std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
@@ -144,7 +144,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //but at least we are running some of the relevant code:
   const Gnome::Gda::Value value_next = 
     Glom::DbUtils::get_next_auto_increment_value(table_name, field_new->get_name());
-  const double value_next_as_double = Glom::Conversions::get_double_for_gda_value_numeric(value_next);
+  const auto value_next_as_double = Glom::Conversions::get_double_for_gda_value_numeric(value_next);
   if(value_next_as_double != 0)
   {
     std::cerr << G_STRFUNC << ": Failure: The next auto-increment value is not 0 as expected. Instead it is: " << value_next_as_double << std::endl;
@@ -167,7 +167,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     numeric.set_double(123);
     field->set_default_value( Gnome::Gda::Value(numeric) );
 
-    const bool test = connection_pool->add_column(table_name, field);
+    const auto test = connection_pool->add_column(table_name, field);
     if(!test)
     {
       std::cerr << G_STRFUNC << ": Failure: add_column() failed." << std::endl;
@@ -194,7 +194,7 @@ int main()
 {
   Glom::libglom_init();
   
-  const int result = test_all_hosting_modes(sigc::ptr_fun(&test));
+  const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();
 

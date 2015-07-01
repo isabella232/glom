@@ -61,12 +61,12 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     Glom::Utils::build_simple_where_expression(table_name, key_field, Gnome::Gda::Value(1));
 
   //Set the value, from an image file:
-  const Gnome::Gda::Value value_set = get_value_for_image();
+  const auto value_set = get_value_for_image();
   g_assert(check_value_is_an_image(value_set));
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder_set = 
     Glom::Utils::build_sql_update_with_where_clause(table_name,
       field, value_set, where_clause);
-  const int rows_affected = Glom::DbUtils::query_execute(builder_set);
+  const auto rows_affected = Glom::DbUtils::query_execute(builder_set);
   if(rows_affected == -1)
   {
     std::cerr << G_STRFUNC << ": Failure: UPDATE failed." << std::endl;
@@ -91,15 +91,15 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  const int count = Glom::DbUtils::count_rows_returned_by(builder_get);
+  const auto count = Glom::DbUtils::count_rows_returned_by(builder_get);
   if(count != 1 )
   {
     std::cerr << G_STRFUNC << ": Failure: The COUNT query returned an unexpected value: " << count << std::endl;
     return false;
   }
   
-  const Gnome::Gda::Value value_read = data_model->get_value_at(0, 0);
-  const GType value_read_type = value_read.get_value_type();
+  const auto value_read = data_model->get_value_at(0, 0);
+  const auto value_read_type = value_read.get_value_type();
   if( (value_read_type != GDA_TYPE_BINARY) &&
     (value_read_type != GDA_TYPE_BLOB))
   {
@@ -114,8 +114,8 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     binary_read = gda_value_get_binary(value_read.gobj());
   else if(value_read_type == GDA_TYPE_BLOB)
   {
-    const GdaBlob* blob = gda_value_get_blob(value_read.gobj());
-    const bool read_all = gda_blob_op_read_all(const_cast<GdaBlobOp*>(blob->op), const_cast<GdaBlob*>(blob));
+    const auto blob = gda_value_get_blob(value_read.gobj());
+    const auto read_all = gda_blob_op_read_all(const_cast<GdaBlobOp*>(blob->op), const_cast<GdaBlob*>(blob));
     if(!read_all)
     {
       std::cerr << G_STRFUNC << ": Failure: gda_blob_op_read_all() failed." << std::endl;
@@ -131,7 +131,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  const GdaBinary* binary_set = gda_value_get_binary(value_set.gobj());
+  const auto binary_set = gda_value_get_binary(value_set.gobj());
   if(!binary_set)
   {
     std::cerr << G_STRFUNC << ": Failure: The value read's data was null." << std::endl;
@@ -162,7 +162,7 @@ int main()
 {
   Glom::libglom_init();
   
-  const int result = test_all_hosting_modes(sigc::ptr_fun(&test));
+  const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();
 

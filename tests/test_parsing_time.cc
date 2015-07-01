@@ -31,7 +31,7 @@ int main()
     return EXIT_FAILURE;
   }
 
-  const Gnome::Gda::Time parsed_time = value.get_time();
+  const auto parsed_time = value.get_time();
   //std::cout << "debug: Parsed Time: hour=" <<  parsed_time.hour << ", minute=" <<  parsed_time.minute << ", second=" <<  parsed_time.second << std::endl;
 
   if(parsed_time.hour != 13)

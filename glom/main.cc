@@ -246,14 +246,14 @@ bool check_user_is_not_root_with_warning()
  */
 bool check_postgres_is_available_with_warning()
 {
-  const std::string binpath = Glom::ConnectionPoolBackends::PostgresSelfHosted::get_path_to_postgres_executable("postgres", false /* not quoted */);
+  const auto binpath = Glom::ConnectionPoolBackends::PostgresSelfHosted::get_path_to_postgres_executable("postgres", false /* not quoted */);
 
   // TODO: At least on Windows we should probably also check for initdb and
   // pg_ctl. Perhaps it would also be a good idea to access these files as
   // long as glom runs so they cannot be (re)moved.
   if(!binpath.empty())
   {
-    const Glib::ustring uri_binpath = Glib::filename_to_uri(binpath);
+    const auto uri_binpath = Glib::filename_to_uri(binpath);
     if(Utils::file_exists(uri_binpath))
       return true;
   }
@@ -266,7 +266,7 @@ bool check_postgres_is_available_with_warning()
   dialog.set_secondary_text(_("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nYou may now install PostgreSQL to complete the Glom installation."));
   dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("Install PostgreSQL"), Gtk::RESPONSE_OK);
-  const int response = dialog.run();
+  const auto response = dialog.run();
   if(response != Gtk::RESPONSE_OK)
     return false; //Failure. Glom should now quit.
   else
@@ -275,7 +275,7 @@ bool check_postgres_is_available_with_warning()
   #else  //DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
 
   //Show message to the user about the broken installation:
-  const Glib::ustring message = _("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+  const auto message = _("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
 
   //Make sure this is on stderr too, in case something goes wrong with the UI:
   std::cerr << message << std::endl;
@@ -301,14 +301,14 @@ bool check_postgres_is_available_with_warning()
  */
 bool check_mysql_is_available_with_warning()
 {
-  const std::string binpath = Glom::ConnectionPoolBackends::MySQLSelfHosted::get_path_to_mysql_executable("mysql", false /* not quoted */);
+  const auto binpath = Glom::ConnectionPoolBackends::MySQLSelfHosted::get_path_to_mysql_executable("mysql", false /* not quoted */);
 
   // TODO: At least on Windows we should probably also check for initdb and
   // pg_ctl. Perhaps it would also be a good idea to access these files as
   // long as glom runs so they cannot be (re)moved.
   if(!binpath.empty())
   {
-    const Glib::ustring uri_binpath = Glib::filename_to_uri(binpath);
+    const auto uri_binpath = Glib::filename_to_uri(binpath);
     if(Utils::file_exists(uri_binpath))
       return true;
   }
@@ -322,7 +322,7 @@ bool check_mysql_is_available_with_warning()
   dialog.set_secondary_text(_("Your installation of Glom is not complete, because MySQL is not available on your system. MySQL is needed for self-hosting of some Glom databases.\n\nYou may now install MySQL to complete the Glom installation."));
   dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("Install MySQL"), Gtk::RESPONSE_OK);
-  const int response = dialog.run();
+  const auto response = dialog.run();
   if(response != Gtk::RESPONSE_OK)
     return false; //Failure. Glom should now quit.
   else
@@ -348,7 +348,7 @@ bool check_pyglom_is_available_with_warning()
     return true;
 
   /* The python module could not be imported by Glom, so warn the user: */
-  const Glib::ustring message = _("Your installation of Glom is not complete, because the Glom Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+  const auto message = _("Your installation of Glom is not complete, because the Glom Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
 
   //Make sure this is on stderr too, in case something goes wrong with the UI:
   std::cerr << message << std::endl;
@@ -366,7 +366,7 @@ bool check_gir_is_available_with_warning()
     return true;
 
   /* The python module could not be imported by Glom, so warn the user: */
-  const Glib::ustring message = _("Your installation of Glom is not complete, because the gi.repository Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+  const auto message = _("Your installation of Glom is not complete, because the gi.repository Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
 
   //Make sure this is on stderr too, in case something goes wrong with the UI:
   std::cerr << message << std::endl;
@@ -384,7 +384,7 @@ bool check_pygda_is_available_with_warning()
     return true;
 
   /* The python module could not be imported by Glom, so warn the user: */
-  const Glib::ustring message = _("Your installation of Glom is not complete, because the gi.repository.Gda python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+  const auto message = _("Your installation of Glom is not complete, because the gi.repository.Gda python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
 
   //Make sure this is on stderr too, in case something goes wrong with the UI:
   std::cerr << message << std::endl;
@@ -509,7 +509,7 @@ main(int argc, char* argv[])
     if(!install_complete)
     {
       /* The Postgres provider was not found, so warn the user: */
-      const Glib::ustring message = _("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+      const auto message = _("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
 
       //Make sure this is on stderr too, in case something goes wrong with the UI:
       std::cerr << message << std::endl;
@@ -543,7 +543,7 @@ main(int argc, char* argv[])
       return EXIT_FAILURE;
 
 
-    const int status = application->run(argc, argv);
+    const auto status = application->run(argc, argv);
     if(status != EXIT_SUCCESS) //TODO: Is this right?
       return status;
   }

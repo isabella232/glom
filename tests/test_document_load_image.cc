@@ -55,7 +55,7 @@ int main()
   Glom::Document document;
   document.set_file_uri(uri);
   int failure_code = 0;
-  const bool test = document.load(failure_code);
+  const auto test = document.load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -87,7 +87,7 @@ int main()
     std::dynamic_pointer_cast<const Glom::LayoutItem_Image>(item);
   g_assert(image_item);
 
-  const Gnome::Gda::Value value = image_item->get_image();
+  const auto value = image_item->get_image();
   g_assert(check_value_is_an_image(value));
 
   Glom::libglom_deinit();

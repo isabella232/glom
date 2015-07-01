@@ -209,12 +209,12 @@ static void cleanup()
 {
   Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
 
-  const bool stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );
+  const auto stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );
   g_assert(stopped);
 
   //Make sure the directory is removed at the end,
   {
-    const Glib::ustring uri = convert_filepath_to_uri(filepath_dir);
+    const auto uri = convert_filepath_to_uri(filepath_dir);
     delete_directory(uri);
   }
 }
@@ -298,7 +298,7 @@ int main(int argc, char* argv[])
       return EXIT_FAILURE;
     }
 
-    const Gio::FileType file_type = file->query_file_type();
+    const auto file_type = file->query_file_type();
     if(file_type == Gio::FILE_TYPE_DIRECTORY)
     {
       std::cerr << _("Glom: The file path is a directory instead of a file.") << std::endl;
@@ -339,7 +339,7 @@ int main(int argc, char* argv[])
       return EXIT_FAILURE;
     }
 
-    const Gio::FileType file_type = file->query_file_type();
+    const auto file_type = file->query_file_type();
     if(file_type != Gio::FILE_TYPE_DIRECTORY)
     {
       std::cerr << _("Glom: The output path is not a directory.") << std::endl;
@@ -361,7 +361,7 @@ int main(int argc, char* argv[])
   Glom::Document document;
   document.set_file_uri(input_uri);
   int failure_code = 0;
-  const bool test = document.load(failure_code);
+  const auto test = document.load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -385,7 +385,7 @@ int main(int argc, char* argv[])
 
   //Make sure that the file does not exist yet:
   {
-    const Glib::ustring uri = convert_filepath_to_uri(filepath_dir);
+    const auto uri = convert_filepath_to_uri(filepath_dir);
     if(uri.empty())
       return EXIT_FAILURE;
         
@@ -398,13 +398,13 @@ int main(int argc, char* argv[])
   }
 
   //Save the example as a real file:
-  const Glib::ustring file_uri = convert_filepath_to_uri(filepath);
+  const auto file_uri = convert_filepath_to_uri(filepath);
   if(file_uri.empty())
     return EXIT_FAILURE;
 
   document.set_file_uri(file_uri);
 
-  const bool self_hosting = group.m_arg_server_hostname.empty();
+  const auto self_hosting = group.m_arg_server_hostname.empty();
   if(self_hosting)
   {
     std::cout << "Using self-hosting instead of a central database server." << std::endl;
@@ -434,7 +434,7 @@ int main(int argc, char* argv[])
    
   document.set_is_example_file(false);
   document.set_network_shared(false);
-  const bool saved = document.save();
+  const auto saved = document.save();
   g_assert(saved);
 
   //Specify the backend and backend-specific details to be used by the connectionpool.
@@ -444,7 +444,7 @@ int main(int argc, char* argv[])
   if(self_hosting)
   {
     Glib::ustring password;
-    const Glib::ustring user = Glom::Privs::get_default_developer_user_name(password, document.get_hosting_mode());
+    const auto user = Glom::Privs::get_default_developer_user_name(password, document.get_hosting_mode());
     connection_pool->set_user(user);
     connection_pool->set_password(password);
   }
@@ -454,14 +454,14 @@ int main(int argc, char* argv[])
     //This is not a command-line option because then it would appear in logs.
     //Other command-line utilities such as psql don't do this either.
     //TODO: Support alternatives such as using a file.
-    const Glib::ustring prompt = Glib::ustring::compose(
+    const auto prompt = Glib::ustring::compose(
       _("Please enter the database server's password for the user %1: "), group.m_arg_server_username);
 
 #ifdef G_OS_WIN32
     const char* password = "";
     std::cerr << G_STRFUNC << ": Error: getpass() is not implemented in the Windows build. The connection will fail." << std::endl;
 #else
-    const char* password = ::getpass(prompt.c_str());
+    const auto password = ::getpass(prompt.c_str());
 #endif
 
     //Central hosting:
@@ -503,7 +503,7 @@ int main(int argc, char* argv[])
 
   //Start self-hosting:
   //TODO: Let this happen automatically on first connection?
-  const Glom::ConnectionPool::StartupErrors started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
+  const auto started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
   if(started != Glom::ConnectionPool::Backend::STARTUPERROR_NONE)
   {
     std::cerr << G_STRFUNC << ": connection_pool->startup(): result=" << started << std::endl;
@@ -511,7 +511,7 @@ int main(int argc, char* argv[])
   }
   g_assert(started == Glom::ConnectionPool::Backend::STARTUPERROR_NONE);
 
-  const bool recreated = Glom::DbUtils::recreate_database_from_document(&document, &on_recreate_progress);
+  const auto recreated = Glom::DbUtils::recreate_database_from_document(&document, &on_recreate_progress);
   if(!recreated)
     cleanup();
   g_assert(recreated);

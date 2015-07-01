@@ -76,7 +76,7 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
         if(PyUnicode_Check(pyStringObject))
         {
           PyObject* pyStr = PyUnicode_AsEncodedString(pyStringObject, "utf-8", "Error ~");
-          const char* pchResult = PyBytes_AS_STRING(pyStr);
+          const auto pchResult = PyBytes_AS_STRING(pyStr);
           if(pchResult)
           {
             g_warning("result is %s", pchResult);

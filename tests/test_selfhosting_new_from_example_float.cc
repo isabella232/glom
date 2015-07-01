@@ -50,7 +50,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   //Check that some data is as expected:
-  const Gnome::Gda::Value pk_value = Gnome::Gda::Value::create_as_double(2.0l);
+  const auto pk_value = Gnome::Gda::Value::create_as_double(2.0l);
   const Gnome::Gda::SqlExpr where_clause = 
     Glom::Utils::build_simple_where_expression(table_name, primary_key_field, pk_value);
   
@@ -72,7 +72,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  const int count = Glom::DbUtils::count_rows_returned_by(builder);
+  const auto count = Glom::DbUtils::count_rows_returned_by(builder);
   if(count != 1 )
   {
     std::cerr << G_STRFUNC << "Failure: The COUNT query returned an unexpected value: " << count << std::endl;
@@ -81,7 +81,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
 
   //Get the value from the result:
-  const Gnome::Gda::Value value = data_model->get_value_at(0, 0);
+  const auto value = data_model->get_value_at(0, 0);
 
   if(!test_check_numeric_value_type(hosting_mode, value))
   {
@@ -107,7 +107,7 @@ int main()
 {
   Glom::libglom_init();
   
-  const int result = test_all_hosting_modes(sigc::ptr_fun(&test));
+  const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();
 

@@ -400,7 +400,7 @@ Gtk::TreeModel::iterator AddDel::get_row(const Glib::ustring& key)
 {
   for(Gtk::TreeModel::iterator iter = m_refListStore->children().begin(); iter != m_refListStore->children().end(); ++iter)
   {
-    const Glib::ustring strTemp = get_value(iter, m_col_key);
+    const auto strTemp = get_value(iter, m_col_key);
     if(strTemp == key)
     {
       return iter;
@@ -1362,7 +1362,7 @@ void AddDel::on_treeview_columns_changed()
       TreeViewColumnGlom* pViewColumn = dynamic_cast<TreeViewColumnGlom*>(*iter);
       if(pViewColumn)
       {
-        const Glib::ustring column_id = pViewColumn->get_column_id();
+        const auto column_id = pViewColumn->get_column_id();
         m_vecColumnIDs.push_back(column_id);
 
       }
@@ -1517,8 +1517,8 @@ bool AddDel::get_model_column_index(guint view_column_index, guint& model_column
   //Initialize output parameter:
   model_column_index = 0;
 
-  const guint hidden = get_count_hidden_system_columns();
-  const guint count = m_ColumnTypes.size();
+  const auto hidden = get_count_hidden_system_columns();
+  const auto count = m_ColumnTypes.size();
   if(hidden > count)
     return false; //This should never happen.
 
@@ -1571,7 +1571,7 @@ void AddDel::set_prevent_duplicates_warning(const Glib::ustring& warning_text)
 
 bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
 {
-  const type_ColumnTypes::size_type cols_count = m_ColumnTypes.size();
+  const auto cols_count = m_ColumnTypes.size();
   for(type_ColumnTypes::size_type col = 0; col < cols_count; ++col)
   {
     if(m_ColumnTypes[col].m_prevent_duplicates)

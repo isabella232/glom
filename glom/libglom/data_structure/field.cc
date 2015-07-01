@@ -113,7 +113,7 @@ Field::glom_field_type Field::get_glom_type() const
 
 void Field::set_glom_type(glom_field_type fieldtype)
 {
-  glom_field_type old_type = m_glom_type;
+  auto old_type = m_glom_type;
 
   // Set glom type from fieldinfo if it represents a different type.
   m_glom_type = fieldtype;
@@ -137,7 +137,7 @@ Glib::RefPtr<const Gnome::Gda::Column> Field::get_field_info() const
 
 static const FieldTypes* get_field_types()
 {
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
     return 0;
 
@@ -148,8 +148,8 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
 {
   m_field_info = fieldinfo;
 
-  const glom_field_type glom_type = get_glom_type();
-  const GType new_type = fieldinfo->get_g_type();
+  const auto glom_type = get_glom_type();
+  const auto new_type = fieldinfo->get_g_type();
   if( (glom_type == TYPE_INVALID) &&
     (new_type == GDA_TYPE_NULL)) //GDA_TYPE_NULL is the default for GdaColumn.
   {
@@ -164,7 +164,7 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
   {
     cur_type = get_gda_type_for_glom_type(glom_type);
 
-    const FieldTypes* pFieldTypes = get_field_types();
+    const auto pFieldTypes = get_field_types();
 
     if(pFieldTypes)
     {
@@ -176,7 +176,7 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
   if(cur_type == G_TYPE_NONE)
     set_glom_type( get_glom_type_for_gda_type(fieldinfo->get_g_type()) );
 
-  const Gnome::Gda::Value value = get_default_value();
+  const auto value = get_default_value();
   if(!value.is_null())
   {
     // Check that the default value is consistent with the field's type
@@ -190,8 +190,8 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
 
 GType Field::get_gda_data_type_with_fallback(const Gnome::Gda::Value& value)
 {
-  GType cur_type = get_gda_type_for_glom_type(get_glom_type());
-  const FieldTypes* pFieldTypes = get_field_types();
+  auto cur_type = get_gda_type_for_glom_type(get_glom_type());
+  const auto pFieldTypes = get_field_types();
 
   // Take into account that value might be one of the fallback types
   if(pFieldTypes)
@@ -247,7 +247,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnom
     return Glib::ustring();
   } 
 
-  const GType gda_type = get_gda_type_for_glom_type(m_glom_type);
+  const auto gda_type = get_gda_type_for_glom_type(m_glom_type);
   Glib::RefPtr<const Gnome::Gda::DataHandler> datahandler = 
     provider->get_data_handler_g_type(connection, gda_type);
   if(datahandler)
@@ -278,15 +278,15 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
       return Glib::ustring();
  
     gchar* str = 0;
-    const GType value_type = value.get_value_type();
+    const auto value_type = value.get_value_type();
     if(value_type == GDA_TYPE_BINARY)
     {
-      const GdaBinary* gdabinary = gda_value_get_binary(value.gobj());
+      const auto gdabinary = gda_value_get_binary(value.gobj());
       if(!gdabinary)
         return Glib::ustring();
       else
       {
-        gchar* base64 = g_base64_encode(gdabinary->data, gdabinary->binary_length);
+        auto base64 = g_base64_encode(gdabinary->data, gdabinary->binary_length);
         if(!base64)
           return Glib::ustring();
         else
@@ -297,7 +297,7 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
     }
     else if(value_type == GDA_TYPE_BLOB)
     {
-      const GdaBlob* gdablob = gda_value_get_blob(value.gobj());
+      const auto gdablob = gda_value_get_blob(value.gobj());
 
       if(!gdablob || !gdablob->op)
         return Glib::ustring();
@@ -309,8 +309,8 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
         }
         else
         {
-          const GdaBinary* gdabinary = &(gdablob->data);
-          gchar* base64 = g_base64_encode(gdabinary->data, gdabinary->binary_length);
+          const auto gdabinary = &(gdablob->data);
+          auto base64 = g_base64_encode(gdabinary->data, gdabinary->binary_length);
           if(!base64)
             return Glib::ustring();
           else
@@ -324,7 +324,7 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
     if(!str)
       return Glib::ustring();
 
-    Glib::ustring result = Glib::ustring(Glib::ScopedPtr<char>(str).get());
+    auto result = Glib::ustring(Glib::ScopedPtr<char>(str).get());
 
     //Correction for text representations of image (binary) data:
     //Avoid arbitrary newlines in this text.
@@ -336,7 +336,7 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
   }
   
   NumericFormat format_ignored; //Because we use ISO format.
-  const Glib::ustring result = Conversions::get_text_for_gda_value(glom_type, value, std::locale::classic() /* SQL uses the C locale */, format_ignored, true /* ISO standard */);
+  const auto result = Conversions::get_text_for_gda_value(glom_type, value, std::locale::classic() /* SQL uses the C locale */, format_ignored, true /* ISO standard */);
   
   //Escape " as "", as specified by the CSV RFC:
   return Utils::string_replace(result, GLOM_QUOTE_FOR_FILE_FORMAT, GLOM_QUOTE_FOR_FILE_FORMAT GLOM_QUOTE_FOR_FILE_FORMAT);
@@ -385,7 +385,7 @@ Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, glom_field_t
     if(old_image_format)
     {
       //We used the GDA format before:
-      GdaBinary* gdabinary = gda_string_to_binary(string_unescaped.c_str());
+      auto gdabinary = gda_string_to_binary(string_unescaped.c_str());
       if(!success || !gdabinary)
         return Gnome::Gda::Value();
       else
@@ -398,7 +398,7 @@ Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, glom_field_t
     } else {
       //What we use now in new files:
 
-      GdaBinary* gdabinary = g_new(GdaBinary, 1);
+      auto gdabinary = g_new(GdaBinary, 1);
       gsize len = 0;
       gdabinary->data = g_base64_decode(string_unescaped.c_str(), &len);
       gdabinary->binary_length = len;
@@ -449,7 +449,7 @@ Gnome::Gda::SqlOperatorType Field::sql_find_operator() const
   {
     case(TYPE_TEXT):
     {
-      ConnectionPool* connection_pool = ConnectionPool::get_instance();
+      auto connection_pool = ConnectionPool::get_instance();
       if(connection_pool && connection_pool->get_backend())
         return connection_pool->get_string_find_operator();
       else
@@ -540,13 +540,13 @@ Glib::ustring Field::get_sql_type() const
     //Type
     Glib::ustring strType = "unknowntype";
 
-    ConnectionPool* pConnectionPool = ConnectionPool::get_instance();
+    auto pConnectionPool = ConnectionPool::get_instance();
     if(pConnectionPool)
     {
-      const FieldTypes* pFieldTypes = pConnectionPool->get_field_types();
+      const auto pFieldTypes = pConnectionPool->get_field_types();
       if(pFieldTypes)
       {
-        const GType fieldType = m_field_info->get_g_type();
+        const auto fieldType = m_field_info->get_g_type();
         strType = pFieldTypes->get_string_name_for_gdavaluetype(fieldType);
       }
       else
@@ -573,11 +573,11 @@ Glib::ustring Field::get_gda_type_name() const
 /// Ignores any part of FieldAttributes that libgda does not properly fill.
 bool Field::field_info_from_database_is_equal(const Glib::RefPtr<const Gnome::Gda::Column>& field)
 {
-  Glib::RefPtr<Gnome::Gda::Column> temp = m_field_info->copy();
+  auto temp = m_field_info->copy();
 
   temp->set_auto_increment( field->get_auto_increment() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
 
-  const Gnome::Gda::Value value = field->get_default_value();
+  const auto value = field->get_default_value();
   temp->set_default_value(value); //Don't compare this, because the data is incorrect when libgda reads it from the database.
 
   //TODO_gda: temp->set_primary_key( field->get_primary_key() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
@@ -593,7 +593,7 @@ Field::glom_field_type Field::get_glom_type_for_gda_type(GType gda_type)
 
   //Get the glom type used for this gda type:
   {
-    type_map_gda_type_to_glom_type::iterator iterFind = m_map_gda_type_to_glom_type.find(gda_type);
+    auto iterFind = m_map_gda_type_to_glom_type.find(gda_type);
     if(iterFind != m_map_gda_type_to_glom_type.end())
       result = iterFind->second;
     else
@@ -610,7 +610,7 @@ GType Field::get_gda_type_for_glom_type(Field::glom_field_type glom_type)
   init_map();
 
   //Get the ideal gda type used for that glom type;
-  type_map_glom_type_to_gda_type::iterator iterFind = m_map_glom_type_to_gda_type.find(glom_type);
+  auto iterFind = m_map_glom_type_to_gda_type.find(glom_type);
   GType ideal_gda_type = G_TYPE_NONE;
   if(iterFind != m_map_glom_type_to_gda_type.end())
     ideal_gda_type = iterFind->second;
@@ -739,11 +739,11 @@ void Field::init_map()
 //static:
 bool Field::get_conversion_possible(glom_field_type field_type_src, glom_field_type field_type_dest)
 {
-  type_map_conversions::const_iterator iterFind = m_map_conversions.find(field_type_src);
+  auto iterFind = m_map_conversions.find(field_type_src);
   if(iterFind != m_map_conversions.end())
   {
-    const type_list_conversion_targets list_conversions = iterFind->second;
-    type_list_conversion_targets::const_iterator iterConversionFind = std::find(list_conversions.begin(), list_conversions.end(), field_type_dest);
+    const auto list_conversions = iterFind->second;
+    auto iterConversionFind = std::find(list_conversions.begin(), list_conversions.end(), field_type_dest);
     if(iterConversionFind != list_conversions.end())
       return true; //Success: conversion found.
   }
@@ -773,7 +773,7 @@ Field::type_map_type_names Field::get_usable_type_names()
   type_map_type_names result =  m_map_type_names_ui;
 
   //Remove INVALID, because it's not something that a user can use for a field type.
-  type_map_type_names::iterator iter = result.find(TYPE_INVALID);
+  auto iter = result.find(TYPE_INVALID);
   if(iter != result.end())
     result.erase(iter);
 
@@ -785,7 +785,7 @@ Glib::ustring Field::get_type_name_ui(glom_field_type glom_type)
 {
   Glib::ustring result = "Invalid";
 
-  type_map_type_names::iterator iterFind = m_map_type_names_ui.find(glom_type);
+  auto iterFind = m_map_type_names_ui.find(glom_type);
   if(iterFind != m_map_type_names_ui.end())
     result = iterFind->second;
 
@@ -833,20 +833,20 @@ Field::type_list_strings Field::get_calculation_relationships() const
   type_list_strings result;
 
   Glib::ustring::size_type index = 0;
-  const Glib::ustring::size_type count = m_calculation.size();
+  const auto count = m_calculation.size();
   const Glib::ustring prefix = "record.related[\"";
-  const Glib::ustring::size_type prefix_size = prefix.size();
+  const auto prefix_size = prefix.size();
 
   while(index < count)
   {
-    Glib::ustring::size_type pos_find = m_calculation.find(prefix, index);
+    auto pos_find = m_calculation.find(prefix, index);
     if(pos_find != Glib::ustring::npos)
     {
-      Glib::ustring::size_type pos_find_end = m_calculation.find("\"]", pos_find);
+      auto pos_find_end = m_calculation.find("\"]", pos_find);
       if(pos_find_end  != Glib::ustring::npos)
       {
         Glib::ustring::size_type pos_start = pos_find + prefix_size;
-        const Glib::ustring field_name = m_calculation.substr(pos_start, pos_find_end - pos_start);
+        const auto field_name = m_calculation.substr(pos_start, pos_find_end - pos_start);
         result.push_back(field_name);
         index = pos_find_end + 1;
       }

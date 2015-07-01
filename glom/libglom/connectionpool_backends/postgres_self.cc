@@ -160,17 +160,17 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   }
 
   //Get the filepath of the directory that we should create:
-  const std::string dbdir_uri = m_database_directory_uri;
+  const auto dbdir_uri = m_database_directory_uri;
   //std::cout << "debug: dbdir_uri=" << dbdir_uri << std::endl;
 
   if(file_exists_uri(dbdir_uri))
     return INITERROR_DIRECTORY_ALREADY_EXISTS;
 
-  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+  const auto dbdir = Glib::filename_from_uri(dbdir_uri);
   //std::cout << "debug: dbdir=" << dbdir << std::endl;
   g_assert(!dbdir.empty());
 
-  const bool dbdir_created = create_directory_filepath(dbdir);
+  const auto dbdir_created = create_directory_filepath(dbdir);
   if(!dbdir_created)
   {
     std::cerr << G_STRFUNC << ": Couldn't create directory: " << dbdir << std::endl;
@@ -202,8 +202,8 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   // initdb creates a new postgres database cluster:
 
   //Get file:// URI for the tmp/ directory:
-  const std::string temp_pwfile = Utils::get_temp_file_path("glom_initdb_pwfile");
-  const Glib::ustring temp_pwfile_uri = Glib::filename_to_uri(temp_pwfile);
+  const auto temp_pwfile = Utils::get_temp_file_path("glom_initdb_pwfile");
+  const auto temp_pwfile_uri = Glib::filename_to_uri(temp_pwfile);
   const bool pwfile_creation_succeeded = create_text_file(temp_pwfile_uri, password);
   g_assert(pwfile_creation_succeeded);
 
@@ -219,7 +219,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
     std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting database." << std::endl;
   }
 
-  const int temp_pwfile_removed = g_remove(temp_pwfile.c_str()); //Of course, we don't want this to stay around. It would be a security risk.
+  const auto temp_pwfile_removed = g_remove(temp_pwfile.c_str()); //Of course, we don't want this to stay around. It would be a security risk.
   g_assert(temp_pwfile_removed == 0);
 
   return result ? INITERROR_NONE : INITERROR_COULD_NOT_START_SERVER;
@@ -269,7 +269,7 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
        iter != vec.end();
        ++iter)
   {
-    const Glib::ustring str = *iter;
+    const auto str = *iter;
     if(!str.empty())
       return str; //Found.
   }
@@ -281,7 +281,7 @@ float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgr
 {
   float result = 0;
 
-  const Glib::ustring version_str = get_postgresql_utils_version(slot_progress);
+  const auto version_str = get_postgresql_utils_version(slot_progress);
 
   Glib::RefPtr<Glib::Regex> regex;
 
@@ -314,7 +314,7 @@ float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgr
   {
     //std::cout << "regex item: START" << *iter << "END" << std::endl;
 
-    const Glib::ustring str = *iter;
+    const auto str = *iter;
     if(str.empty())
       continue;
 
@@ -348,7 +348,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
     return STARTUPERROR_NONE; //Just do it once.
   }
 
-  const std::string dbdir_uri = m_database_directory_uri;
+  const auto dbdir_uri = m_database_directory_uri;
 
   if(!(file_exists_uri(dbdir_uri)))
   {
@@ -356,15 +356,15 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
     return STARTUPERROR_FAILED_NO_MAIN_DIRECTORY;
   }
 
-  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+  const auto dbdir = Glib::filename_from_uri(dbdir_uri);
   g_assert(!dbdir.empty());
 
   const std::string dbdir_data = Glib::build_filename(dbdir, FILENAME_DATA);
-  const Glib::ustring dbdir_data_uri = Glib::filename_to_uri(dbdir_data);
+  const auto dbdir_data_uri = Glib::filename_to_uri(dbdir_data);
   if(!(file_exists_uri(dbdir_data_uri)))
   {
     const std::string dbdir_backup = Glib::build_filename(dbdir, FILENAME_BACKUP);
-    const Glib::ustring dbdir_backup_uri = Glib::filename_to_uri(dbdir_backup);
+    const auto dbdir_backup_uri = Glib::filename_to_uri(dbdir_backup);
     if(file_exists_uri(dbdir_backup_uri))
     {
       std::cerr << G_STRFUNC << ": There is no data, but there is backup data." << std::endl;
@@ -390,7 +390,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   }
 
   //TODO: Performance:
-  const std::string port_as_text = Glib::Ascii::dtostr(available_port);
+  const auto port_as_text = Glib::Ascii::dtostr(available_port);
 
   // -D specifies the data directory.
   // -c config_file= specifies the configuration file
@@ -446,16 +446,16 @@ void PostgresSelfHosted::show_active_connections()
   if(!gda_connection)
     std::cerr << G_STRFUNC << ": connection failed." << std::endl;
   
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
+  auto datamodel = DbUtils::query_execute_select(builder);
   if(!datamodel)
     std::cerr << G_STRFUNC << ": pg_stat_activity SQL query failed." << std::endl;
   
-  const int rows_count = datamodel->get_n_rows(); 
+  const auto rows_count = datamodel->get_n_rows(); 
   if(datamodel->get_n_rows() < 1)
     std::cerr << G_STRFUNC << ": pg_stat_activity SQL query returned no rows." << std::endl;
 
   std::cout << "Active connections according to a pg_stat_activity SQL query:" << std::endl;
-  const int cols_count = datamodel->get_n_columns();
+  const auto cols_count = datamodel->get_n_columns();
   for(int row = 0; row < rows_count; ++row)
   {
     for(int col = 0; col < cols_count; ++col)
@@ -482,8 +482,8 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
   if(!get_self_hosting_active())
     return true; //Don't try to stop it if we have not started it.
 
-  const std::string dbdir_uri = m_database_directory_uri;
-  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+  const auto dbdir_uri = m_database_directory_uri;
+  const auto dbdir = Glib::filename_from_uri(dbdir_uri);
   g_assert(!dbdir.empty());
 
   const std::string dbdir_data = Glib::build_filename(dbdir, FILENAME_DATA);
@@ -538,8 +538,8 @@ bool PostgresSelfHosted::set_network_shared(const SlotProgress& /* slot_progress
 
   m_network_shared = network_shared;
 
-  const std::string dbdir_uri = m_database_directory_uri;
-  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+  const auto dbdir_uri = m_database_directory_uri;
+  const auto dbdir = Glib::filename_from_uri(dbdir_uri);
 
   const std::string dbdir_uri_config = dbdir_uri + "/config";
   const char* default_conf_contents = 0;
@@ -607,7 +607,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
         std::cout << "debug: " << G_STRFUNC << ": Waiting and retrying the connection due to suspected too-early success of pg_ctl. retries=" << count_retries << ", max_retries=" << m_network_shared << std::endl;
 
         //Wait:
-        Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
+        auto mainloop = Glib::MainLoop::create(false);
           sigc::connection connection_timeout = Glib::signal_timeout().connect(
           sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)),
           1000 /* 1 second */);

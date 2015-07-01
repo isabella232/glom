@@ -116,11 +116,11 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
 
 #if defined(GLOM_ENABLE_SQLITE) || defined(GLOM_ENABLE_MYSQL)
   //Use titles that show the distinction between PostgreSQL and the alternatives:
-  const Glib::ustring postgresql_selfhost_label = _("Create PostgreSQL database in its own folder, to be hosted by this computer.");
-  const Glib::ustring postgresql_central_label = _("Create database on an external PostgreSQL database server, to be specified in the next step.");
+  const auto postgresql_selfhost_label = _("Create PostgreSQL database in its own folder, to be hosted by this computer.");
+  const auto postgresql_central_label = _("Create database on an external PostgreSQL database server, to be specified in the next step.");
 #else
-  const Glib::ustring postgresql_selfhost_label = _("Create database in its own folder, to be hosted by this computer.");
-  const Glib::ustring postgresql_central_label = _("Create database on an external database server, to be specified in the next step.");
+  const auto postgresql_selfhost_label = _("Create database in its own folder, to be hosted by this computer.");
+  const auto postgresql_central_label = _("Create database on an external database server, to be specified in the next step.");
 #endif
 
   m_radiobutton_server_postgres_selfhosted.set_label(postgresql_selfhost_label);

@@ -63,7 +63,7 @@ void Box_Print_Layouts::fill_row(const Gtk::TreeModel::iterator& iter, const std
 {
   if(iter)
   {
-    const Glib::ustring& name = item->get_name();
+    const auto name = item->get_name();
     m_AddDel.set_value_key(iter, name);
     m_AddDel.set_value(iter, m_colName, name);
     m_AddDel.set_value(iter, m_colTitle, item_get_title(item));
@@ -128,7 +128,7 @@ void Box_Print_Layouts::on_adddel_user_added(const Gtk::TreeModel::iterator& row
 {
   std::shared_ptr<PrintLayout> item = std::make_shared<PrintLayout>();
 
-  const Glib::ustring name = m_AddDel.get_value(row, m_colName);
+  const auto name = m_AddDel.get_value(row, m_colName);
   if(!name.empty())
   {
     item->set_name(name);
@@ -150,7 +150,7 @@ void Box_Print_Layouts::on_adddel_user_added(const Gtk::TreeModel::iterator& row
 
 void Box_Print_Layouts::on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& /* TODO: rowEnd */)
 {
-  const Glib::ustring name = m_AddDel.get_value_key(rowStart);
+  const auto name = m_AddDel.get_value_key(rowStart);
   if(!name.empty())
   {
     get_document()->remove_print_layout(m_table_name, name);
@@ -182,7 +182,7 @@ void Box_Print_Layouts::save_to_document()
     bool modified = false;
     for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
     {
-      const Glib::ustring name = m_AddDel.get_value(iter, m_colName);
+      const auto name = m_AddDel.get_value(iter, m_colName);
 
       if(!name.empty() && std::find(listItems.begin(), listItems.end(), name) == listItems.end())
       {
@@ -205,7 +205,7 @@ void Box_Print_Layouts::on_adddel_user_changed(const Gtk::TreeModel::iterator& r
 {
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
-    const Glib::ustring name = m_AddDel.get_value_key(row);
+    const auto name = m_AddDel.get_value_key(row);
     Document* document = get_document();
 
     std::shared_ptr<PrintLayout> item = document->get_print_layout(m_table_name, name);
@@ -219,7 +219,7 @@ void Box_Print_Layouts::on_adddel_user_changed(const Gtk::TreeModel::iterator& r
       }
       else if(column == m_colName)
       {
-        const Glib::ustring name_new = m_AddDel.get_value(row, m_colName);
+        const auto name_new = m_AddDel.get_value(row, m_colName);
         if(!name.empty() && !name_new.empty())
         {
           Glib::ustring strMsg = _("Are you sure that you want to rename this print layout?");  //TODO: Show old and new names?
@@ -227,7 +227,7 @@ void Box_Print_Layouts::on_adddel_user_changed(const Gtk::TreeModel::iterator& r
           dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
           dialog.add_button(_("Rename"), Gtk::RESPONSE_OK);
           dialog.set_secondary_text(strMsg);
-          const int iButtonClicked = dialog.run();
+          const auto iButtonClicked = dialog.run();
 
           //Rename the item:
           if(iButtonClicked == Gtk::RESPONSE_OK)

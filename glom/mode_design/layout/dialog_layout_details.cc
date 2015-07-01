@@ -570,7 +570,7 @@ std::shared_ptr<LayoutItem_Button> Dialog_Layout_Details::offer_button_script_ed
 
   dialog->set_script(button, m_table_name);
   dialog->set_transient_for(*this);
-  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
   if(response == Gtk::RESPONSE_OK)
   {
@@ -600,7 +600,7 @@ std::shared_ptr<Relationship> Dialog_Layout_Details::offer_relationship_list(con
   dialog->set_document(get_document(), m_table_name);
   dialog->select_item(item);
   dialog->set_transient_for(*this);
-  const int response = dialog->run();
+  const auto response = dialog->run();
   dialog->hide();
   if(response == Gtk::RESPONSE_OK)
   {
@@ -912,7 +912,7 @@ void Dialog_Layout_Details::on_button_formatting()
         std::shared_ptr<LayoutItem_WithFormatting> withformatting = std::dynamic_pointer_cast<LayoutItem_WithFormatting>(layout_item);
         if(withformatting)
         {
-          const bool changed = offer_non_field_item_formatting(withformatting, this);
+          const auto changed = offer_non_field_item_formatting(withformatting, this);
           if(changed)
             m_modified = true;
         }
@@ -1341,7 +1341,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_column_width(const Glib::ust
       {
         //Convert the text to a number, using the same logic used by GtkCellRendererText when it stores numbers.
         char* pchEnd = 0;
-        const guint new_value = static_cast<guint>( strtod(new_text.c_str(), &pchEnd) );
+        const auto new_value = static_cast<guint>( strtod(new_text.c_str(), &pchEnd) );
 
         //Store the user's new value in the model:
         layout_item->set_display_width(new_value);

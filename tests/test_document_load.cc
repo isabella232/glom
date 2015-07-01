@@ -156,7 +156,7 @@ int main()
   Glom::Document document;
   document.set_file_uri(uri);
   int failure_code = 0;
-  const bool test = document.load(failure_code);
+  const auto test = document.load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -169,7 +169,7 @@ int main()
   g_assert(document.get_is_example_file());
   g_assert(document.get_database_title_original() == "Openismus Film Manager");
 
-  const std::vector<Glib::ustring> table_names = document.get_table_names();
+  const auto table_names = document.get_table_names();
   g_assert(contains(table_names, "accommodation"));
   g_assert(contains(table_names, "cars"));
   g_assert(contains(table_names, "characters"));
@@ -185,14 +185,14 @@ int main()
   g_assert( table->get_title_singular_original() == "Scene" );
 
   //Test known fields of one table:
-  const Glom::Document::type_vec_fields fields = document.get_table_fields("scenes");
+  const auto fields = document.get_table_fields("scenes");
   g_assert(contains_named(fields, "scene_id"));
   g_assert(contains_named(fields, "comments"));
   g_assert(contains_named(fields, "description"));
   g_assert(contains_named(fields, "date"));
   g_assert(!contains_named(fields, "nosuchfield"));
 
-  const Glom::Document::type_vec_relationships relationships = document.get_relationships("scenes");
+  const auto relationships = document.get_relationships("scenes");
   g_assert(contains_named(relationships, "location"));
   g_assert(contains_named(relationships, "scene_crew"));
   g_assert(contains_named(relationships, "scene_cast"));
@@ -270,7 +270,7 @@ int main()
 
 
   //Test library modules:
-  const std::vector<Glib::ustring> module_names = document.get_library_module_names();
+  const auto module_names = document.get_library_module_names();
   if(!module_names.empty()) //TODO: Test a document that actually has some?
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected library module names." << std::endl;

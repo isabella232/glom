@@ -121,7 +121,7 @@ void test_selfhosting_cleanup(bool delete_file)
 {
   Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
 
-  const bool stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );
+  const auto stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );
   g_assert(stopped);
 
   if(!delete_file)
@@ -159,7 +159,7 @@ bool test_selfhost(Glom::Document& document, const Glib::ustring& user, const Gl
   connection_pool->set_user(user);
   connection_pool->set_password(password);
 
-  const Glom::ConnectionPool::StartupErrors started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
+  const auto started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
   if(started != Glom::ConnectionPool::Backend::STARTUPERROR_NONE)
   {
     std::cerr << G_STRFUNC << ": connection_pool->startup(): result=" << started << std::endl;
@@ -188,11 +188,11 @@ bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document
     Glom::Utils::get_temp_directory_path(temp_filename);
   if(!subdirectory_path.empty())
     temp_filepath_dir = Glib::build_filename(temp_filepath_dir, subdirectory_path);
-  const std::string temp_filepath = Glib::build_filename(temp_filepath_dir, temp_filename);
+  const auto temp_filepath = Glib::build_filename(temp_filepath_dir, temp_filename);
 
   //Make sure that the file does not exist yet:
   {
-    const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
+    const auto uri = Glib::filename_to_uri(temp_filepath_dir);
     delete_directory(uri);
   }
 
@@ -204,7 +204,7 @@ bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document
   document.set_hosting_mode(hosting_mode);
   document.set_is_example_file(false);
   document.set_network_shared(false);
-  const bool saved = document.save();
+  const auto saved = document.save();
   g_assert(saved);
 
   //Specify the backend and backend-specific details to be used by the connectionpool.
@@ -213,7 +213,7 @@ bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document
 
   //We must specify a default username and password:
   Glib::ustring password;
-  const Glib::ustring user = Glom::Privs::get_default_developer_user_name(password, hosting_mode);
+  const auto user = Glom::Privs::get_default_developer_user_name(password, hosting_mode);
   connection_pool->set_user(user);
   connection_pool->set_password(password);
 
@@ -245,7 +245,7 @@ bool test_create_and_selfhost_new_database(Glom::Document& document, Glom::Docum
     return false;
   } 
 
-  const Glib::ustring db_name = Glom::DbUtils::get_unused_database_name(database_name);
+  const auto db_name = Glom::DbUtils::get_unused_database_name(database_name);
   if(db_name.empty())
   {
     std::cerr << G_STRFUNC << ": DbUtils::get_unused_database_name) failed." << std::endl;
@@ -253,7 +253,7 @@ bool test_create_and_selfhost_new_database(Glom::Document& document, Glom::Docum
   }
 
   //Create a database:
-  const bool created = Glom::DbUtils::create_database(&document, db_name,
+  const auto created = Glom::DbUtils::create_database(&document, db_name,
     "test title", &on_db_creation_progress);
   if(!created)
   {
@@ -336,7 +336,7 @@ static bool after_load(Glom::Document& document, Glom::Document::HostingMode hos
     return false;
   }
 
-  const bool recreated = Glom::DbUtils::recreate_database_from_document(&document, sigc::ptr_fun(&on_recreate_progress) );
+  const auto recreated = Glom::DbUtils::recreate_database_from_document(&document, sigc::ptr_fun(&on_recreate_progress) );
   if(!recreated)
     test_selfhosting_cleanup();
 
@@ -357,7 +357,7 @@ bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Gl
   document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
   document.set_file_uri(example_file_uri);
   int failure_code = 0;
-  const bool test = document.load(failure_code);
+  const auto test = document.load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -382,7 +382,7 @@ bool test_create_and_selfhost_from_data(const Glib::ustring& example_file_conten
   document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
 
   int failure_code = 0;
-  const bool test = document.load_from_data((const guchar*)example_file_contents.c_str(), example_file_contents.bytes(), failure_code);
+  const auto test = document.load_from_data((const guchar*)example_file_contents.c_str(), example_file_contents.bytes(), failure_code);
 
   if(!test)
   {
@@ -470,7 +470,7 @@ static bool test_example_musiccollection_data_related(const Glom::Document* docu
   fieldsToGet.push_back(layoutitem);
 
   //Related field:
-  const std::shared_ptr<Glom::Relationship> relationship = document->get_relationship("albums", "artist");
+  const auto relationship = document->get_relationship("albums", "artist");
   if(!relationship)
   {
     std::cerr << G_STRFUNC << ": Failure: The relationship could not be found." << std::endl;
@@ -542,7 +542,7 @@ bool test_example_musiccollection_data(const Glom::Document* document)
     return false;
   }
 
-  const int count = Glom::DbUtils::count_rows_returned_by(builder);
+  const auto count = Glom::DbUtils::count_rows_returned_by(builder);
   if(count != 1 )
   {
     std::cerr << G_STRFUNC << "Failure: The COUNT query returned an unexpected value: " << count << std::endl;
@@ -551,7 +551,7 @@ bool test_example_musiccollection_data(const Glom::Document* document)
 
 
   //Get the album's related artist name:
-  const Gnome::Gda::Value album_id = data_model->get_value_at(0, 0);
+  const auto album_id = data_model->get_value_at(0, 0);
   return test_example_musiccollection_data_related(document, album_id);
 }
 
@@ -606,7 +606,7 @@ int test_all_hosting_modes(const SlotTest& slot)
 
 bool test_check_numeric_value_type(Glom::Document::HostingMode hosting_mode, const Gnome::Gda::Value& value)
 {
-  const GType gtype = value.get_value_type();
+  const auto gtype = value.get_value_type();
   //std::cout << "debug: gtype=" << g_type_name(gtype) << std::endl;
   if(hosting_mode == Glom::Document::HOSTING_MODE_SQLITE)
   {

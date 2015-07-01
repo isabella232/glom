@@ -79,7 +79,7 @@ Glib::ustring HasTitleSingular::get_title_singular_original() const
 
 Glib::ustring HasTitleSingular::get_title_singular_with_fallback(const Glib::ustring& locale) const
 {
-  const Glib::ustring result = get_title_singular(locale);
+  const auto result = get_title_singular(locale);
   if(!result.empty())
     return result;
   

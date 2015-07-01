@@ -69,7 +69,7 @@ void Dialog_AddRelatedTable::set_fields(const Glib::ustring& table_name)
 {
   m_table_name = table_name;
 
-  const type_vec_fields fields = DbUtils::get_fields_for_table_from_database(table_name);
+  const auto fields = DbUtils::get_fields_for_table_from_database(table_name);
 
   //Show the fields:
   m_combo_from_field->remove_all();
@@ -84,7 +84,7 @@ void Dialog_AddRelatedTable::set_fields(const Glib::ustring& table_name)
 
 void Dialog_AddRelatedTable::on_entry_table_name()
 {
-  const Glib::ustring table_name = m_entry_table_name->get_text();
+  const auto table_name = m_entry_table_name->get_text();
   if(table_name.empty())
     return;
 
@@ -116,7 +116,7 @@ void Dialog_AddRelatedTable::on_entry_table_name()
 
 void Dialog_AddRelatedTable::on_combo_field_name()
 {
-  const Glib::ustring field_name = m_combo_from_field->get_active_text();
+  const auto field_name = m_combo_from_field->get_active_text();
   if(field_name.empty())
     return;
 

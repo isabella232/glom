@@ -173,7 +173,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
     Glib::ustring where_clause_to_table_name = relationship->get_to_table();
 
     std::shared_ptr<LayoutItem_CalendarPortal> derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
-    const Glib::ustring date_field_name = derived_portal->get_date_field()->get_name();
+    const auto date_field_name = derived_portal->get_date_field()->get_name();
 
     std::shared_ptr<const Relationship> relationship_related = m_portal->get_related_relationship();
     if(relationship_related)
@@ -189,12 +189,12 @@ bool Box_Data_Calendar_Related::fill_from_database()
 
     Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-    const guint cond = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_BETWEEN,
+    const auto cond = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_BETWEEN,
        builder->add_field_id(date_field->get_name(), m_found_set.m_table_name),
        builder->add_expr_as_value(date_start_value),
        builder->add_expr_as_value(date_end_value));
     builder->set_where(cond); //Might be unnecessary.
-    const Gnome::Gda::SqlExpr extra_where_clause = builder->export_expression(cond);
+    const auto extra_where_clause = builder->export_expression(cond);
 
     Gnome::Gda::SqlExpr where_clause;
     if(m_found_set.m_where_clause.empty())
@@ -217,20 +217,20 @@ bool Box_Data_Calendar_Related::fill_from_database()
     if(!(datamodel))
       return true;
 
-    const int rows_count = datamodel->get_n_rows();
+    const auto rows_count = datamodel->get_n_rows();
     if(!(rows_count > 0))
       return true;
 
     //Get the data:
     for(int row_index = 0; row_index < rows_count; ++row_index)
     {
-      const int columns_count = datamodel->get_n_columns();
+      const auto columns_count = datamodel->get_n_columns();
       if(m_query_column_date_field > columns_count)
        continue;
 
       //Get the date value for this row:
-      const Gnome::Gda::Value value_date = datamodel->get_value_at(m_query_column_date_field, row_index);
-      const Glib::Date date = value_date.get_date();
+      const auto value_date = datamodel->get_value_at(m_query_column_date_field, row_index);
+      const auto date = value_date.get_date();
 
       //Get all the values for this row:
       type_vector_values* pVector = new type_vector_values(m_FieldsShown.size());
@@ -301,7 +301,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
     if(m_key_field && m_portal)
     {
       Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
-      const Glib::ustring target_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
+      const auto target_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
       builder->set_table(target_table);
       builder->add_field_value_as_value(m_key_field->get_name(), m_key_value);
       builder->set_where(
@@ -309,7 +309,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
           builder->add_field_id(field_primary_key->get_name(), target_table),
           builder->add_expr_as_value(primary_key_value)));
 
-      const bool test = DbUtils::query_execute(builder);
+      const auto test = DbUtils::query_execute(builder);
       if(test)
       {
         //Show it on the view, if it's visible:

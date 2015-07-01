@@ -64,7 +64,7 @@ void Box_Reports::fill_row(const Gtk::TreeModel::iterator& iter, const std::shar
 {
   if(iter)
   {
-    const Glib::ustring report_name = report->get_name();
+    const auto report_name = report->get_name();
     m_AddDel.set_value_key(iter, report_name);
     m_AddDel.set_value(iter, m_colReportName, report_name);
     m_AddDel.set_value(iter, m_colTitle, item_get_title(report));
@@ -129,7 +129,7 @@ void Box_Reports::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 {
   std::shared_ptr<Report> report = std::make_shared<Report>();
 
-  const Glib::ustring report_name = m_AddDel.get_value(row, m_colReportName);
+  const auto report_name = m_AddDel.get_value(row, m_colReportName);
   if(!report_name.empty())
   {
     report->set_name(report_name);
@@ -151,7 +151,7 @@ void Box_Reports::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 
 void Box_Reports::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& /* TODO: rowEnd */)
 {
-  const Glib::ustring name = m_AddDel.get_value_key(rowStart);
+  const auto name = m_AddDel.get_value_key(rowStart);
   if(!name.empty())
   {
     get_document()->remove_report(m_table_name, name);
@@ -184,7 +184,7 @@ void Box_Reports::save_to_document()
     bool modified = false;
     for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
     {
-      const Glib::ustring report_name = m_AddDel.get_value(iter, m_colReportName);
+      const auto report_name = m_AddDel.get_value(iter, m_colReportName);
 
       if(!report_name.empty() && std::find(listReports.begin(), listReports.end(), report_name) == listReports.end())
       {
@@ -208,7 +208,7 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
 {
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
-    const Glib::ustring report_name = m_AddDel.get_value_key(row);
+    const auto report_name = m_AddDel.get_value_key(row);
     Document* document = get_document();
 
     std::shared_ptr<Report> report = document->get_report(m_table_name, report_name);
@@ -222,10 +222,10 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
       }
       else if(column == m_colReportName)
       {
-        const Glib::ustring report_name_new = m_AddDel.get_value(row, m_colReportName);
+        const auto report_name_new = m_AddDel.get_value(row, m_colReportName);
         if(!report_name.empty() && !report_name_new.empty())
         {
-          const Glib::ustring strMsg = _("Are you sure that you want to rename this report?");  //TODO: Show old and new names?
+          const auto strMsg = _("Are you sure that you want to rename this report?");  //TODO: Show old and new names?
           Gtk::MessageDialog dialog(_("Rename Report"));
           dialog.set_secondary_text(strMsg);
           int iButtonClicked = dialog.run();

@@ -58,7 +58,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
     }
     else if(data_model_tables)
     {
-      const int rows = data_model_tables->get_n_rows();
+      const auto rows = data_model_tables->get_n_rows();
       if(!rows)
       {
         //This happens with our developer user when sharing is activated, and with other extra users.
@@ -68,7 +68,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
 
       for(int i = 0; i < rows; ++i)
       {
-        const Gnome::Gda::Value value_name = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_NAME, i);
+        const auto value_name = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_NAME, i);
 
         //Get the types's string representation:
         Glib::ustring schema_type_string;
@@ -77,16 +77,16 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
         
         if(!schema_type_string.empty())
         {
-          const Gnome::Gda::Value value_gdatype = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, i);
+          const auto value_gdatype = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, i);
           if(value_gdatype.get_value_type() == G_TYPE_STRING)
           {
-            Glib::ustring type_string = value_gdatype.get_string();
-            const GType gdatype = gda_g_type_from_string(type_string.c_str());
+            auto type_string = value_gdatype.get_string();
+            const auto gdatype = gda_g_type_from_string(type_string.c_str());
 
             //std::cout << "debug: schema_type_string=" << schema_type_string << ", gda type=" << gdatype << "(" << g_type_name(gdatype) << ")" << std::endl;
 
             //Save it for later:
-            //const Glib::ustring gdatypestring = gda_g_type_to_string(gdatype);
+            //const auto gdatypestring = gda_g_type_to_string(gdatype);
            
             //std::cout << "schema type: " << schema_type_string << " = gdatype " << (guint)gdatype << "(" << gdatypestring << ")" << std::endl;
             
@@ -177,10 +177,10 @@ Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) con
   if(field_type == G_TYPE_STRING)
     return "varchar";
 
-  type_mapGdaTypesToSchemaStrings::const_iterator iterFind = m_mapGdaTypesToSchemaStrings.find(field_type);
+  auto iterFind = m_mapGdaTypesToSchemaStrings.find(field_type);
   if(iterFind == m_mapGdaTypesToSchemaStrings.end())
   {
-    type_mapFallbackTypes::const_iterator iterFallback = m_mapFallbackTypes.find(field_type);
+    auto iterFallback = m_mapFallbackTypes.find(field_type);
     if(iterFallback != m_mapFallbackTypes.end())
       return get_string_name_for_gdavaluetype(iterFallback->second);
 
@@ -200,7 +200,7 @@ Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) con
 
 GType FieldTypes::get_fallback_type_for_gdavaluetype(GType field_type) const
 {
-  type_mapFallbackTypes::const_iterator iter = m_mapFallbackTypes.find(field_type);
+  auto iter = m_mapFallbackTypes.find(field_type);
   if(iter == m_mapFallbackTypes.end()) return G_TYPE_NONE;
   return iter->second;
 }

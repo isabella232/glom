@@ -468,7 +468,7 @@ void Dialog_Layout_Report::enable_buttons()
      //Not all parts may be children of all other parts.
     if(layout_item_available && layout_item_parent)
     {
-      const bool may_be_child_of_parent = TreeStore_ReportLayout::may_be_child_of(layout_item_parent, layout_item_available);
+      const auto may_be_child_of_parent = TreeStore_ReportLayout::may_be_child_of(layout_item_parent, layout_item_available);
       enable_add = may_be_child_of_parent;
 
       if(!may_be_child_of_parent)
@@ -704,7 +704,7 @@ std::shared_ptr<Relationship> Dialog_Layout_Report::offer_relationship_list()
 
   dialog->set_document(get_document(), m_table_name);
   dialog->set_transient_for(*this);
-  const int response = dialog->run();
+  const auto response = dialog->run();
   dialog->hide();
   if(response == Gtk::RESPONSE_OK)
   {
@@ -830,7 +830,7 @@ void Dialog_Layout_Report::on_button_edit()
         dialog->set_item(fieldsummary, m_table_name);
         dialog->set_transient_for(*this);
 
-        const int response = dialog->run();
+        const auto response = dialog->run();
         dialog->hide();
 
         if(response == Gtk::RESPONSE_OK)
@@ -902,7 +902,7 @@ void Dialog_Layout_Report::on_button_edit()
                 dialog->set_item(group_by, m_table_name);
                 dialog->set_transient_for(*this);
 
-                const int response = dialog->run();
+                const auto response = dialog->run();
                 dialog->hide();
 
                 if(response == Gtk::RESPONSE_OK)
@@ -956,7 +956,7 @@ void Dialog_Layout_Report::on_cell_data_part(Gtk::CellRenderer* renderer, const 
       Gtk::TreeModel::Row row = *iter;
 
       std::shared_ptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
-      const Glib::ustring part = pItem->get_part_type_name();
+      const auto part = pItem->get_part_type_name();
 
       renderer_text->property_text() = part;
       renderer_text->property_editable() = false; //Part names can never be edited.

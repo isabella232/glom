@@ -68,7 +68,7 @@ boost::python::object PyGlomRelated::getitem(const boost::python::object& cppite
         {
           //Get the value of the from_key in the parent record.
           std::shared_ptr<Relationship> relationship = iterFind->second;
-          const Glib::ustring from_key = relationship->get_from_field();
+          const auto from_key = relationship->get_from_field();
 
           boost::python::extract<PyGlomRecord*> extractor(m_record);
           if(extractor.check())

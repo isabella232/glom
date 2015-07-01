@@ -64,7 +64,7 @@ const Gtk::Box* FlowTable::get_parent_hbox(const Gtk::Widget* first) const
 
     //Check if it has the widget as one of its children:
     typedef std::vector<const Gtk::Widget*> type_children;
-    const type_children box_children = hbox->get_children();
+    const auto box_children = hbox->get_children();
     if(box_children.empty())
       continue;
 
@@ -93,7 +93,7 @@ void FlowTable::delete_and_forget_hbox(Gtk::Box* hbox)
   //if(hbox->get_parent() == this)
   
   //Check that it is in our list of hboxes:
-  const type_list_hboxes::iterator iter = std::find(
+  const auto iter = std::find(
     m_list_hboxes.begin(), m_list_hboxes.end(), hbox);
   if(iter == m_list_hboxes.end())
   {
@@ -181,7 +181,7 @@ void FlowTable::remove_all()
   //because it handles children differently via its specific API.
   /*
   typedef std::vector<Widget*> type_children;
-  const type_children children = get_children();
+  const auto children = get_children();
   for(type_children::iterator iter = children.begin(); iter != children.end(); ++iter)
   {
     Gtk::Widget* widget = *iter;
@@ -233,7 +233,7 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
   child = &first;
   
   //Check if it was added to an Box:
-  const Gtk::Box* hbox = get_parent_hbox(child);
+  const auto hbox = get_parent_hbox(child);
   if(hbox)
     child = hbox;
     
@@ -247,7 +247,7 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
   
   //Get the internal parent GtkEventBox, if any,
   //though we need a derived get_child_line() to do this automatically:
-  const Gtk::Widget* parent = child->get_parent();
+  const auto parent = child->get_parent();
   if(dynamic_cast<const Gtk::EventBox*>(parent))
      child = parent;
      
@@ -258,7 +258,7 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
 
 bool FlowTable::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-  const bool result = Egg::SpreadTableDnd::on_draw(cr);
+  const auto result = Egg::SpreadTableDnd::on_draw(cr);
   if(!m_design_mode)
     return result;
 
@@ -281,9 +281,9 @@ bool FlowTable::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
     if(!widget)
       continue;
 
-    const Gtk::Allocation allocation = widget->get_allocation();
-    const int x = allocation.get_x();
-    const int y = allocation.get_y();
+    const auto allocation = widget->get_allocation();
+    const auto x = allocation.get_x();
+    const auto y = allocation.get_y();
     //std::cout << G_STRFUNC << ": x: " << x << ", y: " << y << std::endl;
 
     int real_x = 0;
