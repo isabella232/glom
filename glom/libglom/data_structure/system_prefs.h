@@ -32,8 +32,10 @@ class SystemPrefs
 public:
   SystemPrefs();
   SystemPrefs(const SystemPrefs& src);
+  SystemPrefs(SystemPrefs&& src);
 
   SystemPrefs& operator=(const SystemPrefs& src);
+  SystemPrefs& operator=(SystemPrefs&& src);
 
   bool operator==(const SystemPrefs& src) const;
   bool operator!=(const SystemPrefs& src) const;

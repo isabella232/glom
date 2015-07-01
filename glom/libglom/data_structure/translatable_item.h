@@ -34,9 +34,11 @@ class TranslatableItem
 public:
   TranslatableItem();
   TranslatableItem(const TranslatableItem& src);
+  TranslatableItem(TranslatableItem&& src);
   virtual ~TranslatableItem();
 
   TranslatableItem& operator=(const TranslatableItem& src);
+  TranslatableItem& operator=(TranslatableItem&& src);
 
   bool operator==(const TranslatableItem& src) const;
   bool operator!=(const TranslatableItem& src) const;

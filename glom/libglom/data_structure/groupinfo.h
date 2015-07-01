@@ -33,9 +33,11 @@ class GroupInfo : public TranslatableItem
 public:
   GroupInfo();
   GroupInfo(const GroupInfo& src);
+  GroupInfo(GroupInfo&& src);
   virtual ~GroupInfo();
 
   GroupInfo& operator=(const GroupInfo& src);
+  GroupInfo& operator=(GroupInfo&& src);
 
   bool operator==(const GroupInfo& src) const;
   bool operator!=(const GroupInfo& src) const;

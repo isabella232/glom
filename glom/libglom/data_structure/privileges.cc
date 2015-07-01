@@ -36,6 +36,14 @@ Privileges::Privileges(const Privileges& src)
   operator=(src);
 }
 
+Privileges::Privileges(Privileges&& src)
+: m_view(std::move(src.m_view)),
+  m_edit(std::move(src.m_edit)),
+  m_create(std::move(src.m_create)),
+  m_delete(std::move(src.m_delete))
+{
+}
+
 Privileges::~Privileges()
 {
 }
@@ -43,9 +51,19 @@ Privileges::~Privileges()
 Privileges& Privileges::operator=(const Privileges& src)
 {
   m_view = src.m_view;
-  m_edit = src.m_edit;  
+  m_edit = src.m_edit;
   m_create = src.m_create;
   m_delete = src.m_delete;
+
+  return *this;
+}
+
+Privileges& Privileges::operator=(Privileges&& src)
+{
+  m_view = std::move(src.m_view);
+  m_edit = std::move(src.m_edit);
+  m_create = std::move(src.m_create);
+  m_delete = std::move(src.m_delete);
 
   return *this;
 }

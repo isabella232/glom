@@ -39,7 +39,9 @@ class FoundSet
 public:
   FoundSet();
   FoundSet(const FoundSet& src);
+  FoundSet(FoundSet&& src);
   FoundSet& operator=(const FoundSet& src);
+  FoundSet& operator=(FoundSet&& src);
 
 private:
   //We cannot implement this without a way to compare GdaSqlExpr instances,
