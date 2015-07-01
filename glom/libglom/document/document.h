@@ -584,7 +584,9 @@ private:
     }
 
     DocumentTableInfo(const DocumentTableInfo& src) = delete;
+    DocumentTableInfo(DocumentTableInfo&& src) = delete;
     DocumentTableInfo& operator=(const DocumentTableInfo& src) = delete;
+    DocumentTableInfo& operator=(DocumentTableInfo&& src) = delete;
 
     std::shared_ptr<TableInfo> m_info;
 
