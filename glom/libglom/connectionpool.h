@@ -86,7 +86,11 @@ class ConnectionPool : public sigc::trackable
 {
 private:
   ConnectionPool();
-  //ConnectionPool(const ConnectionPool& src);
+  ConnectionPool(const ConnectionPool& src) = delete;
+  ConnectionPool(ConnectionPool&& src) = delete;
+  ConnectionPool& operator=(const ConnectionPool& src) = delete;
+  ConnectionPool& operator=(ConnectionPool&& src) = delete;
+
   virtual ~ConnectionPool();
   //ConnectionPool& operator=(const ConnectionPool& src);
 
