@@ -39,9 +39,11 @@ public:
 
   ChoiceValue();
   ChoiceValue(const ChoiceValue& src);
+  ChoiceValue(ChoiceValue&& src) = delete;
   ~ChoiceValue();
 
   ChoiceValue& operator=(const ChoiceValue& src);
+  ChoiceValue& operator=(ChoiceValue&& src) = delete;
 
   bool operator==(const ChoiceValue& src) const;
   bool operator!=(const ChoiceValue& src) const;

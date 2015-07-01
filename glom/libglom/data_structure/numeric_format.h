@@ -31,9 +31,11 @@ class NumericFormat
 public:
   NumericFormat();
   NumericFormat(const NumericFormat& src);
+  NumericFormat(NumericFormat&& src) = delete;
   ~NumericFormat();
 
   NumericFormat& operator=(const NumericFormat& src);
+  NumericFormat& operator=(NumericFormat&& src) = delete;
 
   bool operator==(const NumericFormat& src) const;
   bool operator!=(const NumericFormat& src) const;

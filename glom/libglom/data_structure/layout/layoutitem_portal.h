@@ -47,7 +47,9 @@ public:
 
   LayoutItem_Portal();
   LayoutItem_Portal(const LayoutItem_Portal& src);
+  LayoutItem_Portal(LayoutItem_Portal&& src) = delete;
   LayoutItem_Portal& operator=(const LayoutItem_Portal& src);
+  LayoutItem_Portal& operator=(LayoutItem_Portal&& src) = delete;
   virtual ~LayoutItem_Portal();
 
   virtual LayoutItem* clone() const;

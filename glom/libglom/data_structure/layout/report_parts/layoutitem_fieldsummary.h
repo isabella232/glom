@@ -32,7 +32,9 @@ public:
 
   LayoutItem_FieldSummary();
   LayoutItem_FieldSummary(const LayoutItem_FieldSummary& src);
+  LayoutItem_FieldSummary(LayoutItem_FieldSummary&& src) = delete;
   LayoutItem_FieldSummary& operator=(const LayoutItem_FieldSummary& src);
+  LayoutItem_FieldSummary& operator=(LayoutItem_FieldSummary&& src) = delete;
   virtual ~LayoutItem_FieldSummary();
 
   virtual LayoutItem* clone() const;

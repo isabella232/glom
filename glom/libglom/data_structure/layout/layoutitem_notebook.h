@@ -37,7 +37,9 @@ public:
 
   LayoutItem_Notebook();
   LayoutItem_Notebook(const LayoutItem_Notebook& src);
+  LayoutItem_Notebook(LayoutItem_Notebook&& src) = delete;
   LayoutItem_Notebook& operator=(const LayoutItem_Notebook& src);
+  LayoutItem_Notebook& operator=(LayoutItem_Notebook&& src) = delete;
   virtual ~LayoutItem_Notebook();
 
   virtual LayoutItem* clone() const;

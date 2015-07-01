@@ -36,7 +36,9 @@ public:
 
   LayoutItem_Footer();
   LayoutItem_Footer(const LayoutItem_Footer& src);
+  LayoutItem_Footer(LayoutItem_Footer&& src) = delete;
   LayoutItem_Footer& operator=(const LayoutItem_Footer& src);
+  LayoutItem_Footer& operator=(LayoutItem_Footer&& src) = delete;
   virtual ~LayoutItem_Footer();
 
   virtual LayoutItem* clone() const;

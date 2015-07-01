@@ -78,7 +78,9 @@ public:
 
   LayoutItem_Field();
   LayoutItem_Field(const LayoutItem_Field& src);
+  LayoutItem_Field(LayoutItem_Field&& src) = delete;
   LayoutItem_Field& operator=(const LayoutItem_Field& src);
+  LayoutItem_Field& operator=(LayoutItem_Field&& src) = delete;
   virtual ~LayoutItem_Field();
 
   virtual LayoutItem* clone() const;

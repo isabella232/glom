@@ -35,7 +35,9 @@ public:
 
   StaticText();
   StaticText(const StaticText& src);
+  StaticText(StaticText&& src) = delete;
   StaticText& operator=(const StaticText& src);
+  StaticText& operator=(StaticText&& src) = delete;
   virtual ~StaticText();
 
   bool operator==(const StaticText& src) const;

@@ -35,7 +35,9 @@ public:
 
   LayoutGroup();
   LayoutGroup(const LayoutGroup& src);
+  LayoutGroup(LayoutGroup&& src) = delete;
   LayoutGroup& operator=(const LayoutGroup& src);
+  LayoutGroup& operator=(LayoutGroup&& src) = delete;
   virtual ~LayoutGroup();
 
   virtual LayoutItem* clone() const;

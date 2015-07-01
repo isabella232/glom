@@ -95,9 +95,11 @@ public:
 
   Field();
   Field(const Field& src);
+  Field(Field&& src) = delete;
   ~Field();
 
   Field& operator=(const Field& src);
+  Field& operator=(Field&& src) = delete;
 
   bool operator==(const Field& src) const;
   bool operator!=(const Field& src) const;

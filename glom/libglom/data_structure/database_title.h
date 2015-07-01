@@ -35,7 +35,9 @@ class DatabaseTitle
 public:
   DatabaseTitle();
   DatabaseTitle(const DatabaseTitle& src);
+  DatabaseTitle(DatabaseTitle&& src) = delete;
   DatabaseTitle& operator=(const DatabaseTitle& src);
+  DatabaseTitle& operator=(DatabaseTitle&& src) = delete;
 };
 
 } //namespace Glom

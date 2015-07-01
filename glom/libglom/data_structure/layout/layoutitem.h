@@ -33,7 +33,9 @@ public:
 
   LayoutItem();
   LayoutItem(const LayoutItem& src);
+  LayoutItem(LayoutItem&& src) = delete;
   LayoutItem& operator=(const LayoutItem& src);
+  LayoutItem& operator=(LayoutItem&& src) = delete;
   virtual ~LayoutItem();
 
   /** Create a new copied instance.
@@ -91,7 +93,9 @@ private:
   public:
     PrintLayoutPosition();
     PrintLayoutPosition(const PrintLayoutPosition& src);
+    PrintLayoutPosition(PrintLayoutPosition&& src) = delete;
     PrintLayoutPosition& operator=(const PrintLayoutPosition& src);
+    PrintLayoutPosition& operator=(PrintLayoutPosition&& src) = delete;
 
     bool operator==(const PrintLayoutPosition& src) const;
 

@@ -37,7 +37,9 @@ public:
 
   LayoutItem_WithFormatting();
   LayoutItem_WithFormatting(const LayoutItem_WithFormatting& src);
+  LayoutItem_WithFormatting(LayoutItem_WithFormatting&& src) = delete;
   LayoutItem_WithFormatting& operator=(const LayoutItem_WithFormatting& src);
+  LayoutItem_WithFormatting& operator=(LayoutItem_WithFormatting&& src) = delete;
   virtual ~LayoutItem_WithFormatting();
 
   bool operator==(const LayoutItem_WithFormatting& src) const;

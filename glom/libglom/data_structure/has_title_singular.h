@@ -35,9 +35,11 @@ class HasTitleSingular
 public:
   HasTitleSingular();
   HasTitleSingular(const HasTitleSingular& src);
+  HasTitleSingular(HasTitleSingular&& src) = delete;
   virtual ~HasTitleSingular();
 
   HasTitleSingular& operator=(const HasTitleSingular& src);
+  HasTitleSingular& operator=(HasTitleSingular&& src) = delete;
 
   bool operator==(const HasTitleSingular& src) const;
   bool operator!=(const HasTitleSingular& src) const;

@@ -37,6 +37,9 @@ public:
   ~LayoutItem_Placeholder();
   
   LayoutItem_Placeholder(const LayoutItem_Placeholder& src);
+  LayoutItem_Placeholder(LayoutItem_Placeholder&& src) = delete;
+
+  //TODO: Add operator=().
   
   /** Create a new copied instance.
   * This allows us to deep-copy a list of LayoutItems.

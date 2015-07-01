@@ -33,7 +33,9 @@ public:
 
   CustomTitle();
   CustomTitle(const CustomTitle& src);
+  CustomTitle(CustomTitle&& src) = delete;
   CustomTitle& operator=(const CustomTitle& src);
+  CustomTitle& operator=(CustomTitle&& src) = delete;
   virtual ~CustomTitle();
 
   bool operator==(const CustomTitle& src) const;

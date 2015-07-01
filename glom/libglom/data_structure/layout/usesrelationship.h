@@ -39,7 +39,9 @@ public:
 
   UsesRelationship();
   UsesRelationship(const UsesRelationship& src);
+  UsesRelationship(UsesRelationship&& src) = delete;
   UsesRelationship& operator=(const UsesRelationship& src);
+  UsesRelationship& operator=(UsesRelationship&& src) = delete;
   virtual ~UsesRelationship();
 
   bool operator==(const UsesRelationship& src) const;

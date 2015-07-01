@@ -41,7 +41,9 @@ class AddDelColumnInfo
 public:
   AddDelColumnInfo();
   AddDelColumnInfo(const AddDelColumnInfo& src);
+  AddDelColumnInfo(AddDelColumnInfo&& src) = delete;
   AddDelColumnInfo& operator=(const AddDelColumnInfo& src);
+  AddDelColumnInfo& operator=(AddDelColumnInfo&& src) = delete;
 
   //If we need any more complicated style (e.g. number of decimal digits) then we will need a separate AddDelStyle class.
   enum enumStyles

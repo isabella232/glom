@@ -33,7 +33,9 @@ public:
 
   LayoutItem_Button();
   LayoutItem_Button(const LayoutItem_Button& src);
+  LayoutItem_Button(LayoutItem_Button&& src) = delete;
   LayoutItem_Button& operator=(const LayoutItem_Button& src);
+  LayoutItem_Button& operator=(LayoutItem_Button&& src) = delete;
   virtual ~LayoutItem_Button();
 
   virtual LayoutItem* clone() const;

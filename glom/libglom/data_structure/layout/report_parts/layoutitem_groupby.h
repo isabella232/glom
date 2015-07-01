@@ -40,7 +40,9 @@ public:
 
   LayoutItem_GroupBy();
   LayoutItem_GroupBy(const LayoutItem_GroupBy& src);
+  LayoutItem_GroupBy(LayoutItem_GroupBy&& src) = delete;
   LayoutItem_GroupBy& operator=(const LayoutItem_GroupBy& src);
+  LayoutItem_GroupBy& operator=(LayoutItem_GroupBy&& src) = delete;
   virtual ~LayoutItem_GroupBy();
 
   virtual LayoutItem* clone() const;

@@ -34,7 +34,9 @@ class TableInfo
 public:
   TableInfo();
   TableInfo(const TableInfo& src);
+  TableInfo(TableInfo&& src) = delete;
   TableInfo& operator=(const TableInfo& src);
+  TableInfo& operator=(TableInfo&& src) = delete;
 
   bool operator==(const TableInfo& src) const;
   bool operator!=(const TableInfo& src) const;
