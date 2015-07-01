@@ -72,9 +72,6 @@ public:
 
   std::shared_ptr<LayoutGroup> get_secondary_fields();
   std::shared_ptr<const LayoutGroup> get_secondary_fields() const;
-
-  type_list_sort_fields get_sort_by() const;
-  void set_sort_by(const type_list_sort_fields& sort_by);
   
 private:
 
