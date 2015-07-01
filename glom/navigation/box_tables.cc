@@ -162,10 +162,8 @@ bool Box_Tables::fill_from_database()
 
     const auto vecTables = DbUtils::get_table_names_from_database();
 
-    for(type_vec_strings::const_iterator iter = vecTables.begin(); iter != vecTables.end(); ++iter)
+    for(const auto& strName : vecTables)
     {
-      const Glib::ustring strName = *iter;
-
       std::shared_ptr<TableInfo> table_info;
 
       //Check whether it should be hidden:
@@ -326,9 +324,8 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
             
             //Remove the auto-increment rows.
             //Otherwise it would not start at 0 if a table with the same name, and same field, is added again later.
-            for(Glom::Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+            for(const auto& field : fields)
             {
-              const std::shared_ptr<const Glom::Field> field = *iter;
               if(!field || !field->get_auto_increment())
                 continue;
                 

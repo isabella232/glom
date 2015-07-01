@@ -165,12 +165,11 @@ void ComboBox_Relationship::set_relationships(Document* document, const Glib::us
     set_display_parent_table(parent_table_name, document->get_table_title(parent_table_name, AppWindow::get_current_locale()));
 
   //Fill the model:
-  for(type_vec_relationships::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
+  for(const auto& rel : relationships)
   {
     Gtk::TreeModel::iterator tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
 
-    std::shared_ptr<Relationship> rel = *iter;
     row[m_model_columns.m_relationship] = rel;
     row[m_model_columns.m_separator] = false;
 
@@ -178,12 +177,11 @@ void ComboBox_Relationship::set_relationships(Document* document, const Glib::us
     if(show_related_relationships && !Document::get_relationship_is_system_properties(rel))
     {
       const auto sub_relationships = document->get_relationships(rel->get_to_table(), false /* plus system properties */);
-      for(type_vec_relationships::const_iterator iter = sub_relationships.begin(); iter != sub_relationships.end(); ++iter)
+      for(const auto& rel : sub_relationships)
       {
         Gtk::TreeModel::iterator tree_iter_child = m_model->append(tree_iter->children());
         Gtk::TreeModel::Row row = *tree_iter_child;
 
-        std::shared_ptr<Relationship> rel = *iter;
         row[m_model_columns.m_relationship] = rel;
         row[m_model_columns.m_separator] = false;
       }
@@ -198,12 +196,12 @@ void ComboBox_Relationship::set_relationships(const type_vec_relationships& rela
   set_display_parent_table(parent_table_name, parent_table_title);
 
   //Fill the model:
-  for(type_vec_relationships::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
+  for(const auto& relationship : relationships)
   {
     Gtk::TreeModel::iterator tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
 
-    row[m_model_columns.m_relationship] = *iter;
+    row[m_model_columns.m_relationship] = relationship;
     row[m_model_columns.m_separator] = false;
   }
 }

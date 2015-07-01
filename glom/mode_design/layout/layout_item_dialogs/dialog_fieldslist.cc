@@ -115,9 +115,9 @@ void Dialog_FieldsList::set_fields(const Glib::ustring& table_name, const Layout
     //Show the field layout:
     m_model_fields->clear();
     guint field_sequence = 0;
-    for(LayoutGroup::type_list_items::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    for(const auto& base_item : fields)
     {
-      std::shared_ptr<const LayoutItem_Field> item = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter);
+      std::shared_ptr<const LayoutItem_Field> item = std::dynamic_pointer_cast<const LayoutItem_Field>(base_item);
       if(!item)
         continue;
 

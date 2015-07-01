@@ -142,10 +142,8 @@ void Dialog_GroupsList::set_document(const Glib::ustring& layout, Document* docu
       group.m_columns_count = 2;
 
       guint field_sequence = 1; //0 means no sequence
-      for(type_vecLayoutFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
+      for(const auto& item : table_fields)
       {
-        LayoutItem_Field item = *iter;
-
         group.add_item(item);
 
         ++field_sequence;
@@ -159,9 +157,9 @@ void Dialog_GroupsList::set_document(const Glib::ustring& layout, Document* docu
 
     m_model_groups->clear();
 
-    for(Document::type_list_layout_groups::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
+    for(const auto& the_pair : mapGroups)
     {
-      std::shared_ptr<const LayoutGroup> group = iter->second;
+      std::shared_ptr<const LayoutGroup> group = the_pairsecond;
 
       add_group(Gtk::TreeModel::iterator(), group);
     }
@@ -350,14 +348,14 @@ void Dialog_GroupsList::fill_group_list()
   m_model_groups->clear();
 
   type_vec_strings group_list = Privs::get_database_groups();
-  for(type_vec_strings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
+  for(const auto& group : group_list)
   {
     Gtk::TreeModel::iterator iterTree = m_model_groups->append();
     Gtk::TreeModel::Row row = *iterTree;
 
-    row[m_model_columns_groups.m_col_name] = *iter;
+    row[m_model_columns_groups.m_col_name] = group;
 
-    if(*iter == GLOM_STANDARD_GROUP_NAME_DEVELOPER)
+    if(group == GLOM_STANDARD_GROUP_NAME_DEVELOPER)
       row[m_model_columns_groups.m_col_description] = _("Full access.");
   }
 
@@ -396,15 +394,15 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
 
     Document::type_listTableInfo table_list = pDocument->get_tables(true /* plus system prefs */);
 
-    for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+    for(const auto& table : table_list)
     {
       Gtk::TreeModel::iterator iterTree = m_model_tables->append();
       Gtk::TreeModel::Row row = *iterTree;
 
-      const auto table_name = (*iter)->get_name();
+      const auto table_name = table->get_name();
 
       row[m_model_columns_tables.m_col_name] = table_name;
-      row[m_model_columns_tables.m_col_title] = item_get_title_or_name(*iter);
+      row[m_model_columns_tables.m_col_title] = item_get_title_or_name(table);
 
       const auto privs = Privs::get_table_privileges(group_name, table_name);
       row[m_model_columns_tables.m_col_view] = privs.m_view;

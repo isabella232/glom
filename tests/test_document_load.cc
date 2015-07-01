@@ -99,10 +99,8 @@ static std::shared_ptr<const Glom::LayoutItem_Portal> get_portal_from_details_la
     std::cerr << G_STRFUNC << ": groups is empty." << std::endl;
   }
   
-  for(Glom::Document::type_list_layout_groups::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
+  for(const auto& group : groups)
   {
-    const std::shared_ptr<const Glom::LayoutGroup> group = *iter;
-
     const Glom::LayoutGroup::type_list_const_items items = 
       group->get_items_recursive_with_groups();
     for(Glom::LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); 

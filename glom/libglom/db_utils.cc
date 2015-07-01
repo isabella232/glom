@@ -269,10 +269,8 @@ bool recreate_database_from_document(Document* document, const std::function<voi
 
   //Create each table:
   Document::type_listTableInfo tables = document->get_tables();
-  for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  for(const auto& table_info : tables)
   {
-    std::shared_ptr<const TableInfo> table_info = *iter;
-
     //Create SQL to describe all fields in this table:
     Glib::ustring sql_fields;
     Document::type_vec_fields fields = document->get_table_fields(table_info->get_name());
@@ -305,10 +303,8 @@ bool recreate_database_from_document(Document* document, const std::function<voi
     return false;
   }
     
-  for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  for(const auto& table_info : tables)
   {
-    std::shared_ptr<const TableInfo> table_info = *iter;
-
     //Add any example data to the table:
     progress();
 
@@ -612,9 +608,8 @@ bool add_standard_groups(Document* document)
 
       const auto table_list = document->get_tables(true /* including system prefs */);
 
-      for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+      for(const auto& table_info : table_list)
       {
-        std::shared_ptr<const TableInfo> table_info = *iter;
         if(table_info)
         {
           const auto table_name = table_info->get_name();
@@ -657,10 +652,8 @@ bool add_groups_from_document(const Document* document)
   const auto document_groups = document->get_groups();
 
   //Add each group if it doesn't exist yet:
-  for(Document::type_list_groups::const_iterator iter = document_groups.begin();
-    iter != document_groups.end(); ++iter)
+  for(const auto& group : document_groups)
   {
-    const GroupInfo& group = *iter;
     const auto name = group.get_name();
     //std::cout << G_STRFUNC << ": DEBUG: group=" << name << std::endl;
 
@@ -702,10 +695,8 @@ bool set_table_privileges_groups_from_document(const Document* document)
 
   bool result = true;
 
-  for(Document::type_list_groups::const_iterator iter = document_groups.begin();
-    iter != document_groups.end(); ++iter)
+  for(const auto& group_info : document_groups)
   {
-    const GroupInfo& group_info = *iter;
     const auto group_name = group_info.get_name();
 
     //See if the group exists in the database:
@@ -718,11 +709,10 @@ bool set_table_privileges_groups_from_document(const Document* document)
     }
 
     //Look at each table privilege for this group:
-    for(GroupInfo::type_map_table_privileges::const_iterator iter = group_info.m_map_privileges.begin();
-      iter != group_info.m_map_privileges.end(); ++iter)
+    for(const auto& the_pair : group_info.m_map_privileges)
     {
-      const Glib::ustring table_name = iter->first;
-      const Privileges& privs = iter->second;
+      const Glib::ustring table_name = the_pair.first;
+      const Privileges& privs = the_pair.second;
 
       //Set the table privilege for the group:
       Privs::set_table_privileges(group_name, table_name, privs, group_info.m_developer);
@@ -1236,10 +1226,9 @@ bool create_table(Document::HostingMode hosting_mode, const std::shared_ptr<cons
 
   //Create SQL to describe all fields in this table:
   Glib::ustring sql_fields;
-  for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  for(const auto& field : fields)
   {
     //Create SQL to describe this field:
-    std::shared_ptr<Field> field = *iter;
 
     //The field has no gda type, so we set that:
     //This usually comes from the database, but that's a bit strange.
@@ -1315,9 +1304,8 @@ bool create_table_add_missing_fields(const std::shared_ptr<const TableInfo>& tab
 {
   const auto table_name = table_info->get_name();
 
-  for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  for(const auto& field : fields)
   {
-    std::shared_ptr<const Field> field = *iter;
     if(!get_field_exists_in_database(table_name, field->get_name()))
     {
       const auto test = add_column(table_name, field, 0); /* TODO: parent_window */
@@ -1604,12 +1592,11 @@ bool insert_example_data(const Document* document, const Glib::ustring& table_na
 
   //std::cout << "DEBUG: example_row size = " << example_rows.size() << std::endl;
 
-  for(Document::type_example_rows::const_iterator iter = example_rows.begin(); iter != example_rows.end(); ++iter)
+  for(const auto& row_data : example_rows)
   {
     //Check that the row contains the correct number of columns.
     //This check will slow this down, but it seems useful:
     //TODO: This can only work if we can distinguish , inside "" and , outside "":
-    const Document::type_row_data& row_data = *iter;
     if(row_data.empty())
       break;
 
@@ -1660,10 +1647,10 @@ bool insert_example_data(const Document* document, const Glib::ustring& table_na
     }
   }
 
-  for(Document::type_vec_fields::const_iterator iter = vec_fields.begin(); iter != vec_fields.end(); ++iter)
+  for(const auto& field : vec_fields)
   {
-    if((*iter)->get_auto_increment())
-      recalculate_next_auto_increment_value(table_name, (*iter)->get_name());
+    if(field->get_auto_increment())
+      recalculate_next_auto_increment_value(table_name, field->get_name());
   }
 
   return insert_succeeded;
@@ -2150,9 +2137,9 @@ bool add_user(const Document* document, const Glib::ustring& user, const Glib::u
   //Remove any user rights, so that all rights come from the user's presence in the group:
   const auto table_list = document->get_tables();
 
-  for(Document::type_listConstTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+  for(const auto& table : table_list)
   {
-    const auto table_name = (*iter)->get_name();
+    const auto table_name = table->get_name();
     const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);
     const auto test = DbUtils::query_execute_string(strQuery);
     if(!test)
@@ -2192,9 +2179,9 @@ bool add_group(const Document* document, const Glib::ustring& group, bool superu
 
   const type_vec_strings table_list =
     get_table_names_from_database(true /* plus system prefs */);
-  for(type_vec_strings::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+  for(const auto& table : table_list)
   {
-    if(!Privs::set_table_privileges(group, *iter, priv))
+    if(!Privs::set_table_privileges(group, table, priv))
     {
       std::cerr << G_STRFUNC << "Privs::set_table_privileges() failed." << std::endl;
       return false;
@@ -2309,10 +2296,10 @@ type_map_fields get_record_field_values(const Document* document, const Glib::us
   //TODO: This seems silly. We should just have a build_sql_select() that can take this container:
   typedef std::vector< std::shared_ptr<LayoutItem_Field> > type_vecLayoutFields;
   type_vecLayoutFields fieldsToGet;
-  for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  for(const auto& field : fields)
   {
     const auto layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
-    layout_item->set_full_field_details(*iter);
+    layout_item->set_full_field_details(field);
 
     fieldsToGet.push_back(layout_item);
   }
@@ -2338,10 +2325,9 @@ type_map_fields get_record_field_values(const Document* document, const Glib::us
     if(data_model && data_model->get_n_rows())
     {
       int col_index = 0;
-      for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+      for(const auto& field : fields)
       {
         //There should be only 1 row. Well, there could be more but we will ignore them.
-        std::shared_ptr<const Field> field = *iter;
         Gnome::Gda::Value value = data_model->get_value_at(col_index, 0);
         //Never give a NULL-type value to the python calculation for types that don't use them:
         //to prevent errors:
@@ -2363,9 +2349,8 @@ type_map_fields get_record_field_values(const Document* document, const Glib::us
   if(field_values.empty()) //Maybe there was no primary key, or maybe the record is not yet in the database.
   {
     //Create appropriate empty values:
-    for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    for(const auto& field : fields)
     {
-      std::shared_ptr<const Field> field = *iter;
       field_values[field->get_name()] = Conversions::get_empty_value(field->get_glom_type());
     }
   }

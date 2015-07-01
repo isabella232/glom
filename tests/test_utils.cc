@@ -28,16 +28,14 @@ std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Do
   const Glom::Document::type_list_layout_groups groups = 
     document.get_data_layout_groups("details", layout_table_name);
 
-  for(Glom::Document::type_list_layout_groups::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
+  for(const auto& group : groups)
   {
-    const std::shared_ptr<const Glom::LayoutGroup> group = *iter;
     if(!group)
       continue;
     
     const auto items = group->get_items_recursive();
-    for(Glom::LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+    for(const auto& layout_item : items)
     {
-      const std::shared_ptr<const Glom::LayoutItem> layout_item = *iter;
       const std::shared_ptr<const Glom::LayoutItem_Field> layout_item_field =
         std::dynamic_pointer_cast<const Glom::LayoutItem_Field>(layout_item);
       if(!layout_item_field)

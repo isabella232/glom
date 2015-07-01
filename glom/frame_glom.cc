@@ -1442,9 +1442,8 @@ void Frame_Glom::update_table_in_document_from_database()
     //and add to, or update Document's list of fields:
     type_vec_fields fieldsDocument = pDoc->get_table_fields(m_table_name);
 
-    for(Base_DB::type_vec_fields::const_iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
+    for(const auto& field_database : fieldsDatabase)
     {
-      std::shared_ptr<Field> field_database = *iter;
       if(field_database)
       {
         //Is the field already in the document?
@@ -1490,10 +1489,8 @@ void Frame_Glom::update_table_in_document_from_database()
     if(!fieldsDatabase.empty()) //Do not do this if getting the fields from the database failed completely, probably due to permissions.
     {
       type_vec_fields fieldsActual;
-      for(type_vec_fields::const_iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
+      for(const auto& field : fieldsDocument)
       {
-        std::shared_ptr<Field> field = *iter;
-
         //Check whether it's in the database:
         type_vec_fields::iterator iterFindDatabase = std::find_if( fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>( field->get_name() ) );
         if(iterFindDatabase != fieldsDatabase.end()) //If it was found

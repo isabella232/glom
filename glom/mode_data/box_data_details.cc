@@ -222,9 +222,9 @@ void Box_Data_Details::create_layout()
     //This map of layout groups will also contain the field information from the database:
     Document::type_list_layout_groups layout_groups = get_data_layout_groups(m_layout_name, m_layout_platform);
 
-    for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+    for(const auto& item : layout_groups)
     {
-      m_FlowTable.add_layout_group(*iter, false /* no indent at this top level */);
+      m_FlowTable.add_layout_group(item, false /* no indent at this top level */);
     }
 
     m_FlowTable.align_child_group_labels();
@@ -515,7 +515,7 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
   const auto primary_key_value = get_primary_key_value_selected();
   for(type_vec_fields::iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
   {
-    const std::shared_ptr<const Field> field = *iter;
+    const auto field = *iter;
 
     //Is this field triggered by this relationship?
     const auto triggered_by = field->get_calculation_relationships();

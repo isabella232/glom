@@ -73,9 +73,8 @@ void Dialog_AddRelatedTable::set_fields(const Glib::ustring& table_name)
 
   //Show the fields:
   m_combo_from_field->remove_all();
-  for(type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  for(const auto& item : fields)
   {
-     std::shared_ptr<Field> item = *iter;
      if(item)
        m_combo_from_field->append(item->get_name());
   }

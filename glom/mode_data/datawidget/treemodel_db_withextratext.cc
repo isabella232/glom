@@ -40,10 +40,10 @@ DbTreeModelWithExtraText::DbTreeModelWithExtraText(const FoundSet& found_set, co
 {
   //Remember the first field details so we can use it later to get a text representation.
   int column_index = 0;
-  for(type_vec_const_layout_items::const_iterator iter = layout_items.begin(); iter != layout_items.end(); ++iter)
+  for(const auto& item : layout_items)
   {
     const std::shared_ptr<const LayoutItem_Field> item_field = 
-      std::dynamic_pointer_cast<const LayoutItem_Field>(*iter);
+      std::dynamic_pointer_cast<const LayoutItem_Field>(item);
     if(item_field)
     {
       m_item_first = item_field;

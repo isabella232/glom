@@ -208,9 +208,8 @@ void Formatting::set_choices_custom(const type_list_values& choices)
 
 Glib::ustring Formatting::get_custom_choice_original_for_translated_text(const Glib::ustring& text, const Glib::ustring& locale) const
 {
-  for(Formatting::type_list_values::const_iterator iter = m_choices_custom_list.begin(); iter != m_choices_custom_list.end(); ++iter)
+  for(const auto& value : m_choices_custom_list)
   {
-    const std::shared_ptr<const ChoiceValue> value = *iter;
     if(!value)
       continue;
 
@@ -223,9 +222,8 @@ Glib::ustring Formatting::get_custom_choice_original_for_translated_text(const G
 
 Glib::ustring Formatting::get_custom_choice_translated(const Glib::ustring& original_text, const Glib::ustring& locale) const
 {
-  for(Formatting::type_list_values::const_iterator iter = m_choices_custom_list.begin(); iter != m_choices_custom_list.end(); ++iter)
+  for(const auto& value : m_choices_custom_list)
   {
-    const std::shared_ptr<const ChoiceValue> value = *iter;
     if(!value)
       continue;
 

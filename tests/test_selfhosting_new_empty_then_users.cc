@@ -146,9 +146,9 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   //Add some tables, for the groups to have rights for:
-  for(type_vec_strings::const_iterator iter = table_names.begin(); iter != table_names.end(); ++iter)
+  for(const auto& table_name : table_names)
   {
-    if(!Glom::DbUtils::create_table_with_default_fields(&document, *iter))
+    if(!Glom::DbUtils::create_table_with_default_fields(&document, table_name))
     {
       std::cerr << G_STRFUNC << ": Failure: create_table_with_default_fields() failed." << std::endl;
       return false;
@@ -190,10 +190,10 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //group_names.push_back("somegroupwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayadd");
 
   //Add groups:
-  for(type_vec_strings::const_iterator iter = group_names.begin(); iter != group_names.end(); ++iter)
+  for(const auto& group_name : group_names)
   {
     //Add groups:
-    if(!test_add_group(document, *iter))
+    if(!test_add_group(document, group_name))
       return false;
   }
 
@@ -210,18 +210,16 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //user_names.push_back("someuserwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayadd");
 
   guint i = 0;
-  for(type_vec_strings::const_iterator iter_user = user_names.begin(); iter_user != user_names.end(); ++iter_user)
+  for(const auto& user_name : user_names)
   {
-    for(type_vec_strings::const_iterator iter_group = group_names.begin(); iter_group != group_names.end(); ++iter_group)
+    for(const auto& group_name : group_names)
     {
-      const Glib::ustring group_name = *iter_group;
-      const auto username = Glib::ustring::compose("%1%2", *iter_user, i); //Make sure the username is unique.
-      if(!test_add_user(document, username, group_name))
+      const auto unique_user_name = Glib::ustring::compose("%1%2", user_name, i); //Make sure the username is unique.
+      if(!test_add_user(document, unique_user_name, group_name))
         return false;
 
-      for(type_vec_strings::const_iterator iter_table = table_names.begin(); iter_table != table_names.end(); ++iter_table)
+      for(const auto& table_name : table_names)
       {
-        const Glib::ustring table_name = *iter_table;
         const auto privs = Glom::Privs::get_table_privileges(group_name, table_name);
         if(!privs.m_view)
         {
@@ -250,19 +248,19 @@ static bool test(Glom::Document::HostingMode hosting_mode)
         }
         */
 
-	if(!change_privileges(group_name, table_name, true, true, true, false))
+	      if(!change_privileges(group_name, table_name, true, true, true, false))
           return false;
       }
 
-      if(!Glom::DbUtils::remove_user_from_group(username, group_name))
+      if(!Glom::DbUtils::remove_user_from_group(unique_user_name, group_name))
       {
-        std::cerr << G_STRFUNC << ": DbUtils::remove_user() failed for user=" << username << ", group=" << group_name << std::endl;
+        std::cerr << G_STRFUNC << ": DbUtils::remove_user() failed for user=" << unique_user_name << ", group=" << group_name << std::endl;
         return false;
       }
 
-      if(!Glom::DbUtils::remove_user(username))
+      if(!Glom::DbUtils::remove_user(unique_user_name))
       {
-        std::cerr << G_STRFUNC << ": DbUtils::remove_user() failed for user=" << username << std::endl;
+        std::cerr << G_STRFUNC << ": DbUtils::remove_user() failed for user=" << unique_user_name << std::endl;
         return false;
       }
 

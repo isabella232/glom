@@ -56,19 +56,17 @@ const Gtk::Box* FlowTable::get_parent_hbox(const Gtk::Widget* first) const
     return 0; //It has no Box parent because it is not even a first widget.
   }
   
-  for(type_list_hboxes::const_iterator iter = m_list_hboxes.begin(); iter != m_list_hboxes.end(); ++iter)
+  for(const auto& hbox : m_list_hboxes)
   {
-    const Gtk::Box* hbox = *iter;
     if(!hbox)
       continue;
 
     //Check if it has the widget as one of its children:
-    typedef std::vector<const Gtk::Widget*> type_children;
     const auto box_children = hbox->get_children();
     if(box_children.empty())
       continue;
 
-    const type_children::const_iterator iter_find = 
+    const auto iter_find = 
       std::find(box_children.begin(), box_children.end(), first);
     if(iter_find != box_children.end())
       return hbox;
@@ -168,9 +166,9 @@ void FlowTable::insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool 
 
 void FlowTable::remove_all()
 {
-  for(type_const_list_widgets::const_iterator iter = m_list_first_widgets.begin(); iter != m_list_first_widgets.end(); ++iter)
+  for(const auto& item : m_list_first_widgets)
   {
-    Gtk::Widget* first_widget = const_cast<Gtk::Widget*>(*iter);
+    Gtk::Widget* first_widget = const_cast<Gtk::Widget*>(item);
     
     if(first_widget)
       remove(*first_widget);

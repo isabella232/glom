@@ -421,9 +421,8 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, bool start_edit
 {
   //Find the first column with a layout_item:
   std::shared_ptr<const LayoutItem> layout_item;
-  for(type_column_items::const_iterator iter_columns = m_column_items.begin(); iter_columns != m_column_items.end(); ++iter_columns)
+  for(const auto& layout_item : m_column_items)
   {
-    layout_item = *iter_columns;
     if(layout_item)
       break;
   }
@@ -831,18 +830,17 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const std::shared
   if(treerow)
   {
     const auto list_indexes = get_data_model_column_index(layout_item, set_specified_field_layout);
-    for(type_list_indexes::const_iterator iter = list_indexes.begin(); iter != list_indexes.end(); ++iter)
+    for(const auto& item : list_indexes)
     {
-      const guint treemodel_col = *iter + get_count_hidden_system_columns();
+      const guint treemodel_col = item + get_count_hidden_system_columns();
       treerow.set_value(treemodel_col, value);
     }
   }
 
   /// Get indexes of any columns with choices with !show_all relationships that have @a from_key as the from_key.
   const auto list_choice_cells = get_choice_index(layout_item /* from_key field name */);
-  for(type_list_indexes::const_iterator iter = list_choice_cells.begin(); iter != list_choice_cells.end(); ++iter)
+  for(const auto& model_index : list_choice_cells)
   {
-    const guint model_index = *iter;
     refresh_cell_choices_data_from_database_with_foreign_key(model_index, value /* foreign key value */);
   }
 
@@ -909,10 +907,8 @@ void DbAddDel::set_columns(const LayoutGroup::type_list_items& layout_items)
 {
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
 
-  for(LayoutGroup::type_list_items::const_iterator iter = layout_items.begin(); iter != layout_items.end(); ++iter)
+  for(const auto& layout_item : layout_items)
   {
-    std::shared_ptr<LayoutItem> layout_item = *iter;
-
     if(!layout_item)
       continue; //TODO: Do something more sensible.
 
@@ -957,9 +953,9 @@ DbAddDel::type_list_indexes DbAddDel::get_data_model_column_index(const std::sha
     return list_indexes;
 
   guint data_model_column_index = 0;
-  for(type_column_items::const_iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
+  for(const auto& item : m_column_items)
   {
-    std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter); //TODO_Performance: This would be unnecessary if !layout_item_field
+    std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(item); //TODO_Performance: This would be unnecessary if !layout_item_field
     if(field)
     {
       if(field->is_same_field(layout_item_field)
@@ -984,9 +980,8 @@ DbAddDel::type_list_indexes DbAddDel::get_column_index(const std::shared_ptr<con
   std::shared_ptr<const LayoutItem_Field> layout_item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
 
   guint i = 0;
-  for(type_column_items::const_iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
+  for(const auto& item : m_column_items)
   {
-    const std::shared_ptr<const LayoutItem> item = *iter;
     const std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(item); //TODO_Performance: This would be unnecessary if !layout_item_field
     if(field && layout_item_field && field->is_same_field(layout_item_field))
     {
@@ -1013,9 +1008,9 @@ DbAddDel::type_list_indexes DbAddDel::get_choice_index(const std::shared_ptr<con
   const auto from_key_name = from_key->get_name();
 
   guint index = 0;
-  for(type_column_items::const_iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
+  for(const auto& item : m_column_items)
   {
-    std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter);
+    std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
     if(!field)
        continue;
 
@@ -1077,9 +1072,9 @@ void DbAddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
     {
       //Add the choices:
       pCellRenderer->remove_all_list_items();
-      for(type_vec_strings::const_iterator iter = vecStrings.begin(); iter != vecStrings.end(); ++iter)
+      for(const auto& item : vecStrings)
       {
-        pCellRenderer->append_list_item(*iter);
+        pCellRenderer->append_list_item(item);
       }
     }
     else
@@ -1655,10 +1650,8 @@ bool DbAddDel::get_column_to_expand(guint& column_to_expand) const
 
   //Discover the right-most text column:
   guint i = 0;
-  for(type_column_items::const_iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
+  for(const auto& layout_item : m_column_items)
   {
-    std::shared_ptr<LayoutItem> layout_item = *iter;
-
     std::shared_ptr<LayoutItem_Field> layout_item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
     if(layout_item_field)
     {

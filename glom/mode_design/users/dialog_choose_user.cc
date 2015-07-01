@@ -39,9 +39,9 @@ Dialog_ChooseUser::~Dialog_ChooseUser()
 
 void Dialog_ChooseUser::set_user_list(const type_vec_strings& users)
 {
-  for(type_vec_strings::const_iterator iter = users.begin(); iter != users.end(); ++iter)
+  for(const auto& item : users)
   {
-    m_combo_name->append(*iter);
+    m_combo_name->append(item);
   }
 
   m_combo_name->set_first_active();

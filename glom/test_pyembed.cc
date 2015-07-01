@@ -33,9 +33,9 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
 
   typedef std::list<Glib::ustring> type_listStrings;
   type_listStrings listStrings = ustring_tokenize(func_impl, "\n", -1);
-  for(type_listStrings::const_iterator iter = listStrings.begin(); iter != listStrings.end(); ++iter)
+  for(const auto& item : listStrings)
   {
-    func_def += "  " + *iter + '\n';
+    func_def += "  " + item + '\n';
   }
 
   //Indent the function implementation (required by python syntax):

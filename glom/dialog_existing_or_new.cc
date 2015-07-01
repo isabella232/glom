@@ -82,11 +82,11 @@ private:
     {
       if(name == "glom_document") //See document_glom.cc for the #defines.
       {
-        for(AttributeList::const_iterator iter = attributes.begin(); iter != attributes.end(); ++ iter)
+        for(const auto& item : attributes)
         {
-          if(iter->name == "database_title")
+          if(item.name == "database_title")
           {
-            m_title = iter->value;
+            m_title = item.value;
 
             // Stop parsing here because we have what we need:
             xmlStopParser(context_);
@@ -170,9 +170,8 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   // Add recently used files
   typedef std::vector< Glib::RefPtr<Gtk::RecentInfo> > type_vec_infos;
   type_vec_infos infos = Gtk::RecentManager::get_default()->get_items();
-  for(type_vec_infos::const_iterator iter = infos.begin(); iter != infos.end(); ++ iter)
+  for(const auto& info : infos)
   {
-    Glib::RefPtr<Gtk::RecentInfo> info = *iter;
     if(info->get_mime_type() == "application/x-glom")
     {
       Gtk::TreeModel::iterator iter = m_existing_model->append(m_iter_existing_recent->children());
@@ -264,14 +263,11 @@ bool Dialog_ExistingOrNew::list_examples()
 
   try
   {
-    typedef std::vector<std::string> type_vec_strings;
     const auto examples = Gio::Resource::enumerate_children_global(examples_dir);
     
     bool example_found = false;
-    for(type_vec_strings::const_iterator iter = examples.begin(); iter != examples.end(); ++iter)
+    for(const auto& example_name : examples)
     {
-      const std::string example_name = *iter;
-
       const auto full_path = Glib::build_filename(examples_dir, example_name);
       const auto title = get_title_from_example(full_path);
       if(!title.empty())

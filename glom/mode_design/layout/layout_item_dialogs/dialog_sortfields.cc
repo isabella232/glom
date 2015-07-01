@@ -112,15 +112,15 @@ void Dialog_SortFields::set_fields(const Glib::ustring& table_name, const Layout
     //Show the field layout
     m_model_fields->clear();
     guint field_sequence = 0;
-    for(LayoutItem_GroupBy::type_list_sort_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    for(const auto& the_pair : fields)
     {
-      std::shared_ptr<const LayoutItem_Field> item = std::dynamic_pointer_cast<const LayoutItem_Field>(iter->first);
+      std::shared_ptr<const LayoutItem_Field> item = std::dynamic_pointer_cast<const LayoutItem_Field>(the_pair.first);
 
       Gtk::TreeModel::iterator iterTree = m_model_fields->append();
       Gtk::TreeModel::Row row = *iterTree;
 
       row[m_ColumnsFields.m_col_layout_item] = item;
-      row[m_ColumnsFields.m_col_ascending] = iter->second;
+      row[m_ColumnsFields.m_col_ascending] = the_pair.second;
       row[m_ColumnsFields.m_col_sequence] = field_sequence;
       ++field_sequence;
     }

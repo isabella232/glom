@@ -163,9 +163,8 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
   const auto initial_cells_count = cells.size();
 
   guint i = 0;
-  for(type_vec_const_layout_items::const_iterator iter = m_db_layout_items.begin(); iter != m_db_layout_items.end(); ++iter)
+  for(const auto& layout_item : m_db_layout_items)
   {
-    const std::shared_ptr<const LayoutItem> layout_item = *iter;
     Gtk::CellRenderer* cell = 0;
 
     if(i == 0 && !m_repacked_first_cell)

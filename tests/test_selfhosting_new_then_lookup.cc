@@ -35,13 +35,13 @@ static std::shared_ptr<const Glom::LayoutItem_Field> get_lookup_field(const Glom
   relationship.reset();
   std::shared_ptr<const Glom::LayoutItem_Field> result;
 
-  for(Glom::Document::type_list_lookups::const_iterator iter = container.begin(); iter != container.end(); ++iter)
+  for(const auto& the_pair : container)
   {
-    const std::shared_ptr<const Glom::LayoutItem_Field> layout_item = iter->first;
+    const std::shared_ptr<const Glom::LayoutItem_Field> layout_item = the_pair.first;
     if(!layout_item)
       return result;
 
-    const std::shared_ptr<const Glom::Relationship> this_relationship = iter->second;
+    const std::shared_ptr<const Glom::Relationship> this_relationship = the_pair.second;
     if(!this_relationship)
       return result;
 

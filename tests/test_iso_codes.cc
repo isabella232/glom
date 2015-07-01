@@ -24,9 +24,8 @@
 
 static bool currencies_contains(const Glom::IsoCodes::type_list_currencies& container, const Glib::ustring& name)
 {
-  for(Glom::IsoCodes::type_list_currencies::const_iterator iter = container.begin(); iter != container.end(); ++iter)
+  for(const auto& item : container)
   {
-    const Glom::IsoCodes::Currency& item = *iter;
     if(item.m_symbol == name)
      return true;
   }
@@ -36,9 +35,8 @@ static bool currencies_contains(const Glom::IsoCodes::type_list_currencies& cont
 
 static bool locales_contains(const Glom::IsoCodes::type_list_locales& container, const Glib::ustring& name)
 {
-  for(Glom::IsoCodes::type_list_locales::const_iterator iter = container.begin(); iter != container.end(); ++iter)
+  for(const auto& item : container)
   {
-    const Glom::IsoCodes::Locale& item = *iter;
     if(item.m_identifier == name)
      return true;
   }

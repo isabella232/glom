@@ -39,10 +39,10 @@ LayoutGroup::LayoutGroup(const LayoutGroup& src)
   m_border_width(src.m_border_width)
 {
   //Deep copy of the items map:
-  for(type_list_items::const_iterator iter = src.m_list_items.begin(); iter != src.m_list_items.end(); ++iter)
+  for(const auto& item : m_list_items)
   {
-    if(*iter)
-      m_list_items.push_back( glom_sharedptr_clone(*iter) );
+    if(item)
+      m_list_items.push_back( glom_sharedptr_clone(item) );
   }
 }
 
@@ -75,10 +75,10 @@ LayoutGroup& LayoutGroup::operator=(const LayoutGroup& src)
 
     //Deep copy of the items map:
     remove_all_items();
-    for(type_list_items::const_iterator iter = src.m_list_items.begin(); iter != src.m_list_items.end(); ++iter)
+    for(const auto& item : m_list_items)
     {
-      if(*iter)
-        m_list_items.push_back( glom_sharedptr_clone(*iter) );
+      if(item)
+        m_list_items.push_back( glom_sharedptr_clone(item) );
     }
   }
 
@@ -87,9 +87,8 @@ LayoutGroup& LayoutGroup::operator=(const LayoutGroup& src)
 
 bool LayoutGroup::has_field(const Glib::ustring& parent_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name) const
 {
-  for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
+  for(const auto& item : m_list_items)
   {
-    auto item = *iter;
     auto field_item = std::dynamic_pointer_cast<LayoutItem_Field>(item);
     if(field_item)
     {
@@ -116,9 +115,8 @@ bool LayoutGroup::has_field(const Glib::ustring& parent_table_name, const Glib::
 
 bool LayoutGroup::has_any_fields() const
 {
-  for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
+  for(const auto& item : m_list_items)
   {
-    auto item = *iter;
     auto field_item = std::dynamic_pointer_cast<LayoutItem_Field>(item);
     if(field_item)
     {
@@ -175,9 +173,9 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items() const
   //TODO_Performance: Surely we should not need to copy the structure just to constize it?
   type_list_const_items result;
 
-  for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
+  for(const auto& item : m_list_items)
   {
-    result.push_back(*iter);
+    result.push_back(item);
   }
 
   return result;
@@ -187,10 +185,8 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive() const
 {
   type_list_const_items result;
 
-  for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
-  {
-    const std::shared_ptr<const LayoutItem> item = *iter;
-    
+  for(const auto& item : m_list_items)
+  {    
     std::shared_ptr<const LayoutGroup> group = std::dynamic_pointer_cast<const LayoutGroup>(item);
     if(group)
     {
@@ -208,10 +204,8 @@ LayoutGroup::type_list_items LayoutGroup::get_items_recursive()
 {
   type_list_items result;
 
-  for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
-  {
-    const auto item = *iter;
-    
+  for(const auto& item : m_list_items)
+  {    
     auto group = std::dynamic_pointer_cast<LayoutGroup>(item);
     if(group)
     {
@@ -229,10 +223,8 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive_with_groups(
 {
   type_list_const_items result;
 
-  for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
-  {
-    const std::shared_ptr<const LayoutItem> item = *iter;
-    
+  for(const auto& item : m_list_items)
+  {    
     //Add the item itself:
     result.push_back(item);
     
@@ -440,14 +432,14 @@ void LayoutGroup::debug(guint level) const
 
   std::cout << "LayoutGroup::debug() level =" << level << std::endl;
 
-  for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
+  for(const auto& item : m_list_items)
   {
-    auto group = std::dynamic_pointer_cast<LayoutGroup>(*iter);
+    auto group = std::dynamic_pointer_cast<LayoutGroup>(item);
     if(group)
       group->debug(level + 1);
     else
     {
-      auto field = std::dynamic_pointer_cast<LayoutItem_Field>(*iter);
+      auto field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
       if(field)
       {
         for(int i = 0; i < level; ++i)

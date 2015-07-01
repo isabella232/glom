@@ -218,9 +218,9 @@ void Dialog_UsersList::on_button_user_add()
     //Remove any user rights, so that all rights come from the user's presence in the group:
     Document::type_listTableInfo table_list = get_document()->get_tables();
 
-    for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+    for(const auto& table : table_list)
     {
-      const auto table_name = (*iter)->get_name();
+      const auto table_name = table->get_name();
       const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);
       const auto test = DbUtils::query_execute_string(strQuery);
       if(!test)
@@ -300,9 +300,9 @@ void Dialog_UsersList::on_button_user_edit()
       dialog->m_combo_group->remove_all();
 
       type_vec_strings group_list = Privs::get_database_groups();
-      for(type_vec_strings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
+      for(const auto& group : group_list)
       {
-         dialog->m_combo_group->append(*iter);
+         dialog->m_combo_group->append(group);
       }
 
       dialog->m_combo_group->set_active_text(m_combo_group->get_active_text());
@@ -379,12 +379,12 @@ void Dialog_UsersList::fill_list()
   {
     const auto group_name = m_combo_group->get_active_text();
     const auto user_list = Privs::get_database_users(group_name);
-    for(type_vec_strings::const_iterator iter = user_list.begin(); iter != user_list.end(); ++iter)
+    for(const auto& user : user_list)
     {
       Gtk::TreeModel::iterator iterTree = m_model_users->append();
       Gtk::TreeModel::Row row = *iterTree;
 
-      row[m_model_columns_users.m_col_name] = Privs::get_user_visible_group_name(*iter);
+      row[m_model_columns_users.m_col_name] = Privs::get_user_visible_group_name(user);
     }
   }
 }
@@ -395,9 +395,9 @@ void Dialog_UsersList::set_group(const Glib::ustring& group_name)
   m_combo_group->remove_all();
 
   type_vec_strings group_list = Privs::get_database_groups();
-  for(type_vec_strings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
+  for(const auto& group : group_list)
   {
-    m_combo_group->append(*iter);
+    m_combo_group->append(group);
   }
 
   m_combo_group->set_active_text(group_name);

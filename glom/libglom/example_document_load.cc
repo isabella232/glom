@@ -34,9 +34,8 @@ void print_layout_group(const std::shared_ptr<Glom::LayoutGroup>& layout_group, 
 
   //Look at each child item:
   const auto items = layout_group->get_items();
-  for(Glom::LayoutGroup::type_list_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+  for(const auto& layout_item : items)
   {
-    std::shared_ptr<Glom::LayoutItem> layout_item = *iter;
     if(!layout_item)
       continue;
 
@@ -60,9 +59,8 @@ void print_layout_group(const std::shared_ptr<Glom::LayoutGroup>& layout_group, 
 
 void print_layout(const Glom::Document::type_list_layout_groups& layout_groups)
 {
-  for(Glom::Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+  for(const auto& layout_group : layout_groups)
   {
-    std::shared_ptr<Glom::LayoutGroup> layout_group = *iter;
     if(!layout_group)
       continue;
 
@@ -107,18 +105,15 @@ int main()
 
 
   // Look at each table:
-  typedef std::vector<Glib::ustring> type_vecstrings;
   const auto table_names = document.get_table_names();
-  for(type_vecstrings::const_iterator iter = table_names.begin(); iter != table_names.end(); ++iter)
+  for(const auto& table_name : table_names)
   {
-    const Glib::ustring table_name = *iter;
     std::cout << "Table: " << table_name << std::endl;
 
     // List the fields for this table:
     Glom::Document::type_vec_fields fields = document.get_table_fields(table_name);
-    for(Glom::Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  for(const auto& field : fields)
     {
-       const std::shared_ptr<const Glom::Field> field = *iter;
        if(!field)
          continue;
 
@@ -132,9 +127,8 @@ int main()
 
     // List the relationships for this table:
     Glom::Document::type_vec_relationships relationships = document.get_relationships(table_name);
-    for(Glom::Document::type_vec_relationships::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
+    for(const auto& relationship : relationships)
     {
-       const std::shared_ptr<const Glom::Relationship> relationship = *iter;
        if(!relationship)
          continue;
 

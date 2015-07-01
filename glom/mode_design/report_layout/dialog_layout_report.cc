@@ -281,9 +281,8 @@ void Dialog_Layout_Report::fill_group_children(const std::shared_ptr<LayoutGroup
 
 void Dialog_Layout_Report::add_group_children(const Glib::RefPtr<type_model>& model_parts, const Gtk::TreeModel::iterator& parent, const std::shared_ptr<const LayoutGroup>& group)
 {
-  for(LayoutGroup::type_list_items::const_iterator iter = group->m_list_items.begin(); iter != group->m_list_items.end(); ++iter)
+  for(const auto& item : group->m_list_items)
   {
-    std::shared_ptr<const LayoutItem> item = *iter;
     std::shared_ptr<const LayoutGroup> group = std::dynamic_pointer_cast<const LayoutGroup>(item);
     if(group)
     {

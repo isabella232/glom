@@ -80,14 +80,14 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 
   //Add values for all fields, not just the shown ones:
   //For instance, we must always add the primary key, and fields with default/calculated/lookup/auto-incremented values:
-  for(type_vec_fields::const_iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
+  for(const auto& item : m_TableFields)
   {
     //TODO: Search for the non-related field with the name, not just the field with the name:
-    type_vecConstLayoutFields::const_iterator iterFind = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>((*iter)->get_name()));
+    type_vecConstLayoutFields::const_iterator iterFind = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>(item->get_name()));
     if(iterFind == fieldsToAdd.end())
     {
       std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
-      layout_item->set_full_field_details(*iter);
+      layout_item->set_full_field_details(item);
 
       fieldsToAdd.push_back(layout_item);
     }
@@ -102,9 +102,8 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   type_map_added map_added;
   Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
 
-  for(type_vecConstLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
+  for(const auto& layout_item : fieldsToAdd)
   {
-    std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
     const Glib::ustring field_name = layout_item->get_name();
     if(!layout_item->get_has_relationship_name()) //TODO: Allow people to add a related record also by entering new data in a related field of the related record.
     {
@@ -204,10 +203,8 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
       set_primary_key_value(row, primary_key_value); //Needed by Box_Data_List::on_adddel_user_changed().
 
       //Update any lookups, related fields, or calculations:
-      for(type_vecConstLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
+      for(const auto& layout_item : fieldsToAdd)
       {
-        std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
-
         //TODO_Performance: We just set this with set_entered_field_data() above. Maybe we could just remember it.
         const auto field_value = get_entered_field_data(layout_item);
 
@@ -472,9 +469,8 @@ Base_DB_Table_Data::type_vecConstLayoutFields Base_DB_Table_Data::get_related_fi
   if(document)
   {
     const auto field_name = field->get_name(); //At the moment, relationships can not be based on related fields on the from side.
-    for(type_vecConstLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end();  ++iter)
+    for(const auto& layout_field : m_FieldsShown)
     {
-      const std::shared_ptr<const LayoutItem_Field> layout_field = *iter;
       //Examine each field that looks up its data from a relationship:
       if(layout_field->get_has_relationship_name())
       {

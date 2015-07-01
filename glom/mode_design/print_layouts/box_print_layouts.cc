@@ -103,9 +103,9 @@ bool Box_Print_Layouts::fill_from_database()
   if(document)
   {
     listItems = document->get_print_layout_names(m_table_name);
-    for(std::vector<Glib::ustring>::const_iterator iter = listItems.begin(); iter != listItems.end(); ++iter)
+    for(const auto& print_layout_name : listItems)
     {
-      std::shared_ptr<PrintLayout> item = document->get_print_layout(m_table_name, *iter);
+      std::shared_ptr<PrintLayout> item = document->get_print_layout(m_table_name, print_layout_name);
       if(item)
       {
         Gtk::TreeModel::iterator row = m_AddDel.add_item(item->get_name());

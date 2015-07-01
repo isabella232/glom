@@ -119,9 +119,9 @@ int main(int argc, char* argv[])
       return EXIT_FAILURE;
 
     const auto children = root->get_children("object");
-    for(xmlpp::Node::NodeList::const_iterator iter = children.begin(); iter != children.end(); ++iter)
+    for(const auto& item : children)
     {
-       const xmlpp::Element* child = dynamic_cast<const xmlpp::Element*>(*iter);
+       const xmlpp::Element* child = dynamic_cast<const xmlpp::Element*>(item);
 
        //Try to instante the object with Gtk::Builder:
        if(child && !attempt_instantiation(filepath, child))

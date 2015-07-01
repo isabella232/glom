@@ -115,9 +115,8 @@ void Dialog_ButtonScript::on_button_test_script()
   if(document)
   {
     const auto fields = document->get_table_fields(m_table_name);
-    for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    for(const auto& field : fields)
     {
-      const std::shared_ptr<const Field> field = *iter;
       const auto example_value = Conversions::get_example_value(field->get_glom_type());
       field_values[field->get_name()] = example_value;
     }

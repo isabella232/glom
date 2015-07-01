@@ -160,7 +160,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
     return;
   }
 
-  for(type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+  for(const auto& the_pair : list_values)
   {
     Gtk::TreeModel::iterator iterTree = list_store->append();
     Gtk::TreeModel::Row row = *iterTree;
@@ -168,16 +168,15 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
     if(layout_choice_first)
     {
       const Glib::ustring text =
-        Conversions::get_text_for_gda_value(layout_choice_first->get_glom_type(), iter->first, layout_choice_first->get_formatting_used().m_numeric_format);
+        Conversions::get_text_for_gda_value(layout_choice_first->get_glom_type(), the_pair->first, layout_choice_first->get_formatting_used().m_numeric_format);
       row.set_value(0, text);
 
-      const type_list_values extra_values = iter->second;
+      const type_list_values extra_values = the_pair->second;
       if(layout_choice_extra && !extra_values.empty())
       {
         guint model_index = 1; //0 is for the main field.
         type_list_values::const_iterator iterValues = extra_values.begin();
-        for(LayoutGroup::type_list_const_items::const_iterator iterExtra = extra_fields.begin();
-          iterExtra != extra_fields.end(); ++iterExtra)
+        for(const auto& extra_field : extra_fields)
         {
           if(model_index >= columns_count)
             break;
@@ -185,7 +184,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
           if(iterValues == extra_values.end())
             break;
 
-          const std::shared_ptr<const LayoutItem> item = *iterExtra;
+          const std::shared_ptr<const LayoutItem> item = extra_field;
           const std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
           if(item_field)
           {
@@ -216,7 +215,7 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const Formatting::type_list_va
     return;
   }
 
-  for(Formatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+  for(const auto& choicevalue : list_values)
   {
     Gtk::TreeModel::iterator iterTree = list_store->append();
     Gtk::TreeModel::Row row = *iterTree;
@@ -225,7 +224,6 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const Formatting::type_list_va
     if(!layout_item)
       continue;
     
-    const std::shared_ptr<ChoiceValue> choicevalue = *iter;
     if(!choicevalue)
       continue;
 

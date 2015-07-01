@@ -364,10 +364,9 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
     guint col = 0;
     const auto num_cols = child_items.size();
     bool something_expanded = false;
-    for(LayoutGroup::type_list_items::const_iterator iter = child_items.begin(); iter != child_items.end(); ++iter)
+    for(const auto& layout_item : child_items)
     {
       //std::cout << "  row=" << row << ", col=" << col << std::endl;
-      std::shared_ptr<LayoutItem> layout_item = *iter;
 
       //Check if a child already exists:
       Glib::RefPtr<Goocanvas::Item> existing_child = 

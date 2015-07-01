@@ -77,9 +77,8 @@ bool Privs::get_developer_user_exists_with_password(Document::HostingMode hostin
   const auto default_user = get_default_developer_user_name(default_password, hosting_mode);
 
   const auto users = get_database_users();
-  for(type_vec_strings::const_iterator iter = users.begin(); iter != users.end(); ++iter)
+  for(const auto& user : users)
   {
-    const Glib::ustring user = *iter;
     if(user == default_user)
       continue;
 
@@ -159,7 +158,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
           group_list = value.get_string();
 
         type_vec_strings vecUserIds = pg_list_separate(group_list);
-        for(type_vec_strings::const_iterator iter = vecUserIds.begin(); iter != vecUserIds.end(); ++iter)
+        for(const auto& userId: vecUserIds)
         {
           //TODO_Performance: Can we do this in one SQL SELECT?
           Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
@@ -169,7 +168,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
           builder->set_where(
             builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
               builder->add_field_id("usesysid", "pg_user"),
-              builder->add_expr(*iter)));
+              builder->add_expr(userId)));
           Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
           if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
           {
@@ -179,7 +178,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
           }
           else
           {
-            std::cerr << G_STRFUNC << ": user not found in pg_user table: " << *iter << std::endl;
+            std::cerr << G_STRFUNC << ": user not found in pg_user table: " << userId << std::endl;
           }
         }
 
@@ -400,13 +399,13 @@ Privs::type_vec_strings Privs::get_groups_of_user(const Glib::ustring& user)
 
   //Look at each group:
   type_vec_strings groups = get_database_groups();
-  for(type_vec_strings::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
+  for(const auto& group : groups)
   {
     //See whether the user is in this group:
-    if(get_user_is_in_group(user, *iter))
+    if(get_user_is_in_group(user, group))
     {
       //Add the group to the result:
-      result.push_back(*iter);
+      result.push_back(group);
     }
   }
 
@@ -480,9 +479,9 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   {
     //Get the "true" rights for any groups that the user is in:
     type_vec_strings groups = get_groups_of_user(current_user);
-    for(type_vec_strings::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
+    for(const auto& group : groups)
     {
-      Privileges privs = get_table_privileges(*iter, table_name);
+      Privileges privs = get_table_privileges(group, table_name);
 
       if(privs.m_view)
         result.m_view = true;

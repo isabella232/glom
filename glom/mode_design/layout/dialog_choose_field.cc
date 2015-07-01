@@ -166,12 +166,11 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
     //Fill the treeview:
     m_model->clear();
     Document::type_vec_fields vecFields = document->get_table_fields(table_name);
-    for(Document::type_vec_fields::const_iterator iter = vecFields.begin(); iter != vecFields.end(); ++iter)
+    for(const auto& field : vecFields)
     {
       Gtk::TreeModel::iterator iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;
 
-      std::shared_ptr<Field> field = *iter;
       row[m_ColumnsFields.m_col_name] = field->get_name();
       row[m_ColumnsFields.m_col_title] = item_get_title(field);
       row[m_ColumnsFields.m_col_field] = field;
@@ -246,9 +245,8 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
     
   typedef std::vector<Gtk::TreeModel::Path> type_list_paths;
   type_list_paths list_paths = refTreeSelection->get_selected_rows();
-  for(type_list_paths::const_iterator iter = list_paths.begin(); iter != list_paths.end(); ++iter)
+  for(const auto& path : list_paths)
   {
-    const Gtk::TreeModel::Path path = *iter;
     Gtk::TreeModel::iterator tree_iter = m_model->get_iter(path);
     if(!tree_iter)
       continue;
@@ -325,12 +323,11 @@ void Dialog_ChooseField::on_combo_relationship_changed()
     }
 
     m_model->clear();
-    for(Document::type_vec_fields::const_iterator iter = vecFields.begin(); iter != vecFields.end(); ++iter)
+    for(const auto& field : vecFields)
     {
       Gtk::TreeModel::iterator iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;
 
-      std::shared_ptr<Field> field = *iter;
       row[m_ColumnsFields.m_col_name] = field->get_name();
       row[m_ColumnsFields.m_col_title] = item_get_title(field);
       row[m_ColumnsFields.m_col_field] = field;

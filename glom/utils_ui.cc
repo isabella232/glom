@@ -279,7 +279,7 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::get_pixbuf_for_gda_value(const Gnome::Gda::Va
       //typedef std::list<Gdk::PixbufFormat> type_list_formats;
       //const type_list_formats formats = Gdk::Pixbuf::get_formats();
       //std::cout << "Debug: Supported pixbuf formats:" << std::endl;
-      //for(type_list_formats::const_iterator iter = formats.begin(); iter != formats.end(); ++iter)
+      //for(const auto& item : formats)
       //{
       //  std::cout << " name=" << iter->get_name() << ", writable=" << iter->is_writable() << std::endl;
       //}
@@ -617,11 +617,10 @@ void UiUtils::container_remove_all(Gtk::Container& container)
   //Remove all (usally just one) widgets from m_vbox_parent:
   //Gtk::Bin::remove() is easier but after GtkAlignment was deprecated, there is no suitable widget.
   const auto children = container.get_children();
-  for(std::vector<Gtk::Widget*>::const_iterator iter = children.begin(); iter != children.end(); ++iter)
+  for(const auto& child : children)
   {
-    Gtk::Widget* child = *iter;
     if(child)
-      container.remove(*(*iter));
+      container.remove(*child);
   }
 }
 

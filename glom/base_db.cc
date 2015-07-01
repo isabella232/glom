@@ -732,11 +732,9 @@ Base_DB::type_vecConstLayoutFields Base_DB::get_table_fields_to_show_for_sequenc
       }
 
       //Add the rest:
-      for(type_vec_fields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
+      for(const auto& field_info : all_fields)
       {
-        std::shared_ptr<Field> field_info = *iter;
-
-        if((*iter)->get_name() != primary_key_field_name) //We already added the primary key.
+        if(field_info->get_name() != primary_key_field_name) //We already added the primary key.
         {
           std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
           layout_item->set_full_field_details(field_info);
@@ -756,10 +754,8 @@ Base_DB::type_vecConstLayoutFields Base_DB::get_table_fields_to_show_for_sequenc
       type_vec_fields vecFieldsInDocument = pDoc->get_table_fields(table_name);
 
       //We will show the fields that the document says we should:
-      for(Document::type_list_layout_groups::const_iterator iter = mapGroupSequence.begin(); iter != mapGroupSequence.end(); ++iter)
+      for(const auto& group : mapGroupSequence)
       {
-        std::shared_ptr<LayoutGroup> group = *iter;
-
         if(true) //!group->get_hidden())
         {
           //Get the fields:
@@ -865,10 +861,8 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
     //Calculate dependencies first:
     //TODO: Prevent unncessary recalculations?
     const auto fields_needed = get_calculation_fields(field_in_record.m_table_name, field_in_record.m_field);
-    for(type_list_const_field_items::const_iterator iterNeeded = fields_needed.begin(); iterNeeded != fields_needed.end(); ++iterNeeded)
+    for(const auto& field_item_needed : fields_needed)
     {
-      std::shared_ptr<const LayoutItem_Field> field_item_needed = *iterNeeded;
-
       if(field_item_needed->get_has_relationship_name())
       {
         //TOOD: Handle related fields? We already handle whole relationships.
@@ -1158,9 +1152,8 @@ void Base_DB::do_calculations(const LayoutFieldInRecord& field_changed, bool fir
 
   type_list_const_field_items calculated_fields = get_calculated_fields(field_changed.m_table_name, field_changed.m_field);
   //std::cout << "  debug: calculated_field.size()=" << calculated_fields.size() << std::endl;
-  for(type_list_const_field_items::const_iterator iter = calculated_fields.begin(); iter != calculated_fields.end(); ++iter)
+  for(const auto& field : calculated_fields)
   {
-    std::shared_ptr<const LayoutItem_Field> field = *iter;
     if(field)
     {
       //std::cout << "debug: recalcing field: " << field->get_name() << std::endl;
@@ -1192,9 +1185,8 @@ Base_DB::type_list_const_field_items Base_DB::get_calculated_fields(const Glib::
     const auto fields = document->get_table_fields(table_name); //TODO_Performance: Cache this?
     //Examine all fields, not just the the shown fields.
     //TODO: How do we trigger relcalculation of related fields if necessary?
-    for(type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end();  ++iter)
+    for(const auto& field_to_examine : fields)
     {
-      std::shared_ptr<Field> field_to_examine = *iter;
       std::shared_ptr<LayoutItem_Field> layoutitem_field_to_examine = std::make_shared<LayoutItem_Field>();
       layoutitem_field_to_examine->set_full_field_details(field_to_examine);
 
@@ -1272,9 +1264,9 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
 
   //Check the use of related records too:
   const auto relationships_used = field->get_calculation_relationships();
-  for(Field::type_list_strings::const_iterator iter = relationships_used.begin(); iter != relationships_used.end(); ++iter)
+  for(const auto& item : relationships_used)
   {
-    std::shared_ptr<Relationship> relationship = document->get_relationship(table_name, *iter);
+    std::shared_ptr<Relationship> relationship = document->get_relationship(table_name, item);
     if(relationship)
     {
       //If the field uses this relationship then it should be triggered by a change in the key that specifies which record the relationship points to:
@@ -1305,20 +1297,20 @@ void Base_DB::do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::
    const auto strFieldName = field_in_record.m_field->get_name();
    const auto lookups = document->get_lookup_fields(field_in_record.m_table_name, strFieldName);
    //std::cout << "debug: " << G_STRFUNC << ": lookups size=" << lookups.size() << std::endl;
-   for(Document::type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
+   for(const auto& the_pair : lookups)
    {
-     std::shared_ptr<const LayoutItem_Field> layout_item = iter->first;
+     std::shared_ptr<const LayoutItem_Field> layout_item = the_pair.first;
 
      //std::cout << "debug: " << G_STRFUNC << ": item=" << layout_item->get_name() << std::endl;
 
-     std::shared_ptr<const Relationship> relationship = iter->second;
+     std::shared_ptr<const Relationship> relationship = the_pair.second;
      const std::shared_ptr<const Field> field_lookup = layout_item->get_full_field_details();
      if(field_lookup)
      {
       std::shared_ptr<const Field> field_source = DbUtils::get_fields_for_table_one_field(document, relationship->get_to_table(), field_lookup->get_lookup_field());
       if(field_source)
       {
-        const auto value = DbUtils::get_lookup_value(document, field_in_record.m_table_name, iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
+        const auto value = DbUtils::get_lookup_value(document, field_in_record.m_table_name, the_pair.second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
 
         const auto value_converted = Conversions::convert_value(value, layout_item->get_glom_type());
 
@@ -1544,9 +1536,8 @@ bool Base_DB::disable_user(const Glib::ustring& user)
     return false;
 
   type_vec_strings vecGroups = Privs::get_groups_of_user(user);
-  for(type_vec_strings::const_iterator iter = vecGroups.begin(); iter != vecGroups.end(); ++iter)
+  for(const auto& group : vecGroups)
   {
-    const Glib::ustring group = *iter;
     DbUtils::remove_user_from_group(user, group);
   }
 

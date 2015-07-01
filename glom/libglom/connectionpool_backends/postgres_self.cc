@@ -265,11 +265,8 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
   //std::cout << "DEBUG: vec.size() == " << vec.size() << std::endl;
 
   // We get, for instance, "\n" and 8.4.1" and "\n".
-  for(type_vec_strings::const_iterator iter = vec.begin();
-       iter != vec.end();
-       ++iter)
+  for(const auto& str : vec)
   {
-    const auto str = *iter;
     if(!str.empty())
       return str; //Found.
   }
@@ -308,13 +305,10 @@ float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgr
 
   //We need to loop over the numbers because we get some "" items that we want to ignore:
   guint count = 0; //We want 2 numbers.
-  for(type_vec_strings::const_iterator iter = vec.begin();
-       iter != vec.end();
-       ++iter)
+  for(const auto& str : vec)
   {
     //std::cout << "regex item: START" << *iter << "END" << std::endl;
 
-    const auto str = *iter;
     if(str.empty())
       continue;
 

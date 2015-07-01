@@ -31,15 +31,13 @@ static bool field_is_on_a_layout(Glom::Document& document, const Glib::ustring& 
 {
   //Check that the field name is no longer used on a layout:
   const auto table_names = document.get_table_names();
-  for(std::vector<Glib::ustring>::const_iterator iter = table_names.begin(); iter != table_names.end(); ++iter)
+  for(const auto& layout_table_name : table_names)
   {
-    const Glib::ustring layout_table_name = *iter;
     const Glom::Document::type_list_layout_groups groups = 
       document.get_data_layout_groups("details", layout_table_name);
 
-    for(Glom::Document::type_list_layout_groups::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
+    for(const auto& group : groups)
     {
-      const std::shared_ptr<Glom::LayoutGroup> group = *iter;
       if(group->has_field(layout_table_name, table_name, field_name))
       {
         //std::cerr << G_STRFUNC << ": Failure: The field is still used on a layout for table: " << layout_table_name << std::endl;

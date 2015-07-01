@@ -191,9 +191,8 @@ void ComboGlom::set_choices_related(const Document* document, const std::shared_
   }
 
   guint model_column_index = 0;
-  for(type_vec_const_layout_items::const_iterator iter = m_db_layout_items.begin(); iter != m_db_layout_items.end(); ++iter)
+  for(const auto& layout_item : m_db_layout_items)
   {
-    const std::shared_ptr<const LayoutItem> layout_item = *iter;
     if(!layout_item) //column_info.m_visible)
     {
       ++model_column_index;

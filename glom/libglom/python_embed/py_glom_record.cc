@@ -89,10 +89,10 @@ boost::python::object PyGlomRecord::get_related()
     //Fill it:
     Document::type_vec_relationships vecRelationships = m_document->get_relationships(m_table_name);
     PyGlomRelated::type_map_relationships map_relationships;
-    for(Document::type_vec_relationships::const_iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
+    for(const auto& relationship : vecRelationships)
     {
-      if(*iter)
-        map_relationships[(*iter)->get_name()] = *iter;
+      if(relationship)
+        map_relationships[relationship->get_name()] = relationship;
     }
 
     boost::python::extract<PyGlomRelated*> extractor(m_related);
@@ -216,10 +216,10 @@ void PyGlomRecord::set_fields(const PyGlomRecord::type_map_field_values& field_v
 {
   m_map_field_values = field_values;
   /* Just for debugging:
-  for(type_map_field_values::const_iterator iter = field_values.begin(); iter != field_values.end(); ++iter)
+  for(const auto& the_pair : field_values)
   {
-    const Gnome::Gda::Value value = iter->second;
-    std::cout << "debug: " << G_STRFUNC << ": field name=" << iter->first << ", type=" << g_type_name(value.get_value_type()) << std::endl;
+    const Gnome::Gda::Value value =the_pair.second;
+    std::cout << "debug: " << G_STRFUNC << ": field name=" << the_pair.first << ", type=" << g_type_name(value.get_value_type()) << std::endl;
   }
   */
 

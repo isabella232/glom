@@ -300,10 +300,8 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
 
     //Add the child items: (TODO_Performance: The child items are ignored/wasted because we clone them again.)
     LayoutGroup::type_list_const_items items = group->get_items();
-    for(LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+    for(const auto& item : items)
     {
-      std::shared_ptr<const LayoutItem> item = *iter;
-
       std::shared_ptr<const LayoutItem_Portal> portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(item);
       if(portal) //If it is a portal
       {
@@ -363,9 +361,8 @@ void Dialog_Layout_Details::init(const Glib::ustring& layout_name, const Glib::u
 
     m_model_items->clear();
 
-    for(Document::type_list_layout_groups::const_iterator iter = list_groups.begin(); iter != list_groups.end(); ++iter)
+    for(const auto& group : list_groups)
     {
-      std::shared_ptr<const LayoutGroup> group = *iter;
       std::shared_ptr<const LayoutGroup> portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(group);
       if(group && !portal)
         add_group(Gtk::TreeModel::iterator() /* null == top-level */, group);

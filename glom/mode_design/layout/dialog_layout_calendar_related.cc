@@ -183,15 +183,13 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
 
     m_model_items->clear();
 
-    for(Document::type_list_layout_groups::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
+    for(const auto& group : mapGroups)
     {
-      std::shared_ptr<const LayoutGroup> group = *iter;
       std::shared_ptr<const LayoutGroup> portal = std::dynamic_pointer_cast<const LayoutItem_CalendarPortal>(group);
       if(portal)
       {
-        for(LayoutGroup::type_list_items::const_iterator iterInner = group->m_list_items.begin(); iterInner != group->m_list_items.end(); ++iterInner)
+        for(const auto& item : group->m_list_items)
         {
-          std::shared_ptr<const LayoutItem> item = *iterInner;
           std::shared_ptr<const LayoutGroup> groupInner = std::dynamic_pointer_cast<const LayoutGroup>(item);
 
           if(groupInner)

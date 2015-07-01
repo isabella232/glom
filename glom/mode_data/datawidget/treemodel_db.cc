@@ -207,9 +207,9 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
 
   //Database columns:;
   {
-    for(type_vec_const_layout_items::const_iterator iter = layout_items.begin(); iter != layout_items.end(); ++iter)
+    for(const auto& item : layout_items)
     {
-      std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter);
+      std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
       if(item_field)
       {
         if(item_field->get_glom_type() == Field::TYPE_INVALID)
@@ -226,9 +226,8 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
     //Find the primary key:
     int column_index_key = 0;
     bool key_found = false;
-    for( DbTreeModel::type_vec_const_fields::const_iterator iter = m_column_fields.begin(); iter != m_column_fields.end(); ++iter)
+    for(const auto& layout_item : m_column_fields)
     {
-      const std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
       if(!layout_item)
         continue;
 
@@ -250,9 +249,8 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
     if(!key_found)
     {
       std::cerr << G_STRFUNC << ": no primary key field found in the list of items:" << std::endl;
-      for(DbTreeModel::type_vec_const_fields::const_iterator iter = m_column_fields.begin(); iter != m_column_fields.end(); ++iter)
+      for(const auto& layout_item : m_column_fields)
       {
-        const std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
         if(layout_item)
           std::cerr << G_STRFUNC << ":   field: " << layout_item->get_name() << std::endl;
       }
@@ -310,9 +308,8 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     m_gda_datamodel = model_array;
 
     int col = 0;
-    for(type_vec_const_fields::const_iterator iter = m_column_fields.begin(); iter != m_column_fields.end(); ++iter)
+    for(const auto& layout_item : m_column_fields)
     {
-      std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
       if(layout_item)
       {
         const auto glom_type = layout_item->get_glom_type();

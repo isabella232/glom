@@ -104,9 +104,9 @@ bool Box_Reports::fill_from_database()
   if(document)
   {
     listTableReports = document->get_report_names(m_table_name);
-    for(std::vector<Glib::ustring>::const_iterator iter = listTableReports.begin(); iter != listTableReports.end(); ++iter)
+    for(const auto& item : listTableReports)
     {
-      std::shared_ptr<Report> report = document->get_report(m_table_name, *iter);
+      std::shared_ptr<Report> report = document->get_report(m_table_name, item);
       if(report)
       {
         Gtk::TreeModel::iterator row = m_AddDel.add_item(report->get_name());

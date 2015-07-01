@@ -122,9 +122,8 @@ void Dialog_FieldCalculation::on_button_test()
   if(document)
   {
     const auto fields = document->get_table_fields(m_table_name);
-    for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    for(const auto& field : fields)
     {
-      const std::shared_ptr<const Field> field = *iter;
       const auto example_value = Conversions::get_example_value(field->get_glom_type());
       field_values[field->get_name()] = example_value;
     }
@@ -157,16 +156,16 @@ void Dialog_FieldCalculation::on_button_test()
   const auto triggered_fields = get_calculation_fields(m_table_name, layoutitem_temp);
 
   Glib::ustring field_names;
-  for(type_list_const_field_items::const_iterator iter = triggered_fields.begin(); iter != triggered_fields.end(); ++iter)
+  for(const auto& field : triggered_fields)
   {
-    field_names += ( (*iter)->get_layout_display_name() + ", " );
+    field_names += ( field->get_layout_display_name() + ", " );
   }
 
   const auto triggered_relationships = temp->get_calculation_relationships();
 
-  for(Field::type_list_strings::const_iterator iter = triggered_relationships.begin(); iter != triggered_relationships.end(); ++iter)
+  for(const auto& field : triggered_relationships)
   {
-    field_names += ( "related(" + *iter + "), " );
+    field_names += ( "related(" + field + "), " );
   }
 
   m_label_triggered_by->set_text(field_names);

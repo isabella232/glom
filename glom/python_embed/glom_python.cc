@@ -177,7 +177,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   const boost::python::object& param2 = boost::python::object())
 {
   //std::cout << "glom_evaluate_python_function_implementation()" << std::endl;
-  //for(type_map_fields::const_iterator iter = field_values.begin(); iter != field_values.end(); ++iter)
+  //for(const auto& item : field_values)
   //{
   //  std::cout << "  field_value: name=" << iter->first << ", value=" << iter->second.to_string() << std::endl;
   //}
@@ -193,9 +193,9 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   //Indent the function implementation (required by python syntax):
   typedef std::list<Glib::ustring> type_listStrings;
   type_listStrings listStrings = ustring_tokenize(func_impl, "\n", -1);
-  for(type_listStrings::const_iterator iter = listStrings.begin(); iter != listStrings.end(); ++iter)
+  for(const auto& item : listStrings)
   {
-    func_def += "  " + *iter + '\n';
+    func_def += "  " + item + '\n';
   }
 
 
@@ -228,9 +228,8 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   if(pDocument)
   {
     const auto module_names = pDocument->get_library_module_names();
-    for(std::vector<Glib::ustring>::const_iterator iter = module_names.begin(); iter != module_names.end(); ++iter)
+    for(const auto& name : module_names)
     {
-      const Glib::ustring name = *iter;
       const auto script = pDocument->get_library_module(name);
       if(!name.empty() && !script.empty())
       {

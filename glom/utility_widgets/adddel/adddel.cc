@@ -616,9 +616,9 @@ void AddDel::construct_specified_columns()
 
           //Add the choices:
           const type_vec_strings vecStrings = m_ColumnTypes[model_column_index].m_choices;
-          for(type_vec_strings::const_iterator iter = vecStrings.begin(); iter != vecStrings.end(); ++iter)
+          for(const auto& item : vecStrings)
           {
-            pCellRenderer->append_list_item(*iter);
+            pCellRenderer->append_list_item(item);
           }
 
           // Append the View column.
@@ -931,9 +931,9 @@ void AddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
     {
       //Add the choices:
       pCellRenderer->remove_all_list_items();
-      for(type_vec_strings::const_iterator iter = vecStrings.begin(); iter != vecStrings.end(); ++iter)
+      for(const auto& item : vecStrings)
       {
-        pCellRenderer->append_list_item(*iter);
+        pCellRenderer->append_list_item(item);
       }
     }
     else

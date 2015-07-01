@@ -104,9 +104,8 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   m_encoding_model->append();
 
   const FileEncodings::type_list_encodings list_encodings =  FileEncodings::get_list_of_encodings();
-  for(FileEncodings::type_list_encodings::const_iterator encodings_iter = list_encodings.begin(); encodings_iter  != list_encodings.end(); ++encodings_iter)
+  for(const auto& encoding : list_encodings)
   {
-    const FileEncodings::Encoding encoding = *encodings_iter;
     if(encoding.get_name().empty())
       continue;
 
@@ -201,9 +200,8 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
     (*tree_iter)[m_field_columns.m_col_field_name] = _("<None>");
 
     const Document::type_vec_fields fields(document->get_table_fields(into_table));
-    for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++ iter)
+    for (const auto& field : fields)
     {
-      std::shared_ptr<Field> field = *iter;
       if(!field)
         continue;
 
@@ -213,8 +211,8 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
       if(!field->get_primary_key() || !field->get_auto_increment())
       {
         Gtk::TreeModel::iterator tree_iter = m_field_model->append();
-        (*tree_iter)[m_field_columns.m_col_field] = *iter;
-        (*tree_iter)[m_field_columns.m_col_field_name] = (*iter)->get_name();
+        (*tree_iter)[m_field_columns.m_col_field] = field;
+        (*tree_iter)[m_field_columns.m_col_field_name] = field->get_name();
       }
     }
 

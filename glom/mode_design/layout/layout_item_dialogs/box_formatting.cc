@@ -327,9 +327,8 @@ void Box_Formatting::set_formatting_for_non_field(const Formatting& format, bool
     //Custom choices:
     m_adddel_choices_custom->remove_all();
     Formatting::type_list_values list_choice_values = format.get_choices_custom();
-    for(Formatting::type_list_values::const_iterator iter = list_choice_values.begin(); iter != list_choice_values.end(); ++iter)
+    for(const auto& choicevalue : list_choice_values)
     {
-      const std::shared_ptr<ChoiceValue> choicevalue = *iter;
       Gnome::Gda::Value value;
       if(choicevalue)
         value = choicevalue->get_value();

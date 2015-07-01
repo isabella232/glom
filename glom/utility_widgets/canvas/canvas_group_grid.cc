@@ -74,9 +74,8 @@ double CanvasGroupGrid::snap_position_rules(const type_vec_doubles& rules, doubl
 {
   double result = a;
 
-  for(type_vec_doubles::const_iterator iter = rules.begin(); iter != rules.end(); ++iter)
+  for(const auto& rule_a : rules)
   {
-    const double rule_a = *iter;
     if(is_close(a, rule_a))
     {
       if(result == a) //Prefer some snap to no snap

@@ -115,13 +115,13 @@ Glib::ustring TranslatableItem::get_title_translation(const Glib::ustring& local
   //TODO_Performance: This is slow.
   //Note that this would, for instance, give en_GB translations before en_US translations, if there are no en_AU translations.
   const auto locale_language_id = Utils::locale_language_id(locale);
-  for(type_map_locale_to_translations::const_iterator iter = m_map_translations.begin(); iter != m_map_translations.end(); ++iter)
+  for(const auto& the_pair : m_map_translations)
   {
-    const auto locale_id = iter->first;
+    const auto locale_id = the_pair.first;
     if(Utils::locale_language_id(locale_id) == locale_language_id)
     {
-      if(!(iter->second.empty()))
-        return iter->second;
+      if(!(the_pair.second.empty()))
+        return the_pair.second;
     }
   }
 
@@ -192,9 +192,9 @@ void TranslatableItem::clear_title_in_all_locales()
 {
   m_title.clear();
   
-  for(type_map_locale_to_translations::iterator iter = m_map_translations.begin(); iter != m_map_translations.end(); ++iter)
+  for(const auto& the_pair : m_map_translations)
   {
-    auto translation = iter->second;
+    auto translation = the_pair.second;
     translation.clear();
   }
 }

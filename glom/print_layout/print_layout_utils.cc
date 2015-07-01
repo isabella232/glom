@@ -227,9 +227,8 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
 
   //Deal with a regular group:
   //Recurse into the group's child items:
-  for(LayoutGroup::type_list_items::const_iterator iter = layout_group->m_list_items.begin(); iter != layout_group->m_list_items.end(); ++iter)
+  for(const auto& item : layout_group->m_list_items)
   {
-    const std::shared_ptr<const LayoutItem> item = *iter;
     if(!item)
       continue;
 
@@ -347,9 +346,8 @@ std::shared_ptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageS
   //TODO: Use fill_layout_group_field_info()?
   const Document::type_list_layout_groups layout_groups = 
     document->get_data_layout_groups("details", table_name); //TODO: layout_platform.
-  for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+  for(const auto& group : layout_groups)
   {
-    const std::shared_ptr<const LayoutGroup> group = *iter;
     if(!group)
       continue;
 

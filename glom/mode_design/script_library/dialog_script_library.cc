@@ -204,9 +204,8 @@ void Dialog_ScriptLibrary::load_from_document()
   const auto module_names = document->get_library_module_names();
   m_combobox_name->remove_all();
  
-  for(std::vector<Glib::ustring>::const_iterator iter = module_names.begin(); iter != module_names.end(); ++iter)
+  for(const auto& name : module_names)
   {
-    const Glib::ustring name = *iter;
     m_combobox_name->append(name);
   }
 

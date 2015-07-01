@@ -218,9 +218,8 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
 
 
     LayoutGroup::type_list_items items = group->get_items();
-    for(LayoutGroup::type_list_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+    for(const auto& item : items)
     {
-      std::shared_ptr<LayoutItem> item = *iter;
       if(item)
       {
         flow_table->add_layout_item(item);
@@ -416,9 +415,8 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
 
         //Add child items:
         LayoutGroup::type_list_items items = group->get_items();
-        for(LayoutGroup::type_list_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+        for(const auto& item : items)
         {
-          std::shared_ptr<LayoutItem> item = *iter;
           if(item)
           {
             flow_table->add_layout_item(item);
@@ -783,10 +781,9 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const std::sh
   const auto from_key_name = from_key->get_name();
 
   //Check the single-item widgets:
-  for(type_portals::const_iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
+  for(const auto& pPortalUI : m_portals)
   {
     //*iter is a FlowTableItem.
-    Box_Data_Portal* pPortalUI = *iter;
     if(pPortalUI)
     {
       std::shared_ptr<LayoutItem_Portal> portal = pPortalUI->get_portal();
@@ -804,9 +801,8 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const std::sh
   }
 
   //Check the sub-flowtables:
-  for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  for(const auto& subtable : m_sub_flow_tables)
   {
-    FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
       type_portals sub_list = subtable->get_portals(from_key);
@@ -861,9 +857,8 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
   }
 
   //Check the sub-flowtables:
-  for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  for(const auto& subtable : m_sub_flow_tables)
   {
-    FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
       const auto sub_list = subtable->get_choice_widgets(from_key);
@@ -905,12 +900,11 @@ FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(cons
   get_direct_fields(m_listFields.begin(), m_listFields.end(), std::back_inserter(result), layout_item, include_item);
 
   //Check the sub-flowtables:
-  for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  for(const auto& subtable : m_sub_flow_tables)
   {
-    const FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
-      type_list_const_widgets sub_list = subtable->get_field(layout_item, include_item);
+      auto sub_list = subtable->get_field(layout_item, include_item);
       if(!sub_list.empty())
       {
         //Add to the main result:
@@ -931,9 +925,8 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const std:
   //TODO: Avoid duplication
 
   //Check the sub-flowtables:
-  for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  for(const auto& subtable : m_sub_flow_tables)
   {
-    FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
       type_list_widgets sub_list = subtable->get_field(layout_item, include_item);
@@ -1260,9 +1253,8 @@ guint FlowTableWithFields::get_sub_flowtables_max_columns() const
 {
   guint result = get_lines();
 
-  for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  for(const auto& subtable : m_sub_flow_tables)
   {
-    const FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
       const auto count = subtable->get_lines();
@@ -1376,10 +1368,8 @@ void FlowTableWithFields::set_find_mode(bool val)
   m_find_mode = val;
 
   //Set find mode in all portals:
-  for(type_portals::const_iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
+  for(const auto& portal : m_portals)
   {
-    //*iter is a FlowTableItem.
-    Box_Data_Portal* portal = *iter;
     if(portal)
       portal->set_find_mode(m_find_mode);
   }

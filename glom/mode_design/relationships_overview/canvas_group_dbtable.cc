@@ -80,10 +80,8 @@ CanvasGroupDbTable::CanvasGroupDbTable(const Glib::ustring& table_name, const Gl
 
   //Add the table's fields:
   double field_y = field_height;
-  for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  for(const auto& field : fields)
   {
-    std::shared_ptr<Field> field = *iter;
-
     //Show the primary key as bold:
     Glib::ustring title;
     if(field->get_primary_key())

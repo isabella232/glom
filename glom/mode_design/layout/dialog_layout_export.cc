@@ -123,9 +123,9 @@ void Dialog_Layout_Export::set_layout_groups(Document::type_list_layout_groups& 
       group->set_name("main");
 
       guint field_sequence = 1; //0 means no sequence
-      for(type_vecLayoutFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
+      for(const auto& field : table_fields)
       {
-        LayoutItem_Field item = *(*iter);
+        LayoutItem_Field item = *(field);
         group->add_item(item);
 
         ++field_sequence;
@@ -139,17 +139,16 @@ void Dialog_Layout_Export::set_layout_groups(Document::type_list_layout_groups& 
     m_model_fields->clear();
 
     guint field_sequence = 1; //0 means no sequence
-    for(Document::type_list_layout_groups::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
+    for(const auto& group : mapGroups)
     {
-      std::shared_ptr<const LayoutGroup> group = *iter;
       if(!group)
         continue;
 
       //Add the group's fields:
-      LayoutGroup::type_list_const_items items = group->get_items();
-      for(LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+      const auto items = group->get_items();
+      for(const auto& base_item : items)
       {
-        std::shared_ptr<const LayoutItem_Field> item = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter); 
+        std::shared_ptr<const LayoutItem_Field> item = std::dynamic_pointer_cast<const LayoutItem_Field>(base_item); 
         if(item)
         {
           Gtk::TreeModel::iterator iterTree = m_model_fields->append();

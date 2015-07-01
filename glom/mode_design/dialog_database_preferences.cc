@@ -161,14 +161,13 @@ void Dialog_Database_Preferences::load_from_document()
   //Make sure that all auto-increment values are setup:
 
   const Document::type_listTableInfo tables = document->get_tables();
-  for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  for(const auto& table : tables)
   {
-    const Document::type_vec_fields fields = document->get_table_fields((*iter)->get_name());
-    for(Document::type_vec_fields::const_iterator iterFields = fields.begin(); iterFields != fields.end(); ++iterFields)
+    const Document::type_vec_fields fields = document->get_table_fields(table->get_name());
+    for(const auto& field: fields)
     {
-      std::shared_ptr<Field> field = *iterFields;
       if(field->get_primary_key())
-        DbUtils::auto_increment_insert_first_if_necessary((*iter)->get_name(), field->get_name());
+        DbUtils::auto_increment_insert_first_if_necessary(table->get_name(), field->get_name());
     }
   }
 

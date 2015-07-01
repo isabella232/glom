@@ -351,9 +351,8 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
   if(!items.empty())
   {
     //Add Field headings:
-    for(type_vecLayoutItems::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+    for(const auto& layout_item : items)
     {
-      std::shared_ptr<LayoutItem> layout_item = *iter;
       std::shared_ptr<LayoutItem_Field> layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
 
       //This adds a field heading (and therefore, column) for fields, or for a vertical group.
@@ -367,9 +366,8 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
 
     //Get list of fields to get from the database.
     Utils::type_vecLayoutFields fieldsToGet;
-    for(type_vecLayoutItems::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+    for(const auto& layout_item : items)
     {
-      std::shared_ptr<LayoutItem> layout_item = *iter;
       std::shared_ptr<LayoutItem_Field> layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
       if(layoutitem_field)
         fieldsToGet.push_back(layoutitem_field);
@@ -413,9 +411,8 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
         xmlpp::Element* nodeRow = parent_node.add_child("row");
 
         guint colField = 0;
-        for(type_vecLayoutItems::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+        for(const auto& item : items)
         {
-          std::shared_ptr<LayoutItem> item = *iter;
           std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
           if(field)
           {
@@ -677,10 +674,8 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::
   type_vecLayoutItems itemsToGet_TopLevel;
 
   const std::shared_ptr<const LayoutGroup> group = report->get_layout_group();
-  for(LayoutGroup::type_list_items::const_iterator iter = group->m_list_items.begin(); iter != group->m_list_items.end(); ++iter)
+  for(const auto& pPart : group->m_list_items)
   {
-    std::shared_ptr<LayoutItem> pPart = *iter;
-
     //The Group, and the details for each record in the group:
     std::shared_ptr<LayoutItem_GroupBy> pGroupBy = std::dynamic_pointer_cast<LayoutItem_GroupBy>(pPart);
     if(pGroupBy)
@@ -748,9 +743,8 @@ static void fill_standard_list_report_fill(const std::shared_ptr<Report>& report
   if(!layout_group)
     return;
 
-  for(LayoutGroup::type_list_items::const_iterator iter = layout_group->m_list_items.begin(); iter != layout_group->m_list_items.end(); ++iter)
+  for(const auto& item : layout_group->m_list_items)
   {
-    const std::shared_ptr<const LayoutItem> item = *iter;
     if(!item)
       continue;
 
@@ -768,9 +762,8 @@ std::shared_ptr<Report> ReportBuilder::create_standard_list_report(const Documen
 
   const Document::type_list_layout_groups layout_groups = 
     document->get_data_layout_groups("list", table_name); //TODO: layout_platform.
-  for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+  for(const auto& group : layout_groups)
   {
-    const std::shared_ptr<const LayoutGroup> group = *iter;
     if(group)
       fill_standard_list_report_fill(result, group);
   }

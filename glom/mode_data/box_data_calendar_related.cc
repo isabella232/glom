@@ -442,9 +442,8 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
 
   //Look at each row for this date:
   const type_list_vectors& rows = iter_find->second;
-  for(type_list_vectors::const_iterator iter = rows.begin(); iter != rows.end(); ++iter)
+  for(const auto& pRow : rows)
   {
-    type_vector_values* pRow = *iter;
     if(!pRow)
       continue;
 
@@ -456,9 +455,8 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
     //instead of the ones used by the query (m_FieldsShown),
     //because we really don't want to show the extra fields (at the end) to the user:
     LayoutGroup::type_list_items items = m_portal->get_items();
-    for(LayoutGroup::type_list_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+    for(const auto& layout_item : items)
     {
-      std::shared_ptr<const LayoutItem> layout_item = *iter;
       if(!layout_item)
         continue;
 

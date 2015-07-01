@@ -128,12 +128,12 @@ Glib::ustring LayoutItem_GroupBy::get_layout_display_name() const
     Glib::ustring sort_fields_names;
 
     //List all the sort fields:
-    for(type_list_sort_fields::const_iterator iter = m_fields_sort_by.begin(); iter != m_fields_sort_by.end(); ++iter)
+    for(const auto& sort_by : m_fields_sort_by)
     {
       if(!sort_fields_names.empty())
         sort_fields_names += ", ";
 
-      sort_fields_names += iter->first->get_layout_display_name();
+      sort_fields_names += sort_by.first->get_layout_display_name();
     }
 
     result += sort_fields_names + ')';

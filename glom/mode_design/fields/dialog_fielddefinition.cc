@@ -353,9 +353,9 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
       {
         //Get the fields in the other table, and add them to the combo:
         const auto fields_in_to_table = DbUtils::get_fields_for_table(document, to_table);
-        for(type_vec_fields::const_iterator iter = fields_in_to_table.begin(); iter != fields_in_to_table.end(); ++iter)
+        for(const auto& field : fields_in_to_table)
         {
-          m_pCombo_LookupField->append((*iter)->get_name());
+          m_pCombo_LookupField->append(field->get_name());
         }
       }
     }

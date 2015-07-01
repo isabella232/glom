@@ -61,9 +61,9 @@ type_list_currencies get_list_of_currency_symbols()
         const auto nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
 
         xmlpp::Node::NodeList listNodes = nodeRoot->get_children("iso_4217_entry");
-        for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+        for(const auto& node : listNodes)
         {
-          xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(*iter);
+          xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(node);
           if(nodeEntry)
           {
             Currency currency;
@@ -133,18 +133,16 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     //because this is normally what translators translate to.
     //For instance, po/ files generally contain po/de.po.
     type_list_ids list_ids_simple;
-    for(type_list_ids::const_iterator iter = list_ids.begin(); iter != list_ids.end(); ++iter)
+    for(const auto& id : list_ids)
     {
-      const Glib::ustring id = *iter;
       Glib::ustring id_language, id_country;
       split_locale_id(id, id_language, id_country);
       list_ids_simple.push_back(id_language);
     }
 
     //Add the non-specific locales:
-    for(type_list_ids::const_iterator iter = list_ids_simple.begin(); iter != list_ids_simple.end(); ++iter)
+    for(const auto& id : list_ids_simple)
     {
-      const Glib::ustring id = *iter;
       if(std::find(list_ids.begin(), list_ids.end(), id) == list_ids.end())
         list_ids.push_back(id);
     }
@@ -169,9 +167,9 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
         const auto nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
 
         xmlpp::Node::NodeList listNodes = nodeRoot->get_children("iso_639_entry");
-        for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+        for(const auto& node : listNodes)
         {
-          xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(*iter);
+          xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(node);
           if(nodeEntry)
           {
             //TODO: There are 3 codes (not each entry has each code). Is this the correct one to identify a language?
@@ -224,9 +222,9 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
         const auto nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
 
         xmlpp::Node::NodeList listNodes = nodeRoot->get_children("iso_3166_entry");
-        for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+        for(const auto& node : listNodes)
         {
-          xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(*iter);
+          xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(node);
           if(nodeEntry)
           {
             const auto attribute_code = nodeEntry->get_attribute("alpha_2_code");

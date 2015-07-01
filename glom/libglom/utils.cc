@@ -214,9 +214,9 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(c
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
-  for(type_vecLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+  for(const auto& field : fieldsToGet)
   {
-    constFieldsToGet.push_back(*iter);
+    constFieldsToGet.push_back(field);
   }
 
   return build_sql_select_with_where_clause(table_name, constFieldsToGet, where_clause, extra_join, sort_clause, limit);
@@ -341,33 +341,29 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
   typedef std::list< std::shared_ptr<const UsesRelationship> > type_list_relationships;
   type_list_relationships list_relationships;
 
-  for(type_vecConstLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+  for(const auto& layout_item : fieldsToGet)
   {
-    std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
     add_to_relationships_list(list_relationships, layout_item);
   }
 
-  for(type_sort_clause::const_iterator iter = sort_clause.begin(); iter != sort_clause.end(); ++iter)
+  for(const auto& the_pair : sort_clause)
   {
-    std::shared_ptr<const LayoutItem_Field> layout_item = iter->first;
-    add_to_relationships_list(list_relationships, layout_item);
+    add_to_relationships_list(list_relationships, the_pair.first);
   }
 
 
   //LEFT OUTER JOIN will get the field values from the other tables,
   //and give us our fields for this table even if there is no corresponding value in the other table.
-  for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
+  for(const auto& uses_relationship : list_relationships)
   {
-    std::shared_ptr<const UsesRelationship> uses_relationship = *iter;
     builder_add_join(builder, uses_relationship);
   }
 
   bool one_added = false;
-  for(type_vecConstLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+  for(const auto& layout_item : fieldsToGet)
   {
     Glib::ustring one_sql_part;
 
-    std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
     if(!layout_item)
     {
       g_warn_if_reached();
@@ -443,12 +439,12 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(c
     //Sort clause:
     if(!sort_clause.empty())
     {
-      for(type_sort_clause::const_iterator iter = sort_clause.begin(); iter != sort_clause.end(); ++iter)
+      for(const auto& the_pair : sort_clause)
       {
-        std::shared_ptr<const LayoutItem_Field> layout_item = iter->first;
+        auto layout_item = the_pair.first;
         if(layout_item)
         {
-          const bool ascending = iter->second;
+          const auto ascending = the_pair.second;
 
           //TODO: Avoid the need for the "."
           builder->select_order_by(
@@ -477,9 +473,9 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
-  for(type_vecLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+  for(const auto& field : fieldsToGet)
   {
-    constFieldsToGet.push_back(*iter);
+    constFieldsToGet.push_back(field);
   }
 
   return build_sql_select_with_key(table_name, constFieldsToGet, key_field, key_value, sort_clause, limit);
@@ -573,10 +569,8 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
   if(layout_choice_extra)
   {
     const LayoutGroup::type_list_const_items extra_fields = layout_choice_extra->get_items_recursive();
-    for(LayoutGroup::type_list_const_items::const_iterator iter = extra_fields.begin();
-      iter != extra_fields.end(); ++iter)
+    for(const auto& item : extra_fields)
     {
-      const std::shared_ptr<const LayoutItem> item = *iter;
       const std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
       if(item_field)
          fields.push_back(item_field); //TODO: Don't ignore other usable items such as static text.
@@ -670,12 +664,12 @@ Glib::ustring Utils::create_name_from_title(const Glib::ustring& title)
 Glib::ustring Utils::string_escape_underscores(const Glib::ustring& text)
 {
   Glib::ustring result;
-  for(Glib::ustring::const_iterator iter = text.begin(); iter != text.end(); ++iter)
+  for(const auto& item : text)
   {
-    if(*iter == '_')
+    if(item == '_')
       result += "__";
     else
-      result += *iter;
+      result += item;
   }
 
   return result;
@@ -803,9 +797,8 @@ Glib::ustring Utils::title_from_string(const Glib::ustring& text)
   Glib::ustring result;
 
   bool capitalise_next_char = true;
-  for(Glib::ustring::const_iterator iter = text.begin(); iter != text.end(); ++iter)
+  for(const auto& ch : text)
   {
-    const gunichar& ch = *iter;
     if(ch == '_') //Replace _ with space.
     {
       capitalise_next_char = true; //Capitalise all words.
@@ -814,9 +807,9 @@ Glib::ustring Utils::title_from_string(const Glib::ustring& text)
     else
     {
       if(capitalise_next_char)
-        result += Glib::Unicode::toupper(*iter);
+        result += Glib::Unicode::toupper(ch);
       else
-        result += *iter;
+        result += ch;
 
       capitalise_next_char = false;
     }
@@ -1149,11 +1142,9 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document,
   guint previous_id = 0;
   typedef std::vector< std::shared_ptr<LayoutItem_Field> > type_vecLayoutFields;
   type_vecLayoutFields fieldsToGet;
-  for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  for(const auto& field : fields)
   {
     Glib::ustring strClausePart;
-
-    std::shared_ptr<const Field> field = *iter;
 
     bool use_this_field = true;
     if(field->get_glom_type() != Field::TYPE_TEXT)
@@ -1392,9 +1383,8 @@ std::string Utils::get_file_path_without_extension(const std::string& filepath)
 Glib::ustring Utils::get_list_of_layout_items_for_display(const LayoutGroup::type_list_items& list_layout_fields)
 {
   Glib::ustring result;
-  for(LayoutGroup::type_list_items::const_iterator iter = list_layout_fields.begin(); iter != list_layout_fields.end(); ++iter)
+  for(const auto& item : list_layout_fields)
   {
-    const std::shared_ptr<LayoutItem> item = *iter;
     if(item)
     {
       if(!result.empty())
@@ -1418,9 +1408,9 @@ Glib::ustring Utils::get_list_of_layout_items_for_display(const std::shared_ptr<
 Glib::ustring Utils::get_list_of_sort_fields_for_display(const Formatting::type_list_sort_fields& sort_fields)
 {
   Glib::ustring text;
-  for(Formatting::type_list_sort_fields::const_iterator iter = sort_fields.begin(); iter != sort_fields.end(); ++iter)
+  for(const auto& the_pair : sort_fields)
   {
-    const std::shared_ptr<const LayoutItem_Field> item = iter->first;
+    const auto item = the_pair.first;
     if(!item)
       continue;
     

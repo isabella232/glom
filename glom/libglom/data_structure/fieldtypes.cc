@@ -187,9 +187,9 @@ Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) con
     std::cerr << G_STRFUNC << ": returning unknowntype for field_type=" << field_type << " (" << g_type_name(field_type) << ")" << std::endl;
 
     std::cerr << G_STRFUNC << ":   possible types are: " << std::endl;
-    for(type_mapGdaTypesToSchemaStrings::const_iterator iter = m_mapGdaTypesToSchemaStrings.begin(); iter != m_mapGdaTypesToSchemaStrings.end(); ++iter)
+    for(const auto& item : m_mapGdaTypesToSchemaStrings)
     {
-      std::cerr << G_STRFUNC << ":     gdatype=" << iter->first << " (" << g_type_name(iter->first) << "), sqltype=" << iter->second << std::endl;
+      std::cerr << G_STRFUNC << ":     gdatype=" << item.first << " (" << g_type_name(item.first) << "), sqltype=" << item.second << std::endl;
     }
     
     return "unknowntype";

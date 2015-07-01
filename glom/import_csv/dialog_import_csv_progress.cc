@@ -180,9 +180,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
 
   // Update the current row values map:
   guint col_index = 0;
-  for(CsvParser::type_row_strings::const_iterator iter = row.begin();
-      iter != row.end();
-      ++iter)
+  for(const auto& str : row)
   {
     std::shared_ptr<const Field> field = m_data_source->get_field_for_column(col_index++);
     if(field)
@@ -190,7 +188,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
       // We always assume exported data is in standard CSV format, since
       // we export it this way.
       bool success = false;
-      Gnome::Gda::Value value = field->from_file_format(*iter, success);
+      Gnome::Gda::Value value = field->from_file_format(str, success);
 
       if(success)
       {
@@ -212,7 +210,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
       }
       else
       {
-        const Glib::ustring message(Glib::ustring::compose(_("Warning: Importing row %1: The value for field %2, \"%3\" could not be converted to the field's type. The value will not be imported.\n"), m_current_row + 1, field->get_name(), *iter));
+        const Glib::ustring message(Glib::ustring::compose(_("Warning: Importing row %1: The value for field %2, \"%3\" could not be converted to the field's type. The value will not be imported.\n"), m_current_row + 1, field->get_name(), str));
         add_text(message);
       }
     }

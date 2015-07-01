@@ -1624,10 +1624,8 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
 
   //Create each table:
   Document::type_listTableInfo tables = pDocument->get_tables();
-  for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  for(const auto& table_info : tables)
   {
-    std::shared_ptr<const TableInfo> table_info = *iter;
-
     //Create SQL to describe all fields in this table:
     Glib::ustring sql_fields;
     Document::type_vec_fields fields = pDocument->get_table_fields(table_info->get_name());
@@ -1651,10 +1649,8 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
   if(!test)
     return false;
 
-  for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  for(const auto& table_info : tables)
   {
-    std::shared_ptr<const TableInfo> table_info = *iter;
-
     //Add any example data to the table:
     pulse_progress_message();
 
@@ -1890,9 +1886,8 @@ void AppWindow::fill_menu_tables()
   }
 
   const auto tables = document->get_tables();
-  for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  for(const auto& table_info : tables)
   {
-    std::shared_ptr<const TableInfo> table_info = *iter;
     if(!table_info->get_hidden())
     {
       const auto title = Utils::string_escape_underscores(item_get_title_or_name(table_info));
@@ -1946,9 +1941,9 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
   }
 
   const auto reports = document->get_report_names(table_name);
-  for(std::vector<Glib::ustring>::const_iterator iter = reports.begin(); iter != reports.end(); ++iter)
+  for(const auto& item : reports)
   {
-    std::shared_ptr<Report> report = document->get_report(table_name, *iter);
+    std::shared_ptr<Report> report = document->get_report(table_name, item);
     if(report)
     {
       const auto report_name = report->get_name();
@@ -1981,9 +1976,8 @@ void AppWindow::enable_menu_print_layouts_details(bool enable)
   //TODO: Suggest a simpler get_actions() method?
   typedef std::vector<Glib::ustring> type_vec_action_names;
   type_vec_action_names actions = m_refNavPrintLayoutsActionGroup->list_actions();
-  for(type_vec_action_names::const_iterator iter = actions.begin(); iter != actions.end(); ++iter)
+  for(const auto& name : actions)
   {
-    const Glib::ustring name = *iter;
     Glib::RefPtr<Gio::SimpleAction> action = 
       Glib::RefPtr<Gio::SimpleAction>::cast_dynamic(m_refNavPrintLayoutsActionGroup->lookup_action(name));
     if(action)
@@ -2034,9 +2028,9 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
   // TODO_clientonly: Should this be available in client only mode? We need to
   // depend on goocanvas in client only mode then:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  for(std::vector<Glib::ustring>::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  for(const auto& item : tables)
   {
-    std::shared_ptr<PrintLayout> print_layout = document->get_print_layout(table_name, *iter);
+    std::shared_ptr<PrintLayout> print_layout = document->get_print_layout(table_name, item);
     if(print_layout)
     {
       const auto name = print_layout->get_name();
@@ -2098,9 +2092,9 @@ void AppWindow::on_menu_file_save_as_example()
 
       //Save all data from all tables into the document:
       Document::type_listTableInfo list_table_info = document->get_tables();
-      for(Document::type_listTableInfo::const_iterator iter = list_table_info.begin(); iter != list_table_info.end(); ++iter)
+      for(const auto& item : list_table_info)
       {
-        const auto table_name = (*iter)->get_name();
+        const auto table_name = item->get_name();
 
         //const type_vec_fields vec_fields = document->get_table_fields(table_name);
 

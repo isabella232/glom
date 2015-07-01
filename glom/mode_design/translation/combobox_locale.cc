@@ -33,12 +33,11 @@ ComboBox_Locale::ComboBox_Locale(BaseObjectType* cobject, const Glib::RefPtr<Gtk
 
   //Fill the model:
   const auto list_locales = IsoCodes::get_list_of_locales();
-  for(IsoCodes::type_list_locales::const_iterator iter = list_locales.begin(); iter != list_locales.end(); ++iter)
+  for(const auto& the_locale : list_locales)
   {
     Gtk::TreeModel::iterator tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
 
-    const IsoCodes::Locale& the_locale = *iter;
     row[m_model_columns.m_identifier] = the_locale.m_identifier;
     row[m_model_columns.m_name] = the_locale.m_name;
   }

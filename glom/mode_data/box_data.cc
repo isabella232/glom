@@ -99,13 +99,13 @@ Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
   }
 
   //Look at each field entry and build e.g. 'Name = "Bob"'
-  for(type_vecConstLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
+  for(const auto& item : m_FieldsShown)
   {
-    const auto data = get_entered_field_data(*iter);
+    const auto data = get_entered_field_data(item);
 
     if(!Conversions::value_is_empty(data))
     {
-      const std::shared_ptr<const Field> field = (*iter)->get_full_field_details();
+      const std::shared_ptr<const Field> field = item->get_full_field_details();
       if(field)
       {
         bool use_this_field = true;

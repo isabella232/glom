@@ -433,17 +433,14 @@ void Box_Data_List_Related::create_layout()
 
   //This map of layout groups will also contain the field information from the database:
   Document::type_list_layout_groups layout_groups = create_layout_get_layout();
-  for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+  for(const auto& layout_group : layout_groups)
   {
-    const std::shared_ptr<LayoutGroup> layout_group = *iter;
     if(!layout_group)
       continue;
 
     const auto child_items = layout_group->get_items_recursive();
-    for(LayoutGroup::type_list_items::const_iterator iterItems = child_items.begin(); iterItems != child_items.end(); ++iterItems)
+    for(const auto& child_item : child_items)
     {
-      std::shared_ptr<LayoutItem> child_item = *iterItems;
-
       //TODO: Set the whole thing as read-only instead:
       if(m_read_only)
         child_item->set_editable(false);

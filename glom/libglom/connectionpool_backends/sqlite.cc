@@ -293,11 +293,10 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     }
   }
 
-  for(type_vec_const_fields::const_iterator iter = fields_added.begin(); iter != fields_added.end(); ++ iter)
+  for(const auto& field : fields_added)
   {
     // Add new fields to the table. Fields that have changed have already
     // been handled above.
-    const std::shared_ptr<const Field>& field = *iter;
     auto removed_iter = std::find(fields_removed.begin(), fields_removed.end(), field->get_name());
     if(removed_iter == fields_removed.end())
     {

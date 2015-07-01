@@ -348,9 +348,9 @@ std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_is_from_non
   const auto parent_table_name = get_table_used(Glib::ustring() /* parent table - not relevant */);
 
   auto items = get_items();
-  for(LayoutItem_Portal::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+  for(const auto& item : items)
   {
-    std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter);
+    auto field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
     if(field)
     {
       if(field->get_has_relationship_name())
@@ -380,9 +380,9 @@ std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_identifies_
   const auto parent_table_name = get_table_used(Glib::ustring() /* parent table - not relevant */);
 
   auto items = get_items();
-  for(LayoutItem_Portal::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+  for(const auto& item : items)
   {
-    std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter);
+    auto field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
     if(field && !(field->get_has_relationship_name()))
     {
       std::shared_ptr<const Relationship> relationship = document->get_field_used_in_relationship_to_one(parent_table_name, field);
