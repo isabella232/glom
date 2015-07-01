@@ -583,6 +583,9 @@ private:
       m_info = std::make_shared<TableInfo>(); //Avoid a null std::shared_ptr.
     }
 
+    DocumentTableInfo(const DocumentTableInfo& src) = delete;
+    DocumentTableInfo& operator=(const DocumentTableInfo& src) = delete;
+
     std::shared_ptr<TableInfo> m_info;
 
     type_vec_fields m_fields;
@@ -607,11 +610,6 @@ private:
     FoundSet m_foundset_current;
 
     float m_overviewx, m_overviewy;
-
-  private:
-    //Prevent copying:
-    DocumentTableInfo(const DocumentTableInfo& src);
-    DocumentTableInfo& operator=(const DocumentTableInfo& src);
   };
 
   std::shared_ptr<DocumentTableInfo> get_table_info_with_add(const Glib::ustring& table_name);
