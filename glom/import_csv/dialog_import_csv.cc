@@ -115,7 +115,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
     row[m_encoding_columns.m_col_charset] = encoding.get_charset();
   }
 
-  Gtk::CellRendererText* renderer = Gtk::manage(new Gtk::CellRendererText);
+  auto renderer = Gtk::manage(new Gtk::CellRendererText);
   m_encoding_combo->set_model(m_encoding_model);
   m_encoding_combo->pack_start(*renderer);
   m_encoding_combo->set_cell_data_func(*renderer, sigc::bind(sigc::mem_fun(*this, &Dialog_Import_CSV::encoding_data_func), sigc::ref(*renderer)));
@@ -178,7 +178,7 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
 {
   clear();
 
-  Document* document = get_document();
+  auto document = get_document();
   if(!document)
   {
     show_error_dialog(_("No Document Available"), _("You need to open a document to import the data into a table."));
@@ -424,7 +424,7 @@ void Dialog_Import_CSV::begin_parse()
   if(m_auto_detect_encoding != -1)
   {
     const char* encoding_charset = AUTODETECT_ENCODINGS_CHARSETS[m_auto_detect_encoding];
-    const Glib::ustring encoding_name = FileEncodings::get_name_of_charset(encoding_charset);
+    const auto encoding_name = FileEncodings::get_name_of_charset(encoding_charset);
     m_encoding_info->set_text(Glib::ustring::compose(_("Encoding detected as: %1"), encoding_display(encoding_name, encoding_charset)));
   }
   else
@@ -509,8 +509,8 @@ void Dialog_Import_CSV::setup_sample_model(const CsvParser::type_row_strings& ro
   m_fields.resize(row.size());
 
   // Start with a column showing the line number.
-  Gtk::CellRendererText* text = Gtk::manage(new Gtk::CellRendererText);
-  Gtk::TreeViewColumn* col = Gtk::manage(new Gtk::TreeViewColumn(_("Line")));
+  auto text = Gtk::manage(new Gtk::CellRendererText);
+  auto col = Gtk::manage(new Gtk::TreeViewColumn(_("Line")));
   col->pack_start(*text, false);
   col->set_cell_data_func(*text, sigc::mem_fun(*this, &Dialog_Import_CSV::line_data_func));
   m_sample_view->append_column(*col);
@@ -527,7 +527,7 @@ void Dialog_Import_CSV::setup_sample_model(const CsvParser::type_row_strings& ro
 Gtk::TreeViewColumn* Dialog_Import_CSV::create_sample_column(const Glib::ustring& title, guint index)
 {
   Gtk::TreeViewColumn* col = new Gtk::TreeViewColumn(title);
-  Gtk::CellRendererCombo* cell = create_sample_cell(index);
+  auto cell = create_sample_cell(index);
   col->pack_start(*Gtk::manage(cell), true);
   col->set_cell_data_func(*cell, sigc::bind(sigc::mem_fun(*this, &Dialog_Import_CSV::field_data_func), index));
   col->set_sizing(Gtk::TREE_VIEW_COLUMN_AUTOSIZE);
@@ -548,7 +548,7 @@ Gtk::CellRendererCombo* Dialog_Import_CSV::create_sample_cell(guint index)
 void Dialog_Import_CSV::line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   const int row = (*iter)[m_sample_columns.m_col_row];
-  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(!renderer_text)
     throw std::logic_error("CellRenderer is not a CellRendererText in line_data_func");
 
@@ -561,7 +561,7 @@ void Dialog_Import_CSV::line_data_func(Gtk::CellRenderer* renderer, const Gtk::T
 void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, guint column_number)
 {
   const int row = (*iter)[m_sample_columns.m_col_row];
-  Gtk::CellRendererCombo* renderer_combo = dynamic_cast<Gtk::CellRendererCombo*>(renderer);
+  auto renderer_combo = dynamic_cast<Gtk::CellRendererCombo*>(renderer);
   if(!renderer_combo) throw std::logic_error("CellRenderer is not a CellRendererCombo in field_data_func");
 
   Glib::ustring text;
@@ -588,7 +588,7 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
 
       if(row != -1) // && static_cast<unsigned int>(row) < m_parser->get_rows_count())
       {
-          const Glib::ustring& orig_text = m_parser->get_data(row, column_number);
+          const auto orig_text = m_parser->get_data(row, column_number);
 
           if(field)
           {
@@ -596,7 +596,7 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
             {
               /* Exported data is always stored in postgres format */
               bool success = false;
-              const Gnome::Gda::Value value = field->from_file_format(orig_text, success);
+              const auto value = field->from_file_format(orig_text, success);
               if(!success)
                 text = _("<Import Failure>");
               else
@@ -685,7 +685,7 @@ void Dialog_Import_CSV::validate_primary_key()
   {
     // Allow the import button to be pressed when the value for the primary key
     // has been chosen:
-    std::shared_ptr<Field> primary_key = get_field_primary_key_for_table(get_target_table_name());
+    auto primary_key = get_field_primary_key_for_table(get_target_table_name());
     bool primary_key_selected = false;
 
     if(primary_key && !primary_key->get_auto_increment())

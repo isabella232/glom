@@ -290,10 +290,10 @@ bool CsvParser::on_idle_parse()
   static const guint CONVERT_BUFFER_SIZE = 1024;
 
   const char* inbuffer = &m_raw[m_input_position];
-  char* inbuf = const_cast<char*>(inbuffer);
+  auto inbuf = const_cast<char*>(inbuffer);
 
   g_return_val_if_fail(m_input_position <= m_raw.size(), true);
-  gsize inbytes = m_raw.size() - m_input_position;
+  auto inbytes = m_raw.size() - m_input_position;
 
   char outbuffer[CONVERT_BUFFER_SIZE];
   char* outbuf = outbuffer;
@@ -473,13 +473,13 @@ void CsvParser::do_line_scanned(const Glib::ustring& line, guint line_number)
    return;
 
   m_rows.push_back(CsvParser::type_row_strings());
-  type_row_strings& row = m_rows.back();
+  auto& row = m_rows.back();
 
   Glib::ustring field;
   //Gtk::TreeModelColumnRecord record;
 
   // Parse first field:
-  Glib::ustring::const_iterator line_iter = CsvParser::advance_field(line.begin(), line.end(), field);
+  auto line_iter = CsvParser::advance_field(line.begin(), line.end(), field);
   row.push_back(field);
 
   // Parse more fields:
@@ -564,7 +564,7 @@ void CsvParser::on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result,
 {
   try
   {
-    Glib::RefPtr<Gio::FileInfo> info = source->query_info_finish(result);
+    auto info = source->query_info_finish(result);
     if(info)
       signal_have_display_name().emit(info->get_display_name());
   }

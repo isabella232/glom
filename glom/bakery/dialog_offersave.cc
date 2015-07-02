@@ -53,7 +53,7 @@ Dialog_OfferSave::Dialog_OfferSave(const Glib::ustring& file_uri)
   set_secondary_text(get_confirmation_message(file_uri));
 
   add_button(_("Discard"), BUTTON_Discard);
-  Gtk::Button* cancel_button = add_button(_("_Cancel"), BUTTON_Cancel);
+  auto cancel_button = add_button(_("_Cancel"), BUTTON_Cancel);
   add_button(_("_Save"), BUTTON_Save);
 
   // Otherwise Discard has focus initially which seems inconvenient:

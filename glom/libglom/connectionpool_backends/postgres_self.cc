@@ -436,7 +436,7 @@ void PostgresSelfHosted::show_active_connections()
   builder->select_add_field("*", "pg_stat_activity");
   builder->select_add_target("pg_stat_activity");
  
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = connect(m_saved_database_name, m_saved_username, m_saved_password);
+  auto gda_connection = connect(m_saved_database_name, m_saved_username, m_saved_password);
   if(!gda_connection)
     std::cerr << G_STRFUNC << ": connection failed." << std::endl;
   

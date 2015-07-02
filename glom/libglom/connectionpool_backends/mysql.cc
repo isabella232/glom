@@ -482,7 +482,7 @@ std::string MySQL::get_path_to_mysql_executable(const std::string& program, bool
   // share/mysqlql which would be nice to separate the mysql stuff
   // from the other shared data. We can perhaps still change this later by
   // building mysql with another prefix than /local/pgsql.
-  gchar* installation_directory = g_win32_get_package_installation_directory_of_module(0);
+  auto installation_directory = g_win32_get_package_installation_directory_of_module(0);
   std::string test;
 
   try
@@ -530,7 +530,7 @@ std::string MySQL::get_path_to_mysql_executable(const std::string& program, bool
 Glib::ustring MySQL::port_as_string(unsigned int port_num)
 {
   Glib::ustring result;
-  char* cresult = g_strdup_printf("%u", port_num);
+  auto cresult = g_strdup_printf("%u", port_num);
   if(cresult)
     result = cresult;
   g_free(cresult);
