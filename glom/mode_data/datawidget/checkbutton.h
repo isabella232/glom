@@ -51,7 +51,7 @@ private:
   void init();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual bool on_button_press_event(GdkEventButton *event); //override
+  virtual bool on_button_press_event(GdkEventButton *event) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual AppWindow* get_appwindow() const;

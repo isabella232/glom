@@ -34,11 +34,11 @@ public:
 
   virtual bool init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform);
 
-  virtual Gtk::Widget* get_default_button(); //override
+  virtual Gtk::Widget* get_default_button() override;
 
 private:
 
-  virtual bool fill_from_database(); //override.
+  virtual bool fill_from_database() override;
   virtual void create_layout();
 
   //Member widgets:

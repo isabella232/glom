@@ -87,7 +87,7 @@ protected:
   virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
 
 
-  virtual bool fill_from_database(); //override.
+  virtual bool fill_from_database() override;
   virtual void create_layout();
   //virtual void fill_related();
 
@@ -107,7 +107,7 @@ private:
 
 protected:
 
-  virtual void on_userlevel_changed(AppState::userlevels user_level); //override
+  virtual void on_userlevel_changed(AppState::userlevels user_level) override;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_flowtable_layout_changed();
@@ -132,12 +132,12 @@ protected:
   virtual void recalculate_fields_for_related_records(const Glib::ustring& relationship_name);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual Dialog_Layout* create_layout_dialog() const; // override.
-  virtual void prepare_layout_dialog(Dialog_Layout* dialog); // override.
+  virtual Dialog_Layout* create_layout_dialog() const override;
+  virtual void prepare_layout_dialog(Dialog_Layout* dialog) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   std::shared_ptr<Field> m_field_primary_key;
- virtual void show_all_vfunc(); //override.
+ virtual void show_all_vfunc() override;
 
   Gnome::Gda::Value m_primary_key_value;
 

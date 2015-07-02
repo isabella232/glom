@@ -36,7 +36,7 @@ public:
 
   void init(); //avoid duplication in constructors.
 
-  virtual void save_to_document(); //override.
+  virtual void save_to_document() override;
 
 private:
   virtual bool fill_from_database();

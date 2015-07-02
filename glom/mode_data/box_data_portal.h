@@ -93,21 +93,21 @@ public:
   virtual void set_find_mode(bool val = true);
 
 protected:
-  virtual type_vecConstLayoutFields get_fields_to_show() const; //override
+  virtual type_vecConstLayoutFields get_fields_to_show() const override;
     
   //Implementations of pure virtual methods from Base_DB_Table_Data:
   virtual std::shared_ptr<Field> get_field_primary_key() const;
 
   //Overrides of virtual methods from Base_Db_Table_Data: 
-  virtual void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row); //Override. Not a signal handler.
-  virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value); //override.
+  virtual void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row) override; // Not a signal handler.
+  virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value) override;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_dialog_layout_hide(); //override.
+  virtual void on_dialog_layout_hide() override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 protected:
-  virtual Document::type_list_layout_groups create_layout_get_layout(); //override.
+  virtual Document::type_list_layout_groups create_layout_get_layout();
 
   void make_record_related(const Gnome::Gda::Value& related_record_primary_key_value);
 

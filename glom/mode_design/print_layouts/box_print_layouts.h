@@ -38,7 +38,7 @@ public:
   virtual ~Box_Print_Layouts();
 
 private:
-  virtual bool fill_from_database(); //override
+  virtual bool fill_from_database() override;
 
   virtual void fill_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const PrintLayout>& print_layout);
 

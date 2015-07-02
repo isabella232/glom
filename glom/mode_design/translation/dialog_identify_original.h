@@ -44,7 +44,7 @@ public:
 
   Glib::ustring get_locale() const;
 
-  virtual void load_from_document(); //override
+  virtual void load_from_document() override;
 
 private:
   Gtk::Label* m_label_original;

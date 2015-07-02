@@ -73,7 +73,7 @@ public:
   /**
    * @param restore Whether @a document_uri is a .tar.gz backup file to restore.
    */
-  bool init_with_document(const Glib::ustring& document_uri = Glib::ustring(), bool restore = false); //override
+  bool init_with_document(const Glib::ustring& document_uri = Glib::ustring(), bool restore = false);
 
   /** Changes the mode to Data mode, as if the user had selected the Data Mode menu item.
    */
@@ -174,12 +174,12 @@ public:
   static Glib::ustring util_bold_message(const Glib::ustring& message);
 
 protected:
-  virtual void init_layout(); //Arranges the menu, toolbar, etc.
-  virtual void init_menus(); //Override this to add more or different menus.
-  virtual void init_menus_file(); //Call this from init_menus() to add the standard file menu.
-  virtual void init_menus_edit(); //Call this from init_menus() to add the standard edit menu
+  void init_layout(); //Arranges the menu, toolbar, etc.
+  virtual void init_menus() override; //Override this to add more or different menus.
+  virtual void init_menus_file() override; //Call this from init_menus() to add the standard file menu.
+  virtual void init_menus_edit() override; //Call this from init_menus() to add the standard edit menu
 
-  virtual void on_hide(); //override.
+  virtual void on_hide() override;
 
   //Overrides from AppWindow_WithDoc:
   virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
@@ -200,7 +200,7 @@ protected:
   virtual void ui_hide();
   virtual void ui_bring_to_front();
 
-  virtual bool on_delete_event(GdkEventAny* event); //override
+  virtual bool on_delete_event(GdkEventAny* event) override;
 
   void on_menu_edit_copy_activate();
   void on_menu_edit_cut_activate();
@@ -227,9 +227,9 @@ protected:
   virtual void ui_warning_load_failed(int failure_code = 0); //Override.
 
 private:
-  virtual void init_create_document(); //override
-  virtual bool on_document_load(); //override.
-  virtual void on_document_close(); //override.
+  virtual void init_create_document() override;
+  virtual bool on_document_load() override;
+  virtual void on_document_close() override;
 
   bool offer_new_or_existing();
 
@@ -281,7 +281,7 @@ private:
   Glib::ustring ui_file_select_open_with_browse(bool& browsed, EpcServiceInfo*& browsed_server, Glib::ustring& browsed_service_name, const Glib::ustring& starting_folder_uri = Glib::ustring());
 #endif // !G_OS_WIN32
 
-  virtual void new_instance(const Glib::ustring& uri = Glib::ustring()); //Override
+  virtual void new_instance(const Glib::ustring& uri = Glib::ustring()) override;
 
   void on_connection_create_database_progress();
   void on_connection_close_progress();

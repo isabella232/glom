@@ -45,7 +45,7 @@ public:
   virtual void set_find_mode(bool val = true);
 
 protected:
-  virtual bool fill_from_database(); //Override.
+  virtual bool fill_from_database() override;
 
   //Signal handlers:
   void on_adddel_record_changed();
@@ -63,7 +63,7 @@ protected:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_dialog_layout_hide(); //override.
+  virtual void on_dialog_layout_hide() override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //Implementations of pure virtual methods from Base_DB_Table_Data:
@@ -73,14 +73,14 @@ protected:
   virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const;
 
   //Overrides of functions from Box_Data:
-  virtual Document::type_list_layout_groups create_layout_get_layout();
-  virtual void create_layout();
+  virtual Document::type_list_layout_groups create_layout_get_layout() override;
+  virtual void create_layout() override;
 
-  virtual void enable_buttons(); //override
+  virtual void enable_buttons();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual Dialog_Layout* create_layout_dialog() const; // override.
-  virtual void prepare_layout_dialog(Dialog_Layout* dialog); // override.
+  virtual Dialog_Layout* create_layout_dialog() const override;
+  virtual void prepare_layout_dialog(Dialog_Layout* dialog) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 

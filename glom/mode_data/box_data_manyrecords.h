@@ -57,7 +57,7 @@ public:
   void get_record_counts(gulong& total, gulong& found) const;
 
 protected:
-  //virtual Document::type_list_layout_groups create_layout_get_layout(); //overriden in Box_Data_ManyRecords_Related.
+  //virtual Document::type_list_layout_groups create_layout_get_layout() ; //overriden in Box_Data_ManyRecords_Related.
   void create_layout_add_group(const std::shared_ptr<LayoutGroup>& layout_group);
 
   virtual void print_layout();

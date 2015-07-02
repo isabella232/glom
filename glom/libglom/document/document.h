@@ -322,7 +322,7 @@ public:
 
   type_example_rows get_table_example_data(const Glib::ustring& table_name) const;
 
-  virtual Glib::ustring get_name() const; //override.
+  virtual Glib::ustring get_name() const override;
 
   Glib::ustring get_default_table() const;
   Glib::ustring get_first_table() const;
@@ -497,7 +497,7 @@ public:
 private:
   //Overrides:
 
-  virtual bool save_before();
+  virtual bool save_before() override;
   void save_before_layout_group(xmlpp::Element* node, const std::shared_ptr<const LayoutGroup>& group, bool with_print_layout_positions = false);
   void save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupBy::type_list_sort_fields& list_fields);
   void save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const std::shared_ptr<const UsesRelationship>& item);

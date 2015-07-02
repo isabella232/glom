@@ -50,30 +50,30 @@ public:
   virtual bool init_db_details(const Glib::ustring& parent_table, bool show_title = true);
 
 private:
-  virtual bool fill_from_database(); //Override.
-  virtual type_vecConstLayoutFields get_fields_to_show() const; //override
-  virtual void create_layout(); //override
+  virtual bool fill_from_database() override;
+  virtual type_vecConstLayoutFields get_fields_to_show() const override;
+  virtual void create_layout() override;
     
     
   //Implementations of pure virtual methods from Base_DB_Table_Data:
   virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
     
 
-  void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row); //Override. Not a signal handler.
+  void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row) override; //Not a signal handler.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_dialog_layout_hide(); //override.
+  virtual void on_dialog_layout_hide() override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual void enable_buttons(); //override
+  virtual void enable_buttons();
     
   //Implementations of pure virtual methods from Base_DB_Table_Data:
   virtual Gnome::Gda::Value get_primary_key_value_selected() const;
   virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual Dialog_Layout* create_layout_dialog() const; // override.
-  virtual void prepare_layout_dialog(Dialog_Layout* dialog); // override.
+  virtual Dialog_Layout* create_layout_dialog() const override;
+  virtual void prepare_layout_dialog(Dialog_Layout* dialog) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Glib::ustring on_calendar_details(guint year, guint month, guint day);

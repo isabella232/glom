@@ -34,9 +34,9 @@ public:
   AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~AddDel_WithButtons();
 
-  virtual void set_allow_add(bool val = true); //override
-  virtual void set_allow_delete(bool val = true); //override
-  virtual void set_allow_user_actions(bool bVal = true); //override
+  void set_allow_add(bool val = true) override;
+  void set_allow_delete(bool val = true) override;
+  void set_allow_user_actions(bool bVal = true) override;
 
   /**
    * @param label The button label text, including the mnemonic underline.
@@ -59,7 +59,7 @@ private:
   void on_button_edit();
   void on_button_extra();
 
-  virtual void show_all_vfunc();
+  virtual void show_all_vfunc() override;
 
   //member widgets:
   Gtk::ButtonBox m_ButtonBox;

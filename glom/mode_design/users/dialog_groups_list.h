@@ -42,7 +42,7 @@ public:
   virtual ~Dialog_GroupsList();
 
   //Refresh the UI when we get the document, from add_view:
-  virtual void load_from_document();
+  virtual void load_from_document() override;
 
   /**
    * @param layout "list" or "details"

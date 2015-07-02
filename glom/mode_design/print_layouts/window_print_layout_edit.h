@@ -119,7 +119,7 @@ private:
   bool on_vruler_button_press_event(GdkEventButton* event);
 
   //override:
-  virtual bool on_configure_event(GdkEventConfigure* event);
+  virtual bool on_configure_event(GdkEventConfigure* event) override;
 
   void do_menu_view_show_grid(bool active);
   void do_menu_view_show_rules(bool active);

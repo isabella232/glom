@@ -153,23 +153,23 @@ private:
 
 protected:
    // Overrides:
-   virtual Gtk::TreeModelFlags get_flags_vfunc() const;
-   virtual int get_n_columns_vfunc() const;
-   virtual GType get_column_type_vfunc(int index) const;
-   virtual void get_value_vfunc(const TreeModel::iterator& iter, int column, Glib::ValueBase& value) const;
+   virtual Gtk::TreeModelFlags get_flags_vfunc() const override;
+   virtual int get_n_columns_vfunc() const override;
+   virtual GType get_column_type_vfunc(int index) const override;
+   virtual void get_value_vfunc(const TreeModel::iterator& iter, int column, Glib::ValueBase& value) const override;
 
-   bool iter_next_vfunc(const iterator& iter, iterator& iter_next) const;
+   bool iter_next_vfunc(const iterator& iter, iterator& iter_next) const override;
 
    //TODO: Make sure that we make all of these const when we have made them all const in the TreeModel:
-   virtual bool iter_children_vfunc(const iterator& parent, iterator& iter) const;
-   virtual bool iter_has_child_vfunc(const iterator& iter) const;
-   virtual int iter_n_children_vfunc(const iterator& iter) const;
-   virtual int iter_n_root_children_vfunc() const;
-   virtual bool iter_nth_child_vfunc(const iterator& parent, int n, iterator& iter) const;
-   virtual bool iter_nth_root_child_vfunc(int n, iterator& iter) const;
-   virtual bool iter_parent_vfunc(const iterator& child, iterator& iter) const;
-   virtual Path get_path_vfunc(const iterator& iter) const;
-   virtual bool get_iter_vfunc(const Path& path, iterator& iter) const;
+   virtual bool iter_children_vfunc(const iterator& parent, iterator& iter) const override;
+   virtual bool iter_has_child_vfunc(const iterator& iter) const override;
+   virtual int iter_n_children_vfunc(const iterator& iter) const override;
+   virtual int iter_n_root_children_vfunc() const override;
+   virtual bool iter_nth_child_vfunc(const iterator& parent, int n, iterator& iter) const override;
+   virtual bool iter_nth_root_child_vfunc(int n, iterator& iter) const override;
+   virtual bool iter_parent_vfunc(const iterator& child, iterator& iter) const override;
+   virtual Path get_path_vfunc(const iterator& iter) const override;
+   virtual bool get_iter_vfunc(const Path& path, iterator& iter) const override;
 private:
 
    bool iter_is_valid(const iterator& iter) const;

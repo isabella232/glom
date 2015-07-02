@@ -50,11 +50,11 @@ public:
 
   std::shared_ptr<SharedConnection> connect_to_server_with_connection_settings() const;
 
-  virtual void load_from_document(); //override
-  virtual void save_to_document(); //override
+  virtual void load_from_document() override;
+  virtual void save_to_document() override;
 
 private:
-  void on_response(int response_id);
+  void on_response(int response_id) override;
 
   void on_button_choose_image();
   void on_button_test_script();

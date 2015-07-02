@@ -58,7 +58,7 @@ public:
 
   //Override this so we can store the text to compare later.
   //This is not virtual, so you must not use it via Gtk::Entry.
-  void set_text(const Glib::ustring& text); //override
+  void set_text(const Glib::ustring& text);
 
   Glib::ustring get_text() const;
 
@@ -83,12 +83,12 @@ private:
 
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual bool on_button_press_event(GdkEventButton *event);
-  virtual bool on_radiobutton_button_press_event(GdkEventButton *event);
+  virtual bool on_button_press_event(GdkEventButton *event) override;
+  bool on_radiobutton_button_press_event(GdkEventButton *event);
   void show_context_menu(GdkEventButton *event);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual AppWindow* get_appwindow() const;
+  virtual AppWindow* get_appwindow() const override;
 
 
   Glib::ustring m_old_text;

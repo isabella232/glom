@@ -55,13 +55,13 @@ public:
   //This creates a db-based tree model, with appropriate cell renderers:
   virtual void set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value);
 
-  virtual void set_read_only(bool read_only = true);
+  virtual void set_read_only(bool read_only = true) override;
 
   /** Set the text from a Gnome::Gda::Value.
    */
-  virtual void set_value(const Gnome::Gda::Value& value);
+  virtual void set_value(const Gnome::Gda::Value& value) override;
 
-  virtual Gnome::Gda::Value get_value() const;
+  virtual Gnome::Gda::Value get_value() const override;
 
 private:
 
@@ -69,15 +69,15 @@ private:
 
   // Note that this is a normal signal handler when glibmm was complied
   // without default signal handlers
-  virtual void on_changed(); //From Gtk::ComboBox
+  virtual void on_changed() override; //From Gtk::ComboBox
 
-  virtual void check_for_change();
+  void check_for_change();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual bool on_button_press_event(GdkEventButton *event);
+  virtual bool on_button_press_event(GdkEventButton *event) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual AppWindow* get_appwindow() const;
+  virtual AppWindow* get_appwindow() const override;
 
 
   Gnome::Gda::Value m_old_value; //TODO: Only useful for navigation, which currently has no implementation.

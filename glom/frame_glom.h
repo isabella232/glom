@@ -137,8 +137,8 @@ public:
 
   void on_dialog_tables_hide();
 
-  virtual void set_document(Document* pDocument); //View override
-  virtual void load_from_document(); //View override
+  virtual void set_document(Document* pDocument) override; //View override
+  virtual void load_from_document() override; //View override
 
   enum enumModes
   {
@@ -189,7 +189,7 @@ public:
 
 private:
 
-  //virtual void set_document(Document* pDocument); //override
+  //virtual void set_document(Document* pDocument) override;
 
   /** Show the table, possibly selecting a particular record, possibly showing that in the details tab. This allows table_name to be empty in which case no
    * table will be shown.

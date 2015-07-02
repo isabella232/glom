@@ -286,7 +286,7 @@ private:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_menu_properties_activate();
   virtual void on_menu_delete_activate(); // override this to add a dialog box
-  virtual bool on_button_press_event(GdkEventButton *event);
+  virtual bool on_button_press_event(GdkEventButton *event) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 };
 

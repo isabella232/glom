@@ -50,7 +50,7 @@ public:
 
   //Override this so we can store the text to compare later.
   //This is not virtual, so you must not use it via Gtk::Entry.
-  void set_text(const Glib::ustring& text); //override
+  void set_text(const Glib::ustring& text);
 
   /** Set the text from a Gnome::Gda::Value.
    */
@@ -68,15 +68,15 @@ private:
   void init();
 
   //Overrides of default signal handlers:
-  virtual void on_buffer_changed();
-  //virtual void on_activate(); //From Gtk::Entry.
-  virtual bool on_textview_focus_out_event(GdkEventFocus* event); //From Gtk::Widget
+  void on_buffer_changed();
+  //virtual void on_activate() override; //From Gtk::Entry.
+  bool on_textview_focus_out_event(GdkEventFocus* event);
   //virtual void on_insert_text(const Glib::ustring& text, int* position); //From Gtk::Editable
 
   virtual void check_for_change();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual bool on_button_press_event(GdkEventButton *event); //override
+  virtual bool on_button_press_event(GdkEventButton *event) override;
 #endif
 
   virtual AppWindow* get_appwindow() const;

@@ -66,8 +66,8 @@ public:
 
   static std::shared_ptr<SharedConnection> connect_to_server(Gtk::Window* parent_window = 0);
 
-  virtual void set_document(Document* pDocument); //View override
-  virtual void load_from_document(); //View override
+  virtual void set_document(Document* pDocument) override; //View override
+  virtual void load_from_document() override; //View override
 
   std::shared_ptr<Field> change_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field_old, const std::shared_ptr<const Field>& field, Gtk::Window* parent_window) const;
 

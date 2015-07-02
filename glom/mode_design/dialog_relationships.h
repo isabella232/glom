@@ -38,7 +38,7 @@ public:
 
   virtual bool init_db_details(const Glib::ustring& table_name);
 
-  virtual void on_hide();
+  virtual void on_hide() override;
 
 private:
 

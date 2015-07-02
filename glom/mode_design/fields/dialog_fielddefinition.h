@@ -66,7 +66,7 @@ private:
   //void on_foreach(Gtk::Widget& widget);
 
   //Disable/enable other controls when a control is selected.
-  virtual void enforce_constraints(); //override.
+  virtual void enforce_constraints() override;
 
   Gtk::Entry* m_pEntry_Name;
   Combo_FieldType* m_pCombo_Type;

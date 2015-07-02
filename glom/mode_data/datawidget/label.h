@@ -55,7 +55,7 @@ private:
     
   Gtk::Label m_label;
 #ifndef GLOM_ENABLE_CLIENT_ONLY    
-  virtual bool on_button_press_event(GdkEventButton *event);
+  virtual bool on_button_press_event(GdkEventButton *event) override;
   virtual void on_menu_properties_activate();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
     

@@ -51,7 +51,7 @@ public:
 
 protected:
 
-  void on_show();
+  void on_show() override;
 
   Gtk::Window* get_app_window();
 

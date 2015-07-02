@@ -55,15 +55,15 @@ private:
   void on_data_source_state_changed();
   bool on_idle_import();
 
-  virtual void on_response(int response_id); // Override from Gtk::Dialog
+  virtual void on_response(int response_id) override; // From Gtk::Dialog
 
-  virtual Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const; // Override from Base_DB_Table_Data
-  virtual void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value&  value); // Override from Base_DB
+  virtual Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const override; // from Base_DB_Table_Data
+  virtual void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value&  value) override; // from Base_DB
 
-  virtual std::shared_ptr<Field> get_field_primary_key() const; // Override from Base_DB_Table_Data
-  virtual Gnome::Gda::Value get_primary_key_value_selected() const; // Override from Base_DB_Table_Data
-  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value); // Override from Base_DB_Table_Data
-  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const; // Override from Base_DB_Table_Data
+  virtual std::shared_ptr<Field> get_field_primary_key() const override; // from Base_DB_Table_Data
+  virtual Gnome::Gda::Value get_primary_key_value_selected() const override; // from Base_DB_Table_Data
+  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) override; // from Base_DB_Table_Data
+  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const override; // from Base_DB_Table_Data
 
   std::shared_ptr<Field> m_field_primary_key;
   Dialog_Import_CSV* m_data_source;

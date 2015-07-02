@@ -277,9 +277,9 @@ private:
   void set_value(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value, bool set_specified_field_layout);
 
   //Overrides of Base_DB/Base_DB_Table methods:
-  virtual void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  virtual Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const;
+  virtual void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
+  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
+  virtual Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const override;
   virtual Gtk::TreeModel::iterator get_row_selected();
 
   //Implementations of pure virtual methods from Base_DB_Table_Data:

@@ -60,7 +60,7 @@ public:
 
   virtual ~AppWindow_WithDoc();
 
-  virtual void init(); //overridden to create document.
+  virtual void init() override; //overridden to create document.
 
   enum enumSaveChanges
   {

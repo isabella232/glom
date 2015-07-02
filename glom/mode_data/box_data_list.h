@@ -70,7 +70,7 @@ public:
   void get_record_counts(gulong& total, gulong& found) const;
 
   #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_dialog_layout_hide(); //override
+  virtual void on_dialog_layout_hide() override;
   #endif //GLOM_ENABLE_CLIENT_ONLY
 
 
@@ -80,10 +80,10 @@ protected:
   virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const;
 
   //Overrides of functions from Box_Data:
-  virtual void create_layout(); //override
+  virtual void create_layout() override;
   virtual Document::type_list_layout_groups create_layout_get_layout();
 
-  virtual bool fill_from_database(); //override.
+  virtual bool fill_from_database() override;
   virtual void enable_buttons();
 
   virtual std::shared_ptr<Field> get_field_primary_key() const;
@@ -102,8 +102,8 @@ protected:
   bool on_script_button_idle(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual Dialog_Layout* create_layout_dialog() const; // override.
-  virtual void prepare_layout_dialog(Dialog_Layout* dialog); // override.
+  virtual Dialog_Layout* create_layout_dialog() const override;
+  virtual void prepare_layout_dialog(Dialog_Layout* dialog) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //Member widgets:

@@ -135,6 +135,7 @@ void TextView::on_activate()
 }
 */
 
+//TODO: Remove this? It doesn't seem to be used.
 void TextView::on_buffer_changed()
 {
   check_for_change();

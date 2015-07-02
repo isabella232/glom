@@ -37,7 +37,7 @@ public:
   typedef Gtk::Container type_base;
 
   void add_widgets(Gtk::Widget& first, Gtk::Widget& second, bool expand_second = false);
-  void add_widgets(Gtk::Widget& first, bool expand = false); //override
+  void add_widgets(Gtk::Widget& first, bool expand = false);
  
   /** Show extra UI that is useful in RAD tools:
    */
@@ -63,7 +63,7 @@ protected:
    */
   type_const_list_widgets get_first_child_widgets() const;
 
-  virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
+  virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
 
 private:
 

@@ -47,7 +47,7 @@ public:
   Glib::ustring get_user() const;
   Glib::ustring get_password() const;
 
-  virtual void load_from_document(); //override
+  virtual void load_from_document() override;
 
 
 private:

@@ -82,11 +82,11 @@ public:
   // Set the accessible name for the TreeView widget
   void set_treeview_accessible_name(const Glib::ustring& name);
 
-  void set_allow_user_actions(bool bVal = true);
+  virtual void set_allow_user_actions(bool bVal = true);
   bool get_allow_user_actions() const;
 
-  void set_allow_add(bool val = true);
-  void set_allow_delete(bool val = true);
+  virtual void set_allow_add(bool val = true);
+  virtual void set_allow_delete(bool val = true);
 
   Gtk::TreeModel::iterator add_item(const Glib::ustring& strKey); //Return index of new row.
 

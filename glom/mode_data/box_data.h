@@ -95,7 +95,7 @@ protected:
   virtual void create_layout();
 
   ///Fill the existing layout with data from the database.
-  virtual bool fill_from_database(); //override.
+  virtual bool fill_from_database() override;
 
   virtual type_vecConstLayoutFields get_fields_to_show() const;
 

@@ -37,7 +37,7 @@ public:
   virtual ~Box_Reports();
 
 private:
-  virtual bool fill_from_database(); //override
+  virtual bool fill_from_database() override;
 
   virtual void fill_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const Report>& report);
 
