@@ -190,10 +190,10 @@ void Box_Data_List::on_adddel_user_reordered_columns()
 
     AddDel::type_vec_strings vec_field_names = m_AddDel.get_columns_order();
 
-    for(AddDel::type_vec_strings::iterator iter = vec_field_names.begin(); iter != vec_field_names.end(); ++iter)
+    for(const auto& field_name : vec_field_names)
     {
       std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
-      layout_item->set_name(*iter);
+      layout_item->set_name(field_name);
       group->add_item(layout_item);
     }
 

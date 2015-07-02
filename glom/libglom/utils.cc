@@ -103,9 +103,9 @@ Glib::ustring Utils::trim_whitespace(const Glib::ustring& text)
   //Find non-whitespace from front:
   Glib::ustring::size_type posFront = Glib::ustring::npos;
   Glib::ustring::size_type pos = 0;
-  for(Glib::ustring::iterator iter = result.begin(); iter != result.end(); ++iter)
+  for(const auto& item : result)
   {
-    if(!Glib::Unicode::isspace(*iter))
+    if(!Glib::Unicode::isspace(item))
     {
       posFront = pos;
       break;

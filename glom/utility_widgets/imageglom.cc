@@ -308,14 +308,10 @@ void ImageGlom::fill_gdkpixbuf_supported_mime_types()
   //Fill the static list if it has not already been filled:
   if(!m_gdkpixbuf_supported_mime_types.empty())
     return;
-    
-  typedef std::vector<Gdk::PixbufFormat> type_vec_formats;
+
   const auto formats = Gdk::Pixbuf::get_formats();
-  
-  for(type_vec_formats::const_iterator iter = formats.begin();
-    iter != formats.end(); ++iter)
+  for(const auto& format : formats)
   {
-    const Gdk::PixbufFormat& format = *iter;
     const auto mime_types = format.get_mime_types();
     m_gdkpixbuf_supported_mime_types.insert(
       m_gdkpixbuf_supported_mime_types.end(),

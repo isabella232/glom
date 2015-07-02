@@ -246,12 +246,11 @@ void Box_Formatting::set_formatting_for_non_field(const Formatting& format, bool
   const Formatting::HorizontalAlignment alignment =
     format.get_horizontal_alignment();
   Gtk::TreeModel::Children children = m_model_alignment->children();
-  for(Gtk::TreeModel::Children::iterator iter = children.begin(); iter != children.end(); ++iter)
+  for(const auto& row : children)
   {
-    Gtk::TreeModel::Row row = *iter;
     if(row[m_columns_alignment.m_col_alignment] == alignment)
     {
-      m_combo_format_text_horizontal_alignment->set_active(iter);
+      m_combo_format_text_horizontal_alignment->set_active(row);
       break;
     }
   }
@@ -412,9 +411,9 @@ bool Box_Formatting::get_formatting(Formatting& format) const
     Glib::RefPtr<Gtk::TreeModel> choices_model = m_adddel_choices_custom->get_model();
     if(choices_model)
     {
-      for(Gtk::TreeModel::iterator iter = choices_model->children().begin(); iter != choices_model->children().end(); ++iter)
+      for(const auto& row : choices_model->children())
       {
-        const auto text = m_adddel_choices_custom->get_value(iter, m_col_index_custom_choices);
+        const auto text = m_adddel_choices_custom->get_value(row, m_col_index_custom_choices);
         if(!text.empty())
         {
           bool success = false;

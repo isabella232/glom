@@ -264,9 +264,9 @@ Document::type_list_layout_groups Box_Data::get_data_layout_groups(const Glib::u
       const auto table_privs = Privs::get_current_privs(m_table_name);
 
       //Fill in the field information for the fields mentioned in the layout:
-      for(Document::type_list_layout_groups::iterator iterGroups = layout_groups.begin(); iterGroups != layout_groups.end(); ++iterGroups)
+      for(const auto& item : layout_groups)
       {
-        fill_layout_group_field_info(*iterGroups, table_privs);
+        fill_layout_group_field_info(item, table_privs);
 
         //std::cout << "debug: Box_Data::get_data_layout_groups: " << std::endl;
         //*iterGroups->debug();
@@ -285,10 +285,9 @@ void Box_Data::fill_layout_group_field_info(const std::shared_ptr<LayoutGroup>& 
   const auto document = get_document();
 
   LayoutGroup::type_list_items items = group->get_items();
-  for(LayoutGroup::type_list_items::iterator iter = items.begin(); iter != items.end(); ++iter)
+  for(const auto& item : items)
   {
-    std::shared_ptr<LayoutItem> item = *iter;
-    std::shared_ptr<LayoutItem_Field> item_field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
+    auto item_field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
     if(item_field) //If is a field rather than some other layout item
     {
 

@@ -580,15 +580,14 @@ bool ConnectionPool::handle_error_cerr_only()
     if(!list_errors.empty())
     {
       Glib::ustring error_details;
-      for(type_list_errors::iterator iter = list_errors.begin(); iter != list_errors.end(); ++iter)
+      for(const auto& event : list_errors)
       {
-        Glib::RefPtr<Gnome::Gda::ConnectionEvent> event = *iter;
         if(event && (event->get_event_type() == Gnome::Gda::CONNECTION_EVENT_ERROR))
         {
           if(!error_details.empty())
             error_details += '\n'; //Add newline after each error.
 
-          error_details += (*iter)->get_description();
+          error_details += event->get_description();
           std::cerr << G_STRFUNC << ": Internal error (Database): " << error_details << std::endl;
         }
       }

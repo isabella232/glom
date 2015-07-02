@@ -201,7 +201,7 @@ Box_Data_Portal::type_vecConstLayoutFields Box_Data_Portal::get_fields_to_show()
       /*
       if(!(m_portal->get_relationship_used_allows_edit()))
       {
-        for(type_vecConstLayoutFields::iterator iter = result.begin(); iter != result.end(); ++iter)
+        for(const auto& item : result)
         {
           std::shared_ptr<const LayoutItem_Field> item = *iter;
           if(item)

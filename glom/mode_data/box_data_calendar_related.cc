@@ -249,12 +249,11 @@ bool Box_Data_Calendar_Related::fill_from_database()
 
 void Box_Data_Calendar_Related::clear_cached_database_values()
 {
-  for(type_map_values::iterator iter = m_map_values.begin(); iter != m_map_values.end(); ++iter)
+  for(const auto& the_pair : m_map_values)
   {
-    type_list_vectors vec = iter->second;
-    for(type_list_vectors::iterator iter = vec.begin(); iter != vec.end(); ++iter)
+    type_list_vectors vec = the_pair.second;
+    for(const auto& pValues : vec)
     {
-      type_vector_values* pValues = *iter;
       delete pValues;
     }
   }

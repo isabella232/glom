@@ -182,16 +182,16 @@ void Box_Reports::save_to_document()
     std::vector<Glib::ustring> listReports = get_document()->get_report_names(m_table_name);
 
     bool modified = false;
-    for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
+    for(const auto& item : m_AddDel.get_model()->children())
     {
-      const auto report_name = m_AddDel.get_value(iter, m_colReportName);
+      const auto report_name = m_AddDel.get_value(item, m_colReportName);
 
       if(!report_name.empty() && std::find(listReports.begin(), listReports.end(), report_name) == listReports.end())
       {
         std::shared_ptr<Report> report(new Report());
         report->set_name(report_name);
 
-        report->set_title( m_AddDel.get_value(iter, m_colTitle) , AppWindow::get_current_locale()); //TODO: Translations: Store the original in the TreeView.
+        report->set_title( m_AddDel.get_value(item, m_colTitle) , AppWindow::get_current_locale()); //TODO: Translations: Store the original in the TreeView.
 
         get_document()->set_report(m_table_name, report);
         modified = true;

@@ -237,10 +237,8 @@ void CanvasGroupGrid::remove_rules()
 CanvasGroupGrid::type_vec_doubles CanvasGroupGrid::get_horizontal_rules() const
 {
   type_vec_doubles result;
-  for(type_vec_lines::const_iterator iter = m_rules_y.begin();
-    iter != m_rules_y.end(); ++iter)
+  for(const auto& line : m_rules_y)
   {
-    Glib::RefPtr<CanvasLineMovable> line = *iter;
     if(!line)
       continue;
 
@@ -256,10 +254,8 @@ CanvasGroupGrid::type_vec_doubles CanvasGroupGrid::get_horizontal_rules() const
 CanvasGroupGrid::type_vec_doubles CanvasGroupGrid::get_vertical_rules() const
 {
   type_vec_doubles result;
-  for(type_vec_lines::const_iterator iter = m_rules_x.begin();
-    iter != m_rules_x.end(); ++iter)
+  for(const auto& line : m_rules_x)
   {
-    Glib::RefPtr<CanvasLineMovable> line = *iter;
     if(!line)
       continue;
 

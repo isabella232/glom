@@ -45,14 +45,14 @@ void Combo_FieldType::init()
   //Set Type choices:
   Field::type_map_type_names map_names = Field::get_usable_type_names();
 
-  for(Field::type_map_type_names::iterator iter = map_names.begin(); iter != map_names.end(); ++iter)
+  for(const auto& the_pair : map_names)
   {
     Gtk::TreeModel::iterator iterModel = m_refTreeModel->append();
     if(iterModel)
     {
       Gtk::TreeModel::Row row = *iterModel;
-      row[m_Columns.m_col_name] = iter->second;
-      row[m_Columns.m_col_type] = iter->first;
+      row[m_Columns.m_col_name] = the_pair.second;
+      row[m_Columns.m_col_type] = the_pair.first;
 
       //std::cout << "adding combo row: " << row[m_Columns.m_col_name] << ", " << row[m_Columns.m_col_type] << std::endl;
     }
@@ -73,14 +73,14 @@ Combo_FieldType::~Combo_FieldType()
 void Combo_FieldType::set_field_type(Field::glom_field_type fieldType)
 {
   const auto children = m_refTreeModel->children();
-   for(Gtk::TreeModel::iterator iter = children.begin(); iter != children.end(); ++iter)
+   for(const auto& row : children)
    {
-     Gtk::TreeModel::Row row = *iter;
      if( row[m_Columns.m_col_type] == fieldType )
      {
-       set_active(iter);
+       set_active(row);
 
-        Glib::ustring temp = row[m_Columns.m_col_name];
+       //TODO: What was this?
+       //Glib::ustring temp = row[m_Columns.m_col_name];
        //iter
      }
    }

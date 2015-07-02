@@ -72,9 +72,9 @@ xmlpp::Element* get_node_child_named(const xmlpp::Element* node, const Glib::ust
     //We check all of them, instead of just the first, until we find one,
     //because get_children() returns, for instance, TextNodes (which are not Elements) for "text", 
     //as well as Elements with the name "text".
-    for(xmlpp::Node::NodeList::iterator iter = list.begin(); iter != list.end(); ++iter)
+    for(const auto& item : list)
     {
-      nodeResult = dynamic_cast<xmlpp::Element*>(*iter);  
+      nodeResult = dynamic_cast<xmlpp::Element*>(item);  
       if(nodeResult)
         return nodeResult;
     }                       

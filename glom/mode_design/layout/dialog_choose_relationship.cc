@@ -102,16 +102,15 @@ void Dialog_ChooseRelationship::select_item(const std::shared_ptr<const Relation
   else
   {
     //Find any items with the same name:
-    for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
+    for(const auto& row : m_model->children())
     {
       const auto relationship_name = glom_get_sharedptr_name(relationship);
 
-      Gtk::TreeModel::Row row = *iter;
       std::shared_ptr<Relationship> relationship_item = row[m_ColumnsRelationships.m_col_relationship];
       if(glom_get_sharedptr_name(relationship_item) == relationship_name)
       {
         //Select the item:
-        refTreeSelection->select(iter);
+        refTreeSelection->select(row);
       }
     }
   }

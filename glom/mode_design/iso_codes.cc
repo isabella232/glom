@@ -257,9 +257,9 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
 #endif // LIBXMLCPP_EXCEPTIONS_ENABLED
 
     //Use a map so we can easily check for duplicates.
-    for(type_list_ids::iterator iter = list_ids.begin(); iter != list_ids.end(); ++iter)
+    for(const auto& id : list_ids)
     {
-      const auto identifier = Utils::locale_simplify(*iter);
+      const auto identifier = Utils::locale_simplify(id);
 
       if(map_locales.find(identifier) == map_locales.end()) //Prevent duplicates.
       {
@@ -313,9 +313,9 @@ type_list_locales get_list_of_locales()
     get_locale_name("temp"); //Fill the map.
 
     //Put the map into a list:
-    for(type_map_locales::iterator iter = map_locales.begin(); iter != map_locales.end(); ++iter)
+    for(const auto& the_pair : map_locales)
     {
-      list_locales.push_back(iter->second);
+      list_locales.push_back(the_pair.second);
     }
   }
 

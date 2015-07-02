@@ -513,16 +513,13 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
 
   //Check all fields in the parent table:
   const auto primary_key_value = get_primary_key_value_selected();
-  for(type_vec_fields::iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
+  for(const auto& field : m_TableFields)
   {
-    const auto field = *iter;
-
     //Is this field triggered by this relationship?
     const auto triggered_by = field->get_calculation_relationships();
     Field::type_list_strings::const_iterator iterFind = std::find(triggered_by.begin(), triggered_by.end(), relationship_name);
     if(iterFind != triggered_by.end()) //If it was found
     {
-      std::shared_ptr<Field> field = *iter;
       if(field)
       {
         std::shared_ptr<LayoutItem_Field> layoutitem_field = std::make_shared<LayoutItem_Field>();
@@ -817,10 +814,8 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
         /*
         bool bIsForeignKey = false;
         Document::type_vec_relationships vecRelationships = get_document()->get_relationships(m_table_name);
-        for(Document::type_vec_relationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
+        for(const auto& relationship : vecRelationships)
         {
-          const Relationship& relationship = *iter;
-
           if(relationship->get_from_field() == strFieldName)
           {
             bIsForeignKey = true;

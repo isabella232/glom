@@ -978,9 +978,8 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
 
   //Look at each field in the database:
   /*
-  for(type_vec_fields::iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
+  for(const auto& field : fieldsDocument)
   {
-    std::shared_ptr<Field> field = *iter;
     const auto field_name = field->get_name();
 
     //Get the field info from the database:
@@ -1011,7 +1010,7 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
   }
 
   //Add any fields that are in the database, but not in the document:
-  for(type_vec_fields::iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
+  for(const auto& item : fieldsDatabase)
   {
     const auto field_name = (*iter)->get_name();
 

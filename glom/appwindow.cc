@@ -1233,10 +1233,8 @@ void AppWindow::update_table_sensitive_ui()
   if(m_pFrame)
     has_table = !m_pFrame->get_shown_table_name().empty();
 
-  for(type_listActions::iterator iter = m_listTableSensitiveActions.begin(); iter != m_listTableSensitiveActions.end(); ++iter)
-  {
-    Glib::RefPtr<Gio::SimpleAction> action = *iter;
- 
+  for(const auto& action : m_listTableSensitiveActions)
+  { 
     bool sensitive = has_table;
 
     const bool is_developer_item = 
@@ -1253,9 +1251,8 @@ void AppWindow::update_userlevel_ui()
   AppState::userlevels userlevel = get_userlevel();
 
   //Disable/Enable developer actions:
-  for(type_listActions::iterator iter = m_listDeveloperActions.begin(); iter != m_listDeveloperActions.end(); ++iter)
+  for(const auto& action : m_listDeveloperActions)
   {
-    Glib::RefPtr<Gio::SimpleAction> action = *iter;
      action->set_enabled( userlevel == AppState::USERLEVEL_DEVELOPER );
   }
 
@@ -1837,7 +1834,7 @@ void AppWindow::add_developer_action(const Glib::RefPtr<Gio::SimpleAction>& refA
 
 void AppWindow::remove_developer_action(const Glib::RefPtr<Gio::SimpleAction>& refAction)
 {
-  for(type_listActions::iterator iter = m_listDeveloperActions.begin(); iter != m_listDeveloperActions.end(); ++iter)
+  for(auto iter = m_listDeveloperActions.begin(); iter != m_listDeveloperActions.end(); ++iter)
   {
     if(*iter == refAction)
     {

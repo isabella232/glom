@@ -163,9 +163,8 @@ void Window_RelationshipsOverview::draw_tables()
 
     //Create tables canvas items, with lists of fields:
     Document::type_listTableInfo tables = document->get_tables();
-    for(Document::type_listTableInfo::iterator iter = tables.begin(); iter != tables.end(); ++iter)
+    for(const auto& info : tables)
     {
-      std::shared_ptr<TableInfo> info = *iter;
       const auto table_name = info->get_name();
 
       float table_x = 0;
@@ -217,9 +216,8 @@ void Window_RelationshipsOverview::draw_lines()
   {
     //Create the lines linking tables to show relationships:
     Document::type_listTableInfo tables = document->get_tables();
-    for(Document::type_listTableInfo::iterator iter = tables.begin(); iter != tables.end(); ++iter)
+    for(const auto& info : tables)
     {
-      std::shared_ptr<TableInfo> info = *iter;
       const auto table_name = info->get_name();
 
       Document::type_vec_relationships m_relationships = document->get_relationships(table_name);

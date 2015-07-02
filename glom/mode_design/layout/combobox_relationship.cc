@@ -112,9 +112,8 @@ void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relat
   Glib::RefPtr<Gtk::TreeModel> model = get_model();
   if(model)
   {
-    for(Gtk::TreeModel::iterator iter = model->children().begin(); iter != model->children().end(); ++iter)
+    for(const auto& row : model->children())
     {
-      Gtk::TreeModel::Row row = *iter;
       std::shared_ptr<Relationship> relationship = row[m_model_columns.m_relationship];
       const auto this_name = glom_get_sharedptr_name(relationship);
 
@@ -123,19 +122,18 @@ void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relat
       {
         if(related_relationship_name.empty())
         {
-           set_active(iter);
+           set_active(row);
            return; //success
         }
         else
         {
-          for(Gtk::TreeModel::iterator iterChildren = iter->children().begin(); iterChildren != iter->children().end(); ++iterChildren)
+          for(const auto& sub_row : row.children())
           {
-            Gtk::TreeModel::Row row = *iterChildren;
-            std::shared_ptr<Relationship> relationship = row[m_model_columns.m_relationship];
+            std::shared_ptr<Relationship> relationship = sub_row[m_model_columns.m_relationship];
             const auto this_name = glom_get_sharedptr_name(relationship);
             if(this_name == related_relationship_name)
             {
-              set_active(iterChildren);
+              set_active(sub_row);
               return; //success
             }
           }

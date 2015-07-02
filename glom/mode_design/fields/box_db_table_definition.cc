@@ -163,10 +163,8 @@ bool Box_DB_Table_Definition::fill_from_database()
 
     Field::type_map_type_names mapFieldTypes = Field::get_type_names_ui();
 
-    for(type_vec_fields::iterator iter = m_vecFields.begin(); iter != m_vecFields.end(); ++iter)
+    for(const auto& field : m_vecFields)
     {
-      const std::shared_ptr<const Field>& field = *iter;
-
       //Name:
       Gtk::TreeModel::iterator tree_iter= m_AddDel.add_item(field->get_name());
       fill_field_row(tree_iter, field);

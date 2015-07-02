@@ -262,15 +262,14 @@ void Dialog_Layout_Report::fill_group_children(const std::shared_ptr<LayoutGroup
     Gtk::TreeModel::Row row = *iter;
 
     group->remove_all_items();
-    for(Gtk::TreeModel::iterator iterChild = row.children().begin(); iterChild != row.children().end(); ++iterChild)
+    for(const auto& child_row : row.children())
     {
-      Gtk::TreeModel::Row row = *iterChild;
-      std::shared_ptr<LayoutItem> item = row[model->m_columns.m_col_item];
+      std::shared_ptr<LayoutItem> item = child_row[model->m_columns.m_col_item];
 
       //Recurse:
       std::shared_ptr<LayoutGroup> child_group = std::dynamic_pointer_cast<LayoutGroup>(item);
       if(child_group)
-        fill_group_children(child_group, iterChild, model);
+        fill_group_children(child_group, child_row, model);
 
       //std::cout << "debug: " << G_STRFUNC << ": Adding group child: parent part type=" << group->get_part_type_name() << ", child part type=" << item->get_part_type_name() << std::endl;
       group->add_item(item);
@@ -1037,10 +1036,10 @@ std::shared_ptr<Report> Dialog_Layout_Report::get_report()
 
 void Dialog_Layout_Report::fill_report_parts(std::shared_ptr<LayoutGroup>& group, const Glib::RefPtr<const type_model> parts_model)
 {
-  for(Gtk::TreeModel::iterator iter = parts_model->children().begin(); iter != parts_model->children().end(); ++iter)
+  for(const auto& row : parts_model->children())
   {
     //Recurse into a group if necessary:
-    std::shared_ptr<LayoutGroup> group_child = fill_group(iter, parts_model);
+    std::shared_ptr<LayoutGroup> group_child = fill_group(row, parts_model);
     if(group_child)
     {
       //Add the group:
@@ -1048,7 +1047,7 @@ void Dialog_Layout_Report::fill_report_parts(std::shared_ptr<LayoutGroup>& group
     }
     else
     {
-      std::shared_ptr<LayoutItem> item = (*iter)[parts_model->m_columns.m_col_item];
+      std::shared_ptr<LayoutItem> item = row[parts_model->m_columns.m_col_item];
       if(item)
       {
         group->add_item(item);

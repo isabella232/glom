@@ -180,9 +180,8 @@ void FlowTable::remove_all()
   /*
   typedef std::vector<Widget*> type_children;
   const auto children = get_children();
-  for(type_children::iterator iter = children.begin(); iter != children.end(); ++iter)
+  for(const auto& widget : children)
   {
-    Gtk::Widget* widget = *iter;
     remove(*widget);
   }
   */
@@ -271,9 +270,8 @@ bool FlowTable::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
   //This is a very rough interpretation of the column/item borders,
   //but it is better than nothing.
   //TODO: Add API to EggSpreadTable for this?
-  for(type_const_list_widgets::iterator iter = m_list_first_widgets.begin(); iter != m_list_first_widgets.end(); ++iter)
+  for(const auto& widget : m_list_first_widgets)
   {
-    const Gtk::Widget* widget = *iter;
     //std::cout << G_STRFUNC << ": widget: " << widget << std::endl;
 
     if(!widget)

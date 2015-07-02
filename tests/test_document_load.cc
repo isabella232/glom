@@ -49,12 +49,8 @@ bool contains_named(const T_Container& container, const Glib::ustring& name)
 template<typename T_Container>
 bool contains_value(const T_Container& container, const Glib::ustring& name)
 {
-  typedef typename T_Container::value_type type_item;
-  typedef typename T_Container::const_iterator type_iterator;
-
-  for(type_iterator iter = container.begin(); iter != container.end(); ++iter)
+  for(const auto& item : container)
   {
-    const type_item item = *iter;
     if(item->get_value() == Gnome::Gda::Value(name))
       return true;
   }
@@ -103,11 +99,8 @@ static std::shared_ptr<const Glom::LayoutItem_Portal> get_portal_from_details_la
   {
     const Glom::LayoutGroup::type_list_const_items items = 
       group->get_items_recursive_with_groups();
-    for(Glom::LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); 
-      iter != items.end(); ++iter)
-    {
-      const std::shared_ptr<const Glom::LayoutItem> layout_item = *iter;
- 
+    for(const auto& layout_item : items)
+    { 
       const std::shared_ptr<const Glom::LayoutGroup> group =
         std::dynamic_pointer_cast<const Glom::LayoutGroup>(layout_item);
       if(!group)

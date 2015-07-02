@@ -211,16 +211,16 @@ bool write_translations_to_po_file(Document* document, const Glib::ustring& po_f
   Glib::ustring data;
 
   Document::type_list_translatables list_layout_items = document->get_translatable_items();
-  for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
+  for(const auto& the_pair : list_layout_items)
   {
-    std::shared_ptr<TranslatableItem> item = iter->first;
+    std::shared_ptr<TranslatableItem> item = the_pair.first;
     if(!item)
       continue;
 
     if(item->get_title_original().empty())
       continue;
 
-    const Glib::ustring hint = iter->second;
+    const Glib::ustring hint = the_pair.second;
 
     // Add "context" comments, to uniquely identify similar strings, used in different places,
     // and to provide a hint for translators.
@@ -301,13 +301,13 @@ bool import_translations_from_po_file(Document* document, const Glib::ustring& p
       const auto msgcontext = Glib::convert_const_gchar_ptr_to_ustring( po_message_msgctxt(msg) );
 
       //Find the matching item in the list:
-      for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
+      for(const auto& the_pair : list_layout_items)
       {
-        std::shared_ptr<TranslatableItem> item = iter->first;
+        std::shared_ptr<TranslatableItem> item = the_pair.first;
         if(!item)
           continue;
 
-        const Glib::ustring hint = iter->second;
+        const Glib::ustring hint = the_pair.second;
 
         if( (item->get_title_original() == msgid) && 
           (get_po_context_for_item(item, hint) == msgcontext) ) // This is not efficient, but it should be reliable.

@@ -55,10 +55,9 @@ void ComboAsRadioButtons::init()
 void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_second& list_values)
 {
   //Clear existing buttons:
-  for(type_map_buttons::iterator iter = m_map_buttons.begin();
-    iter != m_map_buttons.end(); ++iter)
+  for(const auto& the_pair : m_map_buttons)
   {
-     Gtk::RadioButton* button = iter->second;
+     Gtk::RadioButton* button = the_pair.second;
      delete button;
   }
   m_map_buttons.clear();
@@ -124,10 +123,9 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
 void ComboAsRadioButtons::set_choices_fixed(const Formatting::type_list_values& list_values, bool /* restricted */)
 {
   //Clear existing buttons:
-  for(type_map_buttons::iterator iter = m_map_buttons.begin();
-    iter != m_map_buttons.end(); ++iter)
+  for(const auto& the_pair : m_map_buttons)
   {
-     Gtk::RadioButton* button = iter->second;
+     Gtk::RadioButton* button = the_pair.second;
      delete button;
   }
   m_map_buttons.clear();
@@ -164,10 +162,9 @@ void ComboAsRadioButtons::set_choices_related(const Document* document, const st
 
 ComboAsRadioButtons::~ComboAsRadioButtons()
 {
-  for(type_map_buttons::iterator iter = m_map_buttons.begin();
-    iter != m_map_buttons.end(); ++iter)
+  for(const auto& the_pair : m_map_buttons)
   {
-    Gtk::RadioButton* button = iter->second;
+    Gtk::RadioButton* button = the_pair.second;
     delete button;
   }
   m_map_buttons.clear();

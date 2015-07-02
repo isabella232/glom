@@ -250,16 +250,15 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
   m_ignore_changed = true;
 
   bool found = false;
-  for(Gtk::TreeModel::iterator iter = model->children().begin(); iter != model->children().end(); ++iter)
+  for(const auto& row : model->children())
   {
-    const Gtk::TreeModel::Row row = *iter;
     Gnome::Gda::Value this_value;
     row.get_value(0, this_value);
 
     if(this_value == value)
     {
       found = true;
-      set_active(iter);
+      set_active(row);
       break;
     }
   }

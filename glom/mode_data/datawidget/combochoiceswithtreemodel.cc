@@ -105,17 +105,15 @@ void ComboChoicesWithTreeModel::create_model_non_db(guint columns_count)
 void ComboChoicesWithTreeModel::delete_model()
 {
   //Delete the vector's items:
-  for(type_vec_model_columns_string_fixed::iterator iter = m_vec_model_columns_string_fixed.begin(); iter != m_vec_model_columns_string_fixed.end(); ++iter)
+  for(const auto& model_column : m_vec_model_columns_string_fixed)
   {
-    type_model_column_string_fixed* model_column = *iter;
     delete model_column;
   }
   m_vec_model_columns_string_fixed.clear();
   
   //Delete the vector's items:
-  for(type_vec_model_columns_value_fixed::iterator iter = m_vec_model_columns_value_fixed.begin(); iter != m_vec_model_columns_value_fixed.end(); ++iter)
+  for(const auto& model_column : m_vec_model_columns_value_fixed)
   {
-    type_model_column_value_fixed* model_column = *iter;
     delete model_column;
   }
   m_vec_model_columns_value_fixed.clear();
@@ -456,11 +454,11 @@ int ComboChoicesWithTreeModel::get_fixed_cell_height(Gtk::Widget& widget)
     m_fixed_cell_height = height;
 
     //Look at each column:
-    for(type_vec_const_layout_items::iterator iter = m_db_layout_items.begin(); iter != m_db_layout_items.end(); ++iter)
+    for(const auto& item : m_db_layout_items)
     {
       Glib::ustring font_name;
 
-      const std::shared_ptr<const LayoutItem_WithFormatting> item_withformatting = std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(*iter);
+      const std::shared_ptr<const LayoutItem_WithFormatting> item_withformatting = std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(item);
       if(item_withformatting)
       {
          const auto formatting = item_withformatting->get_formatting_used();

@@ -80,14 +80,14 @@ void ComboBox_Locale::set_selected_locale(const Glib::ustring& locale)
   Glib::RefPtr<Gtk::TreeModel> model = get_model();
   if(model)
   {
-    for(Gtk::TreeModel::iterator iter = model->children().begin(); iter != model->children().end(); ++iter)
+    for(const auto& row : model->children())
     {
-      const Glib::ustring& this_text = (*iter)[m_model_columns.m_identifier];
+      const Glib::ustring& this_text = row[m_model_columns.m_identifier];
       //std::cout << G_STRFUNC << ": DEBUG: locale=" << locale << ", this_text=" << this_text << "." << std::endl;
  
       if(this_text == locale)
       {
-        set_active(iter);
+        set_active(row);
         return; //success
       }
     }

@@ -238,9 +238,9 @@ void Window_Translations::load_from_document()
   m_label_source_locale->set_text(original_locale_name);
 
   Document::type_list_translatables list_layout_items = document->get_translatable_items();
-  for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
+  for(const auto& the_pair : list_layout_items)
   {
-    std::shared_ptr<TranslatableItem> item = iter->first;
+    std::shared_ptr<TranslatableItem> item = the_pair.first;
     if(!item)
       continue;
 
@@ -252,7 +252,7 @@ void Window_Translations::load_from_document()
 
     row[m_columns.m_col_item] = item;
     row[m_columns.m_col_translation] = item->get_title_translation(m_translation_locale, false);
-    row[m_columns.m_col_hint] = iter->second;
+    row[m_columns.m_col_hint] = the_pair.second;
   }
 
   m_treeview_modified = false;
@@ -264,10 +264,8 @@ void Window_Translations::save_to_document()
     return;
 
   //Look at every item in the treeview and apply its translation:
-  for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
+  for(const auto& row : m_model->children())
   {
-    Gtk::TreeModel::Row row = *iter;
-
     //We have stored a std::shared_ptr to the original item, so we can just change it directly:
     std::shared_ptr<TranslatableItem> item = row[m_columns.m_col_item];
     if(item)
@@ -311,10 +309,8 @@ void Window_Translations::on_button_copy_translation()
       //Save and update:
       on_combo_target_locale_changed();
 
-      for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
+      for(const auto& row : m_model->children())
       {
-        Gtk::TreeModel::Row row = *iter;
-
         std::shared_ptr<TranslatableItem> item = row[m_columns.m_col_item];
         if(item)
         {

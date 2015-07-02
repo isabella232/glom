@@ -502,10 +502,8 @@ void Canvas_PrintLayout::on_context_menu_delete()
   //TODO: If there are multiple items, ask the user for confirmation?
   m_context_item.reset();
   const type_vec_items items = get_selected_items();
-  for(type_vec_items::const_iterator iter = items.begin();
-    iter != items.end(); ++iter)
+  for(const auto& selected_item : items)
   {
-    const Glib::RefPtr<CanvasItemMovable> selected_item = *iter;
     if(!selected_item)
       continue;
       
@@ -1087,9 +1085,8 @@ Base_DB::type_vecConstLayoutFields Canvas_PrintLayout::get_portal_fields_to_show
       /* TODO: Find a better way to do this.
       if(!(portal->get_relationship_used_allows_edit()))
       {
-        for(type_vecConstLayoutFields::iterator iter = result.begin(); iter != result.end(); ++iter)
+        for(const auto& item : result)
         {
-          std::shared_ptr<const LayoutItem_Field> item = *iter;
           if(item)
             item->set_editable(false);
         }

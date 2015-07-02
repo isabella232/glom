@@ -643,7 +643,7 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
 
   // Lookup field indicated by new_text
   const Gtk::TreeNodeChildren& children = m_field_model->children();
-  for(Gtk::TreeModel::iterator field_iter = children.begin(); field_iter != children.end(); ++ field_iter)
+  for(auto field_iter = children.begin(); field_iter != children.end(); ++ field_iter)
   {
     if( (*field_iter)[m_field_columns.m_col_field_name] == new_text)
     {
@@ -660,7 +660,7 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
       // Create a TreeModel::Path with initial index 0. We need a TreeModel::Path for the row_changed() call
       Gtk::TreeModel::Path path("0");
 
-      for(Gtk::TreeModel::iterator sample_iter = sample_children.begin(); sample_iter != sample_children.end(); ++ sample_iter)
+      for(auto sample_iter = sample_children.begin(); sample_iter != sample_children.end(); ++ sample_iter)
       {
         if(sample_iter != iter)
           m_sample_model->row_changed(path, sample_iter);
@@ -696,9 +696,9 @@ void Dialog_Import_CSV::validate_primary_key()
       primary_key_selected = false;
       if(!m_parser->get_rows_empty())
       {
-        for(type_vec_fields::iterator iter = m_fields.begin(); iter != m_fields.end(); ++ iter)
+        for(const auto& field : m_fields)
         {
-          if(*iter == primary_key)
+          if(field == primary_key) //TODO: Is this just comparing shared_ptr?
           {
             primary_key_selected = true;
             break;

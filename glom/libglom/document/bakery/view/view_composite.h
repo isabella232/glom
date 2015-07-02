@@ -69,9 +69,8 @@ public:
     View<T_Document>::set_document(pDocument);
 
     //Change the document in the child views.
-    for(typename type_vec_views::iterator iter = m_vecViews.begin(); iter != m_vecViews.end(); ++iter)
+    for(const auto& pView : m_vecViews)
     {
-      type_view* pView = *iter;
       if(pView)
         pView->set_document(pDocument);
     }
@@ -80,9 +79,8 @@ public:
   virtual void load_from_document()
   {
     //Delegate to the child views:
-    for(typename type_vec_views::iterator iter = m_vecViews.begin(); iter != m_vecViews.end(); ++iter)
+    for(const auto& pView : m_vecViews)
     {
-      type_view* pView = *iter;
       if(pView)
         pView->load_from_document();
     }
@@ -91,9 +89,8 @@ public:
   virtual void save_to_document()
   {
     //Delegate to the child views:
-    for(typename type_vec_views::iterator iter = m_vecViews.begin(); iter != m_vecViews.end(); ++iter)
+    for(const auto& pView : m_vecViews)
     {
-      type_view* pView = *iter;
       if(pView)
         pView->save_to_document();
     }

@@ -301,9 +301,8 @@ void LayoutGroup::remove_field(const Glib::ustring& parent_table_name, const Gli
 void LayoutGroup::change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
 {
   //Look at each item:
-  for(LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin(); iterItem != m_list_items.end(); ++iterItem)
+  for(const auto& item : m_list_items)
   {
-    auto item = *iterItem;
     auto field_item = std::dynamic_pointer_cast<LayoutItem_Field>(item);
     if(field_item)
     {
@@ -332,9 +331,8 @@ void LayoutGroup::change_related_field_item_name(const Glib::ustring& table_name
 void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
 {
   //Look at each item:
-  for(LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin(); iterItem != m_list_items.end(); ++iterItem)
+  for(const auto& item : m_list_items)
   {
-    auto item = *iterItem;
     std::shared_ptr<LayoutItem_Field> field_item = 
       std::dynamic_pointer_cast<LayoutItem_Field>(item);
     
@@ -382,7 +380,7 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
 void LayoutGroup::change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new)
 {
   //Look at each item:
-  for(LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin(); iterItem != m_list_items.end(); ++iterItem)
+  for(const auto& item : m_list_items)
   {
     auto field_item = dynamic_cast<LayoutItem_Field*>(*iterItem);
     if(field_item)

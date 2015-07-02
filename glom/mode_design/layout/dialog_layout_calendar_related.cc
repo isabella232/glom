@@ -277,10 +277,8 @@ void Dialog_Layout_Calendar_Related::save_to_document()
     m_portal->remove_all_items();
 
     guint field_sequence = 1; //0 means no sequence
-    for(Gtk::TreeModel::iterator iterFields = m_model_items->children().begin(); iterFields != m_model_items->children().end(); ++iterFields)
+    for(const auto& row : m_model_items->children())
     {
-      Gtk::TreeModel::Row row = *iterFields;
-
       std::shared_ptr<LayoutItem> item = row[m_model_items->m_columns.m_col_layout_item];
       const auto field_name = item->get_name();
       if(!field_name.empty())
@@ -380,9 +378,8 @@ void Dialog_Layout_Calendar_Related::on_button_add_field()
   //std::cout << "debug table used =" << m_portal->get_table_used(m_table_name) << std::endl;
 
   type_list_field_items fields_list = offer_field_list(m_table_name, this);
-  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen)
+  for(const auto& field : fields_list)
   {
-    std::shared_ptr<LayoutItem_Field> field = *iter_chosen;
     if(!field)
       continue;
 

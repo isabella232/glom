@@ -180,16 +180,16 @@ void Box_Print_Layouts::save_to_document()
     std::vector<Glib::ustring> listItems = get_document()->get_print_layout_names(m_table_name);
 
     bool modified = false;
-    for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
+    for(const auto& row : m_AddDel.get_model()->children())
     {
-      const auto name = m_AddDel.get_value(iter, m_colName);
+      const auto name = m_AddDel.get_value(row, m_colName);
 
       if(!name.empty() && std::find(listItems.begin(), listItems.end(), name) == listItems.end())
       {
         std::shared_ptr<PrintLayout> item(new PrintLayout());
         item->set_name(name);
 
-        item->set_title( m_AddDel.get_value(iter, m_colTitle) , AppWindow::get_current_locale()); //TODO: Translations: Store the original in the TreeView.
+        item->set_title( m_AddDel.get_value(row, m_colTitle) , AppWindow::get_current_locale()); //TODO: Translations: Store the original in the TreeView.
 
         get_document()->set_print_layout(m_table_name, item);
         modified = true;

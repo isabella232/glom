@@ -204,10 +204,8 @@ void CanvasEditable::on_item_selected(const Glib::RefPtr<CanvasItemMovable>& ite
   {
     //Make sure that all other items are deselected first:
     const auto items = get_selected_items();
-    for(type_vec_items::const_iterator iter = items.begin();
-      iter != items.end(); ++iter)
+    for(const auto& selected_item : items)
     {
-      Glib::RefPtr<CanvasItemMovable> selected_item = *iter;
       if(selected_item)
         selected_item->set_selected(false);
     }

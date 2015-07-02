@@ -87,12 +87,9 @@ void Box_Data_Details_Find::fill_related()
   Document::type_vec_relationships vecRelationships = get_document()->get_relationships(m_table_name);
 
   //Add the relationships:
-  for(Document::type_vec_relationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
-  {
      /*
-     const Relationship& relationship = *iter;
-
-
+  for(const auto& item : vecRelationships)
+  {
      Box_Data_List_Related* pBox = Gtk::manage(new Box_Data_List_Related());
      std::cout <<  "Box_Data_Details::fill_related() 2:" << relationship->get_name() << std::endl;
      m_Notebook_Related.pages().push_back( Gtk::Notebook_Helpers::TabElem(*pBox, relationship->get_name()) );
@@ -105,8 +102,8 @@ void Box_Data_Details_Find::fill_related()
      std::cout <<  "Box_Data_Details::fill_related() 3:" << std::endl;
      pBox->init_db_details(get_database_name(), relationship->get_to_table(), relationship->get_to_field(), strKeyValue);
      pBox->show_all();
-     */
   }
+  */
 }
 
 

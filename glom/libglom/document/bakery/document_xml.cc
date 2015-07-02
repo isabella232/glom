@@ -177,9 +177,8 @@ void Document_XML::add_indenting_white_space_to_node(xmlpp::Node* node, const Gl
   //Remove any previous indenting:
   {
   auto list = node->get_children();
-  for(xmlpp::Node::NodeList::iterator iter = list.begin(); iter != list.end(); ++iter)
+  for(const auto& child : list)
   {
-    auto child = *iter;
     if(!child)
       continue;
 
@@ -204,9 +203,8 @@ void Document_XML::add_indenting_white_space_to_node(xmlpp::Node* node, const Gl
   bool had_children = false;
   auto node_as_element = dynamic_cast<xmlpp::Element*>(node);
   auto list = node_as_element->get_children();
-  for(xmlpp::Node::NodeList::iterator iter = list.begin(); iter != list.end(); ++iter)
+  for(const auto& child : list)
   {
-    auto child = *iter;
     if(!child)
       continue;
 

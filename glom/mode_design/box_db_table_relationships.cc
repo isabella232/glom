@@ -102,9 +102,8 @@ bool Box_DB_Table_Relationships::fill_from_database()
     //To Field choices are different for each row: set in on_adddel_signal_user_activated.
 
     //Add the relationships:
-    for(Document::type_vec_relationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
+    for(const auto& relationship : vecRelationships)
     {
-      std::shared_ptr<const Relationship> relationship = *iter;
       if(relationship)
       {
         //Name:
@@ -141,11 +140,11 @@ void Box_DB_Table_Relationships::save_to_document()
 
   const auto document = get_document();
 
-  for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
+  for(const auto& item : m_AddDel.get_model()->children())
   {
-    const auto old_name = m_AddDel.get_value_key(iter);
+    const auto old_name = m_AddDel.get_value_key(item);
 
-    const auto name = m_AddDel.get_value(iter, m_colName);
+    const auto name = m_AddDel.get_value(item, m_colName);
     if(!name.empty())
     {
       //If it is a rename:
@@ -159,14 +158,14 @@ void Box_DB_Table_Relationships::save_to_document()
           relationship = std::make_shared<Relationship>();
 
         relationship->set_name(name);
-        relationship->set_title(m_AddDel.get_value(iter, m_colTitle), AppWindow::get_current_locale());
-        relationship->set_title_singular(m_AddDel.get_value(iter, m_colTitleSingular), AppWindow::get_current_locale());
+        relationship->set_title(m_AddDel.get_value(item, m_colTitle), AppWindow::get_current_locale());
+        relationship->set_title_singular(m_AddDel.get_value(item, m_colTitleSingular), AppWindow::get_current_locale());
         relationship->set_from_table(m_table_name);
-        relationship->set_from_field(m_AddDel.get_value(iter, m_colFromField));
-        relationship->set_to_table(m_AddDel.get_value(iter, m_colToTable));
-        relationship->set_to_field(m_AddDel.get_value(iter, m_colToField));
-        relationship->set_allow_edit(m_AddDel.get_value_as_bool(iter, m_colAllowEdit));
-        relationship->set_auto_create(m_AddDel.get_value_as_bool(iter, m_colAutoCreate));
+        relationship->set_from_field(m_AddDel.get_value(item, m_colFromField));
+        relationship->set_to_table(m_AddDel.get_value(item, m_colToTable));
+        relationship->set_to_field(m_AddDel.get_value(item, m_colToField));
+        relationship->set_allow_edit(m_AddDel.get_value_as_bool(item, m_colAllowEdit));
+        relationship->set_auto_create(m_AddDel.get_value_as_bool(item, m_colAutoCreate));
 
         vecRelationships.push_back(relationship);
       }

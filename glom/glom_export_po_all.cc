@@ -206,10 +206,8 @@ int main(int argc, char* argv[])
   }
 
   const auto original_locale_id = document.get_translation_original_locale();
-  for(std::vector<Glib::ustring>::const_iterator iter = locales.begin();
-    iter != locales.end(); ++iter)
+  for(const auto& locale_id : locales)
   {
-    const Glib::ustring locale_id = *iter;
     if(locale_id == original_locale_id)
       continue;
 

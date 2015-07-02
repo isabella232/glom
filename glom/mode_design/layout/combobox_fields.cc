@@ -85,16 +85,15 @@ void ComboBox_Fields::set_selected_field(const Glib::ustring& field_name)
   Glib::RefPtr<Gtk::TreeModel> model = get_model();
   if(model)
   {
-    for(Gtk::TreeModel::iterator iter = model->children().begin(); iter != model->children().end(); ++iter)
+    for(const auto& row : model->children())
     {
-      Gtk::TreeModel::Row row = *iter;
       std::shared_ptr<Field> field = row[m_model_columns.m_field];
       const auto this_name = glom_get_sharedptr_name(field);
 
       //(An empty name means Select the parent table item.)
       if(this_name == field_name)
       {
-        set_active(iter);
+        set_active(row);
         return; //success
       }
     }

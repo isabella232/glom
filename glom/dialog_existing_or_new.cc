@@ -301,8 +301,8 @@ Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
   if(!m_iter_existing_network_dummy.get())
   {
     const auto children = m_iter_existing_network->children();
-    for(Gtk::TreeModel::iterator iter = children.begin(); iter != children.end(); ++ iter)
-      epc_service_info_unref((*iter)[m_existing_columns.m_col_service_info]);
+    for(const auto& item : children)
+      epc_service_info_unref(item[m_existing_columns.m_col_service_info]);
   }
 #endif
 
@@ -739,7 +739,7 @@ void Dialog_ExistingOrNew::on_service_removed(const Glib::ustring& name, const G
 {
   // Find the entry with the given name
   const auto children = m_iter_existing_network->children();
-  for(Gtk::TreeModel::iterator iter = children.begin(); iter != children.end(); ++ iter)
+  for(auto iter = children.begin(); iter != children.end(); ++ iter)
   {
     if((*iter)[m_existing_columns.m_col_service_name] == name)
     {

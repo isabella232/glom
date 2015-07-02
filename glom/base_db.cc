@@ -597,16 +597,15 @@ std::shared_ptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustr
     //TODO_Performance: Cache this result?
     Document::type_vec_fields fields = document->get_table_fields(table_name);
     //std::cout << "debug: " << G_STRFUNC << ": table=" << table_name << ", fields count=" << fields.size() << std::endl;
-    for(Document::type_vec_fields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    for(const auto& field : fields)
     {
-      std::shared_ptr<Field> field = *iter;
       if(!field)
         continue;
 
       //std::cout << "  field=" << field->get_name() << std::endl;
 
       if(field->get_primary_key())
-        return *iter;
+        return field;
     }
   }
 
@@ -620,10 +619,8 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
   //g_warning("Box_Data::get_table_fields_to_show_for_sequence_add_group(): table_name=%s, all_db_fields.size()=%d, group->name=%s", table_name.c_str(), all_db_fields.size(), group->get_name().c_str());
 
   LayoutGroup::type_list_items items = group->get_items();
-  for(LayoutGroup::type_list_items::iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
+  for(const auto& item : items)
   {
-    std::shared_ptr<LayoutItem> item = *iterItems;
-
     std::shared_ptr<LayoutItem_Field> item_field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
     if(item_field)
     {

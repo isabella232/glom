@@ -496,11 +496,11 @@ void Document::set_relationship(const Glib::ustring& table_name, const std::shar
   const auto relationship_name = glom_get_sharedptr_name(relationship);
 
   auto relationships = info->m_relationships;
-  for(type_vec_relationships::iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
+  for(auto& item : relationships)
   {
-    if((*iter)->get_name() == relationship_name)
+    if(item->get_name() == relationship_name)
     {
-      *iter = relationship; //Changes the relationship. All references (std::shared_ptrs) to the relationship will get the informatin too, because it is shared.
+      item = relationship; //Changes the relationship. All references (std::shared_ptrs) to the relationship will get the informatin too, because it is shared.
       existing = true;
     }
   }
@@ -718,9 +718,9 @@ void Document::remove_relationship(const std::shared_ptr<const Relationship>& re
 
   //Remove relationshp from any reports:
   auto reports = info->m_reports;
-  for(DocumentTableInfo::type_reports::iterator iterReports = reports.begin(); iterReports != reports.end(); ++iterReports)
+  for(const auto& the_pair : reports)
   {
-    auto report = iterReports->second;
+    auto report = the_pair.second;
     auto group = report->get_layout_group();
 
     //Remove the field wherever it is a related field:
@@ -746,9 +746,9 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
   }
 
   //Remove any relationships that use this field:
-  for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
+  for(const auto& the_pair : m_tables)
   {
-    const auto info = iter->second;
+    const auto info = the_pair.second;
     if(!info)
       continue;
 
@@ -781,12 +781,10 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
 
     //Remove field from any layouts:
     auto layouts = info->m_layouts;
-    for(DocumentTableInfo::type_layouts::iterator iterLayouts = layouts.begin(); iterLayouts != layouts.end(); ++iterLayouts)
+    for(const auto& layout_info : layouts)
     {
-      auto layout_info = *iterLayouts;
-      for(type_list_layout_groups::iterator iter = layout_info.m_layout_groups.begin(); iter != layout_info.m_layout_groups.end(); ++iter)
+      for(const auto& group : layout_info.m_layout_groups)
       {
-        auto group = *iter;
         if(!group)
           continue;
 
@@ -802,9 +800,9 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
 
     //Remove field from any reports:
     auto reports = info->m_reports;
-    for(DocumentTableInfo::type_reports::iterator iterReports = reports.begin(); iterReports != reports.end(); ++iterReports)
+    for(const auto& the_pair : reports)
     {
-      auto report = iterReports->second;
+      auto report = the_pair.second;
       auto group = report->get_layout_group();
 
       //Remove regular fields if the field is in this layout's table:
@@ -827,9 +825,9 @@ void Document::remove_table(const Glib::ustring& table_name)
   }
 
   //Remove any relationships that use this table:
-  for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
+  for(const auto& the_pair : m_tables)
   {
-    const auto info = iter->second;
+    const auto info = the_pair.second;
     if(!info)
       continue;
 
@@ -967,17 +965,16 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
 
     //Find any relationships, layouts, or formatting that use this field
     //Look at each table:
-    for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
+    for(const auto& the_pair : m_tables)
     {
-      const std::shared_ptr<DocumentTableInfo> infoInner = iter->second;
+      const std::shared_ptr<DocumentTableInfo> infoInner = the_pair.second;
       if(!infoInner)
         continue;
 
       //Fields:
       type_vec_fields& vecFields = infoInner->m_fields;
-      for(type_vec_fields::iterator iterField = vecFields.begin(); iterField != vecFields.end(); ++iterField)
+      for(const auto& field : vecFields)
       {
-        std::shared_ptr<Field> field = *iterField;
         if(!field)
           continue;
 
@@ -987,10 +984,8 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
       }
 
       //Look at each relationship in the table:
-      for(type_vec_relationships::iterator iterRels = infoInner->m_relationships.begin(); iterRels != infoInner->m_relationships.end(); ++iterRels)
+      for(const auto& relationship : infoInner->m_relationships)
       {
-        std::shared_ptr<Relationship> relationship = *iterRels;
-
         if(relationship->get_from_table() == table_name)
         {
           if(relationship->get_from_field() == strFieldNameOld)
@@ -1013,12 +1008,11 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
       const auto is_parent_table = (infoInner->m_info->get_name() == table_name);
 
       //Look at each layout:
-      for(DocumentTableInfo::type_layouts::iterator iterLayouts = infoInner->m_layouts.begin(); iterLayouts != infoInner->m_layouts.end(); ++iterLayouts)
+      for(const auto& item : infoInner->m_layouts)
       {
         //Look at each group:
-        for(type_list_layout_groups::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
+        for(const auto& group : item.m_layout_groups)
         {
-          std::shared_ptr<LayoutGroup> group = *iterGroup;
           if(group)
           {
             //Change the field if it is in this group:
@@ -1032,10 +1026,10 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
 
 
       //Look at each report:
-      for(DocumentTableInfo::type_reports::iterator iterReports = infoInner->m_reports.begin(); iterReports != infoInner->m_reports.end(); ++iterReports)
+      for(const auto& the_pair : infoInner->m_reports)
       {
         //Change the field if it is in this group:
-        std::shared_ptr<Report> report = iterReports->second;
+        auto report = the_pair.second;
         if(report)
         {
           if(is_parent_table)
@@ -1071,18 +1065,16 @@ void Document::change_table_name(const Glib::ustring& table_name_old, const Glib
 
     //Find any relationships or layouts that use this table
     //Look at each table:
-    for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
+    for(const auto& the_pair : m_tables)
     {
       //Look at each relationship in the table:
-      const std::shared_ptr<DocumentTableInfo> doctableinfo = iter->second;
+      const std::shared_ptr<DocumentTableInfo> doctableinfo = the_pair.second;
       if(!doctableinfo)
         continue;
 
       type_vec_relationships relationships = doctableinfo->m_relationships;
-      for(type_vec_relationships::iterator iterRels = relationships.begin(); iterRels != relationships.end(); ++iterRels)
+      for(const auto& relationship : relationships)
       {
-        std::shared_ptr<Relationship> relationship = *iterRels;
-
         if(relationship->get_from_table() == table_name_old)
         {
           //Change it:
@@ -1120,11 +1112,12 @@ void Document::change_relationship_name(const Glib::ustring& table_name, const G
 
 
     //Look at each table:
-    for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
-    {
       /*
+    for(const auto& item : m_tables)
+    {
+
        //Look at all field formatting:
-      for(type_vec_fields::iterator iterFields = iter->second->m_fields.begin(); iterFields != iter->second->m_fields.end(); ++iterFields)
+      for(const auto& item : iterFields)
       {
         (*iterFields)->m_default_formatting.change_relationship_name(table_name, name, name_new);
       }
@@ -1132,10 +1125,10 @@ void Document::change_relationship_name(const Glib::ustring& table_name, const G
       const auto is_parent_table = (iter->second->m_info->get_name() == table_name);
 
       //Look at each layout:
-      for(DocumentTableInfo::type_layouts::iterator iterLayouts = iter->second->m_layouts.begin(); iterLayouts != iter->second->m_layouts.end(); ++iterLayouts)
+      for(const auto& item : iterLayouts)
       {
         //Look at each group:
-        for(type_list_layout_groups::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
+        for(const auto& item : iterGroup)
         {
           //Change the field if it is in this group:
           if(is_parent_table)
@@ -1147,7 +1140,7 @@ void Document::change_relationship_name(const Glib::ustring& table_name, const G
 
 
       //Look at each report:
-      for(DocumentTableInfo::type_reports::iterator iterReports = iter->second->m_reports.begin(); iterReports != iter->second->m_reports.end(); ++iterReports)
+      for(const auto& item : iterReports)
       {
         //Change the field if it is in this group:
         if(is_parent_table)
@@ -1155,11 +1148,11 @@ void Document::change_relationship_name(const Glib::ustring& table_name, const G
         else
           iterReports->second->get_layout_group()->change_related_relationship_name(table_name, name, name_new);
       }
-      */
 
      //TODO_SharedRelationshipCheck lookups.
 
     }
+      */
 
     set_modified();
   }
@@ -1288,9 +1281,9 @@ void Document::set_tables(const type_listTableInfo& tables)
   //Look at each "table":
 
   bool something_changed = false;
-  for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
+  for(const auto& the_pair : m_tables)
   {
-    const std::shared_ptr<DocumentTableInfo> doctableinfo = iter->second;
+    const std::shared_ptr<DocumentTableInfo> doctableinfo = the_pair.second;
     if(!doctableinfo)
       continue;
 
@@ -1320,9 +1313,9 @@ void Document::set_tables(const type_listTableInfo& tables)
 
 void Document::fill_sort_field_details(const Glib::ustring& parent_table_name, Formatting::type_list_sort_fields& sort_fields) const
 {
-  for(Formatting::type_list_sort_fields::iterator iter = sort_fields.begin(); iter != sort_fields.end(); ++iter)
+  for(const auto& the_pair : sort_fields)
   {
-    std::shared_ptr<const LayoutItem_Field> sort_field = iter->first;
+    std::shared_ptr<const LayoutItem_Field> sort_field = the_pair.first;
     if(!sort_field)
      continue;
  
@@ -1340,10 +1333,8 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
 
   //Get the full field information for the LayoutItem_Fields in this group:
 
-  for(LayoutGroup::type_list_items::iterator iter = layout_group->m_list_items.begin(); iter != layout_group->m_list_items.end(); ++iter)
+  for(const auto& layout_item : layout_group->m_list_items)
   {
-    std::shared_ptr<LayoutItem> layout_item = *iter;
-
     //Check custom Field Formatting:
     std::shared_ptr<LayoutItem_WithFormatting> layout_withformatting = 
       std::dynamic_pointer_cast<LayoutItem_WithFormatting>(layout_item);
@@ -1404,9 +1395,8 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
 
 void Document::fill_layout_field_details(const Glib::ustring& parent_table_name, type_list_layout_groups& groups) const
 {
-  for(type_list_layout_groups::iterator iterGroups = groups.begin(); iterGroups != groups.end(); ++iterGroups)
+  for(const auto& group : groups)
   {
-    std::shared_ptr<LayoutGroup> group = *iterGroups;
     if(group)
       fill_layout_field_details(parent_table_name, group);
   }
@@ -1512,9 +1502,8 @@ Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fiel
     //Make the default layout suitable for the special platform:
     if(layout_platform == "maemo")
     {
-      for(type_list_layout_groups::iterator iter = result.begin(); iter != result.end(); ++iter)
+      for(const auto& layout_group : result)
       {
-        std::shared_ptr<LayoutGroup> layout_group = *iter;
         if(!layout_group)
           continue;
 
@@ -1563,9 +1552,8 @@ bool Document::get_data_layout_groups_have_any_fields(const Glib::ustring& layou
 {
   //TODO_Performance: This could make the response to some button slow, such as the Add button, which does a check for this.
   auto layout_groups = get_data_layout_groups(layout_name, parent_table_name, layout_platform);
-  for(type_list_layout_groups::iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+  for(const auto& layout_group : layout_groups)
   {
-    std::shared_ptr<LayoutGroup> layout_group = *iter;
     if(layout_group && layout_group->has_any_fields())
       return true;
   }
@@ -1991,9 +1979,9 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
         Formatting::type_list_values list_values;
 
         auto listNodesCustomChoices = nodeChoiceList->get_children(GLOM_NODE_FORMAT_CUSTOM_CHOICE);
-        for(xmlpp::Node::NodeList::iterator iter = listNodesCustomChoices.begin(); iter != listNodesCustomChoices.end(); ++iter)
+        for(const auto& node : listNodesCustomChoices)
         {
-          const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
+          const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(node);
           if(element)
           {
             if(field_type == Field::TYPE_INVALID)
@@ -2159,9 +2147,9 @@ void Document::load_after_sort_by(const xmlpp::Element* node, const Glib::ustrin
     return;
 
   auto listNodes = node->get_children(GLOM_NODE_DATA_LAYOUT_ITEM_FIELD);
-  for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+  for(const auto& node : listNodes)
   {
-    const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
+    const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(node);
     if(element)
     {
       auto item = std::make_shared<LayoutItem_Field>();
@@ -2197,12 +2185,12 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
 
   //Get the child items:
   auto listNodes = node->get_children();
-  for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+  for(const auto& node : listNodes)
   {
     std::shared_ptr<LayoutItem> item_added;
 
     //Create the layout item:
-    const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
+    const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(node);
     if(element)
     {
       if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELD)
@@ -2499,9 +2487,9 @@ void Document::load_after_translations(const xmlpp::Element* element, const std:
   if(nodeTranslations)
   {
     auto listNodesTranslations = nodeTranslations->get_children(GLOM_NODE_TRANSLATION);
-    for(xmlpp::Node::NodeList::iterator iter = listNodesTranslations.begin(); iter != listNodesTranslations.end(); ++iter)
+    for(const auto& node : listNodesTranslations)
     {
-      const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
+      const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(node);
       if(element)
       {
         const auto locale = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_LOCALE);
@@ -2863,9 +2851,9 @@ bool Document::load_after(int& failure_code)
           if(nodeDataLayouts)
           {
             xmlpp::Node::NodeList listNodes = nodeDataLayouts->get_children(GLOM_NODE_DATA_LAYOUT);
-            for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+            for(const auto& item : listNodes)
             {
-              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
+              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(item);
               if(node)
               {
                 const auto layout_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
@@ -2878,9 +2866,9 @@ bool Document::load_after(int& failure_code)
                 {
                   //Look at all its children:
                   xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
-                  for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+                  for(const auto& item : listNodes)
                   {
-                    const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
+                    const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(item);
                     if(node)
                     {
                       const auto group_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
@@ -2910,9 +2898,9 @@ bool Document::load_after(int& failure_code)
           if(nodeReports)
           {
             xmlpp::Node::NodeList listNodes = nodeReports->get_children(GLOM_NODE_REPORT);
-            for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+            for(const auto& item : listNodes)
             {
-              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
+              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(item);
               if(node)
               {
                 const auto report_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
@@ -2929,9 +2917,9 @@ bool Document::load_after(int& failure_code)
                 {
                   //Look at all its children:
                   xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
-                  for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+                  for(const auto& item : listNodes)
                   {
-                    const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
+                    const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(item);
                     if(node)
                     {
                       std::shared_ptr<LayoutGroup> group = report->get_layout_group();
@@ -2957,9 +2945,9 @@ bool Document::load_after(int& failure_code)
           if(nodePrintLayouts)
           {
             xmlpp::Node::NodeList listNodes = nodePrintLayouts->get_children(GLOM_NODE_PRINT_LAYOUT);
-            for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+            for(const auto& item : listNodes)
             {
-              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
+              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(item);
               if(node)
               {
                 const auto name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
@@ -2979,9 +2967,9 @@ bool Document::load_after(int& failure_code)
                 //Get the horizontal and vertical rules:
                 PrintLayout::type_vec_doubles vec_rules_h;
                 xmlpp::Node::NodeList listRules = node->get_children(GLOM_NODE_HORIZONTAL_RULE);
-                for(xmlpp::Node::NodeList::iterator iter = listRules.begin(); iter != listRules.end(); ++iter)
+                for(const auto& item : listRules)
                 {
-                  const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
+                  const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(item);
                   if(!node)
                     continue;
 
@@ -2992,9 +2980,9 @@ bool Document::load_after(int& failure_code)
 
 		PrintLayout::type_vec_doubles vec_rules_v;
                 listRules = node->get_children(GLOM_NODE_VERTICAL_RULE);
-                for(xmlpp::Node::NodeList::iterator iter = listRules.begin(); iter != listRules.end(); ++iter)
+                for(const auto& item : listRules)
                 {
-                  const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
+                  const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(item);
                   if(!node)
                     continue;
 
@@ -3018,9 +3006,9 @@ bool Document::load_after(int& failure_code)
                 {
                   //Look at all its children:
                   xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
-                  for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+                  for(const auto& item : listNodes)
                   {
-                    const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
+                    const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(item);
                     if(node)
                     {
                       std::shared_ptr<LayoutGroup> group = print_layout->get_layout_group();
@@ -3049,9 +3037,9 @@ bool Document::load_after(int& failure_code)
           if(nodeGroups)
           {
             xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_GROUP);
-            for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+            for(const auto& item : listNodes)
             {
-              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
+              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(item);
               if(node)
               {
                 GroupInfo group_info;
@@ -3060,9 +3048,9 @@ bool Document::load_after(int& failure_code)
                 group_info.m_developer = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_DEVELOPER);
 
                 xmlpp::Node::NodeList listTablePrivs = node->get_children(GLOM_NODE_TABLE_PRIVS);
-                for(xmlpp::Node::NodeList::iterator iter = listTablePrivs.begin(); iter != listTablePrivs.end(); ++iter)
+                for(const auto& item : listTablePrivs)
                 {
-                  xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
+                  xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(item);
                   if(node)
                   {
                     const auto table_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_TABLE_NAME);
@@ -3090,9 +3078,9 @@ bool Document::load_after(int& failure_code)
           if(nodeModules)
           {
             xmlpp::Node::NodeList listNodes = nodeModules->get_children(GLOM_NODE_LIBRARY_MODULE);
-            for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+            for(const auto& item : listNodes)
             {
-              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
+              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(item);
               if(node)
               {
                 //The name is in an attribute:
@@ -3653,8 +3641,8 @@ bool Document::save_before()
   {
     // Remove existing child nodes:
     xmlpp::Node::NodeList listNodesToRemove = nodeRoot->get_children();
-    for(xmlpp::Node::NodeList::iterator iter = listNodesToRemove.begin(); iter != listNodesToRemove.end(); ++iter)
-      nodeRoot->remove_child(*iter);
+    for(const auto& item : listNodesToRemove)
+      nodeRoot->remove_child(item);
 
     //Always save as the latest format,
     //possibly making it impossible to open this document in older versions of Glom:
@@ -3707,8 +3695,8 @@ bool Document::save_before()
 
     //Remove existing tables:
     xmlpp::Node::NodeList listNodes = nodeRoot->get_children(GLOM_NODE_TABLE);
-    for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
-      nodeRoot->remove_child(*iter);
+    for(const auto& item : listNodes)
+      nodeRoot->remove_child(item);
 
     //Add tables:
   for(const auto& the_pair : m_tables)
@@ -3919,8 +3907,8 @@ bool Document::save_before()
 
     //Remove existing groups:
     listNodes = nodeRoot->get_children(GLOM_NODE_GROUPS);
-    for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
-      nodeRoot->remove_child(*iter);
+    for(const auto& item : listNodes)
+      nodeRoot->remove_child(item);
 
     //Add groups:
     xmlpp::Element* nodeGroups = nodeRoot->add_child(GLOM_NODE_GROUPS);
@@ -3960,8 +3948,8 @@ bool Document::save_before()
 
     //Remove existing library modules::
     listNodes = nodeRoot->get_children(GLOM_NODE_LIBRARY_MODULES);
-    for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
-      nodeRoot->remove_child(*iter);
+    for(const auto& item : listNodes)
+      nodeRoot->remove_child(item);
 
     //Add groups:
     xmlpp::Element* nodeModules = nodeRoot->add_child(GLOM_NODE_LIBRARY_MODULES);
@@ -4422,9 +4410,9 @@ static void add_to_translatable_list(Document::type_list_translatables& list, co
 template <typename T_List>
 static void translatable_items_append_with_hint(Document::type_list_translatables& result, T_List& list_items, const Glib::ustring& hint)
 {
-  for(typename T_List::iterator iter = list_items.begin(); iter != list_items.end(); ++iter)
+  for(const auto& item : list_items)
   {
-    add_to_translatable_list(result, *iter, hint);
+    add_to_translatable_list(result, item, hint);
   }
 }
 
@@ -4447,9 +4435,8 @@ Document::type_list_translatables Document::get_translatable_items()
     //The table's field titles:
     const Glib::ustring hint = "Parent table: " + table_name;
     type_vec_fields fields = get_table_fields(table_name);
-    for(type_vec_fields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    for(const auto& field : fields)
     {
-      std::shared_ptr<Field> field = *iter;
       if(!field)
         continue;
 
@@ -4471,9 +4458,8 @@ Document::type_list_translatables Document::get_translatable_items()
 
     //The table's report titles:
     std::vector<Glib::ustring> listReports = get_report_names(table_name);
-    for(std::vector<Glib::ustring>::iterator iter = listReports.begin(); iter != listReports.end(); ++iter)
+    for(const auto& report_name : listReports)
     {
-      const Glib::ustring report_name = *iter;
       std::shared_ptr<Report> report = get_report(table_name, report_name);
       if(!report)
         continue;
@@ -4488,9 +4474,8 @@ Document::type_list_translatables Document::get_translatable_items()
 
     //The table's print layout titles:
     std::vector<Glib::ustring> listPrintLayouts = get_print_layout_names(table_name);
-    for(std::vector<Glib::ustring>::iterator iter = listPrintLayouts.begin(); iter != listPrintLayouts.end(); ++iter)
+    for(const auto& print_layout_name : listPrintLayouts)
     {
-      const Glib::ustring print_layout_name = *iter;
       std::shared_ptr<PrintLayout> print_layout = get_print_layout(table_name, print_layout_name);
       if(!print_layout)
         continue;
@@ -4521,12 +4506,11 @@ Document::type_list_translatables Document::get_translatable_layout_items(const 
 
   //Look at each layout:
   DocumentTableInfo::type_layouts layouts = info->m_layouts;
-  for(DocumentTableInfo::type_layouts::iterator iterLayouts = info->m_layouts.begin(); iterLayouts != info->m_layouts.end(); ++iterLayouts)
+  for(const auto& layout : layouts)
   {
     //Look at each group:
-    for(type_list_layout_groups::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
+    for(const auto& group : layout.m_layout_groups)
     {
-      std::shared_ptr<LayoutGroup> group = *iterGroup;
       if(group)
       {
         fill_translatable_layout_items(group, result, hint);
@@ -4566,10 +4550,8 @@ void Document::fill_translatable_custom_choices(Formatting& formatting, type_lis
     return;
 
   Formatting::type_list_values values = formatting.get_choices_custom();
-  for(Formatting::type_list_values::iterator iter = values.begin(); iter != values.end(); ++iter)
+  for(const auto& value : values)
   {
-    std::shared_ptr<ChoiceValue> value = *iter;
-
     the_list.push_back( pair_translatable_item_and_hint(value, hint) );
   }
 }

@@ -170,10 +170,8 @@ std::shared_ptr<LayoutItem_Notebook> Dialog_Notebook::get_notebook() const
   std::shared_ptr<LayoutItem_Notebook> result = glom_sharedptr_clone(m_layout_item);
   result->remove_all_items();
 
-  for(Gtk::TreeModel::iterator iterFields = m_model->children().begin(); iterFields != m_model->children().end(); ++iterFields)
+  for(const auto& row : m_model->children())
   {
-    Gtk::TreeModel::Row row = *iterFields;
-
     const Glib::ustring name = row[m_ColumnsTabs.m_col_name];
     if(!name.empty())
     {

@@ -87,9 +87,8 @@ void LayoutItem_Portal::change_related_field_item_name(const Glib::ustring& tabl
 void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
 {
   //Look at each item:
-  for(LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin(); iterItem != m_list_items.end(); ++iterItem)
+  for(const auto& item : m_list_items)
   {
-    auto item = *iterItem;
     auto field_item = std::dynamic_pointer_cast<LayoutItem_Field>(item);
     if(field_item)
     {

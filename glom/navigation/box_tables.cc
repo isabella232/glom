@@ -378,10 +378,9 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
       {
         //Set all the other rows to false:
         Glib::RefPtr<Gtk::TreeModel> model = m_AddDel.get_model();
-        for(Gtk::TreeModel::iterator iter = model->children().begin(); iter != model->children().end(); ++iter)
+        for(const auto& row : model->children())
         {
-          if(iter != row)
-            m_AddDel.set_value(iter, m_colDefault, false);
+          m_AddDel.set_value(row, m_colDefault, false);
         }
       }
 
@@ -463,21 +462,21 @@ void Box_Tables::save_to_document()
 
     Document* document = get_document();
 
-    for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
+    for(const auto& row : m_AddDel.get_model()->children())
     {
-      const auto table_name = m_AddDel.get_value(iter, m_colTableName); //The name has already been changed in the document.
+      const auto table_name = m_AddDel.get_value(row, m_colTableName); //The name has already been changed in the document.
       std::shared_ptr<TableInfo> table_info = document->get_table(table_name); //Start with the existing table_info, to preserve extra information, such as translations.
       if(table_info)
       {
-        table_info->set_name( m_AddDel.get_value(iter, m_colTableName) );
+        table_info->set_name( m_AddDel.get_value(row, m_colTableName) );
 
         if(!table_info->get_name().empty())
         {
-          table_info->set_hidden( m_AddDel.get_value_as_bool(iter, m_colHidden) );
-          table_info->set_title( m_AddDel.get_value(iter, m_colTitle) , AppWindow::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
-          table_info->set_title_singular( m_AddDel.get_value(iter, m_colTitleSingular), AppWindow::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
+          table_info->set_hidden( m_AddDel.get_value_as_bool(row, m_colHidden) );
+          table_info->set_title( m_AddDel.get_value(row, m_colTitle) , AppWindow::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
+          table_info->set_title_singular( m_AddDel.get_value(row, m_colTitleSingular), AppWindow::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
           //std::cout << "debug: " << G_STRFUNC << ": title=" << item_get_title(table_info) << std::endl;
-          table_info->set_default( m_AddDel.get_value_as_bool(iter, m_colDefault) );
+          table_info->set_default( m_AddDel.get_value_as_bool(row, m_colDefault) );
 
           listTables.push_back(table_info);
         }

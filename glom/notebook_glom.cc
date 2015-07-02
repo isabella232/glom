@@ -103,9 +103,8 @@ void Notebook_Glom::on_leave_page(guint uiPageNumber)
   {
     typedef std::vector<Gtk::Widget*> type_vec_widgets;
     type_vec_widgets children = get_page_children();
-    for(type_vec_widgets::iterator iter = children.begin(); iter != children.end(); ++iter)
+    for(const auto& pChild : children)
     {
-      Gtk::Widget* pChild = *iter;
       Base_DB* pBox = dynamic_cast<Base_DB*>(pChild);
       if(pBox)
       {

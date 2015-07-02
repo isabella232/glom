@@ -231,10 +231,8 @@ void Dialog_Layout_Export::get_layout_groups(Document::type_list_layout_groups& 
   others->set_name("main");
 
   guint field_sequence = 1; //0 means no sequence
-  for(Gtk::TreeModel::iterator iterFields = m_model_fields->children().begin(); iterFields != m_model_fields->children().end(); ++iterFields)
+  for(const auto& row : m_model_fields->children())
   {
-    Gtk::TreeModel::Row row = *iterFields;
-
     std::shared_ptr<LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item];
     const auto field_name = item->get_name();
     if(!field_name.empty())
@@ -258,9 +256,8 @@ void Dialog_Layout_Export::on_button_add_field()
 {
   //Get the chosen fields:
   type_list_field_items fields_list = offer_field_list(m_table_name, this);
-  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen) 
+  for(const auto& field : fields_list) 
   {
-    std::shared_ptr<LayoutItem_Field> field = *iter_chosen;
     if(!field)
       continue;
 

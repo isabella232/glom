@@ -57,13 +57,13 @@ Combo_SummaryType::~Combo_SummaryType()
 
 void Combo_SummaryType::set_summary_type(LayoutItem_FieldSummary::summaryType summary_type)
 {
-  for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
+  for(const auto& row : m_model->children())
   {
-    const LayoutItem_FieldSummary::summaryType this_value = (*iter)[m_model_columns.m_summary_type];
+    const LayoutItem_FieldSummary::summaryType this_value = row[m_model_columns.m_summary_type];
 
     if(this_value == summary_type)
     {
-      set_active(iter);
+      set_active(row);
       return; //success
     }
   }

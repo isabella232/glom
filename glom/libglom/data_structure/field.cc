@@ -797,11 +797,11 @@ Field::glom_field_type Field::get_type_for_ui_name(const Glib::ustring& glom_typ
 {
   glom_field_type result = TYPE_INVALID;
 
-  for(type_map_type_names::iterator iter = m_map_type_names_ui.begin(); iter != m_map_type_names_ui.end(); ++iter)
+  for(const auto& the_pair : m_map_type_names_ui)
   {
-    if(iter->second == glom_type)
+    if(the_pair.second == glom_type)
     {
-      result = iter->first;
+      result = the_pair.first;
       break;
     }
   }
