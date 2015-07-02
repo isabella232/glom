@@ -67,7 +67,7 @@ bool TreeStore_ReportLayout::row_drop_possible_vfunc(const Gtk::TreeModel::Path&
     return false; //Prevent a row from being dragged onto itself.
 
 
-  Gtk::TreeModel::iterator iter_dragged_row = refThis->get_iter(path_dragged_row);
+  auto iter_dragged_row = refThis->get_iter(path_dragged_row);
   if(!iter_dragged_row)
     return false;
 

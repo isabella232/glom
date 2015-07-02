@@ -108,7 +108,7 @@ bool Box_Print_Layouts::fill_from_database()
       std::shared_ptr<PrintLayout> item = document->get_print_layout(m_table_name, print_layout_name);
       if(item)
       {
-        Gtk::TreeModel::iterator row = m_AddDel.add_item(item->get_name());
+        auto row = m_AddDel.add_item(item->get_name());
         fill_row(row, item);
       }
     }

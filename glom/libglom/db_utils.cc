@@ -952,7 +952,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
   }
 
   //Hide system fields.
-  type_vec_fields::iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK));
+  auto iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK));
   if(iterFind != result.end())
     result.erase(iterFind);
 
@@ -1035,7 +1035,7 @@ std::shared_ptr<Field> get_fields_for_table_one_field(const Document* document, 
     return result;
 
   type_vec_fields fields = get_fields_for_table(document, table_name); //TODO_Performance
-  type_vec_fields::iterator iter = std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(field_name));
+  auto iter = std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(field_name));
   if(iter != fields.end()) //TODO: Handle error?
   {
     return *iter;

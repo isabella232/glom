@@ -97,7 +97,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   //Fill the list of encodings:
   m_encoding_model = Gtk::ListStore::create(m_encoding_columns);
 
-  Gtk::TreeModel::iterator iter = m_encoding_model->append();
+  auto iter = m_encoding_model->append();
   (*iter)[m_encoding_columns.m_col_name] = _("Auto Detect");
 
   // Separator:
@@ -196,7 +196,7 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
     m_target_table->set_markup("<b>" + Glib::Markup::escape_text(into_table) + "</b>");
 
     m_field_model = Gtk::ListStore::create(m_field_columns);
-    Gtk::TreeModel::iterator tree_iter = m_field_model->append();
+    auto tree_iter = m_field_model->append();
     (*tree_iter)[m_field_columns.m_col_field_name] = _("<None>");
 
     const Document::type_vec_fields fields(document->get_table_fields(into_table));
@@ -210,7 +210,7 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
       // automatically anyway.
       if(!field->get_primary_key() || !field->get_auto_increment())
       {
-        Gtk::TreeModel::iterator tree_iter = m_field_model->append();
+        auto tree_iter = m_field_model->append();
         (*tree_iter)[m_field_columns.m_col_field] = field;
         (*tree_iter)[m_field_columns.m_col_field_name] = field->get_name();
       }
@@ -323,7 +323,7 @@ void Dialog_Import_CSV::on_first_line_as_title_toggled()
   {
     m_sample_view->set_headers_visible(true);
     Gtk::TreeModel::Path path("1");
-    Gtk::TreeModel::iterator iter = m_sample_model->get_iter(path);
+    auto iter = m_sample_model->get_iter(path);
 
     // Remove the first row from the view
     if(iter && (*iter)[m_sample_columns.m_col_row] == 0)
@@ -342,7 +342,7 @@ void Dialog_Import_CSV::on_first_line_as_title_toggled()
 
     // Check whether row 0 is displayed
     Gtk::TreeModel::Path path("1");
-    Gtk::TreeModel::iterator iter = m_sample_model->get_iter(path);
+    auto iter = m_sample_model->get_iter(path);
 
     //if((!iter || (*iter)[m_sample_columns.m_col_row] != 0) && !m_parser->get_rows_empty() && m_sample_rows->get_value_as_int() > 0)
     if((!iter || (*iter)[m_sample_columns.m_col_row] != 0) &&
@@ -384,7 +384,7 @@ void Dialog_Import_CSV::on_sample_rows_changed()
     // +1 for the "target field" row
     Gtk::TreeModel::Path path(1);
     path[0] = new_sample_rows + 1;
-    Gtk::TreeModel::iterator iter = m_sample_model->get_iter(path);
+    auto iter = m_sample_model->get_iter(path);
 
     while(iter != m_sample_model->children().end())
       iter = m_sample_model->erase(iter);
@@ -398,7 +398,7 @@ void Dialog_Import_CSV::on_sample_rows_changed()
 
     for(guint i = current_sample_rows; i < new_sample_rows; ++i, ++row_index)
     {
-      Gtk::TreeModel::iterator iter = m_sample_model->append();
+      auto iter = m_sample_model->append();
       (*iter)[m_sample_columns.m_col_row] = row_index;
     }
   }
@@ -406,7 +406,7 @@ void Dialog_Import_CSV::on_sample_rows_changed()
 
 Glib::ustring Dialog_Import_CSV::get_current_encoding() const
 {
-  Gtk::TreeModel::iterator iter = m_encoding_combo->get_active();
+  auto iter = m_encoding_combo->get_active();
   const Glib::ustring encoding = (*iter)[m_encoding_columns.m_col_charset];
 
   if(encoding.empty())
@@ -478,7 +478,7 @@ void Dialog_Import_CSV::on_parser_line_scanned(CsvParser::type_row_strings row, 
   if(!m_sample_model)
   {
     setup_sample_model(row);
-    Gtk::TreeModel::iterator iter = m_sample_model->append();
+    auto iter = m_sample_model->append();
     // -1 means the row to select target fields (see special handling in cell data funcs)
     (*iter)[m_sample_columns.m_col_row] = -1;
   }
@@ -493,7 +493,7 @@ void Dialog_Import_CSV::on_parser_line_scanned(CsvParser::type_row_strings row, 
   {
     if(sample_rows < static_cast<guint>(m_sample_rows->get_value_as_int()))
     {
-      Gtk::TreeModel::iterator tree_iter = m_sample_model->append();
+      auto tree_iter = m_sample_model->append();
       (*tree_iter)[m_sample_columns.m_col_row] = row_number;
     }
   }
@@ -639,7 +639,7 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
 void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::ustring& new_text, guint column_number)
 {
   Gtk::TreeModel::Path treepath(path);
-  Gtk::TreeModel::iterator iter = m_sample_model->get_iter(treepath);
+  auto iter = m_sample_model->get_iter(treepath);
 
   // Lookup field indicated by new_text
   const Gtk::TreeNodeChildren& children = m_field_model->children();
@@ -649,7 +649,7 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
     {
       std::shared_ptr<Field> field = (*field_iter)[m_field_columns.m_col_field];
       // Check whether another column is already using that field
-      type_vec_fields::iterator vec_field_iter = std::find(m_fields.begin(), m_fields.end(), field);
+      auto vec_field_iter = std::find(m_fields.begin(), m_fields.end(), field);
       // Reset the old column since two different columns cannot be imported into the same field
       if(vec_field_iter != m_fields.end()) *vec_field_iter = std::shared_ptr<Field>();
 

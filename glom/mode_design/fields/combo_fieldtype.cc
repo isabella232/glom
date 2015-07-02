@@ -47,7 +47,7 @@ void Combo_FieldType::init()
 
   for(const auto& the_pair : map_names)
   {
-    Gtk::TreeModel::iterator iterModel = m_refTreeModel->append();
+    auto iterModel = m_refTreeModel->append();
     if(iterModel)
     {
       Gtk::TreeModel::Row row = *iterModel;
@@ -91,7 +91,7 @@ Field::glom_field_type Combo_FieldType::get_field_type() const
   Field::glom_field_type result = Field::TYPE_INVALID;
 
   //Get the active row:
-  Gtk::TreeModel::iterator active_row  = get_active();
+  auto active_row  = get_active();
   if(active_row)
   {
     Gtk::TreeModel::Row row = *active_row;

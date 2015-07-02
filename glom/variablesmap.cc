@@ -93,18 +93,18 @@ void VariablesMap::transfer_widgets_to_variables()
 {
   if(validate_widgets()) //If the widgets' data is correct. Useful to override.
   {
-    for(type_mapWidgetsToVariables::iterator iter =  m_mapWidgetsToVariables.begin(); iter != m_mapWidgetsToVariables.end(); ++iter)
+    for(const auto& the_pair : m_mapWidgetsToVariables)
     {
-      transfer_one_widget(iter->first, true); //true = to_variable.
+      transfer_one_widget(the_pair.first, true); //true = to_variable.
     }
   }
 }
 
 void VariablesMap::transfer_variables_to_widgets()
 {
-  for(type_mapWidgetsToVariables::iterator iter =  m_mapWidgetsToVariables.begin(); iter != m_mapWidgetsToVariables.end(); ++iter)
+  for(const auto& the_pair : m_mapWidgetsToVariables)
   {
-    transfer_one_widget(iter->first, false); //false = to_widget.
+    transfer_one_widget(the_pair.first, false); //false = to_widget.
   }
 }
 
@@ -112,7 +112,7 @@ void VariablesMap::transfer_variables_to_widgets()
 void VariablesMap::transfer_one_widget(Gtk::Widget* pWidget, bool to_variable)
 {
   //Find the widget in the map:
-  type_mapWidgetsToVariables::iterator iterFind = m_mapWidgetsToVariables.find(pWidget);
+  auto iterFind = m_mapWidgetsToVariables.find(pWidget);
   if(iterFind != m_mapWidgetsToVariables.end())
   {
     //Get the variable for the widget:

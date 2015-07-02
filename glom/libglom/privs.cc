@@ -424,7 +424,7 @@ bool Privs::on_privs_privileges_cache_timeout(const Glib::ustring& table_name)
   //std::cout << "debug: " << G_STRFUNC << ": table=" << table_name << std::endl;
 
   //Forget the cached privileges after a few seconds:
-  type_map_privileges::iterator iter = m_privileges_cache.find(table_name);
+  auto iter = m_privileges_cache.find(table_name);
   if(iter != m_privileges_cache.end())
   {
     //std::cout << "debug: " << G_STRFUNC << ": Cleared cache for table=" << table_name << std::endl;
@@ -514,7 +514,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   //TODO: Make sure we handle the failure well in that unlikely case.
 
   //Stop the existing timeout if it has not run yet.
-  type_map_cache_timeouts::iterator iter_connection = m_map_cache_timeouts.find(table_name);
+  auto iter_connection = m_map_cache_timeouts.find(table_name);
   if(iter_connection != m_map_cache_timeouts.end())
     iter_connection->second.disconnect();
 

@@ -247,7 +247,7 @@ void Window_Translations::load_from_document()
     if(item->get_title_original().empty())
       continue;
       
-    Gtk::TreeModel::iterator iterTree = m_model->append();
+    auto iterTree = m_model->append();
     Gtk::TreeModel::Row row = *iterTree;
 
     row[m_columns.m_col_item] = item;

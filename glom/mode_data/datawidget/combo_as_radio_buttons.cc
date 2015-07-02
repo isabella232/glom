@@ -220,7 +220,7 @@ void ComboAsRadioButtons::set_text(const Glib::ustring& text)
 {
   m_old_text = text;
 
-  type_map_buttons::iterator iter = m_map_buttons.find(text);
+  auto iter = m_map_buttons.find(text);
   if(iter != m_map_buttons.end())
   {
     Gtk::RadioButton* button = iter->second;

@@ -53,7 +53,7 @@ boost::python::object PyGlomRelated::getitem(const boost::python::object& cppite
     if(!key.empty())
     {
       //Return a cached item if possible:
-      PyGlomRelated::type_map_relatedrecords::iterator iterCacheFind = m_map_relatedrecords.find(key);
+      auto iterCacheFind = m_map_relatedrecords.find(key);
       if(iterCacheFind != m_map_relatedrecords.end())
       {
         //Return a reference to the cached item:

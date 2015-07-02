@@ -1447,7 +1447,7 @@ void Frame_Glom::update_table_in_document_from_database()
       if(field_database)
       {
         //Is the field already in the document?
-        type_vec_fields::iterator iterFindDoc = std::find_if( fieldsDocument.begin(), fieldsDocument.end(), predicate_FieldHasName<Field>( field_database->get_name() ) );
+        auto iterFindDoc = std::find_if( fieldsDocument.begin(), fieldsDocument.end(), predicate_FieldHasName<Field>( field_database->get_name() ) );
         if(iterFindDoc == fieldsDocument.end()) //If it was not found:
         {
           //Add it
@@ -1492,7 +1492,7 @@ void Frame_Glom::update_table_in_document_from_database()
       for(const auto& field : fieldsDocument)
       {
         //Check whether it's in the database:
-        type_vec_fields::iterator iterFindDatabase = std::find_if( fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>( field->get_name() ) );
+        auto iterFindDatabase = std::find_if( fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>( field->get_name() ) );
         if(iterFindDatabase != fieldsDatabase.end()) //If it was found
         {
           fieldsActual.push_back(field);

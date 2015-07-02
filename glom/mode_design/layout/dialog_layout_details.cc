@@ -232,10 +232,8 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, std
     group->remove_all_items(); //Remove the copied child items, if any, so we can add them.
 
     //Get child layout items:
-    for(Gtk::TreeModel::iterator iterChild = row.children().begin(); iterChild != row.children().end(); ++iterChild)
+    for(const auto& rowChild : row.children())
     {
-      Gtk::TreeModel::Row rowChild = *iterChild;
-
       std::shared_ptr<LayoutItem> layout_item = rowChild[m_model_items->m_columns.m_col_layout_item];
 
       std::shared_ptr<LayoutItem_Portal> layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
@@ -253,7 +251,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, std
         {
           //Recurse:
           std::shared_ptr<LayoutGroup> group_child = glom_sharedptr_clone(layout_group);
-          fill_group(iterChild, group_child);
+          fill_group(rowChild, group_child);
           group->add_item(group_child);
         }
         else if(layout_item)
@@ -306,7 +304,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
       if(portal) //If it is a portal
       {
         //Handle this differently to regular groups, so we do not also add its children:
-        Gtk::TreeModel::iterator iter = m_model_items->append(iterNewGroup->children());
+        auto iter = m_model_items->append(iterNewGroup->children());
         Gtk::TreeModel::Row row = *iter;
         row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(portal);
       }
@@ -318,7 +316,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
         else
         {
           //Add the item to the treeview:
-          Gtk::TreeModel::iterator iter = m_model_items->append(iterNewGroup->children());
+          auto iter = m_model_items->append(iterNewGroup->children());
           Gtk::TreeModel::Row row = *iter;
           row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(item);
         }
@@ -383,12 +381,12 @@ void Dialog_Layout_Details::enable_buttons()
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
   if(refSelection)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
+    auto iter = refSelection->get_selected();
     if(iter)
     {
       //Disable Up if It can't go any higher.
       bool enable_up = true;
-      Gtk::TreeModel::iterator iterParent = iter->parent();
+      auto iterParent = iter->parent();
       if(iterParent)
       {
         //See whether it is the last child of its parent:
@@ -406,7 +404,7 @@ void Dialog_Layout_Details::enable_buttons()
 
 
       //Disable Down if It can't go any lower.
-      Gtk::TreeModel::iterator iterNext = iter;
+      auto iterNext = iter;
       iterNext++;
 
       bool enable_down = true;
@@ -452,7 +450,7 @@ void Dialog_Layout_Details::on_button_field_delete()
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       m_model_items->erase(iter);
@@ -467,10 +465,10 @@ void Dialog_Layout_Details::on_button_up()
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
   if(refSelection)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
+    auto iter = refSelection->get_selected();
     if(iter)
     {
-      Gtk::TreeModel::iterator parent = iter->parent();
+      auto parent = iter->parent();
       bool is_first = false;
       if(parent)
         is_first = (iter == parent->children().begin());
@@ -479,7 +477,7 @@ void Dialog_Layout_Details::on_button_up()
 
       if(!is_first)
       {
-        Gtk::TreeModel::iterator iterBefore = iter;
+        auto iterBefore = iter;
         --iterBefore;
 
         m_model_items->iter_swap(iter, iterBefore);
@@ -498,13 +496,13 @@ void Dialog_Layout_Details::on_button_down()
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
   if(refSelection)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
+    auto iter = refSelection->get_selected();
     if(iter)
     {
-      Gtk::TreeModel::iterator iterNext = iter;
+      auto iterNext = iter;
       iterNext++;
 
-      Gtk::TreeModel::iterator parent = iter->parent();
+      auto parent = iter->parent();
       bool is_last = false;
       if(parent)
         is_last = (iterNext == parent->children().end());
@@ -528,14 +526,13 @@ void Dialog_Layout_Details::on_button_down()
 void Dialog_Layout_Details::on_button_add_field()
 {
   type_list_field_items fields_list = offer_field_list(m_table_name, this);
-  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen)
+  for(const auto& layout_item : fields_list)
   {
-    std::shared_ptr<LayoutItem_Field> layout_item = *iter_chosen;
     if(!layout_item)
       continue;
 
     //Add the field details to the layout treeview:
-    Gtk::TreeModel::iterator iter = append_appropriate_row();
+    auto iter = append_appropriate_row();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
@@ -614,7 +611,7 @@ Gtk::TreeModel::iterator Dialog_Layout_Details::append_appropriate_row()
 {
   Gtk::TreeModel::iterator result;
 
-  Gtk::TreeModel::iterator parent = get_selected_group_parent();
+  auto parent = get_selected_group_parent();
 
   //Add the field details to the layout treeview:
   if(parent)
@@ -624,7 +621,7 @@ Gtk::TreeModel::iterator Dialog_Layout_Details::append_appropriate_row()
   else
   {
     //Find the first group, and make the new row a child of that:
-    Gtk::TreeModel::iterator iter_first = m_model_items->children().begin();
+    auto iter_first = m_model_items->children().begin();
     if(iter_first)
     {
       Gtk::TreeModel::Row row = *iter_first;
@@ -649,7 +646,7 @@ Gtk::TreeModel::iterator Dialog_Layout_Details::append_appropriate_row()
 
 void Dialog_Layout_Details::on_button_add_button()
 {
-  Gtk::TreeModel::iterator iter = append_appropriate_row();
+  auto iter = append_appropriate_row();
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
@@ -674,7 +671,7 @@ void Dialog_Layout_Details::on_button_add_button()
 
 void Dialog_Layout_Details::on_button_add_text()
 {
-  Gtk::TreeModel::iterator iter = append_appropriate_row();
+  auto iter = append_appropriate_row();
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
@@ -699,7 +696,7 @@ void Dialog_Layout_Details::on_button_add_text()
 
 void Dialog_Layout_Details::on_button_add_image()
 {
-  Gtk::TreeModel::iterator iter = append_appropriate_row();
+  auto iter = append_appropriate_row();
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
@@ -724,7 +721,7 @@ void Dialog_Layout_Details::on_button_add_image()
 
 void Dialog_Layout_Details::on_button_add_notebook()
 {
-  Gtk::TreeModel::iterator iter = append_appropriate_row();
+  auto iter = append_appropriate_row();
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
@@ -753,7 +750,7 @@ void Dialog_Layout_Details::on_button_add_related()
   if(relationship)
   {
   */
-    Gtk::TreeModel::iterator iter = append_appropriate_row();
+    auto iter = append_appropriate_row();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
@@ -785,7 +782,7 @@ void Dialog_Layout_Details::on_button_add_related_calendar()
   if(relationship)
   {
   */
-    Gtk::TreeModel::iterator iter = append_appropriate_row();
+    auto iter = append_appropriate_row();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
@@ -817,7 +814,7 @@ Gtk::TreeModel::iterator Dialog_Layout_Details::get_selected_group_parent() cons
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
@@ -844,7 +841,7 @@ Gtk::TreeModel::iterator Dialog_Layout_Details::get_selected_group_parent() cons
 
 void Dialog_Layout_Details::on_button_add_group()
 {
-  Gtk::TreeModel::iterator parent = get_selected_group_parent();
+  auto parent = get_selected_group_parent();
 
   Gtk::TreeModel::iterator iterNewGroup;
   if(!parent)
@@ -885,7 +882,7 @@ void Dialog_Layout_Details::on_button_formatting()
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
@@ -924,7 +921,7 @@ void Dialog_Layout_Details::on_button_edit()
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       //Do something different for each type of item:
@@ -1063,17 +1060,15 @@ void Dialog_Layout_Details::save_to_document()
     Document::type_list_layout_groups list_groups;
 
     //Add the layout items:
-    for(Gtk::TreeModel::iterator iterFields = m_model_items->children().begin(); iterFields != m_model_items->children().end(); ++iterFields)
+    for(const auto& row : m_model_items->children())
     {
-      Gtk::TreeModel::Row row = *iterFields;
-
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
       std::shared_ptr<LayoutGroup> layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
       std::shared_ptr<LayoutItem_Portal> layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
       if(layout_group && !layout_portal) //There may be top-level groups, but no top-level fields, because the fields must be in a group (so that they are in columns)
       {
         std::shared_ptr<LayoutGroup> group = std::make_shared<LayoutGroup>();
-        fill_group(iterFields, group);
+        fill_group(row, group);
 
         list_groups.push_back(group);
       }
@@ -1282,7 +1277,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_title(const Glib::ustring& p
     Gtk::TreeModel::Path path(path_string);
 
     //Get the row from the path:
-    Gtk::TreeModel::iterator iter = m_model_items->get_iter(path);
+    auto iter = m_model_items->get_iter(path);
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
@@ -1306,7 +1301,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_name(const Glib::ustring& pa
     Gtk::TreeModel::Path path(path_string);
 
     //Get the row from the path:
-    Gtk::TreeModel::iterator iter = m_model_items->get_iter(path);
+    auto iter = m_model_items->get_iter(path);
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
@@ -1329,7 +1324,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_column_width(const Glib::ust
     Gtk::TreeModel::Path path(path_string);
 
     //Get the row from the path:
-    Gtk::TreeModel::iterator iter = m_model_items->get_iter(path);
+    auto iter = m_model_items->get_iter(path);
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
@@ -1358,7 +1353,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_group_columns(const Glib::us
   Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
-  Gtk::TreeModel::iterator iter = m_model_items->get_iter(path);
+  auto iter = m_model_items->get_iter(path);
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;

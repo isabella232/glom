@@ -97,7 +97,7 @@ void Dialog_Notebook::set_notebook(const std::shared_ptr<const LayoutItem_Notebo
     std::shared_ptr<const LayoutGroup> item = std::dynamic_pointer_cast<const LayoutGroup>(base_item);
     if(item)
     {
-      Gtk::TreeModel::iterator iterTree = m_model->append();
+      auto iterTree = m_model->append();
       Gtk::TreeModel::Row row = *iterTree;
 
       row[m_ColumnsTabs.m_col_item] = glom_sharedptr_clone(item);
@@ -119,7 +119,7 @@ void Dialog_Notebook::enable_buttons()
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview->get_selection();
   if(refSelection)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
+    auto iter = refSelection->get_selected();
     if(iter)
     {
       //Disable Up if It can't go any higher.
@@ -131,7 +131,7 @@ void Dialog_Notebook::enable_buttons()
 
 
       //Disable Down if It can't go any lower.
-      Gtk::TreeModel::iterator iterNext = iter;
+      auto iterNext = iter;
       iterNext++;
 
       bool enable_down = true;
@@ -201,7 +201,7 @@ void Dialog_Notebook::on_treeview_selection_changed()
 void Dialog_Notebook::on_button_add()
 {
   //Add the field details to the layout treeview:
-  Gtk::TreeModel::iterator iter =  m_model->append();
+  auto iter =  m_model->append();
 
   if(iter)
   {
@@ -222,7 +222,7 @@ void Dialog_Notebook::on_button_delete()
   if(refTreeSelection)
   {
     //TODO: Handle multiple-selection:
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       m_model->erase(iter);

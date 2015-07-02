@@ -109,7 +109,7 @@ bool Box_Reports::fill_from_database()
       std::shared_ptr<Report> report = document->get_report(m_table_name, item);
       if(report)
       {
-        Gtk::TreeModel::iterator row = m_AddDel.add_item(report->get_name());
+        auto row = m_AddDel.add_item(report->get_name());
         fill_row(row, report);
       }
     }

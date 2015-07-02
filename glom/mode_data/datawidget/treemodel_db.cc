@@ -846,7 +846,7 @@ DbTreeModel::DbValue DbTreeModel::get_key_value(const TreeModel::iterator& iter)
   if(check_treeiter_validity(iter))
   {
     type_datamodel_row_index datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
-    type_map_rows::iterator iterFind = m_map_rows.find(datamodel_row);
+    auto iterFind = m_map_rows.find(datamodel_row);
     if(iterFind != m_map_rows.end())
       return iterFind->second.m_key;
     else

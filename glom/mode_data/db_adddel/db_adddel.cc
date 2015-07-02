@@ -152,7 +152,7 @@ void DbAddDel::set_height_rows_actual(gulong rows_count)
 
 void DbAddDel::do_user_requested_edit()
 {
-  Gtk::TreeModel::iterator iter = get_item_selected();
+  auto iter = get_item_selected();
   if(iter)
   {
     signal_user_requested_edit()(iter);
@@ -171,7 +171,7 @@ void DbAddDel::on_cell_button_clicked(const Gtk::TreeModel::Path& path)
   if(!m_refListStore)
     return;
 
-  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
+  auto iter = m_refListStore->get_iter(path);
   if(iter)
   {
     select_item(iter, false /* start_editing */);
@@ -204,7 +204,7 @@ void DbAddDel::on_MenuPopup_activate_Delete()
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_TreeView.get_selection();
   if(refSelection)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
+    auto iter = refSelection->get_selected();
     if(iter && !get_is_placeholder_row(iter))
     {
       //TODO: We can't handle multiple-selections yet.
@@ -355,7 +355,7 @@ Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, cons
 
 Gnome::Gda::Value DbAddDel::get_value_key_selected() const
 {
-  Gtk::TreeModel::iterator iter = get_item_selected();
+  auto iter = get_item_selected();
   if(iter)
   {
     return get_value_key(iter);
@@ -404,7 +404,7 @@ Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
   if(!m_refListStore)
     return Gtk::TreeModel::iterator();
 
-  for(Gtk::TreeModel::iterator iter = m_refListStore->children().begin(); iter != m_refListStore->children().end(); ++iter)
+  for(auto iter = m_refListStore->children().begin(); iter != m_refListStore->children().end(); ++iter)
   {
     //Gtk::TreeModel::Row row = *iter;
     const auto valTemp = get_value_key(iter);
@@ -519,7 +519,7 @@ guint DbAddDel::get_fixed_cell_height()
     m_fixed_cell_height = height;
 
     //Look at each column:
-    for(type_column_items::iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
+    for(auto iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
     {
       Glib::ustring font_name;
 
@@ -694,7 +694,7 @@ void DbAddDel::construct_specified_columns()
   const auto has_expandable_column = get_column_to_expand(column_to_expand);
   //std::cout << "DEBUG: column_to_expand=" << column_to_expand  << ", has=" << has_expandable_column << std::endl;
 
-  for(type_column_items::iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
+  for(auto iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
   {
     const std::shared_ptr<LayoutItem> layout_item = m_column_items[model_column_index]; //TODO: Inefficient.
     if(layout_item) //column_info.m_visible)
@@ -1254,7 +1254,7 @@ void DbAddDel::on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, i
   if(!m_refListStore)
     return;
 
-  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
+  auto iter = m_refListStore->get_iter(path);
   if(iter)
   {
     std::shared_ptr<const LayoutItem> layout_item = m_column_items[model_column_index];
@@ -1279,7 +1279,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
   const Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
-  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
+  auto iter = m_refListStore->get_iter(path);
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
@@ -1398,7 +1398,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
   }
 
   //Get the row from the path:
-  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
+  auto iter = m_refListStore->get_iter(path);
   if(iter != get_model()->children().end())
   {
     Gtk::TreeModel::Row row = *iter;
@@ -1626,9 +1626,9 @@ void DbAddDel::on_treeview_columns_changed()
     typedef std::vector<Gtk::TreeViewColumn*> type_vecViewColumns;
     type_vecViewColumns vecViewColumns = m_TreeView.get_columns();
 
-    for(type_vecViewColumns::iterator iter = vecViewColumns.begin(); iter != vecViewColumns.end(); ++iter)
+    for(auto iter = vecViewColumns.begin(); iter != vecViewColumns.end(); ++iter)
     {
-      DbTreeViewColumnGlom* pViewColumn = dynamic_cast<DbTreeViewColumnGlom*>(*iter);
+      auto pViewColumn = dynamic_cast<DbTreeViewColumnGlom*>(*iter);
       if(pViewColumn)
       {
         const auto column_id = pViewColumn->get_column_id();
@@ -2055,7 +2055,7 @@ void DbAddDel::show_hint_model()
   m_treeviewcolumn_button = 0; //When we removed the view columns, this was deleted because it's manage()ed.
 
   m_model_hint = Gtk::ListStore::create(m_columns_hint);
-  Gtk::TreeModel::iterator iter = m_model_hint->append();
+  auto iter = m_model_hint->append();
   (*iter)[m_columns_hint.m_col_hint] = _("Right-click to layout, to specify the related fields.");
 
   m_TreeView.set_model(m_model_hint);
@@ -2065,7 +2065,7 @@ void DbAddDel::show_hint_model()
 
 bool DbAddDel::start_new_record()
 {
-  Gtk::TreeModel::iterator iter = get_item_placeholder();
+  auto iter = get_item_placeholder();
   if(!iter)
     return false;
 
@@ -2081,7 +2081,7 @@ bool DbAddDel::start_new_record()
   if(fieldPrimaryKey && fieldPrimaryKey->get_auto_increment())
   {
     //Start editing in the first cell that is not auto_increment:
-    for(type_column_items::iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
+    for(auto iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
     {
       std::shared_ptr<LayoutItem> layout_item = *iter;
       std::shared_ptr<LayoutItem_Field> layout_item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);

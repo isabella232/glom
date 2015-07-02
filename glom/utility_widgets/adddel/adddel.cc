@@ -173,7 +173,7 @@ AddDel::on_MenuPopup_activate_Edit()
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_TreeView.get_selection();
   if(refSelection)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
+    auto iter = refSelection->get_selected();
     if(iter)
     {
       //Discover whether it's the last (empty) row:
@@ -192,7 +192,7 @@ AddDel::on_MenuPopup_activate_Edit()
           bool bRowAdded = true;
 
           //The rows might be re-ordered:
-          Gtk::TreeModel::iterator rowAdded = iter;
+          auto rowAdded = iter;
           Glib::ustring strValue_Added =  get_value_key(iter);
           if(strValue_Added != strValue)
             rowAdded = get_row(strValue);
@@ -219,7 +219,7 @@ void AddDel::on_MenuPopup_activate_Delete()
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_TreeView.get_selection();
   if(refSelection)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
+    auto iter = refSelection->get_selected();
     if(iter)
     {
       //TODO: We can't handle multiple-selections yet.
@@ -278,7 +278,7 @@ bool AddDel::on_button_press_event_Popup(GdkEventButton *event)
 Gtk::TreeModel::iterator AddDel::get_item_placeholder()
 {
   //Get the existing placeholder row, or add one if necessary:
-  Gtk::TreeModel::iterator iter = get_last_row();
+  auto iter = get_last_row();
   if( get_is_placeholder_row(iter) )
   {
     return iter;
@@ -291,7 +291,7 @@ Gtk::TreeModel::iterator AddDel::get_item_placeholder()
 
 Gtk::TreeModel::iterator AddDel::add_item_placeholder()
 {
-  Gtk::TreeModel::iterator iter = m_refListStore->append();
+  auto iter = m_refListStore->append();
   if(iter)
   {
     iter->set_value(m_col_key, Glib::ustring("")); //Remove temporary key value.
@@ -303,7 +303,7 @@ Gtk::TreeModel::iterator AddDel::add_item_placeholder()
 
 Gtk::TreeModel::iterator AddDel::add_item(const Glib::ustring& strKey)
 {
-  Gtk::TreeModel::iterator result = get_next_available_row_with_add_if_necessary();
+  auto result = get_next_available_row_with_add_if_necessary();
 
   if(result)
   {
@@ -326,7 +326,7 @@ void AddDel::remove_all()
 
   if(m_refListStore)
   {
-    Gtk::TreeModel::iterator iter = m_refListStore->children().begin();
+    auto iter = m_refListStore->children().begin();
     while(iter)
     {
       m_refListStore->erase(iter);
@@ -398,7 +398,7 @@ Gtk::TreeModel::iterator AddDel::get_item_selected()
 
 Gtk::TreeModel::iterator AddDel::get_row(const Glib::ustring& key)
 {
-  for(Gtk::TreeModel::iterator iter = m_refListStore->children().begin(); iter != m_refListStore->children().end(); ++iter)
+  for(auto iter = m_refListStore->children().begin(); iter != m_refListStore->children().end(); ++iter)
   {
     const auto strTemp = get_value(iter, m_col_key);
     if(strTemp == key)
@@ -457,7 +457,7 @@ bool AddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, boo
 
 bool AddDel::select_item(const Glib::ustring& strItemText, guint column, bool start_editing)
 {
-  Gtk::TreeModel::iterator iter = get_row(strItemText);
+  auto iter = get_row(strItemText);
   if(iter)
   {
     return select_item(iter, column, start_editing);
@@ -492,7 +492,7 @@ void AddDel::add_blank()
 
   if(get_allow_user_actions()) //The extra blank line is only used if the user may add items:
   {
-    Gtk::TreeModel::iterator iter = get_last_row();
+    auto iter = get_last_row();
     if(get_is_placeholder_row(iter))
     {
         bAddNewBlank  = false; //One already exists.
@@ -555,11 +555,10 @@ void AddDel::construct_specified_columns()
   Gtk::TreeModel::ColumnRecord record;
   {
     type_vecModelColumns::size_type i = 0;
-    for(type_ColumnTypes::iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
+    for(const auto& column_info : m_ColumnTypes)
     {
       Gtk::TreeModelColumnBase* pModelColumn = 0;
 
-      AddDelColumnInfo column_info = *iter;
       switch(column_info.m_style)
       {
         //Create an appropriate type of Model Column:
@@ -598,10 +597,8 @@ void AddDel::construct_specified_columns()
   //Add new View Colums:
   int model_column_index = 0;
   int view_column_index = 0;
-  for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
+  for(const auto& pModelColumn : vecModelColumns)
   {
-    type_vecModelColumns::value_type& pModelColumn = *iter;
-
     if(m_ColumnTypes[model_column_index].m_visible)
     {
       const Glib::ustring column_name = m_ColumnTypes[model_column_index].m_name;
@@ -699,10 +696,8 @@ void AddDel::construct_specified_columns()
 
   //Delete the vector's items:
   model_column_index = 0;
-  for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
+  for(auto& pModelColumn : vecModelColumns)
   {
-    Gtk::TreeModelColumnBase* pModelColumn = *iter;
-
     if(model_column_index < (int)m_ColumnTypes.size())
     {
       AddDelColumnInfo::enumStyles style = m_ColumnTypes[model_column_index].m_style;
@@ -730,7 +725,7 @@ void AddDel::construct_specified_columns()
         }
       }
 
-      *iter = 0;
+      pModelColumn = 0;
     }
     else
     {
@@ -1023,7 +1018,7 @@ void AddDel::remove_item(const Gtk::TreeModel::iterator& iter)
 
 void AddDel::remove_item_by_key(const Glib::ustring& strKey)
 {
-  Gtk::TreeModel::iterator iter = get_row(strKey);
+  auto iter = get_row(strKey);
   remove_item(iter);
 }
 
@@ -1078,7 +1073,7 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
   Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
-  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
+  auto iter = m_refListStore->get_iter(path);
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
@@ -1153,7 +1148,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
   Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
-  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
+  auto iter = m_refListStore->get_iter(path);
   if(iter != get_model()->children().end())
   {
     Gtk::TreeModel::Row row = *iter;
@@ -1270,7 +1265,7 @@ void AddDel::on_treeview_cell_editing_started(Gtk::CellEditable* /* editable */,
   if(!m_refListStore)
     return;
 
-  Gtk::TreeModel::iterator iterRow = m_refListStore->get_iter(path);
+  auto iterRow = m_refListStore->get_iter(path);
   if(iterRow)
     signal_user_activated().emit(iterRow, model_column_index);
 }
@@ -1357,9 +1352,9 @@ void AddDel::on_treeview_columns_changed()
     typedef std::vector<Gtk::TreeViewColumn*> type_vecViewColumns;
     type_vecViewColumns vecViewColumns = m_TreeView.get_columns();
 
-    for(type_vecViewColumns::iterator iter = vecViewColumns.begin(); iter != vecViewColumns.end(); ++iter)
+    for(const auto& item : vecViewColumns)
     {
-      TreeViewColumnGlom* pViewColumn = dynamic_cast<TreeViewColumnGlom*>(*iter);
+      TreeViewColumnGlom* pViewColumn = dynamic_cast<TreeViewColumnGlom*>(item);
       if(pViewColumn)
       {
         const auto column_id = pViewColumn->get_column_id();
@@ -1415,7 +1410,7 @@ Gtk::TreeModel::iterator AddDel::get_next_available_row_with_add_if_necessary()
 
   if(get_allow_user_actions()) //The extra blank line is only used if the user may add items:
   {
-    Gtk::TreeModel::iterator iter = get_last_row();
+    auto iter = get_last_row();
 
     if(iter != get_model()->children().end())
     {
@@ -1449,7 +1444,7 @@ Gtk::TreeModel::iterator AddDel::get_next_available_row_with_add_if_necessary()
 Gtk::TreeModel::iterator AddDel::get_last_row() const
 {
   //TODO_performance: Hopefully there is a better way to do this.
-  Gtk::TreeModel::iterator iter = get_model()->children().begin();
+  auto iter = get_model()->children().begin();
   guint size = get_model()->children().size();
   if(size > 1)
   {
@@ -1465,7 +1460,7 @@ Gtk::TreeModel::iterator AddDel::get_last_row() const
 Gtk::TreeModel::iterator AddDel::get_last_row()
 {
   //TODO_performance: Hopefully there is a better way to do this.
-  Gtk::TreeModel::iterator iter = get_model()->children().begin();
+  auto iter = get_model()->children().begin();
   guint size = get_model()->children().size();
   if(size > 1)
   {
@@ -1597,7 +1592,7 @@ bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
       //std::cout << "value_text=" << value_text << std::endl;
 
       //Look at each other row to see whether the value exists there already:
-      for(Gtk::TreeModel::iterator iterCheck = m_refListStore->children().begin(); iterCheck != m_refListStore->children().end(); ++iterCheck)
+      for(auto iterCheck = m_refListStore->children().begin(); iterCheck != m_refListStore->children().end(); ++iterCheck)
       {
         if(iterCheck != iter) //Don't compare the row with itself
         {

@@ -297,7 +297,7 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
 Gnome::Gda::Value ComboGlom::get_value() const
 {
    //Get the active row:
-   Gtk::TreeModel::iterator iter = get_active();
+   auto iter = get_active();
 
    if(iter)
    {
@@ -366,7 +366,7 @@ void ComboGlom::on_changed()
 
   //This signal is emitted for every key press, but sometimes it's just to say that the active item has changed to "no active item",
   //if the text is not in the dropdown list:
-  Gtk::TreeModel::iterator iter = get_active();
+  auto iter = get_active();
 
   if(iter)
   {

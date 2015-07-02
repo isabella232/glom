@@ -33,7 +33,7 @@ Combo_SummaryType::Combo_SummaryType(BaseObjectType* cobject, const Glib::RefPtr
 
   //Fill the model:
 
-  Gtk::TreeModel::iterator iter = m_model->append();
+  auto iter = m_model->append();
   (*iter)[m_model_columns.m_summary_type] = LayoutItem_FieldSummary::TYPE_SUM;
   (*iter)[m_model_columns.m_name] = LayoutItem_FieldSummary::get_summary_type_name(LayoutItem_FieldSummary::TYPE_SUM);
   iter = m_model->append();
@@ -77,7 +77,7 @@ void Combo_SummaryType::set_summary_type(LayoutItem_FieldSummary::summaryType su
 LayoutItem_FieldSummary::summaryType Combo_SummaryType::get_summary_type() const
 {
   //Get the active row:
-  Gtk::TreeModel::iterator active_row = get_active();
+  auto active_row = get_active();
   if(active_row)
   {
     Gtk::TreeModel::Row row = *active_row;

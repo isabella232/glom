@@ -174,7 +174,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   {
     if(info->get_mime_type() == "application/x-glom")
     {
-      Gtk::TreeModel::iterator iter = m_existing_model->append(m_iter_existing_recent->children());
+      auto iter = m_existing_model->append(m_iter_existing_recent->children());
       (*iter)[m_existing_columns.m_col_title] = info->get_display_name();
       (*iter)[m_existing_columns.m_col_time] = info->get_modified();
       (*iter)[m_existing_columns.m_col_recent_info] = info;
@@ -310,7 +310,7 @@ Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
 
 bool Dialog_ExistingOrNew::on_existing_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool /* path_currently_selected */)
 {
-  Gtk::TreeModel::iterator iter = model->get_iter(path);
+  auto iter = model->get_iter(path);
 #ifndef G_OS_WIN32
   if(iter == m_iter_existing_network)
     return false; /* Do not allow parent nodes to be selected. */
@@ -324,7 +324,7 @@ bool Dialog_ExistingOrNew::on_existing_select_func(const Glib::RefPtr<Gtk::TreeM
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 bool Dialog_ExistingOrNew::on_new_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool /* path_currently_selected */)
 {
-  Gtk::TreeModel::iterator iter = model->get_iter(path);
+  auto iter = model->get_iter(path);
   if(iter == m_iter_new_template)
     return false; /* Do not allow parent nodes to be selected. */
   else
@@ -434,7 +434,7 @@ Glib::ustring Dialog_ExistingOrNew::get_service_name() const
 
 std::shared_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_item_existing(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text)
 {
-  Gtk::TreeModel::iterator iter = m_existing_model->append(parent->children());
+  auto iter = m_existing_model->append(parent->children());
   (*iter)[m_existing_columns.m_col_title] = text;
   return std::shared_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
 }
@@ -442,7 +442,7 @@ std::shared_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_ite
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 std::shared_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_item_new(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text)
 {
-  Gtk::TreeModel::iterator iter = m_new_model->append(parent->children());
+  auto iter = m_new_model->append(parent->children());
   (*iter)[m_new_columns.m_col_title] = text;
   return std::shared_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
 }
@@ -603,7 +603,7 @@ void Dialog_ExistingOrNew::update_ui_sensitivity()
     }
     else
     {
-      Gtk::TreeModel::iterator sel = m_existing_view->get_selection()->get_selected();
+      auto sel = m_existing_view->get_selection()->get_selected();
       sensitivity = (sel != m_iter_existing_recent);
 #ifndef G_OS_WIN32
       sensitivity = sensitivity && (sel != m_iter_existing_network);
@@ -626,7 +626,7 @@ void Dialog_ExistingOrNew::update_ui_sensitivity()
     }
     else
     {
-      Gtk::TreeModel::iterator sel = m_new_view->get_selection()->get_selected();
+      auto sel = m_new_view->get_selection()->get_selected();
       sensitivity = (sel != m_iter_new_template &&
                      (!m_iter_new_template_dummy.get() || sel != *m_iter_new_template_dummy));
     }
@@ -683,7 +683,7 @@ void Dialog_ExistingOrNew::append_example(const Glib::ustring& title, const std:
     const auto is_first_item = m_iter_new_template_dummy.get();
 
     // Add to list.
-    Gtk::TreeModel::iterator iter = m_new_model->append(m_iter_new_template->children());
+    auto iter = m_new_model->append(m_iter_new_template->children());
     (*iter)[m_new_columns.m_col_title] = title;
     (*iter)[m_new_columns.m_col_template_uri] = "resource://" + resource_name; //GFile understands this for actual files, though not directories.
 
@@ -718,7 +718,7 @@ void Dialog_ExistingOrNew::on_service_found(const Glib::ustring& name, EpcServic
 {
   //Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
   gchar* title = g_strdup_printf(_("%s on %s (via %s)"), name.c_str(), epc_service_info_get_host(info), epc_service_info_get_interface(info));
-  Gtk::TreeModel::iterator iter = m_existing_model->prepend(m_iter_existing_network->children());
+  auto iter = m_existing_model->prepend(m_iter_existing_network->children());
   (*iter)[m_existing_columns.m_col_title] = title;
   (*iter)[m_existing_columns.m_col_time] = std::time(0); /* sort more recently discovered items above */
   (*iter)[m_existing_columns.m_col_service_name] = name;

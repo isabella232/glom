@@ -109,7 +109,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   //Fill the alignment combo:
   m_model_alignment = Gtk::ListStore::create(m_columns_alignment);
 
-  Gtk::TreeModel::iterator iter = m_model_alignment->append();
+  auto iter = m_model_alignment->append();
   (*iter)[m_columns_alignment.m_col_alignment] = Formatting::HORIZONTAL_ALIGNMENT_AUTO;
   //Translators: This is Automatic text alignment.
   (*iter)[m_columns_alignment.m_col_title] = _("Automatic");
@@ -334,7 +334,7 @@ void Box_Formatting::set_formatting_for_non_field(const Formatting& format, bool
 
       //Display the value in the choices list as it would be displayed in the format:
       const auto value_text = Conversions::get_text_for_gda_value(m_field->get_glom_type(), value, format.m_numeric_format);
-      Gtk::TreeModel::iterator tree_iter = m_adddel_choices_custom->add_item(value_text);
+      auto tree_iter = m_adddel_choices_custom->add_item(value_text);
       m_adddel_choices_custom->set_value(tree_iter, m_col_index_custom_choices, value_text);
     }
 
@@ -360,7 +360,7 @@ bool Box_Formatting::get_formatting(Formatting& format) const
     m_checkbox_format_color_negatives->get_active();
 
   //Text formatting:
-  Gtk::TreeModel::iterator iter = m_combo_format_text_horizontal_alignment->get_active();
+  auto iter = m_combo_format_text_horizontal_alignment->get_active();
   Formatting::HorizontalAlignment alignment = Formatting::HORIZONTAL_ALIGNMENT_LEFT;
   if(iter)
     alignment = (*iter)[m_columns_alignment.m_col_alignment];

@@ -166,7 +166,7 @@ bool Box_DB_Table_Definition::fill_from_database()
     for(const auto& field : m_vecFields)
     {
       //Name:
-      Gtk::TreeModel::iterator tree_iter= m_AddDel.add_item(field->get_name());
+      auto tree_iter= m_AddDel.add_item(field->get_name());
       fill_field_row(tree_iter, field);
     }
 
@@ -243,11 +243,11 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
 
 void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd)
 {
-  Gtk::TreeModel::iterator iterAfterEnd = rowEnd;
+  auto iterAfterEnd = rowEnd;
   if(iterAfterEnd != m_AddDel.get_model()->children().end())
     ++iterAfterEnd;
 
-  for(Gtk::TreeModel::iterator iter = rowStart; iter != iterAfterEnd; ++iter)
+  for(auto iter = rowStart; iter != iterAfterEnd; ++iter)
   {
     Glib::ustring name = m_AddDel.get_value_key(iter);
     if(!name.empty())
@@ -453,7 +453,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::
   if(pDoc)
   {
     Document::type_vec_fields vecFields= pDoc->get_table_fields(m_table_name);
-    Document::type_vec_fields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeforeEdit) );
+    auto iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeforeEdit) );
 
     if((iterFind != vecFields.end()) && (*iterFind)) //If it was found:
     {
@@ -628,7 +628,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::sha
     {
       //Find old field:
       const auto field_name_old = old_fields[i]->get_name();
-      Document::type_vec_fields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name_old) );
+      auto iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name_old) );
       if(iterFind != vecFields.end()) //If it was found:
       {
         //Change it to the new Fields's value:

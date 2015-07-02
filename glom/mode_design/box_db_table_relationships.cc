@@ -107,7 +107,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
       if(relationship)
       {
         //Name:
-        Gtk::TreeModel::iterator iterTree = m_AddDel.add_item(relationship->get_name());
+        auto iterTree = m_AddDel.add_item(relationship->get_name());
         m_AddDel.set_value(iterTree, m_colName, relationship->get_name());
 
         //Title:
@@ -266,12 +266,12 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
 
 void Box_DB_Table_Relationships::on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& /* rowEnd */)
 {
-  //Gtk::TreeModel::iterator iterAfter = rowEnd;
+  //auto iterAfter = rowEnd;
   //++iterAfter;
 
-  //for(Gtk::TreeModel::iterator iter = rowStart; iter != iterAfter; ++iter)
+  //for(auto iter = rowStart; iter != iterAfter; ++iter)
   //{ //AddDel::remove_item() can't cope with this.
-    Gtk::TreeModel::iterator iter = rowStart;
+    auto iter = rowStart;
     const auto relationship_name = m_AddDel.get_value_key(iter);
 
     //Remove the row:

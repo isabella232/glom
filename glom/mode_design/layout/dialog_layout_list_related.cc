@@ -253,7 +253,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
           else
           {
             //Add the item to the treeview:
-            Gtk::TreeModel::iterator iter = m_model_items->append();
+            auto iter = m_model_items->append();
             Gtk::TreeModel::Row row = *iter;
             row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(item);
           }
@@ -505,7 +505,7 @@ void Dialog_Layout_List_Related::on_button_add_field()
       continue;
 
     //Add the field details to the layout treeview:
-    Gtk::TreeModel::iterator iter = m_model_items->append();
+    auto iter = m_model_items->append();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
@@ -527,7 +527,7 @@ void Dialog_Layout_List_Related::on_button_edit()
   if(refTreeSelection)
   {
     //TODO: Handle multiple-selection:
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;

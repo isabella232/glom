@@ -735,7 +735,7 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
   if(info)
   {
     auto vecFields = info->m_fields;
-    type_vec_fields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name) );
+    auto iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name) );
     if(iterFind != vecFields.end()) //If it was found:
     {
       //Remove it:
@@ -4023,7 +4023,7 @@ Document::type_list_groups Document::get_groups() const
 void Document::set_group(GroupInfo& group)
 {
   const auto name = group.get_name();
-  type_map_groups::iterator iter = m_groups.find(name);
+  auto iter = m_groups.find(name);
   if(iter == m_groups.end())
   {
     //Add it if necesary:
@@ -4043,7 +4043,7 @@ void Document::set_group(GroupInfo& group)
 
 void Document::remove_group(const Glib::ustring& group_name)
 {
-  type_map_groups::iterator iter = m_groups.find(group_name);
+  auto iter = m_groups.find(group_name);
   if(iter != m_groups.end())
   {
     m_groups.erase(iter);
@@ -4098,7 +4098,7 @@ void Document::remove_report(const Glib::ustring& table_name, const Glib::ustrin
   const auto info = get_table_info(table_name);
   if(info)
   {
-    DocumentTableInfo::type_reports::iterator iterFindReport = info->m_reports.find(report_name);
+    auto iterFindReport = info->m_reports.find(report_name);
     if(iterFindReport != info->m_reports.end())
     {
       info->m_reports.erase(iterFindReport);
@@ -4157,7 +4157,7 @@ void Document::remove_print_layout(const Glib::ustring& table_name, const Glib::
   const auto info = get_table_info(table_name);
   if(info)
   {
-    DocumentTableInfo::type_print_layouts::iterator iterFindPrintLayout = info->m_print_layouts.find(print_layout_name);
+    auto iterFindPrintLayout = info->m_print_layouts.find(print_layout_name);
     if(iterFindPrintLayout != info->m_print_layouts.end())
     {
       info->m_print_layouts.erase(iterFindPrintLayout);
@@ -4708,7 +4708,7 @@ void Document::set_library_module(const Glib::ustring& name, const Glib::ustring
   if(name.empty())
     return;
 
-  type_map_library_scripts::iterator iter = m_map_library_scripts.find(name);
+  auto iter = m_map_library_scripts.find(name);
   if(iter != m_map_library_scripts.end())
   {
     //Change the existing script, if necessary:
@@ -4739,7 +4739,7 @@ Glib::ustring Document::get_library_module(const Glib::ustring& name) const
 
 void Document::remove_library_module(const Glib::ustring& name)
 {
-  type_map_library_scripts::iterator iter = m_map_library_scripts.find(name);
+  auto iter = m_map_library_scripts.find(name);
   if(iter != m_map_library_scripts.end())
   {
      m_map_library_scripts.erase(iter);

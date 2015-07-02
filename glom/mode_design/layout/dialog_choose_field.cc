@@ -107,8 +107,8 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
     const auto field_name = field->get_name();
 
     //Get the iterator for the row:
-    Gtk::TreeModel::iterator iterFound = m_model->children().end();
-    for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
+    auto iterFound = m_model->children().end();
+    for(auto iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
     {
       if(field_name == (*iter)[m_ColumnsFields.m_col_name])
       {
@@ -168,7 +168,7 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
     Document::type_vec_fields vecFields = document->get_table_fields(table_name);
     for(const auto& field : vecFields)
     {
-      Gtk::TreeModel::iterator iterRow = m_model->append();
+      auto iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;
 
       row[m_ColumnsFields.m_col_name] = field->get_name();
@@ -184,7 +184,7 @@ void Dialog_ChooseField::select_item(const Field& field)
   //TODO: We do this in set_document() as well.
 
   //Find any items with the same name:
-  for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
+  auto iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
   {
     Gtk::TreeModel::Row row = *iter;
     const Field& field_item = row[m_ColumnsFields.m_col_field];
@@ -247,7 +247,7 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
   type_list_paths list_paths = refTreeSelection->get_selected_rows();
   for(const auto& path : list_paths)
   {
-    Gtk::TreeModel::iterator tree_iter = m_model->get_iter(path);
+    auto tree_iter = m_model->get_iter(path);
     if(!tree_iter)
       continue;
       
@@ -325,7 +325,7 @@ void Dialog_ChooseField::on_combo_relationship_changed()
     m_model->clear();
     for(const auto& field : vecFields)
     {
-      Gtk::TreeModel::iterator iterRow = m_model->append();
+      auto iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;
 
       row[m_ColumnsFields.m_col_name] = field->get_name();
@@ -342,7 +342,7 @@ void Dialog_ChooseField::on_treeview_selection_changed()
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview->get_selection();
   if(refSelection)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
+    auto iter = refSelection->get_selected();
     if(iter)
     {
       /*

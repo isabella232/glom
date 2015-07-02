@@ -202,7 +202,7 @@ bool Box_Tables::fill_from_database()
 
       if(bAddIt)
       {
-        Gtk::TreeModel::iterator iter = m_AddDel.add_item(strName);
+        auto iter = m_AddDel.add_item(strName);
         fill_table_row(iter, table_info);
       }
     }
@@ -274,11 +274,11 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 
 void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd)
 {
-  Gtk::TreeModel::iterator iterAfter = rowEnd;
+  auto iterAfter = rowEnd;
   ++iterAfter;
 
   bool something_changed = false;
-  for(Gtk::TreeModel::iterator iter = rowStart; iter != iterAfter; ++iter)
+  for(auto iter = rowStart; iter != iterAfter; ++iter)
   {
     const auto table_name = m_AddDel.get_value_key(iter);
 

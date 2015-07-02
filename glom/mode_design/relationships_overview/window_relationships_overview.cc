@@ -126,7 +126,7 @@ Window_RelationshipsOverview::~Window_RelationshipsOverview()
   //so sigc::bind()ed RefPtrs can be released.
   while(m_list_table_connections.size())
   {
-     type_list_connections::iterator iter = m_list_table_connections.begin();
+     auto iter = m_list_table_connections.begin();
      sigc::connection the_connection = *iter;
      the_connection.disconnect();
      m_list_table_connections.erase(iter);
@@ -144,7 +144,7 @@ void Window_RelationshipsOverview::draw_tables()
   //so sigc::bind()ed RefPtrs can be released.
   while(m_list_table_connections.size())
   {
-     type_list_connections::iterator iter = m_list_table_connections.begin();
+     auto iter = m_list_table_connections.begin();
      sigc::connection the_connection = *iter;
      the_connection.disconnect();
      m_list_table_connections.erase(iter);

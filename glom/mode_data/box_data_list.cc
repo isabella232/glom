@@ -254,7 +254,7 @@ void Box_Data_List::on_details_nav_first()
 
 void Box_Data_List::on_details_nav_previous()
 {
-  Gtk::TreeModel::iterator iter = m_AddDel.get_item_selected();
+  auto iter = m_AddDel.get_item_selected();
   if(iter)
   {
     //Don't try to select a negative record number.
@@ -270,7 +270,7 @@ void Box_Data_List::on_details_nav_previous()
 
 void Box_Data_List::on_details_nav_next()
 {
-  Gtk::TreeModel::iterator iter = m_AddDel.get_item_selected();
+  auto iter = m_AddDel.get_item_selected();
   if(iter)
   {
     //Don't go past the last record:
@@ -290,7 +290,7 @@ void Box_Data_List::on_details_nav_next()
 
 void Box_Data_List::on_details_nav_last()
 {
-  Gtk::TreeModel::iterator iter = m_AddDel.get_last_row();
+  auto iter = m_AddDel.get_last_row();
   if(iter)
   {
     m_AddDel.select_item(iter);
@@ -304,11 +304,11 @@ void Box_Data_List::on_details_nav_last()
 void Box_Data_List::on_details_record_deleted(const Gnome::Gda::Value& primary_key_value)
 {
   //Find out which row is affected:
-  Gtk::TreeModel::iterator iter = m_AddDel.get_row(primary_key_value);
+  auto iter = m_AddDel.get_row(primary_key_value);
   if(iter)
   {
     //Remove the row:
-    Gtk::TreeModel::iterator iterNext = iter;
+    auto iterNext = iter;
     iterNext++;
 
     m_AddDel.remove_item(iter);
@@ -351,7 +351,7 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_first() const
   Glib::RefPtr<Gtk::TreeModel> model = m_AddDel.get_model();
   if(model)
   {
-    Gtk::TreeModel::iterator iter = model->children().begin();
+    auto iter = model->children().begin();
     while(iter != model->children().end())
     {
       Gnome::Gda::Value value = get_primary_key_value(iter);
@@ -506,7 +506,7 @@ void Box_Data_List::set_open_button_title(const Glib::ustring& title)
 
 void Box_Data_List::set_primary_key_value_selected(const Gnome::Gda::Value& primary_key_value)
 {
-  Gtk::TreeModel::iterator iter = m_AddDel.get_row(primary_key_value);
+  auto iter = m_AddDel.get_row(primary_key_value);
   if(iter)
   {
     m_AddDel.select_item(iter);

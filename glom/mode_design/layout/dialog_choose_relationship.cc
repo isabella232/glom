@@ -79,7 +79,7 @@ void Dialog_ChooseRelationship::set_document(Document* document, const Glib::ust
     Document::type_vec_relationships vecRelationships = document->get_relationships(table_name);
     for(const auto& relationship : vecRelationships)
     {
-      Gtk::TreeModel::iterator iterRow = m_model->append();
+      auto iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;
 
       if(relationship)
@@ -123,7 +123,7 @@ std::shared_ptr<Relationship> Dialog_ChooseRelationship::get_relationship_chosen
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
   if(refTreeSelection)
   {
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;

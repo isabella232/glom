@@ -41,7 +41,7 @@ void Combo_TextGlade::set_first_active()
   if(!model)
     return;
 
-  Gtk::TreeModel::iterator iter = model->children().begin();
+  auto iter = model->children().begin();
   set_active(iter);
 }
 

@@ -40,7 +40,7 @@ FlowTable::~FlowTable()
 {
   while(!m_list_hboxes.empty())
   {
-    type_list_hboxes::iterator iter = m_list_hboxes.begin();
+    auto iter = m_list_hboxes.begin();
     Gtk::Box* hbox = *iter;
     delete_and_forget_hbox(hbox);
   }

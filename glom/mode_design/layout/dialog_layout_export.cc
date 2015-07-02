@@ -151,7 +151,7 @@ void Dialog_Layout_Export::set_layout_groups(Document::type_list_layout_groups& 
         std::shared_ptr<const LayoutItem_Field> item = std::dynamic_pointer_cast<const LayoutItem_Field>(base_item); 
         if(item)
         {
-          Gtk::TreeModel::iterator iterTree = m_model_fields->append();
+          auto iterTree = m_model_fields->append();
           Gtk::TreeModel::Row row = *iterTree;
 
           row[m_ColumnsFields.m_col_layout_item] = glom_sharedptr_clone(item);
@@ -173,7 +173,7 @@ void Dialog_Layout_Export::enable_buttons()
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
   if(refSelection)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
+    auto iter = refSelection->get_selected();
     if(iter)
     {
       //Disable Up if It can't go any higher.
@@ -185,7 +185,7 @@ void Dialog_Layout_Export::enable_buttons()
 
 
       //Disable Down if It can't go any lower.
-      Gtk::TreeModel::iterator iterNext = iter;
+      auto iterNext = iter;
       iterNext++;
 
       bool enable_down = true;
@@ -262,7 +262,7 @@ void Dialog_Layout_Export::on_button_add_field()
       continue;
 
     //Add the field details to the layout treeview:
-    Gtk::TreeModel::iterator iter =  m_model_fields->append();
+    auto iter =  m_model_fields->append();
 
     if(iter)
     {
@@ -289,7 +289,7 @@ void Dialog_Layout_Export::on_button_delete()
   if(refTreeSelection)
   {
     //TODO: Handle multiple-selection:
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       m_model_fields->erase(iter);
@@ -328,7 +328,7 @@ void Dialog_Layout_Export::on_button_edit_field()
   if(refTreeSelection)
   {
     //TODO: Handle multiple-selection:
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;

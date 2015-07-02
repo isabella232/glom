@@ -183,7 +183,7 @@ void Dialog_GroupsList::enable_buttons()
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_groups->get_selection();
   if(refSelection)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
+    auto iter = refSelection->get_selected();
     if(iter)
     {
       m_button_group_users->set_sensitive(true);
@@ -204,7 +204,7 @@ void Dialog_GroupsList::on_button_group_delete()
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_groups->get_selection();
   if(refTreeSelection)
   {
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
@@ -274,7 +274,7 @@ void Dialog_GroupsList::on_button_group_users()
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_groups->get_selection();
   if(refTreeSelection)
   {
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
@@ -321,7 +321,7 @@ Glib::ustring Dialog_GroupsList::get_selected_group() const
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_groups->get_selection();
   if(refSelection)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
+    auto iter = refSelection->get_selected();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
@@ -350,7 +350,7 @@ void Dialog_GroupsList::fill_group_list()
   type_vec_strings group_list = Privs::get_database_groups();
   for(const auto& group : group_list)
   {
-    Gtk::TreeModel::iterator iterTree = m_model_groups->append();
+    auto iterTree = m_model_groups->append();
     Gtk::TreeModel::Row row = *iterTree;
 
     row[m_model_columns_groups.m_col_name] = group;
@@ -365,7 +365,7 @@ void Dialog_GroupsList::fill_group_list()
     Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_groups->get_selection();
     if(refSelection)
     {
-      Gtk::TreeModel::iterator iterFirst = m_model_groups->children().begin();
+      auto iterFirst = m_model_groups->children().begin();
       if(iterFirst)
       {
         refSelection->select(iterFirst);
@@ -396,7 +396,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
 
     for(const auto& table : table_list)
     {
-      Gtk::TreeModel::iterator iterTree = m_model_tables->append();
+      auto iterTree = m_model_tables->append();
       Gtk::TreeModel::Row row = *iterTree;
 
       const auto table_name = table->get_name();
@@ -495,7 +495,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_view(const Glib::ustring& pat
   Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
-  Gtk::TreeModel::iterator iter = m_model_tables->get_iter(path);
+  auto iter = m_model_tables->get_iter(path);
   if(iter)
   {
     Gtk::TreeRow row = *iter;
@@ -534,7 +534,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_edit(const Glib::ustring& pat
   Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
-  Gtk::TreeModel::iterator iter = m_model_tables->get_iter(path);
+  auto iter = m_model_tables->get_iter(path);
   if(iter)
   {
     Gtk::TreeRow row = *iter;
@@ -558,7 +558,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_create(const Glib::ustring& p
   Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
-  Gtk::TreeModel::iterator iter = m_model_tables->get_iter(path);
+  auto iter = m_model_tables->get_iter(path);
   if(iter)
   {
     Gtk::TreeRow row = *iter;
@@ -582,7 +582,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_delete(const Glib::ustring& p
   Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
-  Gtk::TreeModel::iterator iter = m_model_tables->get_iter(path);
+  auto iter = m_model_tables->get_iter(path);
   if(iter)
   {
     Gtk::TreeRow row = *iter;

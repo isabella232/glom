@@ -75,7 +75,7 @@ void AddDel_WithButtons::on_button_add()
 {
   if(m_auto_add)
   {
-    Gtk::TreeModel::iterator iter = get_item_placeholder();
+    auto iter = get_item_placeholder();
     if(iter)
     {
       guint first_visible = get_count_hidden_system_columns();
@@ -104,7 +104,7 @@ void AddDel_WithButtons::on_button_extra()
   if(!refSelection)
     return;
 
-  Gtk::TreeModel::iterator iter = refSelection->get_selected();
+  auto iter = refSelection->get_selected();
   if(!iter)
     return;
    

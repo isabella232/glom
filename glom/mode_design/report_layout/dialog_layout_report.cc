@@ -101,22 +101,22 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
     {
       m_model_available_parts_main = type_model::create();
 
-  //     Gtk::TreeModel::iterator iterHeader = m_model_available_parts_main->append();
+  //     auto iterHeader = m_model_available_parts_main->append();
   //     (*iterHeader)[m_model_available_parts_main->m_columns.m_col_item] = std::make_shared<LayoutItem_Header>();
 
-      Gtk::TreeModel::iterator iter = m_model_available_parts_main->append();
+      auto iter = m_model_available_parts_main->append();
       (*iter)[m_model_available_parts_main->m_columns.m_col_item] = std::make_shared<LayoutItem_GroupBy>();
 
-      Gtk::TreeModel::iterator iterField = m_model_available_parts_main->append(iter->children()); //Place Field under GroupBy to indicate that that's where it belongs in the actual layout.
+      auto iterField = m_model_available_parts_main->append(iter->children()); //Place Field under GroupBy to indicate that that's where it belongs in the actual layout.
       (*iterField)[m_model_available_parts_main->m_columns.m_col_item] = std::make_shared<LayoutItem_Field>();
 
-      Gtk::TreeModel::iterator iterText = m_model_available_parts_main->append(iter->children());
+      auto iterText = m_model_available_parts_main->append(iter->children());
       (*iterText)[m_model_available_parts_main->m_columns.m_col_item] = std::make_shared<LayoutItem_Text>();
 
-      Gtk::TreeModel::iterator iterImage = m_model_available_parts_main->append(iter->children());
+      auto iterImage = m_model_available_parts_main->append(iter->children());
       (*iterImage)[m_model_available_parts_main->m_columns.m_col_item] = std::make_shared<LayoutItem_Image>();
 
-      Gtk::TreeModel::iterator iterVerticalGroup = m_model_available_parts_main->append(iter->children());
+      auto iterVerticalGroup = m_model_available_parts_main->append(iter->children());
       (*iterVerticalGroup)[m_model_available_parts_main->m_columns.m_col_item] = std::make_shared<LayoutItem_VerticalGroup>();
 
       iter = m_model_available_parts_main->append();
@@ -124,7 +124,7 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
       iter = m_model_available_parts_main->append(iter->children());
       (*iter)[m_model_available_parts_main->m_columns.m_col_item] = std::make_shared<LayoutItem_FieldSummary>();
 
-//     Gtk::TreeModel::iterator iterFooter = m_model_available_parts_main->append();
+//     auto iterFooter = m_model_available_parts_main->append();
 //     (*iterFooter)[m_model_available_parts_main->m_columns.m_col_item] = std::make_shared<LayoutItem_Footer>();
     }
 
@@ -132,16 +132,16 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
     {
       m_model_available_parts_headerfooter = type_model::create();
 
-      Gtk::TreeModel::iterator iterVerticalGroup = m_model_available_parts_headerfooter->append();
+      auto iterVerticalGroup = m_model_available_parts_headerfooter->append();
       (*iterVerticalGroup)[m_model_available_parts_headerfooter->m_columns.m_col_item] = std::make_shared<LayoutItem_VerticalGroup>();
 
-      Gtk::TreeModel::iterator iterField = m_model_available_parts_headerfooter->append(iterVerticalGroup->children());
+      auto iterField = m_model_available_parts_headerfooter->append(iterVerticalGroup->children());
       (*iterField)[m_model_available_parts_headerfooter->m_columns.m_col_item] = std::make_shared<LayoutItem_Field>();
 
-      Gtk::TreeModel::iterator iterText = m_model_available_parts_headerfooter->append(iterVerticalGroup->children());
+      auto iterText = m_model_available_parts_headerfooter->append(iterVerticalGroup->children());
       (*iterText)[m_model_available_parts_headerfooter->m_columns.m_col_item] = std::make_shared<LayoutItem_Text>();
 
-      Gtk::TreeModel::iterator iterImage = m_model_available_parts_headerfooter->append(iterVerticalGroup->children());
+      auto iterImage = m_model_available_parts_headerfooter->append(iterVerticalGroup->children());
       (*iterImage)[m_model_available_parts_headerfooter->m_columns.m_col_item] = std::make_shared<LayoutItem_Image>();
     }
 
@@ -300,7 +300,7 @@ void Dialog_Layout_Report::add_group_children(const Glib::RefPtr<type_model>& mo
     }
     else
     {
-      Gtk::TreeModel::iterator iter = model_parts->append(parent->children());
+      auto iter = model_parts->append(parent->children());
       Gtk::TreeModel::Row row = *iter;
       row[model_parts->m_columns.m_col_item] = glom_sharedptr_clone(item);
     }
@@ -394,7 +394,7 @@ void Dialog_Layout_Report::enable_buttons()
   Glib::RefPtr<Gtk::TreeView::Selection> refSelectionAvailable = m_treeview_available_parts->get_selection();
   if(refSelectionAvailable)
   {
-    Gtk::TreeModel::iterator iter = refSelectionAvailable->get_selected();
+    auto iter = refSelectionAvailable->get_selected();
     if(iter)
     {
       layout_item_available = (*iter)[m_model_available_parts_main->m_columns.m_col_item];
@@ -419,7 +419,7 @@ void Dialog_Layout_Report::enable_buttons()
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = treeview->get_selection();
   if(refSelection)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
+    auto iter = refSelection->get_selected();
     if(iter)
     {
       layout_item_parent = (*iter)[model->m_columns.m_col_item];
@@ -433,7 +433,7 @@ void Dialog_Layout_Report::enable_buttons()
 
 
       //Disable Down if It can't go any lower.
-      Gtk::TreeModel::iterator iterNext = iter;
+      auto iterNext = iter;
       iterNext++;
 
       bool enable_down = true;
@@ -474,7 +474,7 @@ void Dialog_Layout_Report::enable_buttons()
         //Maybe it can be a sibling of the parent instead (and that's what would happen if Add was clicked).
         std::shared_ptr<LayoutItem> layout_item_parent_of_parent;
 
-        Gtk::TreeModel::iterator iterParent = iter->parent();
+        auto iterParent = iter->parent();
         if(iterParent)
           layout_item_parent_of_parent = (*iterParent)[model->m_columns.m_col_item];
 
@@ -542,7 +542,7 @@ void Dialog_Layout_Report::on_button_delete()
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = treeview->get_selection();
   if(refTreeSelection)
   {
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       model->erase(iter);
@@ -563,10 +563,10 @@ void Dialog_Layout_Report::on_button_up()
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = treeview->get_selection();
   if(refSelection)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
+    auto iter = refSelection->get_selected();
     if(iter)
     {
-      Gtk::TreeModel::iterator parent = iter->parent();
+      auto parent = iter->parent();
       bool is_first = false;
       if(parent)
         is_first = (iter == parent->children().begin());
@@ -575,7 +575,7 @@ void Dialog_Layout_Report::on_button_up()
 
       if(!is_first)
       {
-        Gtk::TreeModel::iterator iterBefore = iter;
+        auto iterBefore = iter;
         --iterBefore;
 
         model->iter_swap(iter, iterBefore);
@@ -600,13 +600,13 @@ void Dialog_Layout_Report::on_button_down()
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = treeview->get_selection();
   if(refSelection)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
+    auto iter = refSelection->get_selected();
     if(iter)
     {
-      Gtk::TreeModel::iterator iterNext = iter;
+      auto iterNext = iter;
       iterNext++;
 
-      Gtk::TreeModel::iterator parent = iter->parent();
+      auto parent = iter->parent();
       bool is_last = false;
       if(parent)
         is_last = (iterNext == parent->children().end());
@@ -636,7 +636,7 @@ void Dialog_Layout_Report::on_button_add()
   Glib::RefPtr<type_model> model = get_selected_model();
   Glib::RefPtr<type_model> model_available = Glib::RefPtr<type_model>::cast_dynamic(m_treeview_available_parts->get_model());
 
-  Gtk::TreeModel::iterator parent = get_selected_group_parent();
+  auto parent = get_selected_group_parent();
   std::shared_ptr<const LayoutItem> pParentPart;
   if(parent)
   {
@@ -644,7 +644,7 @@ void Dialog_Layout_Report::on_button_add()
     pParentPart = temp;
   }
 
-  Gtk::TreeModel::iterator available = get_selected_available();
+  auto available = get_selected_available();
   std::shared_ptr<const LayoutItem> pAvailablePart;
   if(available)
   {
@@ -731,7 +731,7 @@ Gtk::TreeModel::iterator Dialog_Layout_Report::get_selected_group_parent() const
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = treeview->get_selection();
   if(refTreeSelection)
   {
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
@@ -780,7 +780,7 @@ void Dialog_Layout_Report::on_button_formatting()
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = treeview->get_selection();
   if(refTreeSelection)
   {
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
@@ -812,7 +812,7 @@ void Dialog_Layout_Report::on_button_edit()
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = treeview->get_selection();
   if(refTreeSelection)
   {
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       //Do something different for each type of item:

@@ -114,7 +114,7 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
   Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
-  Gtk::TreeModel::iterator iter = m_model_autoincrements->get_iter(path);
+  auto iter = m_model_autoincrements->get_iter(path);
   if(iter != m_model_autoincrements->children().end())
   {
     Gtk::TreeModel::Row row = *iter;
@@ -196,7 +196,7 @@ void Dialog_Database_Preferences::load_from_document()
   const guint count = datamodel->get_n_rows();
   for(guint i = 0; i < count; ++i)
   {
-    Gtk::TreeModel::iterator iter = m_model_autoincrements->append();
+    auto iter = m_model_autoincrements->append();
     Gtk::TreeModel::Row row = *iter;
     row[m_columns.m_col_table] = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(0, i), numeric_format);
     row[m_columns.m_col_field] = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(1, i), numeric_format);

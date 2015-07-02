@@ -58,7 +58,7 @@ public:
 
   virtual void remove_view(type_view* pView)
   {
-    typename type_vec_views::iterator iter = std::find(m_vecViews.begin(), m_vecViews.end(), pView);
+    auto iter = std::find(m_vecViews.begin(), m_vecViews.end(), pView);
     if(iter != m_vecViews.end())
       m_vecViews.erase(iter);
   }

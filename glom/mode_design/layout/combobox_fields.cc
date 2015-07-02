@@ -55,7 +55,7 @@ ComboBox_Fields::~ComboBox_Fields()
 
 std::shared_ptr<Field> ComboBox_Fields::get_selected_field() const
 {
-  Gtk::TreeModel::iterator iter = get_active();
+  auto iter = get_active();
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
@@ -122,7 +122,7 @@ void ComboBox_Fields::set_fields(Document* document, const Glib::ustring parent_
   //Fill the model:
   for(const auto& field : fields)
   {
-    Gtk::TreeModel::iterator tree_iter = m_model->append();
+    auto tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
 
     std::shared_ptr<Field> rel = field;
@@ -149,7 +149,7 @@ void ComboBox_Fields::set_fields(Document* document, const Glib::ustring parent_
     if(rel && (rel->get_glom_type() == field_type))
     {
       std::cout << "DEBUG: ComboBox_Fields::set_fields() 1" << std::endl;
-      Gtk::TreeModel::iterator tree_iter = m_model->append();
+      auto tree_iter = m_model->append();
       std::cout << "DEBUG: ComboBox_Fields::set_fields() 2" << std::endl;
       Gtk::TreeModel::Row row = *tree_iter;
 
@@ -169,7 +169,7 @@ void ComboBox_Fields::set_fields(const type_vec_fields& fields, bool with_none_i
   if(with_none_item)
   {
     //Add a special "None" item, so the user can clear the GtkComboBox:
-    Gtk::TreeModel::iterator tree_iter = m_model->append();
+    auto tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
 
     row[m_model_columns.m_field] = std::shared_ptr<Field>(); 
@@ -186,7 +186,7 @@ void ComboBox_Fields::set_fields(const type_vec_fields& fields, bool with_none_i
   //Fill the model:
   for(const auto& field : fields)
   {
-    Gtk::TreeModel::iterator tree_iter = m_model->append();
+    auto tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
 
     row[m_model_columns.m_field] = field;

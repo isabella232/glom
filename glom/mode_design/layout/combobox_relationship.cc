@@ -60,7 +60,7 @@ ComboBox_Relationship::~ComboBox_Relationship()
 
 std::shared_ptr<Relationship> ComboBox_Relationship::get_selected_relationship() const
 {
-  Gtk::TreeModel::iterator iter = get_active();
+  auto iter = get_active();
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
@@ -72,11 +72,11 @@ std::shared_ptr<Relationship> ComboBox_Relationship::get_selected_relationship()
 
 std::shared_ptr<Relationship> ComboBox_Relationship::get_selected_relationship(std::shared_ptr<Relationship>& related_relationship) const
 {
-  Gtk::TreeModel::iterator iter = get_active();
+  auto iter = get_active();
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
-    Gtk::TreeModel::iterator iterParent = row.parent();
+    auto iterParent = row.parent();
     if(iterParent)
     {
       //It's a related relationship:
@@ -165,7 +165,7 @@ void ComboBox_Relationship::set_relationships(Document* document, const Glib::us
   //Fill the model:
   for(const auto& rel : relationships)
   {
-    Gtk::TreeModel::iterator tree_iter = m_model->append();
+    auto tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
 
     row[m_model_columns.m_relationship] = rel;
@@ -177,7 +177,7 @@ void ComboBox_Relationship::set_relationships(Document* document, const Glib::us
       const auto sub_relationships = document->get_relationships(rel->get_to_table(), false /* plus system properties */);
       for(const auto& rel : sub_relationships)
       {
-        Gtk::TreeModel::iterator tree_iter_child = m_model->append(tree_iter->children());
+        auto tree_iter_child = m_model->append(tree_iter->children());
         Gtk::TreeModel::Row row = *tree_iter_child;
 
         row[m_model_columns.m_relationship] = rel;
@@ -196,7 +196,7 @@ void ComboBox_Relationship::set_relationships(const type_vec_relationships& rela
   //Fill the model:
   for(const auto& relationship : relationships)
   {
-    Gtk::TreeModel::iterator tree_iter = m_model->append();
+    auto tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
 
     row[m_model_columns.m_relationship] = relationship;
@@ -222,7 +222,7 @@ void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_itera
   std::shared_ptr<Relationship> relationship = row[m_model_columns.m_relationship];
   if(relationship)
   {
-    Gtk::TreeModel::iterator iterParent = row->parent();
+    auto iterParent = row->parent();
     if(iterParent)
     {
       //related relationship:
@@ -256,7 +256,7 @@ void ComboBox_Relationship::on_cell_data_fromfield(const Gtk::TreeModel::const_i
   std::shared_ptr<Relationship> relationship = row[m_model_columns.m_relationship];
   if(relationship && relationship->get_has_fields())
   {
-    Gtk::TreeModel::iterator iterParent = iter->parent();
+    auto iterParent = iter->parent();
     if(iterParent)
     {
       std::shared_ptr<Relationship> parent_relationship = (*iterParent)[m_model_columns.m_relationship];
@@ -286,7 +286,7 @@ void ComboBox_Relationship::set_display_parent_table(const Glib::ustring& table_
   if(!already_added)
   {
     //Add a separator row after the table name:
-    Gtk::TreeModel::iterator tree_iter = m_model->prepend();
+    auto tree_iter = m_model->prepend();
     Gtk::TreeModel::Row row = *tree_iter;
     row[m_model_columns.m_separator] = true;
 

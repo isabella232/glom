@@ -821,7 +821,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
   //std::cerr << G_STRFUNC << ": field_name=" << field_name << std::endl;
 
   //Do we already have this in our list?
-  type_field_calcs::iterator iterFind = m_FieldsCalculationInProgress.find(field_name);
+  auto iterFind = m_FieldsCalculationInProgress.find(field_name);
   if(iterFind == m_FieldsCalculationInProgress.end()) //If it was not found.
   {
     //Add it:

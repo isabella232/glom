@@ -100,7 +100,7 @@ void Dialog_UsersList::enable_buttons()
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_users->get_selection();
   if(refSelection)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
+    auto iter = refSelection->get_selected();
     if(iter)
     {
       m_button_user_edit->set_sensitive(true);
@@ -121,7 +121,7 @@ void Dialog_UsersList::on_button_user_remove()
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_users->get_selection();
   if(refTreeSelection)
   {
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       if(warn_about_empty_standard_group())
@@ -148,7 +148,7 @@ void Dialog_UsersList::on_button_user_delete()
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_users->get_selection();
   if(refTreeSelection)
   {
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       if(warn_about_empty_standard_group())
@@ -280,7 +280,7 @@ void Dialog_UsersList::on_button_user_edit()
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_users->get_selection();
   if(refTreeSelection)
   {
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    auto iter = refTreeSelection->get_selected();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
@@ -381,7 +381,7 @@ void Dialog_UsersList::fill_list()
     const auto user_list = Privs::get_database_users(group_name);
     for(const auto& user : user_list)
     {
-      Gtk::TreeModel::iterator iterTree = m_model_users->append();
+      auto iterTree = m_model_users->append();
       Gtk::TreeModel::Row row = *iterTree;
 
       row[m_model_columns_users.m_col_name] = Privs::get_user_visible_group_name(user);

@@ -270,14 +270,14 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
 
         //Get the translated human-readable names of the language and country:
         Glib::ustring name;
-        type_map_language::iterator iterFindLanguage = map_languages.find(id_language);
+        auto iterFindLanguage = map_languages.find(id_language);
         if(iterFindLanguage != map_languages.end()) //Ignore languages that are not listed by iso-codes.
         {
           name += iterFindLanguage->second;
 
           if(!id_country.empty())
           {
-            type_map_country::iterator iterFindCountry = map_country.find(id_country);
+            auto iterFindCountry = map_country.find(id_country);
             if(iterFindCountry != map_country.end())
               name += " (" + iterFindCountry->second + ')';
             else

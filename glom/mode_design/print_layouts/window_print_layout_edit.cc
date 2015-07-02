@@ -1053,10 +1053,8 @@ void Window_PrintLayout_Edit::on_menu_edit_copy()
 
   m_layout_items_to_paste.clear();
 
-  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
-    iter != m_layout_items_selected.end(); ++iter)
+  for(const auto& item : m_layout_items_selected)
   {
-    Glib::RefPtr<CanvasLayoutItem> item = *iter;
     if(item)
       item->update_layout_position_from_canvas();
 
@@ -1074,10 +1072,8 @@ void Window_PrintLayout_Edit::on_menu_edit_paste()
   if(m_layout_items_to_paste.empty())
     return;
 
-  for(type_list_items::iterator iter = m_layout_items_to_paste.begin();
-    iter != m_layout_items_to_paste.end(); ++iter)
+  for(const auto& item : m_layout_items_to_paste)
   {
-    std::shared_ptr<LayoutItem> item = *iter;
     if(!item)
       continue;
 
@@ -1136,7 +1132,7 @@ void Window_PrintLayout_Edit::on_menu_align_top()
 {
   //Get the top-most position:
   double top = 0;
-  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+  for(auto iter = m_layout_items_selected.begin();
     iter != m_layout_items_selected.end(); ++iter)
   {
     Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
@@ -1154,10 +1150,8 @@ void Window_PrintLayout_Edit::on_menu_align_top()
   }
   
   //Give all items the same top position:
-  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
-    iter != m_layout_items_selected.end(); ++iter)
+  for(const auto& selected_item : m_layout_items_selected)
   {
-    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
     if(!selected_item)
       continue;
 
@@ -1172,7 +1166,7 @@ void Window_PrintLayout_Edit::on_menu_align_bottom()
 {
   //Get the bottom-most position:
   double bottom = 0;
-  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+  for(auto iter = m_layout_items_selected.begin();
     iter != m_layout_items_selected.end(); ++iter)
   {
     Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
@@ -1195,10 +1189,8 @@ void Window_PrintLayout_Edit::on_menu_align_bottom()
   }
   
   //Give all items the same top position:
-  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
-    iter != m_layout_items_selected.end(); ++iter)
+  for(const auto& selected_item : m_layout_items_selected)
   {
-    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
     if(!selected_item)
       continue;
 
@@ -1220,7 +1212,7 @@ void Window_PrintLayout_Edit::on_menu_align_left()
 {
   //Get the left-most position:
   double left = 0;
-  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+  for(auto iter = m_layout_items_selected.begin();
     iter != m_layout_items_selected.end(); ++iter)
   {
     Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
@@ -1238,10 +1230,8 @@ void Window_PrintLayout_Edit::on_menu_align_left()
   }
   
   //Give all items the same left position:
-  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
-    iter != m_layout_items_selected.end(); ++iter)
+  for(const auto& selected_item : m_layout_items_selected)
   {
-    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
     if(!selected_item)
       continue;
 
@@ -1256,10 +1246,11 @@ void Window_PrintLayout_Edit::on_menu_align_right()
 {
   //Get the right-most position:
   double right = 0;
-  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+  for(auto iter = m_layout_items_selected.begin();
     iter != m_layout_items_selected.end(); ++iter)
   {
     Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
+
     if(!selected_item)
       continue;
 
@@ -1279,10 +1270,8 @@ void Window_PrintLayout_Edit::on_menu_align_right()
   }
   
   //Give all items the same top position:
-  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
-    iter != m_layout_items_selected.end(); ++iter)
+  for(const auto& selected_item : m_layout_items_selected)
   {
-    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
     if(!selected_item)
       continue;
 
@@ -1369,10 +1358,8 @@ void Window_PrintLayout_Edit::get_dimensions_of_multiple_selected_items(double& 
   double x2 = 0;
   double y2 = 0;
   bool first = true;
-  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
-    iter != m_layout_items_selected.end(); ++iter)
+  for(const auto& item : m_layout_items_selected)
   {
-    Glib::RefPtr<CanvasLayoutItem> item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(*iter);
     if(!item)
       continue;
 
@@ -1412,10 +1399,9 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
 
   //Forget about any previously selected items:
   m_layout_items_selected.clear();
-  for(type_vec_connections::iterator iter = m_connections_items_selected_moved.begin();
-    iter != m_connections_items_selected_moved.end(); ++iter)
+  for(auto item : m_connections_items_selected_moved)
   {
-    iter->disconnect();
+    item.disconnect();
   }
   m_connections_items_selected_moved.clear();
   
@@ -1478,10 +1464,8 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
 void Window_PrintLayout_Edit::on_selected_item_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset)
 {
   //Move the other selected items too:
-  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
-    iter != m_layout_items_selected.end(); ++iter)
+  for(const auto& selected_item : m_layout_items_selected)
   {
-    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
     if(!selected_item || (item == selected_item))
       continue;
 
@@ -1525,10 +1509,8 @@ void Window_PrintLayout_Edit::on_spinbutton_x()
   const auto offset_x = m_spinbutton_x->get_value() - x;
 
   //Apply the offset to all items:
-  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
-    iter != m_layout_items_selected.end(); ++iter)
+  for(const auto& item : m_layout_items_selected)
   {
-    Glib::RefPtr<CanvasLayoutItem> item = *iter;
     if(!item)
       continue;
 
@@ -1560,10 +1542,8 @@ void Window_PrintLayout_Edit::on_spinbutton_y()
   const auto offset_y = m_spinbutton_y->get_value() - y;
 
   //Apply the offset to all items:
-  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
-    iter != m_layout_items_selected.end(); ++iter)
+  for(const auto& item : m_layout_items_selected)
   {
-    Glib::RefPtr<CanvasLayoutItem> item = *iter;
     if(!item)
       continue;
 

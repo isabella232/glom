@@ -62,15 +62,15 @@ FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
 FlowTableWithFields::~FlowTableWithFields()
 {
   //Remove views. The widgets are deleted automatically because they are managed.
-  for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
+  for(const auto& the_pair : m_listFields)
   {
-    View_Composite_Glom* pViewFirst = dynamic_cast<View_Composite_Glom*>(iter->m_first);
+    View_Composite_Glom* pViewFirst = dynamic_cast<View_Composite_Glom*>(the_pair.m_first);
     if(pViewFirst)
     {
       remove_view(pViewFirst);
     }
 
-    View_Composite_Glom* pViewSecond = dynamic_cast<View_Composite_Glom*>(iter->m_second);
+    View_Composite_Glom* pViewSecond = dynamic_cast<View_Composite_Glom*>(the_pair.m_second);
     if(pViewSecond)
     {
       remove_view(pViewSecond);
@@ -83,9 +83,8 @@ void FlowTableWithFields::set_table(const Glib::ustring& table_name)
   m_table_name = table_name;
 
   //Recurse:
-  for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  for(const auto& subtable : m_sub_flow_tables)
   {
-    FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
       subtable->set_table(table_name);
@@ -354,9 +353,9 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
   notebook_widget->show();
   notebook_widget->set_layout_item(notebook, m_table_name);
 
-  for(LayoutGroup::type_list_items::iterator iter = notebook->m_list_items.begin(); iter != notebook->m_list_items.end(); ++iter)
+  for(const auto& item : notebook->m_list_items)
   {
-    std::shared_ptr<LayoutGroup> group = std::dynamic_pointer_cast<LayoutGroup>(*iter);
+    std::shared_ptr<LayoutGroup> group = std::dynamic_pointer_cast<LayoutGroup>(item);
     if(group)
     {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -644,9 +643,9 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
 {
   for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
-    if(iter->m_field->get_name() == id)
+    Info info = *iter;
+    if(info.m_field->get_name() == id)
     {
-      Info info = *iter;
       remove(*(info.m_first));
 
       View_Composite_Glom* pViewFirst = dynamic_cast<View_Composite_Glom*>(info.m_first);
@@ -675,9 +674,9 @@ void FlowTableWithFields::set_field_value(const std::shared_ptr<const LayoutItem
 {
   //Set widgets which should show the value of this field:
   type_list_widgets list_widgets = get_field(field, set_specified_field_layout);
-  for(type_list_widgets::iterator iter = list_widgets.begin(); iter != list_widgets.end(); ++iter)
+  for(const auto& item : list_widgets)
   {
-    DataWidget* datawidget = dynamic_cast<DataWidget*>(*iter);
+    DataWidget* datawidget = dynamic_cast<DataWidget*>(item);
     if(datawidget)
     {
       datawidget->set_value(value);
@@ -686,9 +685,8 @@ void FlowTableWithFields::set_field_value(const std::shared_ptr<const LayoutItem
 
   //Refresh portal widgets which should show the related records for relationships that use this field:
   type_portals list_portals = get_portals(field /* from_key field name */);
-  for(type_portals::iterator iter = list_portals.begin(); iter != list_portals.end(); ++iter)
+  for(const auto& portal : list_portals)
   {
-    Box_Data_Portal* portal = *iter;
     if(portal)
     {
       //std::cerr << G_STRFUNC << ": foreign_key_value=" << value.to_string() << std::endl;
@@ -698,9 +696,8 @@ void FlowTableWithFields::set_field_value(const std::shared_ptr<const LayoutItem
 
   //Refresh choices widgets which should show the related records for relationships that use this field:
   type_choice_widgets list_choice_widgets = get_choice_widgets(field /* from_key field name */);
-  for(type_choice_widgets::iterator iter = list_choice_widgets.begin(); iter != list_choice_widgets.end(); ++iter)
+  for(const auto& widget : list_choice_widgets)
   {
-    DataWidgetChildren::ComboChoices* widget = *iter;
     if(widget)
     {
       //std::cerr << G_STRFUNC << ": foreign_key_value=" << value.to_string() << std::endl;
@@ -736,9 +733,9 @@ Gnome::Gda::Value FlowTableWithFields::get_field_value(const std::shared_ptr<con
 void FlowTableWithFields::set_field_editable(const std::shared_ptr<const LayoutItem_Field>& field, bool editable)
 {
   type_list_widgets list_widgets = get_field(field, true);
-  for(type_list_widgets::iterator iter = list_widgets.begin(); iter != list_widgets.end(); ++iter)
+  for(const auto& item : list_widgets)
   {
-    DataWidget* datawidget = dynamic_cast<DataWidget*>(*iter);
+    DataWidget* datawidget = dynamic_cast<DataWidget*>(item);
     if(datawidget)
     {
       datawidget->set_editable(editable);
@@ -749,9 +746,9 @@ void FlowTableWithFields::set_field_editable(const std::shared_ptr<const LayoutI
 void FlowTableWithFields::update_choices(const std::shared_ptr<const LayoutItem_Field>& field)
 {
   type_list_widgets list_widgets = get_field(field, true);
-  for(type_list_widgets::iterator iter = list_widgets.begin(); iter != list_widgets.end(); ++iter)
+  for(const auto& item : list_widgets)
   {
-    DataWidget* datawidget = dynamic_cast<DataWidget*>(*iter);
+    DataWidget* datawidget = dynamic_cast<DataWidget*>(item);
     if(!datawidget)
       continue;
 
@@ -826,9 +823,9 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
   const auto from_key_name = from_key->get_name();
 
   //Check the single-item widgets:
-  for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
+  for(const auto& the_pair : m_listFields)
   {
-    DataWidget* widget = iter->m_second;
+    DataWidget* widget = the_pair.m_second;
     if(!widget)
       continue;
 
@@ -952,12 +949,11 @@ void FlowTableWithFields::remove_all()
 
   m_listFields.clear();
 
-  for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  for(auto pSub : m_sub_flow_tables)
   {
-    FlowTableWithFields* pSub = *iter;
     if(pSub)
     {
-      remove_view(*iter);
+      remove_view(pSub);
 
       delete pSub;
     }
@@ -966,9 +962,8 @@ void FlowTableWithFields::remove_all()
   m_sub_flow_tables.clear();
 
 
-  for(type_portals::iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
+  for(const auto& pPortal : m_portals)
   {
-    Box_Data_Portal* pPortal = *iter;
     remove_view(pPortal);
     delete pPortal;
   }
@@ -977,13 +972,13 @@ void FlowTableWithFields::remove_all()
   m_list_layoutwidgets.clear();
 
   //Remove views. The widgets are deleted automatically because they are managed.
-  for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
+  for(const auto& the_pair : m_listFields)
   {
-    View_Composite_Glom* pViewFirst = dynamic_cast<View_Composite_Glom*>(iter->m_first);
+    View_Composite_Glom* pViewFirst = dynamic_cast<View_Composite_Glom*>(the_pair.m_first);
     if(pViewFirst)
       remove_view(pViewFirst);
 
-   View_Composite_Glom* pViewSecond = dynamic_cast<View_Composite_Glom*>(iter->m_second);
+   View_Composite_Glom* pViewSecond = dynamic_cast<View_Composite_Glom*>(the_pair.m_second);
     if(pViewSecond)
       remove_view(pViewSecond);
   }
@@ -1050,9 +1045,8 @@ void FlowTableWithFields::set_design_mode(bool value)
 #endif
 
   //Set the mode in the sub-flowtables:
-  for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  for(const auto& subtable : m_sub_flow_tables)
   {
-    FlowTableWithFields* subtable = *iter;
     if(subtable)
       subtable->set_design_mode(value);
   }
@@ -1179,9 +1173,8 @@ void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value pri
 void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups& size_groups)
 {
   //Remove widgets from any existing size group:
-  for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
+  for(auto info : m_listFields)
   {
-    Info info = *iter;
     Gtk::Widget* widget = info.m_first;
     Glib::RefPtr<Gtk::SizeGroup> previous_size_group = info.m_first_in_sizegroup;
     if(!widget || !previous_size_group)
@@ -1196,9 +1189,8 @@ void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups&
   if(m_vec_size_groups.empty())
     return;
 
-  for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
+  for(auto info : m_listFields)
   {
-    Info info = *iter;
     Gtk::Widget* label = info.m_first;
     if(!label)
       continue;
@@ -1241,9 +1233,8 @@ void FlowTableWithFields::align_child_group_labels()
     vec_sizegroups[i] = Gtk::SizeGroup::create(Gtk::SIZE_GROUP_HORIZONTAL);
   }
 
-  for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  for(const auto& subtable : m_sub_flow_tables)
   {
-    FlowTableWithFields* subtable = *iter;
     if(subtable)
       subtable->apply_size_groups_to_labels(vec_sizegroups);
   }
@@ -1375,9 +1366,8 @@ void FlowTableWithFields::set_find_mode(bool val)
   }
 
   //Set find mode in all the child flowtables, recursively:
-  for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  for(const auto& subtable : m_sub_flow_tables)
   {
-    FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
       subtable->set_find_mode(m_find_mode);
@@ -1396,9 +1386,8 @@ void FlowTableWithFields::set_enable_drag_and_drop(bool enabled)
   set_drag_enabled(EGG_DRAG_DISABLED);
   set_drop_enabled(enabled);
   
-  for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  for(const auto& child : m_sub_flow_tables)
   {
-    FlowTableWithFields* child = *iter;
     if(child)
     {
       //std::cout << G_STRFUNC << ": child" << std::endl;

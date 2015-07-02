@@ -199,7 +199,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
       std::cerr << G_STRFUNC << ": INSERT failed." << std::endl;
     else
     {
-      Gtk::TreeModel::iterator row = get_row_selected(); //Null and ignored for details views.
+      auto row = get_row_selected(); //Null and ignored for details views.
       set_primary_key_value(row, primary_key_value); //Needed by Box_Data_List::on_adddel_user_changed().
 
       //Update any lookups, related fields, or calculations:
