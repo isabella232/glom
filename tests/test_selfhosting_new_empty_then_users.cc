@@ -132,12 +132,12 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
 
   typedef std::vector<Glib::ustring> type_vec_strings;
-  type_vec_strings table_names;
-  table_names.push_back("sometable");
-  table_names.push_back("SomeTableWithUpperCase");
-  table_names.push_back("sometable with space characters");
-  table_names.push_back("sometable with a \" doublequote character");
-  table_names.push_back("sometable with a ' quote character");
+  type_vec_strings table_names( {
+    "sometable",
+    "SomeTableWithUpperCase",
+    "sometable with space characters",
+    "sometable with a \" doublequote character",
+    "sometable with a ' quote character"} );
 
   //MySQL has a 64-character limit on SQL identifiers:
   if(hosting_mode != Glom::Document::HOSTING_MODE_MYSQL_SELF)
@@ -180,12 +180,12 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
 
   //Add groups:
-  type_vec_strings group_names;
-  group_names.push_back("somegroup1");
-  group_names.push_back("somegroup with space characters");
-  group_names.push_back("somegroup with a \" doublequote character");
-  group_names.push_back("somegroup with a ' quote character");
-  group_names.push_back("somegroupwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayad"); //Almost too big.
+  type_vec_strings group_names( {
+    "somegroup1",
+    "somegroup with space characters",
+    "somegroup with a \" doublequote character",
+    "somegroup with a ' quote character",
+     "somegroupwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayad"} ); //Almost too big.
   //We expect this to fail because of an apparently-undocumented max pg_user size of 63 characters in PostgreSQL:
   //group_names.push_back("somegroupwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayadd");
 
@@ -200,12 +200,12 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   //Add users:
   //TODO: Test strange passwords.
-  type_vec_strings user_names;
-  user_names.push_back("someuser1");
-  user_names.push_back("someuser with space characters");
-  user_names.push_back("someuser with a \" doublequote character");
-  user_names.push_back("someuser with a ' quote character");
-  user_names.push_back("someuserwithaverylongnameyaddayaddayaddayaddayaddyaddayadda"); //Almost too big, with space for the numeric suffix below.
+  type_vec_strings user_names( {
+    "someuser1",
+    "someuser with space characters",
+    "someuser with a \" doublequote character",
+    "someuser with a ' quote character",
+    "someuserwithaverylongnameyaddayaddayaddayaddayaddyaddayadda"} ); //Almost too big, with space for the numeric suffix below.
   //We expect this to fail because of an apparently-undocumented max pg_user size of 63 characters in PostgreSQL:
   //user_names.push_back("someuserwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayadd");
 

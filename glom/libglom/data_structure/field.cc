@@ -691,44 +691,41 @@ void Field::init_map()
     //These are the conversions know to be supported by the used version of postgres
     m_map_conversions.clear();
 
-    type_list_conversion_targets list_conversions;
-
-    //Numeric:
-    list_conversions.clear();
-    list_conversions.push_back(Field::TYPE_BOOLEAN);
-    list_conversions.push_back(Field::TYPE_TEXT);
+    type_list_conversion_targets list_conversions( {
+      Field::TYPE_BOOLEAN,
+      Field::TYPE_TEXT} );
     //to_date(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_DATE);
     //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_TIME);
     m_map_conversions[Field::TYPE_NUMERIC] = list_conversions;
 
     //Text:
-    list_conversions.clear();
-    list_conversions.push_back(Field::TYPE_BOOLEAN);
-    list_conversions.push_back(Field::TYPE_NUMERIC);
-    list_conversions.push_back(Field::TYPE_DATE);
-    list_conversions.push_back(Field::TYPE_TIME);
+    list_conversions = {
+      Field::TYPE_BOOLEAN,
+      Field::TYPE_NUMERIC,
+      Field::TYPE_DATE,
+      Field::TYPE_TIME};
     m_map_conversions[Field::TYPE_TEXT] = list_conversions;
 
     //Boolean:
-    list_conversions.clear();
-    list_conversions.push_back(Field::TYPE_TEXT);
-    list_conversions.push_back(Field::TYPE_NUMERIC);
+    list_conversions = {
+      Field::TYPE_TEXT,
+      Field::TYPE_NUMERIC};
     //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_DATE);
     //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_TIME);
     m_map_conversions[Field::TYPE_BOOLEAN] = list_conversions;
 
     //Date:
-    list_conversions.clear();
-    list_conversions.push_back(Field::TYPE_TEXT);
+    list_conversions = {
+      Field::TYPE_TEXT};
     //to_number(textcat()) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_NUMERIC);
     //to_number(textcat()) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_BOOLEAN);
     m_map_conversions[Field::TYPE_DATE] = list_conversions;
 
     //Time:
-    list_conversions.clear();
-    list_conversions.push_back(Field::TYPE_TEXT);
-    list_conversions.push_back(Field::TYPE_NUMERIC);
-    list_conversions.push_back(Field::TYPE_BOOLEAN);
+    list_conversions = {
+      Field::TYPE_TEXT,
+      Field::TYPE_NUMERIC,
+      Field::TYPE_BOOLEAN};
     m_map_conversions[Field::TYPE_TIME] = list_conversions;
 
 
