@@ -30,7 +30,7 @@ namespace Glom
 {
   
 LayoutWidgetUtils::LayoutWidgetUtils() :
-  m_pPopupMenuUtils(0)
+  m_pPopupMenuUtils(nullptr)
 {
   //Derived class's constructors must call this:
   //setup_util_menu(this);
@@ -73,7 +73,7 @@ void LayoutWidgetUtils::on_menu_delete_activate()
     return;
   }
 
-  LayoutWidgetBase* base = 0;
+  LayoutWidgetBase* base = nullptr;
   do
   {
     parent = parent->get_parent();

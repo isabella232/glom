@@ -30,7 +30,7 @@ const bool Dialog_ChangeLanguage::glade_developer(true);
 
 Dialog_ChangeLanguage::Dialog_ChangeLanguage(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_combo_locale(0)
+  m_combo_locale(nullptr)
 {
   builder->get_widget_derived("combobox_locale", m_combo_locale);
   if(m_combo_locale)

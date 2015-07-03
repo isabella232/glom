@@ -27,8 +27,8 @@ namespace Glom
 
 ComboBox_Relationship::ComboBox_Relationship(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::ComboBox(cobject),
-  m_renderer_title(0),
-  m_renderer_fromfield(0)
+  m_renderer_title(nullptr),
+  m_renderer_fromfield(nullptr)
 {
   m_model = Gtk::TreeStore::create(m_model_columns);
 

@@ -33,16 +33,16 @@ const bool Dialog_GroupBy::glade_developer(true);
 
 Dialog_GroupBy::Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_label_group_by(0),
-  m_label_sort_by(0),
-  m_label_secondary_fields(0),
-  m_button_field_group_by(0),
-  m_button_formatting_group_by(0),
-  m_button_field_sort_by(0),
-  m_button_secondary_fields(0),
-  m_comboboxentry_border_width(0),
-  m_dialog_choose_secondary_fields(0),
-  m_dialog_choose_sort_fields(0)
+  m_label_group_by(nullptr),
+  m_label_sort_by(nullptr),
+  m_label_secondary_fields(nullptr),
+  m_button_field_group_by(nullptr),
+  m_button_formatting_group_by(nullptr),
+  m_button_field_sort_by(nullptr),
+  m_button_secondary_fields(nullptr),
+  m_comboboxentry_border_width(nullptr),
+  m_dialog_choose_secondary_fields(nullptr),
+  m_dialog_choose_sort_fields(nullptr)
 {
   builder->get_widget("label_group_by", m_label_group_by);
   builder->get_widget("label_sort_by", m_label_sort_by);

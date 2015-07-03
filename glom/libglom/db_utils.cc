@@ -55,7 +55,7 @@ static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
   if(!sharedconnection)
   {
     std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
-    return Glib::RefPtr<Gnome::Gda::Connection>(0);
+    return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
@@ -831,7 +831,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
     g_assert(quoted_table_name_c);
     Glib::ustring quoted_table_name(quoted_table_name_c);
     g_free (quoted_table_name_c);
-    quoted_table_name_c = 0;
+    quoted_table_name_c = nullptr;
 
     holder_table_name->set_value(quoted_table_name);
 
@@ -874,7 +874,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
       Glib::RefPtr<Gnome::Gda::MetaStore> store = connection->get_meta_store();
       Glib::RefPtr<Gnome::Gda::MetaStruct> metastruct =
         Gnome::Gda::MetaStruct::create(store, Gnome::Gda::META_STRUCT_FEATURE_NONE);
-      GdaMetaDbObject* meta_dbobject = 0;
+      GdaMetaDbObject* meta_dbobject = nullptr;
       try
       {
         meta_dbobject = metastruct->complement(Gnome::Gda::META_DB_TABLE,

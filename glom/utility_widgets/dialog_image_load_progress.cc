@@ -64,7 +64,7 @@ void DialogImageLoadProgress::load(const Glib::ustring& uri)
   g_assert(!m_data.get());
 
   m_data.reset(new GdaBinary);
-  m_data->data = 0;
+  m_data->data = nullptr;
   m_data->binary_length = 0;
 
   m_file = Gio::File::create_for_uri(uri);

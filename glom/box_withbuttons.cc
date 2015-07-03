@@ -35,7 +35,7 @@ Box_WithButtons::Box_WithButtons()
   m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, UiUtils::DEFAULT_SPACING_SMALL),
   m_Button_Cancel(_("_Cancel"))
 {
-  //m_pDocument = 0;
+  //m_pDocument = nullptr;
 
   //set_border_width(UiUtils::DEFAULT_SPACING_SMALL);
   set_spacing(UiUtils::DEFAULT_SPACING_SMALL);
@@ -49,7 +49,7 @@ Box_WithButtons::Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk
   m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, UiUtils::DEFAULT_SPACING_SMALL),
   m_Button_Cancel(_("_Cancel"))
 {
-  //m_pDocument = 0;
+  //m_pDocument = nullptr;
 
   //set_border_width(UiUtils::DEFAULT_SPACING_SMALL);
   set_spacing(UiUtils::DEFAULT_SPACING_SMALL);

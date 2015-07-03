@@ -114,7 +114,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 {
 #ifdef GLOM_ENABLE_CLIENT_ONLY
   //Don't mention creation of new documents in client-only mode:
-  Gtk::Label* label = 0;
+  Gtk::Label* label = nullptr;
   builder->get_widget("existing_or_new_label", label);
   label->set_text(_("Open a Document"));
 #endif //GLOM_ENABLE_CLIENT_ONLY
@@ -294,7 +294,7 @@ Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
   if(m_service_monitor)
   {
     g_object_unref(m_service_monitor);
-    m_service_monitor = 0;
+    m_service_monitor = nullptr;
   }
 
   // Release the service infos in the treestore

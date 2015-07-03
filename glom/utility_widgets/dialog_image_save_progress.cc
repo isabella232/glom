@@ -41,7 +41,7 @@ const bool DialogImageSaveProgress::glade_developer(false);
 
 DialogImageSaveProgress::DialogImageSaveProgress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_data(0)
+  m_data(nullptr)
 {
   builder->get_widget("progress_bar", m_progress_bar);
 

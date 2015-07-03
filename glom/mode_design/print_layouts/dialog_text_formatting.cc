@@ -31,10 +31,10 @@ const bool Dialog_TextFormatting::glade_developer(true);
 
 Dialog_TextFormatting::Dialog_TextFormatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Window(cobject),
-  m_box_formatting_placeholder(0),
-  m_box_formatting(0)
+  m_box_formatting_placeholder(nullptr),
+  m_box_formatting(nullptr)
 {
-  Gtk::Button* button_close = 0;
+  Gtk::Button* button_close = nullptr;
   builder->get_widget("button_close",  button_close);
   if(button_close)
   {

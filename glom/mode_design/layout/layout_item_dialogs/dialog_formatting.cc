@@ -27,7 +27,7 @@ namespace Glom
 {
 
 Dialog_Formatting::Dialog_Formatting()
-: m_box_formatting(0)
+: m_box_formatting(nullptr)
 {
   set_title(_("Formatting"));
   set_border_width(6);

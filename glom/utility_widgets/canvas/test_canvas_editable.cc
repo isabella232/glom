@@ -34,7 +34,7 @@ class MyCanvas : public Glom::CanvasEditable
 public:
   
   MyCanvas()
-  : m_context_menu(0)
+  : m_context_menu(nullptr)
   {
     setup_context_menu();
 

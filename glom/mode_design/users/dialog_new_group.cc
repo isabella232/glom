@@ -29,7 +29,7 @@ const bool Dialog_NewGroup::glade_developer(true);
 
 Dialog_NewGroup::Dialog_NewGroup(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_entry_name(0)
+  m_entry_name(nullptr)
 {
   builder->get_widget("entry_group_name", m_entry_name);
   m_entry_name->set_max_length(Privs::MAX_ROLE_SIZE);

@@ -32,11 +32,11 @@ const bool Dialog_AddRelatedTable::glade_developer(true);
 Dialog_AddRelatedTable::Dialog_AddRelatedTable(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   Base_DB(),
-  m_entry_table_name(0),
-  m_entry_relationship_name(0),
-  m_combo_from_field(0),
-  m_button_edit_fields(0),
-  m_button_ok(0)
+  m_entry_table_name(nullptr),
+  m_entry_relationship_name(nullptr),
+  m_combo_from_field(nullptr),
+  m_button_edit_fields(nullptr),
+  m_button_ok(nullptr)
 {
   builder->get_widget("entry_related_table_name", m_entry_table_name);
   builder->get_widget("entry_relationship_name", m_entry_relationship_name);

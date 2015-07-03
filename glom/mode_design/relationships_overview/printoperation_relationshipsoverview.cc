@@ -21,7 +21,7 @@ namespace Glom
 {
 
 PrintOperationRelationshipsOverview::PrintOperationRelationshipsOverview()
-: m_canvas(0)
+: m_canvas(nullptr)
 {
 }
 

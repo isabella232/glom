@@ -45,7 +45,7 @@ namespace Glom
 
 static DataWidgetChildren::ComboChoices* create_combo_widget_for_field(const std::shared_ptr<LayoutItem_Field>& field)
 {
-  DataWidgetChildren::ComboChoices* result = 0;
+  DataWidgetChildren::ComboChoices* result = nullptr;
   bool as_radio_buttons = false;
   const auto restricted = field->get_formatting_used().get_choices_restricted(as_radio_buttons);
   if(restricted)
@@ -62,8 +62,8 @@ static DataWidgetChildren::ComboChoices* create_combo_widget_for_field(const std
 }
 
 DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document* document)
-:  m_child(0),
-   m_button_go_to_details(0)
+:  m_child(nullptr),
+   m_button_go_to_details(nullptr)
 {
   const auto glom_type = field->get_glom_type();
   set_layout_item(field, table_name);
@@ -73,7 +73,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
   const auto title = Glib::ustring::compose(_("%1:"), item_get_title_or_name(field));
 
   m_child = 0;
-  LayoutWidgetField* pFieldWidget = 0;  
+  LayoutWidgetField* pFieldWidget = nullptr;  
   if(glom_type == Field::TYPE_BOOLEAN)
   {
     DataWidgetChildren::CheckButton* checkbutton = Gtk::manage( new DataWidgetChildren::CheckButton() );
@@ -191,7 +191,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
        DbUtils::layout_field_should_have_navigation(table_name, field, document, 
          field_used_in_relationship_to_one);
 
-    Gtk::Box* hbox_parent = 0; //Only used if there are extra widgets.
+    Gtk::Box* hbox_parent = nullptr; //Only used if there are extra widgets.
 
     const bool with_extra_widgets = field_used_in_relationship_to_one || add_open_button || (glom_type == Field::TYPE_DATE);
     if(with_extra_widgets)
@@ -469,7 +469,7 @@ std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustri
 {
   std::shared_ptr<LayoutItem_Field> result;
 
-  Dialog_ChooseField* dialog = 0;
+  Dialog_ChooseField* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
 
   if(dialog)
@@ -496,7 +496,7 @@ std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_layout(const std::shar
 {
   std::shared_ptr<LayoutItem_Field> result;
 
-  Dialog_FieldLayout* dialog = 0;
+  Dialog_FieldLayout* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return result;
@@ -630,7 +630,7 @@ void DataWidget::on_button_new_id()
 
 void DataWidget::on_button_choose_date()
 {
-  DataWidgetChildren::Dialog_ChooseDate* dialog = 0;
+  DataWidgetChildren::Dialog_ChooseDate* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
 
   if(dialog)
@@ -668,7 +668,7 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
   //Initialize output variable:
   chosen_id = Gnome::Gda::Value();
 
-  DataWidgetChildren::Dialog_ChooseID* dialog = 0;
+  DataWidgetChildren::Dialog_ChooseID* dialog = nullptr;
   Glom::Utils::get_glade_widget_derived_with_warning(dialog);
 
   if(dialog)
@@ -717,7 +717,7 @@ bool DataWidget::offer_related_record_id_new(Gnome::Gda::Value& chosen_id)
   //Initialize output variable:
   chosen_id = Gnome::Gda::Value();
 
-  DataWidgetChildren::Dialog_NewRecord* dialog = 0;
+  DataWidgetChildren::Dialog_NewRecord* dialog = nullptr;
   Glom::Utils::get_glade_widget_derived_with_warning(dialog);
 
   if(dialog)

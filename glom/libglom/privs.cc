@@ -286,7 +286,7 @@ static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
   if(!sharedconnection)
   {
     std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
-    return Glib::RefPtr<Gnome::Gda::Connection>(0);
+    return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();

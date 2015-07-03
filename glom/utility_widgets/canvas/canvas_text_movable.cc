@@ -174,7 +174,7 @@ void CanvasTextMovable::reconstruct_markup()
     return;
   }
 
-  char* markup = 0;
+  char* markup = nullptr;
   if(!m_text.empty())
   {
     //We will use the text as markup, so remove anything that could be 

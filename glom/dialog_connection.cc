@@ -40,11 +40,11 @@ const bool Dialog_Connection::glade_developer(false);
 Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   Base_DB(),
-  m_entry_host(0),
-  m_entry_user(0),
-  m_entry_password(0),
-  m_label_database(0),
-  m_label_note(0)
+  m_entry_host(nullptr),
+  m_entry_user(nullptr),
+  m_entry_password(nullptr),
+  m_label_database(nullptr),
+  m_label_note(nullptr)
 {
   builder->get_widget("entry_host", m_entry_host);
   builder->get_widget("entry_user", m_entry_user);
@@ -63,7 +63,7 @@ std::shared_ptr<SharedConnection> Dialog_Connection::connect_to_server_with_conn
 
   //TODO: BusyCursor busy_cursor(get_app_window());
 
-  std::shared_ptr<SharedConnection> result(0);
+  std::shared_ptr<SharedConnection> result;
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   g_assert(connection_pool);

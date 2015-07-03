@@ -33,11 +33,11 @@ const bool Dialog_ChooseField::glade_developer(true);
 
 Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_combo_relationship(0),
-  m_button_select(0),
-  m_checkbutton_show_related_relationships(0),
-  m_treeview(0),
-  m_document(0)
+  m_combo_relationship(nullptr),
+  m_button_select(nullptr),
+  m_checkbutton_show_related_relationships(nullptr),
+  m_treeview(nullptr),
+  m_document(nullptr)
 {
   builder->get_widget("checkbutton_show_related_relationships", m_checkbutton_show_related_relationships);
   m_checkbutton_show_related_relationships->set_active(false); //Start with the simpler list, to avoid confusing people.

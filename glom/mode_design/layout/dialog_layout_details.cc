@@ -38,30 +38,30 @@ const bool Dialog_Layout_Details::glade_developer(true);
 
 Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Layout(cobject, builder),
-  m_treeview_fields(0),
-  m_treeview_column_title(0),
-  m_treeview_column_group_columns(0),
-  m_treeview_column_column_width(0),
-  m_box_table_widgets(0),
-  m_box_related_table_widgets(0),
-  m_box_related_navigation(0),
-  m_button_up(0),
-  m_button_down(0),
-  m_button_add_field(0),
-  m_button_add_group(0),
-  m_button_add_notebook(0),
-  m_button_add_related(0),
-  m_button_add_related_calendar(0),
-  m_button_add_button(0),
-  m_button_add_text(0),
-  m_button_add_image(0),
-  m_button_field_delete(0),
-  m_button_formatting(0),
-  m_button_edit(0),
-  m_label_table_name(0),
-  m_hbox_rows_count(0),
-  m_spinbutton_rows_count_min(0),
-  m_spinbutton_rows_count_max(0)
+  m_treeview_fields(nullptr),
+  m_treeview_column_title(nullptr),
+  m_treeview_column_group_columns(nullptr),
+  m_treeview_column_column_width(nullptr),
+  m_box_table_widgets(nullptr),
+  m_box_related_table_widgets(nullptr),
+  m_box_related_navigation(nullptr),
+  m_button_up(nullptr),
+  m_button_down(nullptr),
+  m_button_add_field(nullptr),
+  m_button_add_group(nullptr),
+  m_button_add_notebook(nullptr),
+  m_button_add_related(nullptr),
+  m_button_add_related_calendar(nullptr),
+  m_button_add_button(nullptr),
+  m_button_add_text(nullptr),
+  m_button_add_image(nullptr),
+  m_button_field_delete(nullptr),
+  m_button_formatting(nullptr),
+  m_button_edit(nullptr),
+  m_label_table_name(nullptr),
+  m_hbox_rows_count(nullptr),
+  m_spinbutton_rows_count_min(nullptr),
+  m_spinbutton_rows_count_max(nullptr)
 {
   // Get the alternate sets of widgets, only one of which should be shown:
   // Derived classes will hide one and show the other:
@@ -74,7 +74,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   builder->get_widget("frame_lines", m_box_frame_lines);
   m_box_frame_lines->hide();
 
-  Gtk::Frame* box_calendar = 0;
+  Gtk::Frame* box_calendar = nullptr;
   builder->get_widget("frame_calendar", box_calendar);
   box_calendar->hide();
 
@@ -557,7 +557,7 @@ std::shared_ptr<LayoutItem_Button> Dialog_Layout_Details::offer_button_script_ed
 {
   std::shared_ptr<LayoutItem_Button> result;
 
-  Dialog_ButtonScript* dialog = 0;
+  Dialog_ButtonScript* dialog = nullptr;
   Glom::Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return result;
@@ -586,7 +586,7 @@ std::shared_ptr<Relationship> Dialog_Layout_Details::offer_relationship_list(con
 {
   std::shared_ptr<Relationship> result = glom_sharedptr_clone(item);
 
-  Dialog_ChooseRelationship* dialog = 0;
+  Dialog_ChooseRelationship* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return result;
@@ -1332,7 +1332,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_column_width(const Glib::ust
       if(layout_item)
       {
         //Convert the text to a number, using the same logic used by GtkCellRendererText when it stores numbers.
-        char* pchEnd = 0;
+        char* pchEnd = nullptr;
         const auto new_value = static_cast<guint>( strtod(new_text.c_str(), &pchEnd) );
 
         //Store the user's new value in the model:
@@ -1367,7 +1367,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_group_columns(const Glib::us
       //new_value << astream; //Get it out of the stream as the numerical type.
 
       //Convert the text to a number, using the same logic used by GtkCellRendererText when it stores numbers.
-      char* pchEnd = 0;
+      char* pchEnd = nullptr;
       guint new_value = static_cast<guint>( strtod(new_text.c_str(), &pchEnd) );
 
       //Don't allow a 0 columns_count:

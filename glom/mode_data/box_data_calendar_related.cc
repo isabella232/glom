@@ -33,7 +33,7 @@ namespace Glom
 {
 
 Box_Data_Calendar_Related::Box_Data_Calendar_Related()
-: m_pMenuPopup(0),
+: m_pMenuPopup(nullptr),
   m_query_column_date_field(-1)
 {
   set_size_request(400, -1); //An arbitrary default.
@@ -378,7 +378,7 @@ void Box_Data_Calendar_Related::on_dialog_layout_hide()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 Dialog_Layout* Box_Data_Calendar_Related::create_layout_dialog() const
 {
-  Dialog_Layout_Calendar_Related* dialog = 0;
+  Dialog_Layout_Calendar_Related* dialog = nullptr;
   Glom::Utils::get_glade_widget_derived_with_warning(dialog);
   return dialog;
 }

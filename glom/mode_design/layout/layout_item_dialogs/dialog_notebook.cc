@@ -33,11 +33,11 @@ const bool Dialog_Notebook::glade_developer(true);
 
 Dialog_Notebook::Dialog_Notebook(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Layout(cobject, builder, false /* means no table title */),
-  m_treeview(0),
-  m_button_up(0),
-  m_button_down(0),
-  m_button_add(0),
-  m_button_delete(0)
+  m_treeview(nullptr),
+  m_button_up(nullptr),
+  m_button_down(nullptr),
+  m_button_add(nullptr),
+  m_button_delete(nullptr)
 {
   builder->get_widget("treeview", m_treeview);
   if(m_treeview)

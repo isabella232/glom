@@ -31,7 +31,7 @@ namespace Glom
 
 CellRendererDbList::CellRendererDbList()
 : m_repacked_first_cell(false),
-  m_document(0)
+  m_document(nullptr)
 {
 }
 
@@ -127,7 +127,7 @@ void CellRendererDbList::repack_cells_fixed(Gtk::CellLayout* combobox)
   {
     for(guint col = cells.size(); col != m_vec_model_columns_value_fixed.size(); ++col)
     {
-      Gtk::CellRenderer* cell = 0;
+      Gtk::CellRenderer* cell = nullptr;
       if(m_db_layout_items.empty())
         cell = Gtk::manage(new Gtk::CellRendererText);
       else if(col < m_db_layout_items.size())
@@ -165,7 +165,7 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
   guint i = 0;
   for(const auto& layout_item : m_db_layout_items)
   {
-    Gtk::CellRenderer* cell = 0;
+    Gtk::CellRenderer* cell = nullptr;
 
     if(i == 0 && !m_repacked_first_cell)
     {

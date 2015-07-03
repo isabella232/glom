@@ -44,16 +44,16 @@ static bool attempt_instantiation(const std::string& filepath, const xmlpp::Elem
   }
 
   // Try to get the widget, checking that it has the correct type:
-  Gtk::Widget* widget = 0;
+  Gtk::Widget* widget = nullptr;
   if(gclassname == "GtkWindow")
   {
-    Gtk::Window* window = 0;
+    Gtk::Window* window = nullptr;
     builder->get_widget(id, window);
     widget = window;
   }
   else if(gclassname == "GtkDialog")
   {
-    Gtk::Dialog* dialog = 0;
+    Gtk::Dialog* dialog = nullptr;
     builder->get_widget(id, dialog);
     widget = dialog;
   }

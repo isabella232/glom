@@ -34,7 +34,7 @@ const bool Box_Tables::glade_developer(false);
 
 Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Box_WithButtons(cobject, builder),
-  m_pCheckButtonShowHidden(0),
+  m_pCheckButtonShowHidden(nullptr),
   m_colTableName(0),
   m_colHidden(0),
   m_colTitle(0),
@@ -42,14 +42,14 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_colTitleSingular(0)
 {
   //Get the Glade-instantiated widgets, and connect signal handlers:
-  Gtk::Button* pButtonCancel = 0;
+  Gtk::Button* pButtonCancel = nullptr;
   builder->get_widget("button_cancel_tables", pButtonCancel);
   set_button_cancel(*pButtonCancel);
 
   // Set a name for the AddDel TreeView, so it can be accessed by LDTP
   m_AddDel.set_treeview_accessible_name("Tables");
 
-  Gtk::Box* pAddDelParent = 0;
+  Gtk::Box* pAddDelParent = nullptr;
   builder->get_widget("vbox_adddel_parent", pAddDelParent);
   pAddDelParent->pack_start(m_AddDel);
 

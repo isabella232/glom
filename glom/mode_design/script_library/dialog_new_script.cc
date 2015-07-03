@@ -28,7 +28,7 @@ const bool Dialog_NewScript::glade_developer(true);
 
 Dialog_NewScript::Dialog_NewScript(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_entry_name(0)
+  m_entry_name(nullptr)
 {
   builder->get_widget("entry_name", m_entry_name);
 

@@ -553,7 +553,7 @@ void Box_Data_List::on_dialog_layout_hide()
 
 Dialog_Layout* Box_Data_List::create_layout_dialog() const
 {
-  Dialog_Layout_List* dialog = 0;
+  Dialog_Layout_List* dialog = nullptr;
   Glom::Utils::get_glade_widget_derived_with_warning(dialog);
   return dialog;
 }

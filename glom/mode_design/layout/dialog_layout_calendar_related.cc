@@ -37,13 +37,13 @@ const bool Dialog_Layout_Calendar_Related::glade_developer(true);
 
 Dialog_Layout_Calendar_Related::Dialog_Layout_Calendar_Related(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Layout_List(cobject, builder),
-  m_combo_relationship(0),
-  m_checkbutton_show_child_relationships(0),
-  m_radio_navigation_automatic(0),
-  m_radio_navigation_specify(0),
-  m_label_navigation_automatic(0),
-  m_combo_navigation_specify(0),
-  m_combobox_date_field(0)
+  m_combo_relationship(nullptr),
+  m_checkbutton_show_child_relationships(nullptr),
+  m_radio_navigation_automatic(nullptr),
+  m_radio_navigation_specify(nullptr),
+  m_label_navigation_automatic(nullptr),
+  m_combo_navigation_specify(nullptr),
+  m_combobox_date_field(nullptr)
 {
   // Show the appropriate alternate widgets:
   m_box_table_widgets->hide();
@@ -87,7 +87,7 @@ Dialog_Layout_Calendar_Related::Dialog_Layout_Calendar_Related(BaseObjectType* c
 
   //The base class hid this, but we do want it here:
   //(We share one glade definition for several dialogs.)
-  Gtk::Frame* box_calendar = 0;
+  Gtk::Frame* box_calendar = nullptr;
   builder->get_widget("frame_calendar", box_calendar);
   box_calendar->show();
 

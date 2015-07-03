@@ -30,9 +30,9 @@ const bool Dialog_FieldSummary::glade_developer(true);
 
 Dialog_FieldSummary::Dialog_FieldSummary(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_label_field(0),
-  m_combo_summarytype(0),
-  m_button_field(0)
+  m_label_field(nullptr),
+  m_combo_summarytype(nullptr),
+  m_button_field(nullptr)
 {
   builder->get_widget("label_field", m_label_field);
   builder->get_widget_derived("combobox_summarytype", m_combo_summarytype);

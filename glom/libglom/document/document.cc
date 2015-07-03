@@ -3277,7 +3277,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const std::shared_
 
   //g_warning("save_before_layout_group");
 
-  xmlpp::Element* child = 0;
+  xmlpp::Element* child = nullptr;
 
   std::shared_ptr<const LayoutItem_GroupBy> group_by = std::dynamic_pointer_cast<const LayoutItem_GroupBy>(group);
   if(group_by) //If it is a GroupBy report part.
@@ -3454,7 +3454,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const std::shared_
     }
     else
     {
-      xmlpp::Element* nodeItem = 0;
+      xmlpp::Element* nodeItem = nullptr;
 
       std::shared_ptr<const LayoutItem_FieldSummary> fieldsummary = std::dynamic_pointer_cast<const LayoutItem_FieldSummary>(item);
       if(fieldsummary) //If it is a summaryfield
@@ -5121,7 +5121,7 @@ Glib::ustring Document::extract_backup_file(const Glib::ustring& backup_uri, std
 
   std::string contents_glom_file;
 
-  struct archive_entry* entry = 0;
+  struct archive_entry* entry = nullptr;
   while(archive_read_next_header(a, &entry) == ARCHIVE_OK)
   {
     const auto pathname = archive_entry_pathname(entry);

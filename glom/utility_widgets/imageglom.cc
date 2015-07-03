@@ -47,18 +47,18 @@ ImageGlom::type_vec_ustrings ImageGlom::m_evince_supported_mime_types;
 ImageGlom::type_vec_ustrings ImageGlom::m_gdkpixbuf_supported_mime_types;
 
 ImageGlom::ImageGlom()
-: m_ev_view(0),
-  m_ev_document_model(0),
-  m_pMenuPopup_UserMode(0)
+: m_ev_view(nullptr),
+  m_ev_document_model(nullptr),
+  m_pMenuPopup_UserMode(nullptr)
 {
   init();
 }
 
 ImageGlom::ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::EventBox(cobject),
-  m_ev_view(0),
-  m_ev_document_model(0),
-  m_pMenuPopup_UserMode(0)
+  m_ev_view(nullptr),
+  m_ev_document_model(nullptr),
+  m_pMenuPopup_UserMode(nullptr)
 {
   init();
 }
@@ -239,7 +239,7 @@ void ImageGlom::on_ev_job_finished(EvJob* job)
 
 const GdaBinary* ImageGlom::get_binary() const
 {
-  const GdaBinary* gda_binary = 0;
+  const GdaBinary* gda_binary = nullptr;
   if(m_original_data.get_value_type() == GDA_TYPE_BINARY)
     gda_binary = gda_value_get_binary(m_original_data.gobj());
   else if(m_original_data.get_value_type() == GDA_TYPE_BLOB)
@@ -292,7 +292,7 @@ void ImageGlom::fill_evince_supported_mime_types()
     if(!info)
       continue;
 
-    const char* mime_type = 0;
+    const char* mime_type = nullptr;
     int i = 0;
     while((mime_type = info->mime_types[i++]))
     {
@@ -346,7 +346,7 @@ void ImageGlom::show_image_data()
   if(m_ev_document_model)
   {
     g_object_unref(m_ev_document_model);
-    m_ev_document_model = 0;
+    m_ev_document_model = nullptr;
   }
 
   if(use_evince)
@@ -730,7 +730,7 @@ bool ImageGlom::save_file_sync(const Glib::ustring& uri)
 
 bool ImageGlom::save_file(const Glib::ustring& uri)
 {
-  DialogImageSaveProgress* dialog_save = 0;
+  DialogImageSaveProgress* dialog_save = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog_save);
   if(!dialog_save)
     return false;

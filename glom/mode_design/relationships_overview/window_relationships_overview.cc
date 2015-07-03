@@ -44,11 +44,11 @@ const bool Window_RelationshipsOverview::glade_developer(true);
 Window_RelationshipsOverview::Window_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
   : Gtk::ApplicationWindow(cobject),
     m_builder(builder),
-    m_menu(0),
+    m_menu(nullptr),
     m_modified(false),
-    m_scrolledwindow_canvas(0)
+    m_scrolledwindow_canvas(nullptr)
 {
-  Gtk::Button* button_close = 0;
+  Gtk::Button* button_close = nullptr;
   builder->get_widget("button_close",  button_close);
   if(button_close)
     button_close->signal_clicked().connect( sigc::mem_fun(*this, &Window_RelationshipsOverview::on_button_close) );
@@ -57,7 +57,7 @@ Window_RelationshipsOverview::Window_RelationshipsOverview(BaseObjectType* cobje
   m_refSettings = Gtk::PrintSettings::create();
 
   //Add a menu:
-  Gtk::Box* vbox = 0;
+  Gtk::Box* vbox = nullptr;
   builder->get_widget("vbox_placeholder_menubar", vbox);
 
   Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
@@ -90,7 +90,7 @@ Window_RelationshipsOverview::Window_RelationshipsOverview(BaseObjectType* cobje
 
 
   //Get the scolled window and add the canvas to it:
-  m_scrolledwindow_canvas = 0;
+  m_scrolledwindow_canvas = nullptr;
   builder->get_widget("scrolledwindow_canvas", m_scrolledwindow_canvas);
 
   m_scrolledwindow_canvas->add(m_canvas);

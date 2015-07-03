@@ -28,7 +28,7 @@ const bool Dialog_ChooseUser::glade_developer(true);
 
 Dialog_ChooseUser::Dialog_ChooseUser(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_combo_name(0)
+  m_combo_name(nullptr)
 {
   builder->get_widget_derived("combo_user_name", m_combo_name);
 }

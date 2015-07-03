@@ -41,7 +41,7 @@ namespace Glom
 Box_Data::Box_Data()
 : m_Button_Find(_("_Find"), true)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  ,m_pDialogLayout(0)
+  ,m_pDialogLayout(nullptr)
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 {
   m_bUnstoredData = false;

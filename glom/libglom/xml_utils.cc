@@ -63,7 +63,7 @@ void set_node_attribute_value(xmlpp::Element* node, const Glib::ustring& strAttr
 
 xmlpp::Element* get_node_child_named(const xmlpp::Element* node, const Glib::ustring& strName)
 {
-  xmlpp::Element* nodeResult = 0;
+  xmlpp::Element* nodeResult = nullptr;
 
   if(node)
   { 

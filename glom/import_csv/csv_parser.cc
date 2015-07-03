@@ -55,15 +55,11 @@ bool CsvParser::next_char_is_quote(const Glib::ustring::const_iterator& iter, co
 }
 
 CsvParser::CsvParser(const std::string& encoding_charset)
-: m_raw(0),
-  m_encoding(encoding_charset),
+: m_encoding(encoding_charset),
   m_input_position(0),
   m_in_quotes(false),
-  m_idle_connection(),
   m_line_number(0),
   m_state(STATE_NONE),
-  m_stream(),
-  m_rows(),
   m_row_index(0)
 {
 }

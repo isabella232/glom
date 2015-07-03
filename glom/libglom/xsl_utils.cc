@@ -71,7 +71,7 @@ static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std
   //std::cout << std::endl;
 
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(resource_path_xslt); //This must use a resource:// URI.
-  char* xslt_data = 0;
+  char* xslt_data = nullptr;
   gsize xslt_length = 0;
   try
   {
@@ -102,7 +102,7 @@ static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std
       xsltFreeStylesheet(cur);
 
       //Get the output text:
-      xmlChar* buffer = 0;
+      xmlChar* buffer = nullptr;
       int length = 0;
       xmlIndentTreeOutput = 1; //Format the output with extra white space. TODO: Is there a better way than this global variable?
       xmlDocDumpFormatMemoryEnc(pDocOutput, &buffer, &length, 0, 0);

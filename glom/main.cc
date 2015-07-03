@@ -121,7 +121,7 @@ int
 pgwin32_is_admin(void)
 {
   HANDLE    AccessToken;
-  char     *InfoBuffer = 0;
+  char     *InfoBuffer = nullptr;
   char    errbuf[256];
   PTOKEN_GROUPS Groups;
   PSID    AdministratorsSid;

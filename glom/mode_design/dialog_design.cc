@@ -29,9 +29,9 @@ namespace Glom
 
 Dialog_Design::Dialog_Design(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Window(cobject),
-  m_label_table(0)
+  m_label_table(nullptr)
 {
-  Gtk::Button* button_close = 0;
+  Gtk::Button* button_close = nullptr;
   builder->get_widget("button_close",  button_close);
   button_close->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Design::on_button_close) );
 

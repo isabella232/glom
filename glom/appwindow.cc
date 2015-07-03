@@ -71,7 +71,7 @@ static const Glib::ustring ACTION_GROUP_NAME_PRINT_LAYOUTS = "print-layouts-list
 //static const int GLOM_RESPONSE_BROWSE_NETWORK = 1;
 
 // Global application variable
-AppWindow* global_appwindow = 0;
+AppWindow* global_appwindow = nullptr;
 
 Glib::ustring AppWindow::m_current_locale;
 Glib::ustring AppWindow::m_original_locale;
@@ -83,20 +83,20 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 : GlomBakery::AppWindow_WithDoc("Glom"),
   Gtk::ApplicationWindow(cobject),
   m_builder(builder),
-  m_menubar(0),
-  m_pVBox(0),
+  m_menubar(nullptr),
+  m_pVBox(nullptr),
   m_VBox_PlaceHolder(Gtk::ORIENTATION_VERTICAL),
-  m_pBoxTop(0),
-  m_pFrame(0),
+  m_pBoxTop(nullptr),
+  m_pFrame(nullptr),
   m_bAboutShown(false),
-  m_pAbout(0),
+  m_pAbout(nullptr),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_window_translations(0),
+  m_window_translations(nullptr),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_ui_save_extra_showextras(false),
   m_ui_save_extra_newdb_hosting_mode(Document::HOSTING_MODE_DEFAULT),
-  m_avahi_progress_dialog(0),
+  m_avahi_progress_dialog(nullptr),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
 {
@@ -154,15 +154,15 @@ AppWindow::~AppWindow()
   }
 
   delete m_avahi_progress_dialog;
-  m_avahi_progress_dialog = 0;
+  m_avahi_progress_dialog = nullptr;
 
   #endif // !GLOM_ENABLE_CLIENT_ONLY
   
   delete m_pAbout;
-  m_pAbout = 0;
+  m_pAbout = nullptr;
 
   //This was set in the constructor:
-  global_appwindow = 0;
+  global_appwindow = nullptr;
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -170,7 +170,7 @@ void AppWindow::on_connection_avahi_begin()
 {
   //Create the dialog:
   delete m_avahi_progress_dialog;
-  m_avahi_progress_dialog = 0;
+  m_avahi_progress_dialog = nullptr;
 
   m_avahi_progress_dialog = new Gtk::MessageDialog(UiUtils::bold_message(_("Glom: Generating Encryption Certificates")), true, Gtk::MESSAGE_INFO);
   m_avahi_progress_dialog->set_secondary_text(_("Please wait while Glom prepares your system for publishing over the network."));
@@ -456,7 +456,7 @@ void AppWindow::on_menu_help_about()
   {
     //Re-create About box:
     delete m_pAbout;
-    m_pAbout = 0;
+    m_pAbout = nullptr;
 
     m_pAbout = new Gtk::AboutDialog;
 
@@ -477,7 +477,7 @@ void AppWindow::on_menu_help_about()
 
     //TODO: Use this, instead of the C API, when we can depend on gtkmm 3.12, with a try/catch:
     //Glib::RefPtr<Gdk::Pixbuf> logo = Gdk::Pixbuf::create_from_resource(glom_icon_path);
-    GError* gerror = 0;
+    GError* gerror = nullptr;
     Glib::RefPtr<Gdk::Pixbuf> logo =
       Glib::wrap(gdk_pixbuf_new_from_resource(glom_icon_path.c_str(), &gerror));
     if(gerror)
@@ -594,13 +594,13 @@ void AppWindow::ui_warning_load_failed(int failure_code)
 void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::ustring& service_name)
 {
   gsize length = 0;
-  gchar *document_contents = 0;
+  gchar *document_contents = nullptr;
 
   bool keep_trying = true;
   while(keep_trying)
   {
     //Request a password to attempt retrieval of the document over the network:
-    Dialog_Connection* dialog_connection = 0;
+    Dialog_Connection* dialog_connection = nullptr;
     //Load the Glade file and instantiate its widgets to get the dialog stuff:
     Utils::get_glade_widget_derived_with_warning(dialog_connection);
     if(!dialog_connection)
@@ -626,7 +626,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
       epc_consumer_set_username(consumer, username.c_str());
       epc_consumer_set_password(consumer, password.c_str());
 
-      GError *error = 0;
+      GError *error = nullptr;
       document_contents = (gchar*)epc_consumer_lookup(consumer, "document", &length, &error);
       if(error)
       {
@@ -655,7 +655,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
     }
 
     delete dialog_connection;
-    dialog_connection = 0;
+    dialog_connection = nullptr;
 
   }
 
@@ -1293,7 +1293,7 @@ void AppWindow::update_userlevel_ui()
 bool AppWindow::offer_new_or_existing()
 {
   //Offer to load an existing document, or start a new one.
-  Dialog_ExistingOrNew* dialog_raw = 0;
+  Dialog_ExistingOrNew* dialog_raw = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog_raw);
   std::shared_ptr<Dialog_ExistingOrNew> dialog(dialog_raw);
   dialog->set_transient_for(*this);
@@ -2141,7 +2141,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
   AppWindow& app = *this;
 
   std::shared_ptr<Gtk::FileChooserDialog> fileChooser_Save;
-  Glom::FileChooserDialog_SaveExtras* fileChooser_SaveExtras = 0;
+  Glom::FileChooserDialog_SaveExtras* fileChooser_SaveExtras = nullptr;
 
   //Create the appropriate dialog, depending on how the caller set m_ui_save_extra_showextras:
   if(m_ui_save_extra_showextras)
@@ -2357,7 +2357,7 @@ void AppWindow::stop_self_hosting_of_document_database()
 
 void AppWindow::on_menu_developer_changelanguage()
 {
-  Dialog_ChangeLanguage* dialog = 0;
+  Dialog_ChangeLanguage* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
@@ -2899,7 +2899,7 @@ AppWindow::enumSaveChanges AppWindow::ui_offer_to_save_changes()
 
   GlomBakery::Dialog_OfferSave::enumButtons buttonClicked = (GlomBakery::Dialog_OfferSave::enumButtons)pDialogQuestion->run();
   delete pDialogQuestion;
-  pDialogQuestion = 0;
+  pDialogQuestion = nullptr;
 
   if(buttonClicked == GlomBakery::Dialog_OfferSave::BUTTON_Save)
      result = GlomBakery::AppWindow_WithDoc::SAVECHANGES_Save;

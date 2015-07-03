@@ -38,7 +38,7 @@ const bool Dialog_Import_CSV_Progress::glade_developer(false);
 
 Dialog_Import_CSV_Progress::Dialog_Import_CSV_Progress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject), 
-  m_data_source(0), 
+  m_data_source(nullptr), 
   m_current_row(0)
 {
   builder->get_widget("import_csv_progress_progress_bar", m_progress_bar);

@@ -34,15 +34,15 @@ const char* Dialog_NewRecord::glade_id("dialog_new_record");
 const bool Dialog_NewRecord::glade_developer(false);
 
 Dialog_NewRecord::Dialog_NewRecord()
-: m_label_table_name(0),
-  m_vbox_parent(0)
+: m_label_table_name(nullptr),
+  m_vbox_parent(nullptr)
 {
 }
 
 Dialog_NewRecord::Dialog_NewRecord(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_label_table_name(0),
-  m_vbox_parent(0)
+  m_label_table_name(nullptr),
+  m_vbox_parent(nullptr)
 {
   builder->get_widget("label_table_name", m_label_table_name);
   builder->get_widget("vbox_parent", m_vbox_parent);

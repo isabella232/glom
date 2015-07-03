@@ -39,7 +39,7 @@ namespace Glom
 
 //Set the object's member data, from the parameters supplied when creating the object:
 PyGlomRecord::PyGlomRecord()
-: m_document(0),
+: m_document(nullptr),
   m_read_only(false)
 {
 }

@@ -67,7 +67,7 @@ static void apply_formatting(Gtk::CellRenderer* renderer, const std::shared_ptr<
 
 Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_item, const Glib::ustring& table_name, const Document* document, guint fixed_cell_height)
 {
-  Gtk::CellRenderer* cell = 0;
+  Gtk::CellRenderer* cell = nullptr;
 
   //Create the appropriate cellrenderer type:
   std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);

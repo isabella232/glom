@@ -56,7 +56,7 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
   if(pyValue)
   {
     Py_DECREF(pyValue);
-    pyValue = 0;
+    pyValue = nullptr;
   }
 
   //Call the function:

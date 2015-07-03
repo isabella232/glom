@@ -277,7 +277,7 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
     if(!value.gobj())
       return Glib::ustring();
  
-    gchar* str = 0;
+    gchar* str = nullptr;
     const auto value_type = value.get_value_type();
     if(value_type == GDA_TYPE_BINARY)
     {

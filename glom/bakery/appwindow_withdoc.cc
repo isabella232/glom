@@ -30,7 +30,7 @@ AppWindow_WithDoc::type_list_strings AppWindow_WithDoc::m_mime_types;
 
 AppWindow_WithDoc::AppWindow_WithDoc(const Glib::ustring& appname)
 : AppWindow(appname),
-  m_pDocument(0),
+  m_pDocument(nullptr),
   m_bCloseAfterSave(false)
 {
 }
@@ -39,7 +39,7 @@ AppWindow_WithDoc::~AppWindow_WithDoc()
 {
   //Delete the document:
   delete m_pDocument; //This will cause Document::signal_forget to be emitted, so the Views will then null their pointers as well. A smartpointer might be a better way to do this.
-  m_pDocument = 0;
+  m_pDocument = nullptr;
 }
 
 //static
@@ -155,7 +155,7 @@ bool AppWindow_WithDoc::open_document(const Glib::ustring& file_uri)
 
     //re-initialize document.
     delete pApp->m_pDocument;
-    pApp->m_pDocument = 0;
+    pApp->m_pDocument = nullptr;
     pApp->init_create_document();
 
     return false; //failed.

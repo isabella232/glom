@@ -48,7 +48,7 @@ void libglom_init()
 {
   //Threading is always enabled starting from GLib 2.31.0:
   //if(!Glib::thread_supported())
-  //Glib::thread_init(0); //So we can use GMutex.
+  //Glib::thread_init(nullptr); //So we can use GMutex.
 
   Gnome::Gda::init();
   Gio::init();

@@ -219,7 +219,7 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
 
   //Discover actual child widget that was added to the EggSpreadTable,
   //so we can use it again to call EggSpreadTable::get_child_line():
-  const Gtk::Widget* child = 0;
+  const Gtk::Widget* child = nullptr;
       
   //Check that it is really a child widget:
   const type_const_list_widgets::const_iterator iter_find = 

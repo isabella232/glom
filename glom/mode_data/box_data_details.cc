@@ -955,7 +955,7 @@ void Box_Data_Details::print_layout()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 Dialog_Layout* Box_Data_Details::create_layout_dialog() const
 {
-  Dialog_Layout_Details* dialog = 0;
+  Dialog_Layout_Details* dialog = nullptr;
   Glom::Utils::get_glade_widget_derived_with_warning(dialog);
   return dialog;
 }

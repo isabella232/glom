@@ -32,7 +32,7 @@ Document::Document()
   m_bIsNew = true;
   m_bModified = false;
   m_bReadOnly = false;
-  m_pView = 0;
+  m_pView = nullptr;
 }
 
 Document::~Document()

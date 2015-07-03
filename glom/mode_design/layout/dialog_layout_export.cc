@@ -34,16 +34,16 @@ const bool Dialog_Layout_Export::glade_developer(true);
 
 Dialog_Layout_Export::Dialog_Layout_Export(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Layout(cobject, builder, false /* no table title */),
-  m_treeview_fields(0),
-  m_button_field_up(0),
-  m_button_field_down(0),
-  m_button_field_add(0),
-  m_button_field_delete(0),
-  m_button_field_edit(0),
-  m_label_table_name(0)
+  m_treeview_fields(nullptr),
+  m_button_field_up(nullptr),
+  m_button_field_down(nullptr),
+  m_button_field_add(nullptr),
+  m_button_field_delete(nullptr),
+  m_button_field_edit(nullptr),
+  m_label_table_name(nullptr)
 {
   builder->get_widget("label_table_name", m_label_table_name);
-  m_entry_table_title = 0; //Not in this glade file.
+  m_entry_table_title = nullptr; //Not in this glade file.
 
   builder->get_widget("treeview_fields", m_treeview_fields);
   if(m_treeview_fields)

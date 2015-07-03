@@ -48,21 +48,21 @@ const bool Dialog_Layout_Report::glade_developer(true);
 
 Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Layout(cobject, builder, false /* No table title */),
-  m_notebook_parts(0),
-  m_treeview_parts_header(0),
-  m_treeview_parts_footer(0),
-  m_treeview_parts_main(0),
-  m_treeview_available_parts(0),
-  m_button_up(0),
-  m_button_down(0),
-  m_button_add(0),
-  m_button_delete(0),
-  m_button_edit(0),
-  m_button_formatting(0),
-  m_label_table_name(0),
-  m_entry_name(0),
-  m_entry_title(0),
-  m_checkbutton_table_title(0)
+  m_notebook_parts(nullptr),
+  m_treeview_parts_header(nullptr),
+  m_treeview_parts_footer(nullptr),
+  m_treeview_parts_main(nullptr),
+  m_treeview_available_parts(nullptr),
+  m_button_up(nullptr),
+  m_button_down(nullptr),
+  m_button_add(nullptr),
+  m_button_delete(nullptr),
+  m_button_edit(nullptr),
+  m_button_formatting(nullptr),
+  m_label_table_name(nullptr),
+  m_entry_name(nullptr),
+  m_entry_title(nullptr),
+  m_checkbutton_table_title(nullptr)
 {
   builder->get_widget("label_table_name", m_label_table_name);
   builder->get_widget("entry_name", m_entry_name);
@@ -695,7 +695,7 @@ std::shared_ptr<Relationship> Dialog_Layout_Report::offer_relationship_list()
 {
   std::shared_ptr<Relationship> result;
 
-  Dialog_ChooseRelationship* dialog = 0;
+  Dialog_ChooseRelationship* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return result;
@@ -822,7 +822,7 @@ void Dialog_Layout_Report::on_button_edit()
       std::shared_ptr<LayoutItem_FieldSummary> fieldsummary = std::dynamic_pointer_cast<LayoutItem_FieldSummary>(item);
       if(fieldsummary)
       {
-        Dialog_FieldSummary* dialog = 0;
+        Dialog_FieldSummary* dialog = nullptr;
         Utils::get_glade_widget_derived_with_warning(dialog);
         add_view(dialog);
         dialog->set_item(fieldsummary, m_table_name);
@@ -891,7 +891,7 @@ void Dialog_Layout_Report::on_button_edit()
               std::shared_ptr<LayoutItem_GroupBy> group_by = std::dynamic_pointer_cast<LayoutItem_GroupBy>(item);
               if(group_by)
               {
-                Dialog_GroupBy* dialog = 0;
+                Dialog_GroupBy* dialog = nullptr;
                 Utils::get_glade_widget_derived_with_warning(dialog);
                 if(!dialog)
                   return;

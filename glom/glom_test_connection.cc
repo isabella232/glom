@@ -194,7 +194,7 @@ int main(int argc, char* argv[])
 
   //Specify the backend and backend-specific details to be used by the connectionpool.
   //This is usually done by ConnectionPool::setup_from_document():
-  Glom::ConnectionPoolBackends::Backend* backend = 0;
+  Glom::ConnectionPoolBackends::Backend* backend = nullptr;
 #ifdef GLOM_ENABLE_MYSQL
   if(group.m_arg_use_mysql)
   {

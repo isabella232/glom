@@ -34,8 +34,8 @@ const bool Dialog_Line::glade_developer(true);
 
 Dialog_Line::Dialog_Line(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_spinbutton_line_width(0),
-  m_colorbutton(0)
+  m_spinbutton_line_width(nullptr),
+  m_colorbutton(nullptr)
 {
   builder->get_widget("spinbutton_line_width",  m_spinbutton_line_width);
   builder->get_widget("colorbutton",  m_colorbutton);

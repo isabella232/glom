@@ -109,7 +109,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   //Make sure that we have a GdaBinary,
   //even if (as with SQLite) it's actually a GdaBlob that we get back:
-  const GdaBinary* binary_read = 0;
+  const GdaBinary* binary_read = nullptr;
   if(value_read_type == GDA_TYPE_BINARY)
     binary_read = gda_value_get_binary(value_read.gobj());
   else if(value_read_type == GDA_TYPE_BLOB)

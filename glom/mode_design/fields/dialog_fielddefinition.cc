@@ -36,7 +36,7 @@ const bool Dialog_FieldDefinition::glade_developer(true);
 
 Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Properties(cobject, builder),
-  m_pDataWidget_DefaultValueSimple(0)
+  m_pDataWidget_DefaultValueSimple(nullptr)
 {
   builder->get_widget_derived("combobox_type", m_pCombo_Type);
 
@@ -140,7 +140,7 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
 
   //Create an appropriate DataWidget for the default value:
   delete m_pDataWidget_DefaultValueSimple;
-  m_pDataWidget_DefaultValueSimple = 0;
+  m_pDataWidget_DefaultValueSimple = nullptr;
 
   //We use a regular DataWidget for the default value, so we can reuse its functionality,
   //but it's not a real field - hence the special title.
@@ -366,7 +366,7 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
 void Dialog_FieldDefinition::on_button_edit_calculation()
 {
   //TODO: Share a global instance, to make this quicker?
-  Dialog_FieldCalculation* dialog = 0;
+  Dialog_FieldCalculation* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;

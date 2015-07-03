@@ -149,7 +149,7 @@ int UiUtils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
  */
 void UiUtils::show_help(const Glib::ustring& id)
 {
-  GError* err = 0;
+  GError* err = nullptr;
   const gchar* pId;
   if(id.length())
   {
@@ -157,7 +157,7 @@ void UiUtils::show_help(const Glib::ustring& id)
   }
   else
   {
-    pId = 0;
+    pId = nullptr;
   }
 
   try
@@ -545,7 +545,7 @@ void UiUtils::show_report_in_browser(const std::string& filepath, Gtk::Window* p
   }
 
   //Use the GNOME browser:
-  GError* gerror = 0;
+  GError* gerror = nullptr;
   if(!gtk_show_uri(0 /* screen */, uri.c_str(), GDK_CURRENT_TIME, &gerror))
   {
     std::cerr << G_STRFUNC << ": " << gerror->message << std::endl;
@@ -594,7 +594,7 @@ void UiUtils::treeview_delete_all_columns(Gtk::TreeView* treeview)
     if(!pViewColumn)
       continue;
 
-    GtkTreeViewColumn* weak_ptr = 0;
+    GtkTreeViewColumn* weak_ptr = nullptr;
     g_object_add_weak_pointer (G_OBJECT (pViewColumn->gobj()), (gpointer*)&weak_ptr);
 
     //Keep the object alive, instead of letting gtk_tree_view_remove_column() delete it by reducing its reference to 0,

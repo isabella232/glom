@@ -83,7 +83,7 @@ void Label::on_menu_properties_activate()
   if(!textobject)
     return;
 
-  Dialog_TextObject* dialog = 0;
+  Dialog_TextObject* dialog = nullptr;
   Glom::Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;

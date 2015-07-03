@@ -125,7 +125,7 @@ GType SpreadTable::get_base_type()
 SpreadTable::SpreadTable()
 :
   // Mark this class as non-derived to allow C++ vfuncs to be skipped.
-  Glib::ObjectBase(0),
+  Glib::ObjectBase(nullptr),
   Gtk::Container(Glib::ConstructParams(spreadtable_class_.init()))
 {
 
@@ -135,8 +135,8 @@ SpreadTable::SpreadTable()
 SpreadTable::SpreadTable(Gtk::Orientation orientation, guint lines)
 :
   // Mark this class as non-derived to allow C++ vfuncs to be skipped.
-  Glib::ObjectBase(0),
-  Gtk::Container(Glib::ConstructParams(spreadtable_class_.init(), "orientation", ((GtkOrientation)(orientation)), "lines", lines, static_cast<char*>(0)))
+  Glib::ObjectBase(nullptr),
+  Gtk::Container(Glib::ConstructParams(spreadtable_class_.init(), "orientation", ((GtkOrientation)(orientation)), "lines", lines, static_cast<char*>(nullptr)))
 {
 
 

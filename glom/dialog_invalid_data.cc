@@ -34,7 +34,7 @@ const bool Dialog_InvalidData::glade_developer(false);
  */
 bool glom_show_dialog_invalid_data(Field::glom_field_type glom_type)
 {
-  Dialog_InvalidData* dialog = 0;
+  Dialog_InvalidData* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return false;
@@ -49,7 +49,7 @@ bool glom_show_dialog_invalid_data(Field::glom_field_type glom_type)
 
 Dialog_InvalidData::Dialog_InvalidData(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_label(0)
+  m_label(nullptr)
 {
   builder->get_widget("label_example_data", m_label);
 }

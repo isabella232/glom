@@ -82,7 +82,7 @@ Glib::ustring Conversions::format_date(const tm& tm_data)
 #define GLOM_NON_TRANSLATED_LOCALE_DATE_FORMAT "%x"
 
 // The % format to use to print and interpret dates, with 4-digit years:
-static const gchar* c_locale_date_format = 0;
+static const gchar* c_locale_date_format = nullptr;
 
 static inline const char* glom_get_locale_date_format()
 {
@@ -110,7 +110,7 @@ static inline const char* glom_get_locale_date_format()
 
     //std::cout << "DEBUG: LC_TIME: " << lc_time << std::endl;
 
-    char* old_lc_messages = 0;
+    char* old_lc_messages = nullptr;
     bool changed_lc_messages = false;
 
     if(lc_time)

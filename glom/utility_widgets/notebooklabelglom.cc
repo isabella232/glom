@@ -31,7 +31,7 @@ namespace Glom
 
 NotebookLabel::NotebookLabel(NotebookGlom* notebook) 
 : m_notebook(notebook),
-  m_pPopupMenu(0)
+  m_pPopupMenu(nullptr)
 {
   init();
 }
@@ -39,7 +39,7 @@ NotebookLabel::NotebookLabel(NotebookGlom* notebook)
 NotebookLabel::NotebookLabel(const Glib::ustring& label, NotebookGlom* notebook)
 : m_label(label),
   m_notebook (notebook),
-  m_pPopupMenu(0)
+  m_pPopupMenu(nullptr)
 {
   init();
 }

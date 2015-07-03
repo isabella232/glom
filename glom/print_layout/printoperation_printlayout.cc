@@ -21,7 +21,7 @@ namespace Glom
 {
 
 PrintOperationPrintLayout::PrintOperationPrintLayout()
-: m_canvas(0)
+: m_canvas(nullptr)
 {
   set_unit(Gtk::UNIT_MM);
   set_use_full_page(true); //Because we show the margins on our canvas.

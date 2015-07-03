@@ -105,7 +105,7 @@ private:
     // it can write to it.
     SECURITY_ATTRIBUTES security_attr;
     security_attr.nLength = sizeof(security_attr);
-    security_attr.lpSecurityDescriptor = 0;
+    security_attr.lpSecurityDescriptor = nullptr;
     security_attr.bInheritHandle = true;
 
     HANDLE result = CreateFile(filename.c_str(), GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_DELETE, &security_attr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
@@ -168,11 +168,11 @@ public:
 #ifdef G_OS_WIN32
     startup_info.cb = sizeof(startup_info);
     startup_info.dwFlags = STARTF_USESTDHANDLES;
-    startup_info.lpReserved = 0;
-    startup_info.lpDesktop = 0;
-    startup_info.lpTitle = 0;
-    startup_info.cbReserved2 = 0;
-    startup_info.lpReserved2 = 0;
+    startup_info.lpReserved = nullptr;
+    startup_info.lpDesktop = nullptr;
+    startup_info.lpTitle = nullptr;
+    startup_info.cbReserved2 = nullptr;
+    startup_info.lpReserved2 = nullptr;
     startup_info.hStdInput = INVALID_HANDLE_VALUE;
 
     if(redirect & REDIRECT_STDOUT)

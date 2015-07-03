@@ -44,7 +44,7 @@ namespace Glom
 
 Canvas_PrintLayout::Canvas_PrintLayout()
 : m_modified(false),
-  m_dialog_format(0),
+  m_dialog_format(nullptr),
   m_outline_visibility(false),
   m_page_count(1) //Sensible default
 {
@@ -326,7 +326,7 @@ std::shared_ptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(con
 {
   std::shared_ptr<LayoutItem_Portal> result = portal;
 
-  Dialog_Layout_List_Related* dialog = 0;
+  Dialog_Layout_List_Related* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return result;
@@ -345,7 +345,7 @@ std::shared_ptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(con
   result = dialog->get_portal_layout();
 
   delete dialog;
-  dialog = 0;
+  dialog = nullptr;
 
   return result;
 }
@@ -354,7 +354,7 @@ std::shared_ptr<LayoutItem_Line> Canvas_PrintLayout::offer_line(const std::share
 {
   std::shared_ptr<LayoutItem_Line> result = line;
 
-  Dialog_Line* dialog = 0;
+  Dialog_Line* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return result;
@@ -457,7 +457,7 @@ void Canvas_PrintLayout::on_context_menu_formatting()
   {
      remove_view(m_dialog_format);
      delete m_dialog_format;
-     m_dialog_format = 0;
+     m_dialog_format = nullptr;
   }
 
   Utils::get_glade_widget_derived_with_warning(m_dialog_format);
@@ -541,7 +541,7 @@ void Canvas_PrintLayout::on_dialog_format_hide()
   m_context_item->set_layout_item(layout_item); //Redraw the child item with the new formatting.
 
   delete m_dialog_format;
-  m_dialog_format = 0;
+  m_dialog_format = nullptr;
 }
 
 #endif //GLOM_ENABLE_CLIENT_ONLY

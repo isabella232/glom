@@ -29,19 +29,19 @@ const char* Dialog_ChooseRelationship::glade_id("dialog_choose_relationship");
 const bool Dialog_ChooseRelationship::glade_developer(true);
 
 Dialog_ChooseRelationship::Dialog_ChooseRelationship()
-: m_label_table_name(0),
-  m_button_select(0),
-  m_treeview(0),
-  m_document(0)
+: m_label_table_name(nullptr),
+  m_button_select(nullptr),
+  m_treeview(nullptr),
+  m_document(nullptr)
 {
 }
 
 Dialog_ChooseRelationship::Dialog_ChooseRelationship(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_label_table_name(0),
-  m_button_select(0),
-  m_treeview(0),
-  m_document(0)
+  m_label_table_name(nullptr),
+  m_button_select(nullptr),
+  m_treeview(nullptr),
+  m_document(nullptr)
 {
   builder->get_widget("button_select", m_button_select);
   builder->get_widget("label_table_name", m_label_table_name);

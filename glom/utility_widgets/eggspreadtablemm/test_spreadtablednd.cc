@@ -39,10 +39,10 @@ static const guint INITIAL_VSPACING = 2;
 static const guint INITIAL_LINES = 3;
 static const Gtk::Align INITIAL_HALIGN = Gtk::ALIGN_FILL;
 
-static Egg::SpreadTableDnd *paper = 0;
-static Gtk::ComboBoxText* combo_halign = 0;
-static Gtk::ComboBoxText* combo_orientation = 0;
-static Gtk::SpinButton* spinbutton_lines = 0;
+static Egg::SpreadTableDnd *paper = nullptr;
+static Gtk::ComboBoxText* combo_halign = nullptr;
+static Gtk::ComboBoxText* combo_orientation = nullptr;
+static Gtk::SpinButton* spinbutton_lines = nullptr;
 static Gtk::Align child_halign = INITIAL_HALIGN;
 static bool child_accepts_drops = true;
 static bool parent_accepts_drops = true;

@@ -31,9 +31,9 @@ const bool Dialog_FlowTable::glade_developer(true);
 		
 Dialog_FlowTable::Dialog_FlowTable(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_entry_title(0),
-  m_spin_columns(0),
-  m_flowtable(0)
+  m_entry_title(nullptr),
+  m_spin_columns(nullptr),
+  m_flowtable(nullptr)
 {
   builder->get_widget("entry_title",  m_entry_title);
   builder->get_widget("spin_columns",  m_spin_columns);

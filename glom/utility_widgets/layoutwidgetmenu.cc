@@ -30,7 +30,7 @@ namespace Glom
 
 LayoutWidgetMenu::LayoutWidgetMenu()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  : m_pMenuPopup(0)
+  : m_pMenuPopup(nullptr)
 #endif
 {
   #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -167,7 +167,7 @@ void LayoutWidgetMenu::on_menupopup_activate_delete()
     return;
   }
 
-  LayoutWidgetBase* base = 0;
+  LayoutWidgetBase* base = nullptr;
   do
   {
     parent = parent->get_parent();

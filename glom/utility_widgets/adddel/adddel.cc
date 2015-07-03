@@ -75,7 +75,7 @@ AddDelColumnInfo& AddDelColumnInfo::operator=(const AddDelColumnInfo& src)
 AddDel::AddDel()
 : Gtk::Box(Gtk::ORIENTATION_VERTICAL),
   m_col_key(0),
-  m_pMenuPopup(0),
+  m_pMenuPopup(nullptr),
   m_auto_add(true),
   m_allow_add(true),
   m_allow_delete(true)
@@ -87,7 +87,7 @@ AddDel::AddDel()
 AddDel::AddDel(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::Box(cobject),
   m_col_key(0),
-  m_pMenuPopup(0),
+  m_pMenuPopup(nullptr),
   m_auto_add(true),
   m_allow_add(true),
   m_allow_delete(true)
@@ -557,7 +557,7 @@ void AddDel::construct_specified_columns()
     type_vecModelColumns::size_type i = 0;
     for(const auto& column_info : m_ColumnTypes)
     {
-      Gtk::TreeModelColumnBase* pModelColumn = 0;
+      Gtk::TreeModelColumnBase* pModelColumn = nullptr;
 
       switch(column_info.m_style)
       {

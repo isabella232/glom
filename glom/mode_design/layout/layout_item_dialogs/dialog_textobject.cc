@@ -34,9 +34,9 @@ const bool Dialog_TextObject::glade_developer(true);
 
 Dialog_TextObject::Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_box_title(0),
-  m_entry_title(0),
-  m_text_view(0)
+  m_box_title(nullptr),
+  m_entry_title(nullptr),
+  m_text_view(nullptr)
 {
   builder->get_widget("vbox_title",  m_box_title);
   builder->get_widget("entry_title",  m_entry_title);

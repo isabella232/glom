@@ -84,9 +84,9 @@ static Glib::ustring get_traceback()
   //   for the Boost::Python code that this is based on:
 
 
-  PyObject* type = 0;
-  PyObject* value = 0;
-  PyObject* traceback = 0;
+  PyObject* type = nullptr;
+  PyObject* value = nullptr;
+  PyObject* traceback = nullptr;
   PyErr_Fetch(&type, &value, &traceback);
 
   if(!traceback)
@@ -494,7 +494,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       //(though I don't think this code is ever reached. murrayc)
 
       //Treat this as a string or something that can be converted to a string:
-      const char* pchResult = 0;
+      const char* pchResult = nullptr;
       try
       {
         pchResult = boost::python::extract<const char*>(pyResultCpp);

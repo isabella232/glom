@@ -43,14 +43,14 @@ const bool Window_Translations::glade_developer(true);
 
 Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Window(cobject),
-  m_treeview(0),
-  m_button_identify(0),
-  m_combo_target_locale(0),
-  m_label_source_locale(0),
-  m_button_ok(0),
-  m_button_cancel(0),
-  m_button_import(0),
-  m_button_export(0),
+  m_treeview(nullptr),
+  m_button_identify(nullptr),
+  m_combo_target_locale(nullptr),
+  m_label_source_locale(nullptr),
+  m_button_ok(nullptr),
+  m_button_cancel(nullptr),
+  m_button_import(nullptr),
+  m_button_export(nullptr),
   m_treeview_modified(false)
 {
   builder->get_widget("label_source_locale", m_label_source_locale);
@@ -153,7 +153,7 @@ void Window_Translations::enable_buttons()
 
 void Window_Translations::on_button_identify()
 {
-  Dialog_IdentifyOriginal* dialog = 0;
+  Dialog_IdentifyOriginal* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
@@ -292,7 +292,7 @@ void Window_Translations::on_button_ok()
 
 void Window_Translations::on_button_copy_translation()
 {
-  Dialog_CopyTranslation* dialog = 0;
+  Dialog_CopyTranslation* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;

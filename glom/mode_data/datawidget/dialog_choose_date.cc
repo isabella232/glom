@@ -33,13 +33,13 @@ const char* Dialog_ChooseDate::glade_id("dialog_choose_date");
 const bool Dialog_ChooseDate::glade_developer(false);
 
 Dialog_ChooseDate::Dialog_ChooseDate()
-: m_calendar(0)
+: m_calendar(nullptr)
 {
 }
 
 Dialog_ChooseDate::Dialog_ChooseDate(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_calendar(0)
+  m_calendar(nullptr)
 {
   builder->get_widget("calendar", m_calendar);
 

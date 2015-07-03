@@ -63,7 +63,7 @@ AppWindow* ButtonGlom::get_appwindow() const
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void ButtonGlom::on_menu_properties_activate()
 {
-  Dialog_ButtonScript* dialog = 0;
+  Dialog_ButtonScript* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;

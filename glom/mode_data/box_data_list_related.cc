@@ -349,7 +349,7 @@ void Box_Data_List_Related::on_dialog_layout_hide()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 Dialog_Layout* Box_Data_List_Related::create_layout_dialog() const
 {
-  Dialog_Layout_List_Related* dialog = 0;
+  Dialog_Layout_List_Related* dialog = nullptr;
   Glom::Utils::get_glade_widget_derived_with_warning(dialog);
   return dialog;
 }

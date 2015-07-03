@@ -25,13 +25,13 @@ namespace Glom
 
 PlaceHolder::PlaceHolder()
 : Gtk::Box(Gtk::ORIENTATION_VERTICAL),
-  m_pChild(0)
+  m_pChild(nullptr)
 {
 }
 
 PlaceHolder::PlaceHolder(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /*builder*/)
 : Gtk::Box(cobject),
-  m_pChild(0)
+  m_pChild(nullptr)
 {
 }
 
@@ -51,7 +51,7 @@ void PlaceHolder::remove()
   if(m_pChild)
   {
     Gtk::Box::remove(*m_pChild);
-    m_pChild = 0;
+    m_pChild = nullptr;
   }
 }
 

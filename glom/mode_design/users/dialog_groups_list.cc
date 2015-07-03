@@ -39,10 +39,10 @@ const bool Dialog_GroupsList::glade_developer(true);
 
 Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_treeview_groups(0),
-  m_button_group_new(0),
-  m_button_group_delete(0),
-  m_button_group_users(0)
+  m_treeview_groups(nullptr),
+  m_button_group_new(nullptr),
+  m_button_group_delete(nullptr),
+  m_button_group_users(nullptr)
 {
   //set_default_size(600, -1);
 
@@ -238,7 +238,7 @@ void Dialog_GroupsList::on_button_group_delete()
 
 void Dialog_GroupsList::on_button_group_new()
 {
-  Dialog_NewGroup* dialog = 0;
+  Dialog_NewGroup* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
@@ -280,7 +280,7 @@ void Dialog_GroupsList::on_button_group_users()
       Gtk::TreeModel::Row row = *iter;
       const Glib::ustring group_name = row[m_model_columns_groups.m_col_name];
 
-      Dialog_UsersList* dialog = 0;
+      Dialog_UsersList* dialog = nullptr;
       Utils::get_glade_widget_derived_with_warning(dialog);
       if(!dialog) //Unlikely and it already warns on stderr.
         return;

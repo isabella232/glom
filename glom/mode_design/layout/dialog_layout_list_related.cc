@@ -39,16 +39,16 @@ const bool Dialog_Layout_List_Related::glade_developer(true);
 
 Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Layout_List(cobject, builder),
-  m_combo_relationship(0),
-  m_checkbutton_show_child_relationships(0),
-  m_radio_navigation_automatic(0),
-  m_radio_navigation_none(0),
-  m_radio_navigation_specify(0),
-  m_label_navigation_automatic(0),
-  m_combo_navigation_specify(0),
-  m_spinbutton_row_line_width(0),
-  m_spinbutton_column_line_width(0),
-  m_colorbutton_line(0),
+  m_combo_relationship(nullptr),
+  m_checkbutton_show_child_relationships(nullptr),
+  m_radio_navigation_automatic(nullptr),
+  m_radio_navigation_none(nullptr),
+  m_radio_navigation_specify(nullptr),
+  m_label_navigation_automatic(nullptr),
+  m_combo_navigation_specify(nullptr),
+  m_spinbutton_row_line_width(nullptr),
+  m_spinbutton_column_line_width(nullptr),
+  m_colorbutton_line(nullptr),
   m_for_print_layout(false)
 {  
   // Show the appropriate alternate widgets:

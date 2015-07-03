@@ -83,7 +83,7 @@ template<class T_Widget>
 bool instantiate_widget()
 {
   //Test that the widget can be instantiated with its own glade ID.
-  T_Widget* widget = 0;
+  T_Widget* widget = nullptr;
   Glom::Utils::get_glade_widget_derived_with_warning(widget);
   if(!widget)
   {
@@ -98,7 +98,7 @@ bool instantiate_widget()
   //but hopefully it will catch some problems:
 
   //GTK+ complains if the a Gtk::Dialog has no transient parent.
-  Gtk::Window* parent_window = 0;
+  Gtk::Window* parent_window = nullptr;
   Gtk::Dialog* dialog = dynamic_cast<Gtk::Dialog*>(widget);
   if(dialog)
   {

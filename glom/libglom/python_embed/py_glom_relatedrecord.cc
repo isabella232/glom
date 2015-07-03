@@ -35,7 +35,7 @@ namespace Glom
 {
 
 PyGlomRelatedRecord::PyGlomRelatedRecord()
-: m_document(0)
+: m_document(nullptr)
 {
 }
 

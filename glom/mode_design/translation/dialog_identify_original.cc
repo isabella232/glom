@@ -34,8 +34,8 @@ const bool Dialog_IdentifyOriginal::glade_developer(true);
 
 Dialog_IdentifyOriginal::Dialog_IdentifyOriginal(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_label_original(0),
-  m_combo_locale(0)
+  m_label_original(nullptr),
+  m_combo_locale(nullptr)
 {
   builder->get_widget("label_original", m_label_original);
   builder->get_widget_derived("combobox_locale", m_combo_locale);

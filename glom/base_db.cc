@@ -88,7 +88,7 @@ private:
 
 Base_DB::Base_DB()
 {
-  //m_pDocument = 0;
+  //m_pDocument = nullptr;
 }
 
 Base_DB::~Base_DB()
@@ -329,7 +329,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection()
   if(!sharedconnection)
   {
     std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
-    return Glib::RefPtr<Gnome::Gda::Connection>(0);
+    return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
@@ -348,7 +348,7 @@ std::shared_ptr<LayoutItem_Field> Base_DB::offer_field_list_select_one_field(con
 {
   std::shared_ptr<LayoutItem_Field> result;
 
-  Dialog_ChooseField* dialog = 0;
+  Dialog_ChooseField* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return result;
@@ -378,7 +378,7 @@ Base_DB::type_list_field_items Base_DB::offer_field_list(const Glib::ustring& ta
 {
   type_list_field_items result;
 
-  Dialog_ChooseField* dialog = 0;
+  Dialog_ChooseField* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return result;
@@ -432,7 +432,7 @@ std::shared_ptr<LayoutItem_Field> Base_DB::offer_field_formatting(const std::sha
 {
   std::shared_ptr<LayoutItem_Field> result;
 
-  Dialog_FieldLayout* dialog = 0;
+  Dialog_FieldLayout* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return result;
@@ -463,7 +463,7 @@ std::shared_ptr<LayoutItem_Text> Base_DB::offer_textobject(const std::shared_ptr
 {
   std::shared_ptr<LayoutItem_Text> result = start_textobject;
 
-  Dialog_TextObject* dialog = 0;
+  Dialog_TextObject* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return result;
@@ -489,7 +489,7 @@ std::shared_ptr<LayoutItem_Image> Base_DB::offer_imageobject(const std::shared_p
 {
   std::shared_ptr<LayoutItem_Image> result = start_imageobject;
 
-  Dialog_ImageObject* dialog = 0;
+  Dialog_ImageObject* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return result;
@@ -515,7 +515,7 @@ std::shared_ptr<LayoutItem_Notebook> Base_DB::offer_notebook(const std::shared_p
 {
   std::shared_ptr<LayoutItem_Notebook> result = start_notebook;
 
-  Dialog_Notebook* dialog = 0;
+  Dialog_Notebook* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return result;

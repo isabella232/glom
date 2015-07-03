@@ -25,7 +25,7 @@ namespace Glom
 {
 
 CellRendererList::CellRendererList()
-:  Glib::ObjectBase(0) //Mark this class as gtkmmproc-generated, rather than a custom class, to allow vfunc optimisations.
+:  Glib::ObjectBase(nullptr) //Mark this class as gtkmmproc-generated, rather than a custom class, to allow vfunc optimisations.
    //TODO: This should not be necessary - our gtkmm callbacks are somehow preventing the popup from appearing.
 {
   m_refModel = Gtk::ListStore::create(m_model_columns);

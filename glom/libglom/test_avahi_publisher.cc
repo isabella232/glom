@@ -31,7 +31,7 @@ TestWindow::TestWindow()
 : m_box(Gtk::ORIENTATION_VERTICAL, Glom::UiUtils::DEFAULT_SPACING_SMALL),
   m_button_start("Start"),
   m_button_stop("Stop"),
-  m_avahi_publisher(0)
+  m_avahi_publisher(nullptr)
 {
   set_border_width(10);
   add(m_box);
@@ -67,7 +67,7 @@ void TestWindow::on_button_stop()
   std::cout << "Stopping" << std::endl;
 
   delete m_avahi_publisher;
-  m_avahi_publisher = 0;
+  m_avahi_publisher = nullptr;
 }
 
 

@@ -104,16 +104,16 @@ void SharedConnection::close()
 }
 
 //init_db_details static data:
-ConnectionPool* ConnectionPool::m_instance = 0;
+ConnectionPool* ConnectionPool::m_instance = nullptr;
 
 ConnectionPool::ConnectionPool()
 :
-  m_epc_publisher(0),
-  m_dialog_epc_progress(0),
-  m_backend(0),
+  m_epc_publisher(nullptr),
+  m_dialog_epc_progress(nullptr),
+  m_backend(nullptr),
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
-  m_pFieldTypes(0),
+  m_pFieldTypes(nullptr),
   m_show_debug_output(false),
   m_auto_server_shutdown(true),
   m_fake_connection(false)
@@ -123,7 +123,7 @@ ConnectionPool::ConnectionPool()
 ConnectionPool::~ConnectionPool()
 {
   delete m_pFieldTypes;
-  m_pFieldTypes = 0;
+  m_pFieldTypes = nullptr;
 }
 
 //static
@@ -200,7 +200,7 @@ void ConnectionPool::setup_from_document(const Document* document)
 void ConnectionPool::delete_instance()
 {
   delete m_instance;
-  m_instance = 0;
+  m_instance = nullptr;
 }
 
 bool ConnectionPool::get_ready_to_connect() const
@@ -239,7 +239,7 @@ bool ConnectionPool::get_backend_supports_cursor() const
 //static:
 std::shared_ptr<SharedConnection> ConnectionPool::get_and_connect()
 {
-  std::shared_ptr<SharedConnection> result(0);
+  std::shared_ptr<SharedConnection> result;
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
@@ -290,7 +290,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
   //std::cout << G_STRFUNC << ": debug" << std::endl;
 
   //Don't try to connect if we don't have a backend to connect to.
-  g_return_val_if_fail(m_backend.get(), std::shared_ptr<SharedConnection>(0));
+  g_return_val_if_fail(m_backend.get(), std::shared_ptr<SharedConnection>());
 
   if(get_ready_to_connect() || m_fake_connection)
   {
@@ -398,7 +398,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
     //std::cerr << G_STRFUNC << ": not ready to connect." << std::endl;
   }
 
-  return std::shared_ptr<SharedConnection>(0);
+  return std::shared_ptr<SharedConnection>();
 }
 
 void ConnectionPool::create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name)
@@ -536,7 +536,7 @@ void ConnectionPool::invalidate_connection()
   m_sharedconnection_refcount = 0;
 
   delete m_pFieldTypes;
-  m_pFieldTypes = 0;
+  m_pFieldTypes = nullptr;
 }
 
 void ConnectionPool::on_sharedconnection_finished()
@@ -961,7 +961,7 @@ void ConnectionPool::avahi_start_publishing()
     epc_publisher_set_service_cookie(m_epc_publisher, m_database.c_str());
 
   //Start the publisher, serving HTTPS:
-  GError* error = 0;
+  GError* error = nullptr;
   epc_publisher_run_async(m_epc_publisher, &error);
   if(error)
   {
@@ -987,7 +987,7 @@ void ConnectionPool::avahi_stop_publishing()
   epc_publisher_quit(m_epc_publisher);
 #endif // !G_OS_WIN32
   g_object_unref(m_epc_publisher);
-  m_epc_publisher = 0;
+  m_epc_publisher = nullptr;
 }
 #endif // !G_OS_WIN32
 

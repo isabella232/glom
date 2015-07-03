@@ -35,9 +35,9 @@ const bool Dialog_ImageObject::glade_developer(true);
 
 Dialog_ImageObject::Dialog_ImageObject(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_box_title(0),
-  m_entry_title(0),
-  m_image(0)
+  m_box_title(nullptr),
+  m_entry_title(nullptr),
+  m_image(nullptr)
 {
   builder->get_widget("vbox_title", m_box_title);
   builder->get_widget("entry_title", m_entry_title);

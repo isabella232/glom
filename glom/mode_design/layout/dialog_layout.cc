@@ -27,12 +27,12 @@ namespace Glom
 
 Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, bool with_table_title)
 : Gtk::Dialog(cobject),
-  m_entry_table_title(0),
-  m_label_table_title(0),
+  m_entry_table_title(nullptr),
+  m_label_table_title(nullptr),
   m_editable_layout(true),
   m_modified(false)
 {
-  Gtk::Button* button = 0;
+  Gtk::Button* button = nullptr;
   builder->get_widget("button_close", button);
   button->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout::on_button_close) );
 

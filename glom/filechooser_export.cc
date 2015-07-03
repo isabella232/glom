@@ -32,9 +32,9 @@ FileChooser_Export::FileChooser_Export()
   m_extra_widget(Gtk::ORIENTATION_HORIZONTAL, UiUtils::DEFAULT_SPACING_SMALL),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_button_format(_("Define Data _Format"), true /* use mnenomic */),
-  m_pDialogLayout(0),
+  m_pDialogLayout(nullptr),
 #endif //GLOM_ENABLE_CLIENT_ONLY
-  m_document(0)
+  m_document(nullptr)
 {
   add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   add_button(_("_Export"), Gtk::RESPONSE_OK);
@@ -52,7 +52,7 @@ FileChooser_Export::FileChooser_Export()
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //TODO: Use a generic layout dialog?
-  Dialog_Layout_Export* dialog = 0;
+  Dialog_Layout_Export* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog)
     return;
@@ -67,7 +67,7 @@ FileChooser_Export::~FileChooser_Export()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   delete m_pDialogLayout;
-  m_pDialogLayout = 0;
+  m_pDialogLayout = nullptr;
 #endif //GLOM_ENABLE_CLIENT_ONLY
 }
 

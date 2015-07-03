@@ -35,8 +35,8 @@ const bool Dialog_DefaultFormatting::glade_developer(true);
 
 Dialog_DefaultFormatting::Dialog_DefaultFormatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Properties(cobject, builder),
-  m_box_formatting_placeholder(0),
-  m_box_formatting(0)
+  m_box_formatting_placeholder(nullptr),
+  m_box_formatting(nullptr)
 {
   //Get the place to put the Formatting stuff:
   builder->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);

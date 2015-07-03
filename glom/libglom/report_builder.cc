@@ -32,7 +32,7 @@ namespace Glom
 {
 
 ReportBuilder::ReportBuilder(const std::locale& locale)
-: m_document(0),
+: m_document(nullptr),
   m_locale(locale)
 {
   m_locale_id = Utils::locale_simplify(locale.name());

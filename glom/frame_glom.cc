@@ -73,29 +73,29 @@ namespace Glom
 
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : PlaceHolder(cobject, builder),
-  m_pLabel_Table_DataMode(0),
-  m_pLabel_Table_FindMode(0),
+  m_pLabel_Table_DataMode(nullptr),
+  m_pLabel_Table_FindMode(nullptr),
   m_Box_RecordsCount(Gtk::ORIENTATION_HORIZONTAL, UiUtils::DEFAULT_SPACING_SMALL),
   m_Button_FindAll(_("Find All")),
-  m_stack_mode(0),
-  m_pBox_Tables(0),
-  m_pDialog_Tables(0),
-  m_pBox_QuickFind(0),
-  m_pEntry_QuickFind(0),
-  m_pButton_QuickFind(0),
+  m_stack_mode(nullptr),
+  m_pBox_Tables(nullptr),
+  m_pDialog_Tables(nullptr),
+  m_pBox_QuickFind(nullptr),
+  m_pEntry_QuickFind(nullptr),
+  m_pButton_QuickFind(nullptr),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_pDialog_Reports(0),
-  m_pDialogLayoutReport(0),
-  m_pBox_Reports(0),
-  m_pDialog_PrintLayouts(0),
-  m_pDialogLayoutPrint(0),
-  m_pBox_PrintLayouts(0),
-  m_pDialog_Fields(0),
-  m_pDialog_Relationships(0),
-  m_dialog_addrelatedtable(0),
-  m_window_relationships_overview(0),
+  m_pDialog_Reports(nullptr),
+  m_pDialogLayoutReport(nullptr),
+  m_pBox_Reports(nullptr),
+  m_pDialog_PrintLayouts(nullptr),
+  m_pDialogLayoutPrint(nullptr),
+  m_pBox_PrintLayouts(nullptr),
+  m_pDialog_Fields(nullptr),
+  m_pDialog_Relationships(nullptr),
+  m_dialog_addrelatedtable(nullptr),
+  m_window_relationships_overview(nullptr),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  m_pDialogConnection(0)
+  m_pDialogConnection(nullptr)
 {
   m_pLabel_Table_DataMode = Gtk::manage(new Gtk::Label(_("No Table Selected")));
   m_pLabel_Table_DataMode->show();
@@ -127,7 +127,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pBox_QuickFind->show_all_children();
   m_pBox_QuickFind->hide();
 
-  PlaceHolder* placeholder_quickfind = 0;
+  PlaceHolder* placeholder_quickfind = nullptr;
   builder->get_widget_derived("vbox_quickfind", placeholder_quickfind);
   if(placeholder_quickfind)
     placeholder_quickfind->add(*m_pBox_QuickFind);
@@ -180,7 +180,7 @@ Frame_Glom::~Frame_Glom()
     remove_view(m_pBox_Tables);
 
   delete m_pDialog_Tables;
-  m_pDialog_Tables = 0;
+  m_pDialog_Tables = nullptr;
 
   remove_view(&m_Notebook_Data); //Also a composite view.
   remove_view(&m_Notebook_Find); //Also a composite view.
@@ -190,7 +190,7 @@ Frame_Glom::~Frame_Glom()
   {
     remove_view(m_pDialogConnection);
     delete m_pDialogConnection;
-    m_pDialogConnection = 0;
+    m_pDialogConnection = nullptr;
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -204,42 +204,42 @@ Frame_Glom::~Frame_Glom()
   {
     remove_view(m_pDialog_Relationships);
     delete m_pDialog_Relationships;
-    m_pDialog_Relationships = 0;
+    m_pDialog_Relationships = nullptr;
   }
 
   if(m_pDialogLayoutReport)
   {
     remove_view(m_pDialogLayoutReport);
     delete m_pDialogLayoutReport;
-    m_pDialogLayoutReport = 0;
+    m_pDialogLayoutReport = nullptr;
   }
 
   if(m_pDialogLayoutPrint)
   {
     remove_view(m_pDialogLayoutPrint);
     delete m_pDialogLayoutPrint;
-    m_pDialogLayoutPrint = 0;
+    m_pDialogLayoutPrint = nullptr;
   }
 
   if(m_pDialog_Fields)
   {
     remove_view(m_pDialog_Fields);
     delete m_pDialog_Fields;
-    m_pDialog_Fields = 0;
+    m_pDialog_Fields = nullptr;
   }
 
   if(m_dialog_addrelatedtable)
   {
     remove_view(m_dialog_addrelatedtable);
     delete m_dialog_addrelatedtable;
-    m_dialog_addrelatedtable = 0;
+    m_dialog_addrelatedtable = nullptr;
   }
 
   if(m_window_relationships_overview)
   {
     remove_view(m_window_relationships_overview);
     delete m_window_relationships_overview;
-    m_window_relationships_overview = 0;
+    m_window_relationships_overview = nullptr;
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
@@ -749,7 +749,7 @@ void Frame_Glom::on_menu_file_import()
     {
       file_chooser.hide();
 
-      Dialog_Import_CSV* dialog = 0;
+      Dialog_Import_CSV* dialog = nullptr;
       Glom::Utils::get_glade_widget_derived_with_warning(dialog);
       if(!dialog) //Unlikely and it already warns on stderr.
         return;
@@ -761,7 +761,7 @@ void Frame_Glom::on_menu_file_import()
       {
         dialog->hide();
 
-        Dialog_Import_CSV_Progress* progress_dialog = 0;
+        Dialog_Import_CSV_Progress* progress_dialog = nullptr;
         Glom::Utils::get_glade_widget_derived_with_warning(progress_dialog);
         int response = Gtk::RESPONSE_OK;
         if(!progress_dialog)
@@ -778,7 +778,7 @@ void Frame_Glom::on_menu_file_import()
 
           remove_view(progress_dialog);
           delete progress_dialog;
-          progress_dialog = 0;
+          progress_dialog = nullptr;
 
           // Force update from database so the newly added entries are shown
           show_table_refresh();
@@ -1095,7 +1095,7 @@ void Frame_Glom::on_menu_Tables_AddRelatedTable()
   {
     remove_view(m_dialog_addrelatedtable);
     delete m_dialog_addrelatedtable;
-    m_dialog_addrelatedtable = 0;
+    m_dialog_addrelatedtable = nullptr;
   }
 
   Utils::get_glade_widget_derived_with_warning(m_dialog_addrelatedtable);
@@ -1538,7 +1538,7 @@ void Frame_Glom::load_from_document()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_menu_developer_database_preferences()
 {
-  Dialog_Database_Preferences* dialog = 0;
+  Dialog_Database_Preferences* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
@@ -1656,7 +1656,7 @@ void Frame_Glom::on_menu_developer_relationships()
 
 void Frame_Glom::on_menu_developer_users()
 {
-  Dialog_GroupsList* dialog = 0;
+  Dialog_GroupsList* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
@@ -1764,7 +1764,7 @@ void Frame_Glom::on_menu_developer_print_layouts()
 
 void Frame_Glom::on_menu_developer_script_library()
 {
-  Dialog_ScriptLibrary* dialog = 0;
+  Dialog_ScriptLibrary* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
@@ -1936,7 +1936,7 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
     return false;
 
   //Ask for a new username and password to specify when creating a new self-hosted database.
-  Dialog_InitialPassword* dialog = 0;
+  Dialog_InitialPassword* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog)
     return false;
@@ -1972,7 +1972,7 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
 
   remove_view(dialog);
   delete dialog;
-  dialog = 0;
+  dialog = nullptr;
 
   return (response == Gtk::RESPONSE_OK);
 }
@@ -2279,7 +2279,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
   {
     //We recreate the dialog each time to make sure it is clean of any changes:
     delete m_pDialogConnection;
-    m_pDialogConnection = 0;
+    m_pDialogConnection = nullptr;
 
     Utils::get_glade_widget_derived_with_warning(m_pDialogConnection);
     if(!m_pDialogConnection)
@@ -2307,7 +2307,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
   {
     //Later, if m_pDialogConnection is null then we assume we should use the known user/password:
     delete m_pDialogConnection;
-    m_pDialogConnection = 0;
+    m_pDialogConnection = nullptr;
   }
 
 
@@ -2391,7 +2391,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
   if(!result)
   {
     //Tell the user:
-    Gtk::Dialog* dialog = 0;
+    Gtk::Dialog* dialog = nullptr;
     Utils::get_glade_widget_with_warning("glom_developer.glade", "dialog_error_create_database", dialog);
     if(!dialog)
     {

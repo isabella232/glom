@@ -34,24 +34,24 @@ const char* Dialog_ChooseID::glade_id("dialog_find_id");
 const bool Dialog_ChooseID::glade_developer(false);
 
 Dialog_ChooseID::Dialog_ChooseID()
-: m_label_table_name(0),
-  m_pBox_QuickFind(0),
-  m_pEntry_QuickFind(0),
-  m_pButton_QuickFind(0),
-  m_vbox_parent(0),
-  m_document(0),
+: m_label_table_name(nullptr),
+  m_pBox_QuickFind(nullptr),
+  m_pEntry_QuickFind(nullptr),
+  m_pButton_QuickFind(nullptr),
+  m_vbox_parent(nullptr),
+  m_document(nullptr),
   m_stage(STAGE_INVALID)
 {
 }
 
 Dialog_ChooseID::Dialog_ChooseID(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_label_table_name(0),
-  m_pBox_QuickFind(0),
-  m_pEntry_QuickFind(0),
-  m_pButton_QuickFind(0),
-  m_vbox_parent(0),
-  m_document(0),
+  m_label_table_name(nullptr),
+  m_pBox_QuickFind(nullptr),
+  m_pEntry_QuickFind(nullptr),
+  m_pButton_QuickFind(nullptr),
+  m_vbox_parent(nullptr),
+  m_document(nullptr),
   m_stage(STAGE_INVALID)
 {
   builder->get_widget("label_table_name", m_label_table_name);

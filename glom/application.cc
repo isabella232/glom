@@ -47,7 +47,7 @@ void Application::create_window(const Glib::RefPtr<Gio::File>& file)
 {
   //std::cout << G_STRFUNC << ": debug" << std::endl;
 
-  AppWindow* window = 0;
+  AppWindow* window = nullptr;
   Glom::Utils::get_glade_widget_derived_with_warning(window);
   g_assert(window);
 

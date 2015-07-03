@@ -25,7 +25,7 @@ namespace GlomBakery
 
 
 Document_XML::Document_XML()
-: m_pDOM_Document(0),
+: m_pDOM_Document(nullptr),
   m_write_formatted(false)
 {
 }

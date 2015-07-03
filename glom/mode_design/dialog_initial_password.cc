@@ -32,8 +32,8 @@ const bool Dialog_InitialPassword::glade_developer(true);
 Dialog_InitialPassword::Dialog_InitialPassword(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   Base_DB(),
-  m_entry_user(0),
-  m_entry_password(0)
+  m_entry_user(nullptr),
+  m_entry_password(nullptr)
 {
   builder->get_widget("entry_user", m_entry_user);
   builder->get_widget("entry_password", m_entry_password);

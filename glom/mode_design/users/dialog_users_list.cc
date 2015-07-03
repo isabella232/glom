@@ -36,13 +36,13 @@ const bool Dialog_UsersList::glade_developer(true);
 
 Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_treeview_users(0),
-  m_combo_group(0),
-  m_button_user_add(0),
-  m_button_user_remove(0),
-  m_button_user_new(0),
-  m_button_user_delete(0),
-  m_button_user_edit(0)
+  m_treeview_users(nullptr),
+  m_combo_group(nullptr),
+  m_button_user_add(nullptr),
+  m_button_user_remove(nullptr),
+  m_button_user_new(nullptr),
+  m_button_user_delete(nullptr),
+  m_button_user_edit(nullptr)
 {
   builder->get_widget("combobox_group", m_combo_group);
   m_combo_group->signal_changed().connect(sigc::mem_fun(*this, &Dialog_UsersList::on_combo_group_changed));
@@ -189,7 +189,7 @@ void Dialog_UsersList::on_button_user_add()
     return;
   }
 
-  Dialog_ChooseUser* dialog = 0;
+  Dialog_ChooseUser* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
@@ -233,7 +233,7 @@ void Dialog_UsersList::on_button_user_add()
 
 void Dialog_UsersList::on_button_user_new()
 {
-  Dialog_User* dialog = 0;
+  Dialog_User* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
@@ -285,7 +285,7 @@ void Dialog_UsersList::on_button_user_edit()
     {
       Gtk::TreeModel::Row row = *iter;
 
-      Dialog_User* dialog = 0;
+      Dialog_User* dialog = nullptr;
       Utils::get_glade_widget_derived_with_warning(dialog);
       if(!dialog) //Unlikely and it already warns on stderr.
         return;

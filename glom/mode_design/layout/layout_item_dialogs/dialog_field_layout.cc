@@ -32,15 +32,15 @@ const bool Dialog_FieldLayout::glade_developer(true);
 
 Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_label_field_name(0),
-  m_checkbutton_editable(0),
-  m_radiobutton_title_default(0),
-  m_label_title_default(0),
-  m_radiobutton_title_custom(0),
-  m_entry_title_custom(0),
-  m_box_formatting_placeholder(0),
-  m_radiobutton_custom_formatting(0),
-  m_box_formatting(0)
+  m_label_field_name(nullptr),
+  m_checkbutton_editable(nullptr),
+  m_radiobutton_title_default(nullptr),
+  m_label_title_default(nullptr),
+  m_radiobutton_title_custom(nullptr),
+  m_entry_title_custom(nullptr),
+  m_box_formatting_placeholder(nullptr),
+  m_radiobutton_custom_formatting(nullptr),
+  m_box_formatting(nullptr)
 {
   builder->get_widget("label_field_name", m_label_field_name);
   builder->get_widget("checkbutton_editable", m_checkbutton_editable);

@@ -46,7 +46,7 @@ DbAddDel::DbAddDel()
   m_column_is_sorted(false),
   m_column_sorted_direction(false),
   m_column_sorted(0),
-  m_pMenuPopup(0),
+  m_pMenuPopup(nullptr),
   m_bAllowUserActions(true),
   m_bPreventUserSignals(false),
   m_bIgnoreTreeViewSignals(false),
@@ -57,7 +57,7 @@ DbAddDel::DbAddDel()
   m_validation_retry(false),
   m_allow_view(true),
   m_allow_view_details(false),
-  m_treeviewcolumn_button(0),
+  m_treeviewcolumn_button(nullptr),
   m_fixed_cell_height(0),
   m_rows_count_min(0),
   m_rows_count_max(0)
@@ -2052,7 +2052,7 @@ void DbAddDel::set_open_button_title(const Glib::ustring& title)
 void DbAddDel::show_hint_model()
 {
   treeview_delete_all_columns();
-  m_treeviewcolumn_button = 0; //When we removed the view columns, this was deleted because it's manage()ed.
+  m_treeviewcolumn_button = nullptr; //When we removed the view columns, this was deleted because it's manage()ed.
 
   m_model_hint = Gtk::ListStore::create(m_columns_hint);
   auto iter = m_model_hint->append();
@@ -2442,7 +2442,7 @@ void DbAddDel::treeview_delete_all_columns()
   UiUtils::treeview_delete_all_columns(&m_TreeView);
 
   //Reset this too, because we must have just deleted it:
-  m_treeviewcolumn_button = 0;
+  m_treeviewcolumn_button = nullptr;
 }
 
 const Gtk::Window* DbAddDel::get_app_window() const

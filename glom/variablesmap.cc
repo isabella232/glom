@@ -39,7 +39,7 @@ VariablesMap::~VariablesMap()
 
 void VariablesMap::connect_widget(const Glib::ustring& widget_name, bool& variable)
 {
-  Gtk::ToggleButton* pToggleButton = 0;
+  Gtk::ToggleButton* pToggleButton = nullptr;
   m_builder->get_widget(widget_name, pToggleButton); //Glade::Xml will complain if it is not a ToggleButton.
   if(pToggleButton)
   {
@@ -49,7 +49,7 @@ void VariablesMap::connect_widget(const Glib::ustring& widget_name, bool& variab
 
 void VariablesMap::connect_widget(const Glib::ustring& widget_name, Glib::ustring& variable)
 {
-  Gtk::Widget* pWidget = 0;
+  Gtk::Widget* pWidget = nullptr;
   m_builder->get_widget(widget_name, pWidget); 
 
   Gtk::Entry* pEntry = dynamic_cast<Gtk::Entry*>(pWidget); //it mange both Gtk::entry and Gtk::SpinButton
@@ -67,7 +67,7 @@ void VariablesMap::connect_widget(const Glib::ustring& widget_name, Glib::ustrin
 
 void VariablesMap::connect_widget(const Glib::ustring& widget_name, double& variable)
 {
-  Gtk::Widget* pWidget = 0;
+  Gtk::Widget* pWidget = nullptr;
   m_builder->get_widget(widget_name, pWidget); 
 
   Gtk::Scale* pScale = dynamic_cast<Gtk::Scale*>(pWidget); 
@@ -79,7 +79,7 @@ void VariablesMap::connect_widget(const Glib::ustring& widget_name, double& vari
 
 void VariablesMap::connect_widget(const Glib::ustring& widget_name, Glib::Date& variable)
 {
-  Gtk::Widget* pWidget = 0;
+  Gtk::Widget* pWidget = nullptr;
   m_builder->get_widget(widget_name, pWidget); 
 
   Gtk::Calendar* pCalendar = dynamic_cast<Gtk::Calendar*>(pWidget); 

@@ -39,11 +39,11 @@ Box_Print_Layouts::Box_Print_Layouts(BaseObjectType* cobject, const Glib::RefPtr
   m_colTitle(0)
 {
   //Get the Glade-instantiated widgets, and connect signal handlers:
-  Gtk::Button* pButtonCancel = 0;
+  Gtk::Button* pButtonCancel = nullptr;
   builder->get_widget("button_cancel", pButtonCancel);
   set_button_cancel(*pButtonCancel);
 
-  Gtk::Box* pAddDelParent = 0;
+  Gtk::Box* pAddDelParent = nullptr;
   builder->get_widget("vbox_adddel_parent", pAddDelParent);
   pAddDelParent->pack_start(m_AddDel);
 

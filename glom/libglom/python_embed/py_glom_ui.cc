@@ -26,7 +26,7 @@ namespace Glom
 {
 
 PyGlomUI::PyGlomUI()
-: m_callbacks(0)
+: m_callbacks(nullptr)
 {
 }
 

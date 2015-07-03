@@ -29,8 +29,8 @@ namespace Glom
 
 Infobar_ProgressCreating::Infobar_ProgressCreating(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::InfoBar(cobject),
-  m_progress(0),
-  m_label_message(0)
+  m_progress(nullptr),
+  m_label_message(nullptr)
 {
   builder->get_widget("progressbar", m_progress);
   builder->get_widget("label_message", m_label_message);

@@ -31,8 +31,8 @@ namespace Glom
 {
 
 Box_DB_Table_Definition::Box_DB_Table_Definition()
-: m_dialog_field_definition(0),
-  m_dialog_default_formatting(0)
+: m_dialog_field_definition(nullptr),
+  m_dialog_default_formatting(nullptr)
 {
   init();
 }

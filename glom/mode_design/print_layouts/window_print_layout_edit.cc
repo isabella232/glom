@@ -46,23 +46,23 @@ static const char DRAG_TARGET_NAME_RULE[] = "application/x-glom-printoutlayout-r
 
 Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::ApplicationWindow(cobject),
-  m_entry_name(0),
-  m_entry_title(0),
-  m_label_table_name(0),
-  m_button_close(0),
-  m_box(0),
-  m_box_item_position(0),
-  m_spinbutton_x(0),
-  m_spinbutton_y(0),
-  m_spinbutton_width(0),
-  m_spinbutton_height(0),
+  m_entry_name(nullptr),
+  m_entry_title(nullptr),
+  m_label_table_name(nullptr),
+  m_button_close(nullptr),
+  m_box(nullptr),
+  m_box_item_position(nullptr),
+  m_spinbutton_x(nullptr),
+  m_spinbutton_y(nullptr),
+  m_spinbutton_width(nullptr),
+  m_spinbutton_height(nullptr),
   m_ignore_spinbutton_signals(false),
   m_drag_preview_requested(false),
   m_temp_rule_horizontal(false),
-  m_vruler(0),
-  m_hruler(0),
+  m_vruler(nullptr),
+  m_hruler(nullptr),
   m_builder(builder),
-  m_context_menu(0)
+  m_context_menu(nullptr)
 {
   //See CanvasPrintLayout's commented-out use of set_size_request()
   //for an attempt to do this properly.
@@ -119,7 +119,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
  
   //Add the ruler widgets to the table at the left and top:
   //TODO: Use C++ API here:
-  Gtk::Grid* grid = 0;
+  Gtk::Grid* grid = nullptr;
   builder->get_widget("grid_canvas", grid);
   gtk_grid_attach(grid->gobj(), GTK_WIDGET(m_vruler), 
     0, 1, 1, 1);

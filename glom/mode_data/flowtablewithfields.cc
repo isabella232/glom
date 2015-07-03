@@ -43,16 +43,16 @@ namespace Glom
 {
 
 FlowTableWithFields::Info::Info()
-: m_first(0),
-  m_first_eventbox(0),
-  m_second(0),
-  m_checkbutton(0)
+: m_first(nullptr),
+  m_first_eventbox(nullptr),
+  m_second(nullptr),
+  m_checkbutton(nullptr)
 {
 }
 
 FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
 :
-  m_placeholder(0),
+  m_placeholder(nullptr),
   m_table_name(table_name),
   m_find_mode(false)
 {
@@ -326,7 +326,7 @@ Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const st
 
 void FlowTableWithFields::add_layout_portal(const std::shared_ptr<LayoutItem_Portal>& portal)
 {
-  Box_Data_Portal* portal_box = 0;
+  Box_Data_Portal* portal_box = nullptr;
   std::shared_ptr<LayoutItem_CalendarPortal> calendar_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(portal);
   if(calendar_portal)
     portal_box = create_related_calendar(calendar_portal);
@@ -475,7 +475,7 @@ void FlowTableWithFields::add_field(const std::shared_ptr<LayoutItem_Field>& lay
   }
   else
   {
-    info.m_first = 0;
+    info.m_first = nullptr;
   }
 
   //info.m_group = layoutitem_field.m_group;
@@ -1261,7 +1261,7 @@ guint FlowTableWithFields::get_sub_flowtables_max_columns() const
 
 void FlowTableWithFields::on_menu_properties_activate()
 {
-  Dialog_FlowTable* dialog = 0;
+  Dialog_FlowTable* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
@@ -1327,7 +1327,7 @@ bool FlowTableWithFields::on_button_press_event(GdkEventButton *event)
 //TODO: Rename this? It's not a simpler getter. It does UI.
 std::shared_ptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship()
 {
-  Dialog_ChooseRelationship* dialog = 0;
+  Dialog_ChooseRelationship* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return std::shared_ptr<LayoutItem_Portal>();

@@ -92,7 +92,7 @@ void Dialog_ScriptLibrary::on_button_add()
   if(!document)
     return;
 
-  Dialog_NewScript* dialog = 0;
+  Dialog_NewScript* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
