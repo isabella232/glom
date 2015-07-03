@@ -354,7 +354,7 @@ private:
 template<class T_ModelColumnType>
 guint AddDel::treeview_append_column(const Glib::ustring& title, const Gtk::TreeModelColumn<T_ModelColumnType>& column, const Glib::ustring& column_id)
 {
-  Gtk::CellRenderer* pCellRenderer = manage( Gtk::CellRenderer_Generation::generate_cellrenderer<T_ModelColumnType>() );
+  auto pCellRenderer = manage( Gtk::CellRenderer_Generation::generate_cellrenderer<T_ModelColumnType>() );
   return treeview_append_column(title, *pCellRenderer, column, column_id);
 }
 

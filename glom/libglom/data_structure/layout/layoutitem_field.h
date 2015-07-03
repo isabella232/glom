@@ -50,7 +50,7 @@ public:
 
     //Allow this to be used on a container of LayoutItems,
     //as well as just of LayoutItem_Fields.
-    std::shared_ptr<const T_ElementField> element_field = std::dynamic_pointer_cast<const T_ElementField>(element);
+    const auto element_field = std::dynamic_pointer_cast<const T_ElementField>(element);
     if(!element_field)
       return false;
        

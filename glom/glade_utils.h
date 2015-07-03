@@ -53,7 +53,7 @@ Glib::RefPtr<Gtk::Builder> helper_get_glade_widget_derived_with_warning(const st
 
   try
   {
-    const std::string filepath = Utils::get_glade_resource_path(filename);
+    const auto filepath = Utils::get_glade_resource_path(filename);
     if(load_all)
       refXml = Gtk::Builder::create_from_resource(filepath);
      else
@@ -97,7 +97,7 @@ Glib::RefPtr<Gtk::Builder> get_glade_child_widget_derived_with_warning(T_Widget*
   // Check the path to the installed .glade file:
   // The id is the same as the filename, in a developer/operator sub-directory:
   // TODO: Should we use build_filename()?
-  const std::string filename = Glib::build_filename(
+  const auto filename = Glib::build_filename(
       (T_Widget::glade_developer ? "developer" : "operator"),
       std::string(T_Widget::glade_id) + ".glade"); 
   
@@ -112,7 +112,7 @@ template<class T_Widget>
 void box_pack_start_glade_child_widget_derived_with_warning(Gtk::Box* parent_box, T_Widget*& widget)
 {
   widget = 0;
-  Glib::RefPtr<Gtk::Builder> builder = get_glade_child_widget_derived_with_warning(widget);
+  auto builder = get_glade_child_widget_derived_with_warning(widget);
 
   if(widget)
     parent_box->pack_start(*widget);
@@ -130,7 +130,7 @@ void get_glade_widget_derived_with_warning(T_Widget*& widget)
 
   // Check the path to the installed .glade file:
   // The id is the same as the filename, in a developer/operator sub-directory:
-  const std::string filename = Glib::build_filename(
+  const auto filename = Glib::build_filename(
       (T_Widget::glade_developer ? "developer" : "operator"),
       std::string(T_Widget::glade_id) + ".glade"); 
   
@@ -171,7 +171,7 @@ void get_glade_widget_with_warning(const std::string& filename, const Glib::ustr
   // Make sure that all windows have the Glom icon.
   // TODO: Though shouldn't all transient windows have this by default,
   // or should they even be visible in the task list? murrayc
-  Gtk::Window* window = dynamic_cast<Gtk::Window*>(widget);
+  auto window = dynamic_cast<Gtk::Window*>(widget);
   if(window)
     window->set_icon_name("glom");
 }
