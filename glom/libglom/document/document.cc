@@ -967,7 +967,7 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
     //Look at each table:
     for(const auto& the_pair : m_tables)
     {
-      const std::shared_ptr<DocumentTableInfo> infoInner = the_pair.second;
+      const auto infoInner = the_pair.second;
       if(!infoInner)
         continue;
 
@@ -1055,7 +1055,7 @@ void Document::change_table_name(const Glib::ustring& table_name_old, const Glib
     //so we copy the whole thing and put it back in the map under a different key:
 
     //iterFindTable->first = table_name_new;
-    const std::shared_ptr<DocumentTableInfo> doctableinfo = iterFindTable->second;
+    const auto doctableinfo = iterFindTable->second;
     m_tables.erase(iterFindTable);
 
     if(doctableinfo && doctableinfo->m_info)
@@ -1068,7 +1068,7 @@ void Document::change_table_name(const Glib::ustring& table_name_old, const Glib
     for(const auto& the_pair : m_tables)
     {
       //Look at each relationship in the table:
-      const std::shared_ptr<DocumentTableInfo> doctableinfo = the_pair.second;
+      const auto doctableinfo = the_pair.second;
       if(!doctableinfo)
         continue;
 
@@ -1190,7 +1190,7 @@ Document::type_listTableInfo Document::get_tables(bool plus_system_prefs)
 
   for(const auto& the_pair : m_tables)
   {
-    const std::shared_ptr<DocumentTableInfo> doctableinfo = the_pair.second;
+    const auto doctableinfo = the_pair.second;
     if(doctableinfo)
       result.push_back(doctableinfo->m_info);
 
@@ -1283,7 +1283,7 @@ void Document::set_tables(const type_listTableInfo& tables)
   bool something_changed = false;
   for(const auto& the_pair : m_tables)
   {
-    const std::shared_ptr<DocumentTableInfo> doctableinfo = the_pair.second;
+    const auto doctableinfo = the_pair.second;
     if(!doctableinfo)
       continue;
 
@@ -1347,7 +1347,7 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
       bool choice_show_all = false;
       layout_withformatting->m_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_sort_fields, choice_show_all);
       
-      const Glib::ustring table_name = (choice_relationship ? choice_relationship->get_to_table() : Glib::ustring());
+      const auto table_name = (choice_relationship ? choice_relationship->get_to_table() : Glib::ustring());
       if(choice_layout_first)
         choice_layout_first->set_full_field_details( get_field(table_name, choice_layout_first->get_name()) );
       fill_layout_field_details(parent_table_name, choice_extra_layouts); //recurse
@@ -1370,7 +1370,7 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
         bool choice_show_all = false;
         field->m_default_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_sort_fields, choice_show_all);
         
-        const Glib::ustring table_name = (choice_relationship ? choice_relationship->get_to_table() : Glib::ustring());
+        const auto table_name = (choice_relationship ? choice_relationship->get_to_table() : Glib::ustring());
         if(choice_layout_first)
           choice_layout_first->set_full_field_details( get_field(table_name, choice_layout_first->get_name()) );
         fill_layout_field_details(parent_table_name, choice_extra_layouts); //recurse
@@ -1955,7 +1955,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
 
   //Alignment. Not-specified means auto.
   Formatting::HorizontalAlignment alignment = Formatting::HORIZONTAL_ALIGNMENT_AUTO;
-  const Glib::ustring alignment_str = XmlUtils::get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT);
+  const auto alignment_str = XmlUtils::get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT);
   if(alignment_str == GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT)
     alignment = Formatting::HORIZONTAL_ALIGNMENT_LEFT;
   else if(alignment_str == GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT)
@@ -1981,7 +1981,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
         auto listNodesCustomChoices = nodeChoiceList->get_children(GLOM_NODE_FORMAT_CUSTOM_CHOICE);
         for(const auto& node : listNodesCustomChoices)
         {
-          const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(node);
+          const auto element = dynamic_cast<const xmlpp::Element*>(node);
           if(element)
           {
             if(field_type == Field::TYPE_INVALID)
@@ -2149,7 +2149,7 @@ void Document::load_after_sort_by(const xmlpp::Element* node, const Glib::ustrin
   auto listNodes = node->get_children(GLOM_NODE_DATA_LAYOUT_ITEM_FIELD);
   for(const auto& node : listNodes)
   {
-    const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(node);
+    const auto element = dynamic_cast<const xmlpp::Element*>(node);
     if(element)
     {
       auto item = std::make_shared<LayoutItem_Field>();
@@ -2190,7 +2190,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
     std::shared_ptr<LayoutItem> item_added;
 
     //Create the layout item:
-    const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(node);
+    const auto element = dynamic_cast<const xmlpp::Element*>(node);
     if(element)
     {
       if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELD)
@@ -2489,7 +2489,7 @@ void Document::load_after_translations(const xmlpp::Element* element, const std:
     auto listNodesTranslations = nodeTranslations->get_children(GLOM_NODE_TRANSLATION);
     for(const auto& node : listNodesTranslations)
     {
-      const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(node);
+      const auto element = dynamic_cast<const xmlpp::Element*>(node);
       if(element)
       {
         const auto locale = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_LOCALE);
@@ -2844,7 +2844,7 @@ bool Document::load_after(int& failure_code)
         if(nodeTable)
         {
           const auto table_name = XmlUtils::get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
-          const std::shared_ptr<DocumentTableInfo> doctableinfo = m_tables[table_name];
+          const auto doctableinfo = m_tables[table_name];
 
           //Layouts:
           const auto nodeDataLayouts = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_DATA_LAYOUTS);
@@ -2868,7 +2868,7 @@ bool Document::load_after(int& failure_code)
                   xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
                   for(const auto& item : listNodes)
                   {
-                    const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(item);
+                    const auto node = dynamic_cast<const xmlpp::Element*>(item);
                     if(node)
                     {
                       const auto group_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
@@ -2919,7 +2919,7 @@ bool Document::load_after(int& failure_code)
                   xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
                   for(const auto& item : listNodes)
                   {
-                    const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(item);
+                    const auto node = dynamic_cast<const xmlpp::Element*>(item);
                     if(node)
                     {
                       std::shared_ptr<LayoutGroup> group = report->get_layout_group();
@@ -2969,7 +2969,7 @@ bool Document::load_after(int& failure_code)
                 xmlpp::Node::NodeList listRules = node->get_children(GLOM_NODE_HORIZONTAL_RULE);
                 for(const auto& item : listRules)
                 {
-                  const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(item);
+                  const auto node = dynamic_cast<const xmlpp::Element*>(item);
                   if(!node)
                     continue;
 
@@ -2982,7 +2982,7 @@ bool Document::load_after(int& failure_code)
                 listRules = node->get_children(GLOM_NODE_VERTICAL_RULE);
                 for(const auto& item : listRules)
                 {
-                  const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(item);
+                  const auto node = dynamic_cast<const xmlpp::Element*>(item);
                   if(!node)
                     continue;
 
@@ -3008,7 +3008,7 @@ bool Document::load_after(int& failure_code)
                   xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
                   for(const auto& item : listNodes)
                   {
-                    const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(item);
+                    const auto node = dynamic_cast<const xmlpp::Element*>(item);
                     if(node)
                     {
                       std::shared_ptr<LayoutGroup> group = print_layout->get_layout_group();
@@ -3728,7 +3728,7 @@ bool Document::save_before()
             xmlpp::Element* nodeExampleRow = nodeExampleRows->add_child(GLOM_NODE_EXAMPLE_ROW);
             if(!row_data.empty())
             {
-              const unsigned int row_data_size = row_data.size();
+              const auto row_data_size = row_data.size();
               for(unsigned int i = 0; i < row_data_size; ++i)
               {
                 std::shared_ptr<const Field> field = doctableinfo->m_fields[i];
@@ -4445,7 +4445,7 @@ Document::type_list_translatables Document::get_translatable_items()
       //Custom Choices, if any:
       if(field->get_glom_type() == Field::TYPE_TEXT) //Choices for other field types could not be translated.
       {
-        const Glib::ustring this_hint = hint + ", Parent Field: " + field->get_name();   
+        const auto this_hint = hint + ", Parent Field: " + field->get_name();   
         type_list_translatables list_choice_items;
         Document::fill_translatable_custom_choices(field->m_default_formatting, list_choice_items, this_hint);
         add_to_translatable_list(result, list_choice_items);
@@ -4467,7 +4467,7 @@ Document::type_list_translatables Document::get_translatable_items()
       add_to_translatable_list(result, report, hint);
       
       //Translatable report items:
-      const Glib::ustring this_hint = hint + ", Parent Report: " + report->get_name();
+      const auto this_hint = hint + ", Parent Report: " + report->get_name();
       type_list_translatables list_layout_items = get_translatable_report_items(table_name, report_name, this_hint);
       add_to_translatable_list(result, list_layout_items);
     }
@@ -4483,7 +4483,7 @@ Document::type_list_translatables Document::get_translatable_items()
       add_to_translatable_list(result, print_layout, hint);
       
       //Translatable print layout items:
-      const Glib::ustring this_hint = hint + ", Print Layout: " + print_layout->get_name();
+      const auto this_hint = hint + ", Print Layout: " + print_layout->get_name();
       type_list_translatables list_layout_items = get_translatable_print_layout_items(table_name, print_layout_name, this_hint);
       add_to_translatable_list(result, list_layout_items);
     }
@@ -4572,7 +4572,7 @@ void Document::fill_translatable_layout_items(const std::shared_ptr<LayoutItem_F
   //Only text fields can have translated choice values:
   if(layout_field->get_glom_type() == Field::TYPE_TEXT)
   {
-    const Glib::ustring choice_hint = hint + ", Parent Field: " + layout_field->get_name();
+    const auto choice_hint = hint + ", Parent Field: " + layout_field->get_name();
     fill_translatable_custom_choices(layout_field->m_formatting, the_list, hint);
   }
 }

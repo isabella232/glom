@@ -696,7 +696,7 @@ void DbAddDel::construct_specified_columns()
 
   for(auto iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
   {
-    const std::shared_ptr<LayoutItem> layout_item = m_column_items[model_column_index]; //TODO: Inefficient.
+    const auto layout_item = m_column_items[model_column_index]; //TODO: Inefficient.
     if(layout_item) //column_info.m_visible)
     {
       no_columns_used = false;

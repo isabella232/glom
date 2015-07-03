@@ -69,7 +69,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
       // Convert URI to path, for GDA connection string
       const auto database_directory = db_dir->get_path();
 
-      const Glib::ustring cnc_string = "DB_DIR=" + DbUtils::gda_cnc_string_encode(database_directory) + 
+      const auto cnc_string = "DB_DIR=" + DbUtils::gda_cnc_string_encode(database_directory) + 
         ";DB_NAME=" + DbUtils::gda_cnc_string_encode(database);
       const auto auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", 
         DbUtils::gda_cnc_string_encode(username), DbUtils::gda_cnc_string_encode(password));
@@ -346,7 +346,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
 
     if(!trans_fields.empty())
     {
-      const Glib::ustring query_insert = "INSERT INTO " + DbUtils::escape_sql_id(TEMPORARY_TABLE_NAME) + " SELECT " + trans_fields + " FROM " + DbUtils::escape_sql_id(table_name);
+      const auto query_insert = "INSERT INTO " + DbUtils::escape_sql_id(TEMPORARY_TABLE_NAME) + " SELECT " + trans_fields + " FROM " + DbUtils::escape_sql_id(table_name);
       //std::cout << "debug: query_insert=" << query_insert << std::endl;
       connection->statement_execute_non_select(query_insert);
       connection->statement_execute_non_select("DROP TABLE " + DbUtils::escape_sql_id(table_name));

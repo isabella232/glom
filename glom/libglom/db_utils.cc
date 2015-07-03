@@ -691,7 +691,7 @@ bool set_table_privileges_groups_from_document(const Document* document)
   const auto document_groups = document->get_groups();
 
   //Get the list of tables:
-  //const Document::type_listConstTableInfo table_list = document->get_tables();
+  //const auto table_list = document->get_tables();
 
   bool result = true;
 
@@ -733,7 +733,7 @@ static Glib::ustring remove_quotes(const Glib::ustring& str)
     return str;
 
   const auto size = str.size();
-  const Glib::ustring::size_type posQuoteEnd = str.find(quote, 1);
+  const auto posQuoteEnd = str.find(quote, 1);
   if(posQuoteEnd != (size - 1))
     return str;
 
@@ -890,8 +890,8 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
       GdaMetaTable* meta_table = GDA_META_TABLE(meta_dbobject);
 
       //Examine each field:
-      guint row = 0;
-      const gulong rows_count = data_model_fields->get_n_rows();
+      auto row = 0;
+      const auto rows_count = data_model_fields->get_n_rows();
       while(row < rows_count)
       {
         Glib::RefPtr<Gnome::Gda::Column> field_info = Gnome::Gda::Column::create();

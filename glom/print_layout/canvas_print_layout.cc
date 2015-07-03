@@ -786,7 +786,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
         if(relationship)
         {
           const Document* document = get_document();
-          const std::shared_ptr<Field> from_field = DbUtils::get_fields_for_table_one_field(document,
+          const auto from_field = DbUtils::get_fields_for_table_one_field(document,
             relationship->get_from_table(), relationship->get_from_field());
           const Gnome::Gda::Value from_key_value = get_field_value_in_database(from_field, found_set, 0 /* TODO: window */);
           fill_with_data_portal(canvas_item, from_key_value);

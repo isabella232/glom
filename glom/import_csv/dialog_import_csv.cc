@@ -48,7 +48,7 @@ const char* AUTODETECT_ENCODINGS_CHARSETS[] = {
   "UCS-4"
 };
 
-const guint N_AUTODETECT_ENCODINGS_CHARSETS = sizeof(AUTODETECT_ENCODINGS_CHARSETS)/sizeof(AUTODETECT_ENCODINGS_CHARSETS[0]);
+const auto N_AUTODETECT_ENCODINGS_CHARSETS = sizeof(AUTODETECT_ENCODINGS_CHARSETS)/sizeof(AUTODETECT_ENCODINGS_CHARSETS[0]);
 
 
 Glib::ustring encoding_display(const Glib::ustring& name, const Glib::ustring& charset)
@@ -103,7 +103,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   // Separator:
   m_encoding_model->append();
 
-  const FileEncodings::type_list_encodings list_encodings =  FileEncodings::get_list_of_encodings();
+  const auto list_encodings =  FileEncodings::get_list_of_encodings();
   for(const auto& encoding : list_encodings)
   {
     if(encoding.get_name().empty())
@@ -277,8 +277,8 @@ void Dialog_Import_CSV::show_error_dialog(const Glib::ustring&, const Glib::ustr
 
 void Dialog_Import_CSV::encoding_data_func(const Gtk::TreeModel::iterator& iter, Gtk::CellRendererText& renderer)
 {
-  const Glib::ustring name = (*iter)[m_encoding_columns.m_col_name];
-  const Glib::ustring charset = (*iter)[m_encoding_columns.m_col_charset];
+  const auto name = (*iter)[m_encoding_columns.m_col_name];
+  const auto charset = (*iter)[m_encoding_columns.m_col_charset];
 
   renderer.set_property("text", encoding_display(name, charset));
 }
@@ -357,7 +357,7 @@ void Dialog_Import_CSV::on_first_line_as_title_toggled()
       (*iter)[m_sample_columns.m_col_row] = 0;
 
       // Remove last row if we hit the limit
-      const guint sample_rows = m_sample_model->children().size() - 1;
+      const auto sample_rows = m_sample_model->children().size() - 1;
       if(sample_rows > static_cast<guint>(m_sample_rows->get_value_as_int()))
       {
         //m_sample_model->erase(m_sample_model->children().rbegin());
@@ -376,7 +376,8 @@ void Dialog_Import_CSV::on_sample_rows_changed()
   if(!m_sample_model)
     return;
 
-  const guint current_sample_rows = m_sample_model->children().size() - 1;
+  const auto children_size = m_sample_model->children().size();
+  const guint current_sample_rows = (children_size == 0 ? 0 : children_size - 1);
   const guint new_sample_rows = m_sample_rows->get_value_as_int();
 
   if(current_sample_rows > new_sample_rows)
@@ -486,7 +487,7 @@ void Dialog_Import_CSV::on_parser_line_scanned(CsvParser::type_row_strings row, 
   // Add the row to the treeview if there are not yet as much sample rows
   // as the user has chosen (note the first row is to choose the target fields,
   // not a sample row, which is why we do -1 here).
-  const guint sample_rows = m_sample_model->children().size() - 1;
+  const auto sample_rows = m_sample_model->children().size() - 1;
 
   // Don't add if this is the first line and m_first_line_as_title is active:
   if(row_number > 1 || !m_first_line_as_title->get_active())
@@ -547,7 +548,7 @@ Gtk::CellRendererCombo* Dialog_Import_CSV::create_sample_cell(guint index)
 
 void Dialog_Import_CSV::line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
-  const int row = (*iter)[m_sample_columns.m_col_row];
+  const auto row = (*iter)[m_sample_columns.m_col_row];
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(!renderer_text)
     throw std::logic_error("CellRenderer is not a CellRendererText in line_data_func");
@@ -560,7 +561,7 @@ void Dialog_Import_CSV::line_data_func(Gtk::CellRenderer* renderer, const Gtk::T
 
 void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, guint column_number)
 {
-  const int row = (*iter)[m_sample_columns.m_col_row];
+  const auto row = (*iter)[m_sample_columns.m_col_row];
   auto renderer_combo = dynamic_cast<Gtk::CellRendererCombo*>(renderer);
   if(!renderer_combo) throw std::logic_error("CellRenderer is not a CellRendererCombo in field_data_func");
 
@@ -642,7 +643,7 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
   auto iter = m_sample_model->get_iter(treepath);
 
   // Lookup field indicated by new_text
-  const Gtk::TreeNodeChildren& children = m_field_model->children();
+  const auto children = m_field_model->children();
   for(auto field_iter = children.begin(); field_iter != children.end(); ++ field_iter)
   {
     if( (*field_iter)[m_field_columns.m_col_field_name] == new_text)
@@ -656,7 +657,7 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
       m_fields[column_number] = field;
 
       // Update the rows, so they are redrawn, doing a conversion to the new type.
-      const Gtk::TreeNodeChildren& sample_children = m_sample_model->children();
+      const auto sample_children = m_sample_model->children();
       // Create a TreeModel::Path with initial index 0. We need a TreeModel::Path for the row_changed() call
       Gtk::TreeModel::Path path("0");
 

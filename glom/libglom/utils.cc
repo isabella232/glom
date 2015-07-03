@@ -1501,7 +1501,7 @@ LayoutGroup::type_list_const_items Utils::get_layout_items_plus_primary_key(cons
     return items;
   }
 
-  const std::shared_ptr<Field> field_primary_key = document->get_field_primary_key(table_name);
+  const auto field_primary_key = document->get_field_primary_key(table_name);
   if(!field_primary_key)
   {
     std::cerr << G_STRFUNC << ": Could not find the primary key." << std::endl;
@@ -1530,7 +1530,7 @@ LayoutGroup::type_list_items Utils::get_layout_items_plus_primary_key(const Layo
     return items;
   }
 
-  const std::shared_ptr<Field> field_primary_key = document->get_field_primary_key(table_name);
+  const auto field_primary_key = document->get_field_primary_key(table_name);
   if(!field_primary_key)
   {
     std::cerr << G_STRFUNC << ": Could not find the primary key." << std::endl;

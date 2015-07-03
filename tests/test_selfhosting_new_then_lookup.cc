@@ -176,7 +176,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   //Lookup the value from the related record.
-  const std::shared_ptr<Glom::Field> field_source = 
+  const auto field_source = 
     document.get_field(relationship->get_to_table(), field->get_lookup_field());
   const auto value = Glom::DbUtils::get_lookup_value(&document, 
     table_name, relationship, field_source, Gnome::Gda::Value(2));

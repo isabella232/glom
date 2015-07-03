@@ -123,7 +123,7 @@ bool PostgresSelfHosted::install_postgres(const SlotProgress& /* slot_progress *
   //so there is no need to start a Glom service after installation at system startup,
   //though it will not hurt Glom if you do that.
   const gchar *packages[] = { "postgresql-8.1", 0 };
-  const bool result = gst_packages_install(parent_window->gobj() /* parent window */, packages);
+  const auto result = gst_packages_install(parent_window->gobj() /* parent window */, packages);
   if(result)
   {
     std::cout << "Glom: gst_packages_install() reports success." << std::endl;
@@ -179,7 +179,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   }
 
   //Create the config directory:
-  const std::string dbdir_config = get_self_hosting_config_path(true /* create */);
+  const auto dbdir_config = get_self_hosting_config_path(true /* create */);
   if(dbdir_config.empty())
   {
     std::cerr << G_STRFUNC << ": Couldn't create the config directory: " << dbdir << std::endl;
@@ -191,7 +191,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   set_network_shared(slot_progress, m_network_shared); //Creates pg_hba.conf
 
   //Check that there is not an existing data directory:
-  const std::string dbdir_data = get_self_hosting_data_path(true /* create */);
+  const auto dbdir_data = get_self_hosting_data_path(true /* create */);
   if(dbdir_data.empty())
   {
     std::cerr << G_STRFUNC << ": Couldn't create the data directory: " << dbdir << std::endl;
@@ -204,7 +204,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   //Get file:// URI for the tmp/ directory:
   const auto temp_pwfile = Utils::get_temp_file_path("glom_initdb_pwfile");
   const auto temp_pwfile_uri = Glib::filename_to_uri(temp_pwfile);
-  const bool pwfile_creation_succeeded = create_text_file(temp_pwfile_uri, password);
+  const auto pwfile_creation_succeeded = create_text_file(temp_pwfile_uri, password);
   g_assert(pwfile_creation_succeeded);
 
   // Make sure to use double quotes for the executable path, because the
@@ -213,7 +213,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
                                         " -U " + initial_username + " --pwfile=" + Glib::shell_quote(temp_pwfile);
 
   //Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
-  const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb, slot_progress);
+  const auto result = Glom::Spawn::execute_command_line_and_wait(command_initdb, slot_progress);
   if(!result)
   {
     std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting database." << std::endl;
@@ -229,11 +229,11 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
 {
   Glib::ustring result;
 
-  const std::string command = get_path_to_postgres_executable("pg_ctl") + " --version";
+  const auto command = get_path_to_postgres_executable("pg_ctl") + " --version";
 
   //The first command does not return, but the second command can check whether it succeeded:
   std::string output;
-  const bool spawn_result = Glom::Spawn::execute_command_line_and_wait(command, slot_progress, output);
+  const auto spawn_result = Glom::Spawn::execute_command_line_and_wait(command, slot_progress, output);
   if(!spawn_result)
   {
     std::cerr << G_STRFUNC << ": Error while attempting to discover the pg_ctl version." << std::endl;
@@ -298,8 +298,7 @@ float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgr
   if(!regex)
     return result;
 
-  typedef std::vector<Glib::ustring> type_vec_strings;
-  const type_vec_strings vec = regex->split(version_str, Glib::REGEX_MATCH_NOTEMPTY);
+  const auto vec = regex->split(version_str, Glib::REGEX_MATCH_NOTEMPTY);
   //std::cout << "DEBUG: str == " << version_str << std::endl;
   //std::cout << "DEBUG: vec.size() == " << vec.size() << std::endl;
 
@@ -312,7 +311,7 @@ float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgr
     if(str.empty())
       continue;
 
-    const float num = atoi(str.c_str());
+    const auto num = atoi(str.c_str());
     if(count == 0)
       result = num;
     else if(count == 1)
@@ -353,11 +352,11 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   const auto dbdir = Glib::filename_from_uri(dbdir_uri);
   g_assert(!dbdir.empty());
 
-  const std::string dbdir_data = Glib::build_filename(dbdir, FILENAME_DATA);
+  const auto dbdir_data = Glib::build_filename(dbdir, FILENAME_DATA);
   const auto dbdir_data_uri = Glib::filename_to_uri(dbdir_data);
   if(!(file_exists_uri(dbdir_data_uri)))
   {
-    const std::string dbdir_backup = Glib::build_filename(dbdir, FILENAME_BACKUP);
+    const auto dbdir_backup = Glib::build_filename(dbdir, FILENAME_BACKUP);
     const auto dbdir_backup_uri = Glib::filename_to_uri(dbdir_backup);
     if(file_exists_uri(dbdir_backup_uri))
     {
@@ -375,7 +374,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   //Attempt to ensure that the config files are correct:
   set_network_shared(slot_progress, m_network_shared); //Creates pg_hba.conf
 
-  const unsigned int available_port = discover_first_free_port(PORT_POSTGRESQL_SELF_HOSTED_START, PORT_POSTGRESQL_SELF_HOSTED_END);
+  const auto available_port = discover_first_free_port(PORT_POSTGRESQL_SELF_HOSTED_START, PORT_POSTGRESQL_SELF_HOSTED_END);
   //std::cout << "debug: " << G_STRFUNC << ":() : debug: Available port for self-hosting: " << available_port << std::endl;
   if(available_port == 0)
   {
@@ -391,11 +390,11 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   // -k specifies a directory to use for the socket. This must be writable by us.
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
-  const std::string dbdir_config = Glib::build_filename(dbdir, "config");
-  const std::string dbdir_hba = Glib::build_filename(dbdir_config, "pg_hba.conf");
-  const std::string dbdir_pid = Glib::build_filename(dbdir, "pid");
-  const std::string listen_address = (m_network_shared ? "*" : "localhost");
-  const std::string command_postgres_start = get_path_to_postgres_executable("postgres") + " -D " + Glib::shell_quote(dbdir_data)
+  const auto dbdir_config = Glib::build_filename(dbdir, "config");
+  const auto dbdir_hba = Glib::build_filename(dbdir_config, "pg_hba.conf");
+  const auto dbdir_pid = Glib::build_filename(dbdir, "pid");
+  const auto listen_address = (m_network_shared ? "*" : "localhost");
+  const auto command_postgres_start = get_path_to_postgres_executable("postgres") + " -D " + Glib::shell_quote(dbdir_data)
                                   + " -p " + port_as_text
                                   + " -h " + listen_address
                                   + " -c hba_file=" + Glib::shell_quote(dbdir_hba)
@@ -405,7 +404,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
 
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_check_postgres_has_started = get_path_to_postgres_executable("pg_ctl") + " status -D " + Glib::shell_quote(dbdir_data);
+  const auto command_check_postgres_has_started = get_path_to_postgres_executable("pg_ctl") + " status -D " + Glib::shell_quote(dbdir_data);
 
   //For postgres 8.1, this is "postmaster is running".
   //For postgres 8.2, this is "server is running".
@@ -417,7 +416,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   const std::string second_command_success_text = "is running"; //TODO: This is not a stable API. Also, watch out for localisation.
 
   //The first command does not return, but the second command can check whether it succeeded:
-  const bool result = Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_postgres_start, command_check_postgres_has_started, slot_progress, second_command_success_text);
+  const auto result = Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_postgres_start, command_check_postgres_has_started, slot_progress, second_command_success_text);
   if(!result)
   {
     std::cerr << G_STRFUNC << ": Error while attempting to self-host a database." << std::endl;
@@ -480,7 +479,7 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
   const auto dbdir = Glib::filename_from_uri(dbdir_uri);
   g_assert(!dbdir.empty());
 
-  const std::string dbdir_data = Glib::build_filename(dbdir, FILENAME_DATA);
+  const auto dbdir_data = Glib::build_filename(dbdir, FILENAME_DATA);
 
 
   // TODO: Detect other instances on the same computer, and use a different port number,
@@ -493,8 +492,8 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
   // TODO: Warn about connected clients on other computers? Warn those other users?
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_postgres_stop = get_path_to_postgres_executable("pg_ctl") + " -D " + Glib::shell_quote(dbdir_data) + " stop -m fast";
-  const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress);
+  const auto command_postgres_stop = get_path_to_postgres_executable("pg_ctl") + " -D " + Glib::shell_quote(dbdir_data) + " stop -m fast";
+  const auto result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress);
   if(!result)
   {
     std::cerr << G_STRFUNC << ": Error while attempting to stop self-hosting of the database. Trying again."  << std::endl;
@@ -511,7 +510,7 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
     
     //I've seen it fail when running under valgrind, and there are reports of failures in bug #420962.
     //Maybe it will help to try again:
-    const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress);
+    const auto result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress);
     if(!result)
     {
       std::cerr << G_STRFUNC << ": Error while attempting (for a second time) to stop self-hosting of the database."  << std::endl;
@@ -540,14 +539,14 @@ bool PostgresSelfHosted::set_network_shared(const SlotProgress& /* slot_progress
 
   // Choose the configuration contents based on 
   // whether we want to be network-shared:
-  //const float postgresql_version = get_postgresql_utils_version_as_number(slot_progress);
+  //const auto postgresql_version = get_postgresql_utils_version_as_number(slot_progress);
   //std::cout << "DEBUG: postgresql_version=" << postgresql_version << std::endl;
 
   default_conf_contents = m_network_shared ? DEFAULT_CONFIG_PG_HBA_REMOTE : DEFAULT_CONFIG_PG_HBA_LOCAL;
 
   //std::cout << "DEBUG: default_conf_contents=" << default_conf_contents << std::endl;
 
-  const bool hba_conf_creation_succeeded = create_text_file(dbdir_uri_config + "/pg_hba.conf", default_conf_contents);
+  const auto hba_conf_creation_succeeded = create_text_file(dbdir_uri_config + "/pg_hba.conf", default_conf_contents);
   g_assert(hba_conf_creation_succeeded);
   if(!hba_conf_creation_succeeded)
     return false;
@@ -636,7 +635,7 @@ bool PostgresSelfHosted::create_database(const SlotProgress& slot_progress, cons
 unsigned int PostgresSelfHosted::discover_first_free_port(unsigned int start_port, unsigned int end_port)
 {
   //Open a socket so we can try to bind it to a port:
-  const int fd = socket(AF_INET, SOCK_STREAM, 0);
+  const auto fd = socket(AF_INET, SOCK_STREAM, 0);
   if(fd == -1)
   {
 #ifdef G_OS_WIN32
@@ -658,7 +657,7 @@ unsigned int PostgresSelfHosted::discover_first_free_port(unsigned int start_por
   {
     sa.sin_port = htons(port_to_try);
 
-    const int result = bind(fd, (sockaddr*)&sa, sizeof(sa));
+    const auto result = bind(fd, (sockaddr*)&sa, sizeof(sa));
     bool available = false;
     if(result == 0)
        available = true;

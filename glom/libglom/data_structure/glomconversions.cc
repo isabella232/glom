@@ -237,7 +237,7 @@ bool Conversions::sanity_check_date_text_representation_uses_4_digit_years(bool 
   //See if the year appears in full in that date.
   //There are probably some locales for which this fails.
   //Please tell us if there are.
-  const Glib::ustring::size_type pos = date_text.find("2008");
+  const auto pos = date_text.find("2008");
   if(pos == Glib::ustring::npos)
   {
     //Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
@@ -270,7 +270,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
 
   // Get a time_put face:
   typedef std::time_put<char> type_time_put;
-  const type_time_put& tp = std::use_facet<type_time_put>(locale);
+  const auto& tp = std::use_facet<type_time_put>(locale);
 
   //type_iterator begin(the_stream);
   tp.put(the_stream /* iter to beginning of stream */, the_stream, ' ' /* fill */, &tm_data, format, format + strlen(format) /* 'E' */ /* use locale's alternative format */);
@@ -299,7 +299,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
   /*
   //This is based on the code in Glib::Date::format_string(), which only deals with dates, but not times:
 
-  const std::string locale_format = Glib::locale_from_utf8("%X"); //%x means "is replaced by the locale's appropriate time representation".
+  const auto locale_format = Glib::locale_from_utf8("%X"); //%x means "is replaced by the locale's appropriate time representation".
   gsize bufsize = std::max<gsize>(2 * locale_format.size(), 128);
 
   do
@@ -659,7 +659,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
     if(!(numeric_format.m_currency_symbol.empty()))
     {
       //Remove the currency symbol:
-      const Glib::ustring prefix = text_to_parse.substr(0, numeric_format.m_currency_symbol.size());
+      const auto prefix = text_to_parse.substr(0, numeric_format.m_currency_symbol.size());
       if(text_to_parse.substr(0, numeric_format.m_currency_symbol.size()) == numeric_format.m_currency_symbol)
       {
         text_to_parse = text_to_parse.substr(numeric_format.m_currency_symbol.size());
@@ -745,8 +745,8 @@ tm Conversions::parse_date(const Glib::ustring& text, const std::locale& locale,
   //because std::get_time() stupidly parses _only_ that format.
   //Some implementations parse extra formats, in unspecified/non-standard ways, but not g++'s libstdc++
   //So just use the fallback instead. It's probably good enough.
-  const bool is_iso_locale = (locale == std::locale::classic());
-  const bool skip_time_get = !is_iso_locale && (strcmp(GLOM_NON_TRANSLATED_LOCALE_DATE_FORMAT, glom_get_locale_date_format()) != 0);
+  const auto is_iso_locale = (locale == std::locale::classic());
+  const auto skip_time_get = !is_iso_locale && (strcmp(GLOM_NON_TRANSLATED_LOCALE_DATE_FORMAT, glom_get_locale_date_format()) != 0);
 
   std::ios_base::iostate err = std::ios_base::goodbit;  //The initialization is essential because time_get seems to a) not initialize this output argument and b) check its value.
 
@@ -762,7 +762,7 @@ tm Conversions::parse_date(const Glib::ustring& text, const std::locale& locale,
     typedef std::time_get<char> type_time_get;
     typedef type_time_get::iter_type type_iterator;
 
-    const type_time_get& tg = std::use_facet<type_time_get>(locale);
+    const auto& tg = std::use_facet<type_time_get>(locale);
 
     type_iterator the_begin(the_stream);
     type_iterator the_end;
@@ -897,7 +897,7 @@ tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale,
   // Get a time_get facet:
   typedef std::istreambuf_iterator<char, std::char_traits<char> > type_iterator;
   typedef std::time_get<char, type_iterator> type_time_get;
-  const type_time_get& tg = std::use_facet<type_time_get>(locale);
+  const auto& tg = std::use_facet<type_time_get>(locale);
 
   type_iterator the_begin(the_stream);
   type_iterator the_end;
@@ -985,7 +985,7 @@ tm Conversions::parse_tm(const Glib::ustring& text, const std::locale& locale, c
   // Get a time_get facet:
   typedef std::istreambuf_iterator<char, std::char_traits<char> > type_iterator;
   typedef std::time_get<char, type_iterator> type_time_get;
-  const type_time_get& tg = std::use_facet<type_time_get>(locale);
+  const auto& tg = std::use_facet<type_time_get>(locale);
 
   the_stream << text;
 
@@ -1077,12 +1077,12 @@ static bool vtype_is_numeric(GType vtype)
 
 Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type)
 {
-  const GType gvalue_type_target = Field::get_gda_type_for_glom_type(target_glom_type);
-  const GType gvalue_type_source = value.get_value_type();
+  const auto gvalue_type_target = Field::get_gda_type_for_glom_type(target_glom_type);
+  const auto gvalue_type_source = value.get_value_type();
   if(gvalue_type_source == gvalue_type_target)
     return value; //No conversion necessary, and no loss of precision.
   
-  const Field::glom_field_type source_glom_type = Field::get_glom_type_for_gda_type(gvalue_type_source);
+  const auto source_glom_type = Field::get_glom_type_for_gda_type(gvalue_type_source);
   if(source_glom_type == target_glom_type)
   {
     //Try to return the canonical type, 
@@ -1090,13 +1090,13 @@ Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Fie
     if((target_glom_type == Field::TYPE_NUMERIC) && 
       (vtype_is_numeric(gvalue_type_source)))
     {
-      const double number = get_double_for_gda_value_numeric(value);
+      const auto number = get_double_for_gda_value_numeric(value);
       return parse_value(number);
     }
   }
 
   //Fallback for other conversions:
-  const Glib::ustring text = get_text_for_gda_value(source_glom_type, value, std::locale::classic(), NumericFormat(), true /* iso_format */);
+  const auto text = get_text_for_gda_value(source_glom_type, value, std::locale::classic(), NumericFormat(), true /* iso_format */);
   bool test = false;
   return parse_value(target_glom_type, text, test, true /* iso_format */);
 }

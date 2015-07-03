@@ -191,7 +191,7 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
         if(gdabinary)
           ret = boost::python::object((const char*)gdabinary->data); /* TODO: Use the size. TODO: Check for null GdaBinary. */
     } else if(value_type == GDA_TYPE_BLOB) {
-        const GdaBlob* gdablob = gda_value_get_blob (boxed);
+        const auto gdablob = gda_value_get_blob (boxed);
         if(gdablob && gdablob->op)
         {
           if(gda_blob_op_read_all(const_cast<GdaBlobOp*>(gdablob->op), const_cast<GdaBlob*>(gdablob)))
@@ -204,7 +204,7 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
 #if PY_VERSION_HEX >= 0x02040000
     } else if(value_type == G_TYPE_DATE) {
 
-        const GDate* val = (const GDate*)g_value_get_boxed(boxed);
+        const auto val = (const GDate*)g_value_get_boxed(boxed);
         if(val)
         {
           //Note that the g_date_get* functions give what we expect, but direct struct field access does not.

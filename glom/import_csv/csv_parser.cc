@@ -344,10 +344,10 @@ bool CsvParser::on_idle_parse()
     // Note that, unlike std::string::find*, std::find* returns an iterator (char*), not a position.
     // It returns outbuf if none is found.
     const char newline_to_find[] = { '\r', '\n', '\0' };
-    const char* pos_newline = std::find_first_of<const char*>(prev, outbuf, newline_to_find, newline_to_find + sizeof(newline_to_find));
+    const auto pos_newline = std::find_first_of<const char*>(prev, outbuf, newline_to_find, newline_to_find + sizeof(newline_to_find));
 
     const char quote_to_find[] = {(char)QUOTE};
-    const char* pos_quote = std::find_first_of<const char*>(prev, outbuf, quote_to_find, quote_to_find + sizeof(quote_to_find));
+    const auto pos_quote = std::find_first_of<const char*>(prev, outbuf, quote_to_find, quote_to_find + sizeof(quote_to_find));
 
     // Examine the first character (quote or newline) that was found:
     const char* pos = pos_newline;

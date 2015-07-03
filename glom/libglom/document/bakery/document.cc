@@ -54,7 +54,7 @@ Glib::ustring Document::get_file_uri_with_extension(const Glib::ustring& uri)
   if(!m_file_extension.empty())  //If there is an extension to enforce.
   {
     bool bAddExt = false;
-    const Glib::ustring strExt = '.' + get_file_extension();
+    const auto strExt = '.' + get_file_extension();
 
     if(result.size() < strExt.size()) //It can't have the ext already if it's not long enough.
     {

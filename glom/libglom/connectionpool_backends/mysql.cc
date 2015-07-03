@@ -87,7 +87,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQL::attempt_connect(const Glib::ustring&
   const Glib::ustring cnc_string_main = "HOST=" + DbUtils::gda_cnc_string_encode(m_host)
    + ";PORT=" + DbUtils::gda_cnc_string_encode(port)
    + ";PROTOCOL=TCP"; //PROTOCOL is in libgda >= 5.1.2.
-  const Glib::ustring cnc_string = cnc_string_main +";DB_NAME=" + DbUtils::gda_cnc_string_encode(database);
+  const auto cnc_string = cnc_string_main +";DB_NAME=" + DbUtils::gda_cnc_string_encode(database);
 
   Glib::RefPtr<Gnome::Gda::Connection> connection;
   Glib::RefPtr<Gnome::Gda::DataModel> data_model;
@@ -125,7 +125,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQL::attempt_connect(const Glib::ustring&
     std::cout << "debug: " << G_STRFUNC << ": Attempting to connect without specifying the database." << std::endl;
 #endif
 
-    const Glib::ustring cnc_string = cnc_string_main + ";DB_NAME=" + DbUtils::gda_cnc_string_encode(default_database);
+    const auto cnc_string = cnc_string_main + ";DB_NAME=" + DbUtils::gda_cnc_string_encode(default_database);
     Glib::RefPtr<Gnome::Gda::Connection> temp_conn;
     auto auth_string = create_auth_string(username, password);
     try
