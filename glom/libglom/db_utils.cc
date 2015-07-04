@@ -111,7 +111,8 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
   //std::cout << "Awake" << std::endl;
 #endif
 
-  progress();
+  if(progress)
+    progress();
 
   try
   {
@@ -124,13 +125,15 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
     return false;
   }
 
-  progress();
+  if(progress)
+    progress();
 
   //Connect to the actual database:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   connection_pool->set_database(database_name);
 
-  progress();
+  if(progress)
+    progress();
 
   std::shared_ptr<SharedConnection> sharedconnection;
   try
@@ -150,7 +153,8 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
 
   if(sharedconnection)
   {
-    progress();
+    if(progress)
+      progress();
 
     bool test = add_standard_tables(document); //Add internal, hidden, tables.
     if(!test)
@@ -159,7 +163,8 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
       return false;
     }
     
-    progress();
+    if(progress)
+      progress();
 
     //Create the developer group, and make this user a member of it:
     //If we got this far then the user must really have developer privileges already:
@@ -170,7 +175,8 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
       return false;
     }
     
-    progress();
+    if(progress)
+      progress();
 
     //std::cout << "debug: " << G_STRFUNC << ": Creation of standard tables and groups finished." << std::endl;
 
@@ -187,7 +193,8 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
       //std::cout << "debug: " << G_STRFUNC << ": database has title: " << prefs.m_name << std::endl;
     }
 
-    progress();
+    if(progress)
+      progress();
     
     //Save the port, if appropriate, so the document can be used to connect again:
     Glom::ConnectionPool::Backend* backend = connection_pool->get_backend();
@@ -240,7 +247,8 @@ bool recreate_database_from_document(Document* document, const std::function<voi
 
 
   //Create the database:
-  progress();
+  if(progress)
+    progress();
   connection_pool->set_database( Glib::ustring() );
   const auto db_created = create_database(document, db_name, document->get_database_title_original(), progress);
 
@@ -251,7 +259,8 @@ bool recreate_database_from_document(Document* document, const std::function<voi
   else
     connection_pool->set_database(db_name); //Specify the new database when connecting from now on.
 
-  progress();
+  if(progress)
+    progress();
 
   std::shared_ptr<SharedConnection> sharedconnection;
   try
@@ -265,7 +274,8 @@ bool recreate_database_from_document(Document* document, const std::function<voi
     return false;
   }
 
-  progress();
+  if(progress)
+    progress();
 
   //Create each table:
   Document::type_listTableInfo tables = document->get_tables();
@@ -275,9 +285,11 @@ bool recreate_database_from_document(Document* document, const std::function<voi
     Glib::ustring sql_fields;
     Document::type_vec_fields fields = document->get_table_fields(table_info->get_name());
 
-    progress();
+    if(progress)
+      progress();
     const auto table_creation_succeeded = create_table(document->get_hosting_mode(), table_info, fields);
-    progress();
+    if(progress)
+      progress();
     if(!table_creation_succeeded)
     {
       std::cerr << G_STRFUNC << ": CREATE TABLE failed with the newly-created database." << std::endl;
@@ -288,7 +300,8 @@ bool recreate_database_from_document(Document* document, const std::function<voi
   //Note that create_database() has already called add_standard_tables() and add_standard_groups(document).
 
   //Add groups from the document:
-  progress();
+  if(progress)
+    progress();
   if(!add_groups_from_document(document))
   {
     std::cerr << G_STRFUNC << ": add_groups_from_document() failed." << std::endl;
@@ -296,7 +309,8 @@ bool recreate_database_from_document(Document* document, const std::function<voi
   }
   
   //Set table privileges, using the groups we just added:
-  progress();
+  if(progress)
+    progress();
   if(!DbUtils::set_table_privileges_groups_from_document(document))
   {
     std::cerr << G_STRFUNC << ": set_table_privileges_groups_from_document() failed." << std::endl;
@@ -306,11 +320,13 @@ bool recreate_database_from_document(Document* document, const std::function<voi
   for(const auto& table_info : tables)
   {
     //Add any example data to the table:
-    progress();
+    if(progress)
+      progress();
 
     //try
     //{
-      progress();
+      if(progress)
+        progress();
       const auto table_insert_succeeded = insert_example_data(document, table_info->get_name());
 
       if(!table_insert_succeeded)

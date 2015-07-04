@@ -113,21 +113,24 @@ bool Sqlite::create_database(const SlotProgress& slot_progress, const Glib::ustr
     return false;
   }
  
-  slot_progress();
+  if(slot_progress)  
+    slot_progress();
  
   auto file = Gio::File::create_for_uri(m_database_directory_uri);
   const auto database_directory = file->get_path();
   const auto cnc_string = Glib::ustring::compose("DB_DIR=%1;DB_NAME=%2", 
     DbUtils::gda_cnc_string_encode(database_directory), DbUtils::gda_cnc_string_encode(database_name));
 
-  slot_progress();
+  if(slot_progress)  
+    slot_progress();
 
   Glib::RefPtr<Gnome::Gda::Connection> cnc =
     Gnome::Gda::Connection::open_from_string("SQLite",
       cnc_string, "",
       Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
 
-  slot_progress();
+  if(slot_progress)  
+    slot_progress();
 
   return true;
 }

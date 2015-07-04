@@ -5102,21 +5102,23 @@ Glib::ustring Document::extract_backup_file(const Glib::ustring& backup_uri, std
     return Glib::ustring();
   }
 
-  slot_progress();
+  if(slot_progress)   
+    slot_progress();
 
 
   //const char *name = archive_entry_pathname(entry);
   //std::cout << "debug: name=" << name << std::endl;
 
-  slot_progress();
+  if(slot_progress)  
+    slot_progress();
 
   Glib::ustring contents;
 
   //Read the whole file in one go,
   //We'd have to keep it all in memory anyway as we concatentated it,
   //if we did it in chunks.
-  slot_progress();
-
+  if(slot_progress)
+    slot_progress();
 
 
   std::string contents_glom_file;

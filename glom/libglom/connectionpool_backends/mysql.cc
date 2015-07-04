@@ -405,12 +405,14 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
 
 bool MySQL::attempt_create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& username, const Glib::ustring& password)
 {
-  slot_progress();
+  if(slot_progress)
+    slot_progress();
 
   Glib::RefPtr<Gnome::Gda::ServerOperation> op = 
     Gnome::Gda::ServerOperation::prepare_create_database("MySQL", database_name);
 
-  slot_progress();
+  if(slot_progress)
+    slot_progress();
 
   g_assert(op);
   try
@@ -427,7 +429,8 @@ bool MySQL::attempt_create_database(const SlotProgress& slot_progress, const Gli
     return false;
   }
 
-  slot_progress();
+  if(slot_progress)
+    slot_progress();
 
   return true;
 }

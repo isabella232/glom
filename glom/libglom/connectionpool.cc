@@ -885,7 +885,7 @@ void ConnectionPool::on_epc_progress_begin(const gchar* /* title */, gpointer us
   //We ignore the title parameter because there is no way that libepc could know what Glom wants to say.
 
   ConnectionPool* connection_pool = (ConnectionPool*)user_data;
-  if(connection_pool)
+  if(connection_pool && connection_pool->m_epc_slot_begin)
     connection_pool->m_epc_slot_begin();
 }
 
@@ -895,14 +895,14 @@ void ConnectionPool::on_epc_progress_update(gdouble /* progress */, const gchar*
   //TODO: Show the progress in a ProgressBar.
 
   ConnectionPool* connection_pool = (ConnectionPool*)user_data;
-  if(connection_pool)
+  if(connection_pool && connection_pool->m_epc_slot_progress)
     connection_pool->m_epc_slot_progress();
 }
 
 void ConnectionPool::on_epc_progress_end(gpointer user_data)
 {
   ConnectionPool* connection_pool = (ConnectionPool*)user_data;
-  if(connection_pool)
+  if(connection_pool && connection_pool->m_epc_slot_done)
     connection_pool->m_epc_slot_done();
 }
 

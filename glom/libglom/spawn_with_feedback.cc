@@ -373,7 +373,8 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
   sigc::connection timeout_connection = Glib::signal_timeout().connect(
     sigc::bind_return( slot_progress, true),
     500);
-  slot_progress(); //Make sure it is called at least once.
+  if(slot_progress)
+    slot_progress(); //Make sure it is called at least once.
 
   //Block until signal_finished is called.
   mainloop->run();
@@ -417,7 +418,8 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
   sigc::connection timeout_connection = Glib::signal_timeout().connect(
     sigc::bind_return( slot_progress, true),
     500);
-  slot_progress(); //Make sure it is called at least once.
+  if(slot_progress)
+    slot_progress(); //Make sure it is called at least once.
 
   //Block until signal_finished is called.
   mainloop->run();
@@ -535,7 +537,9 @@ namespace
        #endif //GLOM_SPAWN_DEBUG
     }
 
-    slot_progress(); //Show UI progress feedback.
+    if(slot_progress)
+      slot_progress(); //Show UI progress feedback.
+
     return true;
   }
 
@@ -582,7 +586,8 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
 
   // Call the second command once every second
   sigc::connection timeout_conn = Glib::signal_timeout().connect(sigc::bind(sigc::ptr_fun(&second_command_on_timeout), sigc::ref(second_command), sigc::ref(success_text), slot_progress, sigc::ref(mainloop)), 1000);
-  slot_progress(); //Make sure it is called at least once.
+  if(slot_progress)
+    slot_progress(); //Make sure it is called at least once.
 
   // Block until signal_finished is emitted:
   mainloop->run();
