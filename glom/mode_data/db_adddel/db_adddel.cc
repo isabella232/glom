@@ -421,8 +421,9 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, bool start_edit
 {
   //Find the first column with a layout_item:
   std::shared_ptr<const LayoutItem> layout_item;
-  for(const auto& layout_item : m_column_items)
+  for(const auto& item : m_column_items)
   {
+    layout_item = item;
     if(layout_item)
       break;
   }
