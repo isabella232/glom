@@ -977,6 +977,12 @@ DbAddDel::type_list_indexes DbAddDel::get_column_index(const std::shared_ptr<con
 
   type_list_indexes list_indexes;
 
+  if(!layout_item)
+  {
+    std::cerr << G_STRFUNC << ": layout_item was null." << std::endl;
+    return list_indexes;
+  }
+
   std::shared_ptr<const LayoutItem_Field> layout_item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
 
   guint i = 0;
