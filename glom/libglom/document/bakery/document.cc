@@ -453,7 +453,7 @@ bool Document::get_read_only() const
       Glib::RefPtr<Gio::FileInfo> info;
       try
       {
-        auto info = file->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
+        info = file->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
       }
       catch(const Gio::Error& ex)
       {
