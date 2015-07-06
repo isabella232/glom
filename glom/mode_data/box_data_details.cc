@@ -717,13 +717,11 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
   {
     Glib::ustring table_name;
     std::shared_ptr<Field> primary_key_field;
-    Gnome::Gda::Value primary_key_value;
 
     if(!layout_field->get_has_relationship_name())
     {
       table_name = get_table_name();
       primary_key_field = m_field_primary_key;
-      primary_key_value = get_primary_key_value_selected();
     }
     else
     {
