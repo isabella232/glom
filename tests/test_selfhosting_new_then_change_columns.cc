@@ -45,14 +45,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   
   const Glib::ustring table_name = "contacts";
   const Glib::ustring field_name_original = "date_of_birth";
-  std::shared_ptr<const Glom::Field> field = document.get_field(table_name, field_name_original);
-  if(!field)
+  std::shared_ptr<const Glom::Field> field_original = document.get_field(table_name, field_name_original);
+  if(!field_original)
   {
     std::cerr << G_STRFUNC << ": Failure: Could not get field." << std::endl;
     return false;
   }
 
-  std::shared_ptr<Glom::Field> field_new = Glom::glom_sharedptr_clone(field);
+  std::shared_ptr<Glom::Field> field_new = Glom::glom_sharedptr_clone(field_original);
   if(!field_new)
   {
     std::cerr << G_STRFUNC << ": Failure: field_new is null." << std::endl;
@@ -72,7 +72,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //and check that the result is as expected:
   try
   {
-    const auto test = connection_pool->change_column(table_name, field, field_new);
+    const auto test = connection_pool->change_column(table_name, field_original, field_new);
     if(!test)
     {
       std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
@@ -86,11 +86,11 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   //Try another change:
-  field = Glom::glom_sharedptr_clone(field_new);
+  field_original = Glom::glom_sharedptr_clone(field_new);
   field_new->set_glom_type(Glom::Field::TYPE_NUMERIC);
   try
   {
-    const auto test = connection_pool->change_column(table_name, field, field_new);
+    const auto test = connection_pool->change_column(table_name, field_original, field_new);
     if(!test)
     {
       std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
@@ -104,11 +104,11 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   //Try another change:
-  field = Glom::glom_sharedptr_clone(field_new);
+  field_original = Glom::glom_sharedptr_clone(field_new);
   field_new->set_name("somenewfieldname");
   try
   {
-    const auto test = connection_pool->change_column(table_name, field, field_new);
+    const auto test = connection_pool->change_column(table_name, field_original, field_new);
     if(!test)
     {
       std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
@@ -122,11 +122,11 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   //Try to make it auto-increment:
-  field = Glom::glom_sharedptr_clone(field_new);
+  field_original = Glom::glom_sharedptr_clone(field_new);
   field_new->set_auto_increment();
   try
   {
-    const auto test = connection_pool->change_column(table_name, field, field_new);
+    const auto test = connection_pool->change_column(table_name, field_original, field_new);
     if(!test)
     {
       std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
@@ -156,18 +156,18 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   try
   {
     //TODO: Avoid the need for this awkward use of set_g_type():
-    std::shared_ptr<Glom::Field> field = std::make_shared<Glom::Field>();
-    field->set_name("newfield");
-    field->set_glom_type(Glom::Field::TYPE_NUMERIC);
-    Glib::RefPtr<Gnome::Gda::Column> field_info = field->get_field_info();
-    field_info->set_g_type( Glom::Field::get_gda_type_for_glom_type(field->get_glom_type()) );
-    field->set_field_info(field_info);
+    std::shared_ptr<Glom::Field> field_numeric = std::make_shared<Glom::Field>();
+    field_numeric->set_name("newfield");
+    field_numeric->set_glom_type(Glom::Field::TYPE_NUMERIC);
+    Glib::RefPtr<Gnome::Gda::Column> field_info = field_numeric->get_field_info();
+    field_info->set_g_type( Glom::Field::get_gda_type_for_glom_type(field_numeric->get_glom_type()) );
+    field_numeric->set_field_info(field_info);
     
     Gnome::Gda::Numeric numeric;
     numeric.set_double(123);
-    field->set_default_value( Gnome::Gda::Value(numeric) );
+    field_numeric->set_default_value( Gnome::Gda::Value(numeric) );
 
-    const auto test = connection_pool->add_column(table_name, field);
+    const auto test = connection_pool->add_column(table_name, field_numeric);
     if(!test)
     {
       std::cerr << G_STRFUNC << ": Failure: add_column() failed." << std::endl;

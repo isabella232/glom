@@ -52,25 +52,25 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
   PyObject* pDict = PyModule_GetDict(pMain);
 
   //Create the function definition:
-  PyObject* pyValue = PyRun_String(func_def.c_str(), Py_file_input, pDict, pDict);
-  if(pyValue)
+  PyObject* pyValueFunc = PyRun_String(func_def.c_str(), Py_file_input, pDict, pDict);
+  if(pyValueFunc)
   {
-    Py_DECREF(pyValue);
-    pyValue = nullptr;
+    Py_DECREF(pyValueFunc);
+    pyValueFunc = nullptr;
   }
 
   //Call the function:
   {
     Glib::ustring call_func = "glom_calc_field_value()";
-    PyObject* pyValue = PyRun_String(call_func.c_str(), Py_eval_input, pDict, pDict);
-    if(!pyValue)
+    PyObject* pyValueCall = PyRun_String(call_func.c_str(), Py_eval_input, pDict, pDict);
+    if(!pyValueCall)
     {
-      g_warning("pyValue was null");
+      g_warning("pyValueCall was null");
       PyErr_Print();
     }
     else
     {
-      PyObject* pyStringObject = PyObject_Str(pyValue);
+      PyObject* pyStringObject = PyObject_Str(pyValueCall);
       if(pyStringObject)
       {
         if(PyUnicode_Check(pyStringObject))
@@ -91,7 +91,8 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
       else
         g_warning("pyStringObject is null");
 
-      Py_DECREF(pyValue);
+      Py_DECREF(pyValueCall);
+      pyValueCall = nullptr;
     }
   }
 
