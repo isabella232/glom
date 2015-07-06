@@ -141,9 +141,9 @@ void Dialog_GroupBy::on_button_field_sort_by()
   {
     m_dialog_choose_sort_fields->set_fields(m_table_name, m_layout_item->get_fields_sort_by());
 
-    const auto response = Glom::UiUtils::dialog_run_with_help(m_dialog_choose_sort_fields);
+    const auto dialog_response = Glom::UiUtils::dialog_run_with_help(m_dialog_choose_sort_fields);
     m_dialog_choose_sort_fields->hide();
-    if(response == Gtk::RESPONSE_OK && m_dialog_choose_sort_fields->get_modified())
+    if(dialog_response == Gtk::RESPONSE_OK && m_dialog_choose_sort_fields->get_modified())
     {
       m_layout_item->set_fields_sort_by( m_dialog_choose_sort_fields->get_fields() );
     }
@@ -168,9 +168,9 @@ void Dialog_GroupBy::on_button_secondary_fields()
   {
     m_dialog_choose_secondary_fields->set_fields(m_table_name, m_layout_item->get_secondary_fields()->m_list_items);
 
-    const auto response = Glom::UiUtils::dialog_run_with_help(m_dialog_choose_secondary_fields);
+    const auto dialog_response = Glom::UiUtils::dialog_run_with_help(m_dialog_choose_secondary_fields);
     m_dialog_choose_secondary_fields->hide();
-    if(response == Gtk::RESPONSE_OK && m_dialog_choose_secondary_fields->get_modified())
+    if(dialog_response == Gtk::RESPONSE_OK && m_dialog_choose_secondary_fields->get_modified())
     {
       m_layout_item->get_secondary_fields()->remove_all_items(); //Free the existing member items.
       m_layout_item->get_secondary_fields()->m_list_items = m_dialog_choose_secondary_fields->get_fields();

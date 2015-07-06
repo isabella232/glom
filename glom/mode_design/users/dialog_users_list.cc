@@ -162,10 +162,10 @@ void Dialog_UsersList::on_button_user_delete()
           dialog.set_secondary_text(_("Are your sure that you wish to delete this user?"));
           dialog.set_transient_for(*this);
 
-          const auto response = dialog.run();
+          const auto dialog_response = dialog.run();
           dialog.hide();
 
-          if(response == Gtk::RESPONSE_OK)
+          if(dialog_response == Gtk::RESPONSE_OK)
           {
             DbUtils::remove_user(user); //TODO: Warn about failure when this returns false?
             fill_list();
@@ -198,13 +198,13 @@ void Dialog_UsersList::on_button_user_add()
 
   dialog->set_user_list(users);
 
-  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto dialog_response = Glom::UiUtils::dialog_run_with_help(dialog);
 
   const auto user = dialog->get_user();
 
   delete dialog;
 
-  if(response != Gtk::RESPONSE_OK)
+  if(dialog_response != Gtk::RESPONSE_OK)
     return;
 
   if(!user.empty())
@@ -241,14 +241,14 @@ void Dialog_UsersList::on_button_user_new()
   dialog->set_transient_for(*this);
   dialog->m_combo_group->set_sensitive(false); //It is being added to the current group, so don't offer a different group.
  
-  int response = Gtk::RESPONSE_OK;
+  int dialog_response = Gtk::RESPONSE_OK;
   bool keep_trying = true;
   while(keep_trying)
   {
-    response = Glom::UiUtils::dialog_run_with_help(dialog);
+    dialog_response = Glom::UiUtils::dialog_run_with_help(dialog);
 
     //Check the password is acceptable:
-    if(response == Gtk::RESPONSE_OK)
+    if(dialog_response == Gtk::RESPONSE_OK)
     {
       const auto password_ok = dialog->check_password();
       if(password_ok)
@@ -263,7 +263,7 @@ void Dialog_UsersList::on_button_user_new()
 
   delete dialog;
 
-  if(response != Gtk::RESPONSE_OK)
+  if(dialog_response != Gtk::RESPONSE_OK)
     return;
 
   if(!DbUtils::add_user(get_document(), user, password, m_combo_group->get_active_text() /* group */))
@@ -309,14 +309,14 @@ void Dialog_UsersList::on_button_user_edit()
       dialog->m_combo_group->set_sensitive(false); //TODO: Allow, and handle, changes to this.
 
 
-      int response = Gtk::RESPONSE_OK;
+      int dialog_response = Gtk::RESPONSE_OK;
       bool keep_trying = true;
       while(keep_trying)
       {
-        response = Glom::UiUtils::dialog_run_with_help(dialog);
+        dialog_response = Glom::UiUtils::dialog_run_with_help(dialog);
 
         //Check the password is acceptable:
-        if(response == Gtk::RESPONSE_OK)
+        if(dialog_response == Gtk::RESPONSE_OK)
         {
           const auto password_ok = dialog->check_password();
           if(password_ok)
@@ -331,7 +331,7 @@ void Dialog_UsersList::on_button_user_edit()
 
       delete dialog;
 
-      if(response != Gtk::RESPONSE_OK)
+      if(dialog_response != Gtk::RESPONSE_OK)
         return;
 
       if(!user.empty() && !password.empty())

@@ -564,9 +564,9 @@ std::shared_ptr<LayoutItem_Button> Dialog_Layout_Details::offer_button_script_ed
 
   dialog->set_script(button, m_table_name);
   dialog->set_transient_for(*this);
-  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto dialog_response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
-  if(response == Gtk::RESPONSE_OK)
+  if(dialog_response == Gtk::RESPONSE_OK)
   {
     //Get the chosen relationship:
      result = dialog->get_script();
@@ -594,9 +594,9 @@ std::shared_ptr<Relationship> Dialog_Layout_Details::offer_relationship_list(con
   dialog->set_document(get_document(), m_table_name);
   dialog->select_item(item);
   dialog->set_transient_for(*this);
-  const auto response = dialog->run();
+  const auto dialog_response = dialog->run();
   dialog->hide();
-  if(response == Gtk::RESPONSE_OK)
+  if(dialog_response == Gtk::RESPONSE_OK)
   {
     //Get the chosen relationship:
     result = dialog->get_relationship_chosen();

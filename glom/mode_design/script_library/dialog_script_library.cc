@@ -98,9 +98,9 @@ void Dialog_ScriptLibrary::on_button_add()
     return;
     
   dialog->set_transient_for(*this);
-  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto dialog_response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
-  if(response != Gtk::RESPONSE_OK)
+  if(dialog_response != Gtk::RESPONSE_OK)
     return;
 
   const auto name = dialog->m_entry_name->get_text();
@@ -131,9 +131,9 @@ void Dialog_ScriptLibrary::on_button_remove()
   dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("_Remove"), Gtk::RESPONSE_OK);
   dialog.set_transient_for(*this);
-  const auto response = dialog.run();
+  const auto dialog_response = dialog.run();
   dialog.hide();
-  if(response != Gtk::RESPONSE_OK)
+  if(dialog_response != Gtk::RESPONSE_OK)
     return;
 
   const auto name = m_combobox_name->get_active_text();

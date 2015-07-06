@@ -217,10 +217,10 @@ void Dialog_GroupsList::on_button_group_delete()
         dialog.set_secondary_text(_("Are your sure that you wish to delete this group?"));
         dialog.set_transient_for(*this);
 
-        int response = dialog.run();
+        int dialog_response = dialog.run();
         dialog.hide();
 
-        if(response == Gtk::RESPONSE_OK)
+        if(dialog_response == Gtk::RESPONSE_OK)
         {
           const Glib::ustring strQuery = "DROP GROUP " + DbUtils::escape_sql_id(group);
           const auto test = DbUtils::query_execute_string(strQuery);
@@ -244,13 +244,13 @@ void Dialog_GroupsList::on_button_group_new()
     return;
     
   dialog->set_transient_for(*this);
-  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
+  const auto dialog_response = Glom::UiUtils::dialog_run_with_help(dialog);
 
   const auto group_name = dialog->m_entry_name->get_text();
 
   delete dialog;
 
-  if(response != Gtk::RESPONSE_OK)
+  if(dialog_response != Gtk::RESPONSE_OK)
     return;
 
   if(group_name.empty())
