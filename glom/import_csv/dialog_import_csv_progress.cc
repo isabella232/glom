@@ -224,8 +224,9 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   }
   else
   {
-    // No auto-increment primary key: Check for uniqueness
-    auto primary_key_value = m_current_row_values[m_field_primary_key->get_name()];
+    // No auto-increment primary key: Check for uniqueness.
+    // TODO: Test this situation.
+    primary_key_value = m_current_row_values[m_field_primary_key->get_name()];
     auto layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_full_field_details(m_field_primary_key);
 
