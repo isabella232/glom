@@ -196,8 +196,8 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
     m_target_table->set_markup("<b>" + Glib::Markup::escape_text(into_table) + "</b>");
 
     m_field_model = Gtk::ListStore::create(m_field_columns);
-    auto tree_iter = m_field_model->append();
-    (*tree_iter)[m_field_columns.m_col_field_name] = _("<None>");
+    auto tree_iter_none = m_field_model->append();
+    (*tree_iter_none)[m_field_columns.m_col_field_name] = _("<None>");
 
     const Document::type_vec_fields fields(document->get_table_fields(into_table));
     for (const auto& field : fields)
@@ -659,14 +659,14 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
       // Update the rows, so they are redrawn, doing a conversion to the new type.
       const auto sample_children = m_sample_model->children();
       // Create a TreeModel::Path with initial index 0. We need a TreeModel::Path for the row_changed() call
-      Gtk::TreeModel::Path path("0");
+      Gtk::TreeModel::Path path_changed("0");
 
       for(auto sample_iter = sample_children.begin(); sample_iter != sample_children.end(); ++ sample_iter)
       {
         if(sample_iter != iter)
-          m_sample_model->row_changed(path, sample_iter);
+          m_sample_model->row_changed(path_changed, sample_iter);
 
-        path.next();
+        path_changed.next();
       }
 
       validate_primary_key();

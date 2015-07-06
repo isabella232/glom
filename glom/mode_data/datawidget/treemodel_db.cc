@@ -751,8 +751,8 @@ DbTreeModel::iterator DbTreeModel::append()
 
   //Create the iterator to the new row:
   iterator iter;
-  const auto iter_is_valid = create_iterator(datamodel_row, iter);
-  if(iter_is_valid)
+  const auto the_iter_is_valid = create_iterator(datamodel_row, iter);
+  if(the_iter_is_valid)
   {
     row_inserted(get_path(iter), iter); //Allow the TreeView to respond to the addition.
   }

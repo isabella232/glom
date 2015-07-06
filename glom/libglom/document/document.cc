@@ -718,9 +718,9 @@ void Document::remove_relationship(const std::shared_ptr<const Relationship>& re
 
   //Remove relationshp from any reports:
   auto reports = info->m_reports;
-  for(const auto& the_pair : reports)
+  for(const auto& report_pair : reports)
   {
-    auto report = the_pair.second;
+    auto report = report_pair.second;
     auto group = report->get_layout_group();
 
     //Remove the field wherever it is a related field:
@@ -731,10 +731,10 @@ void Document::remove_relationship(const std::shared_ptr<const Relationship>& re
 void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Remove the field itself:
-  const auto info = get_table_info(table_name);
-  if(info)
+  const auto table_info = get_table_info(table_name);
+  if(table_info)
   {
-    auto vecFields = info->m_fields;
+    auto vecFields = table_info->m_fields;
     auto iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name) );
     if(iterFind != vecFields.end()) //If it was found:
     {
@@ -746,9 +746,9 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
   }
 
   //Remove any relationships that use this field:
-  for(const auto& the_pair : m_tables)
+  for(const auto& table_pair : m_tables)
   {
-    const auto info = the_pair.second;
+    const auto info = table_pair.second;
     if(!info)
       continue;
 
@@ -800,9 +800,9 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
 
     //Remove field from any reports:
     auto reports = info->m_reports;
-    for(const auto& the_pair : reports)
+    for(const auto& report_pair : reports)
     {
-      auto report = the_pair.second;
+      auto report = report_pair.second;
       auto group = report->get_layout_group();
 
       //Remove regular fields if the field is in this layout's table:
@@ -825,9 +825,9 @@ void Document::remove_table(const Glib::ustring& table_name)
   }
 
   //Remove any relationships that use this table:
-  for(const auto& the_pair : m_tables)
+  for(const auto& table_pair : m_tables)
   {
-    const auto info = the_pair.second;
+    const auto info = table_pair.second;
     if(!info)
       continue;
 
@@ -965,15 +965,15 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
 
     //Find any relationships, layouts, or formatting that use this field
     //Look at each table:
-    for(const auto& the_pair : m_tables)
+    for(const auto& table_pair : m_tables)
     {
-      const auto infoInner = the_pair.second;
+      const auto infoInner = table_pair.second;
       if(!infoInner)
         continue;
 
       //Fields:
-      type_vec_fields& vecFields = infoInner->m_fields;
-      for(const auto& field : vecFields)
+      type_vec_fields& vecFieldsInner = infoInner->m_fields;
+      for(const auto& field : vecFieldsInner)
       {
         if(!field)
           continue;
@@ -1026,10 +1026,10 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
 
 
       //Look at each report:
-      for(const auto& the_pair : infoInner->m_reports)
+      for(const auto& report_pair : infoInner->m_reports)
       {
         //Change the field if it is in this group:
-        auto report = the_pair.second;
+        auto report = report_pair.second;
         if(report)
         {
           if(is_parent_table)
@@ -1065,14 +1065,14 @@ void Document::change_table_name(const Glib::ustring& table_name_old, const Glib
 
     //Find any relationships or layouts that use this table
     //Look at each table:
-    for(const auto& the_pair : m_tables)
+    for(const auto& table_pair : m_tables)
     {
       //Look at each relationship in the table:
-      const auto doctableinfo = the_pair.second;
-      if(!doctableinfo)
+      const auto doctableinfo_inner = table_pair.second;
+      if(!doctableinfo_inner)
         continue;
 
-      type_vec_relationships relationships = doctableinfo->m_relationships;
+      type_vec_relationships relationships = doctableinfo_inner->m_relationships;
       for(const auto& relationship : relationships)
       {
         if(relationship->get_from_table() == table_name_old)
@@ -1165,9 +1165,9 @@ Document::type_listConstTableInfo Document::get_tables(bool plus_system_prefs) c
 
   type_listConstTableInfo result;
 
-  for(const auto& the_pair : m_tables)
+  for(const auto& table_pair : m_tables)
   {
-    const std::shared_ptr<const DocumentTableInfo> doctableinfo = the_pair.second;
+    const std::shared_ptr<const DocumentTableInfo> doctableinfo = table_pair.second;
     if(doctableinfo)
       result.push_back(doctableinfo->m_info);
 
@@ -1188,9 +1188,9 @@ Document::type_listTableInfo Document::get_tables(bool plus_system_prefs)
 {
   type_listTableInfo result;
 
-  for(const auto& the_pair : m_tables)
+  for(const auto& table_pair : m_tables)
   {
-    const auto doctableinfo = the_pair.second;
+    const auto doctableinfo = table_pair.second;
     if(doctableinfo)
       result.push_back(doctableinfo->m_info);
 
@@ -1281,9 +1281,9 @@ void Document::set_tables(const type_listTableInfo& tables)
   //Look at each "table":
 
   bool something_changed = false;
-  for(const auto& the_pair : m_tables)
+  for(const auto& table_pair : m_tables)
   {
-    const auto doctableinfo = the_pair.second;
+    const auto doctableinfo = table_pair.second;
     if(!doctableinfo)
       continue;
 
@@ -1313,9 +1313,9 @@ void Document::set_tables(const type_listTableInfo& tables)
 
 void Document::fill_sort_field_details(const Glib::ustring& parent_table_name, Formatting::type_list_sort_fields& sort_fields) const
 {
-  for(const auto& the_pair : sort_fields)
+  for(const auto& sort_pair : sort_fields)
   {
-    std::shared_ptr<const LayoutItem_Field> sort_field = the_pair.first;
+    std::shared_ptr<const LayoutItem_Field> sort_field = sort_pair.first;
     if(!sort_field)
      continue;
  
@@ -1793,9 +1793,9 @@ void Document::set_active_layout_platform(const Glib::ustring& layout_platform)
 
 Glib::ustring Document::get_default_table() const
 {
-  for(const auto& the_pair : m_tables)
+  for(const auto& table_pair : m_tables)
   {
-    const std::shared_ptr<const DocumentTableInfo> doctableinfo = the_pair.second;
+    const std::shared_ptr<const DocumentTableInfo> doctableinfo = table_pair.second;
     if(!doctableinfo)
       continue;
 
@@ -1979,10 +1979,10 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
         Formatting::type_list_values list_values;
 
         auto listNodesCustomChoices = nodeChoiceList->get_children(GLOM_NODE_FORMAT_CUSTOM_CHOICE);
-        for(const auto& node : listNodesCustomChoices)
+        for(const auto& node_choices : listNodesCustomChoices)
         {
-          const auto element = dynamic_cast<const xmlpp::Element*>(node);
-          if(element)
+          const auto element_custom_choices = dynamic_cast<const xmlpp::Element*>(node_choices);
+          if(element_custom_choices)
           {
             if(field_type == Field::TYPE_INVALID)
             {
@@ -1995,7 +1995,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
             }
 
             auto value = std::make_shared<ChoiceValue>();
-            load_after_choicevalue(element, value, field_type);
+            load_after_choicevalue(element_custom_choices, value, field_type);
             list_values.push_back(value);
           }
         }
@@ -2146,10 +2146,10 @@ void Document::load_after_sort_by(const xmlpp::Element* node, const Glib::ustrin
   if(!node)
     return;
 
-  auto listNodes = node->get_children(GLOM_NODE_DATA_LAYOUT_ITEM_FIELD);
-  for(const auto& node : listNodes)
+  auto list_nodes_item_fields = node->get_children(GLOM_NODE_DATA_LAYOUT_ITEM_FIELD);
+  for(const auto& node_item_field : list_nodes_item_fields)
   {
-    const auto element = dynamic_cast<const xmlpp::Element*>(node);
+    const auto element = dynamic_cast<const xmlpp::Element*>(node_item_field);
     if(element)
     {
       auto item = std::make_shared<LayoutItem_Field>();
@@ -2184,13 +2184,13 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
   load_after_translations(node, temp);
 
   //Get the child items:
-  auto listNodes = node->get_children();
-  for(const auto& node : listNodes)
+  auto list_nodes_children = node->get_children();
+  for(const auto& node_child : list_nodes_children)
   {
     std::shared_ptr<LayoutItem> item_added;
 
     //Create the layout item:
-    const auto element = dynamic_cast<const xmlpp::Element*>(node);
+    const auto element = dynamic_cast<const xmlpp::Element*>(node_child);
     if(element)
     {
       if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELD)
@@ -2487,13 +2487,13 @@ void Document::load_after_translations(const xmlpp::Element* element, const std:
   if(nodeTranslations)
   {
     auto listNodesTranslations = nodeTranslations->get_children(GLOM_NODE_TRANSLATION);
-    for(const auto& node : listNodesTranslations)
+    for(const auto& node_translation : listNodesTranslations)
     {
-      const auto element = dynamic_cast<const xmlpp::Element*>(node);
-      if(element)
+      const auto element_translation = dynamic_cast<const xmlpp::Element*>(node_translation);
+      if(element_translation)
       {
-        const auto locale = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_LOCALE);
-        const auto translation = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_VALUE);
+        const auto locale = XmlUtils::get_node_attribute_value(element_translation, GLOM_ATTRIBUTE_TRANSLATION_LOCALE);
+        const auto translation = XmlUtils::get_node_attribute_value(element_translation, GLOM_ATTRIBUTE_TRANSLATION_VALUE);
         item->set_title(translation, locale);
 
         //Remember any new translation locales in our cached list:
@@ -2655,10 +2655,10 @@ bool Document::load_after(int& failure_code)
       m_tables.clear();
 
       //Look at each "table" node.
-      auto listNodes = nodeRoot->get_children(GLOM_NODE_TABLE);
-      for(const auto& node : listNodes)
+      auto list_nodes_tables = nodeRoot->get_children(GLOM_NODE_TABLE);
+      for(const auto& node_table : list_nodes_tables)
       {
-        auto nodeTable = dynamic_cast<xmlpp::Element*>(node);
+        auto nodeTable = dynamic_cast<xmlpp::Element*>(node_table);
         if(nodeTable)
         {
           const auto table_name = XmlUtils::get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
@@ -2684,26 +2684,26 @@ bool Document::load_after(int& failure_code)
           const auto nodeRelationships = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_RELATIONSHIPS);
           if(nodeRelationships)
           {
-            const auto listNodes = nodeRelationships->get_children(GLOM_NODE_RELATIONSHIP);
-            for(const auto& node : listNodes)
+            const auto list_nodes_rels = nodeRelationships->get_children(GLOM_NODE_RELATIONSHIP);
+            for(const auto& item_rel : list_nodes_rels)
             {
-              const auto nodeChild = dynamic_cast<xmlpp::Element*>(node);
-              if(nodeChild)
+              const auto node_rel = dynamic_cast<xmlpp::Element*>(item_rel);
+              if(node_rel)
               {
                 auto relationship = std::make_shared<Relationship>();
-                const auto relationship_name = XmlUtils::get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_NAME);
+                const auto relationship_name = XmlUtils::get_node_attribute_value(node_rel, GLOM_ATTRIBUTE_NAME);
 
                 relationship->set_from_table(table_name);
                 relationship->set_name(relationship_name);;
 
-                relationship->set_from_field( XmlUtils::get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_KEY) );
-                relationship->set_to_table( XmlUtils::get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_OTHER_TABLE) );
-                relationship->set_to_field( XmlUtils::get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_OTHER_KEY) );
-                relationship->set_auto_create( XmlUtils::get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_AUTO_CREATE) );
-                relationship->set_allow_edit( XmlUtils::get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_ALLOW_EDIT) );
+                relationship->set_from_field( XmlUtils::get_node_attribute_value(node_rel, GLOM_ATTRIBUTE_KEY) );
+                relationship->set_to_table( XmlUtils::get_node_attribute_value(node_rel, GLOM_ATTRIBUTE_OTHER_TABLE) );
+                relationship->set_to_field( XmlUtils::get_node_attribute_value(node_rel, GLOM_ATTRIBUTE_OTHER_KEY) );
+                relationship->set_auto_create( XmlUtils::get_node_attribute_value_as_bool(node_rel, GLOM_ATTRIBUTE_AUTO_CREATE) );
+                relationship->set_allow_edit( XmlUtils::get_node_attribute_value_as_bool(node_rel, GLOM_ATTRIBUTE_ALLOW_EDIT) );
 
                 //Translations:
-                load_after_translations(nodeChild, relationship);
+                load_after_translations(node_rel, relationship);
 
                 doctableinfo->m_relationships.push_back(relationship);
               }
@@ -2717,23 +2717,23 @@ bool Document::load_after(int& failure_code)
             const auto type_names = Field::get_type_names();
 
             //Loop through Field child nodes:
-            auto listNodes = nodeFields->get_children(GLOM_NODE_FIELD);
-            for(const auto& node : listNodes)
+            auto list_nodes_fields = nodeFields->get_children(GLOM_NODE_FIELD);
+            for(const auto& item_field : list_nodes_fields)
             {
-              const auto nodeChild = dynamic_cast<xmlpp::Element*>(node);
-              if(nodeChild)
+              const auto node_field = dynamic_cast<xmlpp::Element*>(item_field);
+              if(node_field)
               {
                 std::shared_ptr<Field> field(new Field());
 
-                const auto strName = XmlUtils::get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_NAME);
+                const auto strName = XmlUtils::get_node_attribute_value(node_field, GLOM_ATTRIBUTE_NAME);
                 field->set_name( strName );
 
-                field->set_primary_key( XmlUtils::get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_PRIMARY_KEY) );
-                field->set_unique_key( XmlUtils::get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_UNIQUE) );
-                field->set_auto_increment( XmlUtils::get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_AUTOINCREMENT) );
+                field->set_primary_key( XmlUtils::get_node_attribute_value_as_bool(node_field, GLOM_ATTRIBUTE_PRIMARY_KEY) );
+                field->set_unique_key( XmlUtils::get_node_attribute_value_as_bool(node_field, GLOM_ATTRIBUTE_UNIQUE) );
+                field->set_auto_increment( XmlUtils::get_node_attribute_value_as_bool(node_field, GLOM_ATTRIBUTE_AUTOINCREMENT) );
 
                 //Get lookup information, if present.
-                xmlpp::Element* nodeLookup = XmlUtils::get_node_child_named(nodeChild, GLOM_NODE_FIELD_LOOKUP);
+                xmlpp::Element* nodeLookup = XmlUtils::get_node_child_named(node_field, GLOM_NODE_FIELD_LOOKUP);
                 if(nodeLookup)
                 {
                   const auto lookup_relationship_name = XmlUtils::get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
@@ -2743,20 +2743,20 @@ bool Document::load_after(int& failure_code)
                   field->set_lookup_field( XmlUtils::get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_FIELD) );
                 }
 
-                field->set_calculation( XmlUtils::get_child_text_node(nodeChild, GLOM_NODE_CALCULATION) );
+                field->set_calculation( XmlUtils::get_child_text_node(node_field, GLOM_NODE_CALCULATION) );
                 if(!(field->get_has_calculation())) //Try the deprecated attribute instead
-                  field->set_calculation( XmlUtils::get_node_attribute_value(nodeChild, GLOM_DEPRECATED_ATTRIBUTE_CALCULATION) );
+                  field->set_calculation( XmlUtils::get_node_attribute_value(node_field, GLOM_DEPRECATED_ATTRIBUTE_CALCULATION) );
 
                 //Field Type:
-                const auto field_type = XmlUtils::get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_TYPE);
+                const auto field_type = XmlUtils::get_node_attribute_value(node_field, GLOM_ATTRIBUTE_TYPE);
 
                 //Get the type enum for this string representation of the type:
                 Field::glom_field_type field_type_enum = Field::TYPE_INVALID;
-                for(const auto& the_pair : type_names)
+                for(const auto& type_pair : type_names)
                 {
-                  if(the_pair.second == field_type)
+                  if(type_pair.second == field_type)
                   {
-                    field_type_enum = the_pair.first;
+                    field_type_enum = type_pair.first;
                     break;
                   }
                 }
@@ -2765,15 +2765,15 @@ bool Document::load_after(int& failure_code)
                 //We set this after set_field_info(), because that gets a glom type from the (not-specified) gdatype. Yes, that's strange, and should probably be more explicit.
                 field->set_glom_type(field_type_enum);
 
-                field->set_default_value( XmlUtils::get_node_attribute_value_as_value(nodeChild, GLOM_ATTRIBUTE_DEFAULT_VALUE, field_type_enum) );
+                field->set_default_value( XmlUtils::get_node_attribute_value_as_value(node_field, GLOM_ATTRIBUTE_DEFAULT_VALUE, field_type_enum) );
 
                 //Default Formatting:
-                const auto elementFormatting = XmlUtils::get_node_child_named(nodeChild, GLOM_NODE_FORMAT);
+                const auto elementFormatting = XmlUtils::get_node_child_named(node_field, GLOM_NODE_FORMAT);
                 if(elementFormatting)
                   load_after_layout_item_formatting(elementFormatting, field->m_default_formatting, field_type_enum, table_name, strName);
 
                 //Translations:
-                load_after_translations(nodeChild, field);
+                load_after_translations(node_field, field);
 
                 doctableinfo->m_fields.push_back(field);
               }
@@ -2789,20 +2789,20 @@ bool Document::load_after(int& failure_code)
           {
             //Loop through example_row child nodes:
             xmlpp::Node::NodeList listExampleRows = nodeExampleRows->get_children(GLOM_NODE_EXAMPLE_ROW);
-            for(const auto& node : listExampleRows)
+            for(const auto& item_row : listExampleRows)
             {
-              const auto nodeChild = dynamic_cast<xmlpp::Element*>(node);
-              if(nodeChild)
+              const auto node_row = dynamic_cast<xmlpp::Element*>(item_row);
+              if(node_row)
               {
                 type_row_data field_values(doctableinfo->m_fields.size());
                 //Loop through value child nodes
-                xmlpp::Node::NodeList listNodes = nodeChild->get_children(GLOM_NODE_VALUE);
-                for(const auto& node : listNodes)
+                xmlpp::Node::NodeList list_nodes_values = node_row->get_children(GLOM_NODE_VALUE);
+                for(const auto& item_value : list_nodes_values)
                 {
-                  const auto nodeChild = dynamic_cast<xmlpp::Element*>(node);
-                  if(nodeChild)
+                  const auto node_value = dynamic_cast<xmlpp::Element*>(item_value);
+                  if(node_value)
                   {
-                    const auto column_name = nodeChild->get_attribute(GLOM_ATTRIBUTE_COLUMN);
+                    const auto column_name = node_value->get_attribute(GLOM_ATTRIBUTE_COLUMN);
                     if(column_name)
                     {
                       //std::cout << "DEBUG: column_name = " << column_name->get_value() << " fields size=" << doctableinfo->m_fields.size() << std::endl;
@@ -2815,7 +2815,7 @@ bool Document::load_after(int& failure_code)
                         //std::cout << "  DEBUG: searching: field i=" << i << " =" << field->get_name() << std::endl;
                         if(field && (field->get_name() == column_name->get_value()))
                         {
-                          field_values[i] = XmlUtils::get_node_text_child_as_value(nodeChild, field->get_glom_type());
+                          field_values[i] = XmlUtils::get_node_text_child_as_value(node_value, field->get_glom_type());
                           //std::cout << "    DEBUG: document example value: field=" << field->get_name() << ", value=" << field_values[i].to_string() << std::endl;
                           break;
                         }
@@ -2838,9 +2838,9 @@ bool Document::load_after(int& failure_code)
       //Look at each "table" node.
       //We do load the layouts separately, because we needed to load all the tables' relationships and tables
       //before we can load layouts that can use them.
-      for(const auto& node : listNodes)
+      for(const auto& node_table : list_nodes_tables)
       {
-        xmlpp::Element* nodeTable = dynamic_cast<xmlpp::Element*>(node);
+        xmlpp::Element* nodeTable = dynamic_cast<xmlpp::Element*>(node_table);
         if(nodeTable)
         {
           const auto table_name = XmlUtils::get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
@@ -2850,32 +2850,32 @@ bool Document::load_after(int& failure_code)
           const auto nodeDataLayouts = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_DATA_LAYOUTS);
           if(nodeDataLayouts)
           {
-            xmlpp::Node::NodeList listNodes = nodeDataLayouts->get_children(GLOM_NODE_DATA_LAYOUT);
-            for(const auto& item : listNodes)
+            xmlpp::Node::NodeList list_nodes_data_layout = nodeDataLayouts->get_children(GLOM_NODE_DATA_LAYOUT);
+            for(const auto& item : list_nodes_data_layout)
             {
-              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(item);
-              if(node)
+              xmlpp::Element* node_data_layout = dynamic_cast<xmlpp::Element*>(item);
+              if(node_data_layout)
               {
-                const auto layout_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
-                const auto layout_platform = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_LAYOUT_PLATFORM);
+                const auto layout_name = XmlUtils::get_node_attribute_value(node_data_layout, GLOM_ATTRIBUTE_NAME);
+                const auto layout_platform = XmlUtils::get_node_attribute_value(node_data_layout, GLOM_ATTRIBUTE_LAYOUT_PLATFORM);
 
                 type_list_layout_groups layout_groups;
 
-                const auto nodeGroups = XmlUtils::get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
-                if(nodeGroups)
+                const auto node_group = XmlUtils::get_node_child_named(node_data_layout, GLOM_NODE_DATA_LAYOUT_GROUPS);
+                if(node_group)
                 {
                   //Look at all its children:
-                  xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
-                  for(const auto& item : listNodes)
+                  xmlpp::Node::NodeList list_nodes_groups = node_group->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
+                  for(const auto& item_group : list_nodes_groups)
                   {
-                    const auto node = dynamic_cast<const xmlpp::Element*>(item);
-                    if(node)
+                    const auto node_layout_group = dynamic_cast<const xmlpp::Element*>(item_group);
+                    if(node_layout_group)
                     {
-                      const auto group_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
+                      const auto group_name = XmlUtils::get_node_attribute_value(node_layout_group, GLOM_ATTRIBUTE_NAME);
                       if(!group_name.empty())
                       {
                         std::shared_ptr<LayoutGroup> group(new LayoutGroup());
-                        load_after_layout_group(node, table_name, group);
+                        load_after_layout_group(node_layout_group, table_name, group);
 
                         layout_groups.push_back(group);
                       }
@@ -2897,14 +2897,14 @@ bool Document::load_after(int& failure_code)
           const auto nodeReports = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_REPORTS);
           if(nodeReports)
           {
-            xmlpp::Node::NodeList listNodes = nodeReports->get_children(GLOM_NODE_REPORT);
-            for(const auto& item : listNodes)
+            xmlpp::Node::NodeList list_nodes_reports = nodeReports->get_children(GLOM_NODE_REPORT);
+            for(const auto& item_report : list_nodes_reports)
             {
-              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(item);
-              if(node)
+              xmlpp::Element* node_report = dynamic_cast<xmlpp::Element*>(item_report);
+              if(node_report)
               {
-                const auto report_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
-                const auto show_table_title = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
+                const auto report_name = XmlUtils::get_node_attribute_value(node_report, GLOM_ATTRIBUTE_NAME);
+                const auto show_table_title = XmlUtils::get_node_attribute_value_as_bool(node_report, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
 
                 //type_list_layout_groups layout_groups;
 
@@ -2912,19 +2912,19 @@ bool Document::load_after(int& failure_code)
                 report->set_name(report_name);
                 report->set_show_table_title(show_table_title);
 
-                const auto nodeGroups = XmlUtils::get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
-                if(nodeGroups)
+                const auto node_group = XmlUtils::get_node_child_named(node_report, GLOM_NODE_DATA_LAYOUT_GROUPS);
+                if(node_group)
                 {
                   //Look at all its children:
-                  xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
-                  for(const auto& item : listNodes)
+                  xmlpp::Node::NodeList list_nodes_groups = node_group->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
+                  for(const auto& item_group : list_nodes_groups)
                   {
-                    const auto node = dynamic_cast<const xmlpp::Element*>(item);
-                    if(node)
+                    const auto node_layout_group = dynamic_cast<const xmlpp::Element*>(item_group);
+                    if(node_layout_group)
                     {
                       std::shared_ptr<LayoutGroup> group = report->get_layout_group();
                       group->remove_all_items();
-                      load_after_layout_group(node, table_name, group);
+                      load_after_layout_group(node_layout_group, table_name, group);
 
                       fill_layout_field_details(table_name, group); //Get full field details from the field names.
                     }
@@ -2932,7 +2932,7 @@ bool Document::load_after(int& failure_code)
                 }
 
                 //Translations:
-                load_after_translations(node, report);
+                load_after_translations(node_report, report);
 
                 doctableinfo->m_reports[report->get_name()] = report;
               }
@@ -2944,76 +2944,76 @@ bool Document::load_after(int& failure_code)
           const auto nodePrintLayouts = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_PRINT_LAYOUTS);
           if(nodePrintLayouts)
           {
-            xmlpp::Node::NodeList listNodes = nodePrintLayouts->get_children(GLOM_NODE_PRINT_LAYOUT);
-            for(const auto& item : listNodes)
+            xmlpp::Node::NodeList list_nodes_print_layout = nodePrintLayouts->get_children(GLOM_NODE_PRINT_LAYOUT);
+            for(const auto& item_print_layout : list_nodes_print_layout)
             {
-              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(item);
-              if(node)
+              xmlpp::Element* node_print_layout = dynamic_cast<xmlpp::Element*>(item_print_layout);
+              if(node_print_layout)
               {
-                const auto name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
-                const auto show_table_title = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
+                const auto name = XmlUtils::get_node_attribute_value(node_print_layout, GLOM_ATTRIBUTE_NAME);
+                const auto show_table_title = XmlUtils::get_node_attribute_value_as_bool(node_print_layout, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
 
                 std::shared_ptr<PrintLayout> print_layout(new PrintLayout());
                 print_layout->set_name(name);
                 print_layout->set_show_table_title(show_table_title);
 
                 print_layout->set_show_grid(
-                  XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_GRID) );
+                  XmlUtils::get_node_attribute_value_as_bool(node_print_layout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_GRID) );
                 print_layout->set_show_rules(
-                  XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_RULES) );
+                  XmlUtils::get_node_attribute_value_as_bool(node_print_layout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_RULES) );
                 print_layout->set_show_outlines(
-                  XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_OUTLINES) );
+                  XmlUtils::get_node_attribute_value_as_bool(node_print_layout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_OUTLINES) );
 
                 //Get the horizontal and vertical rules:
                 PrintLayout::type_vec_doubles vec_rules_h;
-                xmlpp::Node::NodeList listRules = node->get_children(GLOM_NODE_HORIZONTAL_RULE);
-                for(const auto& item : listRules)
+                xmlpp::Node::NodeList listRules = node_print_layout->get_children(GLOM_NODE_HORIZONTAL_RULE);
+                for(const auto& item_rule : listRules)
                 {
-                  const auto node = dynamic_cast<const xmlpp::Element*>(item);
-                  if(!node)
+                  const auto node_rule = dynamic_cast<const xmlpp::Element*>(item_rule);
+                  if(!node_rule)
                     continue;
 
-                  const auto pos = XmlUtils::get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_RULE_POSITION);
+                  const auto pos = XmlUtils::get_node_attribute_value_as_decimal(node_rule, GLOM_ATTRIBUTE_RULE_POSITION);
                   vec_rules_h.push_back(pos);
                 }
-		print_layout->set_horizontal_rules(vec_rules_h);
+                print_layout->set_horizontal_rules(vec_rules_h);
 
-		PrintLayout::type_vec_doubles vec_rules_v;
-                listRules = node->get_children(GLOM_NODE_VERTICAL_RULE);
-                for(const auto& item : listRules)
+                PrintLayout::type_vec_doubles vec_rules_v;
+                listRules = node_print_layout->get_children(GLOM_NODE_VERTICAL_RULE);
+                for(const auto& item_rule : listRules)
                 {
-                  const auto node = dynamic_cast<const xmlpp::Element*>(item);
-                  if(!node)
+                  const auto node_rule = dynamic_cast<const xmlpp::Element*>(item_rule);
+                  if(!node_rule)
                     continue;
 
-                  const auto pos = XmlUtils::get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_RULE_POSITION);
+                  const auto pos = XmlUtils::get_node_attribute_value_as_decimal(node_rule, GLOM_ATTRIBUTE_RULE_POSITION);
                   vec_rules_v.push_back(pos);
                 }
-		print_layout->set_vertical_rules(vec_rules_v);
+                print_layout->set_vertical_rules(vec_rules_v);
 
 
                 //Page Setup:
-                const auto key_file_text = XmlUtils::get_child_text_node(node, GLOM_NODE_PAGE_SETUP);
+                const auto key_file_text = XmlUtils::get_child_text_node(node_print_layout, GLOM_NODE_PAGE_SETUP);
                 print_layout->set_page_setup(key_file_text);
                 
                 print_layout->set_page_count(
-                  XmlUtils::get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_PAGE_COUNT, 1));
+                  XmlUtils::get_node_attribute_value_as_decimal(node_print_layout, GLOM_ATTRIBUTE_PRINT_LAYOUT_PAGE_COUNT, 1));
                  
 
                 //Layout Groups:
-                const auto nodeGroups = XmlUtils::get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
+                const auto nodeGroups = XmlUtils::get_node_child_named(node_print_layout, GLOM_NODE_DATA_LAYOUT_GROUPS);
                 if(nodeGroups)
                 {
                   //Look at all its children:
-                  xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
-                  for(const auto& item : listNodes)
+                  xmlpp::Node::NodeList list_nodes_data_layout_group = nodeGroups->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
+                  for(const auto& item_group : list_nodes_data_layout_group)
                   {
-                    const auto node = dynamic_cast<const xmlpp::Element*>(item);
-                    if(node)
+                    const auto node_layout_group = dynamic_cast<const xmlpp::Element*>(item_group);
+                    if(node_layout_group)
                     {
                       std::shared_ptr<LayoutGroup> group = print_layout->get_layout_group();
                       group->remove_all_items();
-                      load_after_layout_group(node, table_name, group, true /* load positions too. */);
+                      load_after_layout_group(node_layout_group, table_name, group, true /* load positions too. */);
 
                       fill_layout_field_details(table_name, group); //Get full field details from the field names.
                     }
@@ -3021,7 +3021,7 @@ bool Document::load_after(int& failure_code)
                 }
 
                 //Translations:
-                load_after_translations(node, print_layout);
+                load_after_translations(node_print_layout, print_layout);
 
                 doctableinfo->m_print_layouts[print_layout->get_name()] = print_layout;
               }
@@ -3036,32 +3036,32 @@ bool Document::load_after(int& failure_code)
           const auto nodeGroups = XmlUtils::get_node_child_named(nodeRoot, GLOM_NODE_GROUPS);
           if(nodeGroups)
           {
-            xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_GROUP);
-            for(const auto& item : listNodes)
+            xmlpp::Node::NodeList list_nodes_groups = nodeGroups->get_children(GLOM_NODE_GROUP);
+            for(const auto& item_group : list_nodes_groups)
             {
-              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(item);
-              if(node)
+              xmlpp::Element* node_group = dynamic_cast<xmlpp::Element*>(item_group);
+              if(node_group)
               {
                 GroupInfo group_info;
 
-                group_info.set_name( XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
-                group_info.m_developer = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_DEVELOPER);
+                group_info.set_name( XmlUtils::get_node_attribute_value(node_group, GLOM_ATTRIBUTE_NAME) );
+                group_info.m_developer = XmlUtils::get_node_attribute_value_as_bool(node_group, GLOM_ATTRIBUTE_DEVELOPER);
 
-                xmlpp::Node::NodeList listTablePrivs = node->get_children(GLOM_NODE_TABLE_PRIVS);
-                for(const auto& item : listTablePrivs)
+                xmlpp::Node::NodeList listTablePrivs = node_group->get_children(GLOM_NODE_TABLE_PRIVS);
+                for(const auto& item_priv : listTablePrivs)
                 {
-                  xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(item);
-                  if(node)
+                  xmlpp::Element* node_priv = dynamic_cast<xmlpp::Element*>(item_priv);
+                  if(node_priv)
                   {
-                    const auto table_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_TABLE_NAME);
+                    const auto priv_table_name = XmlUtils::get_node_attribute_value(node_priv, GLOM_ATTRIBUTE_TABLE_NAME);
 
                     Privileges privs;
-                    privs.m_view = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_VIEW);
-                    privs.m_edit = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_EDIT);
-                    privs.m_create = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_CREATE);
-                    privs.m_delete = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_DELETE);
+                    privs.m_view = XmlUtils::get_node_attribute_value_as_bool(node_priv, GLOM_ATTRIBUTE_PRIV_VIEW);
+                    privs.m_edit = XmlUtils::get_node_attribute_value_as_bool(node_priv, GLOM_ATTRIBUTE_PRIV_EDIT);
+                    privs.m_create = XmlUtils::get_node_attribute_value_as_bool(node_priv, GLOM_ATTRIBUTE_PRIV_CREATE);
+                    privs.m_delete = XmlUtils::get_node_attribute_value_as_bool(node_priv, GLOM_ATTRIBUTE_PRIV_DELETE);
 
-                    group_info.m_map_privileges[table_name] = privs;
+                    group_info.m_map_privileges[priv_table_name] = privs;
                   }
                 }
 
@@ -3077,25 +3077,25 @@ bool Document::load_after(int& failure_code)
           const auto nodeModules = XmlUtils::get_node_child_named(nodeRoot, GLOM_NODE_LIBRARY_MODULES);
           if(nodeModules)
           {
-            xmlpp::Node::NodeList listNodes = nodeModules->get_children(GLOM_NODE_LIBRARY_MODULE);
-            for(const auto& item : listNodes)
+            xmlpp::Node::NodeList nodes_lib_modules = nodeModules->get_children(GLOM_NODE_LIBRARY_MODULE);
+            for(const auto& item : nodes_lib_modules)
             {
-              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(item);
-              if(node)
+              xmlpp::Element* node_lib_module = dynamic_cast<xmlpp::Element*>(item);
+              if(node_lib_module)
               {
                 //The name is in an attribute:
-                const auto module_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME);
+                const auto module_name = XmlUtils::get_node_attribute_value(node_lib_module, GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME);
 
                 //The string is in a child text node:
                 Glib::ustring script;
 
-                const auto text_child = node->get_child_text();
+                const auto text_child = node_lib_module->get_child_text();
                 if(text_child)
                   script = text_child->get_content();
 
                 //Fall back to the deprecated attribute:
                 if(script.empty())
-                  script = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT);
+                  script = XmlUtils::get_node_attribute_value(node_lib_module, GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT);
 
                 m_map_library_scripts[module_name] = script;
               }
@@ -3259,14 +3259,14 @@ void Document::save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupB
   if(!node)
     return;
 
-  for(const auto& the_pair : list_fields)
+  for(const auto& field_pair : list_fields)
   {
-    std::shared_ptr<const LayoutItem_Field> field = the_pair.first;
+    std::shared_ptr<const LayoutItem_Field> field = field_pair.first;
 
     xmlpp::Element* nodeChild = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_FIELD);
     save_before_layout_item_field(nodeChild, field);
 
-    XmlUtils::set_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_SORT_ASCENDING, the_pair.second);
+    XmlUtils::set_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_SORT_ASCENDING, field_pair.second);
   }
 }
 
@@ -3576,11 +3576,11 @@ void Document::save_before_translations(xmlpp::Element* element, const std::shar
   xmlpp::Element* child = element->add_child(GLOM_NODE_TRANSLATIONS_SET);
 
   const auto map_translations = item->_get_translations_map();
-  for(const auto& the_pair : map_translations)
+  for(const auto& translation_pair : map_translations)
   {
     xmlpp::Element* childItem = child->add_child(GLOM_NODE_TRANSLATION);
-    XmlUtils::set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_LOCALE, the_pair.first);
-    XmlUtils::set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_VALUE, the_pair.second);
+    XmlUtils::set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_LOCALE, translation_pair.first);
+    XmlUtils::set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_VALUE, translation_pair.second);
   }
 
   //If it has a singular title, then save that too:
@@ -3694,14 +3694,14 @@ bool Document::save_before()
     XmlUtils::set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE, m_connection_database);
 
     //Remove existing tables:
-    xmlpp::Node::NodeList listNodes = nodeRoot->get_children(GLOM_NODE_TABLE);
-    for(const auto& item : listNodes)
+    xmlpp::Node::NodeList list_nodes_tables = nodeRoot->get_children(GLOM_NODE_TABLE);
+    for(const auto& item : list_nodes_tables)
       nodeRoot->remove_child(item);
 
     //Add tables:
-  for(const auto& the_pair : m_tables)
+  for(const auto& table_pair : m_tables)
     {
-      const std::shared_ptr<const DocumentTableInfo> doctableinfo = the_pair.second;
+      const std::shared_ptr<const DocumentTableInfo> doctableinfo = table_pair.second;
       if(!doctableinfo || !doctableinfo->m_info)
         continue;
 
@@ -3837,11 +3837,11 @@ bool Document::save_before()
         xmlpp::Element* nodeReports = nodeTable->add_child(GLOM_NODE_REPORTS);
 
         //Add the groups:
-        for(const auto& the_pair : doctableinfo->m_reports)
+        for(const auto& report_pair : doctableinfo->m_reports)
         {
           xmlpp::Element* nodeReport = nodeReports->add_child(GLOM_NODE_REPORT);
 
-          std::shared_ptr<const Report> report = the_pair.second;
+          std::shared_ptr<const Report> report = report_pair.second;
           XmlUtils::set_node_attribute_value(nodeReport, GLOM_ATTRIBUTE_NAME, report->get_name());
           XmlUtils::set_node_attribute_value_as_bool(nodeReport, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, report->get_show_table_title());
 
@@ -3856,11 +3856,11 @@ bool Document::save_before()
         xmlpp::Element* nodePrintLayouts = nodeTable->add_child(GLOM_NODE_PRINT_LAYOUTS);
 
         //Add the print :
-        for(const auto& the_pair : doctableinfo->m_print_layouts)
+        for(const auto& print_layout_pair : doctableinfo->m_print_layouts)
         {
           xmlpp::Element* nodePrintLayout = nodePrintLayouts->add_child(GLOM_NODE_PRINT_LAYOUT);
 
-          std::shared_ptr<const PrintLayout> print_layout = the_pair.second;
+          std::shared_ptr<const PrintLayout> print_layout = print_layout_pair.second;
           XmlUtils::set_node_attribute_value(nodePrintLayout, GLOM_ATTRIBUTE_NAME, print_layout->get_name());
           XmlUtils::set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, print_layout->get_show_table_title());
 
@@ -3906,8 +3906,8 @@ bool Document::save_before()
 
 
     //Remove existing groups:
-    listNodes = nodeRoot->get_children(GLOM_NODE_GROUPS);
-    for(const auto& item : listNodes)
+    auto list_nodes_groups = nodeRoot->get_children(GLOM_NODE_GROUPS);
+    for(const auto& item : list_nodes_groups)
       nodeRoot->remove_child(item);
 
     //Add groups:
@@ -3915,9 +3915,9 @@ bool Document::save_before()
 
     nodeGroups->add_child_comment("These are only used when recreating a database from an example file. The actual access-control is on the server, of course.");
 
-    for(const auto& the_pair : m_groups)
+    for(const auto& group_pair : m_groups)
     {
-      const GroupInfo& group_info = the_pair.second;
+      const GroupInfo& group_info = group_pair.second;
 
       const auto group_name = group_info.get_name();
       if(group_name.empty())
@@ -3932,13 +3932,13 @@ bool Document::save_before()
       XmlUtils::set_node_attribute_value_as_bool(nodeGroup, GLOM_ATTRIBUTE_DEVELOPER, group_info.m_developer);
 
       //The privileges for each table, for this group:
-      for(const auto& the_pair : group_info.m_map_privileges)
+      for(const auto& priv_pair : group_info.m_map_privileges)
       {
         xmlpp::Element* nodeTablePrivs = nodeGroup->add_child(GLOM_NODE_TABLE_PRIVS);
 
-        XmlUtils::set_node_attribute_value(nodeTablePrivs, GLOM_ATTRIBUTE_TABLE_NAME, the_pair.first);
+        XmlUtils::set_node_attribute_value(nodeTablePrivs, GLOM_ATTRIBUTE_TABLE_NAME, priv_pair.first);
 
-        const Privileges& privs = the_pair.second;
+        const Privileges& privs = priv_pair.second;
         XmlUtils::set_node_attribute_value_as_bool(nodeTablePrivs, GLOM_ATTRIBUTE_PRIV_VIEW, privs.m_view);
         XmlUtils::set_node_attribute_value_as_bool(nodeTablePrivs, GLOM_ATTRIBUTE_PRIV_EDIT, privs.m_edit);
         XmlUtils::set_node_attribute_value_as_bool(nodeTablePrivs, GLOM_ATTRIBUTE_PRIV_CREATE, privs.m_create);
@@ -3947,17 +3947,17 @@ bool Document::save_before()
     }
 
     //Remove existing library modules::
-    listNodes = nodeRoot->get_children(GLOM_NODE_LIBRARY_MODULES);
-    for(const auto& item : listNodes)
+    auto list_nodes_lib_modules = nodeRoot->get_children(GLOM_NODE_LIBRARY_MODULES);
+    for(const auto& item : list_nodes_lib_modules)
       nodeRoot->remove_child(item);
 
     //Add groups:
     xmlpp::Element* nodeModules = nodeRoot->add_child(GLOM_NODE_LIBRARY_MODULES);
 
-    for(const auto& the_pair : m_map_library_scripts)
+    for(const auto& script_pair : m_map_library_scripts)
     {
-      const Glib::ustring& name = the_pair.first;
-      const Glib::ustring& script = the_pair.second;
+      const Glib::ustring& name = script_pair.first;
+      const Glib::ustring& script = script_pair.second;
 
       xmlpp::Element* nodeModule = nodeModules->add_child(GLOM_NODE_LIBRARY_MODULE);
 
@@ -4011,9 +4011,9 @@ Glib::ustring Document::get_name() const
 Document::type_list_groups Document::get_groups() const
 {
   type_list_groups result;
-  for(const auto& the_pair : m_groups)
+  for(const auto& group_pair : m_groups)
   {
-    result.push_back(the_pair.second);
+    result.push_back(group_pair.second);
   }
 
   return result;
@@ -4057,9 +4057,9 @@ std::vector<Glib::ustring> Document::get_report_names(const Glib::ustring& table
   if(info)
   {
     std::vector<Glib::ustring> result;
-    for(const auto& the_pair : info->m_reports)
+    for(const auto& report_pair : info->m_reports)
     {
-      result.push_back(the_pair.second->get_name());
+      result.push_back(report_pair.second->get_name());
     }
 
     return result;
@@ -4115,9 +4115,9 @@ std::vector<Glib::ustring> Document::get_print_layout_names(const Glib::ustring&
   if(info)
   {
     std::vector<Glib::ustring> result;
-    for(const auto& the_pair : info->m_print_layouts)
+    for(const auto& print_layout_pair : info->m_print_layouts)
     {
-      result.push_back(the_pair.second->get_name());
+      result.push_back(print_layout_pair.second->get_name());
     }
 
     return result;
@@ -4695,9 +4695,9 @@ guint Document::get_latest_known_document_format_version()
 std::vector<Glib::ustring> Document::get_library_module_names() const
 {
   std::vector<Glib::ustring> result;
-  for(const auto& the_pair : m_map_library_scripts)
+  for(const auto& script_pair : m_map_library_scripts)
   {
-    result.push_back(the_pair.first);
+    result.push_back(script_pair.first);
   }
 
   return result;

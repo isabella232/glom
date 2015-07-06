@@ -493,8 +493,7 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
   const auto command_postgres_stop = get_path_to_postgres_executable("pg_ctl") + " -D " + Glib::shell_quote(dbdir_data) + " stop -m fast";
-  const auto result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress);
-  if(!result)
+  if(!Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress))
   {
     std::cerr << G_STRFUNC << ": Error while attempting to stop self-hosting of the database. Trying again."  << std::endl;
     
@@ -510,8 +509,7 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
     
     //I've seen it fail when running under valgrind, and there are reports of failures in bug #420962.
     //Maybe it will help to try again:
-    const auto result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress);
-    if(!result)
+    if(!Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress))
     {
       std::cerr << G_STRFUNC << ": Error while attempting (for a second time) to stop self-hosting of the database."  << std::endl;
       return false;

@@ -525,9 +525,6 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
 
     Glib::RefPtr<CanvasLayoutItem> item =
       create_canvas_layout_item_and_add(layout_item);
-    double item_x = x;
-    double item_y = y;
-    canvas_convert_from_drag_pixels(item_x, item_y, true /* adjust for scrolling */);
     item->snap_position(item_x, item_y);
     item->set_xy(item_x, item_y);
    

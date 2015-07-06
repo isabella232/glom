@@ -447,11 +447,11 @@ int ComboChoicesWithTreeModel::get_fixed_cell_height(Gtk::Widget& widget)
     // when all columns are known.
 
     //Get a default:
-    const Glib::RefPtr<const Pango::Layout> refLayout = widget.create_pango_layout("example");
-    int width = 0;
-    int height = 0;
-    refLayout->get_pixel_size(width, height);
-    m_fixed_cell_height = height;
+    const Glib::RefPtr<const Pango::Layout> refLayoutDefault = widget.create_pango_layout("example");
+    int width_default = 0;
+    int height_default = 0;
+    refLayoutDefault->get_pixel_size(width_default, height_default);
+    m_fixed_cell_height = height_default;
 
     //Look at each column:
     for(const auto& item : m_db_layout_items)

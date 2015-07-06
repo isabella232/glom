@@ -338,7 +338,6 @@ static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder
 void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder, const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const type_sort_clause& sort_clause, bool extra_join)
 {
   //Get all relationships used in the query:
-  typedef std::list< std::shared_ptr<const UsesRelationship> > type_list_relationships;
   type_list_relationships list_relationships;
 
   for(const auto& layout_item : fieldsToGet)

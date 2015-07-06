@@ -1202,7 +1202,6 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
 
       on_dialog_tables_hide(); //Update the menu.
 
-      Gtk::Window* parent = get_app_window();
       if(parent)
         show_ok_dialog(_("Related Table Created"), _("The new related table has been created."), *parent, Gtk::MESSAGE_INFO);
     }
@@ -2567,6 +2566,20 @@ void Frame_Glom::on_notebook_data_record_selection_changed()
     pApp->enable_menu_print_layouts_details(something_selected);  
 }
 
+namespace {
+
+static Glib::ustring ulong_as_string(gulong value)
+{
+  Glib::ustring result;
+  std::stringstream the_stream;
+  //the_stream.imbue( current_locale );
+  the_stream << value;
+  the_stream >> result;
+  return result;
+}
+
+} //anonymous namespace
+
 gulong Frame_Glom::update_records_count()
 {
   //Get the number of records available and the number found,
@@ -2578,11 +2591,7 @@ gulong Frame_Glom::update_records_count()
   //std::cout << G_STRFUNC << ": count_all=" << count_all << ", count_found=" << count_found << std::endl;
 
   std::string str_count_all, str_count_found;
-
-  std::stringstream the_stream;
-  //the_stream.imbue( current_locale );
-  the_stream << count_all;
-  the_stream >> str_count_all;
+  str_count_all = ulong_as_string(count_all);
 
   if(count_found == count_all)
   {
@@ -2595,9 +2604,7 @@ gulong Frame_Glom::update_records_count()
   }
   else
   {
-    std::stringstream the_stream; //Reusing the existing stream seems to produce an empty string.
-    the_stream << count_found;
-    the_stream >> str_count_found;
+    str_count_found = ulong_as_string(count_found);
 
     m_Button_FindAll.show();
   }

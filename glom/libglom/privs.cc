@@ -134,47 +134,47 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
   }
   else
   {
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> builderGroup =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-    builder->select_add_field("groname", "pg_group");
-    builder->select_add_field("grolist", "pg_group");
-    builder->select_add_target("pg_group");
-    builder->set_where(
-      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-        builder->add_field_id("groname", "pg_group"),
-        builder->add_expr(group_name)));
+    builderGroup->select_add_field("groname", "pg_group");
+    builderGroup->select_add_field("grolist", "pg_group");
+    builderGroup->select_add_target("pg_group");
+    builderGroup->set_where(
+      builderGroup->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+        builderGroup->add_field_id("groname", "pg_group"),
+        builderGroup->add_expr(group_name)));
     //TODO: Show SQL.
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
-    if(data_model && data_model->get_n_rows())
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model_group = DbUtils::query_execute_select(builderGroup);
+    if(data_model_group && data_model_group->get_n_rows())
     {
-      const auto rows_count = data_model->get_n_rows();
+      const auto rows_count = data_model_group->get_n_rows();
       for(int row = 0; row < rows_count; ++row)
       {
-        const auto value = data_model->get_value_at(1, row); //Column 1 is the /* the user list.
+        const auto value_group = data_model_group->get_value_at(1, row); //Column 1 is the /* the user list.
         //pg_group is a string, formatted, bizarrely, like so: "{100, 101}".
 
         Glib::ustring group_list;
-        if(!value.is_null())
-          group_list = value.get_string();
+        if(!value_group.is_null())
+          group_list = value_group.get_string();
 
         type_vec_strings vecUserIds = pg_list_separate(group_list);
         for(const auto& userId: vecUserIds)
         {
           //TODO_Performance: Can we do this in one SQL SELECT?
-          Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+          Glib::RefPtr<Gnome::Gda::SqlBuilder> builderUser =
             Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-          builder->select_add_field("usename", "pg_user");
-          builder->select_add_target("pg_user");
-          builder->set_where(
-            builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-              builder->add_field_id("usesysid", "pg_user"),
-              builder->add_expr(userId)));
-          Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
-          if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
+          builderUser->select_add_field("usename", "pg_user");
+          builderUser->select_add_target("pg_user");
+          builderUser->set_where(
+            builderUser->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+              builderUser->add_field_id("usesysid", "pg_user"),
+              builderUser->add_expr(userId)));
+          Glib::RefPtr<Gnome::Gda::DataModel> data_model_user = DbUtils::query_execute_select(builderUser);
+          if(data_model_user && data_model_user->get_n_rows() && data_model_user->get_n_columns())
           {
-            const auto value = data_model->get_value_at(0, 0);
+            const auto value_user = data_model_user->get_value_at(0, 0);
             //std::cout << G_STRFUNC << "DEBUG:  username=" << value.get_string() << std::endl; 
-            result.push_back(value.get_string());
+            result.push_back(value_user.get_string());
           }
           else
           {

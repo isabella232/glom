@@ -66,11 +66,12 @@ const Gtk::Box* FlowTable::get_parent_hbox(const Gtk::Widget* first) const
     if(box_children.empty())
       continue;
 
-    const auto iter_find = 
+    const auto iter_find_box = 
       std::find(box_children.begin(), box_children.end(), first);
-    if(iter_find != box_children.end())
+    if(iter_find_box != box_children.end())
       return hbox;
   }
+
   return 0;
 }
 

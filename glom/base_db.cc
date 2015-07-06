@@ -832,15 +832,15 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
     iterFind = m_FieldsCalculationInProgress.find(field_name); //Always succeeds.
   }
 
-  CalcInProgress& refCalcProgress = iterFind->second;
+  CalcInProgress& calc_progress = iterFind->second;
 
   //Use the previously-calculated value if possible:
-  if(refCalcProgress.m_calc_in_progress)
+  if(calc_progress.m_calc_in_progress)
   {
     //std::cerr << G_STRFUNC << ": Circular calculation detected. field_name=" << field_name << std::endl;
     //refCalcProgress.m_value = Conversions::get_empty_value(field->get_glom_type()); //Give up.
   }
-  else if(refCalcProgress.m_calc_finished)
+  else if(calc_progress.m_calc_finished)
   {
     //std::cerr << G_STRFUNC << ": Already calculated." << std::endl;
 
@@ -850,10 +850,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
   {
     //std::cerr << G_STRFUNC << ": setting calc_in_progress: field_name=" << field_name << std::endl;
 
-    refCalcProgress.m_calc_in_progress = true; //Let the recursive calls to calculate_field() check this.
-
-    std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
-    layout_item->set_full_field_details(refCalcProgress.m_field);
+    calc_progress.m_calc_in_progress = true; //Let the recursive calls to calculate_field() check this.
 
     //Calculate dependencies first:
     //TODO: Prevent unncessary recalculations?
@@ -888,10 +885,10 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
 
     //m_FieldsCalculationInProgress has changed, probably invalidating our iter, so get it again:
     iterFind = m_FieldsCalculationInProgress.find(field_name); //Always succeeds.
-    CalcInProgress& refCalcProgress = iterFind->second;
+    CalcInProgress& calc_progress_refreshed = iterFind->second;
 
-    //Check again, because the value miight have been calculated during the dependencies.
-    if(refCalcProgress.m_calc_finished)
+    //Check again, because the value might have been calculated during the dependencies.
+    if(calc_progress_refreshed.m_calc_finished)
     {
       //We recently calculated this value, and set it in the database and layout, so don't waste time doing it again:
     }
@@ -902,7 +899,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
       const auto field_values = get_record_field_values_for_calculation(field_in_record.m_table_name, field_in_record.m_key, field_in_record.m_key_value);
       if(!field_values.empty())
       {
-        std::shared_ptr<const Field> field = refCalcProgress.m_field;
+        std::shared_ptr<const Field> field = calc_progress_refreshed.m_field;
         if(field)
         {
           //We need the connection when we run the script, so that the script may use it.
@@ -911,7 +908,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
           g_assert(sharedconnection);
 
           Glib::ustring error_message; //TODO: Check this.
-          refCalcProgress.m_value =
+          calc_progress_refreshed.m_value =
             glom_evaluate_python_function_implementation(field->get_glom_type(),
               field->get_calculation(),
               field_values,
@@ -921,14 +918,14 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
               sharedconnection->get_gda_connection(),
               error_message);
 
-          refCalcProgress.m_calc_finished = true;
-          refCalcProgress.m_calc_in_progress = false;
+          calc_progress_refreshed.m_calc_finished = true;
+          calc_progress_refreshed.m_calc_in_progress = false;
 
           std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
           layout_item->set_full_field_details(field);
 
           //show it:
-          set_entered_field_data(layout_item, refCalcProgress.m_value ); //TODO: If this record is shown.
+          set_entered_field_data(layout_item, calc_progress_refreshed.m_value ); //TODO: If this record is shown.
 
           //Add it to the database (even if it is not shown in the view)
           //Using true for the last parameter means we use existing calculations where possible,
@@ -938,7 +935,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
           {
             LayoutFieldInRecord field_in_record_layout(layout_item, field_in_record.m_table_name /* parent */, field_in_record.m_key, field_in_record.m_key_value);
 
-            set_field_value_in_database(field_in_record_layout, refCalcProgress.m_value, true); //This triggers other recalculations/lookups.
+            set_field_value_in_database(field_in_record_layout, calc_progress_refreshed.m_value, true); //This triggers other recalculations/lookups.
           }
         }
       }

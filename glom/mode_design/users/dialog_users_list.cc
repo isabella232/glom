@@ -210,9 +210,8 @@ void Dialog_UsersList::on_button_user_add()
   if(!user.empty())
   {
     //Add it to the group:
-    const auto strQuery = DbUtils::build_query_add_user_to_group(m_combo_group->get_active_text(), user);
-    const auto test = DbUtils::query_execute_string(strQuery);
-    if(!test)
+    const auto query_add_user = DbUtils::build_query_add_user_to_group(m_combo_group->get_active_text(), user);
+    if(!DbUtils::query_execute_string(query_add_user))
       std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;
 
     //Remove any user rights, so that all rights come from the user's presence in the group:
@@ -221,9 +220,8 @@ void Dialog_UsersList::on_button_user_add()
     for(const auto& table : table_list)
     {
       const auto table_name = table->get_name();
-      const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);
-      const auto test = DbUtils::query_execute_string(strQuery);
-      if(!test)
+      const Glib::ustring query_revoke = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);
+      if(!DbUtils::query_execute_string(query_revoke))
         std::cerr << G_STRFUNC << ": REVOKE failed." << std::endl;
     }
 

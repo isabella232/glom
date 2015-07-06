@@ -67,7 +67,7 @@ public:
 
   /** Either @a x or @a y should be 0.
    */
-  void show_temp_rule(double x, double y, bool show = true);
+  void show_temp_rule(double x, double y, bool show_rule = true);
 
   /** For items not added directly via add_item(),
    * but which need to snap to the grid.

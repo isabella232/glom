@@ -87,7 +87,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQL::attempt_connect(const Glib::ustring&
   const Glib::ustring cnc_string_main = "HOST=" + DbUtils::gda_cnc_string_encode(m_host)
    + ";PORT=" + DbUtils::gda_cnc_string_encode(port)
    + ";PROTOCOL=TCP"; //PROTOCOL is in libgda >= 5.1.2.
-  const auto cnc_string = cnc_string_main +";DB_NAME=" + DbUtils::gda_cnc_string_encode(database);
+  const auto cnc_string_with_db = cnc_string_main +";DB_NAME=" + DbUtils::gda_cnc_string_encode(database);
 
   Glib::RefPtr<Gnome::Gda::Connection> connection;
   Glib::RefPtr<Gnome::Gda::DataModel> data_model;
@@ -96,7 +96,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQL::attempt_connect(const Glib::ustring&
 
 #ifdef GLOM_CONNECTION_DEBUG
   std::cout << std::endl << "DEBUG: Glom: trying to connect on port=" << port << std::endl;
-  std::cout << "debug: " << G_STRFUNC << ": cnc_string=" << cnc_string << std::endl;
+  std::cout << "debug: " << G_STRFUNC << ": cnc_string=" << cnc_string_with_db << std::endl;
   std::cout << "  DEBUG: auth_string=" << auth_string << std::endl;
 #endif
 
@@ -105,13 +105,13 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQL::attempt_connect(const Glib::ustring&
     if(fake_connection)
     {
       connection = Gnome::Gda::Connection::create_from_string("MySQL",
-        cnc_string, auth_string,
+        cnc_string_with_db, auth_string,
         Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
     }
     else
     {
       connection = Gnome::Gda::Connection::open_from_string("MySQL",
-        cnc_string, auth_string,
+        cnc_string_with_db, auth_string,
         Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
 
       //connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
@@ -125,13 +125,13 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQL::attempt_connect(const Glib::ustring&
     std::cout << "debug: " << G_STRFUNC << ": Attempting to connect without specifying the database." << std::endl;
 #endif
 
-    const auto cnc_string = cnc_string_main + ";DB_NAME=" + DbUtils::gda_cnc_string_encode(default_database);
+    const auto cnc_string_without_db = cnc_string_main + ";DB_NAME=" + DbUtils::gda_cnc_string_encode(default_database);
     Glib::RefPtr<Gnome::Gda::Connection> temp_conn;
-    auto auth_string = create_auth_string(username, password);
+    //auto auth_string = create_auth_string(username, password);
     try
     {
       temp_conn = Gnome::Gda::Connection::open_from_string("MySQL",
-        cnc_string, auth_string,
+        cnc_string_without_db, auth_string,
         Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
     }
     catch(const Glib::Error& /* ex */)
@@ -394,9 +394,9 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
     {
       connection->rollback_transaction(TRANSACTION_NAME);
     }
-    catch(const Glib::Error& ex)
+    catch(const Glib::Error& ex_rollback)
     {
-      std::cerr << G_STRFUNC << "Could not rollback the transaction: Exception: " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << "Could not rollback the transaction: Exception: " << ex_rollback.what() << std::endl;
     }
   }
   

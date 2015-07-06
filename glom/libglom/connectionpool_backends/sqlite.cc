@@ -369,9 +369,9 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     {
       connection->rollback_transaction(TRANSACTION_NAME);
     }
-    catch(const Glib::Error& ex)
+    catch(const Glib::Error& ex_rollback)
     {
-       std::cerr << G_STRFUNC << ": Could not revert the transaction. exception=" << ex.what() << std::endl;
+       std::cerr << G_STRFUNC << ": Could not revert the transaction. exception=" << ex_rollback.what() << std::endl;
     }
   }
 

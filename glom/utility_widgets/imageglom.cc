@@ -402,11 +402,11 @@ void ImageGlom::show_image_data()
       
     bool use_gdkpixbuf = false;
     fill_gdkpixbuf_supported_mime_types();
-    const auto iterFind = 
+    const auto iter_find_mime_type = 
       std::find(m_gdkpixbuf_supported_mime_types.begin(),
         m_gdkpixbuf_supported_mime_types.end(),
         mime_type);
-    if(iterFind != m_gdkpixbuf_supported_mime_types.end())
+    if(iter_find_mime_type != m_gdkpixbuf_supported_mime_types.end())
     {
       use_gdkpixbuf = true;
     }
@@ -777,22 +777,22 @@ void ImageGlom::on_menupopup_activate_select_file()
     const auto uri = dialog.get_uri();
     if(!uri.empty())
     {
-      DialogImageLoadProgress* dialog;
-      Utils::get_glade_widget_derived_with_warning(dialog);
-      if(dialog)
+      DialogImageLoadProgress* dialog_progress = nullptr;
+      Utils::get_glade_widget_derived_with_warning(dialog_progress);
+      if(dialog_progress)
       {
         // Automatically delete the dialog when we no longer need it:
-        std::shared_ptr<Gtk::Dialog> dialog_keeper(dialog);
+        std::shared_ptr<Gtk::Dialog> dialog_keeper(dialog_progress);
 
         if(pApp)
-          dialog->set_transient_for(*pApp);
+          dialog_progress->set_transient_for(*pApp);
 
-        dialog->load(uri);
+        dialog_progress->load(uri);
 
-        if(dialog->run() == Gtk::RESPONSE_ACCEPT)
+        if(dialog_progress->run() == Gtk::RESPONSE_ACCEPT)
         {
           GdaBinary* bin = g_new(GdaBinary, 1);
-          std::shared_ptr<GdaBinary> image_data = dialog->get_image_data();
+          std::shared_ptr<GdaBinary> image_data = dialog_progress->get_image_data();
           bin->data = image_data->data;
           bin->binary_length = image_data->binary_length;
 

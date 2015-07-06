@@ -112,13 +112,13 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
     std::cout << "debug: " << G_STRFUNC << ": Attempting to connect without specifying the database." << std::endl;
 #endif
 
-    const auto cnc_string = cnc_string_main + ";DB_NAME=" + DbUtils::gda_cnc_string_encode(default_database);
+    const auto cnc_string_with_db = cnc_string_main + ";DB_NAME=" + DbUtils::gda_cnc_string_encode(default_database);
     Glib::RefPtr<Gnome::Gda::Connection> temp_conn;
-    auto auth_string = create_auth_string(username, password);
+    //auto auth_string = create_auth_string(username, password);
     try
     {
       temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL",
-        cnc_string, auth_string,
+        cnc_string_with_db, auth_string,
         Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
     }
     catch(const Glib::Error& /* ex */)
@@ -379,9 +379,9 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
     {
       connection->rollback_transaction(TRANSACTION_NAME);
     }
-    catch(const Glib::Error& ex)
+    catch(const Glib::Error& ex_rollback)
     {
-      std::cerr << G_STRFUNC << ": Could not rollback the transaction: Exception: " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": Could not rollback the transaction: Exception: " << ex_rollback.what() << std::endl;
     }
   }
   

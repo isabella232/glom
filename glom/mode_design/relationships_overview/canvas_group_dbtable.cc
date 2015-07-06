@@ -50,32 +50,32 @@ CanvasGroupDbTable::CanvasGroupDbTable(const Glib::ustring& table_name, const Gl
   m_table_height = field_height * (fields.size() + 1);
 
   
-  Glib::RefPtr<CanvasRectMovable> m_rect = CanvasRectMovable::create(x, y, m_table_width, m_table_height);
-  m_rect->property_line_width() = 2.0;
-  m_rect->property_radius_x() = 4.0,
-  m_rect->property_radius_y() = 4.0;
-  m_rect->property_stroke_color() = "black";
-  m_rect->property_fill_color() = "white";
-  m_rect->set_movement_allowed(false, false); //Move only as part of the parent group.
-  add_child(m_rect);
+  Glib::RefPtr<CanvasRectMovable> rect = CanvasRectMovable::create(x, y, m_table_width, m_table_height);
+  rect->property_line_width() = 2.0;
+  rect->property_radius_x() = 4.0,
+  rect->property_radius_y() = 4.0;
+  rect->property_stroke_color() = "black";
+  rect->property_fill_color() = "white";
+  rect->set_movement_allowed(false, false); //Move only as part of the parent group.
+  add_child(rect);
 
   const Glib::ustring title = "<b>" + table_title + "</b>";
-  Glib::RefPtr<CanvasTextMovable> m_text = CanvasTextMovable::create(title,
+  Glib::RefPtr<CanvasTextMovable> text = CanvasTextMovable::create(title,
     x + margin, y + margin, m_table_width - margin*2,
     Goocanvas::ANCHOR_NORTH_WEST);
-  m_text->property_font() = "Sans 12"; //TODO: Let the user specify this.
-  m_text->property_use_markup() = true;
-  m_text->set_movement_allowed(false, false); //Move only as part of the parent group.
-  add_child(m_text);
+  text->property_font() = "Sans 12"; //TODO: Let the user specify this.
+  text->property_use_markup() = true;
+  text->set_movement_allowed(false, false); //Move only as part of the parent group.
+  add_child(text);
 
-  Glib::RefPtr<CanvasLineMovable> m_line = CanvasLineMovable::create();
+  Glib::RefPtr<CanvasLineMovable> line = CanvasLineMovable::create();
   double points_coordinates[] = {x, y + field_height, x + m_table_width, y + field_height};
   Goocanvas::Points points(2, points_coordinates);
-  m_line->property_points() = points;
-  m_line->property_stroke_color() = "black";
-  m_line->property_line_width() = 1.0;
-  m_line->set_movement_allowed(false, false); //Move only as part of the parent group.
-  add_child(m_line);
+  line->property_points() = points;
+  line->property_stroke_color() = "black";
+  line->property_line_width() = 1.0;
+  line->set_movement_allowed(false, false); //Move only as part of the parent group.
+  add_child(line);
 
 
   //Add the table's fields:
@@ -83,13 +83,13 @@ CanvasGroupDbTable::CanvasGroupDbTable(const Glib::ustring& table_name, const Gl
   for(const auto& field : fields)
   {
     //Show the primary key as bold:
-    Glib::ustring title;
+    Glib::ustring title_field;
     if(field->get_primary_key())
-      title = "<u>" + item_get_title_or_name(field) + "</u>";
+      title_field = "<u>" + item_get_title_or_name(field) + "</u>";
     else
-      title = item_get_title_or_name(field);
+      title_field = item_get_title_or_name(field);
 
-    Glib::RefPtr<CanvasTextMovable> text_item = CanvasTextMovable::create(title, 
+    Glib::RefPtr<CanvasTextMovable> text_item = CanvasTextMovable::create(title_field, 
       x + margin, y + margin + field_y, m_table_width - margin*2,
       Goocanvas::ANCHOR_NORTH_WEST);
     text_item->property_font() = "Sans 12"; //TODO: Let the user specify this.

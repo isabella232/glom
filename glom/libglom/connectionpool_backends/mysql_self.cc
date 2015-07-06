@@ -362,9 +362,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
   const std::string second_command_success_text = "mysqld is alive"; //TODO: This is not a stable API. Also, watch out for localisation.
   //std::cout << G_STRFUNC << ": debug: command_check_mysql_has_started=" << command_check_mysql_has_started << std::endl;
 
-  const auto result = Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_mysql_start, command_check_mysql_has_started, slot_progress, second_command_success_text);
-
-  if(!result)
+  if(!Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_mysql_start, command_check_mysql_has_started, slot_progress, second_command_success_text))
   {
     m_port = 0;
 
@@ -388,9 +386,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
       + " password " + Glib::shell_quote(m_initial_password_to_set);
     //std::cout << "debug: command_initdb_set_initial_password=" << command_initdb_set_initial_password << std::endl;
 
-    const auto result = Glom::Spawn::execute_command_line_and_wait(command_initdb_set_initial_password, slot_progress);
-
-    if(!result)
+    if(!Glom::Spawn::execute_command_line_and_wait(command_initdb_set_initial_password, slot_progress))
     {
       std::cerr << G_STRFUNC << ": Error while attempting to start self-hosting MySQL database, when setting the initial password." << std::endl;
       return STARTUPERROR_FAILED_UNKNOWN_REASON;
@@ -550,8 +546,7 @@ bool MySQLSelfHosted::cleanup(const SlotProgress& slot_progress)
     
     //I've seen it fail when running under valgrind, and there are reports of failures in bug #420962.
     //Maybe it will help to try again:
-    const auto result = Glom::Spawn::execute_command_line_and_wait(command_mysql_stop, slot_progress);
-    if(!result)
+    if(!Glom::Spawn::execute_command_line_and_wait(command_mysql_stop, slot_progress))
     {
       std::cerr << G_STRFUNC << ": Error while attempting (for a second time) to stop self-hosting of the database."  << std::endl;
       return false;

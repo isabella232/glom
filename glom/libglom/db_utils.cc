@@ -483,25 +483,23 @@ bool add_standard_tables(const Document* document)
       if(test)
       {
         //Add the single record:
-        Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
-        builder->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
-        builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, 1);
-        const auto test = query_execute(builder);
-        if(!test)
+        Glib::RefPtr<Gnome::Gda::SqlBuilder> builderAdd = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
+        builderAdd->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+        builderAdd->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, 1);
+        if(!query_execute(builderAdd))
           std::cerr << G_STRFUNC << ": INSERT failed." << std::endl;
 
         //Use the database title from the document, if there is one:
         const auto system_name = document->get_database_title_original();
         if(!system_name.empty())
         {
-          Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
-          builder->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
-          builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME, system_name);
-          builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-                                               builder->add_field_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME),
-                                               builder->add_expr(1)));
-          const auto test = query_execute(builder);
-          if(!test)
+          Glib::RefPtr<Gnome::Gda::SqlBuilder> builderUpdate = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+          builderUpdate->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+          builderUpdate->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME, system_name);
+          builderUpdate->set_where(builderAdd->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+                                               builderAdd->add_field_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME),
+                                               builderAdd->add_expr(1)));
+          if(!query_execute(builderUpdate))
             std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
         }
       }
@@ -2156,8 +2154,7 @@ bool add_user(const Document* document, const Glib::ustring& user, const Glib::u
   {
     const auto table_name = table->get_name();
     const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);
-    const auto test = DbUtils::query_execute_string(strQuery);
-    if(!test)
+    if(!DbUtils::query_execute_string(strQuery))
       std::cerr << G_STRFUNC << ": REVOKE failed." << std::endl;
   }
 

@@ -129,9 +129,9 @@ void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relat
         {
           for(const auto& sub_row : row.children())
           {
-            std::shared_ptr<Relationship> relationship = sub_row[m_model_columns.m_relationship];
-            const auto this_name = glom_get_sharedptr_name(relationship);
-            if(this_name == related_relationship_name)
+            std::shared_ptr<Relationship> sub_relationship = sub_row[m_model_columns.m_relationship];
+            const auto rel_name = glom_get_sharedptr_name(sub_relationship);
+            if(rel_name == related_relationship_name)
             {
               set_active(sub_row);
               return; //success
@@ -175,13 +175,13 @@ void ComboBox_Relationship::set_relationships(Document* document, const Glib::us
     if(show_related_relationships && !Document::get_relationship_is_system_properties(rel))
     {
       const auto sub_relationships = document->get_relationships(rel->get_to_table(), false /* plus system properties */);
-      for(const auto& rel : sub_relationships)
+      for(const auto& sub_rel : sub_relationships)
       {
         auto tree_iter_child = m_model->append(tree_iter->children());
-        Gtk::TreeModel::Row row = *tree_iter_child;
+        Gtk::TreeModel::Row child_row = *tree_iter_child;
 
-        row[m_model_columns.m_relationship] = rel;
-        row[m_model_columns.m_separator] = false;
+        child_row[m_model_columns.m_relationship] = sub_rel;
+        child_row[m_model_columns.m_separator] = false;
       }
     }
   }

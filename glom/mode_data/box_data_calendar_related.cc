@@ -366,7 +366,6 @@ void Box_Data_Calendar_Related::on_dialog_layout_hide()
   std::shared_ptr<LayoutItem_CalendarPortal> pLayoutItem = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(get_layout_item());
   if(pLayoutItem)
   {
-    std::shared_ptr<LayoutItem_CalendarPortal> derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
     if(derived_portal)
       *pLayoutItem = *derived_portal;
 

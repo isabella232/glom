@@ -609,19 +609,19 @@ void AddDel::construct_specified_columns()
         case(AddDelColumnInfo::STYLE_Choices):
         {
           //Use a custom CellRenderer:
-          CellRendererList* pCellRenderer = Gtk::manage( new CellRendererList() );
+          CellRendererList* pCellRendererList = Gtk::manage( new CellRendererList() );
 
           //Add the choices:
           const type_vec_strings vecStrings = m_ColumnTypes[model_column_index].m_choices;
           for(const auto& item : vecStrings)
           {
-            pCellRenderer->append_list_item(item);
+            pCellRendererList->append_list_item(item);
           }
 
           // Append the View column.
           // We use a derived Gtk::TreeViewColumn so that we can store extra information in it.
           // This means that we must reimplement the code from the convenience template methods from gtkmm.
-          treeview_append_column( Utils::string_escape_underscores(column_name), *pCellRenderer,  *pModelColumn, column_id);
+          treeview_append_column( Utils::string_escape_underscores(column_name), *pCellRendererList,  *pModelColumn, column_id);
 
           break;
         }
@@ -654,29 +654,29 @@ void AddDel::construct_specified_columns()
 
       if(m_ColumnTypes[model_column_index].m_editable)
       {
-        Gtk::CellRendererText* pCellRenderer = dynamic_cast<Gtk::CellRendererText*>(m_TreeView.get_column_cell_renderer(view_column_index));
-        if(pCellRenderer)
+        Gtk::CellRendererText* pCellRendererText = dynamic_cast<Gtk::CellRendererText*>(m_TreeView.get_column_cell_renderer(view_column_index));
+        if(pCellRendererText)
         {
           //Connect a signal handler:
-          if(pCellRenderer)
+          if(pCellRendererText)
           {
             //Make it editable:
-            pCellRenderer->property_editable() = true;
+            pCellRendererText->property_editable() = true;
 
             //Connect to its signal:
-            pCellRenderer->signal_edited().connect(
+            pCellRendererText->signal_edited().connect(
               sigc::bind( sigc::mem_fun(*this, &AddDel::on_treeview_cell_edited), model_column_index) );
           }
         }
         else
         {
-           Gtk::CellRendererToggle* pCellRenderer = dynamic_cast<Gtk::CellRendererToggle*>(m_TreeView.get_column_cell_renderer(view_column_index));
-           if(pCellRenderer)
+           Gtk::CellRendererToggle* pCellRendererToggle = dynamic_cast<Gtk::CellRendererToggle*>(m_TreeView.get_column_cell_renderer(view_column_index));
+           if(pCellRendererToggle)
            {
-             pCellRenderer->property_activatable() = true;
+             pCellRendererToggle->property_activatable() = true;
 
              //Connect to its signal:
-             pCellRenderer->signal_toggled().connect(
+             pCellRendererToggle->signal_toggled().connect(
                sigc::bind( sigc::mem_fun(*this, &AddDel::on_treeview_cell_edited_bool), model_column_index ) );
            }
         }
@@ -1234,9 +1234,9 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
                 {
                   refTreeSelection->select(row); //TODO: This does not seem to work.
 
-                 Gtk::TreeModel::Path path = m_refListStore->get_path(row);
+                 Gtk::TreeModel::Path path_to_activate = m_refListStore->get_path(row);
                  Gtk::TreeView::Column* pColumn = m_TreeView.get_column(model_column_index); //TODO: This might the the view column index, not the model column index.
-                 m_TreeView.set_cursor(path, *pColumn, true /* start_editing */); //This highlights the cell, but does not seem to actually start the editing.
+                 m_TreeView.set_cursor(path_to_activate, *pColumn, true /* start_editing */); //This highlights the cell, but does not seem to actually start the editing.
                }
              }
 

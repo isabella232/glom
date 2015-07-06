@@ -461,7 +461,6 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
     nodeField->set_attribute("vertical", "true");
 
   Gnome::Gda::Value value;
-  Glib::ustring text_value;
 
   if(!datamodel) //We call this for headers and footers too.
   {
@@ -471,15 +470,15 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
     builder->set_table(field->get_table_used(found_set.m_table_name));
     builder->select_add_field(field->get_name(), found_set.m_table_name);
     builder->select_set_limit(1);
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel_syspref = DbUtils::query_execute_select(builder);
 
-    if(!datamodel)
+    if(!datamodel_syspref)
     {
       std::cerr << G_STRFUNC << ": The SQL query failed." << std::endl;
       return false;
     }
 
-    value = datamodel->get_value_at(colField, row); //TODO: Catch exceptions.
+    value = datamodel_syspref->get_value_at(colField, row); //TODO: Catch exceptions.
     colField = 0;
   }
   else
@@ -500,8 +499,8 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
     if(text_value.empty() && std::dynamic_pointer_cast<const LayoutItem_FieldSummary>(field) && (field_type == Field::TYPE_NUMERIC))
     {
       //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
-      const auto value = Conversions::parse_value(0);
-      text_value = Conversions::get_text_for_gda_value(field_type, value, m_locale, field->get_formatting_used().m_numeric_format);
+      const auto value_zero = Conversions::parse_value(0);
+      text_value = Conversions::get_text_for_gda_value(field_type, value_zero, m_locale, field->get_formatting_used().m_numeric_format);
     }
 
     nodeField->set_attribute("value", text_value);

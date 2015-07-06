@@ -246,7 +246,6 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, std
       {
         //std::cout << "debug: " << G_STRFUNC << ": adding group." << std::endl;
         std::shared_ptr<LayoutGroup> layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
-        std::shared_ptr<LayoutItem_Portal> layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_group);
         if(layout_group && !layout_portal)
         {
           //Recurse:
@@ -273,8 +272,8 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
   if(!group)
    return;
 
-  std::shared_ptr<const LayoutItem_Portal> portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(group);
-  if(portal)
+  std::shared_ptr<const LayoutItem_Portal> parent_portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(group);
+  if(parent_portal)
     return; //This method is not for portals.
 
   Gtk::TreeModel::iterator iterNewGroup;

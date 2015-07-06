@@ -157,18 +157,18 @@ Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::create_canvas_item(const std:
 void Canvas_PrintLayout::add_layout_group_children(const std::shared_ptr<LayoutGroup>& group)
 {
   //TODO: Add them inside the group item (when we actually use this code):
-  for(const auto& item : group->m_list_items)
+  for(const auto& child_item : group->m_list_items)
   {
-    std::shared_ptr<LayoutItem_Portal> portal = std::dynamic_pointer_cast<LayoutItem_Portal>(item);
-    std::shared_ptr<LayoutGroup> group = std::dynamic_pointer_cast<LayoutGroup>(item);
-    if(group && !portal)
+    std::shared_ptr<LayoutItem_Portal> child_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(child_item);
+    std::shared_ptr<LayoutGroup> child_group = std::dynamic_pointer_cast<LayoutGroup>(child_item);
+    if(child_group && !child_portal)
     {
-      add_layout_group(group);
+      add_layout_group(child_group);
       continue;
     }
     else
     {
-      create_canvas_layout_item_and_add(item);
+      create_canvas_layout_item_and_add(child_item);
     }
   }
 

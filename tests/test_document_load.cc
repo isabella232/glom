@@ -101,9 +101,9 @@ static std::shared_ptr<const Glom::LayoutItem_Portal> get_portal_from_details_la
       group->get_items_recursive_with_groups();
     for(const auto& layout_item : items)
     { 
-      const std::shared_ptr<const Glom::LayoutGroup> group =
+      const std::shared_ptr<const Glom::LayoutGroup> child_group =
         std::dynamic_pointer_cast<const Glom::LayoutGroup>(layout_item);
-      if(!group)
+      if(!child_group)
         continue;
 
       const std::shared_ptr<const Glom::LayoutItem_Portal> portal =

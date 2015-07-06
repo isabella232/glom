@@ -139,10 +139,10 @@ int main()
 
   {
     //Change a relationship name:
-    const Glib::ustring table_name = "invoices";
+    const Glib::ustring table_name_invoices = "invoices";
     const Glib::ustring relationship_name_original = "contacts";
     const Glib::ustring relationship_name_new = "newrelationshipname";
-    document.change_relationship_name(table_name, 
+    document.change_relationship_name(table_name_invoices, 
       relationship_name_original, relationship_name_new);
     if(document.get_relationship(table_name, relationship_name_original))
     {

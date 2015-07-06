@@ -62,8 +62,8 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, const G
     Glib::RefPtr<CanvasItemMovable> movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(item);
     if(movable)
     {
-      Glib::RefPtr<CanvasGroupResizable> resizable = CanvasGroupResizable::create();
-      resizable->set_grid(m_grid);
+      Glib::RefPtr<CanvasGroupResizable> resizable_item = CanvasGroupResizable::create();
+      resizable_item->set_grid(m_grid);
 
       //Specify the resizable's position, using the child's position:
       double x = 0;
@@ -72,11 +72,11 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, const G
       double width = 0;
       double height = 0;
       movable->get_width_height(width, height);
-      resizable->set_xy(x, y);
-      resizable->set_width_height(width, height);
+      resizable_item->set_xy(x, y);
+      resizable_item->set_width_height(width, height);
 
-      group->add_child(resizable);
-      resizable->set_child(movable); //Puts draggable corners and edges around it.
+      group->add_child(resizable_item);
+      resizable_item->set_child(movable); //Puts draggable corners and edges around it.
 
       added = true;
     }
@@ -164,9 +164,9 @@ CanvasEditable::type_vec_doubles CanvasEditable::get_vertical_rules() const
   return m_grid->get_vertical_rules();
 }
 
-void CanvasEditable::show_temp_rule(double x, double y, bool show)
+void CanvasEditable::show_temp_rule(double x, double y, bool show_rule)
 {
-  m_grid->show_temp_rule(x, y, show);
+  m_grid->show_temp_rule(x, y, show_rule);
 }
 
 void CanvasEditable::set_grid_gap(double gap)

@@ -297,17 +297,17 @@ bool Box_Data_Details::fill_from_database()
       if(table_privs.m_view)
       {
         //Add extra possibly-non-visible columns that we need:
-        std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
-        layout_item->set_full_field_details(m_field_primary_key);
+        std::shared_ptr<LayoutItem_Field> layout_item_pk = std::make_shared<LayoutItem_Field>();
+        layout_item_pk->set_full_field_details(m_field_primary_key);
 
         //Get the primary key index, adding the primary key if necessary:
         //TODO_Performance: Do this for create_layout() only, instead of repeating it for each refresh?:
         int index_primary_key = -1; //Arbitrary default.
         //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
-        const auto iterFind = std::find_if(fieldsToGet.begin(), fieldsToGet.end(), predicate_LayoutItem_Field_IsSameField<LayoutItem_Field>(layout_item));
+        const auto iterFind = std::find_if(fieldsToGet.begin(), fieldsToGet.end(), predicate_LayoutItem_Field_IsSameField<LayoutItem_Field>(layout_item_pk));
         if(iterFind == fieldsToGet.end())
         {
-          fieldsToGet.push_back(layout_item);
+          fieldsToGet.push_back(layout_item_pk);
           index_primary_key = fieldsToGet.size() - 1;
         }
         else
@@ -321,11 +321,11 @@ bool Box_Data_Details::fill_from_database()
             if(!element)
               continue;
 
-            if(element->get_name() != layout_item->get_name())
+            if(element->get_name() != layout_item_pk->get_name())
               continue;
 
             //Compare the relationship and related relationship:
-            std::shared_ptr<const UsesRelationship> uses_a = layout_item;
+            std::shared_ptr<const UsesRelationship> uses_a = layout_item_pk;
             std::shared_ptr<const UsesRelationship> uses_b = element;
             if(*uses_a == *uses_b)
             {
@@ -853,10 +853,10 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
       else
       {
         //Make a new record, and show it:
-        const auto primary_key_value = DbUtils::get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name());
+        const auto primary_key_value_autoincrement = DbUtils::get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name());
 
-        record_new(true /* use entered field data */, primary_key_value);
-        refresh_data_from_database_with_primary_key(primary_key_value);
+        record_new(true /* use entered field data */, primary_key_value_autoincrement);
+        refresh_data_from_database_with_primary_key(primary_key_value_autoincrement);
       }
     }
     else
@@ -940,13 +940,13 @@ void Box_Data_Details::print_layout()
   //breaks because those spaces would be empty space on the page after
   //we have moved items down when expanding:
   //TODO: Squash that space when expanding custom layouts.
-  std::shared_ptr<PrintLayout> print_layout = 
+  std::shared_ptr<PrintLayout> layout = 
     PrintLayoutUtils::create_standard(page_setup, m_table_name, document,
       false /* do not avoid page margins */);
   
   //Show the print preview window:
   AppWindow* app = AppWindow::get_appwindow();
-  PrintLayoutUtils::do_print_layout(print_layout, m_found_set,
+  PrintLayoutUtils::do_print_layout(layout, m_found_set,
     false /* not preview */, document, true /* avoid page margins */, app);
 }
 
@@ -964,12 +964,12 @@ void Box_Data_Details::prepare_layout_dialog(Dialog_Layout* dialog)
     dialog->init(m_layout_name, m_layout_platform, get_document(), m_table_name, m_FieldsShown); //TODO: Use m_TableFields?
 }
 
-void Box_Data_Details::show_layout_toolbar(bool show)
+void Box_Data_Details::show_layout_toolbar(bool show_toolbar)
 {
   //Remember this so we can use it in the show_all() vfunc.
-  m_show_toolbar = show;
+  m_show_toolbar = show_toolbar;
 
-  if(show)
+  if(show_toolbar)
     m_Dragbar.show();
   else
     m_Dragbar.hide();

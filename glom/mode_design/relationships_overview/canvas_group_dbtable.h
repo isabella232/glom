@@ -45,10 +45,6 @@ public:
   double get_field_y(const Glib::ustring& field_name) const;
 
 private:
-   Glib::RefPtr<Goocanvas::Item> m_rect;
-   Glib::RefPtr<Goocanvas::Item> m_text;
-   Glib::RefPtr<Goocanvas::Item> m_line;
-
    Glib::ustring m_table_name;
    double m_table_height;
    static double m_table_width;

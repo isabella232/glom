@@ -1068,16 +1068,16 @@ bool AppWindow::on_document_load()
         //connection_request_password_and_choose_new_database_name() has already change the database name to a new unused one:
 
         bool user_cancelled = false;
-        bool test = false;
+        bool recreated = false;
         if(is_example)
-          test = recreate_database_from_example(user_cancelled);
+          recreated = recreate_database_from_example(user_cancelled);
         else
         {
-          test = recreate_database_from_backup(m_backup_data_filepath, user_cancelled);
+          recreated = recreate_database_from_backup(m_backup_data_filepath, user_cancelled);
           m_backup_data_filepath.clear();
         }
 
-        if(!test)
+        if(!recreated)
         {
           // TODO: Do we need to call connection_pool->cleanup() here, for
           // stopping self-hosted databases? armin.
@@ -1372,8 +1372,6 @@ void AppWindow::existing_or_new_new()
 
   //Each document must have a location, so ask the user for one.
   //This will use an extended save dialog that also asks for the database title and some hosting details:
-  Glib::ustring db_title;
-
   m_ui_save_extra_showextras = true; //Offer self-hosting or central hosting, and offer the database title.
   m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT; /* Default to self-hosting */
   m_ui_save_extra_newdb_title.clear();
@@ -2026,13 +2024,13 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   for(const auto& item : tables)
   {
-    std::shared_ptr<PrintLayout> print_layout = document->get_print_layout(table_name, item);
-    if(print_layout)
+    std::shared_ptr<PrintLayout> layout = document->get_print_layout(table_name, item);
+    if(layout)
     {
-      const auto name = print_layout->get_name();
+      const auto name = layout->get_name();
       if(!name.empty())
       {
-        const auto title = Utils::string_escape_underscores(item_get_title(print_layout));
+        const auto title = Utils::string_escape_underscores(item_get_title(layout));
         const Glib::ustring action_name = name;
 
         menu->append(title, ACTION_GROUP_NAME_PRINT_LAYOUTS + "." + action_name);

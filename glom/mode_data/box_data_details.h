@@ -64,7 +64,7 @@ public:
   type_signal_requested_related_details signal_requested_related_details();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  void show_layout_toolbar(bool show = true);
+  void show_layout_toolbar(bool show_toolbar = true);
 #endif
 
   void do_new_record();

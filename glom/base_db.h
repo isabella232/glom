@@ -153,11 +153,11 @@ protected:
         {
           if(layout_item->get_has_related_relationship_name()) //For doubly-related fields
           {
-            std::shared_ptr<const Relationship> rel = layout_item->get_related_relationship();
-            if(rel)
+            std::shared_ptr<const Relationship> related_rel = layout_item->get_related_relationship();
+            if(related_rel)
             {
               //Actually a foreign key in a doubly-related table:
-              m_key = document.get_field(m_table_name, rel->get_to_field());
+              m_key = document.get_field(m_table_name, related_rel->get_to_field());
             }
           }
           else

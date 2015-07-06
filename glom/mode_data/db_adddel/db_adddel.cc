@@ -342,9 +342,9 @@ Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, cons
       type_list_indexes list_indexes = get_data_model_column_index(layout_item);
       if(!list_indexes.empty())
       {
-        type_list_indexes::const_iterator iter = list_indexes.begin(); //Just get the first displayed instance of this field->
+        type_list_indexes::const_iterator iter_begin = list_indexes.begin(); //Just get the first displayed instance of this field->
 
-        const guint col_real = *iter + get_count_hidden_system_columns();
+        const guint col_real = *iter_begin + get_count_hidden_system_columns();
         treerow.get_value(col_real, value);
       }
     }
@@ -513,11 +513,11 @@ guint DbAddDel::get_fixed_cell_height()
     // when all columns are known.
 
     //Get a default:
-    Glib::RefPtr<Pango::Layout> refLayout = m_TreeView.create_pango_layout("ExampleEg");
-    int width = 0;
-    int height = 0;
-    refLayout->get_pixel_size(width, height);
-    m_fixed_cell_height = height;
+    Glib::RefPtr<Pango::Layout> refLayoutDefault = m_TreeView.create_pango_layout("ExampleEg");
+    int width_default = 0;
+    int height_default = 0;
+    refLayoutDefault->get_pixel_size(width_default, height_default);
+    m_fixed_cell_height = height_default;
 
     //Look at each column:
     for(auto iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
@@ -2087,9 +2087,8 @@ bool DbAddDel::start_new_record()
   if(fieldPrimaryKey && fieldPrimaryKey->get_auto_increment())
   {
     //Start editing in the first cell that is not auto_increment:
-    for(auto iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
+    for(const auto& layout_item : m_column_items)
     {
-      std::shared_ptr<LayoutItem> layout_item = *iter;
       std::shared_ptr<LayoutItem_Field> layout_item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
       if(!(layout_item_field->get_full_field_details()->get_auto_increment()))
       {

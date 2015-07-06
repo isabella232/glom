@@ -282,20 +282,20 @@ void Dialog_Layout_Report::add_group_children(const Glib::RefPtr<type_model>& mo
 {
   for(const auto& item : group->m_list_items)
   {
-    std::shared_ptr<const LayoutGroup> group = std::dynamic_pointer_cast<const LayoutGroup>(item);
-    if(group)
+    std::shared_ptr<const LayoutGroup> child_group = std::dynamic_pointer_cast<const LayoutGroup>(item);
+    if(child_group)
     {
       std::shared_ptr<const LayoutItem_Header> header = std::dynamic_pointer_cast<const LayoutItem_Header>(item);
       std::shared_ptr<const LayoutItem_Footer> footer = std::dynamic_pointer_cast<const LayoutItem_Footer>(item);
 
       //Special-case the header and footer so that their items go into the separate treeviews:
       if(header)
-        add_group_children(m_model_parts_header, parent, group); //Without the Header group being explicitly shown.
+        add_group_children(m_model_parts_header, parent, child_group); //Without the Header group being explicitly shown.
       else if(footer)
-        add_group_children(m_model_parts_footer, parent, group);  //Without the Footer group being explicitly shown.
+        add_group_children(m_model_parts_footer, parent, child_group);  //Without the Footer group being explicitly shown.
       else
       {
-        add_group(model_parts, parent, group);
+        add_group(model_parts, parent, child_group);
       }
     }
     else

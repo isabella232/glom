@@ -46,10 +46,10 @@ PyGlomRelated::type_map_relationships::size_type PyGlomRelated::len() const
 
 boost::python::object PyGlomRelated::getitem(const boost::python::object& cppitem)
 {
-  boost::python::extract<std::string> extractor(cppitem);
-  if(extractor.check())
+  boost::python::extract<std::string> extractor_item(cppitem);
+  if(extractor_item.check())
   {
-    const std::string key = extractor;
+    const std::string key = extractor_item;
     if(!key.empty())
     {
       //Return a cached item if possible:
@@ -70,10 +70,10 @@ boost::python::object PyGlomRelated::getitem(const boost::python::object& cppite
           std::shared_ptr<Relationship> relationship = iterFind->second;
           const auto from_key = relationship->get_from_field();
 
-          boost::python::extract<PyGlomRecord*> extractor(m_record);
-          if(extractor.check())
+          boost::python::extract<PyGlomRecord*> extractor_record(m_record);
+          if(extractor_record.check())
           {
-            PyGlomRecord* record = extractor;
+            PyGlomRecord* record = extractor_record;
             PyGlomRecord::type_map_field_values::const_iterator iterFromKey = record->m_map_field_values.find(from_key);
             if(iterFromKey != record->m_map_field_values.end())
             {

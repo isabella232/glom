@@ -413,12 +413,12 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
         notebook_widget->append_page(*event_box, *tab_label);
 
         //Add child items:
-        LayoutGroup::type_list_items items = group->get_items();
-        for(const auto& item : items)
+        LayoutGroup::type_list_items child_items = group->get_items();
+        for(const auto& child_item : child_items)
         {
-          if(item)
+          if(child_item)
           {
-            flow_table->add_layout_item(item);
+            flow_table->add_layout_item(child_item);
           }
         }
 
@@ -1069,14 +1069,14 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   //so the new item will be after that item, next to it.
 
   //Get the widget's layout item:
-  std::shared_ptr<const LayoutItem> layout_item = pDataWidget->get_layout_item();
-  if(!layout_item)
+  std::shared_ptr<const LayoutItem> layout_item_parent = pDataWidget->get_layout_item();
+  if(!layout_item_parent)
   {
-    std::cerr << G_STRFUNC << ": layout_item is null." << std::endl;
+    std::cerr << G_STRFUNC << ": layout_item_parent is null." << std::endl;
     return;
   }
 
-  //std::cout << "debug: layout_item name=" << layout_item->get_name() << std::endl;
+  //std::cout << "debug: layout_item_parent name=" << layout_item_parent->get_name() << std::endl;
 
   //Get the group that the widget's layout item is in:
   std::shared_ptr<LayoutGroup> layout_group = std::dynamic_pointer_cast<LayoutGroup>(get_layout_item());
@@ -1144,7 +1144,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
 
   if(layout_item_new)
   {
-    layout_group->add_item(layout_item_new, layout_item);
+    layout_group->add_item(layout_item_new, layout_item_parent);
 
     //We have changed the structure itself in the document, because we are using the same structure via std::shared_ptr.
     //So we just tell the parent widgets to rebuild the layout from the document:

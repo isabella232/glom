@@ -107,9 +107,9 @@ static Glib::ustring get_traceback()
   }
   else
   {
-    boost::python::object traceback(boost::python::import("traceback"));
-    boost::python::object format_exception(traceback.attr("format_exception"));
-    boost::python::object formatted_list(format_exception(hexc,hval,htb));
+    boost::python::object cpp_traceback(boost::python::import("traceback"));
+    boost::python::object format_exception(cpp_traceback.attr("format_exception"));
+    boost::python::object formatted_list(format_exception(hexc, hval, htb));
     boost::python::object formatted(boost::python::str("").join(formatted_list));
     const std::string result = boost::python::extract<std::string>(formatted);
     return result;

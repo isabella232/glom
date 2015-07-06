@@ -295,11 +295,10 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
         //Generate the new key value;
       }
 
-      Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
-      builder->set_table(relationship->get_to_table());
-      builder->add_field_value(primary_key_field->get_name(), primary_key_value);
-      const auto test = DbUtils::query_execute(builder);
-      if(!test)
+      Glib::RefPtr<Gnome::Gda::SqlBuilder> builder_insert = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
+      builder_insert->set_table(relationship->get_to_table());
+      builder_insert->add_field_value(primary_key_field->get_name(), primary_key_value);
+      if(!DbUtils::query_execute(builder_insert))
       {
         std::cerr << G_STRFUNC << ": INSERT failed." << std::endl;
         return false;
@@ -341,17 +340,16 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
           else
           {
             const auto target_table = relationship->get_from_table();
-            Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+            Glib::RefPtr<Gnome::Gda::SqlBuilder> builder_update =
               Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
-            builder->set_table(target_table);
-            builder->add_field_value_as_value(relationship->get_from_field(), primary_key_value);
-            builder->set_where(
-              builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-                builder->add_field_id(parent_primary_key_field->get_name(), target_table),
-                builder->add_expr(parent_primary_key_value)) );
+            builder_update->set_table(target_table);
+            builder_update->add_field_value_as_value(relationship->get_from_field(), primary_key_value);
+            builder_update->set_where(
+              builder_update->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+                builder_update->add_field_id(parent_primary_key_field->get_name(), target_table),
+                builder_update->add_expr(parent_primary_key_value)) );
 
-            const auto test = DbUtils::query_execute(builder);
-            if(!test)
+            if(!DbUtils::query_execute(builder_update))
             {
               std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
               return false;

@@ -153,12 +153,12 @@ void CanvasImageMovable::set_snap_corner(Corners corner)
   m_snap_corner = corner;
 }
 
-void CanvasImageMovable::set_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, bool scale)
+void CanvasImageMovable::set_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, bool scale_image)
 {
   property_pixbuf() = pixbuf;
   m_pixbuf = pixbuf;
 
-  if(scale)
+  if(scale_image)
     scale_to_size();
  
   m_image_empty = false;

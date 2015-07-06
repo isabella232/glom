@@ -378,9 +378,9 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
       {
         //Set all the other rows to false:
         Glib::RefPtr<Gtk::TreeModel> model = m_AddDel.get_model();
-        for(const auto& row : model->children())
+        for(const auto& child_row : model->children())
         {
-          m_AddDel.set_value(row, m_colDefault, false);
+          m_AddDel.set_value(child_row, m_colDefault, false);
         }
       }
 

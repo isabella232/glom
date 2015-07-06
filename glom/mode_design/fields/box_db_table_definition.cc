@@ -378,8 +378,8 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
       std::cerr << G_STRFUNC << ": field not found: " << strFieldNameBeingEdited << std::endl;
     else
     {
-      std::shared_ptr<const Field> constfield = *iterFind;
-      m_Field_BeingEdited = constfield;
+      std::shared_ptr<const Field> const_field_found = *iterFind;
+      m_Field_BeingEdited = const_field_found;
 
       //Get new field definition:
       std::shared_ptr<Field> fieldNew = get_field_definition(row);

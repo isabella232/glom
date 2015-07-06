@@ -470,8 +470,8 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       if(text_value.empty() && std::dynamic_pointer_cast<const LayoutItem_FieldSummary>(field) && (field_type == Field::TYPE_NUMERIC))
       {
         //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
-        const auto value = Conversions::parse_value(0);
-        text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
+        const auto value_zero = Conversions::parse_value(0);
+        text_value = Conversions::get_text_for_gda_value(field_type, value_zero, field->get_formatting_used().m_numeric_format);
       }
 
       canvas_item->set_text(text_value);

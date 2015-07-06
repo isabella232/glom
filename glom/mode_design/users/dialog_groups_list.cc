@@ -507,23 +507,19 @@ void Dialog_GroupsList::on_treeview_tables_toggled_view(const Glib::ustring& pat
     const auto group_name = get_selected_group();
     const Glib::ustring table_name = row[m_model_columns_tables.m_col_name];
 
-    bool test = set_table_privilege(table_name, group_name, bActive, PRIV_VIEW);
-    if(test)
+    if(set_table_privilege(table_name, group_name, bActive, PRIV_VIEW))
       row[m_model_columns_tables.m_col_view] = bActive;
 
     //If the group cannot view, then it should not do anything else either:
     if(!bActive)
     {
-      bool test = set_table_privilege(table_name, group_name, bActive, PRIV_EDIT);
-      if(test)
+     if(set_table_privilege(table_name, group_name, bActive, PRIV_EDIT))
         row[m_model_columns_tables.m_col_edit] = false;
 
-      test = set_table_privilege(table_name, group_name, bActive, PRIV_CREATE);
-      if(test)
+      if(set_table_privilege(table_name, group_name, bActive, PRIV_CREATE))
         row[m_model_columns_tables.m_col_create] = false;
 
-      test = set_table_privilege(table_name, group_name, bActive, PRIV_DELETE);
-      if(test)
+      if(set_table_privilege(table_name, group_name, bActive, PRIV_DELETE))
         row[m_model_columns_tables.m_col_delete] = false;
     }
   }
