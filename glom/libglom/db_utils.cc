@@ -496,9 +496,9 @@ bool add_standard_tables(const Document* document)
           Glib::RefPtr<Gnome::Gda::SqlBuilder> builderUpdate = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
           builderUpdate->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
           builderUpdate->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME, system_name);
-          builderUpdate->set_where(builderAdd->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-                                               builderAdd->add_field_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME),
-                                               builderAdd->add_expr(1)));
+          builderUpdate->set_where(builderUpdate->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+                                               builderUpdate->add_field_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME),
+                                               builderUpdate->add_expr(1)));
           if(!query_execute(builderUpdate))
             std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
         }
