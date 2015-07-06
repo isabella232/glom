@@ -283,7 +283,7 @@ void DbAddDel::setup_menu(Gtk::Widget* /* widget */)
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
-bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
+bool DbAddDel::on_button_press_event_Popup(GdkEventButton *button_event)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Enable/Disable items.
@@ -297,16 +297,16 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
 #endif
 
   GdkModifierType mods;
-  gdk_window_get_device_position( gtk_widget_get_window(Gtk::Widget::gobj()), event->device, 0, 0, &mods );
+  gdk_window_get_device_position( gtk_widget_get_window(Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
   if(mods & GDK_BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
-    m_pMenuPopup->popup(event->button, event->time);
+    m_pMenuPopup->popup(button_event->button, button_event->time);
     return true; //handled.
   }
   else
   {
-    if(event->type == GDK_2BUTTON_PRESS)
+    if(button_event->type == GDK_2BUTTON_PRESS)
     {
       //Double-click means edit.
       //Don't do this usually, because users sometimes double-click by accident when they just want to edit a cell.
@@ -1532,18 +1532,17 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
   }
 }
 
-void DbAddDel::on_treeview_button_press_event(GdkEventButton* event)
+void DbAddDel::on_treeview_button_press_event(GdkEventButton* button_event)
 {
-  on_button_press_event_Popup(event);
+  on_button_press_event_Popup(button_event);
 }
 
-bool DbAddDel::on_treeview_columnheader_button_press_event(GdkEventButton* event)
+bool DbAddDel::on_treeview_columnheader_button_press_event(GdkEventButton* button_event)
 {
   //If this is a right-click with the mouse:
-  if( (event->type == GDK_BUTTON_PRESS) && (event->button == 3) )
+  if( (button_event->type == GDK_BUTTON_PRESS) && (button_event->button == 3) )
   {
-
-
+    //TODO: Is something supposed to happen here?
   }
 
   return false;

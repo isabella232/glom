@@ -95,7 +95,7 @@ private:
   //Overrides of default signal handlers:
   void on_widget_edited(); //From Gtk::Entry, or Gtk::CheckButton.
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual bool on_button_press_event(GdkEventButton* event) override;
+  virtual bool on_button_press_event(GdkEventButton* button_event) override;
   virtual void on_child_user_requested_layout();
   virtual void on_child_user_requested_layout_properties();
   virtual void on_child_layout_item_added(LayoutWidgetBase::enumType item_type);

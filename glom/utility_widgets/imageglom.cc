@@ -107,10 +107,10 @@ void ImageGlom::set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, 
 #endif  
 }
 
-bool ImageGlom::on_button_press_event(GdkEventButton *event)
+bool ImageGlom::on_button_press_event(GdkEventButton *button_event)
 {
   GdkModifierType mods;
-  gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), event->device, 0, 0, &mods );
+  gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
 
   //Enable/Disable items.
   //We did this earlier, but get_appwindow is more likely to work now:
@@ -134,7 +134,7 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
       if(mods & GDK_BUTTON3_MASK)
       {
         //Give user choices of actions on this item:
-        popup_menu(event->button, event->time);
+        popup_menu(button_event->button, button_event->time);
        
         return true; //We handled this event.
       }
@@ -146,7 +146,7 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
       if(mods & GDK_BUTTON3_MASK)
       {
         //Give user choices of actions on this item:
-        popup_menu(event->button, event->time);
+        popup_menu(button_event->button, button_event->time);
 
         return true; //We handled this event.
       }
@@ -161,7 +161,7 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
     }
   }
 
-  return Gtk::EventBox::on_button_press_event(event);
+  return Gtk::EventBox::on_button_press_event(button_event);
 }
 
 AppWindow* ImageGlom::get_appwindow() const

@@ -538,7 +538,7 @@ void Box_Data_Calendar_Related::setup_menu(Gtk::Widget* /* this */)
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
-void Box_Data_Calendar_Related::on_calendar_button_press_event(GdkEventButton *event)
+void Box_Data_Calendar_Related::on_calendar_button_press_event(GdkEventButton *button_event)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Enable/Disable items.
@@ -552,16 +552,16 @@ void Box_Data_Calendar_Related::on_calendar_button_press_event(GdkEventButton *e
 #endif
 
   GdkModifierType mods;
-  gdk_window_get_device_position( gtk_widget_get_window(Gtk::Widget::gobj()), event->device, 0, 0, &mods );
+  gdk_window_get_device_position( gtk_widget_get_window(Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
   if(mods & GDK_BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
-    m_pMenuPopup->popup(event->button, event->time);
+    m_pMenuPopup->popup(button_event->button, button_event->time);
     return; //handled.
   }
   else
   {
-    if(event->type == GDK_2BUTTON_PRESS)
+    if(button_event->type == GDK_2BUTTON_PRESS)
     {
       //Double-click means edit.
       //Don't do this usually, because users sometimes double-click by accident when they just want to edit a cell.

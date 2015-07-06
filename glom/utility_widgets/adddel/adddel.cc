@@ -254,18 +254,18 @@ void AddDel::setup_menu(Gtk::Widget* /* widget */)
   m_pMenuPopup->attach_to_widget(*this);
 }
 
-bool AddDel::on_button_press_event_Popup(GdkEventButton *event)
+bool AddDel::on_button_press_event_Popup(GdkEventButton *button_event)
 {
   GdkModifierType mods;
-  gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), event->device, 0, 0, &mods );
+  gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
   if(mods & GDK_BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
-    m_pMenuPopup->popup(event->button, event->time);
+    m_pMenuPopup->popup(button_event->button, button_event->time);
   }
   else
   {
-    if(event->type == GDK_2BUTTON_PRESS)
+    if(button_event->type == GDK_2BUTTON_PRESS)
     {
       //Double-click means edit.
       //Disable this, because it is confusing when single-click activates editable cells too.
@@ -1310,9 +1310,9 @@ AddDel::type_signal_user_reordered_columns AddDel::signal_user_reordered_columns
   return m_signal_user_reordered_columns;
 }
 
-void AddDel::on_treeview_button_press_event(GdkEventButton* event)
+void AddDel::on_treeview_button_press_event(GdkEventButton* button_event)
 {
-  on_button_press_event_Popup(event);
+  on_button_press_event_Popup(button_event);
 }
 
 bool AddDel::on_treeview_column_drop(Gtk::TreeView* /* treeview */, Gtk::TreeViewColumn* /* column */, Gtk::TreeViewColumn* /* prev_column */, Gtk::TreeViewColumn* /* next_column */)

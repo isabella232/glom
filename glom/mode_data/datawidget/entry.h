@@ -68,7 +68,7 @@ private:
   //Overrides of default signal handlers:
   virtual void on_changed() override; //From Gtk::Entry.
   virtual void on_activate() override; //From Gtk::Entry.
-  virtual bool on_focus_out_event(GdkEventFocus* event) override; //From Gtk::Widget
+  virtual bool on_focus_out_event(GdkEventFocus* focus_event) override; //From Gtk::Widget
 
   void check_for_change();
 

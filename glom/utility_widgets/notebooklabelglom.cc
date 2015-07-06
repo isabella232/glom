@@ -128,21 +128,22 @@ void NotebookLabel::setup_menu(Gtk::Widget* /* widget */)
   m_pPopupMenu->attach_to_widget(*this);
 }
 
-bool NotebookLabel::on_button_press_event(GdkEventButton *event)
+bool NotebookLabel::on_button_press_event(GdkEventButton *button_event)
 {
   AppWindow* pApp = get_appwindow();
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     GdkModifierType mods;
-    gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), event->device, 0, 0, &mods );
+    gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
     if(mods & GDK_BUTTON3_MASK)
     {
       //Give user choices of actions on this item:
-      m_pPopupMenu->popup(event->button, event->time);
+      m_pPopupMenu->popup(button_event->button, button_event->time);
       return true; //We handled this event.
     }
   }
-  return Gtk::EventBox::on_button_press_event(event);
+
+  return Gtk::EventBox::on_button_press_event(button_event);
 }
 
 } //namespace Glom

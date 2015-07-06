@@ -420,7 +420,7 @@ void DataWidget::set_editable(bool editable)
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-bool DataWidget::on_button_press_event(GdkEventButton *event)
+bool DataWidget::on_button_press_event(GdkEventButton *button_event)
 {
   //g_warning("DataWidget::on_button_press_event_popup");
 
@@ -442,17 +442,17 @@ bool DataWidget::on_button_press_event(GdkEventButton *event)
     if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
     {
       GdkModifierType mods;
-      gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), event->device, 0, 0, &mods );
+      gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
       if(mods & GDK_BUTTON3_MASK)
       {
         //Give user choices of actions on this item:
-        m_pMenuPopup->popup(event->button, event->time);
+        m_pMenuPopup->popup(button_event->button, button_event->time);
         return true; //We handled this event.
       }
     }
   }
 
-  return Gtk::EventBox::on_button_press_event(event);
+  return Gtk::EventBox::on_button_press_event(button_event);
 }
 
 std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name)

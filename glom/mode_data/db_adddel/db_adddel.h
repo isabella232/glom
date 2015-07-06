@@ -331,8 +331,8 @@ private:
   bool on_treeview_column_drop(Gtk::TreeView* treeview, Gtk::TreeViewColumn* column, Gtk::TreeViewColumn* prev_column, Gtk::TreeViewColumn* next_column);
   void on_treeview_columns_changed();
 
-  bool on_button_press_event_Popup(GdkEventButton* event);
-  void on_treeview_button_press_event(GdkEventButton* event);
+  bool on_button_press_event_Popup(GdkEventButton* button_event);
+  void on_treeview_button_press_event(GdkEventButton* button_event);
   void on_treeview_selection_changed();
 
 protected:
@@ -347,7 +347,7 @@ private:
   void on_MenuPopup_activate_layout();
 #endif
 
-  bool on_treeview_columnheader_button_press_event(GdkEventButton* event);
+  bool on_treeview_columnheader_button_press_event(GdkEventButton* button_event);
   void on_treeview_column_clicked(int model_column_index);
   //void on_treeview_column_resized(int model_column_index, DbTreeViewColumnGlom* view_column);
   void on_idle_row_edit();

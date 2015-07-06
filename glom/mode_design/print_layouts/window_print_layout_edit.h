@@ -92,7 +92,7 @@ private:
   void on_menu_align_left();
   void on_menu_align_right();
 
-  bool on_canvas_motion_notify_event(GdkEventMotion* event);
+  bool on_canvas_motion_notify_event(GdkEventMotion* motion_event);
   void on_canvas_show_context_menu(guint button, guint32 activate_time);
   void on_context_menu_insert_field();
   void on_context_menu_insert_text();
@@ -115,11 +115,11 @@ private:
   void on_spinbutton_width();
   void on_spinbutton_height();
 
-  bool on_hruler_button_press_event(GdkEventButton* event);
-  bool on_vruler_button_press_event(GdkEventButton* event);
+  bool on_hruler_button_press_event(GdkEventButton* button_event);
+  bool on_vruler_button_press_event(GdkEventButton* button_event);
 
   //override:
-  virtual bool on_configure_event(GdkEventConfigure* event) override;
+  virtual bool on_configure_event(GdkEventConfigure* configure_event) override;
 
   void do_menu_view_show_grid(bool active);
   void do_menu_view_show_rules(bool active);

@@ -259,7 +259,7 @@ Glib::ustring ComboAsRadioButtons::get_text() const
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void ComboAsRadioButtons::show_context_menu(GdkEventButton *event)
+void ComboAsRadioButtons::show_context_menu(GdkEventButton *button_event)
 {
   std::cout << "ComboAsRadioButtons::show_context_menu()" << std::endl;
   AppWindow* pApp = get_appwindow();
@@ -279,27 +279,27 @@ void ComboAsRadioButtons::show_context_menu(GdkEventButton *event)
     if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
     {
       GdkModifierType mods;
-      gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), event->device, 0, 0, &mods );
+      gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
       if(mods & GDK_BUTTON3_MASK)
       {
         //Give user choices of actions on this item:
-        m_pMenuPopup->popup(event->button, event->time);
+        m_pMenuPopup->popup(button_event->button, button_event->time);
       }
     }
   }
 }
 
-bool ComboAsRadioButtons::on_radiobutton_button_press_event(GdkEventButton *event)
+bool ComboAsRadioButtons::on_radiobutton_button_press_event(GdkEventButton *button_event)
 {
-  show_context_menu(event);
+  show_context_menu(button_event);
   return false; //Let other signal handlers handle it too.
 }
 
-bool ComboAsRadioButtons::on_button_press_event(GdkEventButton *event)
+bool ComboAsRadioButtons::on_button_press_event(GdkEventButton *button_event)
 {
-  show_context_menu(event);
+  show_context_menu(button_event);
 
-  return Gtk::Box::on_button_press_event(event);
+  return Gtk::Box::on_button_press_event(button_event);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

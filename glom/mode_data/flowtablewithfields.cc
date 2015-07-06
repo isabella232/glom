@@ -1307,21 +1307,21 @@ void FlowTableWithFields::on_menu_delete_activate()
   }
 }
 
-bool FlowTableWithFields::on_button_press_event(GdkEventButton *event)
+bool FlowTableWithFields::on_button_press_event(GdkEventButton *button_event)
 {
   AppWindow* pApp = AppWindow::get_appwindow();
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     GdkModifierType mods;
-    gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), event->device, 0, 0, &mods );
+    gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
     if(mods & GDK_BUTTON3_MASK)
     {
       //Give user choices of actions on this item:
-      m_pPopupMenuUtils->popup(event->button, event->time);
+      m_pPopupMenuUtils->popup(button_event->button, button_event->time);
       return true; //We handled this event.
     }
   }
-  return Gtk::Widget::on_button_press_event(event);
+  return Gtk::Widget::on_button_press_event(button_event);
 }
 
 //TODO: Rename this? It's not a simpler getter. It does UI.

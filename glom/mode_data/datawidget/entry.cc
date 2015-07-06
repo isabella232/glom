@@ -118,9 +118,9 @@ void Entry::check_for_change()
   }
 }
 
-bool Entry::on_focus_out_event(GdkEventFocus* event)
+bool Entry::on_focus_out_event(GdkEventFocus* focus_event)
 {
-  const auto result = Gtk::Entry::on_focus_out_event(event);
+  const auto result = Gtk::Entry::on_focus_out_event(focus_event);
 
   //The user has finished editing.
   check_for_change();
@@ -188,7 +188,7 @@ Gnome::Gda::Value Entry::get_value() const
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-bool Entry::on_button_press_event(GdkEventButton *event)
+bool Entry::on_button_press_event(GdkEventButton *button_event)
 {
   //Enable/Disable items.
   //We did this earlier, but get_appwindow is more likely to work now:
@@ -207,18 +207,18 @@ bool Entry::on_button_press_event(GdkEventButton *event)
     if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
     {
       GdkModifierType mods;
-      gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), event->device, 0, 0, &mods );
+      gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
       if(mods & GDK_BUTTON3_MASK)
       {
         //Give user choices of actions on this item:
-        m_pMenuPopup->popup(event->button, event->time);
+        m_pMenuPopup->popup(button_event->button, button_event->time);
         return true; //We handled this event.
       }
     }
 
   }
 
-  return Gtk::Entry::on_button_press_event(event);
+  return Gtk::Entry::on_button_press_event(button_event);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
