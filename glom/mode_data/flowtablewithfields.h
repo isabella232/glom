@@ -84,9 +84,6 @@ public:
 
   void remove_field(const Glib::ustring& id);
 
-  typedef std::map<int, Field> type_map_field_sequence;
-  //virtual void add_group(const Glib::ustring& group_name, const Glib::ustring& group_title, const type_map_field_sequence& fields);
-
   void add_layout_item(const std::shared_ptr<LayoutItem>& item);
 
   /**
