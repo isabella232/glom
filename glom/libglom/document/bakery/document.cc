@@ -463,7 +463,7 @@ bool Document::get_read_only() const
       if(!info)
         return false;
 
-      const bool read_only = info->get_attribute_boolean(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
+      const bool read_only = !info->get_attribute_boolean(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
       return read_only;
     }
   }
