@@ -567,10 +567,9 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
 
   if(layout_choice_extra)
   {
-    const LayoutGroup::type_list_const_items extra_fields = layout_choice_extra->get_items_recursive();
-    for(const auto& item : extra_fields)
+    for(const auto& item : layout_choice_extra->get_items_recursive())
     {
-      const std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
+      const auto& item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
       if(item_field)
          fields.push_back(item_field); //TODO: Don't ignore other usable items such as static text.
     }

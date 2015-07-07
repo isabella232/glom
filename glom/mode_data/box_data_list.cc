@@ -185,14 +185,12 @@ void Box_Data_List::on_adddel_user_reordered_columns()
   Document* pDoc = dynamic_cast<Document*>(get_document());
   if(pDoc)
   {
-    std::shared_ptr<LayoutGroup> group = std::make_shared<LayoutGroup>();
+    auto group = std::make_shared<LayoutGroup>();
     group->set_name("toplevel");
 
-    AddDel::type_vec_strings vec_field_names = m_AddDel.get_columns_order();
-
-    for(const auto& field_name : vec_field_names)
+    for(const auto& field_name : m_AddDel.get_columns_order())
     {
-      std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
+      auto layout_item = std::make_shared<LayoutItem_Field>();
       layout_item->set_name(field_name);
       group->add_item(layout_item);
     }

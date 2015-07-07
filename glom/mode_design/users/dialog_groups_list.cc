@@ -347,8 +347,7 @@ void Dialog_GroupsList::fill_group_list()
   //Fill the model rows:
   m_model_groups->clear();
 
-  type_vec_strings group_list = Privs::get_database_groups();
-  for(const auto& group : group_list)
+  for(const auto& group : Privs::get_database_groups())
   {
     auto iterTree = m_model_groups->append();
     Gtk::TreeModel::Row row = *iterTree;
@@ -384,7 +383,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
   //Fill the model rows:
   m_model_tables->clear();
 
-  Document* pDocument = get_document();
+ Document* pDocument = get_document();
   if(pDocument)
   {
     // Make sure that these are in the document,
@@ -414,7 +413,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
       group_info.m_map_privileges[table_name] = privs;
     }
 
-     pDocument->set_group(group_info);
+    pDocument->set_group(group_info);
   }
 }
 

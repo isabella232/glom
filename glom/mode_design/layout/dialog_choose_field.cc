@@ -165,8 +165,7 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
 
     //Fill the treeview:
     m_model->clear();
-    Document::type_vec_fields vecFields = document->get_table_fields(table_name);
-    for(const auto& field : vecFields)
+    for(const auto& field : document->get_table_fields(table_name))
     {
       auto iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;
@@ -242,10 +241,7 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
   std::shared_ptr<Relationship> related_relationship;
   std::shared_ptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(related_relationship);
 
-    
-  typedef std::vector<Gtk::TreeModel::Path> type_list_paths;
-  type_list_paths list_paths = refTreeSelection->get_selected_rows();
-  for(const auto& path : list_paths)
+  for(const auto& path : refTreeSelection->get_selected_rows())
   {
     auto tree_iter = m_model->get_iter(path);
     if(!tree_iter)

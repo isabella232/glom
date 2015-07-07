@@ -76,8 +76,7 @@ void Dialog_ChooseRelationship::set_document(Document* document, const Glib::ust
 
     //Fill the treeview:
     m_model->clear();
-    Document::type_vec_relationships vecRelationships = document->get_relationships(table_name);
-    for(const auto& relationship : vecRelationships)
+    for(const auto& relationship : document->get_relationships(table_name))
     {
       auto iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;

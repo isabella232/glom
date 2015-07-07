@@ -154,7 +154,7 @@ void Window_RelationshipsOverview::draw_tables()
   while(m_group_tables->get_n_children() > 0)
     m_group_tables->remove_child(0);
 
-  Document* document = dynamic_cast<Document*>(get_document());
+  const auto document = dynamic_cast<Document*>(get_document());
   if(document)
   {
     double max_table_height = 0;
@@ -162,7 +162,7 @@ void Window_RelationshipsOverview::draw_tables()
     double sizey = 10;
 
     //Create tables canvas items, with lists of fields:
-    Document::type_listTableInfo tables = document->get_tables();
+    const auto tables = document->get_tables();
     for(const auto& info : tables)
     {
       const auto table_name = info->get_name();
@@ -211,12 +211,11 @@ void Window_RelationshipsOverview::draw_lines()
   while(m_group_lines->get_n_children() > 0)
     m_group_lines->remove_child(0);
 
-  Document* document = dynamic_cast<Document*>(get_document());
+  const auto document = dynamic_cast<Document*>(get_document());
   if(document)
   {
     //Create the lines linking tables to show relationships:
-    Document::type_listTableInfo tables = document->get_tables();
-    for(const auto& info : tables)
+    for(const auto& info : document->get_tables())
     {
       const auto table_name = info->get_name();
 

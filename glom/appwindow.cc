@@ -1499,7 +1499,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
   ShowProgressMessage progress_message(_("Creating Glom database from example file."));
 
   //Create a database, based on the information in the current document:
-  Document* pDocument = static_cast<Document*>(get_document());
+  const auto pDocument = static_cast<Document*>(get_document());
   if(!pDocument)
     return false;
 
@@ -1617,7 +1617,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
     return false;
 
   //Create each table:
-  Document::type_listTableInfo tables = pDocument->get_tables();
+  const auto tables = pDocument->get_tables();
   for(const auto& table_info : tables)
   {
     //Create SQL to describe all fields in this table:
@@ -1872,15 +1872,14 @@ void AppWindow::fill_menu_tables()
     menu->remove(0);
   }
 
-  Document* document = dynamic_cast<Document*>(get_document());
+  const auto document = dynamic_cast<Document*>(get_document());
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document is null." << std::endl;
     return;
   }
 
-  const auto tables = document->get_tables();
-  for(const auto& table_info : tables)
+  for(const auto& table_info : document->get_tables())
   {
     if(!table_info->get_hidden())
     {
@@ -1927,17 +1926,16 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
 
   m_refNavReportsActionGroup = Gio::SimpleActionGroup::create();
 
-  Document* document = dynamic_cast<Document*>(get_document());
+  const auto document = dynamic_cast<Document*>(get_document());
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document is null." << std::endl;
     return;
   }
 
-  const auto reports = document->get_report_names(table_name);
-  for(const auto& item : reports)
+  for(const auto& item : document->get_report_names(table_name))
   {
-    std::shared_ptr<Report> report = document->get_report(table_name, item);
+    const auto report = document->get_report(table_name, item);
     if(report)
     {
       const auto report_name = report->get_name();
@@ -1968,11 +1966,9 @@ void AppWindow::enable_menu_print_layouts_details(bool enable)
 
   //Enable/Disable each action in the group:
   //TODO: Suggest a simpler get_actions() method?
-  typedef std::vector<Glib::ustring> type_vec_action_names;
-  type_vec_action_names actions = m_refNavPrintLayoutsActionGroup->list_actions();
-  for(const auto& name : actions)
+  for(const auto& name : m_refNavPrintLayoutsActionGroup->list_actions())
   {
-    Glib::RefPtr<Gio::SimpleAction> action = 
+    auto action = 
       Glib::RefPtr<Gio::SimpleAction>::cast_dynamic(m_refNavPrintLayoutsActionGroup->lookup_action(name));
     if(action)
       action->set_enabled(enable);
@@ -2017,14 +2013,12 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
     return;
   }
 
-  const auto tables = document->get_print_layout_names(table_name);
-
   // TODO_clientonly: Should this be available in client only mode? We need to
   // depend on goocanvas in client only mode then:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  for(const auto& item : tables)
+  for(const auto& item : document->get_print_layout_names(table_name))
   {
-    std::shared_ptr<PrintLayout> layout = document->get_print_layout(table_name, item);
+    const auto layout = document->get_print_layout(table_name, item);
     if(layout)
     {
       const auto name = layout->get_name();
@@ -2085,8 +2079,7 @@ void AppWindow::on_menu_file_save_as_example()
       document->set_is_example_file();
 
       //Save all data from all tables into the document:
-      Document::type_listTableInfo list_table_info = document->get_tables();
-      for(const auto& item : list_table_info)
+      for(const auto& item : document->get_tables())
       {
         const auto table_name = item->get_name();
 

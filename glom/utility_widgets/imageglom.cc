@@ -309,8 +309,7 @@ void ImageGlom::fill_gdkpixbuf_supported_mime_types()
   if(!m_gdkpixbuf_supported_mime_types.empty())
     return;
 
-  const auto formats = Gdk::Pixbuf::get_formats();
-  for(const auto& format : formats)
+  for(const auto& format : Gdk::Pixbuf::get_formats())
   {
     const auto mime_types = format.get_mime_types();
     m_gdkpixbuf_supported_mime_types.insert(

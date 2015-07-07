@@ -25,16 +25,12 @@
 
 std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Document& document, const Glib::ustring& layout_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
-  const Glom::Document::type_list_layout_groups groups = 
-    document.get_data_layout_groups("details", layout_table_name);
-
-  for(const auto& group : groups)
+  for(const auto& group : document.get_data_layout_groups("details", layout_table_name))
   {
     if(!group)
       continue;
     
-    const auto items = group->get_items_recursive();
-    for(const auto& layout_item : items)
+    for(const auto& layout_item : group->get_items_recursive())
     {
       const std::shared_ptr<const Glom::LayoutItem_Field> layout_item_field =
         std::dynamic_pointer_cast<const Glom::LayoutItem_Field>(layout_item);

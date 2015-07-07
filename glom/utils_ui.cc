@@ -616,8 +616,7 @@ void UiUtils::container_remove_all(Gtk::Container& container)
 {
   //Remove all (usally just one) widgets from m_vbox_parent:
   //Gtk::Bin::remove() is easier but after GtkAlignment was deprecated, there is no suitable widget.
-  const auto children = container.get_children();
-  for(const auto& child : children)
+  for(const auto& child : container.get_children())
   {
     if(child)
       container.remove(*child);

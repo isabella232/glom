@@ -43,9 +43,7 @@ void Combo_FieldType::init()
   set_model(m_refTreeModel);
 
   //Set Type choices:
-  Field::type_map_type_names map_names = Field::get_usable_type_names();
-
-  for(const auto& the_pair : map_names)
+  for(const auto& the_pair : Field::get_usable_type_names())
   {
     auto iterModel = m_refTreeModel->append();
     if(iterModel)
@@ -72,8 +70,7 @@ Combo_FieldType::~Combo_FieldType()
 
 void Combo_FieldType::set_field_type(Field::glom_field_type fieldType)
 {
-  const auto children = m_refTreeModel->children();
-   for(const auto& row : children)
+   for(const auto& row : m_refTreeModel->children())
    {
      if( row[m_Columns.m_col_type] == fieldType )
      {

@@ -612,8 +612,7 @@ void AddDel::construct_specified_columns()
           CellRendererList* pCellRendererList = Gtk::manage( new CellRendererList() );
 
           //Add the choices:
-          const type_vec_strings vecStrings = m_ColumnTypes[model_column_index].m_choices;
-          for(const auto& item : vecStrings)
+          for(const auto& item : m_ColumnTypes[model_column_index].m_choices)
           {
             pCellRendererList->append_list_item(item);
           }
@@ -1349,12 +1348,9 @@ void AddDel::on_treeview_columns_changed()
     //Get the new column order, and save it in m_vecColumnIDs:
     m_vecColumnIDs.clear();
 
-    typedef std::vector<Gtk::TreeViewColumn*> type_vecViewColumns;
-    type_vecViewColumns vecViewColumns = m_TreeView.get_columns();
-
-    for(const auto& item : vecViewColumns)
+    for(const auto& item : m_TreeView.get_columns())
     {
-      TreeViewColumnGlom* pViewColumn = dynamic_cast<TreeViewColumnGlom*>(item);
+      auto pViewColumn = dynamic_cast<TreeViewColumnGlom*>(item);
       if(pViewColumn)
       {
         const auto column_id = pViewColumn->get_column_id();

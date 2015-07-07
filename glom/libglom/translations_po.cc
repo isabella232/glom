@@ -210,8 +210,7 @@ bool write_translations_to_po_file(Document* document, const Glib::ustring& po_f
   //do that manually anyway.
   Glib::ustring data;
 
-  Document::type_list_translatables list_layout_items = document->get_translatable_items();
-  for(const auto& the_pair : list_layout_items)
+  for(const auto& the_pair : document->get_translatable_items())
   {
     std::shared_ptr<TranslatableItem> item = the_pair.first;
     if(!item)
@@ -259,7 +258,7 @@ bool import_translations_from_po_file(Document* document, const Glib::ustring& p
     return false;
   }
 
-  Document::type_list_translatables list_layout_items = document->get_translatable_items();
+  const auto list_layout_items = document->get_translatable_items();
   if(list_layout_items.empty())
     return false;
 
@@ -303,11 +302,11 @@ bool import_translations_from_po_file(Document* document, const Glib::ustring& p
       //Find the matching item in the list:
       for(const auto& the_pair : list_layout_items)
       {
-        std::shared_ptr<TranslatableItem> item = the_pair.first;
+        const auto& item = the_pair.first;
         if(!item)
           continue;
 
-        const Glib::ustring hint = the_pair.second;
+        const auto& hint = the_pair.second;
 
         if( (item->get_title_original() == msgid) && 
           (get_po_context_for_item(item, hint) == msgcontext) ) // This is not efficient, but it should be reliable.

@@ -101,9 +101,7 @@ void Notebook_Glom::on_leave_page(guint uiPageNumber)
   //Tell the page to save itself:
   if(!m_destructor_in_progress)
   {
-    typedef std::vector<Gtk::Widget*> type_vec_widgets;
-    type_vec_widgets children = get_page_children();
-    for(const auto& pChild : children)
+    for(const auto& pChild : get_page_children())
     {
       Base_DB* pBox = dynamic_cast<Base_DB*>(pChild);
       if(pBox)

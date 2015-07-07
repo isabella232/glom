@@ -145,8 +145,7 @@ void Dialog_Layout_Export::set_layout_groups(Document::type_list_layout_groups& 
         continue;
 
       //Add the group's fields:
-      const auto items = group->get_items();
-      for(const auto& base_item : items)
+      for(const auto& base_item : group->get_items())
       {
         std::shared_ptr<const LayoutItem_Field> item = std::dynamic_pointer_cast<const LayoutItem_Field>(base_item); 
         if(item)

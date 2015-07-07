@@ -103,10 +103,9 @@ bool Box_Reports::fill_from_database()
   Document* document = get_document();
   if(document)
   {
-    listTableReports = document->get_report_names(m_table_name);
-    for(const auto& item : listTableReports)
+    for(const auto& item : document->get_report_names(m_table_name))
     {
-      std::shared_ptr<Report> report = document->get_report(m_table_name, item);
+      auto report = document->get_report(m_table_name, item);
       if(report)
       {
         auto row = m_AddDel.add_item(report->get_name());

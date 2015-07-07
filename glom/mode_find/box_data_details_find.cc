@@ -84,7 +84,7 @@ void Box_Data_Details_Find::fill_related()
   //m_Notebook_Related.pages().clear();
 
   //Get relationships from the document:
-  Document::type_vec_relationships vecRelationships = get_document()->get_relationships(m_table_name);
+  const auto vecRelationships = get_document()->get_relationships(m_table_name);
 
   //Add the relationships:
      /*

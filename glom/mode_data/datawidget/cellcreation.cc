@@ -208,8 +208,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
     {
       //set_choices_fixed() needs this, for the numeric layout:
       //pCellRendererCombo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
-      const auto list_values = item_field->get_formatting_used().get_choices_custom();
-      for(const auto& value : list_values)
+      for(const auto& value : item_field->get_formatting_used().get_choices_custom())
       {
         if(!value)
           continue;

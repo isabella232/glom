@@ -501,8 +501,7 @@ void Canvas_PrintLayout::on_context_menu_delete()
   //Requesting deletion of a selected item should delete all selected items:
   //TODO: If there are multiple items, ask the user for confirmation?
   m_context_item.reset();
-  const type_vec_items items = get_selected_items();
-  for(const auto& selected_item : items)
+  for(const auto& selected_item : get_selected_items())
   {
     if(!selected_item)
       continue;

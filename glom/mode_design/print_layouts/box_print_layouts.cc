@@ -102,8 +102,7 @@ bool Box_Print_Layouts::fill_from_database()
   Document* document = get_document();
   if(document)
   {
-    listItems = document->get_print_layout_names(m_table_name);
-    for(const auto& print_layout_name : listItems)
+    for(const auto& print_layout_name : document->get_print_layout_names(m_table_name))
     {
       std::shared_ptr<PrintLayout> item = document->get_print_layout(m_table_name, print_layout_name);
       if(item)

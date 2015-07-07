@@ -33,8 +33,7 @@ void print_layout_group(const std::shared_ptr<Glom::LayoutGroup>& layout_group, 
     return;
 
   //Look at each child item:
-  const auto items = layout_group->get_items();
-  for(const auto& layout_item : items)
+  for(const auto& layout_item : layout_group->get_items())
   {
     if(!layout_item)
       continue;
@@ -105,14 +104,12 @@ int main()
 
 
   // Look at each table:
-  const auto table_names = document.get_table_names();
-  for(const auto& table_name : table_names)
+  for(const auto& table_name : document.get_table_names())
   {
     std::cout << "Table: " << table_name << std::endl;
 
     // List the fields for this table:
-    Glom::Document::type_vec_fields fields = document.get_table_fields(table_name);
-  for(const auto& field : fields)
+    for(const auto& field : document.get_table_fields(table_name))
     {
        if(!field)
          continue;
@@ -126,8 +123,7 @@ int main()
     }
 
     // List the relationships for this table:
-    Glom::Document::type_vec_relationships relationships = document.get_relationships(table_name);
-    for(const auto& relationship : relationships)
+    for(const auto& relationship : document.get_relationships(table_name))
     {
        if(!relationship)
          continue;

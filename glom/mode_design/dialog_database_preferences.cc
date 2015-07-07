@@ -150,7 +150,7 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
 
 void Dialog_Database_Preferences::load_from_document()
 {
-  Document* document = get_document();
+  const auto document = get_document();
   m_system_prefs = DbUtils::get_database_preferences(document);
 
   //Show the data in the UI:
@@ -160,8 +160,7 @@ void Dialog_Database_Preferences::load_from_document()
 
   //Make sure that all auto-increment values are setup:
 
-  const Document::type_listTableInfo tables = document->get_tables();
-  for(const auto& table : tables)
+  for(const auto& table : document->get_tables())
   {
     const Document::type_vec_fields fields = document->get_table_fields(table->get_name());
     for(const auto& field: fields)

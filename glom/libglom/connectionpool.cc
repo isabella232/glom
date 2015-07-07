@@ -574,8 +574,7 @@ bool ConnectionPool::handle_error_cerr_only()
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
-    typedef std::vector< Glib::RefPtr<Gnome::Gda::ConnectionEvent> > type_list_errors;
-    type_list_errors list_errors = gda_connection->get_events();
+    const auto list_errors = gda_connection->get_events();
 
     if(!list_errors.empty())
     {

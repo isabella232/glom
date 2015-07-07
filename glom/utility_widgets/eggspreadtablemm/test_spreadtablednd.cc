@@ -61,9 +61,7 @@ populate_spread_table_wrappy(Egg::SpreadTableDnd* spread_table)
   };
 
   /* Remove all children first */
-  typedef std::vector<Gtk::Widget*> type_vec_widgets;
-  type_vec_widgets children = paper->get_children();
-  for(const auto& child : children)
+  for(const auto& child : paper->get_children())
   {
     paper->remove_child(*child);
     delete child;

@@ -30,8 +30,7 @@ ComboEntry_Currency::ComboEntry_Currency(BaseObjectType* cobject, const Glib::Re
   m_model = Gtk::ListStore::create(m_model_columns);
 
   //Fill the model:
-  const auto list_currencies = IsoCodes::get_list_of_currency_symbols();
-  for(const auto& currency : list_currencies)
+  for(const auto& currency : IsoCodes::get_list_of_currency_symbols())
   {
     auto tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;

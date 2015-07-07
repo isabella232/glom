@@ -191,8 +191,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   Glib::ustring func_def;
 
   //Indent the function implementation (required by python syntax):
-  typedef std::list<Glib::ustring> type_listStrings;
-  type_listStrings listStrings = ustring_tokenize(func_impl, "\n", -1);
+  const auto listStrings = ustring_tokenize(func_impl, "\n", -1);
   for(const auto& item : listStrings)
   {
     func_def += "  " + item + '\n';
@@ -227,8 +226,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   //Allow the function to import from our script library:
   if(pDocument)
   {
-    const auto module_names = pDocument->get_library_module_names();
-    for(const auto& name : module_names)
+    for(const auto& name : pDocument->get_library_module_names())
     {
       const auto script = pDocument->get_library_module(name);
       if(!name.empty() && !script.empty())

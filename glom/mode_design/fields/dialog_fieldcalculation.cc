@@ -118,11 +118,10 @@ void Dialog_FieldCalculation::on_button_test()
 
   type_map_fields field_values;
 
-  Document* document = get_document();
+  const auto document = get_document();
   if(document)
   {
-    const auto fields = document->get_table_fields(m_table_name);
-    for(const auto& field : fields)
+    for(const auto& field : document->get_table_fields(m_table_name))
     {
       const auto example_value = Conversions::get_example_value(field->get_glom_type());
       field_values[field->get_name()] = example_value;
@@ -161,9 +160,7 @@ void Dialog_FieldCalculation::on_button_test()
     field_names += ( field->get_layout_display_name() + ", " );
   }
 
-  const auto triggered_relationships = temp->get_calculation_relationships();
-
-  for(const auto& field : triggered_relationships)
+  for(const auto& field : temp->get_calculation_relationships())
   {
     field_names += ( "related(" + field + "), " );
   }

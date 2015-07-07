@@ -215,9 +215,8 @@ void Dialog_UsersList::on_button_user_add()
       std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;
 
     //Remove any user rights, so that all rights come from the user's presence in the group:
-    Document::type_listTableInfo table_list = get_document()->get_tables();
-
-    for(const auto& table : table_list)
+    const auto document = get_document();
+    for(const auto& table : document->get_tables())
     {
       const auto table_name = table->get_name();
       const Glib::ustring query_revoke = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);

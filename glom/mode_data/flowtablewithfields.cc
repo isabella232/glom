@@ -355,7 +355,7 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
 
   for(const auto& item : notebook->m_list_items)
   {
-    std::shared_ptr<LayoutGroup> group = std::dynamic_pointer_cast<LayoutGroup>(item);
+    auto group = std::dynamic_pointer_cast<LayoutGroup>(item);
     if(group)
     {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -413,8 +413,7 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
         notebook_widget->append_page(*event_box, *tab_label);
 
         //Add child items:
-        LayoutGroup::type_list_items child_items = group->get_items();
-        for(const auto& child_item : child_items)
+        for(const auto& child_item : group->get_items())
         {
           if(child_item)
           {
@@ -673,10 +672,9 @@ void FlowTableWithFields::set_field_value(const std::shared_ptr<const LayoutItem
 void FlowTableWithFields::set_field_value(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, bool set_specified_field_layout)
 {
   //Set widgets which should show the value of this field:
-  type_list_widgets list_widgets = get_field(field, set_specified_field_layout);
-  for(const auto& item : list_widgets)
+  for(const auto& item : get_field(field, set_specified_field_layout))
   {
-    DataWidget* datawidget = dynamic_cast<DataWidget*>(item);
+    auto datawidget = dynamic_cast<DataWidget*>(item);
     if(datawidget)
     {
       datawidget->set_value(value);
@@ -684,8 +682,7 @@ void FlowTableWithFields::set_field_value(const std::shared_ptr<const LayoutItem
   }
 
   //Refresh portal widgets which should show the related records for relationships that use this field:
-  type_portals list_portals = get_portals(field /* from_key field name */);
-  for(const auto& portal : list_portals)
+  for(const auto& portal : get_portals(field /* from_key field name */))
   {
     if(portal)
     {
@@ -695,8 +692,7 @@ void FlowTableWithFields::set_field_value(const std::shared_ptr<const LayoutItem
   }
 
   //Refresh choices widgets which should show the related records for relationships that use this field:
-  type_choice_widgets list_choice_widgets = get_choice_widgets(field /* from_key field name */);
-  for(const auto& widget : list_choice_widgets)
+  for(const auto& widget : get_choice_widgets(field /* from_key field name */))
   {
     if(widget)
     {
@@ -732,8 +728,7 @@ Gnome::Gda::Value FlowTableWithFields::get_field_value(const std::shared_ptr<con
 
 void FlowTableWithFields::set_field_editable(const std::shared_ptr<const LayoutItem_Field>& field, bool editable)
 {
-  type_list_widgets list_widgets = get_field(field, true);
-  for(const auto& item : list_widgets)
+  for(const auto& item : get_field(field, true))
   {
     DataWidget* datawidget = dynamic_cast<DataWidget*>(item);
     if(datawidget)
@@ -745,8 +740,7 @@ void FlowTableWithFields::set_field_editable(const std::shared_ptr<const LayoutI
 
 void FlowTableWithFields::update_choices(const std::shared_ptr<const LayoutItem_Field>& field)
 {
-  type_list_widgets list_widgets = get_field(field, true);
-  for(const auto& item : list_widgets)
+  for(const auto& item : get_field(field, true))
   {
     DataWidget* datawidget = dynamic_cast<DataWidget*>(item);
     if(!datawidget)

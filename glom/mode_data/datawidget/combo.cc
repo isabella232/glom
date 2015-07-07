@@ -238,7 +238,7 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
 
   m_old_value = value;
 
-  Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
+  auto model = get_choices_model();
   if(!model)
   {
     std::cerr << G_STRFUNC << ": model is null." << std::endl;

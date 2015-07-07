@@ -155,15 +155,13 @@ void ComboBox_Relationship::set_relationships(Document* document, const Glib::us
   if(!document)
     return;
 
-  const auto relationships = document->get_relationships(parent_table_name, true /* plus system properties */);
-
   m_model->clear();
 
   if(show_parent_table_name)
     set_display_parent_table(parent_table_name, document->get_table_title(parent_table_name, AppWindow::get_current_locale()));
 
   //Fill the model:
-  for(const auto& rel : relationships)
+  for(const auto& rel : document->get_relationships(parent_table_name, true /* plus system properties */))
   {
     auto tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
@@ -174,8 +172,7 @@ void ComboBox_Relationship::set_relationships(Document* document, const Glib::us
     //Children:
     if(show_related_relationships && !Document::get_relationship_is_system_properties(rel))
     {
-      const auto sub_relationships = document->get_relationships(rel->get_to_table(), false /* plus system properties */);
-      for(const auto& sub_rel : sub_relationships)
+      for(const auto& sub_rel : document->get_relationships(rel->get_to_table(), false /* plus system properties */))
       {
         auto tree_iter_child = m_model->append(tree_iter->children());
         Gtk::TreeModel::Row child_row = *tree_iter_child;

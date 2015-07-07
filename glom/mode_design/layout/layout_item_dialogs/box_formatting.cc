@@ -325,8 +325,7 @@ void Box_Formatting::set_formatting_for_non_field(const Formatting& format, bool
 
     //Custom choices:
     m_adddel_choices_custom->remove_all();
-    Formatting::type_list_values list_choice_values = format.get_choices_custom();
-    for(const auto& choicevalue : list_choice_values)
+    for(const auto& choicevalue : format.get_choices_custom())
     {
       Gnome::Gda::Value value;
       if(choicevalue)
@@ -408,7 +407,7 @@ bool Box_Formatting::get_formatting(Formatting& format) const
 
     //Custom choices:
     Formatting::type_list_values list_choice_values;
-    Glib::RefPtr<Gtk::TreeModel> choices_model = m_adddel_choices_custom->get_model();
+    Glib::RefPtr<const Gtk::TreeModel> choices_model = m_adddel_choices_custom->get_model();
     if(choices_model)
     {
       for(const auto& row : choices_model->children())

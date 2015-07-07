@@ -60,8 +60,7 @@ type_list_currencies get_list_of_currency_symbols()
         //Walk the tree:
         const auto nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
 
-        xmlpp::Node::NodeList listNodes = nodeRoot->get_children("iso_4217_entry");
-        for(const auto& node : listNodes)
+        for(const auto& node : nodeRoot->get_children("iso_4217_entry"))
         {
           xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(node);
           if(nodeEntry)
@@ -166,8 +165,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
         //Walk the tree:
         const auto nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
 
-        xmlpp::Node::NodeList listNodes = nodeRoot->get_children("iso_639_entry");
-        for(const auto& node : listNodes)
+        for(const auto& node : nodeRoot->get_children("iso_639_entry"))
         {
           xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(node);
           if(nodeEntry)
@@ -221,8 +219,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
         //Walk the tree:
         const auto nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
 
-        xmlpp::Node::NodeList listNodes = nodeRoot->get_children("iso_3166_entry");
-        for(const auto& node : listNodes)
+        for(const auto& node : nodeRoot->get_children("iso_3166_entry"))
         {
           xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(node);
           if(nodeEntry)

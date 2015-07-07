@@ -344,9 +344,7 @@ std::shared_ptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageS
 
   //The layout:
   //TODO: Use fill_layout_group_field_info()?
-  const Document::type_list_layout_groups layout_groups = 
-    document->get_data_layout_groups("details", table_name); //TODO: layout_platform.
-  for(const auto& group : layout_groups)
+  for(const auto& group : document->get_data_layout_groups("details", table_name)) //TODO: layout_platform.
   {
     if(!group)
       continue;

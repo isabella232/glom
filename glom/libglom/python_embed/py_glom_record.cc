@@ -87,9 +87,8 @@ boost::python::object PyGlomRecord::get_related()
     m_related = boost::python::object(new PyGlomRelated()); //TODO_NotSure
 
     //Fill it:
-    Document::type_vec_relationships vecRelationships = m_document->get_relationships(m_table_name);
     PyGlomRelated::type_map_relationships map_relationships;
-    for(const auto& relationship : vecRelationships)
+    for(const auto& relationship : m_document->get_relationships(m_table_name))
     {
       if(relationship)
         map_relationships[relationship->get_name()] = relationship;

@@ -118,8 +118,7 @@ int main(int argc, char* argv[])
     if(!root)
       return EXIT_FAILURE;
 
-    const auto children = root->get_children("object");
-    for(const auto& item : children)
+    for(const auto& item : root->get_children("object"))
     {
        const xmlpp::Element* child = dynamic_cast<const xmlpp::Element*>(item);
 

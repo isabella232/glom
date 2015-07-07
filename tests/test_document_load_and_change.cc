@@ -30,13 +30,9 @@
 static bool field_is_on_a_layout(Glom::Document& document, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Check that the field name is no longer used on a layout:
-  const auto table_names = document.get_table_names();
-  for(const auto& layout_table_name : table_names)
+  for(const auto& layout_table_name : document.get_table_names())
   {
-    const Glom::Document::type_list_layout_groups groups = 
-      document.get_data_layout_groups("details", layout_table_name);
-
-    for(const auto& group : groups)
+    for(const auto& group : document.get_data_layout_groups("details", layout_table_name))
     {
       if(group->has_field(layout_table_name, table_name, field_name))
       {

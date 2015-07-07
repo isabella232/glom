@@ -278,7 +278,7 @@ bool recreate_database_from_document(Document* document, const std::function<voi
     progress();
 
   //Create each table:
-  Document::type_listTableInfo tables = document->get_tables();
+  const auto tables = document->get_tables();
   for(const auto& table_info : tables)
   {
     //Create SQL to describe all fields in this table:
@@ -620,9 +620,7 @@ bool add_standard_groups(Document* document)
       priv_devs.m_create = true;
       priv_devs.m_delete = true;
 
-      const auto table_list = document->get_tables(true /* including system prefs */);
-
-      for(const auto& table_info : table_list)
+      for(const auto& table_info : document->get_tables(true /* including system prefs */))
       {
         if(table_info)
         {
@@ -662,11 +660,9 @@ bool add_groups_from_document(const Document* document)
   //Get the list of groups from the database server:
   const auto database_groups = Privs::get_database_groups();
 
-  //Get the list of groups from the document:
-  const auto document_groups = document->get_groups();
-
-  //Add each group if it doesn't exist yet:
-  for(const auto& group : document_groups)
+  //Get the list of groups from the document
+  //and add each group if it doesn't exist yet:
+  for(const auto& group : document->get_groups())
   {
     const auto name = group.get_name();
     //std::cout << G_STRFUNC << ": DEBUG: group=" << name << std::endl;

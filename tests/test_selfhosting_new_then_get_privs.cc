@@ -50,8 +50,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       return false;
     }
 
-    const auto users = Glom::Privs::get_database_users(group_name);
-    for(const auto& user_name : users)
+    for(const auto& user_name : Glom::Privs::get_database_users(group_name))
     {
       if(user_name.empty())
       {

@@ -197,14 +197,13 @@ void Dialog_ScriptLibrary::save_current_script()
 
 void Dialog_ScriptLibrary::load_from_document()
 {
-  Document* document = get_document();
+  const Document* document = get_document();
   if(!document)
     return;
 
-  const auto module_names = document->get_library_module_names();
   m_combobox_name->remove_all();
  
-  for(const auto& name : module_names)
+  for(const auto& name : document->get_library_module_names())
   {
     m_combobox_name->append(name);
   }

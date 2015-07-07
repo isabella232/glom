@@ -478,10 +478,10 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   if(sharedconnection && sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
   {
     //Get the "true" rights for any groups that the user is in:
-    type_vec_strings groups = get_groups_of_user(current_user);
+    const type_vec_strings groups = get_groups_of_user(current_user);
     for(const auto& group : groups)
     {
-      Privileges privs = get_table_privileges(group, table_name);
+      const auto privs = get_table_privileges(group, table_name);
 
       if(privs.m_view)
         result.m_view = true;

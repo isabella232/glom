@@ -112,15 +112,13 @@ void ComboBox_Fields::set_fields(Document* document, const Glib::ustring parent_
   if(!document)
     return;
 
-  const auto fields = document->get_table_fields(parent_table_name);
-
   if(!m_model)
     return;
   
   m_model->clear();
 
   //Fill the model:
-  for(const auto& field : fields)
+  for(const auto& field : document->get_table_fields(parent_table_name))
   {
     auto tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
@@ -136,15 +134,13 @@ void ComboBox_Fields::set_fields(Document* document, const Glib::ustring parent_
   if(!document)
     return;
 
-  const auto fields = document->get_table_fields(parent_table_name);
-
   if(!m_model)
     return;
   
   m_model->clear();
 
   //Fill the model:
-  for(const auto& rel : fields)
+  for(const auto& rel : document->get_table_fields(parent_table_name))
   {
     if(rel && (rel->get_glom_type() == field_type))
     {

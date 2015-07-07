@@ -595,9 +595,8 @@ std::shared_ptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustr
   if(document)
   {
     //TODO_Performance: Cache this result?
-    Document::type_vec_fields fields = document->get_table_fields(table_name);
     //std::cout << "debug: " << G_STRFUNC << ": table=" << table_name << ", fields count=" << fields.size() << std::endl;
-    for(const auto& field : fields)
+    for(const auto& field : document->get_table_fields(table_name))
     {
       if(!field)
         continue;
@@ -618,8 +617,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
 
   //g_warning("Box_Data::get_table_fields_to_show_for_sequence_add_group(): table_name=%s, all_db_fields.size()=%d, group->name=%s", table_name.c_str(), all_db_fields.size(), group->get_name().c_str());
 
-  LayoutGroup::type_list_items items = group->get_items();
-  for(const auto& item : items)
+  for(const auto& item : group->get_items())
   {
     std::shared_ptr<LayoutItem_Field> item_field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
     if(item_field)
@@ -854,8 +852,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
 
     //Calculate dependencies first:
     //TODO: Prevent unncessary recalculations?
-    const auto fields_needed = get_calculation_fields(field_in_record.m_table_name, field_in_record.m_field);
-    for(const auto& field_item_needed : fields_needed)
+    for(const auto& field_item_needed : get_calculation_fields(field_in_record.m_table_name, field_in_record.m_field))
     {
       if(field_item_needed->get_has_relationship_name())
       {
@@ -1144,9 +1141,7 @@ void Base_DB::do_calculations(const LayoutFieldInRecord& field_changed, bool fir
 
   //Recalculate fields that are triggered by a change of this field's value, not including calculations that these calculations use.
 
-  type_list_const_field_items calculated_fields = get_calculated_fields(field_changed.m_table_name, field_changed.m_field);
-  //std::cout << "  debug: calculated_field.size()=" << calculated_fields.size() << std::endl;
-  for(const auto& field : calculated_fields)
+  for(const auto& field : get_calculated_fields(field_changed.m_table_name, field_changed.m_field))
   {
     if(field)
     {
@@ -1176,10 +1171,9 @@ Base_DB::type_list_const_field_items Base_DB::get_calculated_fields(const Glib::
     //Look at each field in the table, and get lists of what fields trigger their calculations,
     //so we can see if our field is in any of those lists:
 
-    const auto fields = document->get_table_fields(table_name); //TODO_Performance: Cache this?
     //Examine all fields, not just the the shown fields.
     //TODO: How do we trigger relcalculation of related fields if necessary?
-    for(const auto& field_to_examine : fields)
+    for(const auto& field_to_examine : document->get_table_fields(table_name))  //TODO_Performance: Cache this?
     {
       std::shared_ptr<LayoutItem_Field> layoutitem_field_to_examine = std::make_shared<LayoutItem_Field>();
       layoutitem_field_to_examine->set_full_field_details(field_to_examine);
@@ -1257,18 +1251,17 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
   }
 
   //Check the use of related records too:
-  const auto relationships_used = field->get_calculation_relationships();
-  for(const auto& item : relationships_used)
+  for(const auto& item : field->get_calculation_relationships())
   {
-    std::shared_ptr<Relationship> relationship = document->get_relationship(table_name, item);
+    auto relationship = document->get_relationship(table_name, item);
     if(relationship)
     {
       //If the field uses this relationship then it should be triggered by a change in the key that specifies which record the relationship points to:
       const auto field_from_name = relationship->get_from_field();
-      std::shared_ptr<Field> field_from = document->get_field(table_name, field_from_name);
+      auto field_from = document->get_field(table_name, field_from_name);
       if(field_from)
       {
-        std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
+        auto layout_item = std::make_shared<LayoutItem_Field>();
         layout_item->set_full_field_details(field_from);
 
         result.push_back(layout_item);
@@ -1289,11 +1282,10 @@ void Base_DB::do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::
    //Get values for lookup fields, if this field triggers those relationships:
    //TODO_performance: There is a LOT of iterating and copying here.
    const auto strFieldName = field_in_record.m_field->get_name();
-   const auto lookups = document->get_lookup_fields(field_in_record.m_table_name, strFieldName);
-   //std::cout << "debug: " << G_STRFUNC << ": lookups size=" << lookups.size() << std::endl;
-   for(const auto& the_pair : lookups)
+
+   for(const auto& the_pair : document->get_lookup_fields(field_in_record.m_table_name, strFieldName))
    {
-     std::shared_ptr<const LayoutItem_Field> layout_item = the_pair.first;
+     const auto& layout_item = the_pair.first;
 
      //std::cout << "debug: " << G_STRFUNC << ": item=" << layout_item->get_name() << std::endl;
 

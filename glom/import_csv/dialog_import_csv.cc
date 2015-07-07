@@ -103,8 +103,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   // Separator:
   m_encoding_model->append();
 
-  const auto list_encodings =  FileEncodings::get_list_of_encodings();
-  for(const auto& encoding : list_encodings)
+  for(const auto& encoding : FileEncodings::get_list_of_encodings())
   {
     if(encoding.get_name().empty())
       continue;

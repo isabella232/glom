@@ -179,9 +179,7 @@ void FlowTable::remove_all()
   //We can't use get_children() because EggSpreadTableDnd does not allow that,
   //because it handles children differently via its specific API.
   /*
-  typedef std::vector<Widget*> type_children;
-  const auto children = get_children();
-  for(const auto& widget : children)
+  for(const auto& widget : get_children())
   {
     remove(*widget);
   }

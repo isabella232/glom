@@ -237,10 +237,9 @@ void Window_Translations::load_from_document()
     original_locale_name = _("Unknown");
   m_label_source_locale->set_text(original_locale_name);
 
-  Document::type_list_translatables list_layout_items = document->get_translatable_items();
-  for(const auto& the_pair : list_layout_items)
+  for(const auto& the_pair : document->get_translatable_items())
   {
-    std::shared_ptr<TranslatableItem> item = the_pair.first;
+    const auto& item = the_pair.first;
     if(!item)
       continue;
 

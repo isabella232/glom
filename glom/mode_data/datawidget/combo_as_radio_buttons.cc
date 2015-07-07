@@ -57,7 +57,7 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
   //Clear existing buttons:
   for(const auto& the_pair : m_map_buttons)
   {
-     Gtk::RadioButton* button = the_pair.second;
+     auto button = the_pair.second;
      delete button;
   }
   m_map_buttons.clear();
@@ -83,9 +83,9 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
     if(layout_choice_first)
     {
       const auto value_first = Conversions::get_text_for_gda_value(layout_choice_first->get_glom_type(), the_pair.first, layout_choice_first->get_formatting_used().m_numeric_format);
-      Glib::ustring title = value_first;
+      auto title = value_first;
 
-      const type_list_values extra_values = the_pair.second;
+      const auto extra_values = the_pair.second;
       if(layout_choice_extra && !extra_values.empty())
       {
         type_list_values::const_iterator iterValues = extra_values.begin();

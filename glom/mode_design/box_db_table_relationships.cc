@@ -77,12 +77,12 @@ bool Box_DB_Table_Relationships::fill_from_database()
 
   bool result = Box_DB_Table::fill_from_database();
 
-  Document* document = get_document();
+  const Document* document = get_document();
   if(!document)
     return false;
 
   //Get relationships from the document:
-  Document::type_vec_relationships vecRelationships = document->get_relationships(m_table_name);
+  const auto vecRelationships = document->get_relationships(m_table_name);
 
   m_AddDel.remove_all();
 

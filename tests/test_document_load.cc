@@ -88,7 +88,7 @@ static bool needs_navigation(Glom::Document& document, const Glib::ustring& tabl
 
 static std::shared_ptr<const Glom::LayoutItem_Portal> get_portal_from_details_layout(const Glom::Document& document, const Glib::ustring& table_name, const Glib::ustring& relationship_name)
 {
-  const Glom::Document::type_list_layout_groups groups = 
+  const auto groups = 
     document.get_data_layout_groups("details", table_name);
   if(groups.empty())
   {
@@ -97,9 +97,7 @@ static std::shared_ptr<const Glom::LayoutItem_Portal> get_portal_from_details_la
   
   for(const auto& group : groups)
   {
-    const Glom::LayoutGroup::type_list_const_items items = 
-      group->get_items_recursive_with_groups();
-    for(const auto& layout_item : items)
+    for(const auto& layout_item : group->get_items_recursive_with_groups())
     { 
       const std::shared_ptr<const Glom::LayoutGroup> child_group =
         std::dynamic_pointer_cast<const Glom::LayoutGroup>(layout_item);
