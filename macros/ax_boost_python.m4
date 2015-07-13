@@ -60,20 +60,20 @@ AC_DEFUN([AX_BOOST_PYTHON],
 AC_REQUIRE([AX_BOOST_BASE])dnl
 AC_LANG_PUSH([C++])
 ax_boost_python_save_CPPFLAGS="$CPPFLAGS"
-ax_boost_python_save_LDFLAGS="$LDFLAGS"
 ax_boost_python_save_LIBS="$LIBS"
 if test "x$PYTHON_CPPFLAGS" != "x"; then
   CPPFLAGS="$PYTHON_CPPFLAGS $CPPFLAGS"
 fi
-if test "x$PYTHON_LDFLAGS" != "x"; then
-  LDFLAGS="$PYTHON_LDFLAGS $LDFLAGS"
+if test "x$PYTHON_LIBS" != "x"; then
+  LIBS="$PYTHON_LIBS $LIBS"
 fi
 if test "x$BOOST_CPPFLAGS" != "x"; then
   CPPFLAGS="$BOOST_CPPFLAGS $CPPFLAGS"
 fi
-if test "x$BOOST_LDFLAGS" != "x"; then
-  LDFLAGS="$BOOST_LDFLAGS $LDFLAGS"
+if test "x$BOOST_LIBS" != "x"; then
+  LIBS="$BOOST_LIBS $LIBS"
 fi
+ax_boost_python_base_LIBS="$LIBS"
 AC_CACHE_CHECK(whether the Boost::Python library is available,
 ac_cv_boost_python,
 [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
@@ -89,11 +89,11 @@ if test "$ac_cv_boost_python" = "yes"; then
      ax_python_lib=$with_boost_python
      ax_boost_python_lib=boost_python-$with_boost_python
    fi])
-  BOOSTLIBDIR=`echo $BOOST_LDFLAGS | sed -e 's/@<:@^\/@:>@*//'`
+  BOOSTLIBDIR=`echo $BOOST_LIBS | sed -e 's/@<:@^\/@:>@*//'`
   for ax_lib in $ax_python_lib $ax_boost_python_lib `ls $BOOSTLIBDIR/libboost_python*.so* $BOOSTLIBDIR/libboost_python*.dylib* $BOOSTLIBDIR/libboost_python*.a* 2>/dev/null | sed 's,.*/,,' | sed -e 's;^lib\(boost_python.*\)\.so.*$;\1;' -e 's;^lib\(boost_python.*\)\.dylib.*$;\1;' -e 's;^lib\(boost_python.*\)\.a.*$;\1;' ` boost_python boost_python3; do
     AS_VAR_PUSHDEF([ax_Lib], [ax_cv_lib_$ax_lib''_BOOST_PYTHON_MODULE])dnl
     AC_CACHE_CHECK([whether $ax_lib is the correct library], [ax_Lib],
-    [LIBS="-l$ax_lib $ax_boost_python_save_LIBS"
+    [LIBS="-l$ax_lib $ax_boost_python_base_LIBS="$LIBS""
     AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #include <boost/python/module.hpp>
 BOOST_PYTHON_MODULE(test) { throw "Boost::Python test."; }]], [])],
@@ -105,7 +105,6 @@ BOOST_PYTHON_MODULE(test) { throw "Boost::Python test."; }]], [])],
   AC_SUBST(BOOST_PYTHON_LIB)
 fi
 CPPFLAGS="$ax_boost_python_save_CPPFLAGS"
-LDFLAGS="$ax_boost_python_save_LDFLAGS"
 LIBS="$ax_boost_python_save_LIBS"
 AC_LANG_POP([C++])
 ])dnl

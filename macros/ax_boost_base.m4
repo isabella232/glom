@@ -17,7 +17,7 @@
 #
 #   This macro calls:
 #
-#     AC_SUBST(BOOST_CPPFLAGS) / AC_SUBST(BOOST_LDFLAGS)
+#     AC_SUBST(BOOST_CPPFLAGS) / AC_SUBST(BOOST_LIBS)
 #
 #   And sets:
 #
@@ -119,7 +119,7 @@ if test "x$want_boost" = "xyes"; then
         BOOST_CPPFLAGS="-I$ac_boost_path/include"
         for ac_boost_path_tmp in $libsubdirs; do
                 if test -d "$ac_boost_path"/"$ac_boost_path_tmp" ; then
-                        BOOST_LDFLAGS="-L$ac_boost_path/$ac_boost_path_tmp"
+                        BOOST_LIBS="-L$ac_boost_path/$ac_boost_path_tmp"
                         break
                 fi
         done
@@ -129,7 +129,7 @@ if test "x$want_boost" = "xyes"; then
                 for libsubdir in $libsubdirs ; do
                     if ls "$ac_boost_path_tmp/$libsubdir/libboost_"* >/dev/null 2>&1 ; then break; fi
                 done
-                BOOST_LDFLAGS="-L$ac_boost_path_tmp/$libsubdir"
+                BOOST_LIBS="-L$ac_boost_path_tmp/$libsubdir"
                 BOOST_CPPFLAGS="-I$ac_boost_path_tmp/include"
                 break;
             fi
@@ -139,16 +139,16 @@ if test "x$want_boost" = "xyes"; then
     dnl overwrite ld flags if we have required special directory with
     dnl --with-boost-libdir parameter
     if test "$ac_boost_lib_path" != ""; then
-       BOOST_LDFLAGS="-L$ac_boost_lib_path"
+       BOOST_LIBS="-L$ac_boost_lib_path"
     fi
 
     CPPFLAGS_SAVED="$CPPFLAGS"
     CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS"
     export CPPFLAGS
 
-    LDFLAGS_SAVED="$LDFLAGS"
-    LDFLAGS="$LDFLAGS $BOOST_LDFLAGS"
-    export LDFLAGS
+    LIBS_SAVED="$LIBS"
+    LIBS="$LIBS $BOOST_LIBS"
+    export LIBS
 
     AC_REQUIRE([AC_PROG_CXX])
     AC_LANG_PUSH(C++)
@@ -174,9 +174,9 @@ if test "x$want_boost" = "xyes"; then
     dnl built and installed without the --layout=system option or for a staged(not installed) version
     if test "x$succeeded" != "xyes"; then
         CPPFLAGS="$CPPFLAGS_SAVED"
-        LDFLAGS="$LDFLAGS_SAVED"
+        LIBS="$LIBS_SAVED"
         BOOST_CPPFLAGS=
-        BOOST_LDFLAGS=
+        BOOST_LIBS=
         _version=0
         if test "$ac_boost_path" != ""; then
             if test -d "$ac_boost_path" && test -r "$ac_boost_path"; then
@@ -217,7 +217,7 @@ if test "x$want_boost" = "xyes"; then
                     for libsubdir in $libsubdirs ; do
                         if ls "$best_path/$libsubdir/libboost_"* >/dev/null 2>&1 ; then break; fi
                     done
-                    BOOST_LDFLAGS="-L$best_path/$libsubdir"
+                    BOOST_LIBS="-L$best_path/$libsubdir"
                 fi
             fi
 
@@ -233,7 +233,7 @@ if test "x$want_boost" = "xyes"; then
                     if test "$V_CHECK" = "1" -a "$ac_boost_lib_path" = "" ; then
                         AC_MSG_NOTICE(We will use a staged boost library from $BOOST_ROOT)
                         BOOST_CPPFLAGS="-I$BOOST_ROOT"
-                        BOOST_LDFLAGS="-L$BOOST_ROOT/stage/$libsubdir"
+                        BOOST_LIBS="-L$BOOST_ROOT/stage/$libsubdir"
                     fi
                 fi
             fi
@@ -241,8 +241,8 @@ if test "x$want_boost" = "xyes"; then
 
         CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS"
         export CPPFLAGS
-        LDFLAGS="$LDFLAGS $BOOST_LDFLAGS"
-        export LDFLAGS
+        LIBS="$LIBS $BOOST_LIBS"
+        export LIBS
 
         AC_LANG_PUSH(C++)
             AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
@@ -272,14 +272,14 @@ if test "x$want_boost" = "xyes"; then
         ifelse([$3], , :, [$3])
     else
         AC_SUBST(BOOST_CPPFLAGS)
-        AC_SUBST(BOOST_LDFLAGS)
+        AC_SUBST(BOOST_LIBS)
         AC_DEFINE(HAVE_BOOST,,[define if the Boost library is available])
         # execute ACTION-IF-FOUND (if present):
         ifelse([$2], , :, [$2])
     fi
 
     CPPFLAGS="$CPPFLAGS_SAVED"
-    LDFLAGS="$LDFLAGS_SAVED"
+    LIBS="$LIBS_SAVED"
 fi
 
 ])
