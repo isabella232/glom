@@ -134,9 +134,9 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
   if(connection_pool)
   {
     connection_pool->set_avahi_publish_callbacks(
-      sigc::bind(&AppWindow::on_connection_avahi_begin, this),
-      sigc::bind(&AppWindow::on_connection_avahi_progress, this),
-      sigc::bind(&AppWindow::on_connection_avahi_done, this) );
+      std::bind(&AppWindow::on_connection_avahi_begin, this),
+      std::bind(&AppWindow::on_connection_avahi_progress, this),
+      std::bind(&AppWindow::on_connection_avahi_done, this) );
   }
 #endif
 #endif // !GLOM_ENABLE_CLIENT_ONLY
