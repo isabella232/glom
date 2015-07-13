@@ -241,7 +241,7 @@ AM_PATH_PYTHON
 # 
 # See http://www.gnu.org/software/autoconf-archive/ax_python_devel.html
 # TODO: Use AX_PYTHON_DEVEL(>= '3.0.0') when we can make the build use the python3 version of boost-python by default.
-AX_PYTHON_DEVEL
+AX_PYTHON_DEVEL([>= '3.0.0'])
 
 # Get the CFLAGS and LIBS for boost::python.
 # To use a non-default Boost::Python library, for instance to use
