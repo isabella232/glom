@@ -233,14 +233,10 @@ AC_CHECK_FUNCS([strptime])
 AM_PATH_PYTHON
 
 # Get the compiler and linker flags for embedding Python.
-# To specify a particular python version you must set an environment variable.
-# For instance:
-#   export PYTHON=python3.3
-# When using jhbuild, note that you will need to do that before starting jhbuild,
-# so that jhbuild sets PYTHONPATH correctly.
+# To specify a particular python version you must pass PYTHON_VERSION.
+# For instance, ./configure PYTHON_VERSION="3.4" --prefix=/opt/gnome
 # 
 # See http://www.gnu.org/software/autoconf-archive/ax_python_devel.html
-# TODO: Use AX_PYTHON_DEVEL(>= '3.0.0') when we can make the build use the python3 version of boost-python by default.
 AX_PYTHON_DEVEL([>= '3.0.0'])
 
 # Get the CFLAGS and LIBS for boost::python.
