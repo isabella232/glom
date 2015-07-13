@@ -65,8 +65,10 @@ ax_boost_python_save_LIBS="$LIBS"
 if test "x$PYTHON_CPPFLAGS" != "x"; then
   CPPFLAGS="$PYTHON_CPPFLAGS $CPPFLAGS"
 fi
+# murrayc: PYTHON_LDFLAGS are really libs
+# See https://savannah.gnu.org/patch/?8701
 if test "x$PYTHON_LDFLAGS" != "x"; then
-  LDFLAGS="$PYTHON_LDFLAGS $LDFLAGS"
+  LIBS="$PYTHON_LDFLAGS $LIBS"
 fi
 if test "x$BOOST_CPPFLAGS" != "x"; then
   CPPFLAGS="$BOOST_CPPFLAGS $CPPFLAGS"
@@ -90,10 +92,12 @@ if test "$ac_cv_boost_python" = "yes"; then
      ax_boost_python_lib=boost_python-$with_boost_python
    fi])
   BOOSTLIBDIR=`echo $BOOST_LDFLAGS | sed -e 's/@<:@^\/@:>@*//'`
+  # murrayc: Note that we use PYTHON_LDFLAGS as libs, because that's what it really is:
+  # See https://savannah.gnu.org/patch/?8701
   for ax_lib in $ax_python_lib $ax_boost_python_lib `ls $BOOSTLIBDIR/libboost_python*.so* $BOOSTLIBDIR/libboost_python*.dylib* $BOOSTLIBDIR/libboost_python*.a* 2>/dev/null | sed 's,.*/,,' | sed -e 's;^lib\(boost_python.*\)\.so.*$;\1;' -e 's;^lib\(boost_python.*\)\.dylib.*$;\1;' -e 's;^lib\(boost_python.*\)\.a.*$;\1;' ` boost_python boost_python3; do
     AS_VAR_PUSHDEF([ax_Lib], [ax_cv_lib_$ax_lib''_BOOST_PYTHON_MODULE])dnl
     AC_CACHE_CHECK([whether $ax_lib is the correct library], [ax_Lib],
-    [LIBS="-l$ax_lib $ax_boost_python_save_LIBS"
+    [LIBS="-l$ax_lib $ax_boost_python_save_LIBS $PYTHON_LDFLAGS"
     AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #include <boost/python/module.hpp>
 BOOST_PYTHON_MODULE(test) { throw "Boost::Python test."; }]], [])],
