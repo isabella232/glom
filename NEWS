@@ -1,3 +1,8 @@
+1.28.5 (stable):
+
+* Build: Fix the configure for python 3 versions of boost-python.
+  (Murray Cumming)
+
 1.28.4 (stable):
 
 * Details: Let entry widgets expand to fill space,
