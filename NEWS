@@ -1,3 +1,10 @@
+1.29.5 (unstable):
+
+* Fix the build with python 3 and require python 3.
+  (Murray Cumming)
+* Build with (and require) C++11, using some simple C++11 features.
+  (Murray Cumming)
+
 1.29.4 (unstable):
 
 * Use libgda-5 again instead of libgda-6.
