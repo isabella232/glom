@@ -174,7 +174,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQL::attempt_connect(const Glib::ustring&
   return connection;
 }
 
-bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw()
+bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) noexcept
 {
   static const char TRANSACTION_NAME[] = "glom_change_columns_transaction";
   static const char TEMP_COLUMN_NAME[] = "glom_temp_column"; // TODO: Find a unique name.

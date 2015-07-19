@@ -45,9 +45,9 @@ public:
   };
 
   ExceptionConnection(failure_type failure);
-  virtual ~ExceptionConnection() throw();
+  virtual ~ExceptionConnection() noexcept;
 
-  virtual const char* what() const throw();
+  virtual const char* what() const noexcept;
 
   virtual failure_type get_failure_type() const;
 
@@ -180,7 +180,7 @@ protected:
    */
   virtual bool drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name);
 
-  virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw() = 0;
+  virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) noexcept = 0;
 
   /** This method is called to create a new database on the
    * database server. */

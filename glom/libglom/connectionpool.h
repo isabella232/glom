@@ -252,7 +252,7 @@ public:
    * @param table_name The parent table of the fields to be changed.
    * @param field The field to be added.
    */
-  bool add_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field) throw();
+  bool add_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field) noexcept;
 
   /** Remove a field from the database.
    * The caller should then update the document's list of fields,
@@ -261,7 +261,7 @@ public:
    * @param table_name The parent table of the fields to be changed.
    * @param field_name The name of the field to be removed.
    */
-  bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name) throw();
+  bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name) noexcept;
 
   /** Change some detail about a field in the database.
    * The caller should then update the document's list of fields,
@@ -271,7 +271,7 @@ public:
    * @param field_old The old field information.
    * @param field The new field information. 
    */
-  bool change_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field_old, const std::shared_ptr<const Field>& field) throw();
+  bool change_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field_old, const std::shared_ptr<const Field>& field) noexcept;
 
   /** Change some detail about some fields in the database.
    * The caller should then update the document's list of fields,
@@ -281,7 +281,7 @@ public:
    * @param old_fields The old field information.
    * @param fields The new field information. 
    */
-  bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& fields) throw();
+  bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& fields) noexcept;
 
   /** Specify a callback that the ConnectionPool can call to get a pointer to the document.
    * This callback avoids Connection having to link to AppWindow,

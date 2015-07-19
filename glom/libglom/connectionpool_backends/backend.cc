@@ -28,11 +28,11 @@ ExceptionConnection::ExceptionConnection(failure_type failure)
 {
 }
 
-ExceptionConnection::~ExceptionConnection() throw()
+ExceptionConnection::~ExceptionConnection() noexcept
 {
 }
 
-const char* ExceptionConnection::what() const throw()
+const char* ExceptionConnection::what() const noexcept
 {
   return "Glom database connection failed.";
 }

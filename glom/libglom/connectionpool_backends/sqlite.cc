@@ -176,7 +176,7 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
   return true;
 }
 
-bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_strings& fields_removed, const type_vec_const_fields& fields_added, const type_mapFieldChanges& fields_changed) throw()
+bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_strings& fields_removed, const type_vec_const_fields& fields_added, const type_mapFieldChanges& fields_changed) noexcept
 {
   static const gchar TEMPORARY_TABLE_NAME[] = "GLOM_TEMP_TABLE"; // TODO: Make sure this is unique.
   static const gchar TRANSACTION_NAME[] = "GLOM_RECREATE_TABLE_TRANSACTION";
@@ -397,7 +397,7 @@ bool Sqlite::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection,
   return recreate_table(connection, table_name, type_vec_strings(1, field_name), type_vec_const_fields(), type_mapFieldChanges());
 }
 
-bool Sqlite::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw()
+bool Sqlite::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) noexcept
 {
   type_mapFieldChanges fields_changed;
 

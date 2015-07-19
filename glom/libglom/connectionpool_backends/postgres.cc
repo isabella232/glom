@@ -161,7 +161,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   return connection;
 }
 
-bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw()
+bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) noexcept
 {
   static const char TRANSACTION_NAME[] = "glom_change_columns_transaction";
   static const char TEMP_COLUMN_NAME[] = "glom_temp_column"; // TODO: Find a unique name.

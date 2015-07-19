@@ -713,8 +713,8 @@ bool ConnectionPool::connect_nothrow()
   return (m_refGdaConnection != 0);
 }
 
-//TODO: Why do we use throw() here and on change_columns()?
-bool ConnectionPool::add_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field) throw()
+//TODO: Why do we use noexcept here and on change_columns()?
+bool ConnectionPool::add_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field) noexcept
 {
   if(!connect_nothrow())
     return false;
@@ -733,7 +733,7 @@ bool ConnectionPool::add_column(const Glib::ustring& table_name, const std::shar
   return false;
 }
 
-bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name) throw()
+bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name) noexcept
 {
   if(!connect_nothrow())
     return false;
@@ -752,7 +752,7 @@ bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::us
   return false;
 }
 
-bool ConnectionPool::change_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field_old, const std::shared_ptr<const Field>& field) throw()
+bool ConnectionPool::change_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field_old, const std::shared_ptr<const Field>& field) noexcept
 {
   type_vec_const_fields old_fields(1, field_old);
   type_vec_const_fields new_fields(1, field);
@@ -760,7 +760,7 @@ bool ConnectionPool::change_column(const Glib::ustring& table_name, const std::s
   return change_columns(table_name, old_fields, new_fields);
 }
 
-bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw()
+bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) noexcept
 {
   if(!connect_nothrow())
     return false;
