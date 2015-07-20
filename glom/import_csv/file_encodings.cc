@@ -51,31 +51,6 @@ Glib::ustring Encoding::get_name() const
     return Glib::ustring();
 }
 
-/** A predicate for use with std::find_if() to find an Encoding with the charset.
- */
-template<class T_Element>
-class predicate_EncodingHasCharset
-{
-public:
-  predicate_EncodingHasCharset(const Glib::ustring& charset)
-  {
-    m_charset = charset;
-  }
-
-  virtual ~predicate_EncodingHasCharset()
-  {
-  }
-
-  bool operator() (const T_Element& element)
-  {
-    return (element.get_charset() == m_charset);
-  }
-
-private:
-  Glib::ustring m_charset;
-};
-
-
 static type_list_encodings list_encodings;
 
 static void add_encoding(const gchar* name, const gchar* encoding)
@@ -134,8 +109,11 @@ Glib::ustring get_name_of_charset(const Glib::ustring& charset)
   get_list_of_encodings();
 
   type_list_encodings::const_iterator iter = 
-    std::find_if(list_encodings.begin(), list_encodings.end(), 
-      predicate_EncodingHasCharset<Encoding>(charset));
+    std::find_if(list_encodings.begin(), list_encodings.end(),
+      [charset](const Encoding& encoding) {
+        return encoding.get_charset() == charset;
+    }
+  );
 
   if(iter != list_encodings.end())
     return iter->get_name();
