@@ -250,28 +250,21 @@ static const char GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT[] = "script"; //deprecate
 //A built-in relationship that is available for every table:
 static const char GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES[] = "system_properties";
 
-
-/// Can be used with std::find_if() to find a layout with the same parent_table and layout_name.
-template<class T_Element>
-class predicate_Layout
+/**
+ * Find the element in the container with the same parent_table and layout_name.
+ */
+template
+<typename T_Container>
+auto find_if_layout(T_Container& container, const Glib::ustring& layout_name, const Glib::ustring& layout_platform) -> decltype(container.begin())
 {
-public:
-  predicate_Layout(const Glib::ustring& layout_name, const Glib::ustring& layout_platform)
-  : m_layout_name(layout_name),
-    m_layout_platform(layout_platform)
-  {
-  }
-
-  bool operator() (const T_Element& element)
-  {
-    return (element.m_layout_name == m_layout_name) &&
-           (element.m_layout_platform == m_layout_platform);
-  }
-
-private:
-  Glib::ustring m_layout_name, m_layout_platform;
-};
-
+  return std::find_if(container.begin(), container.end(),
+    [layout_name, layout_platform](const typename T_Container::value_type& element)
+    {
+      return (element.m_layout_name == layout_name) &&
+        (element.m_layout_platform == layout_platform);
+    }
+  );
+}
 
 Document::Document()
 : m_hosting_mode(HOSTING_MODE_DEFAULT),
@@ -1530,7 +1523,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups(const Glib::u
     const DocumentTableInfo::type_layouts layouts = info->m_layouts;
 
     //Look for the layout with this name:
-    auto iter = std::find_if(layouts.begin(), layouts.end(), predicate_Layout<LayoutInfo>(layout_name, layout_platform));
+    auto iter = find_if_layout(layouts, layout_name, layout_platform);
     if(iter != layouts.end())
     {
       return iter->m_layout_groups; //found
@@ -1570,7 +1563,7 @@ void Document::set_data_layout_groups(const Glib::ustring& layout_name, const Gl
     layout_info.m_layout_groups = groups;
 
     DocumentTableInfo::type_layouts& layouts = info->m_layouts;
-    auto iter = std::find_if(layouts.begin(), layouts.end(), predicate_Layout<LayoutInfo>(layout_name, layout_platform));
+    auto iter = find_if_layout(layouts, layout_name, layout_platform);
     if(iter == layouts.end())
       layouts.push_back(layout_info);
     else
