@@ -211,7 +211,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     {
       // If it was removed, and added again, then it has changed, so use the
       // definition from the added_fields vector.
-      auto iter = std::find_if(fields_added.begin(), fields_added.end(), predicate_FieldHasName<Field>(column->column_name));
+      auto iter = find_if_same_name(fields_added, column->column_name);
       if(iter == fields_added.end())
         continue;
       else

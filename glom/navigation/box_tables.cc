@@ -167,7 +167,7 @@ bool Box_Tables::fill_from_database()
       std::shared_ptr<TableInfo> table_info;
 
       //Check whether it should be hidden:
-      Document::type_listTableInfo::const_iterator iterFind = std::find_if(listTablesDocument.begin(), listTablesDocument.end(), predicate_FieldHasName<TableInfo>(strName));
+      Document::type_listTableInfo::const_iterator iterFind = find_if_same_name(listTablesDocument, strName);
       if(iterFind != listTablesDocument.end())
       {
         table_info = *iterFind;

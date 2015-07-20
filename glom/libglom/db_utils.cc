@@ -800,8 +800,8 @@ void handle_error(const std::exception& ex)
 
 bool get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
-  type_vec_fields vecFields = get_fields_for_table_from_database(table_name);
-  type_vec_fields::const_iterator iterFind = std::find_if(vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name));
+  const type_vec_fields vecFields = get_fields_for_table_from_database(table_name);
+  auto iterFind = find_if_same_name(vecFields, field_name);
   return iterFind != vecFields.end();
 }
 
@@ -962,7 +962,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
   }
 
   //Hide system fields.
-  auto iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK));
+  auto iterFind = find_if_same_name(result, GLOM_STANDARD_FIELD_LOCK);
   if(iterFind != result.end())
     result.erase(iterFind);
 
@@ -995,7 +995,7 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
     //Get the field info from the database:
     //This is in the document as well, but it _might_ have changed.
     type_vec_fields::const_iterator iterFindDatabase = 
-      std::find_if(fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>(field_name));
+      find_if_same_name(fieldsDatabase, field_name);
 
     if(iterFindDatabase != fieldsDatabase.end() ) //Ignore fields that don't exist in the database anymore.
     {
@@ -1025,7 +1025,7 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
     const auto field_name = (*iter)->get_name();
 
     //Look in the result so far:
-    type_vec_fields::const_iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(field_name));
+    type_vec_fields::const_iterator iterFind = find_if_same_name(result, field_name);
 
     //Add it if it is not there:
     if(iterFind == result.end() )
@@ -1045,7 +1045,7 @@ std::shared_ptr<Field> get_fields_for_table_one_field(const Document* document, 
     return result;
 
   type_vec_fields fields = get_fields_for_table(document, table_name); //TODO_Performance
-  auto iter = std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(field_name));
+  auto iter = find_if_same_name(fields, field_name);
   if(iter != fields.end()) //TODO: Handle error?
   {
     return *iter;
@@ -1225,7 +1225,7 @@ bool create_table(Document::HostingMode hosting_mode, const std::shared_ptr<cons
 
   //Create the standard field too:
   //(We don't actually use this yet)
-  if(std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK)) == fields.end())
+  if(find_if_same_name(fields, GLOM_STANDARD_FIELD_LOCK) == fields.end())
   {
     std::shared_ptr<Field> field = std::make_shared<Field>();
     field->set_name(GLOM_STANDARD_FIELD_LOCK);

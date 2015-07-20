@@ -39,10 +39,8 @@ bool contains(const T_Container& container, const T_Value& name)
 template<typename T_Container>
 bool contains_named(const T_Container& container, const Glib::ustring& name)
 {
-  typedef typename T_Container::value_type::element_type type_item;
   typename T_Container::const_iterator iter =
-    std::find_if(container.begin(), container.end(),
-      Glom::predicate_FieldHasName<type_item>(name));
+    Glom::find_if_same_name(container, name);
   return iter != container.end();
 }
 
@@ -63,7 +61,11 @@ static bool get_group_named(const Glom::Document::type_list_groups& container, c
 {
   Glom::Document::type_list_groups::const_iterator iter =
     std::find_if(container.begin(), container.end(),
-      Glom::predicate_FieldHasName<Glom::GroupInfo>(name));
+      [name] (const Glom::GroupInfo& info)
+      {
+        return info.get_name() == name;
+      }
+    );
   if(iter != container.end())
   {
     group_info = *iter;

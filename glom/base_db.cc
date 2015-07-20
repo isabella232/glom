@@ -649,7 +649,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
       }
       else //It's a regular field in the table:
       {
-        type_vec_fields::const_iterator iterFind = std::find_if(all_db_fields.begin(), all_db_fields.end(), predicate_FieldHasName<Field>(field_name));
+        type_vec_fields::const_iterator iterFind = find_if_same_name(all_db_fields, field_name);
 
         //If the field does not exist anymore then we won't try to show it:
         if(iterFind != all_db_fields.end() )

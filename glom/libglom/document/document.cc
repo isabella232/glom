@@ -640,8 +640,10 @@ Document::type_vec_relationships Document::get_relationships(const Glib::ustring
     //Add the system properties if necessary:
     if(plus_system_prefs)
     {
-      if(std::find_if(result.begin(), result.end(), predicate_FieldHasName<Relationship>(GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES)) == result.end())
+      if(find_if_same_name(result, GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES) == result.end())
+      {
         result.push_back(create_relationship_system_preferences(table_name));
+      }
     }
 
     return result;
@@ -673,7 +675,7 @@ void Document::remove_relationship(const std::shared_ptr<const Relationship>& re
 
   //Find the relationship and remove it:
   auto relationships = info->m_relationships;
-  auto iterRel = std::find_if(relationships.begin(), relationships.end(), predicate_FieldHasName<Relationship>(relationship_name));
+  auto iterRel = find_if_same_name(relationships, relationship_name);
   if(iterRel != relationships.end())
   {
     relationships.erase(iterRel);
@@ -731,7 +733,7 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
   if(table_info)
   {
     auto vecFields = table_info->m_fields;
-    auto iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name) );
+    auto iterFind = find_if_same_name(vecFields, field_name);
     if(iterFind != vecFields.end()) //If it was found:
     {
       //Remove it:
@@ -892,7 +894,7 @@ Document::type_vec_fields Document::get_table_fields(const Glib::ustring& table_
   }
 
   //Hide any system fields:
-  auto iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK));
+  auto iterFind = find_if_same_name(result, GLOM_STANDARD_FIELD_LOCK);
   if(iterFind != result.end())
     result.erase(iterFind);
 
@@ -922,7 +924,7 @@ void Document::set_table_fields(const Glib::ustring& table_name, const type_vec_
 std::shared_ptr<Field> Document::get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName) const
 {
   auto vecFields = get_table_fields(table_name);
-  auto iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldName) );
+  auto iterFind = find_if_same_name(vecFields, strFieldName);
   if(iterFind != vecFields.end()) //If it was found:
   {
     return  *iterFind; //A reference, not a copy.
@@ -949,7 +951,7 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
   {
     //Fields:
     type_vec_fields& vecFields = info->m_fields;
-    auto iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldNameOld) );
+    auto iterFind = find_if_same_name(vecFields, strFieldNameOld);
     if(iterFind != vecFields.end()) //If it was found:
     {
       //Change it:
@@ -1094,7 +1096,7 @@ void Document::change_relationship_name(const Glib::ustring& table_name, const G
     type_vec_relationships relationships = doctableinfo->m_relationships;
       
     //Change the relationship name:
-    auto iterRelFind = std::find_if(relationships.begin(), relationships.end(), predicate_FieldHasName<Relationship>(name) );
+    auto iterRelFind = find_if_same_name(relationships, name);
     if(iterRelFind != relationships.end())
       (*iterRelFind)->set_name(name_new);
 
@@ -1168,7 +1170,7 @@ Document::type_listConstTableInfo Document::get_tables(bool plus_system_prefs) c
   //Add the system properties if necessary:
   if(plus_system_prefs)
   {
-    if(std::find_if(result.begin(), result.end(), predicate_FieldHasName<TableInfo>(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME)) == result.end())
+    if(find_if_same_name(result, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME) == result.end())
       result.push_back(create_table_system_preferences());
   }
 
@@ -1191,7 +1193,7 @@ Document::type_listTableInfo Document::get_tables(bool plus_system_prefs)
   //Add the system properties if necessary:
   if(plus_system_prefs)
   {
-    if(std::find_if(result.begin(), result.end(), predicate_FieldHasName<TableInfo>(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME)) == result.end())
+    if(find_if_same_name(result, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME) == result.end())
       result.push_back(create_table_system_preferences());
   }
 
@@ -1285,7 +1287,7 @@ void Document::set_tables(const type_listTableInfo& tables)
     const auto table_name = info->get_name();
 
     //If the table is also in the supplied list:
-    auto iterfind = std::find_if(tables.begin(), tables.end(), predicate_FieldHasName<TableInfo>(table_name));
+    auto iterfind = find_if_same_name(tables, table_name);
     if(iterfind != tables.end())
     {
       std::shared_ptr<TableInfo> infoFound = *iterfind;

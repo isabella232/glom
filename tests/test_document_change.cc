@@ -26,24 +26,6 @@
 
 #include <iostream>
 
-template<typename T_Container>
-bool contains(const T_Container& container, const Glib::ustring& name)
-{
-  typename T_Container::const_iterator iter =
-    std::find(container.begin(), container.end(), name);
-  return iter != container.end();
-}
-
-template<typename T_Container>
-bool contains_named(const T_Container& container, const Glib::ustring& name)
-{
-  typedef typename T_Container::value_type::element_type type_item;
-  typename T_Container::const_iterator iter =
-    std::find_if(container.begin(), container.end(),
-      Glom::predicate_FieldHasName<type_item>(name));
-  return iter != container.end();
-}
-
 int main()
 {
   Glom::libglom_init();

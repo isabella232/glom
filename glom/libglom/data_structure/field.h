@@ -28,46 +28,25 @@
 #include <libglom/data_structure/layout/formatting.h>
 #include <libglom/sharedptr.h>
 
-//Predicate, for use with std::find_if():
-
 namespace Glom
 {
 
-/** A predicate for use with std::find_if() to find a Field or LayoutItem which refers 
- * to the same field, looking at just the name.
+/**
+ * Find the element in the container whose name is the same as @name.
+ * This assumes that the element is a shared_ptr<>.
  */
-template<class T_Element>
-class predicate_FieldHasName
+template
+<typename T_Container>
+auto find_if_same_name(T_Container& container, const Glib::ustring& name) -> decltype(container.begin())
 {
-public:
-  predicate_FieldHasName(const Glib::ustring& strName)
-  {
-    m_strName = strName;
-  }
-
-  virtual ~predicate_FieldHasName()
-  {
-  }
-
-  bool operator() (const T_Element& element)
-  {
-    return (element.get_name() == m_strName);
-  }
-
-  bool operator() (const std::shared_ptr<T_Element>& element)
-  {
-    return (element->get_name() == m_strName);
-  }
-
-  bool operator() (const std::shared_ptr<const T_Element>& element)
-  {
-    return (element->get_name() == m_strName);
-  }
-
-private:
-  Glib::ustring m_strName;
-};
-
+  return std::find_if(container.begin(), container.end(),
+    [name](const typename T_Container::value_type& element)
+    {
+      //Assume that element is a shared_ptr<>.
+      return element->get_name() == name;
+    }
+  );
+}
 
 //Field info, such as Name, Title, definitions, and, sometimes, contents.
 class Field : public TranslatableItem

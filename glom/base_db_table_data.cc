@@ -83,7 +83,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   for(const auto& item : m_TableFields)
   {
     //TODO: Search for the non-related field with the name, not just the field with the name:
-    type_vecConstLayoutFields::const_iterator iterFind = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>(item->get_name()));
+    type_vecConstLayoutFields::const_iterator iterFind = find_if_same_name(fieldsToAdd, item->get_name());
     if(iterFind == fieldsToAdd.end())
     {
       std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();

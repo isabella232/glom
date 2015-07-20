@@ -151,7 +151,7 @@ void Box_DB_Table_Relationships::save_to_document()
       if(!old_name.empty() && (old_name != name))
         get_document()->change_relationship_name(m_table_name, old_name, name); //Update layouts and reports.
 
-      if(std::find_if(vecRelationships.begin(), vecRelationships.end(), predicate_FieldHasName<Relationship>(name)) == vecRelationships.end()) //Don't add 2 relationships with the same name.
+      if(find_if_same_name(vecRelationships, name) == vecRelationships.end()) //Don't add 2 relationships with the same name.
       {
         std::shared_ptr<Relationship> relationship = document->get_relationship(m_table_name, name); //Preserve other information, such as translations.
         if(!relationship)

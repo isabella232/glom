@@ -47,9 +47,13 @@ static bool field_is_on_a_layout(Glom::Document& document, const Glib::ustring& 
 
 static bool groups_contain_named(const Glom::Document::type_list_groups& container, const Glib::ustring& name)
 {
-  const Glom::Document::type_list_groups::const_iterator iter =
+  Glom::Document::type_list_groups::const_iterator iter =
     std::find_if(container.begin(), container.end(),
-      Glom::predicate_FieldHasName<Glom::GroupInfo>(name));
+      [name] (const Glom::GroupInfo& info)
+      {
+        return info.get_name() == name;
+      }
+    );
   return iter != container.end();
 }
 

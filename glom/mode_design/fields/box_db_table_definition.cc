@@ -373,7 +373,7 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
     m_Field_BeingEdited = constfield;
 
     //Get DB field info: (TODO: This might be unnecessary).
-    type_vec_fields::const_iterator iterFind = std::find_if( m_vecFields.begin(), m_vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeingEdited) );
+    type_vec_fields::const_iterator iterFind = find_if_same_name(m_vecFields, strFieldNameBeingEdited);
     if(iterFind == m_vecFields.end()) //If it was not found:
       std::cerr << G_STRFUNC << ": field not found: " << strFieldNameBeingEdited << std::endl;
     else
@@ -453,7 +453,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::
   if(pDoc)
   {
     Document::type_vec_fields vecFields= pDoc->get_table_fields(m_table_name);
-    auto iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeforeEdit) );
+    auto iterFind = find_if_same_name(vecFields, strFieldNameBeforeEdit);
 
     if((iterFind != vecFields.end()) && (*iterFind)) //If it was found:
     {
@@ -628,7 +628,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::sha
     {
       //Find old field:
       const auto field_name_old = old_fields[i]->get_name();
-      auto iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name_old) );
+      auto iterFind = find_if_same_name(vecFields, field_name_old);
       if(iterFind != vecFields.end()) //If it was found:
       {
         //Change it to the new Fields's value:
