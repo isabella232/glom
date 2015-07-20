@@ -1510,7 +1510,8 @@ LayoutGroup::type_list_const_items Utils::get_layout_items_plus_primary_key(cons
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
   
-  const LayoutGroup::type_list_const_items::const_iterator iterFind = std::find_if(items.begin(), items.end(), predicate_LayoutItem_Field_IsSameField<LayoutItem_Field, LayoutItem>(pk_layout_item));
+  const LayoutGroup::type_list_const_items::const_iterator iterFind =
+    find_if_layout_item_field_is_same_field(items, pk_layout_item);
   if(iterFind != items.end())
     return items; //It is already in the list:
 
@@ -1539,7 +1540,8 @@ LayoutGroup::type_list_items Utils::get_layout_items_plus_primary_key(const Layo
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
   
-  const LayoutGroup::type_list_items::const_iterator iterFind = std::find_if(items.begin(), items.end(), predicate_LayoutItem_Field_IsSameField<LayoutItem_Field, LayoutItem>(pk_layout_item));
+  const LayoutGroup::type_list_items::const_iterator iterFind = 
+    find_if_layout_item_field_is_same_field(items, pk_layout_item);
   if(iterFind != items.end())
     return items; //It is already in the list:
 

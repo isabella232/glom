@@ -304,7 +304,7 @@ bool Box_Data_Details::fill_from_database()
         //TODO_Performance: Do this for create_layout() only, instead of repeating it for each refresh?:
         int index_primary_key = -1; //Arbitrary default.
         //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
-        const auto iterFind = std::find_if(fieldsToGet.begin(), fieldsToGet.end(), predicate_LayoutItem_Field_IsSameField<LayoutItem_Field>(layout_item_pk));
+        const auto iterFind = find_if_layout_item_field_is_same_field(fieldsToGet, layout_item_pk);
         if(iterFind == fieldsToGet.end())
         {
           fieldsToGet.push_back(layout_item_pk);
