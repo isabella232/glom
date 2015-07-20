@@ -56,35 +56,32 @@
 namespace Glom
 {
 
-
-template<class T_Element>
-class predicate_LayoutItemIsEqual
+/**
+ * This assumes that the element is a shared_ptr<>.
+ */
+template
+<typename T_Container>
+auto find_if_layout_item_is_equal(T_Container& container, const typename T_Container::value_type& layout_item) -> decltype(container.begin())
 {
-public:
-  predicate_LayoutItemIsEqual(const std::shared_ptr<const T_Element>& layout_item)
-  : m_layout_item(layout_item)
-  {
-  }
-
-  bool operator() (const std::shared_ptr<const T_Element>& layout_item) const
-  {
-    if(!m_layout_item && !layout_item)
-      return true;
-
-    if(layout_item && m_layout_item)
+  return std::find_if(container.begin(), container.end(),
+    [layout_item](const typename T_Container::value_type& element)
     {
-      return m_layout_item->is_same_field(layout_item);
-      //std::cout << "          debug: name1=" << m_layout_item->get_name() << ", name2=" << layout_item->get_name() << ", result=" << result << std::endl;
-      //return result;
+      //Assume that element is a shared_ptr<>.
+
+      if(!layout_item && !element)
+        return true;
+
+      if(element && layout_item)
+      {
+        return layout_item->is_same_field(element);
+        //std::cout << "          debug: name1=" << layout_item->get_name() << ", name2=" << element->get_name() << ", result=" << result << std::endl;
+        //return result;
+      }
+      else
+        return false;
     }
-    else
-      return false;
-  }
-
-private:
-  std::shared_ptr<const T_Element> m_layout_item;
-};
-
+  );
+}
 
 Base_DB::Base_DB()
 {
@@ -1183,7 +1180,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculated_fields(const Glib::
       //Does this field's calculation use the field?
       const auto fields_triggered = get_calculation_fields(table_name, layoutitem_field_to_examine);
       //std::cout << "    debug: field_triggered.size()=" << fields_triggered.size() << std::endl;
-      type_list_const_field_items::const_iterator iterFind = std::find_if(fields_triggered.begin(), fields_triggered.end(), predicate_LayoutItemIsEqual<LayoutItem_Field>(field));
+      type_list_const_field_items::const_iterator iterFind = find_if_layout_item_is_equal(fields_triggered, field);
       if(iterFind != fields_triggered.end())
       {
         //std::cout << "      debug: FOUND: name=" << layoutitem_field_to_examine->get_name() << std::endl;
