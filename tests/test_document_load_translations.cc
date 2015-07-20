@@ -38,74 +38,19 @@ bool contains(const T_Container& container, const T_Value& name)
   return iter != container.end();
 }
 
-
-
-/** A predicate for use with std::find_if() to find a Field or LayoutItem which refers 
- * to the same field, looking at just the name.
- */
-template<class T_Element>
-class predicate_ItemHasTitle
-{
-public:
-  predicate_ItemHasTitle(const Glib::ustring& title)
-  {
-    m_title = title;
-  }
-
-  virtual ~predicate_ItemHasTitle()
-  {
-  }
-
-  bool operator() (const std::shared_ptr<T_Element>& element)
-  {
-    return (element->get_title_original() == m_title);
-  }
-
-  bool operator() (const std::shared_ptr<const T_Element>& element)
-  {
-    return (element->get_title_original() == m_title);
-  }
-
-private:
-  Glib::ustring m_title;
-};
-
-/** A predicate for use with std::find_if() to find a LayoutItem of a particular type.
- */
-template<class T_TypeToFind>
-class predicate_ItemHasType
-{
-public:
-  predicate_ItemHasType()
-  {
-  }
-
-  virtual ~predicate_ItemHasType()
-  {
-  }
-
-  bool operator() (const Glom::Document::pair_translatable_item_and_hint& element)
-  {
-    std::shared_ptr<Glom::TranslatableItem> item = element.first;
-    std::shared_ptr<T_TypeToFind> derived = std::dynamic_pointer_cast<T_TypeToFind>(item);
-    if(derived)
-      return true;
-    else
-      return false;
-  }
-};
-
-
 template<typename T_Container>
 typename T_Container::value_type get_titled(const T_Container& container, const Glib::ustring& title)
 {
   typedef typename T_Container::value_type type_sharedptr;
   type_sharedptr result;
 
-  typedef typename T_Container::value_type::element_type type_item;
   typename T_Container::const_iterator iter =
     std::find_if(container.begin(), container.end(),
-      predicate_ItemHasTitle<type_item>(title));
+      [title] (const typename T_Container::value_type& element)
+      {
+        return (element && element->get_title_original() == title);
+      }
+    );
   if(iter != container.end())
     result = *iter;
 
@@ -117,7 +62,16 @@ bool contains_item_type(const Glom::Document::type_list_translatables& container
 {
   Glom::Document::type_list_translatables::const_iterator iter =
     std::find_if(container.begin(), container.end(),
-      predicate_ItemHasType<T_TypeToFind>());
+      [] (const Glom::Document::type_list_translatables::value_type& element)
+      {
+        std::shared_ptr<Glom::TranslatableItem> item = element.first;
+        std::shared_ptr<T_TypeToFind> derived = std::dynamic_pointer_cast<T_TypeToFind>(item);
+        if(derived)
+          return true;
+        else
+          return false;
+      }
+    );
   if(iter != container.end())
     return true;
 
