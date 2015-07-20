@@ -4298,46 +4298,39 @@ std::vector<Glib::ustring> Document::get_translation_available_locales() const
 
 namespace {
 
-/** A predicate for use with std::find_if() to find a pair which contains the same information.
+/**
+ * Find the element in the container which is a pair which contains the same information.
+ * This assumes that the element is a shared_ptr<>.
  */
-class predicate_ItemAndHintEqual
+template
+<typename T_Container>
+auto find_if_item_and_hint_equal(T_Container& container, const Document::pair_translatable_item_and_hint& item_and_hint) -> decltype(container.begin())
 {
-public:
-  predicate_ItemAndHintEqual(const Document::pair_translatable_item_and_hint& item_and_hint)
-  {
-    m_item_and_hint = item_and_hint;
-  }
-
-  virtual ~predicate_ItemAndHintEqual()
-  {
-  }
-
-  bool operator() (const Document::pair_translatable_item_and_hint& item_and_hint)
-  {
-    if(!item_and_hint.first && m_item_and_hint.first)
-      return true;
-
-    if(item_and_hint.first && !m_item_and_hint.first)
-      return true;
-
-    if(item_and_hint.first && m_item_and_hint.first)
+  return std::find_if(container.begin(), container.end(),
+    [item_and_hint](const typename T_Container::value_type& element)
     {
-      if(item_and_hint.first->get_title_original() != m_item_and_hint.first->get_title_original())
+      if(!element.first && item_and_hint.first)
+        return true;
+
+      if(element.first && !item_and_hint.first)
+        return true;
+
+      if(element.first && item_and_hint.first)
+      {
+        if(element.first->get_title_original() != item_and_hint.first->get_title_original())
+          return false;
+      }
+
+      if(get_po_context_for_item(element.first, element.second) != 
+        get_po_context_for_item(item_and_hint.first, item_and_hint.second))
+      {
         return false;
+      }
+
+      return true;
     }
-
-    if(get_po_context_for_item(item_and_hint.first, item_and_hint.second) != 
-      get_po_context_for_item(m_item_and_hint.first, m_item_and_hint.second))
-    {
-      return false;
-    }
-
-    return true;
-  }
-
-private:
-  Document::pair_translatable_item_and_hint m_item_and_hint;
-};
+  );
+}
 
 } //anonymous namespace
 
@@ -4345,8 +4338,7 @@ static void add_to_translatable_list(Document::type_list_translatables& list, co
 {
   // Only add the item/hint combination if it is not there already:
   const Document::pair_translatable_item_and_hint item_and_hint(item, hint);
-  if(std::find_if(list.begin(), list.end(),
-    predicate_ItemAndHintEqual(item_and_hint)) == list.end())
+  if(find_if_item_and_hint_equal(list, item_and_hint) == list.end())
   {
     list.push_back( item_and_hint );
   }
@@ -4357,8 +4349,7 @@ static void add_to_translatable_list(Document::type_list_translatables& list, co
   // Only add the item/hint combination if it is not there already:
   for(const auto& item_and_hint : sublist)
   {
-    if(std::find_if(list.begin(), list.end(),
-      predicate_ItemAndHintEqual(item_and_hint)) == list.end())
+    if(find_if_item_and_hint_equal(list, item_and_hint) == list.end())
     {
       list.push_back( item_and_hint );
     }
