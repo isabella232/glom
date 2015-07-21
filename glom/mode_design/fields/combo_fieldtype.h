@@ -29,33 +29,6 @@
 namespace Glom
 {
 
-//Predicate for use with algorithms with maps.
-template<class T_map>
-class pred_mapPair_HasValue
-{
-public:
-  typedef typename T_map::mapped_type type_value;   //earlier versions of gcc had data_type instead of mapped_type.
-  typedef std::pair<typename T_map::key_type, type_value> type_pair;
-
-  pred_mapPair_HasValue(type_value valueToFind)
-  {
-    m_valueToFind = valueToFind;
-  }
-
-  virtual ~pred_mapPair_HasValue()
-  {
-  }
-
-  bool operator()(const type_pair& item) const
-  {
-    return item.second == m_valueToFind;
-  }
-
-private:
-  type_value m_valueToFind;
-};
-
-
 class Combo_FieldType : public Gtk::ComboBox
 {
 public: 
