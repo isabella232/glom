@@ -51,48 +51,26 @@
 namespace Glom
 {
 
-template<class T_Element>
-class predicate_UsesRelationshipHasRelationships
+template
+<typename T_Container>
+auto find_if_uses_relationship_has_relationship(T_Container& container, const std::shared_ptr<const UsesRelationship> uses_relationship_name, bool first_level_only = false) -> decltype(container.begin())
 {
-public:
-  predicate_UsesRelationshipHasRelationships(const Glib::ustring& relationship_name, const Glib::ustring& related_relationship_name = Glib::ustring())
-  : m_relationship_name(relationship_name),
-    m_related_relationship_name(related_relationship_name)
-  {
-  }
+  const Glib::ustring relationship_name(uses_relationship_name->get_relationship_name());
+  Glib::ustring related_relationship_name(uses_relationship_name->get_related_relationship_name());
 
-  predicate_UsesRelationshipHasRelationships(const std::shared_ptr<const UsesRelationship> uses_relationship_name, bool first_level_only = false)
-  : m_relationship_name(uses_relationship_name->get_relationship_name()),
-    m_related_relationship_name(uses_relationship_name->get_related_relationship_name())
-  {
-    //If first_level_only, search for relationships that have the same top-level relationship, but have no related relationship.
-    if(first_level_only)
-      m_related_relationship_name = Glib::ustring();
-  }
+  //If first_level_only, search for relationships that have the same top-level relationship, but have no related relationship.
+  if(first_level_only)
+    related_relationship_name = Glib::ustring();
 
-  virtual ~predicate_UsesRelationshipHasRelationships()
-  {
-  }
+  return std::find_if(container.begin(), container.end(),
+    [relationship_name, related_relationship_name](const typename T_Container::value_type& element)
+    {
+      //Assume that element is a shared_ptr<>.
 
-  bool operator() (const T_Element& element)
-  {
-    return (element.get_relationship_name() == m_relationship_name) && (element.get_related_relationship_name() == m_related_relationship_name);
-  }
-
-  bool operator() (const std::shared_ptr<T_Element>& element)
-  {
-    return (element->get_relationship_name() == m_relationship_name) && (element->get_related_relationship_name() == m_related_relationship_name);
-  }
-
-  bool operator() (const std::shared_ptr<const T_Element>& element)
-  {
-    return (element->get_relationship_name() == m_relationship_name) && (element->get_related_relationship_name() == m_related_relationship_name);
-  }
-
-private:
-  Glib::ustring m_relationship_name, m_related_relationship_name;
-};
-
+      return (element->get_relationship_name() == relationship_name) && (element->get_related_relationship_name() == related_relationship_name);
+    }
+  );
+}
 
 Glib::ustring Utils::trim_whitespace(const Glib::ustring& text)
 {
@@ -263,7 +241,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
     return;
 
   //If this is a related relationship, add the first-level relationship too, so that the related relationship can be defined in terms of it:
-  type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_UsesRelationshipHasRelationships<UsesRelationship>(layout_item, true /* top_level_only */) );
+  type_list_relationships::const_iterator iterFind = find_if_uses_relationship_has_relationship(list_relationships, layout_item, true /* top_level_only */);
   if(iterFind == list_relationships.end()) //If the table is not yet in the list:
   {
     std::shared_ptr<UsesRelationship> uses_rel = std::make_shared<UsesRelationship>();
@@ -272,7 +250,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
   }
 
   //Add the relationship to the list:
-  iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_UsesRelationshipHasRelationships<UsesRelationship>(layout_item) );
+  iterFind = find_if_uses_relationship_has_relationship(list_relationships, layout_item);
   if(iterFind == list_relationships.end()) //If the table is not yet in the list:
   {
     std::shared_ptr<UsesRelationship> uses_rel = std::make_shared<UsesRelationship>();
