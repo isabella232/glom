@@ -313,7 +313,7 @@ bool Box_Data_Details::fill_from_database()
         else
         {
           //TODO_Performance: Is there any quick way to get the index from iterFind?
-          //TODO_Performance: If not, then just use this instead of the predicate.
+          //TODO_Performance: If not, then just use this instead of std::find_if.
           const auto count = fieldsToGet.size();
           for(type_vecLayoutFields::size_type i = 0; i < count; ++i)
           {

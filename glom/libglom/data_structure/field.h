@@ -89,7 +89,7 @@ public:
   void set_glom_type(glom_field_type fieldtype);
 
 
-  /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::get_name, so that we can use it in the same predicate template.
+  /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::get_name, so that we can use it in the same std::find_if lambda.
   virtual Glib::ustring get_name() const;
 
   /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::set_name, for convenience

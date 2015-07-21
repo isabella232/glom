@@ -63,7 +63,7 @@ public:
 
   /** Get the non-user-visible name of the field.
    */
-  virtual Glib::ustring get_name() const; //For use with our std::find_if() predicate.
+  virtual Glib::ustring get_name() const; //For use with our std::find_if() lambda.
 
   /** Get the user-visible title for the field, in the user's current locale.
    * This returns the name if no title is set.
