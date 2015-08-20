@@ -27,7 +27,7 @@ FoundSet::FoundSet()
 {
 }
 
-FoundSet::FoundSet(const FoundSet& src)
+FoundSet::FoundSet(const FoundSet& src) noexcept
 :  m_table_name(src.m_table_name),
    m_extra_join(src.m_extra_join),
    m_where_clause(src.m_where_clause),
@@ -35,7 +35,7 @@ FoundSet::FoundSet(const FoundSet& src)
 {
 }
 
-FoundSet::FoundSet(FoundSet&& src)
+FoundSet::FoundSet(FoundSet&& src) noexcept
 :  m_table_name(std::move(src.m_table_name)),
    m_extra_join(std::move(src.m_extra_join)),
    m_where_clause(std::move(src.m_where_clause)),
@@ -43,7 +43,7 @@ FoundSet::FoundSet(FoundSet&& src)
 {
 }
 
-FoundSet& FoundSet::operator=(const FoundSet& src)
+FoundSet& FoundSet::operator=(const FoundSet& src) noexcept
 {
   m_table_name = src.m_table_name;
   m_extra_join = src.m_extra_join;
@@ -53,7 +53,7 @@ FoundSet& FoundSet::operator=(const FoundSet& src)
   return *this;
 }
 
-FoundSet& FoundSet::operator=(FoundSet&& src)
+FoundSet& FoundSet::operator=(FoundSet&& src) noexcept
 {
   m_table_name = std::move(src.m_table_name);
   m_extra_join = std::move(src.m_extra_join);

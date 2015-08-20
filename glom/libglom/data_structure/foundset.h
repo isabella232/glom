@@ -37,11 +37,11 @@ namespace Glom
 class FoundSet
 {
 public:
-  FoundSet();
-  FoundSet(const FoundSet& src);
-  FoundSet(FoundSet&& src);
+  FoundSet() noexcept;
+  FoundSet(const FoundSet& src) noexcept;
+  FoundSet(FoundSet&& src) noexcept;
   FoundSet& operator=(const FoundSet& src);
-  FoundSet& operator=(FoundSet&& src);
+  FoundSet& operator=(FoundSet&& src) noexcept;
 
 private:
   //We cannot implement this without a way to compare GdaSqlExpr instances,
