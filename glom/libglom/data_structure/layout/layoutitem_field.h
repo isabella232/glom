@@ -59,20 +59,20 @@ public:
 
   /** Set the non-user-visible name of the field.
    */
-  virtual void set_name(const Glib::ustring& name);
+  void set_name(const Glib::ustring& name) noexcept override;
 
   /** Get the non-user-visible name of the field.
    */
-  virtual Glib::ustring get_name() const; //For use with our std::find_if() lambda.
+  Glib::ustring get_name() const noexcept override; //For use with our std::find_if() lambda.
 
   /** Get the user-visible title for the field, in the user's current locale.
    * This returns the name if no title is set.
    */
-  virtual Glib::ustring get_title(const Glib::ustring& locale) const;
+  Glib::ustring get_title(const Glib::ustring& locale) const noexcept override;
 
   /** Get the user-visible title for the field, in the user's current locale.
    */
-  virtual Glib::ustring get_title_or_name(const Glib::ustring& locale) const;
+  Glib::ustring get_title_or_name(const Glib::ustring& locale) const noexcept override;
 
   Glib::ustring get_title_or_name_no_custom(const Glib::ustring& locale) const;
 

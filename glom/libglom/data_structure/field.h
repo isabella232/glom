@@ -90,10 +90,10 @@ public:
 
 
   /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::get_name, so that we can use it in the same std::find_if lambda.
-  virtual Glib::ustring get_name() const;
+  Glib::ustring get_name() const noexcept override;
 
   /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::set_name, for convenience
-  virtual void set_name(const Glib::ustring& value);
+  void set_name(const Glib::ustring& value) noexcept override;
 
   /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::get_auto_increment.
   bool get_auto_increment() const;

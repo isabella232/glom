@@ -32,31 +32,31 @@ class TableInfo
    public HasTitleSingular
 {
 public:
-  TableInfo();
-  TableInfo(const TableInfo& src);
+  TableInfo() noexcept;
+  TableInfo(const TableInfo& src) noexcept;
   TableInfo(TableInfo&& src) = delete;
-  TableInfo& operator=(const TableInfo& src);
+  TableInfo& operator=(const TableInfo& src) noexcept;
   TableInfo& operator=(TableInfo&& src) = delete;
 
-  bool operator==(const TableInfo& src) const;
-  bool operator!=(const TableInfo& src) const;
+  bool operator==(const TableInfo& src) const noexcept;
+  bool operator!=(const TableInfo& src) const noexcept;
 
   /** Returns true if this table should not be shown in the list of tables when in operator mode.
    */
-  bool get_hidden() const;
+  bool get_hidden() const noexcept;
 
   /** See get_default().
    */
-  void set_hidden(bool val = true);
+  void set_hidden(bool val = true) noexcept;
 
   /** Returns true if this table should be shown when the system is opened.
    * Only one table can be the default table.
    */
-  bool get_default() const;
+  bool get_default() const noexcept;
 
   /** See get_default().
    */
-  void set_default(bool val = true);
+  void set_default(bool val = true) noexcept;
 
 private:
   bool m_hidden;

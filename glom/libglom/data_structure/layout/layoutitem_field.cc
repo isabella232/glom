@@ -102,7 +102,7 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
   return *this;
 }
 
-void LayoutItem_Field::set_name(const Glib::ustring& name)
+void LayoutItem_Field::set_name(const Glib::ustring& name) noexcept
 {
   if(get_name() != name)
     m_field_cache_valid = false;
@@ -110,7 +110,7 @@ void LayoutItem_Field::set_name(const Glib::ustring& name)
   LayoutItem_WithFormatting::set_name(name);
 }
 
-Glib::ustring LayoutItem_Field::get_name() const
+Glib::ustring LayoutItem_Field::get_name() const noexcept
 {
   return LayoutItem_WithFormatting::get_name();
 }
@@ -148,7 +148,7 @@ Glib::ustring LayoutItem_Field::get_title_or_name_no_custom(const Glib::ustring&
   return Glib::ustring();
 }
 
-Glib::ustring LayoutItem_Field::get_title(const Glib::ustring& locale) const
+Glib::ustring LayoutItem_Field::get_title(const Glib::ustring& locale) const noexcept
 {
   //Use the custom title (overriding the field's default title), if there is one:
   //This may even be empty if the developer specifies that.
@@ -161,7 +161,7 @@ Glib::ustring LayoutItem_Field::get_title(const Glib::ustring& locale) const
   return get_title_no_custom(locale);
 }
 
-Glib::ustring LayoutItem_Field::get_title_or_name(const Glib::ustring& locale) const
+Glib::ustring LayoutItem_Field::get_title_or_name(const Glib::ustring& locale) const noexcept
 {
   //Use the custom title (overriding the field's default title), if there is one:
   //This may even be empty if the developer specifies that.

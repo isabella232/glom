@@ -26,12 +26,12 @@
 namespace Glom
 {
 
-TranslatableItem::TranslatableItem()
+TranslatableItem::TranslatableItem() noexcept
 : m_translatable_item_type(TRANSLATABLE_TYPE_INVALID)
 {
 }
 
-TranslatableItem::TranslatableItem(const TranslatableItem& src)
+TranslatableItem::TranslatableItem(const TranslatableItem& src) noexcept
 : m_translatable_item_type(src.m_translatable_item_type),
   m_name(src.m_name),
   m_title(src.m_title),
@@ -39,7 +39,7 @@ TranslatableItem::TranslatableItem(const TranslatableItem& src)
 {
 }
 
-TranslatableItem::TranslatableItem(TranslatableItem&& src)
+TranslatableItem::TranslatableItem(TranslatableItem&& src) noexcept
 : m_translatable_item_type(std::move(src.m_translatable_item_type)),
   m_name(std::move(src.m_name)),
   m_title(std::move(src.m_title)),
@@ -51,7 +51,7 @@ TranslatableItem::~TranslatableItem()
 {
 }
 
-TranslatableItem& TranslatableItem::operator=(const TranslatableItem& src)
+TranslatableItem& TranslatableItem::operator=(const TranslatableItem& src) noexcept
 {
   m_name = src.m_name;
   m_title = src.m_title;
@@ -61,7 +61,7 @@ TranslatableItem& TranslatableItem::operator=(const TranslatableItem& src)
   return *this;
 }
 
-TranslatableItem& TranslatableItem::operator=(TranslatableItem&& src)
+TranslatableItem& TranslatableItem::operator=(TranslatableItem&& src) noexcept
 {
   m_name = std::move(src.m_name);
   m_title = std::move(src.m_title);
@@ -71,7 +71,7 @@ TranslatableItem& TranslatableItem::operator=(TranslatableItem&& src)
   return *this;
 }
 
-bool TranslatableItem::operator==(const TranslatableItem& src) const
+bool TranslatableItem::operator==(const TranslatableItem& src) const noexcept
 {
   bool bResult = (m_name == src.m_name)
                  && (m_title == src.m_title)
@@ -81,12 +81,12 @@ bool TranslatableItem::operator==(const TranslatableItem& src) const
   return bResult;
 }
 
-bool TranslatableItem::operator!=(const TranslatableItem& src) const
+bool TranslatableItem::operator!=(const TranslatableItem& src) const noexcept
 {
   return !(operator==(src));
 }
 
-void TranslatableItem::set_title_translation(const Glib::ustring& locale, const Glib::ustring& translation)
+void TranslatableItem::set_title_translation(const Glib::ustring& locale, const Glib::ustring& translation) noexcept
 {
   if(translation.empty())
   {
@@ -99,7 +99,7 @@ void TranslatableItem::set_title_translation(const Glib::ustring& locale, const 
     m_map_translations[locale] = translation;
 }
 
-Glib::ustring TranslatableItem::get_title_translation(const Glib::ustring& locale, bool fallback) const
+Glib::ustring TranslatableItem::get_title_translation(const Glib::ustring& locale, bool fallback) const noexcept
 {
   auto iterFind = m_map_translations.find(locale);
   if(iterFind != m_map_translations.end())
@@ -142,18 +142,18 @@ Glib::ustring TranslatableItem::get_title_translation(const Glib::ustring& local
   return Glib::ustring();
 }
 
-const TranslatableItem::type_map_locale_to_translations& TranslatableItem::_get_translations_map() const
+const TranslatableItem::type_map_locale_to_translations& TranslatableItem::_get_translations_map() const noexcept
 {
   return m_map_translations;
 }
 
-bool TranslatableItem::get_has_translations() const
+bool TranslatableItem::get_has_translations() const noexcept
 {
   return !m_map_translations.empty();
 }
 
 
-Glib::ustring TranslatableItem::get_title(const Glib::ustring& locale) const
+Glib::ustring TranslatableItem::get_title(const Glib::ustring& locale) const noexcept
 {
   if(!locale.empty())
   {
@@ -166,12 +166,12 @@ Glib::ustring TranslatableItem::get_title(const Glib::ustring& locale) const
 }
 
 
-Glib::ustring TranslatableItem::get_title_original() const
+Glib::ustring TranslatableItem::get_title_original() const noexcept
 {
   return m_title;
 }
 
-void TranslatableItem::set_title(const Glib::ustring& title, const Glib::ustring& locale)
+void TranslatableItem::set_title(const Glib::ustring& title, const Glib::ustring& locale) noexcept
 {
   if(locale.empty())
   {
@@ -182,13 +182,13 @@ void TranslatableItem::set_title(const Glib::ustring& title, const Glib::ustring
   set_title_translation(locale, title);
 }
 
-void TranslatableItem::set_title_original(const Glib::ustring& title)
+void TranslatableItem::set_title_original(const Glib::ustring& title) noexcept
 {
   m_title = title;
 }
 
 //TODO: Make this virtual and handle it in ChoiceValue?
-void TranslatableItem::clear_title_in_all_locales()
+void TranslatableItem::clear_title_in_all_locales() noexcept
 {
   m_title.clear();
   
@@ -199,12 +199,12 @@ void TranslatableItem::clear_title_in_all_locales()
   }
 }
 
-TranslatableItem::enumTranslatableItemType TranslatableItem::get_translatable_item_type() const
+TranslatableItem::enumTranslatableItemType TranslatableItem::get_translatable_item_type() const noexcept
 {
   return m_translatable_item_type;
 }
 
-Glib::ustring TranslatableItem::get_translatable_type_name_nontranslated(enumTranslatableItemType item_type)
+Glib::ustring TranslatableItem::get_translatable_type_name_nontranslated(enumTranslatableItemType item_type) noexcept
 {
   //TODO: Is there an easier way to do this, without duplicating code?
 
@@ -240,7 +240,7 @@ Glib::ustring TranslatableItem::get_translatable_type_name_nontranslated(enumTra
     return "Unknown";
 }
 
-Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemType item_type)
+Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemType item_type) noexcept
 {
   if(item_type == TRANSLATABLE_TYPE_FIELD)
     return _("Field");
@@ -274,22 +274,22 @@ Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemT
     return _("Unknown");
 }
 
-void TranslatableItem::set_name(const Glib::ustring& name)
+void TranslatableItem::set_name(const Glib::ustring& name) noexcept
 {
   m_name = name;
 }
 
-Glib::ustring TranslatableItem::get_name() const
+Glib::ustring TranslatableItem::get_name() const noexcept
 {
   return m_name;
 }
 
-bool TranslatableItem::get_name_not_empty() const
+bool TranslatableItem::get_name_not_empty() const noexcept
 {
   return !(get_name().empty());
 }
 
-Glib::ustring TranslatableItem::get_title_or_name(const Glib::ustring& locale) const
+Glib::ustring TranslatableItem::get_title_or_name(const Glib::ustring& locale) const noexcept
 {
   const auto title = get_title(locale);
   if(title.empty())

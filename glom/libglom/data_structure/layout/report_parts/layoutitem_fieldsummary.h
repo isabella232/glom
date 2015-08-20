@@ -63,8 +63,8 @@ public:
 
   void set_field(const std::shared_ptr<LayoutItem_Field>& field);
 
-  virtual Glib::ustring get_title(const Glib::ustring& locale) const;
-  virtual Glib::ustring get_title_or_name(const Glib::ustring& locale) const;
+  Glib::ustring get_title(const Glib::ustring& locale) const noexcept override;
+  Glib::ustring get_title_or_name(const Glib::ustring& locale) const noexcept override;
 
   virtual Glib::ustring get_layout_display_name() const;
 

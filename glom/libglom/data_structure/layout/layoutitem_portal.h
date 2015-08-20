@@ -54,8 +54,8 @@ public:
 
   virtual LayoutItem* clone() const;
 
-  virtual Glib::ustring get_title(const Glib::ustring& locale) const;
-  virtual Glib::ustring get_title_or_name(const Glib::ustring& locale) const;
+  Glib::ustring get_title(const Glib::ustring& locale) const noexcept override;
+  Glib::ustring get_title_or_name(const Glib::ustring& locale) const noexcept override;
 
   //We do not implement this, because we only ever want to use the method
   //in the derived class.

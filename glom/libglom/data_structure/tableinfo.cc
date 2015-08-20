@@ -23,14 +23,14 @@
 namespace Glom
 {
 
-TableInfo::TableInfo()
+TableInfo::TableInfo() noexcept
 : m_hidden(false),
   m_default(false)
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_TABLE;
 }
 
-TableInfo::TableInfo(const TableInfo& src)
+TableInfo::TableInfo(const TableInfo& src) noexcept
 : TranslatableItem(src),
   HasTitleSingular(src),
   m_hidden(src.m_hidden),
@@ -38,7 +38,7 @@ TableInfo::TableInfo(const TableInfo& src)
 {
 }
 
-TableInfo& TableInfo::operator=(const TableInfo& src)
+TableInfo& TableInfo::operator=(const TableInfo& src) noexcept
 {
   TranslatableItem::operator=(src);
   HasTitleSingular::operator=(src);
@@ -49,7 +49,7 @@ TableInfo& TableInfo::operator=(const TableInfo& src)
   return *this;
 }
 
-bool TableInfo::operator==(const TableInfo& src) const
+bool TableInfo::operator==(const TableInfo& src) const noexcept
 {
   return TranslatableItem::operator==(src) &&
     HasTitleSingular::operator==(src) && 
@@ -57,27 +57,27 @@ bool TableInfo::operator==(const TableInfo& src) const
     (m_default == src.m_default);
 }
 
-bool TableInfo::operator!=(const TableInfo& src) const
+bool TableInfo::operator!=(const TableInfo& src) const noexcept
 {
   return !operator==(src);
 }
 
-bool TableInfo::get_hidden() const
+bool TableInfo::get_hidden() const noexcept
 {
   return m_hidden;
 }
 
-void TableInfo::set_hidden(bool val)
+void TableInfo::set_hidden(bool val) noexcept
 {
   m_hidden = val;
 }
 
-bool TableInfo::get_default() const
+bool TableInfo::get_default() const noexcept
 {
   return m_default;
 }
 
-void TableInfo::set_default(bool val)
+void TableInfo::set_default(bool val) noexcept
 {
   m_default = val;
 }

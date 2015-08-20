@@ -23,7 +23,7 @@
 namespace Glom
 {
 
-FoundSet::FoundSet()
+FoundSet::FoundSet() noexcept
 {
 }
 

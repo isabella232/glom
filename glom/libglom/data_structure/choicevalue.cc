@@ -77,7 +77,7 @@ Gnome::Gda::Value ChoiceValue::get_value() const
   return m_value;
 }
 
-Glib::ustring ChoiceValue::get_title_original() const
+Glib::ustring ChoiceValue::get_title_original() const noexcept
 {
   return m_value.to_string();
 }

@@ -40,13 +40,13 @@ public:
   FoundSet() noexcept;
   FoundSet(const FoundSet& src) noexcept;
   FoundSet(FoundSet&& src) noexcept;
-  FoundSet& operator=(const FoundSet& src);
+  FoundSet& operator=(const FoundSet& src) noexcept;
   FoundSet& operator=(FoundSet&& src) noexcept;
 
 private:
   //We cannot implement this without a way to compare GdaSqlExpr instances,
   //but luckily we don't need to compare FoundSet instances anyway.
-  bool operator==(const FoundSet& src) const;
+  bool operator==(const FoundSet& src) const noexcept;
 
 public:
   Glib::ustring m_table_name;

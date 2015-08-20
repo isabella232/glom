@@ -32,28 +32,28 @@ namespace Glom
 class TranslatableItem
 {
 public:
-  TranslatableItem();
-  TranslatableItem(const TranslatableItem& src);
-  TranslatableItem(TranslatableItem&& src);
+  TranslatableItem() noexcept;
+  TranslatableItem(const TranslatableItem& src) noexcept;
+  TranslatableItem(TranslatableItem&& src) noexcept;
   virtual ~TranslatableItem();
 
-  TranslatableItem& operator=(const TranslatableItem& src);
-  TranslatableItem& operator=(TranslatableItem&& src);
+  TranslatableItem& operator=(const TranslatableItem& src) noexcept;
+  TranslatableItem& operator=(TranslatableItem&& src) noexcept;
 
-  bool operator==(const TranslatableItem& src) const;
-  bool operator!=(const TranslatableItem& src) const;
+  bool operator==(const TranslatableItem& src) const noexcept;
+  bool operator!=(const TranslatableItem& src) const noexcept;
 
   /** Set the  non-translated identifier name.
    */
-  virtual void set_name(const Glib::ustring& name);
+  virtual void set_name(const Glib::ustring& name) noexcept;
 
   /** Get the non-translated identifier name.
    */
-  virtual Glib::ustring get_name() const;
+  virtual Glib::ustring get_name() const noexcept;
 
-  bool get_name_not_empty() const; //For performance.
+  bool get_name_not_empty() const noexcept; //For performance.
 
-  virtual Glib::ustring get_title_or_name(const Glib::ustring& locale) const;
+  virtual Glib::ustring get_title_or_name(const Glib::ustring& locale) const noexcept;
 
   /** Get the title's translation for the specified locale, falling back to the
    * original text if there is no translation.
@@ -64,39 +64,39 @@ public:
    * @param locale The locale whose title text should be returned. If this is empty then the original text will be returned.
    * @result The text of the title.
    */
-  virtual Glib::ustring get_title(const Glib::ustring& locale) const;
+  virtual Glib::ustring get_title(const Glib::ustring& locale) const noexcept;
 
   //This is virtual so that ChoiceValue can override it.
   /** Get the title's original (non-translated, usually English) text.
    */
-  virtual Glib::ustring get_title_original() const;
+  virtual Glib::ustring get_title_original() const noexcept;
 
   /** Get the title's translation for the specified @a locale, optionally
    * falling back to a locale of the same language, and then falling back to 
    * the original.
    * Calling this with the current locale is the same as calling get_title_original().
    */
-  Glib::ustring get_title_translation(const Glib::ustring& locale, bool fallback = true) const;
+  Glib::ustring get_title_translation(const Glib::ustring& locale, bool fallback = true) const noexcept;
   
 
   /** Set the title's translation for the specified locale.
    * @param title The text of the title.
    * @param locale The locale whose title text should be set. If this is empty then the original text will be set.
    */
-  void set_title(const Glib::ustring& title, const Glib::ustring& locale);
+  void set_title(const Glib::ustring& title, const Glib::ustring& locale) noexcept;
 
   /** Set the title's original (non-translated, usually English) text.
    * This is the same as calling set_title() with an empty locale parameter.
    */
-  void set_title_original(const Glib::ustring& title);
+  void set_title_original(const Glib::ustring& title) noexcept;
 
 
   /// Clear the original title and any translations of the title.
-  void clear_title_in_all_locales();
+  void clear_title_in_all_locales() noexcept;
 
   typedef std::map<Glib::ustring, Glib::ustring> type_map_locale_to_translations;
 
-  bool get_has_translations() const;
+  bool get_has_translations() const noexcept;
 
   enum enumTranslatableItemType
   {
@@ -116,25 +116,25 @@ public:
      TRANSLATABLE_TYPE_STATIC_TEXT
    };
 
-  enumTranslatableItemType get_translatable_item_type() const;
+  enumTranslatableItemType get_translatable_item_type() const noexcept;
 
   //Direct access, for performance:
-  const type_map_locale_to_translations& _get_translations_map() const;
+  const type_map_locale_to_translations& _get_translations_map() const noexcept;
 
-  static Glib::ustring get_translatable_type_name(enumTranslatableItemType item_type);
+  static Glib::ustring get_translatable_type_name(enumTranslatableItemType item_type) noexcept;
 
   /** The non-translated name is used for the context in gettext .po files.
    */
-  static Glib::ustring get_translatable_type_name_nontranslated(enumTranslatableItemType item_type);
+  static Glib::ustring get_translatable_type_name_nontranslated(enumTranslatableItemType item_type) noexcept;
 
 private:
 
   /** Get the locale used as the source language.
    * This is the language of the title that is used when there are no translations.
    */
-  static Glib::ustring get_original_locale();
+  static Glib::ustring get_original_locale() noexcept;
 
-  void set_title_translation(const Glib::ustring& locale, const Glib::ustring& translation);
+  void set_title_translation(const Glib::ustring& locale, const Glib::ustring& translation) noexcept;
 
 
 protected:

@@ -403,7 +403,7 @@ std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_identifies_
   return result;
 }
 
-Glib::ustring LayoutItem_Portal::get_title_or_name(const Glib::ustring& locale) const
+Glib::ustring LayoutItem_Portal::get_title_or_name(const Glib::ustring& locale) const noexcept
 {
   auto title = get_title_used(Glib::ustring() /* parent table - not relevant */, locale);
   if(title.empty())
@@ -415,7 +415,7 @@ Glib::ustring LayoutItem_Portal::get_title_or_name(const Glib::ustring& locale) 
   return title;
 }
 
-Glib::ustring LayoutItem_Portal::get_title(const Glib::ustring& locale) const
+Glib::ustring LayoutItem_Portal::get_title(const Glib::ustring& locale) const noexcept
 {
   auto title = get_title_used(Glib::ustring() /* parent table - not relevant */, locale);
   if(title.empty()) //TODO: This prevents "" as a real title.

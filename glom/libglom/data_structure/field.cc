@@ -469,12 +469,12 @@ Gnome::Gda::SqlOperatorType Field::sql_find_operator() const
 }
 
 
-Glib::ustring Field::get_name() const
+Glib::ustring Field::get_name() const noexcept
 {
   return m_field_info->get_name();
 }
 
-void Field::set_name(const Glib::ustring& value)
+void Field::set_name(const Glib::ustring& value) noexcept
 {
   m_field_info->set_name(value);
 }
