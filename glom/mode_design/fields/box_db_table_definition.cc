@@ -191,7 +191,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
   Glib::ustring name = m_AddDel.get_value(row, m_colName);
   if(!name.empty())
   {
-    std::shared_ptr<Field> field(new Field());
+    auto field = std::make_shared<Field>();
     field->set_name(name);
     field->set_title( Utils::title_from_string(name) , AppWindow::get_current_locale()); //Start with a title that might be useful.
     field->set_glom_type(Field::TYPE_NUMERIC);

@@ -531,60 +531,60 @@ std::shared_ptr<TableInfo> Document::create_table_system_preferences(type_vec_fi
 
   fields.clear();
 
-  std::shared_ptr<Field> primary_key(new Field()); //It's not used, because there's only one record, but we must have one.
+  auto primary_key = std::make_shared<Field>(); //It's not used, because there's only one record, but we must have one.
   primary_key->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ID);
   primary_key->set_glom_type(Field::TYPE_NUMERIC);
   fields.push_back(primary_key);
 
-  std::shared_ptr<Field> field_name(new Field());
+  auto field_name = std::make_shared<Field>();
   field_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME);
   field_name->set_title_original(_("System Name"));
   field_name->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_name);
 
-  std::shared_ptr<Field> field_org_name(new Field());
+  auto field_org_name = std::make_shared<Field>();
   field_org_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME);
   field_org_name->set_title_original(_("Organisation Name"));
   field_org_name->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_name);
 
-  std::shared_ptr<Field> field_org_logo(new Field());
+  auto field_org_logo = std::make_shared<Field>();
   field_org_logo->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO);
   field_org_logo->set_title_original(_("Organisation Logo"));
   field_org_logo->set_glom_type(Field::TYPE_IMAGE);
   fields.push_back(field_org_logo);
 
-  std::shared_ptr<Field> field_org_address_street(new Field());
+  auto field_org_address_street = std::make_shared<Field>();
   field_org_address_street->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET);
   field_org_address_street->set_title_original(_("Street"));
   field_org_address_street->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_street);
 
-  std::shared_ptr<Field> field_org_address_street2(new Field());
+  auto field_org_address_street2 = std::make_shared<Field>();
   field_org_address_street2->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2);
   field_org_address_street2->set_title_original(_("Street (line 2)"));
   field_org_address_street2->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_street2);
 
-  std::shared_ptr<Field> field_org_address_town(new Field());
+  auto field_org_address_town = std::make_shared<Field>();
   field_org_address_town->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN);
   field_org_address_town->set_title_original(_("City"));
   field_org_address_town->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_town);
 
-  std::shared_ptr<Field> field_org_address_county(new Field());
+  auto field_org_address_county = std::make_shared<Field>();
   field_org_address_county->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY);
   field_org_address_county->set_title_original(_("State"));
   field_org_address_county->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_county);
 
-  std::shared_ptr<Field> field_org_address_country(new Field());
+  auto field_org_address_country = std::make_shared<Field>();
   field_org_address_country->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY);
   field_org_address_country->set_title_original(_("Country"));
   field_org_address_country->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_country);
 
-  std::shared_ptr<Field> field_org_address_postcode(new Field());
+  auto field_org_address_postcode = std::make_shared<Field>();
   field_org_address_postcode->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE);
   field_org_address_postcode->set_title_original(_("Zip Code"));
   field_org_address_postcode->set_glom_type(Field::TYPE_TEXT);
@@ -2647,7 +2647,7 @@ bool Document::load_after(int& failure_code)
           const auto doctableinfo = std::make_shared<DocumentTableInfo>();
           m_tables[table_name] = doctableinfo;
 
-          std::shared_ptr<TableInfo> table_info(new TableInfo());
+          auto table_info = std::make_shared<TableInfo>();
           table_info->set_name(table_name);
           table_info->set_hidden( XmlUtils::get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN) );
           table_info->set_default( XmlUtils::get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT) );
@@ -2702,7 +2702,7 @@ bool Document::load_after(int& failure_code)
               const auto node_field = dynamic_cast<xmlpp::Element*>(item_field);
               if(node_field)
               {
-                std::shared_ptr<Field> field(new Field());
+                auto field = std::make_shared<Field>();
 
                 const auto strName = XmlUtils::get_node_attribute_value(node_field, GLOM_ATTRIBUTE_NAME);
                 field->set_name( strName );
@@ -2849,7 +2849,7 @@ bool Document::load_after(int& failure_code)
                       const auto group_name = XmlUtils::get_node_attribute_value(node_layout_group, GLOM_ATTRIBUTE_NAME);
                       if(!group_name.empty())
                       {
-                        std::shared_ptr<LayoutGroup> group(new LayoutGroup());
+                        auto group = std::make_shared<LayoutGroup>();
                         load_after_layout_group(node_layout_group, table_name, group);
 
                         layout_groups.push_back(group);
@@ -2882,7 +2882,7 @@ bool Document::load_after(int& failure_code)
 
                 //type_list_layout_groups layout_groups;
 
-                std::shared_ptr<Report> report(new Report());
+                auto report = std::make_shared<Report>();
                 report->set_name(report_name);
                 report->set_show_table_title(show_table_title);
 
@@ -2925,7 +2925,7 @@ bool Document::load_after(int& failure_code)
                 const auto name = XmlUtils::get_node_attribute_value(node_print_layout, GLOM_ATTRIBUTE_NAME);
                 const auto show_table_title = XmlUtils::get_node_attribute_value_as_bool(node_print_layout, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
 
-                std::shared_ptr<PrintLayout> print_layout(new PrintLayout());
+                auto print_layout = std::make_shared<PrintLayout>();
                 print_layout->set_name(name);
                 print_layout->set_show_table_title(show_table_title);
 

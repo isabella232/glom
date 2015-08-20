@@ -35,7 +35,7 @@ LayoutItem_Text::LayoutItem_Text(const LayoutItem_Text& src)
 {
   //Copy the underlying TranslatableItem, not the std::shared_ptr to it:
   const auto src_item = *(src.m_text);
-  m_text = std::shared_ptr<StaticText>(new StaticText(src_item));
+  m_text = std::make_shared<StaticText>(src_item);
 }
 
 LayoutItem_Text::~LayoutItem_Text()
@@ -62,7 +62,7 @@ LayoutItem_Text& LayoutItem_Text::operator=(const LayoutItem_Text& src)
 
   //Copy the underlying TranslatableItem, not the shardptr to it:
   const auto src_item = *(src.m_text);
-  m_text = std::shared_ptr<StaticText>(new StaticText(src_item));
+  m_text = std::make_shared<StaticText>(src_item);
 
   return *this;
 }

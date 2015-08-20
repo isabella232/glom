@@ -185,7 +185,7 @@ void Box_Print_Layouts::save_to_document()
 
       if(!name.empty() && std::find(listItems.begin(), listItems.end(), name) == listItems.end())
       {
-        std::shared_ptr<PrintLayout> item(new PrintLayout());
+        auto item = std::make_shared<PrintLayout>();
         item->set_name(name);
 
         item->set_title( m_AddDel.get_value(row, m_colTitle) , AppWindow::get_current_locale()); //TODO: Translations: Store the original in the TreeView.

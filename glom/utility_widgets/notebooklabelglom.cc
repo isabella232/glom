@@ -73,7 +73,7 @@ AppWindow* NotebookLabel::get_appwindow()
 
 void NotebookLabel::on_menu_new_group_activate()
 {
-  std::shared_ptr<LayoutGroup> group(new LayoutGroup());
+  auto group = std::make_shared<LayoutGroup>();
   group->set_title_original(_("New Group"));
   group->set_name(_("Group"));
   

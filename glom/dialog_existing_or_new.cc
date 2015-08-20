@@ -435,7 +435,7 @@ std::shared_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_ite
 {
   auto iter = m_existing_model->append(parent->children());
   (*iter)[m_existing_columns.m_col_title] = text;
-  return std::shared_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
+  return std::make_shared<Gtk::TreeModel::iterator>(iter);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -443,7 +443,7 @@ std::shared_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_ite
 {
   auto iter = m_new_model->append(parent->children());
   (*iter)[m_new_columns.m_col_title] = text;
-  return std::shared_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
+  return std::make_shared<Gtk::TreeModel::iterator>(iter);
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 

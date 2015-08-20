@@ -187,7 +187,7 @@ void Box_Reports::save_to_document()
 
       if(!report_name.empty() && std::find(listReports.begin(), listReports.end(), report_name) == listReports.end())
       {
-        std::shared_ptr<Report> report(new Report());
+        auto report = std::make_shared<Report>();
         report->set_name(report_name);
 
         report->set_title( m_AddDel.get_value(item, m_colTitle) , AppWindow::get_current_locale()); //TODO: Translations: Store the original in the TreeView.

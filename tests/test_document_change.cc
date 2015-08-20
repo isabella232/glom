@@ -64,7 +64,7 @@ int main()
 
 
   const Glib::ustring table_name = "sometable";
-  std::shared_ptr<Glom::TableInfo> table_info(new Glom::TableInfo());
+  auto table_info = std::make_shared<Glom::TableInfo>();
   table_info->set_name(table_name);
   
   const Glib::ustring table_title = "sometabletitle";

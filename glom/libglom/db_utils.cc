@@ -519,29 +519,29 @@ bool add_standard_tables(const Document* document)
     //Auto-increment next values:
     if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME))
     {
-      std::shared_ptr<TableInfo> table_info(new TableInfo());
+      auto table_info = std::make_shared<TableInfo>();
       table_info->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
       table_info->set_title_original(_("System: Auto Increments"));
       table_info->set_hidden(true);
 
       Document::type_vec_fields fields;
 
-      std::shared_ptr<Field> primary_key(new Field()); //It's not used, because there's only one record, but we must have one.
+      auto primary_key = std::make_shared<Field>(); //It's not used, because there's only one record, but we must have one.
       primary_key->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_ID);
       primary_key->set_glom_type(Field::TYPE_NUMERIC);
       fields.push_back(primary_key);
 
-      std::shared_ptr<Field> field_table_name(new Field());
+      auto field_table_name = std::make_shared<Field>();
       field_table_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME);
       field_table_name->set_glom_type(Field::TYPE_TEXT);
       fields.push_back(field_table_name);
 
-      std::shared_ptr<Field> field_field_name(new Field());
+      auto field_field_name = std::make_shared<Field>();
       field_field_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME);
       field_field_name->set_glom_type(Field::TYPE_TEXT);
       fields.push_back(field_field_name);
 
-      std::shared_ptr<Field> field_next_value(new Field());
+      auto field_next_value = std::make_shared<Field>();
       field_next_value->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE);
       field_next_value->set_glom_type(Field::TYPE_TEXT);
       fields.push_back(field_next_value);
@@ -1163,7 +1163,7 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
   bool created = false;
 
   //Primary key:
-  std::shared_ptr<Field> field_primary_key(new Field());
+  auto field_primary_key = std::make_shared<Field>();
   field_primary_key->set_name(table_name + "_id");
   field_primary_key->set_title_original( Glib::ustring::compose("%1 ID", table_name) );
   field_primary_key->set_primary_key();
@@ -1180,21 +1180,21 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
   fields.push_back(field_primary_key);
 
   //Description:
-  std::shared_ptr<Field> field_description(new Field());
+  auto field_description = std::make_shared<Field>();
   field_description->set_name("description");
   field_description->set_title_original(_("Description")); //Use a translation, because the original locale will be marked as non-English if the current locale is non-English.
   field_description->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_description);
 
   //Comments:
-  std::shared_ptr<Field> field_comments(new Field());
+  auto field_comments = std::make_shared<Field>();
   field_comments->set_name("comments");
   field_comments->set_title_original(_("Comments"));
   field_comments->set_glom_type(Field::TYPE_TEXT);
   field_comments->m_default_formatting.set_text_format_multiline();
   fields.push_back(field_comments);
 
-  std::shared_ptr<TableInfo> table_info(new TableInfo());
+  auto table_info = std::make_shared<TableInfo>();
   table_info->set_name(table_name);
   table_info->set_title_original( Utils::title_from_string( table_name ) ); //Start with a title that might be appropriate.
 
@@ -2306,7 +2306,7 @@ type_map_fields get_record_field_values(const Document* document, const Glib::us
   type_vecLayoutFields fieldsToGet;
   for(const auto& field : fields)
   {
-    const auto layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+    const auto layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_full_field_details(field);
 
     fieldsToGet.push_back(layout_item);

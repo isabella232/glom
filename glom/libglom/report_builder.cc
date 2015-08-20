@@ -743,7 +743,7 @@ static void fill_standard_list_report_fill(const std::shared_ptr<Report>& report
 
 std::shared_ptr<Report> ReportBuilder::create_standard_list_report(const Document* document, const Glib::ustring& table_name)
 {
-  std::shared_ptr<Report> result(new Report());
+  auto result = std::make_shared<Report>();
   result->set_name("list");
   //Translators: This is a noun. It is the title of a report.
   result->set_title_original(_("List"));
