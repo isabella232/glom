@@ -114,13 +114,13 @@ void CanvasGroupResizable::create_rect_manipulators()
   m_group_edge_manipulators->add_child(m_manipulator_edge_right);
 
   m_manipulator_corner_top_left->set_grid(m_grid);
-  m_manipulator_corner_top_left->set_snap_corner(CanvasRectMovable::CORNER_TOP_LEFT);
+  m_manipulator_corner_top_left->set_snap_corner(CanvasRectMovable::Corners::TOP_LEFT);
   m_manipulator_corner_top_right->set_grid(m_grid);
-  m_manipulator_corner_top_right->set_snap_corner(CanvasRectMovable::CORNER_TOP_RIGHT);
+  m_manipulator_corner_top_right->set_snap_corner(CanvasRectMovable::Corners::TOP_RIGHT);
   m_manipulator_corner_bottom_left->set_grid(m_grid);
-  m_manipulator_corner_bottom_left->set_snap_corner(CanvasRectMovable::CORNER_BOTTOM_LEFT);
+  m_manipulator_corner_bottom_left->set_snap_corner(CanvasRectMovable::Corners::BOTTOM_LEFT);
   m_manipulator_corner_bottom_right->set_grid(m_grid);
-  m_manipulator_corner_bottom_right->set_snap_corner(CanvasRectMovable::CORNER_BOTTOM_RIGHT);
+  m_manipulator_corner_bottom_right->set_snap_corner(CanvasRectMovable::Corners::BOTTOM_RIGHT);
   m_manipulator_edge_top->set_grid(m_grid);
   m_manipulator_edge_bottom->set_grid(m_grid);
   m_manipulator_edge_left->set_grid(m_grid);
@@ -139,14 +139,14 @@ void CanvasGroupResizable::create_rect_manipulators()
   m_group_edge_manipulators->raise();//m_group_outline);
   m_group_corner_manipulators->raise();//m_group_outline);
 
-  manipulator_connect_signals(m_manipulator_corner_top_left, MANIPULATOR_CORNER_TOP_LEFT);
-  manipulator_connect_signals(m_manipulator_corner_top_right, MANIPULATOR_CORNER_TOP_RIGHT);
-  manipulator_connect_signals(m_manipulator_corner_bottom_left, MANIPULATOR_CORNER_BOTTOM_LEFT);
-  manipulator_connect_signals(m_manipulator_corner_bottom_right, MANIPULATOR_CORNER_BOTTOM_RIGHT);
-  manipulator_connect_signals(m_manipulator_edge_top, MANIPULATOR_EDGE_TOP);
-  manipulator_connect_signals(m_manipulator_edge_bottom, MANIPULATOR_EDGE_BOTTOM);
-  manipulator_connect_signals(m_manipulator_edge_left, MANIPULATOR_EDGE_LEFT);
-  manipulator_connect_signals(m_manipulator_edge_right, MANIPULATOR_EDGE_RIGHT);
+  manipulator_connect_signals(m_manipulator_corner_top_left, Manipulators::CORNER_TOP_LEFT);
+  manipulator_connect_signals(m_manipulator_corner_top_right, Manipulators::CORNER_TOP_RIGHT);
+  manipulator_connect_signals(m_manipulator_corner_bottom_left, Manipulators::CORNER_BOTTOM_LEFT);
+  manipulator_connect_signals(m_manipulator_corner_bottom_right, Manipulators::CORNER_BOTTOM_RIGHT);
+  manipulator_connect_signals(m_manipulator_edge_top, Manipulators::EDGE_TOP);
+  manipulator_connect_signals(m_manipulator_edge_bottom, Manipulators::EDGE_BOTTOM);
+  manipulator_connect_signals(m_manipulator_edge_left, Manipulators::EDGE_LEFT);
+  manipulator_connect_signals(m_manipulator_edge_right, Manipulators::EDGE_RIGHT);
 }
 
 void CanvasGroupResizable::create_line_manipulators()
@@ -160,15 +160,15 @@ void CanvasGroupResizable::create_line_manipulators()
   m_group_edge_manipulators->add_child(m_manipulator_end);
 
   m_manipulator_start->set_grid(m_grid);
-  //m_manipulator_corner_top_left->set_snap_corner(CanvasRectMovable::CORNER_TOP_LEFT);
+  //m_manipulator_corner_top_left->set_snap_corner(CanvasRectMovable::Corners::TOP_LEFT);
   m_manipulator_end->set_grid(m_grid);
-  //m_manipulator_corner_top_right->set_snap_corner(CanvasRectMovable::CORNER_TOP_RIGHT);
+  //m_manipulator_corner_top_right->set_snap_corner(CanvasRectMovable::Corners::TOP_RIGHT);
   
   m_manipulator_start->set_drag_cursor(Gdk::TCROSS); //A rather arbitrary cursor.
   m_manipulator_end->set_drag_cursor(Gdk::TCROSS);
  
-  manipulator_connect_signals(m_manipulator_start, MANIPULATOR_START);
-  manipulator_connect_signals(m_manipulator_end, MANIPULATOR_END);
+  manipulator_connect_signals(m_manipulator_start, Manipulators::START);
+  manipulator_connect_signals(m_manipulator_end, Manipulators::END);
 }
 
 Glib::RefPtr<CanvasLineMovable> CanvasGroupResizable::create_outline_line(double x1, double y1, double x2, double y2)
@@ -498,27 +498,27 @@ Glib::RefPtr<CanvasItemMovable> CanvasGroupResizable::get_manipulator(Manipulato
   switch(manipulator_id)
   {
     //Rectangle manipulators:
-    case(MANIPULATOR_CORNER_TOP_LEFT):
+    case(Manipulators::CORNER_TOP_LEFT):
       return m_manipulator_corner_top_left;
-    case(MANIPULATOR_CORNER_TOP_RIGHT):
+    case(Manipulators::CORNER_TOP_RIGHT):
       return m_manipulator_corner_top_right;
-    case(MANIPULATOR_CORNER_BOTTOM_LEFT):
+    case(Manipulators::CORNER_BOTTOM_LEFT):
       return m_manipulator_corner_bottom_left;
-    case(MANIPULATOR_CORNER_BOTTOM_RIGHT):
+    case(Manipulators::CORNER_BOTTOM_RIGHT):
       return m_manipulator_corner_bottom_right;
-    case(MANIPULATOR_EDGE_TOP):
+    case(Manipulators::EDGE_TOP):
       return m_manipulator_edge_top;
-    case(MANIPULATOR_EDGE_BOTTOM):
+    case(Manipulators::EDGE_BOTTOM):
       return m_manipulator_edge_bottom;
-    case(MANIPULATOR_EDGE_LEFT):
+    case(Manipulators::EDGE_LEFT):
       return m_manipulator_edge_left;
-    case(MANIPULATOR_EDGE_RIGHT):
+    case(Manipulators::EDGE_RIGHT):
       return m_manipulator_edge_right;
 
     //Line manipulators:
-    case(MANIPULATOR_START):
+    case(Manipulators::START):
       return m_manipulator_start;
-    case(MANIPULATOR_END):
+    case(Manipulators::END):
       return m_manipulator_end;
     default:
       return Glib::RefPtr<CanvasItemMovable>();
@@ -550,7 +550,7 @@ void CanvasGroupResizable::on_manipulator_corner_moved(const Glib::RefPtr<Canvas
 
   switch(manipulator_id)
   {     
-    case(MANIPULATOR_CORNER_TOP_LEFT):
+    case(Manipulators::CORNER_TOP_LEFT):
     {
       const double new_x = std::min(manipulator_x, child_x + child_width);
       const double new_y = std::min(manipulator_y, child_y + child_height);
@@ -561,7 +561,7 @@ void CanvasGroupResizable::on_manipulator_corner_moved(const Glib::RefPtr<Canvas
 
       break;
     }
-    case(MANIPULATOR_CORNER_TOP_RIGHT):
+    case(Manipulators::CORNER_TOP_RIGHT):
     {
       const double new_y = std::min(manipulator_y, child_y + child_height);
       const double new_height = std::max(child_y + child_height - manipulator->property_y(), 0.0);
@@ -572,7 +572,7 @@ void CanvasGroupResizable::on_manipulator_corner_moved(const Glib::RefPtr<Canvas
 
       break;
     }
-    case(MANIPULATOR_CORNER_BOTTOM_LEFT):
+    case(Manipulators::CORNER_BOTTOM_LEFT):
     {
       const double new_x = std::min(manipulator_x, child_x + child_width);
       const double new_height = std::max(manipulator->property_y() + MANIPULATOR_CORNER_SIZE - child_y, 0.0);
@@ -582,7 +582,7 @@ void CanvasGroupResizable::on_manipulator_corner_moved(const Glib::RefPtr<Canvas
 
       break;
     }
-    case(MANIPULATOR_CORNER_BOTTOM_RIGHT):
+    case(Manipulators::CORNER_BOTTOM_RIGHT):
     {
       const double new_height = std::max(manipulator->property_y() + MANIPULATOR_CORNER_SIZE - child_y, 0.0);
       const double new_width = std::max(manipulator->property_x() + MANIPULATOR_CORNER_SIZE - child_x, 0.0);
@@ -626,7 +626,7 @@ void CanvasGroupResizable::on_manipulator_line_end_moved(const Glib::RefPtr<Canv
   if(points.get_num_points() < 2)
     return;
 
-  const int point_index = (manipulator_id == MANIPULATOR_START) ? 0 : 1;
+  const int point_index = (manipulator_id == Manipulators::START) ? 0 : 1;
   const double half_size = MANIPULATOR_CORNER_SIZE / 2;
   points.set_coordinate(point_index, manipulator_x + half_size, manipulator_y + half_size);
   line->property_points() = points; //TODO: Add a way to do this without getting and setting the points property.
@@ -676,7 +676,7 @@ void CanvasGroupResizable::on_manipulator_edge_moved(const Glib::RefPtr<CanvasIt
   
   switch(manipulator_id)
   {
-    case(MANIPULATOR_EDGE_TOP):
+    case(Manipulators::EDGE_TOP):
     {
       const double new_y = y1;
       const double new_height = std::max(child_y + child_height - y1, 0.0);
@@ -687,7 +687,7 @@ void CanvasGroupResizable::on_manipulator_edge_moved(const Glib::RefPtr<CanvasIt
       break;
     }
 
-    case(MANIPULATOR_EDGE_BOTTOM):
+    case(Manipulators::EDGE_BOTTOM):
     {
       const double new_height = std::max(y1 - child_y, 0.0);
 
@@ -695,7 +695,7 @@ void CanvasGroupResizable::on_manipulator_edge_moved(const Glib::RefPtr<CanvasIt
 
       break;
     }
-    case(MANIPULATOR_EDGE_LEFT):
+    case(Manipulators::EDGE_LEFT):
     {
       const double new_x = x1;
       const double new_width = std::max(child_x + child_width - x1, 0.0);
@@ -705,7 +705,7 @@ void CanvasGroupResizable::on_manipulator_edge_moved(const Glib::RefPtr<CanvasIt
 
       break;
     }
-    case(MANIPULATOR_EDGE_RIGHT):
+    case(Manipulators::EDGE_RIGHT):
     {
       const double new_width = std::max(x1 - child_x, 0.0);
 
@@ -925,7 +925,7 @@ void CanvasGroupResizable::snap_position(double& x, double& y) const
   double offset_y_min = 0;
 
   //Try snapping each corner, to choose the one that snapped closest:
-  for(int i = 0; i < CORNER_COUNT; ++i)
+  for(int i = 0; i < static_cast<int>(Corners::COUNT); ++i)
   {
     const Corners corner = (Corners)i;
     double temp_x = x;
@@ -958,19 +958,19 @@ void CanvasGroupResizable::snap_position(Corners corner, double& x, double& y) c
   double corner_y_offset = 0;
   switch(corner)
   {
-    case CORNER_TOP_LEFT:
+    case Corners::TOP_LEFT:
       corner_x_offset = 0;
       corner_y_offset = 0;
       break;
-    case CORNER_TOP_RIGHT:
+    case Corners::TOP_RIGHT:
       corner_x_offset = child_width;
       corner_y_offset = 0;
       break;
-    case CORNER_BOTTOM_LEFT:
+    case Corners::BOTTOM_LEFT:
       corner_x_offset = 0;
       corner_y_offset = child_height;
       break;
-    case CORNER_BOTTOM_RIGHT:
+    case Corners::BOTTOM_RIGHT:
       corner_x_offset = child_width;
       corner_y_offset = child_height;
       break;

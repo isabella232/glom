@@ -182,7 +182,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   //  std::cout << "  field_value: name=" << iter->first << ", value=" << iter->second.to_string() << std::endl;
   //}
 
-  g_assert(result_type != Field::TYPE_INVALID);
+  g_assert(result_type != Field::glom_field_type::INVALID);
 
   //g_warning("glom_evaluate_python_function_implementation: func=%s", func_impl.c_str());
 
@@ -406,7 +406,7 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
   //Pass an additional ui parameter for use by scripts:
   boost::python::object objUI(new PyGlomUI(callbacks));
 
-  glom_python_call(Field::TYPE_TEXT, pDocument, func_impl, error_message, objRecord, objUI);
+  glom_python_call(Field::glom_field_type::TEXT, pDocument, func_impl, error_message, objRecord, objUI);
 }
 
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type,

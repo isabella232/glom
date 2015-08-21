@@ -117,7 +117,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   /* SQLite does not have user/group access levels,
    * so the SQL queries would fail.
    */
-  if(hosting_mode == Glom::Document::HOSTING_MODE_SQLITE)
+  if(hosting_mode == Glom::Document::HostingMode::SQLITE)
   {
     return true;
   }
@@ -140,7 +140,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     "sometable with a ' quote character"} );
 
   //MySQL has a 64-character limit on SQL identifiers:
-  if(hosting_mode != Glom::Document::HOSTING_MODE_MYSQL_SELF)
+  if(hosting_mode != Glom::Document::HostingMode::MYSQL_SELF)
   {
     table_names.push_back("sometablewithaverylongnameyaddayaddayaddayaddayaddyaddayaddayaddayaddayaddayaddayaddayaddayaddayaddayaddayadda");
   }
@@ -157,7 +157,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
 
   //TODO_MySQL: Implement groups/users code.
-  if(hosting_mode == Glom::Document::HOSTING_MODE_MYSQL_SELF)
+  if(hosting_mode == Glom::Document::HostingMode::MYSQL_SELF)
   {
     test_selfhosting_cleanup(false /* do not delete the file. */);
     return true;

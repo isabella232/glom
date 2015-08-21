@@ -29,17 +29,17 @@ PrintLayoutToolbar::PrintLayoutToolbar()
 :  m_group_items(_("Items")),
    m_group_lines(_("Lines")),
    m_group_records(_("Records")),
-   m_drag_field("glom-field.png", PrintLayoutToolbarButton::ITEM_FIELD,
+   m_drag_field("glom-field.png", PrintLayoutToolbarButton::enumItems::FIELD,
      _("Database Field"), _("Drag this to the layout to add a new database field.")),
-   m_drag_text("glom-text.png", PrintLayoutToolbarButton::ITEM_TEXT,
+   m_drag_text("glom-text.png", PrintLayoutToolbarButton::enumItems::TEXT,
      _("Text"), _("Drag this to the layout to add a new static text box.")),
-   m_drag_image("glom-image.png", PrintLayoutToolbarButton::ITEM_IMAGE,
+   m_drag_image("glom-image.png", PrintLayoutToolbarButton::enumItems::IMAGE,
      _("Image"), _("Drag this to the layout to add a new static image.")),
-   m_drag_line_horizontal("glom-line-horizontal.png", PrintLayoutToolbarButton::ITEM_LINE_HORIZONTAL,
+   m_drag_line_horizontal("glom-line-horizontal.png", PrintLayoutToolbarButton::enumItems::LINE_HORIZONTAL,
      _("Horizontal Line"), _("Drag this to the layout to add a new horizontal line.")),
-   m_drag_line_vertical("glom-line-vertical.png", PrintLayoutToolbarButton::ITEM_LINE_VERTICAL,
+   m_drag_line_vertical("glom-line-vertical.png", PrintLayoutToolbarButton::enumItems::LINE_VERTICAL,
      _("Vertical Line"), _("Drag this to the layout to add a new vertical line.")),
-   m_drag_related_records("glom-related-records.png", PrintLayoutToolbarButton::ITEM_PORTAL,
+   m_drag_related_records("glom-related-records.png", PrintLayoutToolbarButton::enumItems::PORTAL,
      _("Related Records"), _("Drag this to the layout to add a new related records portal."))
 {
   // Looks ugly otherwise:

@@ -25,7 +25,7 @@
 
 static bool test_string_value(const Glib::ustring& str)
 {
-  const Glom::Field::glom_field_type field_type = Glom::Field::TYPE_TEXT;
+  const Glom::Field::glom_field_type field_type = Glom::Field::glom_field_type::TEXT;
 
   bool success = false;
   const Gnome::Gda::Value value =
@@ -75,11 +75,11 @@ int main()
 
   /* TODO:
   const Glib::Date date(11, Glib::Date::MAY, 1973);
-  if(!test_value(Glom::Field::TYPE_DATE, Gnome::Gda::Value(date)))
+  if(!test_value(Glom::Field::glom_field_type::DATE, Gnome::Gda::Value(date)))
     return EXIT_FAILURE;
 
   Gnome::Gda::Time time = {10, 20, 30, 0, 0};
-  if(!test_value(Glom::Field::TYPE_TIME, Gnome::Gda::Value(time)))
+  if(!test_value(Glom::Field::glom_field_type::TIME, Gnome::Gda::Value(time)))
     return EXIT_FAILURE;
   */
 

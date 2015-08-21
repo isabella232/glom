@@ -17,7 +17,7 @@ void execute_func_with_date_return_value()
   //Execute a python function:
   Glib::ustring error_message;
   const auto value = Glom::glom_evaluate_python_function_implementation(
-    Glom::Field::TYPE_DATE, calculation, field_values,
+    Glom::Field::glom_field_type::DATE, calculation, field_values,
     0 /* document */, "" /* table name */,
     std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
     connection,
@@ -52,7 +52,7 @@ void execute_func_with_date_input_value()
   //Execute a python function:
   Glib::ustring error_message;
   const auto value = Glom::glom_evaluate_python_function_implementation(
-    Glom::Field::TYPE_NUMERIC, calculation, field_values,
+    Glom::Field::glom_field_type::NUMERIC, calculation, field_values,
     0 /* document */, "" /* table name */,
     std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
     connection,
@@ -89,7 +89,7 @@ void execute_func_with_date_input_value_relativedelta()
 
   //Execute a python function:
   const auto value = Glom::glom_evaluate_python_function_implementation(
-    Glom::Field::TYPE_NUMERIC, calculation, field_values,
+    Glom::Field::glom_field_type::NUMERIC, calculation, field_values,
     0, "",
     std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
     connection);

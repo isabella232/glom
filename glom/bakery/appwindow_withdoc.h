@@ -62,11 +62,11 @@ public:
 
   virtual void init() override; //overridden to create document.
 
-  enum enumSaveChanges
+  enum class enumSaveChanges
   {
-    SAVECHANGES_Save,
-    SAVECHANGES_Cancel,
-    SAVECHANGES_Discard
+    Save,
+    Cancel,
+    Discard
   };
 
   static bool file_exists(const Glib::ustring& uri);

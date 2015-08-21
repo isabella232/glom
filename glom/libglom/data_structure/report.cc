@@ -26,7 +26,7 @@ namespace Glom
 Report::Report()
 : m_show_table_title(true)
 {
-  m_translatable_item_type = TRANSLATABLE_TYPE_REPORT;
+  m_translatable_item_type = enumTranslatableItemType::REPORT;
   m_layout_group = std::make_shared<LayoutGroup>();
 }
 

@@ -42,14 +42,14 @@ public:
   static Glib::RefPtr<CanvasRectMovable> create();
   static Glib::RefPtr<CanvasRectMovable> create(double x, double y, double width, double height);
 
-  enum Corners
+  enum class Corners
   {
-    CORNER_ALL, // Snap to all corners.
-    CORNER_TOP_LEFT,
-    CORNER_TOP_RIGHT,
-    CORNER_BOTTOM_LEFT,
-    CORNER_BOTTOM_RIGHT,
-    CORNER_COUNT
+    ALL, // Snap to all corners.
+    TOP_LEFT,
+    TOP_RIGHT,
+    BOTTOM_LEFT,
+    BOTTOM_RIGHT,
+    COUNT
   };
 
   /** Specify the corner to be considered when snapping to a grid while moving.

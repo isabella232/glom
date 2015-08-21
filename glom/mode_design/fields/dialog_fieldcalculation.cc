@@ -133,7 +133,7 @@ void Dialog_FieldCalculation::on_button_test()
 
   Glib::ustring error_message;
   const auto value = glom_evaluate_python_function_implementation(
-    Field::TYPE_TEXT,
+    Field::glom_field_type::TEXT,
     calculation,
     field_values, //TODO: Maybe use the field's type here.
     document,

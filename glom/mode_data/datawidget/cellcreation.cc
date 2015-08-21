@@ -47,7 +47,7 @@ static void apply_formatting(Gtk::CellRenderer* renderer, const std::shared_ptr<
   //Horizontal alignment:
   const Formatting::HorizontalAlignment alignment =
     layout_item->get_formatting_used_horizontal_alignment();
-  const float x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
+  const float x_align = (alignment == Formatting::HorizontalAlignment::LEFT ? 0.0 : 1.0);
   text_renderer->property_xalign() = x_align;
 
   const auto formatting = layout_item->get_formatting_used();
@@ -84,13 +84,13 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
 
     switch(item_field->get_glom_type())
     {
-      case(Field::TYPE_BOOLEAN):
+      case(Field::glom_field_type::BOOLEAN):
       {
          cell = Gtk::manage( new Gtk::CellRendererToggle() );
 
           break;
       }
-      case(Field::TYPE_IMAGE):
+      case(Field::glom_field_type::IMAGE):
       {
         cell = Gtk::manage( new Gtk::CellRendererPixbuf() );
 

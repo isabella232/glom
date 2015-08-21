@@ -25,7 +25,7 @@ namespace Glom
 
 DatabaseTitle::DatabaseTitle()
 {
-  m_translatable_item_type = TRANSLATABLE_TYPE_DATABASE_TITLE;
+  m_translatable_item_type = enumTranslatableItemType::DATABASE_TITLE;
 }
 
 DatabaseTitle::DatabaseTitle(const DatabaseTitle& src)

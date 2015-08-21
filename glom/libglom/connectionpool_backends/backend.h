@@ -37,11 +37,11 @@ class ConnectionPool;
 class ExceptionConnection : public std::exception
 {
 public:
-  enum failure_type
+  enum class failure_type
   {
-    FAILURE_NO_SERVER, //Either there was no attempt to connect to a specific database, or the connection failed both with and without specifying the database.
-    FAILURE_NO_DATABASE, //Connection without specifying the database was possible.
-    FAILURE_NO_BACKEND //No backend instance available. Should never happen.
+    NO_SERVER, //Either there was no attempt to connect to a specific database, or the connection failed both with and without specifying the database.
+    NO_DATABASE, //Connection without specifying the database was possible.
+    NO_BACKEND //No backend instance available. Should never happen.
   };
 
   ExceptionConnection(failure_type failure);
@@ -69,23 +69,23 @@ public:
   virtual ~Backend() {}
   typedef std::vector<std::shared_ptr<const Field> > type_vec_const_fields;
 
-  enum InitErrors
+  enum class InitErrors
   {
-     INITERROR_NONE,
-     INITERROR_DIRECTORY_ALREADY_EXISTS,
-     INITERROR_COULD_NOT_CREATE_DIRECTORY,
-     INITERROR_COULD_NOT_START_SERVER,
-     INITERROR_OTHER
+     NONE,
+     DIRECTORY_ALREADY_EXISTS,
+     COULD_NOT_CREATE_DIRECTORY,
+     COULD_NOT_START_SERVER,
+     OTHER
   };
 
-  enum StartupErrors
+  enum class StartupErrors
   {
-    STARTUPERROR_NONE, /*< The database is ready for use. */
-    STARTUPERROR_FAILED_NO_DATA, /*< There is no data for the database. */
-    STARTUPERROR_FAILED_NO_DATA_HAS_BACKUP_DATA, /*< There is no data for the database, but there is a backup file instead. */
-    STARTUPERROR_FAILED_NO_MAIN_DIRECTORY, /*< The main directory (containing data and config directories) could not be found. */
-    STARTUPERROR_FAILED_NO_PORT_AVAILABLE, /*< There was no network port available in the normal range of ports. */
-    STARTUPERROR_FAILED_UNKNOWN_REASON /*< Something else failed. */
+    NONE, /*< The database is ready for use. */
+    FAILED_NO_DATA, /*< There is no data for the database. */
+    FAILED_NO_DATA_HAS_BACKUP_DATA, /*< There is no data for the database, but there is a backup file instead. */
+    FAILED_NO_MAIN_DIRECTORY, /*< The main directory (containing data and config directories) could not be found. */
+    FAILED_NO_PORT_AVAILABLE, /*< There was no network port available in the normal range of ports. */
+    FAILED_UNKNOWN_REASON /*< Something else failed. */
   };
 
 protected:

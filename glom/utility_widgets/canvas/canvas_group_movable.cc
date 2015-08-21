@@ -168,19 +168,19 @@ void CanvasGroupMovable::snap_position_one_corner(Corners corner, double& x, dou
   double corner_y_offset = 0;
   switch(corner)
   {
-    case CORNER_TOP_LEFT:
+    case Corners::TOP_LEFT:
       corner_x_offset = 0;
       corner_y_offset = 0;
       break;
-    case CORNER_TOP_RIGHT:
+    case Corners::TOP_RIGHT:
       corner_x_offset = width;
       corner_y_offset = 0;
       break;
-    case CORNER_BOTTOM_LEFT:
+    case Corners::BOTTOM_LEFT:
       corner_x_offset = 0;
       corner_y_offset = height;
       break;
-    case CORNER_BOTTOM_RIGHT:
+    case Corners::BOTTOM_RIGHT:
       corner_x_offset = width;
       corner_y_offset = height;
       break;
@@ -212,7 +212,7 @@ void CanvasGroupMovable::snap_position(double& x, double& y) const
   double offset_y_min = 0;
 
   //Try snapping each corner, to choose the one that snapped closest:
-  for(int i = CORNER_TOP_LEFT; i < CORNER_COUNT; ++i)
+  for(int i = static_cast<int>(Corners::TOP_LEFT); i < static_cast<int>(Corners::COUNT); ++i)
   {
     const Corners corner = (Corners)i;
     double temp_x = x;

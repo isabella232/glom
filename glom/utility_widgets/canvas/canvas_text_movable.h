@@ -40,12 +40,12 @@ private:
 public:
   static Glib::RefPtr<CanvasTextMovable> create(const Glib::ustring& string = Glib::ustring(), double x = 0.0, double y = 0.0, double width = 0.0, Goocanvas::AnchorType anchor = Goocanvas::ANCHOR_NORTH_WEST);
 
-  enum Corners
+  enum class Corners
   {
-    CORNER_TOP_LEFT,
-    CORNER_TOP_RIGHT,
-    CORNER_BOTTOM_LEFT,
-    CORNER_BOTTOM_RIGHT
+    TOP_LEFT,
+    TOP_RIGHT,
+    BOTTOM_LEFT,
+    BOTTOM_RIGHT
   };
 
   /** Specify the corner to be considered when snapping to a grid while moving.

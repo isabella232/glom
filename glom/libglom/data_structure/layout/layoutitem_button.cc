@@ -26,7 +26,7 @@ namespace Glom
 
 LayoutItem_Button::LayoutItem_Button()
 {
-  m_translatable_item_type = TRANSLATABLE_TYPE_BUTTON;
+  m_translatable_item_type = enumTranslatableItemType::BUTTON;
 }
 
 LayoutItem_Button::LayoutItem_Button(const LayoutItem_Button& src)

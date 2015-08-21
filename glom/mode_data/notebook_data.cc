@@ -162,8 +162,8 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
 
   if(details_record_specified)
   {
-    if(current_view != DATA_VIEW_Details)
-      set_current_view(DATA_VIEW_Details);
+    if(current_view != dataview::DETAILS)
+      set_current_view(dataview::DETAILS);
   }
   else
   {
@@ -177,10 +177,10 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
     }
 
     //Set the layout:
-    if( (current_layout.empty() || (current_layout == "list")) && (current_view != DATA_VIEW_List) )
-      set_current_view(DATA_VIEW_List);
-    else if( (current_layout == "details") && (current_view != DATA_VIEW_Details) )
-      set_current_view(DATA_VIEW_Details);
+    if( (current_layout.empty() || (current_layout == "list")) && (current_view != dataview::LIST) )
+      set_current_view(dataview::LIST);
+    else if( (current_layout == "details") && (current_view != dataview::DETAILS) )
+      set_current_view(dataview::DETAILS);
   }
 
   //Re-enable this handler, so we can respond to notebook page changes:
@@ -204,8 +204,8 @@ void Notebook_Data::show_details(const Gnome::Gda::Value& primary_key_value)
   //std::cout << "DEBUG: Notebook_Data::show_details() primary_key_value=" << primary_key_value.to_string() << std::endl;
   m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_value);
 
-  if(get_current_view() != DATA_VIEW_Details)
-    set_current_view(DATA_VIEW_Details);
+  if(get_current_view() != dataview::DETAILS)
+    set_current_view(dataview::DETAILS);
 
   //Re-enable this handler, so we can respond to notebook page changes:
   if(m_connection_switch_page)
@@ -231,7 +231,7 @@ void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& prim
 
 FoundSet Notebook_Data::get_found_set_selected() const
 {
-  if(get_current_view() == DATA_VIEW_Details)
+  if(get_current_view() == dataview::DETAILS)
   {
     return m_Box_Details.get_found_set();
   }
@@ -269,7 +269,7 @@ FoundSet Notebook_Data::get_found_set_selected() const
 
 void Notebook_Data::set_current_view(dataview view)
 {
-  if(view == DATA_VIEW_List)
+  if(view == dataview::LIST)
     set_visible_child(m_pagename_list);
   else
     set_visible_child(m_pagename_details);
@@ -318,19 +318,19 @@ void Notebook_Data::do_menu_file_print()
   }
 }
 
-enum dataview
+enum class dataview
 {
-  DATA_VIEW_Details,
-  DATA_VIEW_List
+  Details,
+  List
 };
 
 Notebook_Data::dataview Notebook_Data::get_current_view() const
 {
   const auto current_page = get_visible_child_name();
 
-  dataview result = DATA_VIEW_Details;
+  dataview result = dataview::DETAILS;
   if(current_page == m_pagename_list)
-    result = DATA_VIEW_List;
+    result = dataview::LIST;
 
   return result;
 }

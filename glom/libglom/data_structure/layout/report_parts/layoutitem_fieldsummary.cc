@@ -25,7 +25,7 @@ namespace Glom
 {
 
 LayoutItem_FieldSummary::LayoutItem_FieldSummary()
-: m_summary_type(TYPE_INVALID)
+: m_summary_type(summaryType::INVALID)
 {
 }
 
@@ -96,13 +96,13 @@ void LayoutItem_FieldSummary::set_summary_type(summaryType summary_type)
 
 Glib::ustring LayoutItem_FieldSummary::get_summary_type_sql() const
 {
-  if(m_summary_type == TYPE_INVALID)
+  if(m_summary_type == summaryType::INVALID)
     return "INVALID";
-  else if(m_summary_type == TYPE_SUM)
+  else if(m_summary_type == summaryType::SUM)
     return "SUM";
-  else if(m_summary_type == TYPE_AVERAGE)
+  else if(m_summary_type == summaryType::AVERAGE)
     return "AVG";
-  else if(m_summary_type == TYPE_COUNT)
+  else if(m_summary_type == summaryType::COUNT)
     return "COUNT";
   else
     return "INVALID";
@@ -111,13 +111,13 @@ Glib::ustring LayoutItem_FieldSummary::get_summary_type_sql() const
 void LayoutItem_FieldSummary::set_summary_type_from_sql(const Glib::ustring& summary_type)
 {
   if(summary_type == "SUM")
-    m_summary_type = TYPE_SUM;
+    m_summary_type = summaryType::SUM;
   else if(summary_type == "AVG")
-    m_summary_type = TYPE_AVERAGE;
+    m_summary_type = summaryType::AVERAGE;
   else if(summary_type == "COUNT")
-    m_summary_type = TYPE_COUNT;
+    m_summary_type = summaryType::COUNT;
   else
-    m_summary_type = TYPE_INVALID;
+    m_summary_type = summaryType::INVALID;
 }
 
 void LayoutItem_FieldSummary::set_field(const std::shared_ptr<LayoutItem_Field>& field)
@@ -130,7 +130,7 @@ Glib::ustring LayoutItem_FieldSummary::get_layout_display_name() const
 {
   auto result = get_layout_display_name_field();
 
-  if(m_summary_type == TYPE_INVALID)
+  if(m_summary_type == summaryType::INVALID)
     result = _("No summary chosen");
   else
     result = get_summary_type_name(m_summary_type) + '(' + result + ')';
@@ -147,13 +147,13 @@ Glib::ustring LayoutItem_FieldSummary::get_layout_display_name_field() const
 //static:
 Glib::ustring LayoutItem_FieldSummary::get_summary_type_name(summaryType summary_type)
 {
-  if(summary_type == TYPE_INVALID)
+  if(summary_type == summaryType::INVALID)
     return _("Invalid");
-  else if(summary_type == TYPE_SUM)
+  else if(summary_type == summaryType::SUM)
     return _("Sum");
-  else if(summary_type == TYPE_AVERAGE)
+  else if(summary_type == summaryType::AVERAGE)
     return _("Average");
-  else if(summary_type == TYPE_COUNT)
+  else if(summary_type == summaryType::COUNT)
     return _("Count");
   else
     return _("Invalid");

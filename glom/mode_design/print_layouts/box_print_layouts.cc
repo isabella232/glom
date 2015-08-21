@@ -77,7 +77,7 @@ bool Box_Print_Layouts::fill_from_database()
   bool result = Base_DB::fill_from_database();
 
   //Enable/Disable extra widgets:
-  bool developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+  bool developer_mode = (get_userlevel() == AppState::userlevels::DEVELOPER);
 
   //Developers see more columns, so make it bigger:
   if(developer_mode)
@@ -92,11 +92,11 @@ bool Box_Print_Layouts::fill_from_database()
 
   const bool editable = developer_mode;
   const bool visible_extras = developer_mode;
-  m_colName = m_AddDel.add_column(_("Name"), AddDelColumnInfo::STYLE_Text, editable, visible_extras);
+  m_colName = m_AddDel.add_column(_("Name"), AddDelColumnInfo::enumStyles::Text, editable, visible_extras);
   m_AddDel.prevent_duplicates(m_colName); //Don't allow a relationship to be added twice.
   m_AddDel.set_prevent_duplicates_warning(_("This item already exists. Please choose a different item name"));
 
-  m_colTitle = m_AddDel.add_column(_("Title"), AddDelColumnInfo::STYLE_Text, editable, true);
+  m_colTitle = m_AddDel.add_column(_("Title"), AddDelColumnInfo::enumStyles::Text, editable, true);
 
   std::vector<Glib::ustring> listItems;
   Document* document = get_document();
@@ -173,7 +173,7 @@ void Box_Print_Layouts::on_adddel_user_requested_edit(const Gtk::TreeModel::iter
 
 void Box_Print_Layouts::save_to_document()
 {
-  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  if(get_userlevel() == AppState::userlevels::DEVELOPER)
   {
     //Add any that are not in the document:
     std::vector<Glib::ustring> listItems = get_document()->get_print_layout_names(m_table_name);
@@ -202,7 +202,7 @@ void Box_Print_Layouts::save_to_document()
 
 void Box_Print_Layouts::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint column)
 {
-  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  if(get_userlevel() == AppState::userlevels::DEVELOPER)
   {
     const auto name = m_AddDel.get_value_key(row);
     Document* document = get_document();

@@ -408,7 +408,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     return Glib::ustring();
   }
 
-  if(glom_type == Field::TYPE_DATE)
+  if(glom_type == Field::glom_field_type::DATE)
   {
     tm the_c_time;
     memset(&the_c_time, 0, sizeof(the_c_time));
@@ -450,7 +450,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     return date.format_string("%x"); //%x means "is replaced by the locale's appropriate date representation".
     */
   }
-  else if(glom_type == Field::TYPE_TIME)
+  else if(glom_type == Field::glom_field_type::TIME)
   {
     tm the_c_time;
     memset(&the_c_time, 0, sizeof(the_c_time));
@@ -481,7 +481,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 
     return format_time(the_c_time, locale, iso_format);
   }
-  else if(glom_type == Field::TYPE_NUMERIC)
+  else if(glom_type == Field::glom_field_type::NUMERIC)
   {
     const auto value_type = value.get_value_type();
     if(value_type != GDA_TYPE_NUMERIC
@@ -558,11 +558,11 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     //std::cout << "debug: " << G_STRFUNC << ": number=" << number << ", text=" << text << std::endl;
     return text; //Do something like Glib::locale_to_utf(), but with the specified locale instead of the current locale.
   }
-  else if(glom_type == Field::TYPE_TEXT)
+  else if(glom_type == Field::glom_field_type::TEXT)
   {
      return value.get_string();
   }
-  else if(glom_type == Field::TYPE_BOOLEAN)
+  else if(glom_type == Field::glom_field_type::BOOLEAN)
   {
     //This is used only by Field::to_file_format(),
     //and should never be shown in the UI.
@@ -571,18 +571,18 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     else
       return "FALSE";
   }
-  else if(glom_type == Field::TYPE_IMAGE)
+  else if(glom_type == Field::glom_field_type::IMAGE)
   {
     //This function is only used for :
     //- UI-visible strings, but images should never be shown as text in the UI. 
     //- Values in SQL queries, but we only do that for clauses (where/sort/order) 
     //  which should never use image values.
-    std::cerr << G_STRFUNC << ": Unexpected TYPE_IMAGE field type: " << glom_type << std::endl;
+    std::cerr << G_STRFUNC << ": Unexpected enumType::IMAGE field type: " << static_cast<int>(glom_type) << std::endl;
     return Glib::ustring();
   }
   else
   {
-    std::cerr << G_STRFUNC << ": Unexpected glom field type: " << glom_type << std::endl;
+    std::cerr << G_STRFUNC << ": Unexpected glom field type: " << static_cast<int>(glom_type) << std::endl;
     return value.to_string();
   }
 }
@@ -618,7 +618,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   //But we use "" for strings, because the distinction between NULL and "" would not be clear to users.
   if(text.empty())
   {
-    if( (glom_type == Field::TYPE_DATE) || (glom_type ==  Field::TYPE_TIME) || (glom_type ==  Field::TYPE_NUMERIC) )
+    if( (glom_type == Field::glom_field_type::DATE) || (glom_type ==  Field::glom_field_type::TIME) || (glom_type ==  Field::glom_field_type::NUMERIC) )
     {
       Gnome::Gda::Value null_value;
       success = true;
@@ -626,7 +626,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
     }
   }
 
-  if(glom_type == Field::TYPE_DATE)
+  if(glom_type == Field::glom_field_type::DATE)
   {
     tm the_c_time = parse_date(text, the_locale, success);
 
@@ -635,7 +635,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
 
     return Gnome::Gda::Value(gda_date);
   }
-  else if(glom_type == Field::TYPE_TIME)
+  else if(glom_type == Field::glom_field_type::TIME)
   {
     tm the_c_time = parse_time(text, the_locale, success);
 
@@ -652,7 +652,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
 
     return Gnome::Gda::Value(gda_time);
   }
-  else if(glom_type == Field::TYPE_NUMERIC)
+  else if(glom_type == Field::glom_field_type::NUMERIC)
   {
     Glib::ustring text_to_parse = Utils::trim_whitespace(text);
 
@@ -686,16 +686,16 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
     success = true; //Can this ever fail?
     return Gnome::Gda::Value(numeric);
   }
-  else if(glom_type == Field::TYPE_BOOLEAN)
+  else if(glom_type == Field::glom_field_type::BOOLEAN)
   {
     success = true;
     return Gnome::Gda::Value( (text.uppercase() == "TRUE" ? true : false) ); //TODO: Internationalize this, but it should never be used anyway.
   }
-  else if(glom_type == Field::TYPE_IMAGE)
+  else if(glom_type == Field::glom_field_type::IMAGE)
   {
     //This function is only used for :
     //- UI-visible strings, but images should never be entered as text in the UI. 
-    std::cerr << G_STRFUNC << ": Unexpected TYPE_IMAGE field type: " << glom_type << std::endl;
+    std::cerr << G_STRFUNC << ": Unexpected enumType::IMAGE field type: " << static_cast<int>(glom_type) << std::endl;
     return Gnome::Gda::Value();
   }
 
@@ -1023,7 +1023,7 @@ Gnome::Gda::Value Conversions::get_empty_value(Field::glom_field_type field_type
 {
   switch(field_type)
   {
-    case(Field::TYPE_TEXT):
+    case(Field::glom_field_type::TEXT):
       return Gnome::Gda::Value( Glib::ustring() ); //Use an empty string instead of a null for text fields, because the distinction is confusing for users, and gives no advantages.
     default:
       return Gnome::Gda::Value(); //A NULL instance, because there is no suitable empty value for numeric, date, or time fields.
@@ -1034,21 +1034,21 @@ Gnome::Gda::Value Conversions::get_example_value(Field::glom_field_type field_ty
 {
   switch(field_type)
   {
-    case(Field::TYPE_BOOLEAN):
+    case(Field::glom_field_type::BOOLEAN):
       return Gnome::Gda::Value(true);
-    case(Field::TYPE_DATE):
+    case(Field::glom_field_type::DATE):
     {
       bool success = false;
       return parse_value(field_type, "01/02/03", success, true /* iso_format */);
     }
-    case(Field::TYPE_NUMERIC):
+    case(Field::glom_field_type::NUMERIC):
     {
       bool success = false;
       return parse_value(field_type, "1", success, true /* iso_format */);
     }
-    case(Field::TYPE_TEXT):
+    case(Field::glom_field_type::TEXT):
       return Gnome::Gda::Value( Glib::ustring("example") ); //Use an empty string instead of a null for text fields, because the distinction is confusing for users, and gives no advantages.
-    case(Field::TYPE_TIME):
+    case(Field::glom_field_type::TIME):
     {
       bool success = false;
       return parse_value(field_type, "01:02", success, true /* iso_format */);
@@ -1087,7 +1087,7 @@ Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Fie
   {
     //Try to return the canonical type, 
     //instead of just something of a similar GType:
-    if((target_glom_type == Field::TYPE_NUMERIC) && 
+    if((target_glom_type == Field::glom_field_type::NUMERIC) && 
       (vtype_is_numeric(gvalue_type_source)))
     {
       const auto number = get_double_for_gda_value_numeric(value);

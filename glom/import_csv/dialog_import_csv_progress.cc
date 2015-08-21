@@ -68,7 +68,7 @@ void Dialog_Import_CSV_Progress::import(Dialog_Import_CSV& data_source)
 
   switch(data_source.get_parser_state())
   {
-  case CsvParser::STATE_PARSING:
+  case CsvParser::State::PARSING:
   {
     // Wait for the parsing to finish. We do not start importing before the file has been
     // parsed completely since we would not to rollback our changes in case of a
@@ -88,7 +88,7 @@ void Dialog_Import_CSV_Progress::import(Dialog_Import_CSV& data_source)
     m_ready_connection = data_source.signal_state_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV_Progress::on_data_source_state_changed));
     break;
   }
-  case CsvParser::STATE_PARSED:
+  case CsvParser::State::PARSED:
     begin_import();
     break;
   default:
@@ -129,11 +129,11 @@ void Dialog_Import_CSV_Progress::on_data_source_state_changed()
 {
   switch(m_data_source->get_parser_state())
   {
-  case CsvParser::STATE_ENCODING_ERROR:
+  case CsvParser::State::ENCODING_ERROR:
     // Cancel on error
     response(Gtk::RESPONSE_CANCEL);
     break;
-  case CsvParser::STATE_PARSED:
+  case CsvParser::State::PARSED:
     // Begin importing when fully parsed
     begin_import();
     //m_progress_connection = Glib::signal_idle().connect(sigc::mem_fun(*this, &Dialog_Import_CSV_Progress::on_idle_import));

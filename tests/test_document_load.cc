@@ -192,12 +192,12 @@ int main()
   std::shared_ptr<const Glom::Field> field = document.get_field("contacts", "contact_id");
   g_assert(field);
   g_assert( field->get_title_original() == "Contact ID" );
-  g_assert(field->get_glom_type() == Glom::Field::TYPE_NUMERIC);
+  g_assert(field->get_glom_type() == Glom::Field::glom_field_type::NUMERIC);
   g_assert(field->get_auto_increment());
   field = document.get_field("locations", "rent");
   g_assert(field);
   g_assert( field->get_title_original() == "Rent" );
-  g_assert(field->get_glom_type() == Glom::Field::TYPE_NUMERIC);
+  g_assert(field->get_glom_type() == Glom::Field::glom_field_type::NUMERIC);
   g_assert(!field->get_auto_increment());
   g_assert(!field->get_unique_key());
 
@@ -235,9 +235,9 @@ int main()
   //Check Field Formatting:
   field = document.get_field("contacts", "name_title");  
   g_assert(field);
-  g_assert(field->get_glom_type() == Glom::Field::TYPE_TEXT);
+  g_assert(field->get_glom_type() == Glom::Field::glom_field_type::TEXT);
   const Glom::Formatting& formatting = field->m_default_formatting;
-  g_assert(formatting.get_horizontal_alignment() == Glom::Formatting::HORIZONTAL_ALIGNMENT_AUTO);
+  g_assert(formatting.get_horizontal_alignment() == Glom::Formatting::HorizontalAlignment::AUTO);
   
   g_assert(formatting.get_has_choices());
   g_assert(formatting.get_has_custom_choices());

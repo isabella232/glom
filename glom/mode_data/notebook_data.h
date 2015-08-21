@@ -66,10 +66,10 @@ public:
 
   void get_record_counts(gulong& total, gulong& found);
 
-  enum dataview
+  enum class dataview
   {
-    DATA_VIEW_Details,
-    DATA_VIEW_List
+    DETAILS,
+    LIST
   };
 
   dataview get_current_view() const;

@@ -60,12 +60,12 @@ public:
    */
   void scale_to_size();
 
-  enum Corners
+  enum class Corners
   {
-    CORNER_TOP_LEFT,
-    CORNER_TOP_RIGHT,
-    CORNER_BOTTOM_LEFT,
-    CORNER_BOTTOM_RIGHT
+    TOP_LEFT,
+    TOP_RIGHT,
+    BOTTOM_LEFT,
+    BOTTOM_RIGHT
   };
 
   /** Specify the corner to be considered when snapping to a grid while moving.

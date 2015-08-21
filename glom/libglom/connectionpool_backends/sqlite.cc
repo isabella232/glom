@@ -96,10 +96,10 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
     if(Glom::Utils::file_exists(db_dir) &&
       (db_dir->query_file_type() == Gio::FILE_TYPE_DIRECTORY))
     {
-      throw ExceptionConnection(ExceptionConnection::FAILURE_NO_DATABASE);
+      throw ExceptionConnection(ExceptionConnection::failure_type::NO_DATABASE);
     }
     else
-      throw ExceptionConnection(ExceptionConnection::FAILURE_NO_SERVER);
+      throw ExceptionConnection(ExceptionConnection::failure_type::NO_SERVER);
   }
 
   return connection;
@@ -228,7 +228,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
       // Convert values to date or time, accordingly.
       switch(changed_iter->second->get_glom_type())
       {
-      case Field::TYPE_TEXT:
+      case Field::glom_field_type::TEXT:
         if(column->gtype == G_TYPE_BOOLEAN)
 	  trans_fields += "(CASE WHEN "+ DbUtils::escape_sql_id(column->column_name) + " = 1 THEN 'true' "
                                               "WHEN " + DbUtils::escape_sql_id(column->column_name) + " = 0 THEN 'false' "
@@ -240,7 +240,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
           trans_fields += "(CASE WHEN "+ DbUtils::escape_sql_id(column->column_name) + " IS NULL THEN '' "
                                               "WHEN " + DbUtils::escape_sql_id(column->column_name) + " IS NOT NULL THEN " + DbUtils::escape_sql_id(column->column_name) + " END)";
 	break;
-      case Field::TYPE_NUMERIC:
+      case Field::glom_field_type::NUMERIC:
         if(column->gtype == G_TYPE_BOOLEAN)
           trans_fields += "(CASE WHEN "+ DbUtils::escape_sql_id(column->column_name) + " = 0 THEN 0 "
                                               "WHEN " + DbUtils::escape_sql_id(column->column_name) + " != 0 THEN 1 "
@@ -250,7 +250,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
         else
           trans_fields += Glib::ustring("CAST(")+ DbUtils::escape_sql_id(column->column_name) + " AS real)";
         break;
-      case Field::TYPE_BOOLEAN:
+      case Field::glom_field_type::BOOLEAN:
         if(column->gtype == G_TYPE_STRING)
           trans_fields += "(CASE WHEN "+ DbUtils::escape_sql_id(column->column_name) + " = 'true' THEN 1 "
                                               "WHEN " + DbUtils::escape_sql_id(column->column_name) + " = 'false' THEN 0 "
@@ -264,19 +264,19 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
         else
           trans_fields += Glib::ustring(column->column_name) + " IS NOT NULL";
         break;
-      case Field::TYPE_DATE:
+      case Field::glom_field_type::DATE:
         if(column->gtype == G_TYPE_BOOLEAN || column->gtype == GDA_TYPE_BLOB || column->gtype == G_TYPE_DOUBLE)
           trans_fields += "NULL";
         else
           trans_fields += Glib::ustring("date(")+ DbUtils::escape_sql_id(column->column_name) + ')';
         break;
-      case Field::TYPE_TIME:
+      case Field::glom_field_type::TIME:
         if(column->gtype == G_TYPE_BOOLEAN || column->gtype == GDA_TYPE_BLOB || column->gtype == G_TYPE_DOUBLE)
           trans_fields += "NULL";
         else
           trans_fields += Glib::ustring("time(")+ DbUtils::escape_sql_id(column->column_name) + ')';
         break;
-      case Field::TYPE_IMAGE:
+      case Field::glom_field_type::IMAGE:
         if(column->gtype == GDA_TYPE_BLOB)
           trans_fields += column->column_name;
         else
@@ -314,13 +314,13 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
       {
         switch(field->get_glom_type())
         {
-        case Field::TYPE_NUMERIC:
+        case Field::glom_field_type::NUMERIC:
           trans_fields += '0';
           break;
-        case Field::TYPE_BOOLEAN:
+        case Field::glom_field_type::BOOLEAN:
           trans_fields += '0';
           break;
-        case Field::TYPE_TEXT:
+        case Field::glom_field_type::TEXT:
           trans_fields += "''";
           break;
         default:

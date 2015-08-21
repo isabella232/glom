@@ -40,7 +40,7 @@ namespace Glom
 {
 
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
-: m_hbox_content(Gtk::ORIENTATION_HORIZONTAL, UiUtils::DEFAULT_SPACING_SMALL),
+: m_hbox_content(Gtk::ORIENTATION_HORIZONTAL, static_cast<int>(UiUtils::DefaultSpacings::SMALL)),
   m_show_toolbar(false),
   m_hbox_buttons(Gtk::ORIENTATION_HORIZONTAL),
   m_Button_New(_("_Add"), true),
@@ -58,19 +58,19 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_layout_name = "details";
 
   m_hbox_buttons.set_layout(Gtk::BUTTONBOX_END);
-  m_hbox_buttons.set_spacing(UiUtils::DEFAULT_SPACING_SMALL);
+  m_hbox_buttons.set_spacing(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
 
   add_view(&m_FlowTable); //Allow this to access the document too.
 
   m_FlowTable.set_lines(1); //Sub-groups will have multiple columns (by default, there is one sub-group, with 2 columns).
 
-  m_FlowTable.set_horizontal_spacing(UiUtils::DEFAULT_SPACING_SMALL); //The default anyway.
-  m_FlowTable.set_vertical_spacing(UiUtils::DEFAULT_SPACING_SMALL); //The default anyway.
+  m_FlowTable.set_horizontal_spacing(static_cast<int>(UiUtils::DefaultSpacings::SMALL)); //The default anyway.
+  m_FlowTable.set_vertical_spacing(static_cast<int>(UiUtils::DefaultSpacings::SMALL)); //The default anyway.
 
   //m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [New] to add a new record.\n Leave automatic ID fields empty - they will be filled for you.");
 
 
-  //m_ScrolledWindow.set_border_width(UiUtils::DEFAULT_SPACING_SMALL);
+  //m_ScrolledWindow.set_border_width(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
 
   // Allow vertical scrolling, but never scroll horizontally:
   m_ScrolledWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
@@ -901,7 +901,7 @@ void Box_Data_Details::on_flowtable_field_choices_changed(const std::shared_ptr<
 void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_design_mode = ( user_level == AppState::USERLEVEL_DEVELOPER );
+  m_design_mode = ( user_level == AppState::userlevels::DEVELOPER );
   m_FlowTable.set_design_mode(m_design_mode);
 
   // Recreate the layout to correctly set the size of empty flowtables:

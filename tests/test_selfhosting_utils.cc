@@ -160,24 +160,24 @@ bool test_selfhost(Glom::Document& document, const Glib::ustring& user, const Gl
   connection_pool->set_password(password);
 
   const auto started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
-  if(started != Glom::ConnectionPool::Backend::STARTUPERROR_NONE)
+  if(started != Glom::ConnectionPool::Backend::StartupErrors::NONE)
   {
-    std::cerr << G_STRFUNC << ": connection_pool->startup(): result=" << started << std::endl;
+    std::cerr << G_STRFUNC << ": connection_pool->startup(): result=" << static_cast<int>(started) << std::endl;
     test_selfhosting_cleanup();
     return false;
   }
-  g_assert(started == Glom::ConnectionPool::Backend::STARTUPERROR_NONE);
+  g_assert(started == Glom::ConnectionPool::Backend::StartupErrors::NONE);
 
   return true;
 }
 
 bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
 {
-  if( (hosting_mode != Glom::Document::HOSTING_MODE_POSTGRES_SELF) &&
-    (hosting_mode != Glom::Document::HOSTING_MODE_MYSQL_SELF) &&
-    (hosting_mode != Glom::Document::HOSTING_MODE_SQLITE) )
+  if( (hosting_mode != Glom::Document::HostingMode::POSTGRES_SELF) &&
+    (hosting_mode != Glom::Document::HostingMode::MYSQL_SELF) &&
+    (hosting_mode != Glom::Document::HostingMode::SQLITE) )
   {
-    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << hosting_mode << std::endl;
+    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << static_cast<int>(hosting_mode) << std::endl;
     return false;
   }
 
@@ -220,7 +220,7 @@ bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document
   //Create the self-hosting files:
   const Glom::ConnectionPool::InitErrors initialized_errors =
     connection_pool->initialize( sigc::ptr_fun(&on_initialize_progress) );
-  g_assert(initialized_errors == Glom::ConnectionPool::Backend::INITERROR_NONE);
+  g_assert(initialized_errors == Glom::ConnectionPool::Backend::InitErrors::NONE);
   
   if(!check_directory_exists())
   {
@@ -345,11 +345,11 @@ static bool after_load(Glom::Document& document, Glom::Document::HostingMode hos
 
 bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
 {
-  if( (hosting_mode != Glom::Document::HOSTING_MODE_POSTGRES_SELF) &&
-    (hosting_mode != Glom::Document::HOSTING_MODE_MYSQL_SELF) &&
-    (hosting_mode != Glom::Document::HOSTING_MODE_SQLITE) )
+  if( (hosting_mode != Glom::Document::HostingMode::POSTGRES_SELF) &&
+    (hosting_mode != Glom::Document::HostingMode::MYSQL_SELF) &&
+    (hosting_mode != Glom::Document::HostingMode::SQLITE) )
   {
-    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << hosting_mode << std::endl;
+    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << static_cast<int>(hosting_mode) << std::endl;
     return false;
   }
 
@@ -371,11 +371,11 @@ bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Gl
 
 bool test_create_and_selfhost_from_data(const Glib::ustring& example_file_contents, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
 {
-  if( (hosting_mode != Glom::Document::HOSTING_MODE_POSTGRES_SELF) &&
-    (hosting_mode != Glom::Document::HOSTING_MODE_MYSQL_SELF) &&
-    (hosting_mode != Glom::Document::HOSTING_MODE_SQLITE) )
+  if( (hosting_mode != Glom::Document::HostingMode::POSTGRES_SELF) &&
+    (hosting_mode != Glom::Document::HostingMode::MYSQL_SELF) &&
+    (hosting_mode != Glom::Document::HostingMode::SQLITE) )
   {
-    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << hosting_mode << std::endl;
+    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << static_cast<int>(hosting_mode) << std::endl;
     return false;
   }
 
@@ -584,7 +584,7 @@ static bool test_hosting_mode(const SlotTest& slot, Glom::Document::HostingMode 
 
 int test_all_hosting_modes(const SlotTest& slot)
 {
-  if(!test_hosting_mode(slot, Glom::Document::HOSTING_MODE_SQLITE, "SQLite"))
+  if(!test_hosting_mode(slot, Glom::Document::HostingMode::SQLITE, "SQLite"))
     return EXIT_FAILURE;
 
 //Do not test MySQL unless it is enabled in the build,
@@ -594,11 +594,11 @@ int test_all_hosting_modes(const SlotTest& slot)
 //Also, Ubuntu's AppArmor will not let use start a MySQL process by default anyway.
 //See https://bugs.launchpad.net/ubuntu/+source/mysql-5.5/+bug/1095370
 #ifdef GLOM_ENABLE_MYSQL
-  if(!test_hosting_mode(slot, Glom::Document::HOSTING_MODE_MYSQL_SELF, "MySQL"))
+  if(!test_hosting_mode(slot, Glom::Document::HostingMode::MYSQL_SELF, "MySQL"))
     return EXIT_FAILURE;
 #endif //GLOM_ENABLE_MYSQL
 
-  if(!test_hosting_mode(slot, Glom::Document::HOSTING_MODE_POSTGRES_SELF, "PostgreSQL"))
+  if(!test_hosting_mode(slot, Glom::Document::HostingMode::POSTGRES_SELF, "PostgreSQL"))
     return EXIT_FAILURE;
 
   return EXIT_SUCCESS;
@@ -608,12 +608,12 @@ bool test_check_numeric_value_type(Glom::Document::HostingMode hosting_mode, con
 {
   const auto gtype = value.get_value_type();
   //std::cout << "debug: gtype=" << g_type_name(gtype) << std::endl;
-  if(hosting_mode == Glom::Document::HOSTING_MODE_SQLITE)
+  if(hosting_mode == Glom::Document::HostingMode::SQLITE)
   {
     if(gtype == G_TYPE_DOUBLE)
       return true;
-  } else if( (hosting_mode == Glom::Document::HOSTING_MODE_MYSQL_CENTRAL) ||
-    (hosting_mode == Glom::Document::HOSTING_MODE_MYSQL_SELF) )
+  } else if( (hosting_mode == Glom::Document::HostingMode::MYSQL_CENTRAL) ||
+    (hosting_mode == Glom::Document::HostingMode::MYSQL_SELF) )
   {
     if(gtype == G_TYPE_DOUBLE)
       return true;

@@ -34,14 +34,14 @@ Combo_SummaryType::Combo_SummaryType(BaseObjectType* cobject, const Glib::RefPtr
   //Fill the model:
 
   auto iter = m_model->append();
-  (*iter)[m_model_columns.m_summary_type] = LayoutItem_FieldSummary::TYPE_SUM;
-  (*iter)[m_model_columns.m_name] = LayoutItem_FieldSummary::get_summary_type_name(LayoutItem_FieldSummary::TYPE_SUM);
+  (*iter)[m_model_columns.m_summary_type] = LayoutItem_FieldSummary::summaryType::SUM;
+  (*iter)[m_model_columns.m_name] = LayoutItem_FieldSummary::get_summary_type_name(LayoutItem_FieldSummary::summaryType::SUM);
   iter = m_model->append();
-  (*iter)[m_model_columns.m_summary_type] = LayoutItem_FieldSummary::TYPE_AVERAGE;
-  (*iter)[m_model_columns.m_name] = LayoutItem_FieldSummary::get_summary_type_name(LayoutItem_FieldSummary::TYPE_AVERAGE);
+  (*iter)[m_model_columns.m_summary_type] = LayoutItem_FieldSummary::summaryType::AVERAGE;
+  (*iter)[m_model_columns.m_name] = LayoutItem_FieldSummary::get_summary_type_name(LayoutItem_FieldSummary::summaryType::AVERAGE);
   iter = m_model->append();
-  (*iter)[m_model_columns.m_summary_type] = LayoutItem_FieldSummary::TYPE_COUNT;
-  (*iter)[m_model_columns.m_name] = LayoutItem_FieldSummary::get_summary_type_name(LayoutItem_FieldSummary::TYPE_COUNT);
+  (*iter)[m_model_columns.m_summary_type] = LayoutItem_FieldSummary::summaryType::COUNT;
+  (*iter)[m_model_columns.m_name] = LayoutItem_FieldSummary::get_summary_type_name(LayoutItem_FieldSummary::summaryType::COUNT);
 
   set_model(m_model);
 
@@ -84,7 +84,7 @@ LayoutItem_FieldSummary::summaryType Combo_SummaryType::get_summary_type() const
     return row[m_model_columns.m_summary_type];
   }
 
-  return LayoutItem_FieldSummary::TYPE_INVALID;
+  return LayoutItem_FieldSummary::summaryType::INVALID;
 }
 
 } //namespace Glom

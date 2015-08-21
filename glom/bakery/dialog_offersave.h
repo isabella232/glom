@@ -34,11 +34,11 @@ public:
   virtual ~Dialog_OfferSave();
 
   ///Return values:
-  enum enumButtons
+  enum class enumButtons
   {
-    BUTTON_Save,
-    BUTTON_Discard,
-    BUTTON_Cancel
+    Save,
+    Discard,
+    Cancel
   };
 
 };

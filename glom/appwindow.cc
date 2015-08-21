@@ -95,7 +95,7 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_ui_save_extra_showextras(false),
-  m_ui_save_extra_newdb_hosting_mode(Document::HOSTING_MODE_DEFAULT),
+  m_ui_save_extra_newdb_hosting_mode(Document::HostingMode::DEFAULT),
   m_avahi_progress_dialog(nullptr),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
@@ -348,7 +348,7 @@ void AppWindow::init_menus()
   m_action_menu_developer_usermode =
     m_refActionGroup_Developer->add_action_radio_integer("usermode",
       sigc::mem_fun(*this, &AppWindow::on_menu_developer_usermode),
-      AppState::USERLEVEL_OPERATOR );
+      static_cast<int>(AppState::userlevels::OPERATOR) );
 
   action = m_refActionGroup_Developer->add_action("database-preferences",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_database_preferences) );
@@ -524,7 +524,7 @@ void AppWindow::on_menu_developer_usermode(int parameter)
   if(!m_pFrame)
     return;
 
-  const bool developer = parameter == AppState::USERLEVEL_DEVELOPER;
+  const bool developer = parameter == static_cast<int>(AppState::userlevels::DEVELOPER);
 
   bool changed = false;
   if(developer)
@@ -570,7 +570,7 @@ static bool hostname_is_localhost(const Glib::ustring& hostname)
 
 void AppWindow::ui_warning_load_failed(int failure_code)
 {
-  if(failure_code == Document::LOAD_FAILURE_CODE_NOT_FOUND)
+  if(failure_code == static_cast<int>(Document::LoadFailureCodes::NOT_FOUND))
   {
     //TODO: Put this in the generic bakery code.
     ui_warning(_("Open Failed"),
@@ -580,7 +580,7 @@ void AppWindow::ui_warning_load_failed(int failure_code)
     //but the initial/welcome dialog doesn't yet update its list when the
     //recent history changes.
   }
-  else if(failure_code == Document::LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW)
+  else if(failure_code == static_cast<int>(Document::load_failure_codes::FILE_VERSION_TOO_NEW))
   {
     ui_warning(_("Open Failed"),
       _("The document could not be opened because it was created or modified by a newer version of Glom."));
@@ -672,8 +672,8 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifdef GLOM_ENABLE_POSTGRESQL
       //Stop the document from being self-hosted (it's already hosted by the other networked Glom instance):
-      if(document_temp.get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_SELF)
-        document_temp.set_hosting_mode(Document::HOSTING_MODE_POSTGRES_CENTRAL);
+      if(document_temp.get_hosting_mode() == Document::HostingMode::POSTGRES_SELF)
+        document_temp.set_hosting_mode(Document::HostingMode::POSTGRES_CENTRAL);
 #endif //GLOM_ENABLE_POSTGRESQL
 #endif // !GLOM_ENABLE_CLIENT_ONLY
       // TODO: Error out in case this is a sqlite database, since we probably
@@ -711,7 +711,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
     if(document)
     {
       document->set_opened_from_browse();
-      document->set_userlevel(AppState::USERLEVEL_OPERATOR); //TODO: This should happen automatically.
+      document->set_userlevel(AppState::userlevels::OPERATOR); //TODO: This should happen automatically.
 
       document->set_network_shared(true); //It is shared by the computer that we opened this from.
       update_network_shared_ui();
@@ -804,7 +804,7 @@ bool AppWindow::check_document_hosting_mode_is_supported(Document* document)
   Glib::ustring error_message;
   switch(document->get_hosting_mode())
   {
-    case Document::HOSTING_MODE_POSTGRES_SELF:
+    case Document::HostingMode::POSTGRES_SELF:
     {
       #ifdef GLOM_ENABLE_CLIENT_ONLY
       error_message = _("The file cannot be opened because this version of Glom does not support self-hosting of databases.");
@@ -818,7 +818,7 @@ bool AppWindow::check_document_hosting_mode_is_supported(Document* document)
 
       break;
     }
-    case Document::HOSTING_MODE_POSTGRES_CENTRAL:
+    case Document::HostingMode::POSTGRES_CENTRAL:
     {
       #ifndef GLOM_ENABLE_POSTGRESQL
       error_message = _("The file cannot be opened because this version of Glom does not support PostgreSQL databases.");
@@ -826,7 +826,7 @@ bool AppWindow::check_document_hosting_mode_is_supported(Document* document)
 
       break;
     }
-    case Document::HOSTING_MODE_SQLITE:
+    case Document::HostingMode::SQLITE:
     {
       #ifndef GLOM_ENABLE_SQLITE
       error_message = _("The file cannot be opened because this version of Glom does not support SQLite databases.");
@@ -837,7 +837,7 @@ bool AppWindow::check_document_hosting_mode_is_supported(Document* document)
     default:
     {
       //on_document_load() should have checked for this already, informing the user.
-      std::cerr << G_STRFUNC << ": Unhandled hosting mode: " << document->get_hosting_mode() << std::endl;
+      std::cerr << G_STRFUNC << ": Unhandled hosting mode: " << static_cast<int>(document->get_hosting_mode()) << std::endl;
      g_assert_not_reached();
      break;
     }
@@ -923,7 +923,7 @@ bool AppWindow::on_document_load()
       }
 
       m_ui_save_extra_newdb_title = "TODO";
-      m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
+      m_ui_save_extra_newdb_hosting_mode = Document::HostingMode::DEFAULT;
 
 
       // Reinit cancelled state
@@ -940,7 +940,7 @@ bool AppWindow::on_document_load()
         //Get the results from the extended save dialog:
         pDocument->set_database_title_original(m_ui_save_extra_newdb_title);
         pDocument->set_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
-        m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
+        m_ui_save_extra_newdb_hosting_mode = Document::HostingMode::DEFAULT;
         pDocument->set_is_example_file(false);
         pDocument->set_is_backup_file(false);
 
@@ -976,9 +976,9 @@ bool AppWindow::on_document_load()
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     //Warn about read-only files, because users will otherwise wonder why they can't use Developer mode:
-    Document::userLevelReason reason = Document::USER_LEVEL_REASON_UNKNOWN;
+    Document::userLevelReason reason = Document::userLevelReason::UNKNOWN;
     const auto userlevel = pDocument->get_userlevel(reason);
-    if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document::USER_LEVEL_REASON_FILE_READ_ONLY) )
+    if( (userlevel == AppState::userlevels::OPERATOR) && (reason == Document::userLevelReason::FILE_READ_ONLY) )
     {
       Gtk::MessageDialog dialog(UiUtils::bold_message(_("Opening Read-Only File.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
       dialog.set_secondary_text(_("This file is read only, so you will not be able to enter Developer mode to make design changes."));
@@ -1028,7 +1028,7 @@ bool AppWindow::on_document_load()
           // username or password, because we don't. The user will enter
           // the login credentials in a dialog.
           const auto hosting_mode = pDocument->get_hosting_mode();
-          if(hosting_mode != Document::HOSTING_MODE_POSTGRES_CENTRAL)
+          if(hosting_mode != Document::HostingMode::POSTGRES_CENTRAL)
             m_temp_username = Privs::get_default_developer_user_name(m_temp_password, hosting_mode);
         }
 
@@ -1090,7 +1090,7 @@ bool AppWindow::on_document_load()
           //Make sure that the changes (mark as non example, and save the new database name) are really saved:
           //Change the user level temporarily so that save_changes() actually saves:
           const auto user_level = pDocument->get_userlevel();
-          pDocument->set_userlevel(AppState::USERLEVEL_DEVELOPER);
+          pDocument->set_userlevel(AppState::userlevels::DEVELOPER);
           pDocument->set_modified(true);
           pDocument->set_allow_autosave(true); //Turn this back on.
           pDocument->set_userlevel(user_level); //Change it back.
@@ -1099,7 +1099,7 @@ bool AppWindow::on_document_load()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
       //Switch to operator mode when opening new documents:
-      pDocument->set_userlevel(AppState::USERLEVEL_OPERATOR);
+      pDocument->set_userlevel(AppState::userlevels::OPERATOR);
 
       //Make sure that it's saved in history, even if it was saved from an example file:
       document_history_add(pDocument->get_file_uri());
@@ -1208,8 +1208,8 @@ void AppWindow::update_network_shared_ui()
 
   //Do not allow impossible changes:
   const auto hosting_mode = document->get_hosting_mode();
-  if( (hosting_mode == Document::HOSTING_MODE_POSTGRES_CENTRAL) //Central hosting means that it must be shared on the network.
-    || (hosting_mode == Document::HOSTING_MODE_SQLITE) ) //sqlite does not allow network sharing.
+  if( (hosting_mode == Document::HostingMode::POSTGRES_CENTRAL) //Central hosting means that it must be shared on the network.
+    || (hosting_mode == Document::HostingMode::SQLITE) ) //sqlite does not allow network sharing.
   {
     m_toggleaction_network_shared->set_enabled(false);
   }
@@ -1239,7 +1239,7 @@ void AppWindow::update_table_sensitive_ui()
     const bool is_developer_item = 
       (std::find(m_listDeveloperActions.begin(), m_listDeveloperActions.end(), action) != m_listDeveloperActions.end());
     if(is_developer_item)
-      sensitive = sensitive && (userlevel == AppState::USERLEVEL_DEVELOPER);
+      sensitive = sensitive && (userlevel == AppState::userlevels::DEVELOPER);
 
     action->set_enabled(sensitive);
   }
@@ -1252,7 +1252,7 @@ void AppWindow::update_userlevel_ui()
   //Disable/Enable developer actions:
   for(const auto& action : m_listDeveloperActions)
   {
-     action->set_enabled( userlevel == AppState::USERLEVEL_DEVELOPER );
+     action->set_enabled( userlevel == AppState::userlevels::DEVELOPER );
   }
 
   //Ensure table sensitive menus stay disabled if necessary.
@@ -1260,7 +1260,7 @@ void AppWindow::update_userlevel_ui()
 
   // Hide users entry from developer menu for connections that don't
   // support users
-  if(userlevel == AppState::USERLEVEL_DEVELOPER)
+  if(userlevel == AppState::userlevels::DEVELOPER)
   {
     if(ConnectionPool::get_instance_is_ready())
     {
@@ -1274,12 +1274,12 @@ void AppWindow::update_userlevel_ui()
   //We only need to set/unset one, because the others are in the same radio group.
   //TODO:
   /*
-  if(userlevel == AppState::USERLEVEL_DEVELOPER)
+  if(userlevel == AppState::userlevels::DEVELOPER)
   {
     if(!m_action_menu_developer_developer->get_active())
       m_action_menu_developer_developer->set_active();
   }
-  else if(userlevel ==  AppState::USERLEVEL_OPERATOR)
+  else if(userlevel ==  AppState::userlevels::OPERATOR)
   {
     if(!m_action_menu_developer_operator->get_active())
       m_action_menu_developer_operator->set_active();
@@ -1313,22 +1313,22 @@ bool AppWindow::offer_new_or_existing()
       switch(dialog->get_action())
       {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-      case Dialog_ExistingOrNew::NEW_EMPTY:
+      case Dialog_ExistingOrNew::Action::NEW_EMPTY:
         existing_or_new_new();
         break;
-      case Dialog_ExistingOrNew::NEW_FROM_TEMPLATE:
+      case Dialog_ExistingOrNew::Action::NEW_FROM_TEMPLATE:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-      case Dialog_ExistingOrNew::OPEN_URI:
+      case Dialog_ExistingOrNew::Action::OPEN_URI:
         open_document(dialog->get_uri());
         break;
 #ifndef G_OS_WIN32
-      case Dialog_ExistingOrNew::OPEN_REMOTE:
+      case Dialog_ExistingOrNew::Action::OPEN_REMOTE:
         open_browsed_document(dialog->get_service_info(), dialog->get_service_name());
         break;
 #endif
-      case Dialog_ExistingOrNew::NONE:
+      case Dialog_ExistingOrNew::Action::NONE:
       default:
-	std::cerr << G_STRFUNC << ": Unhandled action: " << dialog->get_action() << std::endl;
+        std::cerr << G_STRFUNC << ": Unhandled action: " << static_cast<int>(dialog->get_action()) << std::endl;
         g_assert_not_reached();
         break;
       }
@@ -1373,7 +1373,7 @@ void AppWindow::existing_or_new_new()
   //Each document must have a location, so ask the user for one.
   //This will use an extended save dialog that also asks for the database title and some hosting details:
   m_ui_save_extra_showextras = true; //Offer self-hosting or central hosting, and offer the database title.
-  m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT; /* Default to self-hosting */
+  m_ui_save_extra_newdb_hosting_mode = Document::HostingMode::DEFAULT; /* Default to self-hosting */
   m_ui_save_extra_newdb_title.clear();
   offer_saveas();
 
@@ -1391,13 +1391,13 @@ void AppWindow::existing_or_new_new()
     const Glib::ustring db_title = m_ui_save_extra_newdb_title;
     Document::HostingMode hosting_mode = m_ui_save_extra_newdb_hosting_mode;
     m_ui_save_extra_newdb_title.clear();
-    m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
+    m_ui_save_extra_newdb_hosting_mode = Document::HostingMode::DEFAULT;
 
     //Make sure that the user can do something with his new document:
-    document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
+    document->set_userlevel(AppState::userlevels::DEVELOPER);
     // Try various ports if connecting to an existing database server instead
     // of self-hosting one:
-    document->set_connection_try_other_ports(m_ui_save_extra_newdb_hosting_mode == Document::HOSTING_MODE_DEFAULT);
+    document->set_connection_try_other_ports(m_ui_save_extra_newdb_hosting_mode == Document::HostingMode::DEFAULT);
 
     //Each new document must have an associated new database,
     //so choose a name
@@ -1545,7 +1545,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
     {
       const ExceptionConnection& ex = *exptr;
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-      if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+      if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
       {
         user_cancelled = true; //Eventually, the user will cancel after retrying.
         std::cerr << G_STRFUNC << ": Failed because connection to server failed, without specifying a database." << std::endl;
@@ -1727,7 +1727,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
     {
       const ExceptionConnection& ex = *exptr;
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-      if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+      if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
       {
         user_cancelled = true; //Eventually, the user will cancel after retrying.
         std::cerr << G_STRFUNC << ": Failed because connection to server failed, without specifying a database." << std::endl;
@@ -1816,7 +1816,7 @@ AppState::userlevels AppWindow::get_userlevel() const
   }
   else
     g_assert_not_reached();
-    //return AppState::USERLEVEL_DEVELOPER; //This should never happen.
+    //return AppState::userlevels::DEVELOPER; //This should never happen.
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -2064,7 +2064,7 @@ void AppWindow::on_menu_file_save_as_example()
     m_ui_save_extra_title.clear();
     m_ui_save_extra_message.clear();
     m_ui_save_extra_newdb_title.clear();
-    m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
+    m_ui_save_extra_newdb_hosting_mode = Document::HostingMode::DEFAULT;
 
     Glib::ustring file_uri = ui_file_select_save(file_uriOld); //Also asks for overwrite confirmation.
     if(!file_uri.empty())
@@ -2270,17 +2270,17 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
       bool is_self_hosted = false;
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-      if(m_ui_save_extra_newdb_hosting_mode == Document::HOSTING_MODE_POSTGRES_SELF)
+      if(m_ui_save_extra_newdb_hosting_mode == Document::HostingMode::POSTGRES_SELF)
         is_self_hosted = true;
 #endif //GLOM_ENABLE_POSTGRESQL
 
 #ifdef GLOM_ENABLE_MYSQL
-      if(m_ui_save_extra_newdb_hosting_mode == Document::HOSTING_MODE_MYSQL_SELF)
+      if(m_ui_save_extra_newdb_hosting_mode == Document::HostingMode::MYSQL_SELF)
         is_self_hosted = true;
 #endif // GLOM_ENABLE_MYSQL
 
 #ifdef GLOM_ENABLE_SQLITE
-      if(m_ui_save_extra_newdb_hosting_mode == Document::HOSTING_MODE_SQLITE)
+      if(m_ui_save_extra_newdb_hosting_mode == Document::HostingMode::SQLITE)
         is_self_hosted = true;
 #endif // GLOM_ENABLE_SQLITE
 
@@ -2588,7 +2588,7 @@ void AppWindow::update_window_title()
   if(!table_label.empty())
   {
     #ifndef GLOM_ENABLE_CLIENT_ONLY
-    if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    if(document->get_userlevel() == AppState::userlevels::DEVELOPER)
       table_label += " (" + table_name + ")"; //Show the table name as well, if in developer mode.
     #endif // GLOM_ENABLE_CLIENT_ONLY
   }
@@ -2876,7 +2876,7 @@ void AppWindow::ui_show_modification_status()
 
 AppWindow::enumSaveChanges AppWindow::ui_offer_to_save_changes()
 {
-  GlomBakery::AppWindow_WithDoc::enumSaveChanges result = GlomBakery::AppWindow_WithDoc::SAVECHANGES_Cancel;
+  GlomBakery::AppWindow_WithDoc::enumSaveChanges result = GlomBakery::AppWindow_WithDoc::enumSaveChanges::Cancel;
 
   if(!m_pDocument)
     return result;
@@ -2892,12 +2892,12 @@ AppWindow::enumSaveChanges AppWindow::ui_offer_to_save_changes()
   delete pDialogQuestion;
   pDialogQuestion = nullptr;
 
-  if(buttonClicked == GlomBakery::Dialog_OfferSave::BUTTON_Save)
-     result = GlomBakery::AppWindow_WithDoc::SAVECHANGES_Save;
-  else if(buttonClicked == GlomBakery::Dialog_OfferSave::BUTTON_Discard)
-     result = GlomBakery::AppWindow_WithDoc::SAVECHANGES_Discard;
+  if(buttonClicked == GlomBakery::Dialog_OfferSave::enumButtons::Save)
+     result = GlomBakery::AppWindow_WithDoc::enumSaveChanges::Save;
+  else if(buttonClicked == GlomBakery::Dialog_OfferSave::enumButtons::Discard)
+     result = GlomBakery::AppWindow_WithDoc::enumSaveChanges::Discard;
   else
-     result = GlomBakery::AppWindow_WithDoc::SAVECHANGES_Cancel;
+     result = GlomBakery::AppWindow_WithDoc::enumSaveChanges::Cancel;
 
   return result;
 }

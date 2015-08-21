@@ -45,17 +45,17 @@ public:
    */
   bool save();
 
-  enum LoadFailureCodes
+  enum class LoadFailureCodes
   {
-    LOAD_FAILURE_CODE_NONE = 0,
-    LOAD_FAILURE_CODE_NOT_FOUND = 1,
-    LOAD_FAILURE_CODE_LAST = 20 //arbitrary large number. Anything after this is for the application's custom codes.
+    NONE = 0,
+    NOT_FOUND = 1,
+    LAST = 20 //arbitrary large number. Anything after this is for the application's custom codes.
   };
 
   /* Loads data from disk, using the URI (set with set_file_uri()) then asks the View to update itself.
    * bool indicates success.
    * @param failure_code Used to return an error code that is understood by your application.
-   * Custom error codes should be greater than LOAD_FAILURE_CODE_LAST.
+   * Custom error codes should be greater than LoadFailureCodes::CODE_LAST.
    */
   bool load(int& failure_code);
 

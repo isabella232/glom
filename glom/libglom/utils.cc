@@ -1123,7 +1123,7 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document,
     Glib::ustring strClausePart;
 
     bool use_this_field = true;
-    if(field->get_glom_type() != Field::TYPE_TEXT)
+    if(field->get_glom_type() != Field::glom_field_type::TEXT)
     {
       use_this_field = false;
     }

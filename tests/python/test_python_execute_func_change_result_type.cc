@@ -15,7 +15,7 @@ int main()
   //Execute a python function:
   Gnome::Gda::Value value;
   Glib::ustring error_message;
-  const Glom::Field::glom_field_type result_type = Glom::Field::TYPE_TEXT;
+  const Glom::Field::glom_field_type result_type = Glom::Field::glom_field_type::TEXT;
   try
   {
     //We ask for a text result though the python function actually returns a number.

@@ -336,37 +336,37 @@ Dialog_ExistingOrNew::Action Dialog_ExistingOrNew::get_action_impl(Gtk::TreeMode
   if(m_notebook->get_current_page() == 0)
   {
     if(m_existing_view->get_selection()->count_selected_rows() == 0)
-      return NONE;
+      return Action::NONE;
 
     iter = m_existing_view->get_selection()->get_selected();
     if(m_existing_model->is_ancestor(m_iter_existing_recent, iter))
-      return OPEN_URI;
+      return Action::OPEN_URI;
 #ifndef G_OS_WIN32
     if(m_existing_model->is_ancestor(m_iter_existing_network, iter))
-      return OPEN_REMOTE;
+      return Action::OPEN_REMOTE;
 #endif
     if(iter == m_iter_existing_other)
-      return OPEN_URI;
+      return Action::OPEN_URI;
 
-    return NONE;
+    return Action::NONE;
   }
   else
   {
     #ifndef GLOM_ENABLE_CLIENT_ONLY
     if(m_new_view->get_selection()->count_selected_rows() == 0)
-      return NONE;
+      return Action::NONE;
 
     iter = m_new_view->get_selection()->get_selected();
     if(m_new_model->is_ancestor(m_iter_new_template, iter))
-      return NEW_FROM_TEMPLATE;
+      return Action::NEW_FROM_TEMPLATE;
     else if(iter == m_iter_new_empty)
-      return NEW_EMPTY;
+      return Action::NEW_EMPTY;
     else
-      return NONE;
+      return Action::NONE;
     #endif //GLOM_ENABLE_CLIENT_ONLY
   }
 
-  return NONE;
+  return Action::NONE;
 }
 
 Dialog_ExistingOrNew::Action Dialog_ExistingOrNew::get_action() const
@@ -381,13 +381,13 @@ Glib::ustring Dialog_ExistingOrNew::get_uri() const
   const auto action = get_action_impl(iter);
 
   #ifndef GLOM_ENABLE_CLIENT_ONLY
-  if(action == NEW_FROM_TEMPLATE)
+  if(action == Action::NEW_FROM_TEMPLATE)
   {
     return (*iter)[m_new_columns.m_col_template_uri];
   }
   else
   #endif //GLOM_ENABLE_CLIENT_ONLY
-  if(action == OPEN_URI)
+  if(action == Action::OPEN_URI)
   {
     if(iter == m_iter_existing_other)
     {
@@ -411,7 +411,7 @@ EpcServiceInfo* Dialog_ExistingOrNew::get_service_info() const
   Gtk::TreeModel::iterator iter;
   Action action = get_action_impl(iter);
 
-  if(action == OPEN_REMOTE)
+  if(action == Action::OPEN_REMOTE)
     return (*iter)[m_existing_columns.m_col_service_info];
   else
     throw std::logic_error("Dialog_ExistingOrNew::get_service_info: action is not OPEN_REMOTE");
@@ -424,7 +424,7 @@ Glib::ustring Dialog_ExistingOrNew::get_service_name() const
   Gtk::TreeModel::iterator iter;
   Action action = get_action_impl(iter);
 
-  if(action == OPEN_REMOTE)
+  if(action == Action::OPEN_REMOTE)
     return (*iter)[m_existing_columns.m_col_service_name];
   else
     throw std::logic_error("Dialog_ExistingOrNew::get_service_name: action is not OPEN_REMOTE");
@@ -796,7 +796,7 @@ void Dialog_ExistingOrNew::on_select_clicked()
   Gtk::TreeModel::iterator iter;
   Action action = get_action_impl(iter);
 
-  if(action == OPEN_URI && iter == m_iter_existing_other)
+  if(action == Action::OPEN_URI && iter == m_iter_existing_other)
   {
     Gtk::FileChooserDialog dialog(*this, "Open Glom File");
     dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);

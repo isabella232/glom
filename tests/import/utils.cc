@@ -100,7 +100,7 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
 
   const auto file_uri = create_file_from_buffer(input, input_size);
   parser.set_file_and_start_parsing(file_uri);
-  if(Glom::CsvParser::STATE_PARSING != parser.get_state())
+  if(Glom::CsvParser::State::PARSING != parser.get_state())
     return false;
 
   mainloop->run();
@@ -142,7 +142,7 @@ bool run_parser_on_file(const FuncConnectParserSignals& connect_parser_signals, 
   connect_parser_signals(parser);
 
   parser.set_file_and_start_parsing(uri);
-  if(Glom::CsvParser::STATE_PARSING != parser.get_state())
+  if(Glom::CsvParser::State::PARSING != parser.get_state())
     return false;
 
   mainloop->run();

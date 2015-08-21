@@ -38,8 +38,8 @@ namespace Glom
 {
 
 AddDelColumnInfo::AddDelColumnInfo()
-: m_style(STYLE_Text),
-  m_field_type(Field::TYPE_INVALID),
+: m_style(enumStyles::Text),
+  m_field_type(Field::glom_field_type::INVALID),
   m_editable(true),
   m_visible(true),
   m_prevent_duplicates(false)
@@ -100,7 +100,7 @@ void AddDel::init()
   set_prevent_user_signals();
   set_ignore_treeview_signals();
 
-  set_spacing(UiUtils::DEFAULT_SPACING_SMALL);
+  set_spacing(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
 
   m_bAllowUserActions = true;
 
@@ -348,7 +348,7 @@ Glib::ustring AddDel::get_value(const Gtk::TreeModel::iterator& iter, guint col)
     {
       const guint col_real = col;
       //Get different types of data, depending on the column:
-      if(m_ColumnTypes[col_real].m_style == AddDelColumnInfo::STYLE_Boolean)
+      if(m_ColumnTypes[col_real].m_style == AddDelColumnInfo::enumStyles::Boolean)
       {
         bool bValue = false;
         treerow.get_value(col_real, bValue);
@@ -518,7 +518,7 @@ guint AddDel::get_columns_count() const
 /*
 void AddDel::set_columns_count(guint count)
 {
-  m_ColumnTypes.resize(count, STYLE_Text);
+  m_ColumnTypes.resize(count, enumStyles::Text);
   m_vecColumnNames.resize(count);
 }
 */
@@ -562,12 +562,12 @@ void AddDel::construct_specified_columns()
       switch(column_info.m_style)
       {
         //Create an appropriate type of Model Column:
-        case(AddDelColumnInfo::STYLE_Boolean):
+        case(AddDelColumnInfo::enumStyles::Boolean):
         {
           pModelColumn = new Gtk::TreeModelColumn<bool>();
           break;
         }
-        case(AddDelColumnInfo::STYLE_Numerical):
+        case(AddDelColumnInfo::enumStyles::Numerical):
         {
           pModelColumn = new Gtk::TreeModelColumn<int>(); //TODO: Actually there are many different numeric types.
           break;
@@ -606,7 +606,7 @@ void AddDel::construct_specified_columns()
 
       switch(m_ColumnTypes[model_column_index].m_style)
       {
-        case(AddDelColumnInfo::STYLE_Choices):
+        case(AddDelColumnInfo::enumStyles::Choices):
         {
           //Use a custom CellRenderer:
           CellRendererList* pCellRendererList = Gtk::manage( new CellRendererList() );
@@ -624,7 +624,7 @@ void AddDel::construct_specified_columns()
 
           break;
         }
-        case(AddDelColumnInfo::STYLE_Boolean):
+        case(AddDelColumnInfo::enumStyles::Boolean):
         {
           //Use whatever standard CellRenderer gtkmm thinks is appropriate:
 
@@ -704,13 +704,13 @@ void AddDel::construct_specified_columns()
       {
         //Cast it to the derived type, so we can delete it properly.
         //This is necessary because TreeModelColumnBase's destructor is not virtual.
-        case(AddDelColumnInfo::STYLE_Boolean):
+        case(AddDelColumnInfo::enumStyles::Boolean):
         {
           Gtk::TreeModelColumn<bool>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<bool>* >(pModelColumn);
           delete pModelColumnDerived;
           break;
         }
-        case(AddDelColumnInfo::STYLE_Numerical):
+        case(AddDelColumnInfo::enumStyles::Numerical):
         {
           Gtk::TreeModelColumn<int>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<int>* >(pModelColumn);
           delete pModelColumnDerived;
@@ -743,7 +743,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gn
   //Different model columns have different types of data:
   switch(m_ColumnTypes[col].m_style)
   {
-    case(AddDelColumnInfo::STYLE_Boolean):
+    case(AddDelColumnInfo::enumStyles::Boolean):
     {
       std::cerr << G_STRFUNC << ": boolean column being set as bool." << std::endl;
       set_value(iter, col, value.get_bool());
@@ -772,7 +772,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gl
       //Different model columns have different types of data:
       switch(m_ColumnTypes[col].m_style)
       {
-        case(AddDelColumnInfo::STYLE_Boolean):
+        case(AddDelColumnInfo::enumStyles::Boolean):
         {
           bool bValue = (strValue == "true");
           treerow.set_value(col, bValue);
@@ -822,7 +822,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVa
       //Different model columns have different types of data:
       switch(m_ColumnTypes[col].m_style)
       {
-        case(AddDelColumnInfo::STYLE_Boolean):
+        case(AddDelColumnInfo::enumStyles::Boolean):
         {
           treerow.set_value(col, bVal);
           break;
@@ -854,8 +854,8 @@ void AddDel::remove_all_columns()
 
   //Add the hidden key.ID columns
   //Make these visible (with true) if you want to debug problems.
-  m_col_key = add_column("Glom Hidden Key", AddDelColumnInfo::STYLE_Text, false /* not editable */, false /* not visible */);
-  m_col_placeholder = add_column("Glom Hidden Placeholder", AddDelColumnInfo::STYLE_Boolean, true /* not editable */, false /* not visible */);
+  m_col_key = add_column("Glom Hidden Key", AddDelColumnInfo::enumStyles::Text, false /* not editable */, false /* not visible */);
+  m_col_placeholder = add_column("Glom Hidden Placeholder", AddDelColumnInfo::enumStyles::Boolean, true /* not editable */, false /* not visible */);
 }
 
 guint AddDel::add_column(const AddDelColumnInfo& column_info)
@@ -1209,7 +1209,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
         bool do_signal = true;
 
         const Field::glom_field_type field_type = m_ColumnTypes[model_column_index].m_field_type;
-        if(field_type != Field::TYPE_INVALID) //If a field type was specified for this column.
+        if(field_type != Field::glom_field_type::INVALID) //If a field type was specified for this column.
         {
           //Make sure that the entered data is suitable for this field type:
           bool success = false;
@@ -1578,11 +1578,11 @@ bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
       bool value_bool = false;
       int value_int = 0;
 
-      if(m_ColumnTypes[col].m_style == AddDelColumnInfo::STYLE_Text)
+      if(m_ColumnTypes[col].m_style == AddDelColumnInfo::enumStyles::Text)
         row.get_value(col, value_text);
-      else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::STYLE_Boolean)
+      else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::enumStyles::Boolean)
          row.get_value(col, value_bool);
-      else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::STYLE_Numerical)
+      else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::enumStyles::Numerical)
          row.get_value(col, value_int);
 
       //std::cout << "value_text=" << value_text << std::endl;
@@ -1605,7 +1605,7 @@ bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
           bool check_value_bool = false;
           int check_value_int = 0;
 
-          if(m_ColumnTypes[col].m_style == AddDelColumnInfo::STYLE_Text)
+          if(m_ColumnTypes[col].m_style == AddDelColumnInfo::enumStyles::Text)
           {
             check_row.get_value(col, check_value_text);
 
@@ -1614,13 +1614,13 @@ bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
             if(check_value_text == value_text)
               return true;
           }
-          else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::STYLE_Boolean)
+          else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::enumStyles::Boolean)
           {
             check_row.get_value(col, check_value_bool);
             if(check_value_text == value_text)
               return true;
           }
-          else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::STYLE_Numerical)
+          else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::enumStyles::Numerical)
           {
             check_row.get_value(col, check_value_int);
             if(check_value_text == value_text)

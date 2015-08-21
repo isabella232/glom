@@ -38,10 +38,10 @@ namespace Glom
 namespace UiUtils
 {
 
-enum DefaultSpacings
+enum class DefaultSpacings
 {
-  DEFAULT_SPACING_LARGE = 12,
-  DEFAULT_SPACING_SMALL = 6
+  LARGE = 12,
+  SMALL = 6
 };
 
 /**

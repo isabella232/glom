@@ -197,8 +197,8 @@ void Dialog_Database_Preferences::load_from_document()
   {
     auto iter = m_model_autoincrements->append();
     Gtk::TreeModel::Row row = *iter;
-    row[m_columns.m_col_table] = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(0, i), numeric_format);
-    row[m_columns.m_col_field] = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(1, i), numeric_format);
+    row[m_columns.m_col_table] = Conversions::get_text_for_gda_value(Field::glom_field_type::TEXT, datamodel->get_value_at(0, i), numeric_format);
+    row[m_columns.m_col_field] = Conversions::get_text_for_gda_value(Field::glom_field_type::TEXT, datamodel->get_value_at(1, i), numeric_format);
 
     //TODO: Careful of locale:
     row[m_columns.m_col_next_value] = atol(datamodel->get_value_at(2, i).to_string().c_str());
@@ -235,7 +235,7 @@ void Dialog_Database_Preferences::save_to_document()
      return;
 
   //Make sure that set_database_preferences() can work.
-  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  if(get_userlevel() == AppState::userlevels::DEVELOPER)
     DbUtils::add_standard_tables(document);
 
   DbUtils::set_database_preferences(document, m_system_prefs);

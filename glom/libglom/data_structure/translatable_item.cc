@@ -27,7 +27,7 @@ namespace Glom
 {
 
 TranslatableItem::TranslatableItem() noexcept
-: m_translatable_item_type(TRANSLATABLE_TYPE_INVALID)
+: m_translatable_item_type(enumTranslatableItemType::INVALID)
 {
 }
 
@@ -208,33 +208,33 @@ Glib::ustring TranslatableItem::get_translatable_type_name_nontranslated(enumTra
 {
   //TODO: Is there an easier way to do this, without duplicating code?
 
-  if(item_type == TRANSLATABLE_TYPE_FIELD)
+  if(item_type == enumTranslatableItemType::FIELD)
     return "Field";
-  else if(item_type == TRANSLATABLE_TYPE_CUSTOM_TITLE)
+  else if(item_type == enumTranslatableItemType::CUSTOM_TITLE)
     return "Custom Title";
-  else if(item_type == TRANSLATABLE_TYPE_RELATIONSHIP)
+  else if(item_type == enumTranslatableItemType::RELATIONSHIP)
     return "Relationship";
-  else if(item_type == TRANSLATABLE_TYPE_RELATIONSHIP)
+  else if(item_type == enumTranslatableItemType::RELATIONSHIP)
     return "Layout Item";
-  else if(item_type == TRANSLATABLE_TYPE_PRINT_LAYOUT)
+  else if(item_type == enumTranslatableItemType::PRINT_LAYOUT)
     return "Print Layout";
-  else if(item_type == TRANSLATABLE_TYPE_REPORT)
+  else if(item_type == enumTranslatableItemType::REPORT)
     return "Report";
-  else if(item_type == TRANSLATABLE_TYPE_TABLE)
+  else if(item_type == enumTranslatableItemType::TABLE)
     return "Table";
-  else if(item_type == TRANSLATABLE_TYPE_LAYOUT_ITEM)
+  else if(item_type == enumTranslatableItemType::LAYOUT_ITEM)
     return "Layout Group";
-  else if(item_type == TRANSLATABLE_TYPE_BUTTON)
+  else if(item_type == enumTranslatableItemType::BUTTON)
     return "Button";
-  else if(item_type == TRANSLATABLE_TYPE_TEXTOBJECT)
+  else if(item_type == enumTranslatableItemType::TEXTOBJECT)
     return "Text Item";
-  else if(item_type == TRANSLATABLE_TYPE_IMAGEOBJECT)
+  else if(item_type == enumTranslatableItemType::IMAGEOBJECT)
     return "Image";
-  else if(item_type == TRANSLATABLE_TYPE_CHOICEVALUE)
+  else if(item_type == enumTranslatableItemType::CHOICEVALUE)
     return "Field Choice";
-  else if(item_type == TRANSLATABLE_TYPE_DATABASE_TITLE)
+  else if(item_type == enumTranslatableItemType::DATABASE_TITLE)
     return "Database Title";
-  else if(item_type == TRANSLATABLE_TYPE_STATIC_TEXT)
+  else if(item_type == enumTranslatableItemType::STATIC_TEXT)
     return "Text";
   else
     return "Unknown";
@@ -242,33 +242,33 @@ Glib::ustring TranslatableItem::get_translatable_type_name_nontranslated(enumTra
 
 Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemType item_type) noexcept
 {
-  if(item_type == TRANSLATABLE_TYPE_FIELD)
+  if(item_type == enumTranslatableItemType::FIELD)
     return _("Field");
-  else if(item_type == TRANSLATABLE_TYPE_CUSTOM_TITLE)
+  else if(item_type == enumTranslatableItemType::CUSTOM_TITLE)
     return _("Custom Title");
-  else if(item_type == TRANSLATABLE_TYPE_RELATIONSHIP)
+  else if(item_type == enumTranslatableItemType::RELATIONSHIP)
     return _("Relationship");
-  else if(item_type == TRANSLATABLE_TYPE_RELATIONSHIP)
+  else if(item_type == enumTranslatableItemType::RELATIONSHIP)
     return _("Layout Item");
-  else if(item_type == TRANSLATABLE_TYPE_PRINT_LAYOUT)
+  else if(item_type == enumTranslatableItemType::PRINT_LAYOUT)
     return _("Print Layout");
-  else if(item_type == TRANSLATABLE_TYPE_REPORT)
+  else if(item_type == enumTranslatableItemType::REPORT)
     return _("Report");
-  else if(item_type == TRANSLATABLE_TYPE_TABLE)
+  else if(item_type == enumTranslatableItemType::TABLE)
     return _("Table");
-  else if(item_type == TRANSLATABLE_TYPE_LAYOUT_ITEM)
+  else if(item_type == enumTranslatableItemType::LAYOUT_ITEM)
     return _("Layout Group");
-  else if(item_type == TRANSLATABLE_TYPE_BUTTON)
+  else if(item_type == enumTranslatableItemType::BUTTON)
     return _("Button");
-  else if(item_type == TRANSLATABLE_TYPE_TEXTOBJECT)
+  else if(item_type == enumTranslatableItemType::TEXTOBJECT)
     return _("Text Item");
-  else if(item_type == TRANSLATABLE_TYPE_IMAGEOBJECT)
+  else if(item_type == enumTranslatableItemType::IMAGEOBJECT)
     return _("Image");
-  else if(item_type == TRANSLATABLE_TYPE_CHOICEVALUE)
+  else if(item_type == enumTranslatableItemType::CHOICEVALUE)
     return _("Field Choice");
-  else if(item_type == TRANSLATABLE_TYPE_DATABASE_TITLE)
+  else if(item_type == enumTranslatableItemType::DATABASE_TITLE)
     return _("Database Title");
-  else if(item_type == TRANSLATABLE_TYPE_STATIC_TEXT)
+  else if(item_type == enumTranslatableItemType::STATIC_TEXT)
     return _("Text");
   else
     return _("Unknown");

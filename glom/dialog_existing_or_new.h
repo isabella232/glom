@@ -49,7 +49,7 @@ public:
   static const char glade_id[];
   static const bool glade_developer;
 
-  enum Action {
+  enum class Action {
     NONE,
     NEW_EMPTY,
     NEW_FROM_TEMPLATE,

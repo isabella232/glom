@@ -39,7 +39,7 @@ namespace DataWidgetChildren
 
 TextView::TextView(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::ScrolledWindow(cobject),
-  m_glom_type(Field::TYPE_TEXT)
+  m_glom_type(Field::glom_field_type::TEXT)
 {
   init();
 }
@@ -191,7 +191,7 @@ bool TextView::on_button_press_event(GdkEventButton *button_event)
 
     //Only show this popup in developer mode, so operators still see the default GtkEntry context menu.
     //TODO: It would be better to add it somehow to the standard context menu.
-    if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    if(pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
       GdkModifierType mods;
       gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );

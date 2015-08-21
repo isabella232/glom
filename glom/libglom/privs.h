@@ -37,10 +37,7 @@ public:
    * with more characters (or bytes?) than this then
    * a truncated version of it will be read back.
    */
-  enum constant
-  {
-     MAX_ROLE_SIZE = 63
-  };
+  static const guint MAX_ROLE_SIZE = 63;
 
   /** Get the groups with access to the database.
    */

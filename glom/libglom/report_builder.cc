@@ -348,7 +348,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
 
       //This adds a field heading (and therefore, column) for fields, or for a vertical group.
       xmlpp::Element* nodeFieldHeading = parent_node.add_child("field_heading");
-      if(layoutitem_field && layoutitem_field->get_glom_type() == Field::TYPE_NUMERIC)
+      if(layoutitem_field && layoutitem_field->get_glom_type() == Field::glom_field_type::NUMERIC)
         nodeFieldHeading->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
 
       nodeFieldHeading->set_attribute("name", layout_item->get_name()); //Not really necessary, but maybe useful.
@@ -454,7 +454,7 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
   const auto field_type = field->get_glom_type();
 
   xmlpp::Element* nodeField = nodeParent.add_child(field->get_report_part_id());
-  if(field_type == Field::TYPE_NUMERIC)
+  if(field_type == Field::glom_field_type::NUMERIC)
     nodeField->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
 
   if(vertical)
@@ -489,14 +489,14 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
   nodeField->set_attribute("title", field->get_title_or_name(m_locale_id)); //Not always used, but useful.
 
   //Handle the value:
-  if(field_type == Field::TYPE_IMAGE)
+  if(field_type == Field::glom_field_type::IMAGE)
      nodeField->set_attribute("image_uri", Utils::create_local_image_uri(value));
   else
   {
     Glib::ustring text_value = Conversions::get_text_for_gda_value(field_type, value, m_locale, field->get_formatting_used().m_numeric_format);
 
     //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
-    if(text_value.empty() && std::dynamic_pointer_cast<const LayoutItem_FieldSummary>(field) && (field_type == Field::TYPE_NUMERIC))
+    if(text_value.empty() && std::dynamic_pointer_cast<const LayoutItem_FieldSummary>(field) && (field_type == Field::glom_field_type::NUMERIC))
     {
       //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
       const auto value_zero = Conversions::parse_value(0);

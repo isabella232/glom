@@ -26,7 +26,7 @@ namespace Glom
 {
 
 AppState::AppState()
-: m_userlevel(USERLEVEL_DEVELOPER)
+: m_userlevel(userlevels::DEVELOPER)
 {
 }
 

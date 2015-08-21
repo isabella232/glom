@@ -258,17 +258,17 @@ Formatting::HorizontalAlignment LayoutItem_Field::get_formatting_used_horizontal
   Formatting::HorizontalAlignment alignment = 
     format.get_horizontal_alignment();
   
-  if(alignment == Formatting::HORIZONTAL_ALIGNMENT_AUTO)
+  if(alignment == Formatting::HorizontalAlignment::AUTO)
   {
     //By default, right-align numbers on list views, unless they are ID fields.
     //And left-align them on details views, because that looks silly otherwise.
     if(!for_details_view && (m_field && !m_field->get_primary_key())) //TODO: Also prevent this when it is a foreign key.
     {
       //Align numbers to the right by default:
-      alignment = (m_field->get_glom_type() == Field::TYPE_NUMERIC ? Formatting::HORIZONTAL_ALIGNMENT_RIGHT : Formatting::HORIZONTAL_ALIGNMENT_LEFT);
+      alignment = (m_field->get_glom_type() == Field::glom_field_type::NUMERIC ? Formatting::HorizontalAlignment::RIGHT : Formatting::HorizontalAlignment::LEFT);
     }
     else
-      alignment = Formatting::HORIZONTAL_ALIGNMENT_LEFT;
+      alignment = Formatting::HorizontalAlignment::LEFT;
   }
   
   return alignment;
@@ -318,7 +318,7 @@ Field::glom_field_type LayoutItem_Field::get_glom_type() const
   if(m_field && m_field_cache_valid)
     return m_field->get_glom_type();
   else
-    return Field::TYPE_INVALID;
+    return Field::glom_field_type::INVALID;
 }
 
 

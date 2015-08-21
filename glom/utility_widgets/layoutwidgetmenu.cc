@@ -79,22 +79,22 @@ void LayoutWidgetMenu::setup_menu(Gtk::Widget* widget)
     sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_activate_layout_properties) );
 
   add_action(m_refContextAddField,
-    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), TYPE_FIELD ) );
+    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), enumType::FIELD ) );
 
   add_action(m_refContextAddRelatedRecords,
-    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), TYPE_PORTAL ) );
+    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), enumType::PORTAL ) );
 
   add_action(m_refContextAddGroup,
-    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), TYPE_GROUP ) );
+    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), enumType::GROUP ) );
 
   add_action(m_refContextAddNotebook,
-    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), TYPE_NOTEBOOK ) );
+    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), enumType::NOTEBOOK ) );
 
   add_action(m_refContextAddButton,
-    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), TYPE_BUTTON ) );
+    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), enumType::BUTTON ) );
 
   add_action(m_refContextAddText,
-    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), TYPE_TEXT ) );
+    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), enumType::TEXT ) );
   
   add_action(m_refContextDelete,
     sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_activate_delete) );
@@ -130,7 +130,7 @@ void LayoutWidgetMenu::setup_menu(Gtk::Widget* widget)
   m_pMenuPopup->attach_to_widget(*widget);
 
   if(pApp)
-    m_refContextLayout->set_enabled(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+    m_refContextLayout->set_enabled(pApp->get_userlevel() == AppState::userlevels::DEVELOPER);
 
   //Make our popup menu work:
   widget->insert_action_group("context", m_refActionGroup);

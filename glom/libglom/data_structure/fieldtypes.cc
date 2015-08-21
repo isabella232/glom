@@ -30,12 +30,12 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
 {
   // These are documented here:
   // http://library.gnome.org/devel/libgda-4.0/3.99/connection.html#GdaConnectionMetaTypeHead
-  enum GlomGdaDataModelTypesColumns
+  enum class GlomGdaDataModelTypesColumns
   {
-    DATAMODEL_FIELDS_COL_NAME = 0,
-    DATAMODEL_FIELDS_COL_GTYPE = 1,
-    DATAMODEL_FIELDS_COL_COMMENTS = 2,
-    DATAMODEL_FIELDS_COL_SYNONYMS = 3
+    NAME = 0,
+    GTYPE = 1,
+    COMMENTS = 2,
+    SYNONYMS = 3
   };
   
   if(gda_connection && gda_connection->is_opened())
@@ -68,7 +68,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
 
       for(int i = 0; i < rows; ++i)
       {
-        const auto value_name = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_NAME, i);
+        const auto value_name = data_model_tables->get_value_at(static_cast<int>(GlomGdaDataModelTypesColumns::NAME), i);
 
         //Get the types's string representation:
         Glib::ustring schema_type_string;
@@ -77,7 +77,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
         
         if(!schema_type_string.empty())
         {
-          const auto value_gdatype = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, i);
+          const auto value_gdatype = data_model_tables->get_value_at(static_cast<int>(GlomGdaDataModelTypesColumns::GTYPE), i);
           if(value_gdatype.get_value_type() == G_TYPE_STRING)
           {
             auto type_string = value_gdatype.get_string();

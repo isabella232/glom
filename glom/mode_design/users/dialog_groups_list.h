@@ -78,12 +78,12 @@ private:
   virtual void on_treeview_tables_toggled_create(const Glib::ustring& path_string);
   virtual void on_treeview_tables_toggled_delete(const Glib::ustring& path_string);
 
-  enum enumPriv
+  enum class enumPriv
   {
-    PRIV_VIEW,
-    PRIV_EDIT,
-    PRIV_CREATE,
-    PRIV_DELETE
+    VIEW,
+    EDIT,
+    CREATE,
+    DELETE
   };
 
   bool set_table_privilege(const Glib::ustring& table_name, const Glib::ustring& group_name, bool grant, enumPriv priv);

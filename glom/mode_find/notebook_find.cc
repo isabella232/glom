@@ -72,7 +72,7 @@ bool Notebook_Find::init_db_details(const Glib::ustring& table_name, const Glib:
 
 void Notebook_Find::set_current_view(Notebook_Data::dataview view)
 {
-  if(view == Notebook_Data::DATA_VIEW_List)
+  if(view == Notebook_Data::dataview::LIST)
     set_visible_child(m_pagename_list);
   else
     set_visible_child(m_pagename_details);

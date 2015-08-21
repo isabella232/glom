@@ -98,22 +98,22 @@ public:
 
   bool get_has_translations() const noexcept;
 
-  enum enumTranslatableItemType
+  enum class enumTranslatableItemType
   {
-     TRANSLATABLE_TYPE_INVALID,
-     TRANSLATABLE_TYPE_FIELD,
-     TRANSLATABLE_TYPE_RELATIONSHIP,
-     TRANSLATABLE_TYPE_LAYOUT_ITEM,
-     TRANSLATABLE_TYPE_CUSTOM_TITLE,
-     TRANSLATABLE_TYPE_PRINT_LAYOUT,
-     TRANSLATABLE_TYPE_REPORT,
-     TRANSLATABLE_TYPE_TABLE,
-     TRANSLATABLE_TYPE_BUTTON,
-     TRANSLATABLE_TYPE_TEXTOBJECT, //This has a TRANSLATABLE_TYPE_STATIC_TEXT child.
-     TRANSLATABLE_TYPE_IMAGEOBJECT,
-     TRANSLATABLE_TYPE_CHOICEVALUE,
-     TRANSLATABLE_TYPE_DATABASE_TITLE,
-     TRANSLATABLE_TYPE_STATIC_TEXT
+     INVALID,
+     FIELD,
+     RELATIONSHIP,
+     LAYOUT_ITEM,
+     CUSTOM_TITLE,
+     PRINT_LAYOUT,
+     REPORT,
+     TABLE,
+     BUTTON,
+     TEXTOBJECT, //This has a enumTranslatableItemType::STATIC_TEXT child.
+     IMAGEOBJECT,
+     CHOICEVALUE,
+     DATABASE_TITLE,
+     STATIC_TEXT
    };
 
   enumTranslatableItemType get_translatable_item_type() const noexcept;

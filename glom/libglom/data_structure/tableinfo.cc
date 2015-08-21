@@ -27,7 +27,7 @@ TableInfo::TableInfo() noexcept
 : m_hidden(false),
   m_default(false)
 {
-  m_translatable_item_type = TRANSLATABLE_TYPE_TABLE;
+  m_translatable_item_type = enumTranslatableItemType::TABLE;
 }
 
 TableInfo::TableInfo(const TableInfo& src) noexcept

@@ -74,7 +74,7 @@ void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& c
   //Horizontal alignment:
   const Formatting::HorizontalAlignment alignment =
     layout_item->get_formatting_used_horizontal_alignment();
-  const Pango::Alignment x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Pango::ALIGN_LEFT : Pango::ALIGN_RIGHT);
+  const Pango::Alignment x_align = (alignment == Formatting::HorizontalAlignment::LEFT ? Pango::ALIGN_LEFT : Pango::ALIGN_RIGHT);
   canvas_item->property_alignment() = x_align;
 
   const auto formatting = layout_item->get_formatting_used();
@@ -244,7 +244,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
         if(field)
         {
           //Create an appropriate canvas item for the field type:
-          if(field->get_glom_type() == Field::TYPE_IMAGE)
+          if(field->get_glom_type() == Field::glom_field_type::IMAGE)
           {
             Glib::RefPtr<CanvasImageMovable> canvas_item = CanvasImageMovable::create();
             canvas_item->set_image_empty();
@@ -454,11 +454,11 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
   const auto field_type = field->get_glom_type();
   switch(field->get_glom_type())
   {
-    case(Field::TYPE_TEXT):
-    case(Field::TYPE_NUMERIC):
-    case(Field::TYPE_BOOLEAN):
-    case(Field::TYPE_TIME):
-    case(Field::TYPE_DATE):
+    case(Field::glom_field_type::TEXT):
+    case(Field::glom_field_type::NUMERIC):
+    case(Field::glom_field_type::BOOLEAN):
+    case(Field::glom_field_type::TIME):
+    case(Field::glom_field_type::DATE):
     {
       Glib::RefPtr<CanvasTextMovable> canvas_item = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(child);
       if(!canvas_item)
@@ -467,7 +467,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       Glib::ustring text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
 
       //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
-      if(text_value.empty() && std::dynamic_pointer_cast<const LayoutItem_FieldSummary>(field) && (field_type == Field::TYPE_NUMERIC))
+      if(text_value.empty() && std::dynamic_pointer_cast<const LayoutItem_FieldSummary>(field) && (field_type == Field::glom_field_type::NUMERIC))
       {
         //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
         const auto value_zero = Conversions::parse_value(0);
@@ -477,7 +477,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       canvas_item->set_text(text_value);
       break;
     }
-    case(Field::TYPE_IMAGE):
+    case(Field::glom_field_type::IMAGE):
     {
       Glib::RefPtr<CanvasImageMovable> canvas_item = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child);
       if(!canvas_item)

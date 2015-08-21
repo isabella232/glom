@@ -61,7 +61,7 @@ PrintLayoutToolbarButton::~PrintLayoutToolbarButton()
 
 PrintLayoutToolbarButton::enumItems PrintLayoutToolbarButton::get_item_type_from_selection_data(const Glib::RefPtr<Gdk::DragContext>& drag_context, const Gtk::SelectionData& selection_data)
 {
-  PrintLayoutToolbarButton::enumItems result = ITEM_INVALID;
+  PrintLayoutToolbarButton::enumItems result = enumItems::INVALID;
 
   //Put this code in the toolbar class:
   Gtk::Widget* palette_candidate = drag_get_source_widget(drag_context);

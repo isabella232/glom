@@ -52,8 +52,8 @@ public:
   virtual const Formatting& get_formatting_used() const;
 
   /** Get the alignment for the formatting used (see get_formatting_used()),
-   * choosing an appropriate alignment if it is set to HORIZONTAL_ALIGNMENT_AUTO.
-   * Note that this never returns HORIZONTAL_ALIGNMENT_AUTO.
+   * choosing an appropriate alignment if it is set to HorizontalAlignment::AUTO.
+   * Note that this never returns HorizontalAlignment::AUTO.
    */
   virtual Formatting::HorizontalAlignment get_formatting_used_horizontal_alignment(bool for_details_view = false) const;
 };

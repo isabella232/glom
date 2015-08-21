@@ -54,13 +54,13 @@ public:
 private:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
 
-  enum Corners
+  enum class Corners
   {
-    CORNER_TOP_LEFT,
-    CORNER_TOP_RIGHT,
-    CORNER_BOTTOM_LEFT,
-    CORNER_BOTTOM_RIGHT,
-    CORNER_COUNT
+    TOP_LEFT,
+    TOP_RIGHT,
+    BOTTOM_LEFT,
+    BOTTOM_RIGHT,
+    COUNT
   };
 
   void snap_position_one_corner(Corners corner, double& x, double& y) const;

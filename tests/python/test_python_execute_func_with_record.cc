@@ -73,11 +73,11 @@ int main()
   //This is not really necessary for sqlite-based databases.
   const Glom::ConnectionPool::StartupErrors started =
     connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
-  if(started != Glom::ConnectionPool::Backend::STARTUPERROR_NONE)
+  if(started != Glom::ConnectionPool::Backend::StartupErrors::NONE)
   {
-    std::cerr << G_STRFUNC << ": connection_pool->startup(): result=" << started << std::endl;
+    std::cerr << G_STRFUNC << ": connection_pool->startup(): result=" << static_cast<int>(started) << std::endl;
   }
-  g_assert(started == Glom::ConnectionPool::Backend::STARTUPERROR_NONE);
+  g_assert(started == Glom::ConnectionPool::Backend::StartupErrors::NONE);
 
   std::shared_ptr<Glom::SharedConnection> connection = connection_pool->connect();
   g_assert(connection);
@@ -99,7 +99,7 @@ int main()
   try
   {
     value = Glom::glom_evaluate_python_function_implementation(
-      Glom::Field::TYPE_BOOLEAN, calculation, field_values,
+      Glom::Field::glom_field_type::BOOLEAN, calculation, field_values,
       0 /* document */, "" /* table name */,
       std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
       gda_connection,

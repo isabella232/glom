@@ -64,7 +64,7 @@ void Box_DB_Table_Definition::init()
 
   m_colTitle = m_AddDel.add_column(_("Title"));
 
-  m_colType = m_AddDel.add_column(_("Type"), AddDelColumnInfo::STYLE_Choices);
+  m_colType = m_AddDel.add_column(_("Type"), AddDelColumnInfo::enumStyles::Choices);
   m_AddDel.set_column_width(m_colType, 100); //TODO: Auto-size columns.
 
 
@@ -84,8 +84,8 @@ void Box_DB_Table_Definition::init()
 
   m_AddDel.set_column_choices(m_colType, vecTypes);
 
-  m_colUnique = m_AddDel.add_column("Unique", AddDelColumnInfo::STYLE_Boolean);
-  m_colPrimaryKey = m_AddDel.add_column("Primary Key", AddDelColumnInfo::STYLE_Boolean);
+  m_colUnique = m_AddDel.add_column("Unique", AddDelColumnInfo::enumStyles::Boolean);
+  m_colPrimaryKey = m_AddDel.add_column("Primary Key", AddDelColumnInfo::enumStyles::Boolean);
 
   //Connect signals:
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_adddel_add));
@@ -123,7 +123,7 @@ void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& ite
   m_AddDel.set_value(iter, m_colTitle, title);
 
   //Type:
-  //Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(field->get_field_info()->get_g_type()); //Could be TYPE_INVALID if the gda type is not one of ours.
+  //Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(field->get_field_info()->get_g_type()); //Could be INVALID if the gda type is not one of ours.
   // TODO: Why was this done by converting the field's gtype to a glom type
   // instead of using the glom type directly? This breaks numerical types in
   // sqlite which we store as double.
@@ -194,15 +194,15 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
     auto field = std::make_shared<Field>();
     field->set_name(name);
     field->set_title( Utils::title_from_string(name) , AppWindow::get_current_locale()); //Start with a title that might be useful.
-    field->set_glom_type(Field::TYPE_NUMERIC);
+    field->set_glom_type(Field::glom_field_type::NUMERIC);
 
     Glib::RefPtr<Gnome::Gda::Column> field_info = field->get_field_info();
-    field_info->set_g_type( Field::get_gda_type_for_glom_type(Field::TYPE_NUMERIC) );
+    field_info->set_g_type( Field::get_gda_type_for_glom_type(Field::glom_field_type::NUMERIC) );
     field->set_field_info(field_info);
 
     //TODO: Warn about a delay before actually doing this when the backend
     //needs to recreate the whole table.
-    const auto bTest = DbUtils::add_column(m_table_name, field, get_app_window()); //TODO: Get schema type for Field::TYPE_NUMERIC
+    const auto bTest = DbUtils::add_column(m_table_name, field, get_app_window()); //TODO: Get schema type for Field::glom_field_type::NUMERIC
     if(bTest)
     {
       //Store the generated title in the document:
@@ -215,7 +215,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
       Document* pDoc = static_cast<Document*>(get_document());
       if(pDoc)
       {
-        std::cout << field->get_glom_type() << std::endl;
+        std::cout << static_cast<int>(field->get_glom_type()) << std::endl;
         Document::type_vec_fields vecFields = pDoc->get_table_fields(m_table_name);
         vecFields.push_back(field);
         pDoc->set_table_fields(m_table_name, vecFields);
@@ -296,7 +296,7 @@ bool Box_DB_Table_Definition::check_field_change(const std::shared_ptr<const Fie
 
   //If we are changing a non-glom type:
   //Refuse to edit field definitions that were not created by glom:
-  if(field_old->get_glom_type() == Field::TYPE_INVALID)
+  if(field_old->get_glom_type() == Field::glom_field_type::INVALID)
   {
     UiUtils::show_ok_dialog(_("Invalid database structure"),
       _("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."), parent_window, Gtk::MESSAGE_ERROR);

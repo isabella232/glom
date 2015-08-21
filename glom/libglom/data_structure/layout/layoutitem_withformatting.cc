@@ -67,8 +67,8 @@ Formatting::HorizontalAlignment LayoutItem_WithFormatting::get_formatting_used_h
   Formatting::HorizontalAlignment alignment = 
     format.get_horizontal_alignment();
   
-  if(alignment == Formatting::HORIZONTAL_ALIGNMENT_AUTO)
-    alignment = Formatting::HORIZONTAL_ALIGNMENT_LEFT;
+  if(alignment == Formatting::HorizontalAlignment::AUTO)
+    alignment = Formatting::HorizontalAlignment::LEFT;
   
   return alignment;
 }

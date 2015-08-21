@@ -33,7 +33,7 @@ LayoutItem_Line::LayoutItem_Line()
   m_line_width(0.5f), //Arbitrary default
   m_color("black") //Arbitrary default
 {
-  m_translatable_item_type = TRANSLATABLE_TYPE_INVALID; //There is no text in this to translate.
+  m_translatable_item_type = enumTranslatableItemType::INVALID; //There is no text in this to translate.
 }
 
 LayoutItem_Line::LayoutItem_Line(const LayoutItem_Line& src)

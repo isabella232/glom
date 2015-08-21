@@ -43,7 +43,7 @@ class Entry
 {
 public:
   explicit Entry(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  explicit Entry(Field::glom_field_type glom_type = Field::TYPE_TEXT);
+  explicit Entry(Field::glom_field_type glom_type = Field::glom_field_type::TEXT);
   virtual ~Entry();
 
   virtual void set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name) override;

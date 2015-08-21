@@ -67,7 +67,7 @@ bool CheckButton::on_button_press_event(GdkEventButton *button_event)
 
     //Only show this popup in developer mode, so operators still see the default GtkCheckButton context menu.
     //TODO: It would be better to add it somehow to the standard context menu.
-    if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    if(pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
       GdkModifierType mods;
       gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );

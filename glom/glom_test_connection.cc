@@ -259,12 +259,12 @@ int main(int argc, char* argv[])
   }
   catch(const Glom::ExceptionConnection& ex)
   {
-    if(ex.get_failure_type() == Glom::ExceptionConnection::FAILURE_NO_SERVER)
+    if(ex.get_failure_type() == Glom::ExceptionConnection::failure_type::NO_SERVER)
     {
       std::cerr << _("Error: Could not connect to the server even without specifying a database.") << std::endl;
       return EXIT_FAILURE;
     }
-    else if(ex.get_failure_type() == Glom::ExceptionConnection::FAILURE_NO_DATABASE)
+    else if(ex.get_failure_type() == Glom::ExceptionConnection::failure_type::NO_DATABASE)
     {
       //We expect this exception if we did not specify a database:
       if(!(group.m_arg_server_database.empty()))

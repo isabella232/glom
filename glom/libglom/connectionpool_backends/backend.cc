@@ -47,12 +47,12 @@ namespace ConnectionPoolBackends
 
 Backend::InitErrors Backend::initialize(const SlotProgress& /* slot_progress */, const Glib::ustring& /* initial_username */, const Glib::ustring& /* password */, bool /* network_shared */)
 {
-  return INITERROR_NONE;
+  return InitErrors::NONE;
 }
 
 Backend::StartupErrors Backend::startup(const SlotProgress& /* slot_progress */, bool /* network_shared */)
 {
-  return STARTUPERROR_NONE;
+  return StartupErrors::NONE;
 }
 
 bool Backend::cleanup(const SlotProgress& /* slot_progress */)

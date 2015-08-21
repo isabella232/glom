@@ -52,9 +52,9 @@ Dialog_OfferSave::Dialog_OfferSave(const Glib::ustring& file_uri)
   
   set_secondary_text(get_confirmation_message(file_uri));
 
-  add_button(_("Discard"), BUTTON_Discard);
-  auto cancel_button = add_button(_("_Cancel"), BUTTON_Cancel);
-  add_button(_("_Save"), BUTTON_Save);
+  add_button(_("Discard"), static_cast<int>(enumButtons::Discard));
+  auto cancel_button = add_button(_("_Cancel"), static_cast<int>(enumButtons::Cancel));
+  add_button(_("_Save"), static_cast<int>(enumButtons::Save));
 
   // Otherwise Discard has focus initially which seems inconvenient:
   cancel_button->grab_focus();

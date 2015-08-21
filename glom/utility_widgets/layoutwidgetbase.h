@@ -45,15 +45,15 @@ public:
   std::shared_ptr<const LayoutItem> get_layout_item() const;
   std::shared_ptr<LayoutItem> get_layout_item();
 
-  enum enumType
+  enum class enumType
   {
-    TYPE_FIELD,
-    TYPE_GROUP,
-    TYPE_NOTEBOOK,
-    TYPE_PORTAL,
-    TYPE_BUTTON,
-    TYPE_TEXT,
-    TYPE_IMAGE
+    FIELD,
+    GROUP,
+    NOTEBOOK,
+    PORTAL,
+    BUTTON,
+    TEXT,
+    IMAGE
   };
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

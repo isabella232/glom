@@ -121,9 +121,9 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_p
     const Formatting::HorizontalAlignment alignment =
      layout_item->get_formatting_used_horizontal_alignment(true /* for details view */);
     const Gtk::Justification justification =
-      (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::JUSTIFY_LEFT : Gtk::JUSTIFY_RIGHT);
+      (alignment == Formatting::HorizontalAlignment::LEFT ? Gtk::JUSTIFY_LEFT : Gtk::JUSTIFY_RIGHT);
     const Gtk::Align x_align =
-      (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
+      (alignment == Formatting::HorizontalAlignment::LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
 
     Gtk::Label* label = dynamic_cast<Gtk::Label*>(widget_to_change);
     if(label)

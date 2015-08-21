@@ -130,13 +130,13 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
   if(m_database_directory_uri.empty())
   {
     std::cerr << G_STRFUNC << ": initialize: m_self_hosting_data_uri is empty." << std::endl;
-    return INITERROR_OTHER;
+    return InitErrors::OTHER;
   }
 
   if(initial_username.empty())
   {
     std::cerr << G_STRFUNC << ": MySQLSelfHosted::initialize(). Username was empty while attempting to create self-hosting database" << std::endl;
-    return INITERROR_OTHER;
+    return InitErrors::OTHER;
   }
 
   //Get the filepath of the directory that we should create:
@@ -144,7 +144,7 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
   //std::cout << "debug: dbdir_uri=" << dbdir_uri << std::endl;
 
   if(file_exists_uri(dbdir_uri))
-    return INITERROR_DIRECTORY_ALREADY_EXISTS;
+    return InitErrors::DIRECTORY_ALREADY_EXISTS;
 
   const auto dbdir = Glib::filename_from_uri(dbdir_uri);
   //std::cout << "debug: dbdir=" << dbdir << std::endl;
@@ -155,7 +155,7 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
   {
     std::cerr << G_STRFUNC << ": Couldn't create directory: " << dbdir << std::endl;
 
-    return INITERROR_COULD_NOT_CREATE_DIRECTORY;
+    return InitErrors::COULD_NOT_CREATE_DIRECTORY;
   }
 
   //Create these files: environment
@@ -167,7 +167,7 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
   {
     std::cerr << G_STRFUNC << ": Couldn't create the data directory: " << dbdir << std::endl;
 
-    return INITERROR_COULD_NOT_CREATE_DIRECTORY;
+    return InitErrors::COULD_NOT_CREATE_DIRECTORY;
   }
 
   // initdb creates a new mysql database cluster:
@@ -208,17 +208,17 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
     //TODO: This is inefficient, because the caller probably wants to start the server soon anyway,
     //but that might be in a different instance of this backend,
     //and we cannot take the risk of leaving the database with a default password.
-    if(startup(slot_progress, false) != STARTUPERROR_NONE)
+    if(startup(slot_progress, false) != StartupErrors::NONE)
     {
       std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting MySQL database, while starting for the first time, to set the initial username and password." << std::endl;
-      return INITERROR_OTHER;
+      return InitErrors::OTHER;
     }
     else
     {
       if(!cleanup(slot_progress))
       {
         std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting MySQL database, while shutting down, after setting the initial username and password." << std::endl;
-        return INITERROR_OTHER;
+        return InitErrors::OTHER;
       }
     }
 
@@ -245,7 +245,7 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
     */
   }
 
-  return result ? INITERROR_NONE : INITERROR_COULD_NOT_START_SERVER;
+  return result ? InitErrors::NONE : InitErrors::COULD_NOT_START_SERVER;
 }
 
 Glib::ustring MySQLSelfHosted::get_mysqlql_utils_version(const SlotProgress& /* slot_progress */)
@@ -297,7 +297,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
   if(get_self_hosting_active())
   {
     std::cerr << G_STRFUNC << ": Already started." << std::endl;
-    return STARTUPERROR_NONE; //Just do it once.
+    return StartupErrors::NONE; //Just do it once.
   }
 
   const auto dbdir_uri = m_database_directory_uri;
@@ -305,7 +305,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
   if(!(file_exists_uri(dbdir_uri)))
   {
     std::cerr << G_STRFUNC << ": The data directory could not be found: " << dbdir_uri << std::endl;
-    return STARTUPERROR_FAILED_NO_MAIN_DIRECTORY;
+    return StartupErrors::FAILED_NO_MAIN_DIRECTORY;
   }
 
   const auto dbdir = Glib::filename_from_uri(dbdir_uri);
@@ -321,12 +321,12 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
     {
       std::cerr << G_STRFUNC << ": There is no data, but there is backup data." << std::endl;
       //Let the caller convert the backup to real data and then try again:
-      return STARTUPERROR_FAILED_NO_DATA_HAS_BACKUP_DATA;
+      return StartupErrors::FAILED_NO_DATA_HAS_BACKUP_DATA;
     }
     else
     {
       std::cerr << G_STRFUNC << ": The data sub-directory could not be found." << dbdir_data_uri << std::endl;
-      return STARTUPERROR_FAILED_NO_DATA;
+      return StartupErrors::FAILED_NO_DATA;
     }
   }
 
@@ -338,7 +338,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
   if(available_port == 0)
   {
     std::cerr << G_STRFUNC << ": No port was available between " << PORT_MYSQL_SELF_HOSTED_START << " and " << PORT_MYSQL_SELF_HOSTED_END << std::endl;
-    return STARTUPERROR_FAILED_NO_PORT_AVAILABLE;
+    return StartupErrors::FAILED_NO_PORT_AVAILABLE;
   }
 
   //TODO: Performance:
@@ -367,7 +367,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
     m_port = 0;
 
     std::cerr << G_STRFUNC << "Error while attempting to self-host a MySQL database." << std::endl;
-    return STARTUPERROR_FAILED_UNKNOWN_REASON;
+    return StartupErrors::FAILED_UNKNOWN_REASON;
   }
 
   m_port = available_port; //Remember it for later.
@@ -378,7 +378,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
     if(m_initial_password_to_set.empty()) {
       //If this is empty then mysqladmin will ask for it on stdout, blocking us.
       std::cerr << G_STRFUNC << "Error while attempting to self-host a MySQL database: m_initial_password_to_set is empty." << std::endl;
-      return STARTUPERROR_FAILED_UNKNOWN_REASON;
+      return StartupErrors::FAILED_UNKNOWN_REASON;
     }
 
     //Set the root password:
@@ -389,7 +389,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
     if(!Glom::Spawn::execute_command_line_and_wait(command_initdb_set_initial_password, slot_progress))
     {
       std::cerr << G_STRFUNC << ": Error while attempting to start self-hosting MySQL database, when setting the initial password." << std::endl;
-      return STARTUPERROR_FAILED_UNKNOWN_REASON;
+      return StartupErrors::FAILED_UNKNOWN_REASON;
     }
 
     m_temporary_password_active = false;
@@ -402,7 +402,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
     if(!gda_connection)
     {
       std::cerr << G_STRFUNC << "Error while attempting to start self-hosting MySQL database, when setting the initial username: connection failed." << std::endl;
-      return STARTUPERROR_FAILED_UNKNOWN_REASON;
+      return StartupErrors::FAILED_UNKNOWN_REASON;
     }
     m_saved_password = m_initial_password_to_set;
 
@@ -418,21 +418,21 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
       if(!test)
       {
         std::cerr << G_STRFUNC << "Error while attempting to start self-hosting MySQL database, when setting the initial username: UPDATE failed." << std::endl;
-       return STARTUPERROR_FAILED_UNKNOWN_REASON;
+       return StartupErrors::FAILED_UNKNOWN_REASON;
       }
       */
     }
     catch(const Glib::Error& ex)
     {
       std::cerr << G_STRFUNC  << "Error while attempting to start self-hosting MySQL database, when setting the initial username: UPDATE failed: " << ex.what() << std::endl;
-      return STARTUPERROR_FAILED_UNKNOWN_REASON;
+      return StartupErrors::FAILED_UNKNOWN_REASON;
     }
   }
 
   m_saved_username = m_initial_username_to_set;
   m_initial_username_to_set.clear();
 
-  return STARTUPERROR_NONE;
+  return StartupErrors::NONE;
 }
 
 //TODO: Avoid copy/paste with PostgresSelfHosted:
@@ -589,7 +589,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQLSelfHosted::connect(const Glib::ustrin
 
   if(!get_self_hosting_active())
   {
-    throw ExceptionConnection(ExceptionConnection::FAILURE_NO_BACKEND); //TODO: But there is a backend. It's just not ready.
+    throw ExceptionConnection(ExceptionConnection::failure_type::NO_BACKEND); //TODO: But there is a backend. It's just not ready.
   }
 
   Glib::RefPtr<Gnome::Gda::Connection> result;
@@ -605,7 +605,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQLSelfHosted::connect(const Glib::ustrin
     }
     catch(const ExceptionConnection& ex)
     {
-      if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+      if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
       {
         //It must be using a default password, so any failure would not be due to a wrong password.
         //However, pg_ctl sometimes reports success before it is really ready to let us connect,

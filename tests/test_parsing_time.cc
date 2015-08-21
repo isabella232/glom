@@ -23,7 +23,7 @@ int main()
 
   success = false;
   const Gnome::Gda::Value value =
-    Glom::Conversions::parse_value(Glom::Field::TYPE_TIME, time_text_input, success);
+    Glom::Conversions::parse_value(Glom::Field::glom_field_type::TIME, time_text_input, success);
 
   if(!success)
   {
@@ -47,7 +47,7 @@ int main()
   }
 
   const Glib::ustring time_text_parsed =
-    Glom::Conversions::get_text_for_gda_value(Glom::Field::TYPE_TIME, value);
+    Glom::Conversions::get_text_for_gda_value(Glom::Field::glom_field_type::TIME, value);
 
 
   //std::cout << "time_text_parsed=" << time_text_parsed << std::endl;

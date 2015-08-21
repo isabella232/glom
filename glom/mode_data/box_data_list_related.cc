@@ -61,7 +61,7 @@ void Box_Data_List_Related::enable_buttons()
 {
   const bool view_details_possible =
     get_has_suitable_record_to_view_details() &&
-    (m_portal->get_navigation_type() != LayoutItem_Portal::NAVIGATION_NONE);
+    (m_portal->get_navigation_type() != LayoutItem_Portal::navigation_type::NONE);
 
   // Don't allow the user to go to a record in a hidden table.
   // Unless we are on Maemo - then we want to allow editing in a separate window only.
@@ -102,8 +102,8 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
     if(!(m_Frame.get_label_widget()))
       m_Frame.set_label_widget(m_Label);
 
-    m_AddDel.set_margin_start(UiUtils::DEFAULT_SPACING_LARGE);
-    m_AddDel.set_margin_top(UiUtils::DEFAULT_SPACING_SMALL);
+    m_AddDel.set_margin_start(static_cast<int>(UiUtils::DefaultSpacings::LARGE));
+    m_AddDel.set_margin_top(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
 
   }
   else

@@ -212,7 +212,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
   //m_combo_navigation_specify->set_display_parent_table(""); //This would be superfluous, and a bit confusing.
 
   bool navigation_is_automatic = false;
-  if(m_portal->get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
+  if(m_portal->get_navigation_type() == LayoutItem_Portal::navigation_type::SPECIFIC)
   {
     std::shared_ptr<UsesRelationship> navrel = m_portal->get_navigation_relationship_specific();
     //std::cout << "debug navrel=" << navrel->get_relationship()->get_name() << std::endl;
@@ -255,7 +255,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
   else
     std::cout << "debug: " << G_STRFUNC << ": date field:" << debugfield->get_name() << std::endl;
 
-  m_combobox_date_field->set_fields(document, related_table_name, Field::TYPE_DATE);
+  m_combobox_date_field->set_fields(document, related_table_name, Field::glom_field_type::DATE);
   m_combobox_date_field->set_selected_field(m_portal->get_date_field());
 
   m_modified = false;

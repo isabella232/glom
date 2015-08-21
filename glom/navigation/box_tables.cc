@@ -80,7 +80,7 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const std:
   
   if(iter)
   {
-    const auto developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+    const auto developer_mode = (get_userlevel() == AppState::userlevels::DEVELOPER);
 
     m_AddDel.set_value_key(iter, table_info->get_name());
     m_AddDel.set_value(iter, m_colTableName, table_info->get_name());
@@ -109,7 +109,7 @@ bool Box_Tables::fill_from_database()
   bool result = Base_DB::fill_from_database();
 
   //Enable/Disable extra widgets:
-  const auto developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+  const auto developer_mode = (get_userlevel() == AppState::userlevels::DEVELOPER);
 
   //Developers see more columns, so make it bigger:
   if(developer_mode)
@@ -128,18 +128,18 @@ bool Box_Tables::fill_from_database()
 
   const bool editable = developer_mode;
   const bool visible_extras = developer_mode;
-  m_colTableName = m_AddDel.add_column(_("Table"), AddDelColumnInfo::STYLE_Text, editable, visible_extras);
+  m_colTableName = m_AddDel.add_column(_("Table"), AddDelColumnInfo::enumStyles::Text, editable, visible_extras);
   m_AddDel.prevent_duplicates(m_colTableName); //Prevent two tables with the same name from being added.
   m_AddDel.set_prevent_duplicates_warning(_("This table already exists. Please choose a different table name"));
 
-  m_colHidden = m_AddDel.add_column(_("Hidden"), AddDelColumnInfo::STYLE_Boolean, editable, visible_extras);
-  m_colTitle =  m_AddDel.add_column(_("Title"), AddDelColumnInfo::STYLE_Text, editable, true);
+  m_colHidden = m_AddDel.add_column(_("Hidden"), AddDelColumnInfo::enumStyles::Boolean, editable, visible_extras);
+  m_colTitle =  m_AddDel.add_column(_("Title"), AddDelColumnInfo::enumStyles::Text, editable, true);
 
   //TODO: This should really be a radio, but the use of AddDel makes it awkward to change that CellRenderer property.
-  m_colDefault = m_AddDel.add_column(_("Default"), AddDelColumnInfo::STYLE_Boolean, editable, visible_extras);
+  m_colDefault = m_AddDel.add_column(_("Default"), AddDelColumnInfo::enumStyles::Boolean, editable, visible_extras);
 
   if(developer_mode)
-    m_colTitleSingular = m_AddDel.add_column(_("Title (Singular Form)"), AddDelColumnInfo::STYLE_Text, editable, true);
+    m_colTitleSingular = m_AddDel.add_column(_("Title (Singular Form)"), AddDelColumnInfo::enumStyles::Text, editable, true);
 
   //Get the list of hidden tables:
 
@@ -355,7 +355,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
 
 void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column)
 {
-  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  if(get_userlevel() == AppState::userlevels::DEVELOPER)
   {
     if(column == m_colHidden)
     {
@@ -455,7 +455,7 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Box_Tables::save_to_document()
 {
-  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  if(get_userlevel() == AppState::userlevels::DEVELOPER)
   {
     //Save the hidden tables. TODO_usermode: Only if we are in developer mode.
     Document::type_listTableInfo listTables;

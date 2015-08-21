@@ -134,7 +134,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
       std::cerr << G_STRFUNC << ":   (Could not connect even to the default database, database=" << database  << std::endl;
 #endif
 
-    throw ExceptionConnection(temp_conn ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
+    throw ExceptionConnection(temp_conn ? ExceptionConnection::failure_type::NO_DATABASE : ExceptionConnection::failure_type::NO_SERVER);
   }
 
   if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
@@ -217,24 +217,24 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 
 		      switch(new_fields[i]->get_glom_type())
 		      {
-		        case Field::TYPE_BOOLEAN:
+		        case Field::glom_field_type::BOOLEAN:
 		        {
-		          if(old_field_type == Field::TYPE_NUMERIC)
+		          if(old_field_type == Field::glom_field_type::NUMERIC)
 		          {
 		            conversion_command = "(CASE WHEN " + field_name_old_quoted + " > 0 THEN true "
 		                                       "WHEN " + field_name_old_quoted + " = 0 THEN false "
 		                                       "WHEN " + field_name_old_quoted + " IS NULL THEN false END)";
 		          }
-		          else if(old_field_type == Field::TYPE_TEXT)
+		          else if(old_field_type == Field::glom_field_type::TEXT)
 		            conversion_command = '(' + field_name_old_quoted + " !~~* \'false\')"; // !~~* means ! ILIKE
 		          else // Dates and Times:
 		            conversion_command = '(' + field_name_old_quoted + " IS NOT NULL)";
 		          break;
 		        }
 
-		        case Field::TYPE_NUMERIC: // CAST does not work if the destination type is numeric
+		        case Field::glom_field_type::NUMERIC: // CAST does not work if the destination type is numeric
 		        {
-		          if(old_field_type == Field::TYPE_BOOLEAN)
+		          if(old_field_type == Field::glom_field_type::BOOLEAN)
 		          {
 		            conversion_command = "(CASE WHEN " + field_name_old_quoted + " = true THEN 1 "
 		                                       "WHEN " + field_name_old_quoted + " = false THEN 0 "
@@ -253,12 +253,12 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 		          break;
 		        }
 
-		        case Field::TYPE_DATE: // CAST does not work if the destination type is date.
+		        case Field::glom_field_type::DATE: // CAST does not work if the destination type is date.
 		        {
 		          conversion_command = "to_date( " + field_name_old_quoted + ", 'YYYYMMDD' )"; // TODO: Standardise date storage format.
 		          break;
 		        }
-		        case Field::TYPE_TIME: // CAST does not work if the destination type is timestamp.
+		        case Field::glom_field_type::TIME: // CAST does not work if the destination type is timestamp.
 		        {
 		          conversion_command = "to_timestamp( " + field_name_old_quoted + ", 'HHMMSS' )"; // TODO: Standardise time storage format.
 		          break;
@@ -269,7 +269,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 		          // To Text:
 
 		          // bool to text:
-		          if(old_field_type == Field::TYPE_BOOLEAN)
+		          if(old_field_type == Field::glom_field_type::BOOLEAN)
 		          {
 		            conversion_command = "(CASE WHEN " + field_name_old_quoted + " = true THEN \'true\' "
 		                                       "WHEN " + field_name_old_quoted + " = false THEN \'false\' "

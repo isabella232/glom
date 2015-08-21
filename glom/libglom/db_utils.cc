@@ -236,7 +236,7 @@ bool recreate_database_from_document(Document* document, const std::function<voi
   }
   catch(const ExceptionConnection& ex)
   {
-    if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+    if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
     {
       std::cerr << G_STRFUNC << ": AppWindow::recreate_database(): Failed because connection to server failed even without specifying a database." << std::endl;
       return false;
@@ -349,7 +349,7 @@ bool recreate_database_from_document(Document* document, const std::function<voi
 
 SystemPrefs get_database_preferences(const Document* document)
 {
-  //if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  //if(get_userlevel() == AppState::userlevels::DEVELOPER)
   //  add_standard_tables(document);
 
   SystemPrefs result;
@@ -391,14 +391,14 @@ SystemPrefs get_database_preferences(const Document* document)
       if(datamodel && (datamodel->get_n_rows() != 0))
       {
         const std::locale locale(std::locale::classic()); //Ignored for text types, but it's best to avoid ever using the current arbitrary locale here.
-        result.m_name = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(0, 0), locale);
-        result.m_org_name = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(1, 0), locale);
-        result.m_org_address_street = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(2, 0), locale);
-        result.m_org_address_street2 = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(3, 0), locale);
-        result.m_org_address_town = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(4, 0), locale);
-        result.m_org_address_county = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(5, 0), locale);
-        result.m_org_address_country = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(6, 0), locale);
-        result.m_org_address_postcode = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(7, 0), locale);
+        result.m_name = Conversions::get_text_for_gda_value(Field::glom_field_type::TEXT, datamodel->get_value_at(0, 0), locale);
+        result.m_org_name = Conversions::get_text_for_gda_value(Field::glom_field_type::TEXT, datamodel->get_value_at(1, 0), locale);
+        result.m_org_address_street = Conversions::get_text_for_gda_value(Field::glom_field_type::TEXT, datamodel->get_value_at(2, 0), locale);
+        result.m_org_address_street2 = Conversions::get_text_for_gda_value(Field::glom_field_type::TEXT, datamodel->get_value_at(3, 0), locale);
+        result.m_org_address_town = Conversions::get_text_for_gda_value(Field::glom_field_type::TEXT, datamodel->get_value_at(4, 0), locale);
+        result.m_org_address_county = Conversions::get_text_for_gda_value(Field::glom_field_type::TEXT, datamodel->get_value_at(5, 0), locale);
+        result.m_org_address_country = Conversions::get_text_for_gda_value(Field::glom_field_type::TEXT, datamodel->get_value_at(6, 0), locale);
+        result.m_org_address_postcode = Conversions::get_text_for_gda_value(Field::glom_field_type::TEXT, datamodel->get_value_at(7, 0), locale);
 
         //We need to be more clever about these column indexes if we add more new fields:
         if(optional_org_logo)
@@ -528,22 +528,22 @@ bool add_standard_tables(const Document* document)
 
       auto primary_key = std::make_shared<Field>(); //It's not used, because there's only one record, but we must have one.
       primary_key->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_ID);
-      primary_key->set_glom_type(Field::TYPE_NUMERIC);
+      primary_key->set_glom_type(Field::glom_field_type::NUMERIC);
       fields.push_back(primary_key);
 
       auto field_table_name = std::make_shared<Field>();
       field_table_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME);
-      field_table_name->set_glom_type(Field::TYPE_TEXT);
+      field_table_name->set_glom_type(Field::glom_field_type::TEXT);
       fields.push_back(field_table_name);
 
       auto field_field_name = std::make_shared<Field>();
       field_field_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME);
-      field_field_name->set_glom_type(Field::TYPE_TEXT);
+      field_field_name->set_glom_type(Field::glom_field_type::TEXT);
       fields.push_back(field_field_name);
 
       auto field_next_value = std::make_shared<Field>();
       field_next_value->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE);
-      field_next_value->set_glom_type(Field::TYPE_TEXT);
+      field_next_value->set_glom_type(Field::glom_field_type::TEXT);
       fields.push_back(field_next_value);
 
       const auto test = create_table(document->get_hosting_mode(), table_info, fields);
@@ -814,16 +814,16 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
 
   // These are documented here:
   // http://library.gnome.org/devel/libgda-4.0/3.99/connection.html#GdaConnectionMetaTypeHead
-  enum GlomGdaDataModelFieldColumns
+  enum class GlomGdaDataModelFieldColumns
   {
-    DATAMODEL_FIELDS_COL_NAME = 0,
-    DATAMODEL_FIELDS_COL_TYPE = 1,
-    DATAMODEL_FIELDS_COL_GTYPE = 2,
-    DATAMODEL_FIELDS_COL_SIZE = 3,
-    DATAMODEL_FIELDS_COL_SCALE = 4,
-    DATAMODEL_FIELDS_COL_NOTNULL = 5,
-    DATAMODEL_FIELDS_COL_DEFAULTVALUE = 6,
-    DATAMODEL_FIELDS_COL_EXTRA = 6 // Could be auto-increment
+    NAME = 0,
+    TYPE = 1,
+    GTYPE = 2,
+    SIZE = 3,
+    SCALE = 4,
+    NOTNULL = 5,
+    DEFAULTVALUE = 6,
+    EXTRA = 6 // Could be auto-increment
   };
 
   //TODO: BusyCursor busy_cursor(get_appwindow());
@@ -907,7 +907,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
         Glib::RefPtr<Gnome::Gda::Column> field_info = Gnome::Gda::Column::create();
 
         //Get the field name:
-        const auto value_name = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NAME, row);
+        const auto value_name = data_model_fields->get_value_at(static_cast<int>(GlomGdaDataModelFieldColumns::NAME), row);
         if(value_name.get_value_type() ==  G_TYPE_STRING)
         {
           if(value_name.get_string().empty())
@@ -920,7 +920,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
         }
 
         //Get the field type:
-        const auto value_fieldtype = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, row);
+        const auto value_fieldtype = data_model_fields->get_value_at(static_cast<int>(GlomGdaDataModelFieldColumns::GTYPE), row);
         if(value_fieldtype.get_value_type() ==  G_TYPE_STRING)
         {
           const auto type_string = value_fieldtype.get_string();
@@ -931,12 +931,12 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
 
         //Get the default value:
         const Gnome::Gda::Value value_defaultvalue =
-          data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_DEFAULTVALUE, row);
+          data_model_fields->get_value_at(static_cast<int>(GlomGdaDataModelFieldColumns::DEFAULTVALUE), row);
         if(value_defaultvalue.get_value_type() ==  G_TYPE_STRING)
           field_info->set_default_value(value_defaultvalue);
 
         //Get whether it can be null:
-        const auto value_notnull = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NOTNULL, row);
+        const auto value_notnull = data_model_fields->get_value_at(static_cast<int>(GlomGdaDataModelFieldColumns::NOTNULL), row);
         if(value_notnull.get_value_type() ==  G_TYPE_BOOLEAN)
           field_info->set_allow_null(value_notnull.get_boolean());
 
@@ -1173,7 +1173,7 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
   field_info->set_allow_null(false);
   field_primary_key->set_field_info(field_info);
 
-  field_primary_key->set_glom_type(Field::TYPE_NUMERIC);
+  field_primary_key->set_glom_type(Field::glom_field_type::NUMERIC);
   //std::cout << "debug: " << G_STRFUNC << ":" << field_primary_key->get_auto_increment() << std::endl;
 
   type_vec_fields fields;
@@ -1183,14 +1183,14 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
   auto field_description = std::make_shared<Field>();
   field_description->set_name("description");
   field_description->set_title_original(_("Description")); //Use a translation, because the original locale will be marked as non-English if the current locale is non-English.
-  field_description->set_glom_type(Field::TYPE_TEXT);
+  field_description->set_glom_type(Field::glom_field_type::TEXT);
   fields.push_back(field_description);
 
   //Comments:
   auto field_comments = std::make_shared<Field>();
   field_comments->set_name("comments");
   field_comments->set_title_original(_("Comments"));
-  field_comments->set_glom_type(Field::TYPE_TEXT);
+  field_comments->set_glom_type(Field::glom_field_type::TEXT);
   field_comments->m_default_formatting.set_text_format_multiline();
   fields.push_back(field_comments);
 
@@ -1229,7 +1229,7 @@ bool create_table(Document::HostingMode hosting_mode, const std::shared_ptr<cons
   {
     std::shared_ptr<Field> field = std::make_shared<Field>();
     field->set_name(GLOM_STANDARD_FIELD_LOCK);
-    field->set_glom_type(Field::TYPE_TEXT);
+    field->set_glom_type(Field::glom_field_type::TEXT);
     fields.push_back(field);
   }
 
@@ -1247,8 +1247,8 @@ bool create_table(Document::HostingMode hosting_mode, const std::shared_ptr<cons
 
     Glib::ustring field_type = field->get_sql_type();
 
-    if( (hosting_mode == Document::HOSTING_MODE_MYSQL_CENTRAL) ||
-      (hosting_mode == Document::HOSTING_MODE_MYSQL_SELF) )
+    if( (hosting_mode == Document::HostingMode::MYSQL_CENTRAL) ||
+      (hosting_mode == Document::HostingMode::MYSQL_SELF) )
     {
       if(field_type == "varchar")
         field_type = "varchar(255)";
@@ -1469,7 +1469,7 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
 
     //GdaNumeric is a pain, so we take a short-cut:
     bool success = false;
-    value = Conversions::parse_value(Field::TYPE_NUMERIC, "0", success, true /* iso_format */);
+    value = Conversions::parse_value(Field::glom_field_type::NUMERIC, "0", success, true /* iso_format */);
   }
   else
   {
@@ -1479,7 +1479,7 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
     //(our system_autoincrements table has it as text, for future flexibility):
     const auto actual_value_text = actual_value.get_string();
     bool success = false;
-    value = Conversions::parse_value(Field::TYPE_NUMERIC, actual_value_text, success, true /* iso_format */);
+    value = Conversions::parse_value(Field::glom_field_type::NUMERIC, actual_value_text, success, true /* iso_format */);
   }
 
   //std::cout << "auto_increment_insert_first_if_necessary: returning value of type=" << value.get_value_type() << std::endl;
@@ -1626,10 +1626,10 @@ bool insert_example_data(const Document* document, const Glib::ustring& table_na
         break;
       }
 
-      if(field->get_glom_type() == Field::TYPE_IMAGE)
+      if(field->get_glom_type() == Field::glom_field_type::IMAGE)
       {
-        if((hosting_mode == Document::HOSTING_MODE_MYSQL_CENTRAL) ||
-          (hosting_mode == Document::HOSTING_MODE_MYSQL_SELF))
+        if((hosting_mode == Document::HostingMode::MYSQL_CENTRAL) ||
+          (hosting_mode == Document::HostingMode::MYSQL_SELF))
         {
           //TODO: See https://bugzilla.gnome.org/show_bug.cgi?id=691099
           std::cerr << G_STRFUNC << ": Skipping Image field because libgda does not support it for MySQL." << std::endl;
@@ -1946,7 +1946,7 @@ Glib::ustring get_unused_database_name(const Glib::ustring& base_name)
     }
     catch(const ExceptionConnection& ex)
     {
-      if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+      if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
       {
         //We couldn't even connect to the server,
         //regardless of what database we try to connect to:

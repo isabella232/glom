@@ -30,7 +30,7 @@ namespace Glom
 
 CanvasTextMovable::CanvasTextMovable(const Glib::ustring& text, double x, double y, double width, Goocanvas::AnchorType anchor)
 : Goocanvas::Text(text, x, y, width, anchor), 
-  m_snap_corner(CORNER_TOP_LEFT) //arbitrary default.
+  m_snap_corner(Corners::TOP_LEFT) //arbitrary default.
 {
   init();
 }
@@ -92,19 +92,19 @@ void CanvasTextMovable::snap_position(double& x, double& y) const
   double corner_y_offset = 0;
   switch(m_snap_corner)
   {
-    case CORNER_TOP_LEFT:
+    case Corners::TOP_LEFT:
       corner_x_offset = 0;
       corner_y_offset = 0;
       break;
-    case CORNER_TOP_RIGHT:
+    case Corners::TOP_RIGHT:
       corner_x_offset = property_width();
       corner_y_offset = 0;
       break;
-    case CORNER_BOTTOM_LEFT:
+    case Corners::BOTTOM_LEFT:
       corner_x_offset = 0;
       corner_y_offset = height;
       break;
-    case CORNER_BOTTOM_RIGHT:
+    case Corners::BOTTOM_RIGHT:
       corner_x_offset = width;
       corner_y_offset = height;
       break;

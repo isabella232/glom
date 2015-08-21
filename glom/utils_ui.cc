@@ -349,13 +349,13 @@ int UiUtils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const std:
   Glib::ustring example_text;
   switch(field_type)
   {
-    case(Field::TYPE_DATE):
+    case(Field::glom_field_type::DATE):
     {
       const Glib::Date date(31, Glib::Date::Month(12), 2000);
       example_text = Conversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(date));
       break;
     }
-    case(Field::TYPE_TIME):
+    case(Field::glom_field_type::TIME):
     {
       Gnome::Gda::Time time = {0, 0, 0, 0, 0};
       time.hour = 24;
@@ -364,7 +364,7 @@ int UiUtils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const std:
       example_text = Conversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(time));
       break;
     }
-    case(Field::TYPE_NUMERIC):
+    case(Field::glom_field_type::NUMERIC):
     {
       if(for_treeview)
         example_text = "EUR 999.99";
@@ -373,8 +373,8 @@ int UiUtils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const std:
         
       break;
     }
-    case(Field::TYPE_TEXT):
-    case(Field::TYPE_IMAGE): //Give images the same width as text fields, so they will often line up.
+    case(Field::glom_field_type::TEXT):
+    case(Field::glom_field_type::IMAGE): //Give images the same width as text fields, so they will often line up.
     {
       if(for_treeview)
         example_text = "AAAAAAAAAAAA";
@@ -444,15 +444,15 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::image_scale_keeping_ratio(const Glib::RefPtr<
   if(!pixbuf)
     return pixbuf;
 
-  enum enum_scale_mode
+  enum class enum_scale_mode
   {
-    SCALE_WIDTH,
-    SCALE_HEIGHT,
-    SCALE_BOTH,
-    SCALE_NONE
+    WIDTH,
+    HEIGHT,
+    BOTH,
+    NONE
   };
 
-  enum_scale_mode scale_mode = SCALE_NONE; //Start with either the width or height, and scale the other according to the ratio.
+  enum_scale_mode scale_mode = enum_scale_mode::NONE; //Start with either the width or height, and scale the other according to the ratio.
 
   const auto pixbuf_height = pixbuf->get_height();
   const auto pixbuf_width = pixbuf->get_width();
@@ -461,33 +461,33 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::image_scale_keeping_ratio(const Glib::RefPtr<
   {
     if(pixbuf_width > target_width)
     {
-      scale_mode = SCALE_BOTH;
+      scale_mode = enum_scale_mode::BOTH;
     }
     else
     {
       //Only the height is bigger:
-      scale_mode = SCALE_HEIGHT;
+      scale_mode = enum_scale_mode::HEIGHT;
     }
   }
   else if(pixbuf_width > target_width)
   {
     //Only the height is bigger:
-    scale_mode = SCALE_WIDTH;
+    scale_mode = enum_scale_mode::WIDTH;
   }
 
-  if(scale_mode == SCALE_NONE)
+  if(scale_mode == enum_scale_mode::NONE)
     return pixbuf;
-  else if(scale_mode == SCALE_HEIGHT)
+  else if(scale_mode == enum_scale_mode::HEIGHT)
   {
     const float ratio = (float)target_height / (float)pixbuf_height; 
     target_width = (int)((float)pixbuf_width * ratio);
   }
-  else if(scale_mode == SCALE_WIDTH)
+  else if(scale_mode == enum_scale_mode::WIDTH)
   {
     const float ratio = (float)target_width / (float) pixbuf_width;
     target_height = (int)((float)pixbuf_height * ratio);
   }
-  else if(scale_mode == SCALE_BOTH)
+  else if(scale_mode == enum_scale_mode::BOTH)
   {
     const auto ratio = std::min(
       (float)target_width / (float) pixbuf_width,

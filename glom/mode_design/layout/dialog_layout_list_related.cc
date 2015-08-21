@@ -267,7 +267,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
   m_combo_navigation_specify->set_relationships(document, related_table_name, true /* show related relationships */, false /* don't show parent table */); //TODO: Don't show the hidden tables, and don't show relationships that are not used by any fields.
   //m_combo_navigation_specify->set_display_parent_table(""); //This would be superfluous, and a bit confusing.
 
-  if(m_portal->get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
+  if(m_portal->get_navigation_type() == LayoutItem_Portal::navigation_type::SPECIFIC)
   {
     std::shared_ptr<UsesRelationship> navrel = m_portal->get_navigation_relationship_specific();
     //std::cout << "debug navrel=" << navrel->get_relationship()->get_name() << std::endl;
@@ -283,15 +283,15 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
   //std::cout << "debug: navrel_type=" << m_portal->get_navigation_relationship_type() << std::endl;
   switch(m_portal->get_navigation_type())
   {
-    case LayoutItem_Portal::NAVIGATION_NONE:
+    case LayoutItem_Portal::navigation_type::NONE:
       m_radio_navigation_none->set_active(true);
       break;
 
-    case LayoutItem_Portal::NAVIGATION_AUTOMATIC:
+    case LayoutItem_Portal::navigation_type::AUTOMATIC:
       m_radio_navigation_automatic->set_active(true);
       break;
 
-    case LayoutItem_Portal::NAVIGATION_SPECIFIC:
+    case LayoutItem_Portal::navigation_type::SPECIFIC:
       m_radio_navigation_specify->set_active(true);
       break;
   }
@@ -369,13 +369,13 @@ void Dialog_Layout_List_Related::save_to_document()
     }
 
     if(m_radio_navigation_automatic->get_active())
-      m_portal->set_navigation_type(LayoutItem_Portal::NAVIGATION_AUTOMATIC);
+      m_portal->set_navigation_type(LayoutItem_Portal::navigation_type::AUTOMATIC);
 
     if(m_radio_navigation_none->get_active())
     {
       std::shared_ptr<UsesRelationship> uses_rel = std::make_shared<UsesRelationship>();
       uses_rel->set_related_relationship(std::shared_ptr<Relationship>());
-      m_portal->set_navigation_type(LayoutItem_Portal::NAVIGATION_NONE);
+      m_portal->set_navigation_type(LayoutItem_Portal::navigation_type::NONE);
     }
     
     m_portal->set_rows_count(

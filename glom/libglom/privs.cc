@@ -93,8 +93,8 @@ Glib::ustring Privs::get_default_developer_user_name(Glib::ustring& password, Do
 {
   password = "glom_default_developer_password";
 
-  if((hosting_mode == Document::HOSTING_MODE_MYSQL_CENTRAL) ||
-   (hosting_mode == Document::HOSTING_MODE_MYSQL_SELF))
+  if((hosting_mode == Document::HostingMode::MYSQL_CENTRAL) ||
+   (hosting_mode == Document::HostingMode::MYSQL_SELF))
   {
     return "glom_dev_user"; //MySQL restricts user names to 16 characters.
   }

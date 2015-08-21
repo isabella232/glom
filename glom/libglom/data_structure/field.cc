@@ -40,13 +40,13 @@ bool Field::m_maps_inited = false;
 
 
 Field::Field()
-: m_glom_type(TYPE_INVALID),
+: m_glom_type(glom_field_type::INVALID),
   m_field_info(Gnome::Gda::Column::create()),
   m_visible(true),
   m_primary_key(false),
   m_unique_key(false)
 {
-  m_translatable_item_type = TRANSLATABLE_TYPE_FIELD;
+  m_translatable_item_type = enumTranslatableItemType::FIELD;
 }
 
 Field::Field(const Field& src)
@@ -150,7 +150,7 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
 
   const auto glom_type = get_glom_type();
   const auto new_type = fieldinfo->get_g_type();
-  if( (glom_type == TYPE_INVALID) &&
+  if( (glom_type == glom_field_type::INVALID) &&
     (new_type == GDA_TYPE_NULL)) //GDA_TYPE_NULL is the default for GdaColumn.
   {
     //Don't bother with any of the following checks.
@@ -160,7 +160,7 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
   // Also take fallback types into account as fieldinfo might originate from
   // the database system directly.
   GType cur_type = G_TYPE_NONE;
-  if(glom_type != TYPE_INVALID)
+  if(glom_type != glom_field_type::INVALID)
   {
     cur_type = get_gda_type_for_glom_type(glom_type);
 
@@ -233,7 +233,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnom
 {
   //std::cout << ": glom_type=" << get_glom_type() << std::endl;
 
-  if(value.is_null() && (get_glom_type() == TYPE_TEXT))
+  if(value.is_null() && (get_glom_type() == glom_field_type::TEXT))
   {
     return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
   }
@@ -271,8 +271,8 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value) const
 
 Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_type glom_type)
 {
-  //Handle TYPE_IMAGE specially:
-  if(glom_type == TYPE_IMAGE)
+  //Handle glom_field_type::IMAGE specially:
+  if(glom_type == glom_field_type::IMAGE)
   {
     if(!value.gobj())
       return Glib::ustring();
@@ -366,7 +366,7 @@ Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, glom_field_t
 
   //Unescape "" to ", because to_file_format() escaped ", as specified by the CSV RFC:
   Glib::ustring string_unescaped;
-  if(glom_type == TYPE_IMAGE)
+  if(glom_type == glom_field_type::IMAGE)
   {
     string_unescaped = str; //binary data does not have quote characters so we do not bother to escape or unescape it.
   }
@@ -377,7 +377,7 @@ Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, glom_field_t
   }
 
 
-  if(glom_type == TYPE_IMAGE)
+  if(glom_type == glom_field_type::IMAGE)
   {
     if(string_unescaped.empty())
       return Gnome::Gda::Value();
@@ -420,7 +420,7 @@ Glib::ustring Field::sql_find(const Gnome::Gda::Value& value, const Glib::RefPtr
 {
   switch(get_glom_type())
   {
-    case(TYPE_TEXT):
+    case(glom_field_type::TEXT):
     {
       //% means 0 or more characters.
       
@@ -431,10 +431,10 @@ Glib::ustring Field::sql_find(const Gnome::Gda::Value& value, const Glib::RefPtr
         
       break;
     }
-    case(TYPE_DATE):
-    case(TYPE_TIME):
-    case(TYPE_NUMERIC):
-    case(TYPE_BOOLEAN):
+    case(glom_field_type::DATE):
+    case(glom_field_type::TIME):
+    case(glom_field_type::NUMERIC):
+    case(glom_field_type::BOOLEAN):
     default:
     {
       return sql(value, connection);
@@ -447,7 +447,7 @@ Gnome::Gda::SqlOperatorType Field::sql_find_operator() const
 {
   switch(get_glom_type())
   {
-    case(TYPE_TEXT):
+    case(glom_field_type::TEXT):
     {
       auto connection_pool = ConnectionPool::get_instance();
       if(connection_pool && connection_pool->get_backend())
@@ -456,10 +456,10 @@ Gnome::Gda::SqlOperatorType Field::sql_find_operator() const
         return Gnome::Gda::SQL_OPERATOR_TYPE_LIKE; // Default
       break;
     }
-    case(TYPE_DATE):
-    case(TYPE_TIME):
-    case(TYPE_NUMERIC):
-    case(TYPE_BOOLEAN):
+    case(glom_field_type::DATE):
+    case(glom_field_type::TIME):
+    case(glom_field_type::NUMERIC):
+    case(glom_field_type::BOOLEAN):
     default:
     {
       return Gnome::Gda::SQL_OPERATOR_TYPE_EQ;
@@ -557,7 +557,7 @@ Glib::ustring Field::get_sql_type() const
 
     if(strType == "unknowntype")
     {
-      std::cerr << G_STRFUNC << ": returning unknowntype for field name=" << get_name() << ", glom_type=" << get_glom_type() << ", gda_type=" << (int)m_field_info->get_g_type() << std::endl;
+      std::cerr << G_STRFUNC << ": returning unknowntype for field name=" << get_name() << ", glom_type=" << static_cast<int>(get_glom_type()) << ", gda_type=" << (int)m_field_info->get_g_type() << std::endl;
     }
 
     return strType;
@@ -589,7 +589,7 @@ Field::glom_field_type Field::get_glom_type_for_gda_type(GType gda_type)
 {
   init_map();
 
-  Field::glom_field_type result = TYPE_INVALID;
+  Field::glom_field_type result = glom_field_type::INVALID;
 
   //Get the glom type used for this gda type:
   {
@@ -617,7 +617,7 @@ GType Field::get_gda_type_for_glom_type(Field::glom_field_type glom_type)
 
   if(ideal_gda_type == G_TYPE_NONE)
   {
-    std::cerr << G_STRFUNC << ": Returning G_TYPE_NONE for glom_type=" << glom_type << std::endl;
+    std::cerr << G_STRFUNC << ": Returning G_TYPE_NONE for glom_type=" << static_cast<int>(glom_type) << std::endl;
   }
 
   //std::cout << "debug: " << G_STRFUNC << ": returning: " << g_type_name(ideal_gda_type) << std::endl;
@@ -633,58 +633,58 @@ void Field::init_map()
     //Fill maps.
 
     //Ideals:
-    m_map_gda_type_to_glom_type[GDA_TYPE_NUMERIC] = TYPE_NUMERIC;
-    m_map_gda_type_to_glom_type[G_TYPE_INT] = TYPE_NUMERIC; //Only for "serial" (auto-increment) fields.
-    m_map_gda_type_to_glom_type[G_TYPE_STRING] = TYPE_TEXT;
-    m_map_gda_type_to_glom_type[GDA_TYPE_TIME] = TYPE_TIME;
-    m_map_gda_type_to_glom_type[G_TYPE_DATE] = TYPE_DATE;
-    m_map_gda_type_to_glom_type[G_TYPE_BOOLEAN] = TYPE_BOOLEAN;
-    m_map_gda_type_to_glom_type[GDA_TYPE_BINARY] = TYPE_IMAGE;
+    m_map_gda_type_to_glom_type[GDA_TYPE_NUMERIC] = glom_field_type::NUMERIC;
+    m_map_gda_type_to_glom_type[G_TYPE_INT] = glom_field_type::NUMERIC; //Only for "serial" (auto-increment) fields.
+    m_map_gda_type_to_glom_type[G_TYPE_STRING] = glom_field_type::TEXT;
+    m_map_gda_type_to_glom_type[GDA_TYPE_TIME] = glom_field_type::TIME;
+    m_map_gda_type_to_glom_type[G_TYPE_DATE] = glom_field_type::DATE;
+    m_map_gda_type_to_glom_type[G_TYPE_BOOLEAN] = glom_field_type::BOOLEAN;
+    m_map_gda_type_to_glom_type[GDA_TYPE_BINARY] = glom_field_type::IMAGE;
 
     //SQLite can return a GdaBlob though it can take a GdaBinary:
-    m_map_gda_type_to_glom_type[GDA_TYPE_BLOB] = TYPE_IMAGE;
+    m_map_gda_type_to_glom_type[GDA_TYPE_BLOB] = glom_field_type::IMAGE;
 
     //Extra conversions for GTypes that can be returned by glom_pygda_value_from_pyobject():
-    m_map_gda_type_to_glom_type[G_TYPE_DOUBLE] = TYPE_NUMERIC;
+    m_map_gda_type_to_glom_type[G_TYPE_DOUBLE] = glom_field_type::NUMERIC;
     //TODO? m_map_gda_type_to_glom_type[GDA_TYPE_TIME] = ;
     //TODO? m_map_gda_type_to_glom_type[GDA_TYPE_TIMESTAMP] = ;
 
-    m_map_glom_type_to_gda_type[TYPE_NUMERIC] = GDA_TYPE_NUMERIC;
-    m_map_glom_type_to_gda_type[TYPE_TEXT] = G_TYPE_STRING;
-    m_map_glom_type_to_gda_type[TYPE_TIME] = GDA_TYPE_TIME;
-    m_map_glom_type_to_gda_type[TYPE_DATE] = G_TYPE_DATE;
-    m_map_glom_type_to_gda_type[TYPE_BOOLEAN] = G_TYPE_BOOLEAN;
-    m_map_glom_type_to_gda_type[TYPE_IMAGE] = GDA_TYPE_BINARY;
+    m_map_glom_type_to_gda_type[glom_field_type::NUMERIC] = GDA_TYPE_NUMERIC;
+    m_map_glom_type_to_gda_type[glom_field_type::TEXT] = G_TYPE_STRING;
+    m_map_glom_type_to_gda_type[glom_field_type::TIME] = GDA_TYPE_TIME;
+    m_map_glom_type_to_gda_type[glom_field_type::DATE] = G_TYPE_DATE;
+    m_map_glom_type_to_gda_type[glom_field_type::BOOLEAN] = G_TYPE_BOOLEAN;
+    m_map_glom_type_to_gda_type[glom_field_type::IMAGE] = GDA_TYPE_BINARY;
 
     // Translators: This means an unknown or unnacceptable value type in a database.
-    m_map_type_names_ui[TYPE_INVALID] = _("Invalid");
+    m_map_type_names_ui[glom_field_type::INVALID] = _("Invalid");
     
     // Translators: This means a numeric value type in a database.
-    m_map_type_names_ui[TYPE_NUMERIC] = _("Number");
+    m_map_type_names_ui[glom_field_type::NUMERIC] = _("Number");
     
     // Translators: This means a text/string value type in a database.
-    m_map_type_names_ui[TYPE_TEXT] = _("Text");
+    m_map_type_names_ui[glom_field_type::TEXT] = _("Text");
     
     // Translators: This means a time value type in a database.
-    m_map_type_names_ui[TYPE_TIME] = _("Time");
+    m_map_type_names_ui[glom_field_type::TIME] = _("Time");
     
     // Translators: This means a time value type in a database.
-    m_map_type_names_ui[TYPE_DATE] = _("Date");
+    m_map_type_names_ui[glom_field_type::DATE] = _("Date");
     
     // Translators: This means a true/false value type in a database.
-    m_map_type_names_ui[TYPE_BOOLEAN] = _("Boolean");
+    m_map_type_names_ui[glom_field_type::BOOLEAN] = _("Boolean");
     
     // Translators: This means a picture value type in a database.
-    m_map_type_names_ui[TYPE_IMAGE] = _("Image");
+    m_map_type_names_ui[glom_field_type::IMAGE] = _("Image");
 
     //Non-translated names used for the document:
-    m_map_type_names[TYPE_INVALID] = "Invalid";
-    m_map_type_names[TYPE_NUMERIC] = "Number";
-    m_map_type_names[TYPE_TEXT] = "Text";
-    m_map_type_names[TYPE_TIME] = "Time";
-    m_map_type_names[TYPE_DATE] = "Date";
-    m_map_type_names[TYPE_BOOLEAN] = "Boolean";
-    m_map_type_names[TYPE_IMAGE] = "Image";
+    m_map_type_names[glom_field_type::INVALID] = "Invalid";
+    m_map_type_names[glom_field_type::NUMERIC] = "Number";
+    m_map_type_names[glom_field_type::TEXT] = "Text";
+    m_map_type_names[glom_field_type::TIME] = "Time";
+    m_map_type_names[glom_field_type::DATE] = "Date";
+    m_map_type_names[glom_field_type::BOOLEAN] = "Boolean";
+    m_map_type_names[glom_field_type::IMAGE] = "Image";
 
 
     //Conversions:
@@ -692,41 +692,41 @@ void Field::init_map()
     m_map_conversions.clear();
 
     type_list_conversion_targets list_conversions( {
-      Field::TYPE_BOOLEAN,
-      Field::TYPE_TEXT} );
-    //to_date(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_DATE);
-    //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_TIME);
-    m_map_conversions[Field::TYPE_NUMERIC] = list_conversions;
+      Field::glom_field_type::BOOLEAN,
+      Field::glom_field_type::TEXT} );
+    //to_date(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::glom_field_type::DATE);
+    //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::glom_field_type::TIME);
+    m_map_conversions[Field::glom_field_type::NUMERIC] = list_conversions;
 
     //Text:
     list_conversions = {
-      Field::TYPE_BOOLEAN,
-      Field::TYPE_NUMERIC,
-      Field::TYPE_DATE,
-      Field::TYPE_TIME};
-    m_map_conversions[Field::TYPE_TEXT] = list_conversions;
+      Field::glom_field_type::BOOLEAN,
+      Field::glom_field_type::NUMERIC,
+      Field::glom_field_type::DATE,
+      Field::glom_field_type::TIME};
+    m_map_conversions[Field::glom_field_type::TEXT] = list_conversions;
 
     //Boolean:
     list_conversions = {
-      Field::TYPE_TEXT,
-      Field::TYPE_NUMERIC};
-    //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_DATE);
-    //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_TIME);
-    m_map_conversions[Field::TYPE_BOOLEAN] = list_conversions;
+      Field::glom_field_type::TEXT,
+      Field::glom_field_type::NUMERIC};
+    //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::glom_field_type::DATE);
+    //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::glom_field_type::TIME);
+    m_map_conversions[Field::glom_field_type::BOOLEAN] = list_conversions;
 
     //Date:
     list_conversions = {
-      Field::TYPE_TEXT};
-    //to_number(textcat()) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_NUMERIC);
-    //to_number(textcat()) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_BOOLEAN);
-    m_map_conversions[Field::TYPE_DATE] = list_conversions;
+      Field::glom_field_type::TEXT};
+    //to_number(textcat()) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::glom_field_type::NUMERIC);
+    //to_number(textcat()) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::glom_field_type::BOOLEAN);
+    m_map_conversions[Field::glom_field_type::DATE] = list_conversions;
 
     //Time:
     list_conversions = {
-      Field::TYPE_TEXT,
-      Field::TYPE_NUMERIC,
-      Field::TYPE_BOOLEAN};
-    m_map_conversions[Field::TYPE_TIME] = list_conversions;
+      Field::glom_field_type::TEXT,
+      Field::glom_field_type::NUMERIC,
+      Field::glom_field_type::BOOLEAN};
+    m_map_conversions[Field::glom_field_type::TIME] = list_conversions;
 
 
     m_maps_inited = true;
@@ -770,7 +770,7 @@ Field::type_map_type_names Field::get_usable_type_names()
   type_map_type_names result =  m_map_type_names_ui;
 
   //Remove INVALID, because it's not something that a user can use for a field type.
-  auto iter = result.find(TYPE_INVALID);
+  auto iter = result.find(glom_field_type::INVALID);
   if(iter != result.end())
     result.erase(iter);
 
@@ -792,7 +792,7 @@ Glib::ustring Field::get_type_name_ui(glom_field_type glom_type)
 //static:
 Field::glom_field_type Field::get_type_for_ui_name(const Glib::ustring& glom_type)
 {
-  glom_field_type result = TYPE_INVALID;
+  glom_field_type result = glom_field_type::INVALID;
 
   for(const auto& the_pair : m_map_type_names_ui)
   {

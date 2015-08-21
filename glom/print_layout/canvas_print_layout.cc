@@ -996,7 +996,7 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
     return;
 
   //Expect the appropriate canvas item, depending on the field type:
-  if(field->get_glom_type() == Field::TYPE_IMAGE)
+  if(field->get_glom_type() == Field::glom_field_type::IMAGE)
   {
     Glib::RefPtr<CanvasImageMovable> canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(canvas_item);
     if(!canvas_image)

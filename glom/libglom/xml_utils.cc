@@ -225,7 +225,7 @@ void set_node_text_child_as_value(xmlpp::Element* node, const Gnome::Gda::Value&
   const auto value_as_text = Field::to_file_format(value, field_type);
   node->set_child_text( Utils::string_clean_for_xml(value_as_text) );
 
-  if(field_type == Field::TYPE_IMAGE)
+  if(field_type == Field::glom_field_type::IMAGE)
   {
     set_node_attribute_value(node, GLOM_ATTRIBUTE_IMAGE_DATA_FORMAT, GLOM_ATTRIBUTE_IMAGE_DATA_FORMAT_BASE64);
   }

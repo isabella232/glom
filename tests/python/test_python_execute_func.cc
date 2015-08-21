@@ -18,7 +18,7 @@ int main()
   try
   {
     value = Glom::glom_evaluate_python_function_implementation(
-      Glom::Field::TYPE_NUMERIC, calculation, field_values,
+      Glom::Field::glom_field_type::NUMERIC, calculation, field_values,
       0 /* document */, "" /* table name */,
       std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
       connection,

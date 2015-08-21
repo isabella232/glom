@@ -46,12 +46,12 @@ public:
   AddDelColumnInfo& operator=(AddDelColumnInfo&& src) = delete;
 
   //If we need any more complicated style (e.g. number of decimal digits) then we will need a separate AddDelStyle class.
-  enum enumStyles
+  enum class enumStyles
   {
-    STYLE_Text,
-    STYLE_Numerical, //TODO: Right-justify
-    STYLE_Boolean,
-    STYLE_Choices
+    Text,
+    Numerical, //TODO: Right-justify
+    Boolean,
+    Choices
   };
 
   enumStyles m_style;
@@ -140,8 +140,8 @@ public:
 
 
   guint add_column(const AddDelColumnInfo& column_info);
-  guint add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
-  guint add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
+  guint add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::enumStyles::Text, bool editable = true, bool visible = true);
+  guint add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::enumStyles::Text, bool editable = true, bool visible = true);
 
   void prevent_duplicates(guint column_number);
 

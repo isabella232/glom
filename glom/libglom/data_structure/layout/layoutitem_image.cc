@@ -28,7 +28,7 @@ namespace Glom
 
 LayoutItem_Image::LayoutItem_Image()
 {
-  m_translatable_item_type = TRANSLATABLE_TYPE_IMAGEOBJECT;
+  m_translatable_item_type = enumTranslatableItemType::IMAGEOBJECT;
 }
 
 LayoutItem_Image::LayoutItem_Image(const LayoutItem_Image& src)

@@ -79,7 +79,7 @@ std::shared_ptr<SharedConnection> Dialog_Connection::connect_to_server_with_conn
   connection_pool->set_database(m_database_name);
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-  if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_CENTRAL)
+  if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_CENTRAL)
   {
     ConnectionPool::Backend* backend = connection_pool->get_backend();
     ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
@@ -101,7 +101,7 @@ std::shared_ptr<SharedConnection> Dialog_Connection::connect_to_server_with_conn
   //and so we can tell connecting clients (using browse network) what port to use:
   Document* unconst = const_cast<Document*>(document);
 
-  if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_CENTRAL)
+  if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_CENTRAL)
   {
     ConnectionPool::Backend* backend = connection_pool->get_backend();
     ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
@@ -114,7 +114,7 @@ std::shared_ptr<SharedConnection> Dialog_Connection::connect_to_server_with_conn
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  else if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_SELF)
+  else if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_SELF)
   {
     ConnectionPool::Backend* backend = connection_pool->get_backend();
     ConnectionPoolBackends::PostgresSelfHosted* self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
@@ -138,7 +138,7 @@ void Dialog_Connection::load_from_document()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifdef GLOM_ENABLE_POSTGRESQL
     //Load server and user:
-    if(document->get_hosting_mode() != Document::HOSTING_MODE_POSTGRES_CENTRAL)
+    if(document->get_hosting_mode() != Document::HostingMode::POSTGRES_CENTRAL)
     {
        m_entry_host->set_text("(self hosted)");
        m_entry_host->set_sensitive(false);

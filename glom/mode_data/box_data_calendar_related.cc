@@ -39,8 +39,8 @@ Box_Data_Calendar_Related::Box_Data_Calendar_Related()
   set_size_request(400, -1); //An arbitrary default.
 
   m_Frame.add(m_calendar);
-  m_calendar.set_margin_start(UiUtils::DEFAULT_SPACING_LARGE);
-  m_calendar.set_margin_top(UiUtils::DEFAULT_SPACING_SMALL);   
+  m_calendar.set_margin_start(static_cast<int>(UiUtils::DefaultSpacings::LARGE));
+  m_calendar.set_margin_top(static_cast<int>(UiUtils::DefaultSpacings::SMALL));   
   m_calendar.show();
 
   //m_calendar.set_show_details();
@@ -101,8 +101,8 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
     m_Label.set_markup(UiUtils::bold_message(title));
     m_Label.show();
 
-    m_calendar.set_margin_start(UiUtils::DEFAULT_SPACING_LARGE);
-    m_calendar.set_margin_top(UiUtils::DEFAULT_SPACING_SMALL);
+    m_calendar.set_margin_start(static_cast<int>(UiUtils::DefaultSpacings::LARGE));
+    m_calendar.set_margin_top(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
   }
   else
   {
@@ -533,7 +533,7 @@ void Box_Data_Calendar_Related::setup_menu(Gtk::Widget* /* this */)
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   if(pApp)
-    m_refContextLayout->set_enabled(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+    m_refContextLayout->set_enabled(pApp->get_userlevel() == AppState::userlevels::DEVELOPER);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 

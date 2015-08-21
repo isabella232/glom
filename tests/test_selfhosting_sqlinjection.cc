@@ -164,7 +164,7 @@ static bool check_avoid_quotes_and_drop_table_with_false_field_type()
   //Specify a field with incorrect type information:
   std::shared_ptr<Glom::Field> where_field = 
     document.get_field("albums", "name");
-  where_field->set_glom_type(Glom::Field::TYPE_NUMERIC);
+  where_field->set_glom_type(Glom::Field::glom_field_type::NUMERIC);
   //const GType gda_type = Glom::Field::get_gda_type_for_glom_type(Glom::TYPE_NUMERIC); 
 
   const Gnome::Gda::SqlExpr where_clause = 

@@ -26,7 +26,7 @@ namespace Glom
 
 StaticText::StaticText()
 {
-  m_translatable_item_type = TRANSLATABLE_TYPE_STATIC_TEXT;
+  m_translatable_item_type = enumTranslatableItemType::STATIC_TEXT;
 }
 
 StaticText::StaticText(const StaticText& src)

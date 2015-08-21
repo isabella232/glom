@@ -28,7 +28,7 @@ namespace Glom
 
 ChoiceValue::ChoiceValue()
 {
-  m_translatable_item_type = TRANSLATABLE_TYPE_CHOICEVALUE;
+  m_translatable_item_type = enumTranslatableItemType::CHOICEVALUE;
 }
 
 ChoiceValue::ChoiceValue(const ChoiceValue& src)

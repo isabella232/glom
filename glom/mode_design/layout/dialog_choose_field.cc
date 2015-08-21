@@ -344,7 +344,7 @@ void Dialog_ChooseField::on_treeview_selection_changed()
       /*
       Gtk::TreeModel::Row row = *iter;
       const Field& field = row[m_ColumnsFields.m_col_field];
-      const auto is_numeric = (field.get_glom_type() == Field::TYPE_NUMERIC);
+      const auto is_numeric = (field.get_glom_type() == Field::glom_field_type::NUMERIC);
       if(is_numeric)
         m_vbox_numeric_format->show();
       else

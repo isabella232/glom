@@ -140,11 +140,11 @@ public:
   virtual void set_document(Document* pDocument) override; //View override
   virtual void load_from_document() override; //View override
 
-  enum enumModes
+  enum class enumModes
   {
-    MODE_None, //at the start.
-    MODE_Data,
-    MODE_Find
+    NONE, //at the start.
+    DATA,
+    FIND
   };
   enumModes m_Mode;
   enumModes m_Mode_Previous; // see comments in set_mode_widget().

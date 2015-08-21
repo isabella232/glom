@@ -164,11 +164,11 @@ public:
    */
   Glib::ustring get_text_format_color_background() const;
 
-  enum HorizontalAlignment
+  enum class HorizontalAlignment
   {
-    HORIZONTAL_ALIGNMENT_AUTO, //For instance, RIGHT for numeric fields.
-    HORIZONTAL_ALIGNMENT_LEFT,
-    HORIZONTAL_ALIGNMENT_RIGHT
+    AUTO, //For instance, RIGHT for numeric fields.
+    LEFT,
+    RIGHT
   };
 
   void set_horizontal_alignment(HorizontalAlignment alignment);

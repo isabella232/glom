@@ -203,11 +203,11 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
       const int BASE_INDENT = 3;
       
       //std::cout << "title= " << group_title << ", with_indent=" << with_indent << std::endl;
-      event_box->set_margin_top(Glom::UiUtils::DEFAULT_SPACING_SMALL);
+      event_box->set_margin_top(static_cast<int>(Glom::UiUtils::DefaultSpacings::SMALL));
 
       if(with_indent) 
       {
-        event_box->set_margin_start(Glom::UiUtils::DEFAULT_SPACING_SMALL + BASE_INDENT);
+        event_box->set_margin_start(static_cast<int>(Glom::UiUtils::DefaultSpacings::SMALL) + BASE_INDENT);
       }
       else
       {
@@ -373,7 +373,7 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
       {
         //Add a Related Records list for this portal:
         Box_Data_List_Related* portal_box = create_related(portal, false /* no label, because it's in the tab instead. */);
-        //portal_box->set_border_width(Glom::UiUtils::DEFAULT_SPACING_SMALL); It has margins around the frame's child widget instead.
+        //portal_box->set_border_width(static_cast<int>(Glom::UiUtils::DefaultSpacings::SMALL)); It has margins around the frame's child widget instead.
         portal_box->show();
         notebook_widget->append_page(*portal_box, *tab_label);
 
@@ -405,10 +405,10 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
         //Put some space between the page child and the page edges.
         //This doesn't work (probably because we haven't implemented it in our custom container),
         //so we use GtkWidget margins instead. TODO: What's the difference.
-        event_box->set_margin_start(Glom::UiUtils::DEFAULT_SPACING_SMALL);
-        event_box->set_margin_end(Glom::UiUtils::DEFAULT_SPACING_SMALL);
-        event_box->set_margin_top(Glom::UiUtils::DEFAULT_SPACING_SMALL);
-        event_box->set_margin_bottom(Glom::UiUtils::DEFAULT_SPACING_SMALL);
+        event_box->set_margin_start(static_cast<int>(Glom::UiUtils::DefaultSpacings::SMALL));
+        event_box->set_margin_end(static_cast<int>(Glom::UiUtils::DefaultSpacings::SMALL));
+        event_box->set_margin_top(static_cast<int>(Glom::UiUtils::DefaultSpacings::SMALL));
+        event_box->set_margin_bottom(static_cast<int>(Glom::UiUtils::DefaultSpacings::SMALL));
 
         notebook_widget->append_page(*event_box, *tab_label);
 
@@ -480,12 +480,12 @@ void FlowTableWithFields::add_field(const std::shared_ptr<LayoutItem_Field>& lay
   //info.m_group = layoutitem_field.m_group;
 
   //Expand multiline text fields to take up the maximum possible width:
-  if( (layoutitem_field->get_glom_type() == Field::TYPE_TEXT) && layoutitem_field->get_formatting_used().get_text_format_multiline())
+  if( (layoutitem_field->get_glom_type() == Field::glom_field_type::TEXT) && layoutitem_field->get_formatting_used().get_text_format_multiline())
   {
     if(label)
       label->set_valign(Gtk::ALIGN_START); //Center is neater next to entries, but center is silly next to multi-line text boxes.
   }
-  else if(layoutitem_field->get_glom_type() == Field::TYPE_IMAGE)
+  else if(layoutitem_field->get_glom_type() == Field::glom_field_type::IMAGE)
   {
     if(label)
       label->set_valign(Gtk::ALIGN_START); //Center is neater next to entries, but center is silly next to large images.
@@ -538,14 +538,14 @@ void FlowTableWithFields::add_button(const std::shared_ptr<LayoutItem_Button>& l
     layoutitem_button->get_formatting_used_horizontal_alignment();
   Gtk::Widget* widget_to_add = button;
   bool expand = false;
-  if(alignment != Formatting::HORIZONTAL_ALIGNMENT_LEFT)
+  if(alignment != Formatting::HorizontalAlignment::LEFT)
   {
     //Put the button in a Gtk::Box so we can have non-default alignment in
     //its space. Note that we will need a different technique if we ever
     //support center alignment.
     Gtk::Box* box_button = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
     box_button->show();
-    if(alignment == Formatting::HORIZONTAL_ALIGNMENT_RIGHT)
+    if(alignment == Formatting::HorizontalAlignment::RIGHT)
       box_button->pack_end(*button, Gtk::PACK_SHRINK);
     else
       box_button->pack_start(*button, Gtk::PACK_SHRINK);
@@ -568,7 +568,7 @@ void FlowTableWithFields::add_textobject(const std::shared_ptr<LayoutItem_Text>&
 
   const Formatting::HorizontalAlignment alignment =
     layoutitem_text->get_formatting_used_horizontal_alignment();
-  const Gtk::Align x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
+  const Gtk::Align x_align = (alignment == Formatting::HorizontalAlignment::LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
   label->set_halign(x_align);
   label->set_valign(Gtk::ALIGN_CENTER);
   label->show();
@@ -1083,7 +1083,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
 
   //Create/Choose the new layout item:
   std::shared_ptr<LayoutItem> layout_item_new;
-  if(item_type == LayoutWidgetBase::TYPE_FIELD)
+  if(item_type == LayoutWidgetBase::enumType::FIELD)
   {
     std::shared_ptr<LayoutItem_Field> layout_item_field = pDataWidget->offer_field_list(m_table_name);
     if(layout_item_field)
@@ -1092,13 +1092,13 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
       layout_item_new = layout_item_field;
     }
   }
-  else if(item_type == LayoutWidgetBase::TYPE_GROUP)
+  else if(item_type == LayoutWidgetBase::enumType::GROUP)
   {
     std::shared_ptr<LayoutGroup> layout_item = std::make_shared<LayoutGroup>();
     layout_item->set_title_original(_("New Group"));
     layout_item_new = layout_item;
   }
-  else if(item_type == LayoutWidgetBase::TYPE_NOTEBOOK)
+  else if(item_type == LayoutWidgetBase::enumType::NOTEBOOK)
   {
     std::shared_ptr<LayoutItem_Notebook> layout_item = std::make_shared<LayoutItem_Notebook>();
     layout_item->set_name(_("notebook"));
@@ -1116,18 +1116,18 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
 
     layout_item_new = layout_item;
   }
-  else if(item_type == LayoutWidgetBase::TYPE_PORTAL)
+  else if(item_type == LayoutWidgetBase::enumType::PORTAL)
   {
     layout_item_new = get_portal_relationship();
   }
-  else if(item_type == LayoutWidgetBase::TYPE_BUTTON)
+  else if(item_type == LayoutWidgetBase::enumType::BUTTON)
   {
     std::shared_ptr<LayoutItem_Button> layout_item = std::make_shared<LayoutItem_Button>();
     layout_item->set_name(_("button"));
     layout_item->set_title_original(_("New Button"));
     layout_item_new = layout_item;
   }
-  else if(item_type == LayoutWidgetBase::TYPE_TEXT)
+  else if(item_type == LayoutWidgetBase::enumType::TEXT)
   {
     std::shared_ptr<LayoutItem_Text> layout_item = std::make_shared<LayoutItem_Text>();
     layout_item->set_name(_("text"));
@@ -1304,7 +1304,7 @@ void FlowTableWithFields::on_menu_delete_activate()
 bool FlowTableWithFields::on_button_press_event(GdkEventButton *button_event)
 {
   AppWindow* pApp = AppWindow::get_appwindow();
-  if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  if(pApp && pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
   {
     GdkModifierType mods;
     gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );

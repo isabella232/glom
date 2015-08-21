@@ -104,7 +104,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQLCentralHosted::connect(const Glib::ust
   {
     // Remember port if only the database was missing
     connection_possible = false;
-    if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE)
+    if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_DATABASE)
     {
       connection_possible = true;
       m_port = atoi(port.c_str());
@@ -130,7 +130,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQLCentralHosted::connect(const Glib::ust
         //show that a connection was possible with a previously-tried port: connection_possible = false;
 
         // Remember port if only the database was missing
-        if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE)
+        if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_DATABASE)
         {
           connection_possible = true;
           m_port = atoi(port.c_str());
@@ -151,9 +151,9 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQLCentralHosted::connect(const Glib::ust
   else
   {
     if(connection_possible)
-      throw ExceptionConnection(ExceptionConnection::FAILURE_NO_DATABASE);
+      throw ExceptionConnection(ExceptionConnection::failure_type::NO_DATABASE);
     else
-      throw ExceptionConnection(ExceptionConnection::FAILURE_NO_SERVER);
+      throw ExceptionConnection(ExceptionConnection::failure_type::NO_SERVER);
   }
 
   return connection;

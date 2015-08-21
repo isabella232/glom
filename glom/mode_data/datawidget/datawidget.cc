@@ -74,7 +74,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
 
   m_child = 0;
   LayoutWidgetField* pFieldWidget = nullptr;  
-  if(glom_type == Field::TYPE_BOOLEAN)
+  if(glom_type == Field::glom_field_type::BOOLEAN)
   {
     DataWidgetChildren::CheckButton* checkbutton = Gtk::manage( new DataWidgetChildren::CheckButton() );
     checkbutton->show();
@@ -89,7 +89,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
     m_label.set_halign(Gtk::ALIGN_START);
     m_label.show();
   }
-  else if(glom_type == Field::TYPE_IMAGE)
+  else if(glom_type == Field::glom_field_type::IMAGE)
   {
     ImageGlom* image = Gtk::manage( new ImageGlom() );
     image->set_size_request(200, 200);
@@ -142,12 +142,12 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
     }
     else
     {
-      if((glom_type == Field::TYPE_TEXT) && (field->get_formatting_used().get_text_format_multiline()))
+      if((glom_type == Field::glom_field_type::TEXT) && (field->get_formatting_used().get_text_format_multiline()))
       {
         DataWidgetChildren::TextView* textview = Gtk::manage(new DataWidgetChildren::TextView(glom_type));
         pFieldWidget = textview;
       }
-      else  //TYPE_DATE, TYPE_NUMBER, etc.
+      else  //DATE, NUMBER, etc.
       {
         DataWidgetChildren::Entry* entry = Gtk::manage(new DataWidgetChildren::Entry(glom_type));
         pFieldWidget = entry;
@@ -193,11 +193,11 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
 
     Gtk::Box* hbox_parent = nullptr; //Only used if there are extra widgets.
 
-    const bool with_extra_widgets = field_used_in_relationship_to_one || add_open_button || (glom_type == Field::TYPE_DATE);
+    const bool with_extra_widgets = field_used_in_relationship_to_one || add_open_button || (glom_type == Field::glom_field_type::DATE);
     if(with_extra_widgets)
     {
       hbox_parent = Gtk::manage( new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL) ); //We put the child (and any extra stuff) in this:
-      hbox_parent->set_spacing(UiUtils::DEFAULT_SPACING_SMALL);
+      hbox_parent->set_spacing(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
 
       hbox_parent->pack_start(*m_child);
       hbox_parent->show();
@@ -206,7 +206,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
       child_added = true;
     }
 
-    if(glom_type == Field::TYPE_DATE)
+    if(glom_type == Field::glom_field_type::DATE)
     {
       //Let the user choose a date from a calendar dialog:
       Gtk::Button* button_date = Gtk::manage(new Gtk::Button(_("..."))); //TODO: A better label/icon for "Choose Date".
@@ -345,12 +345,12 @@ void DataWidget::set_child_size_by_field(const std::shared_ptr<const LayoutItem_
   const auto glom_type = field->get_glom_type();
   int width = get_suitable_width(field);
 
-  if(glom_type == Field::TYPE_IMAGE) //GtkImage widgets default to no size (invisible) if they are empty.
+  if(glom_type == Field::glom_field_type::IMAGE) //GtkImage widgets default to no size (invisible) if they are empty.
     m_child->set_size_request(width, width);
   else
   {
     int height = -1; //auto.
-    if((glom_type == Field::TYPE_TEXT) && (field->get_formatting_used().get_text_format_multiline()))
+    if((glom_type == Field::glom_field_type::TEXT) && (field->get_formatting_used().get_text_format_multiline()))
     {
       int example_width = 0;
       int example_height = 0;
@@ -439,7 +439,7 @@ bool DataWidget::on_button_press_event(GdkEventButton *button_event)
 
     //Only show this popup in developer mode, so operators still see the default GtkEntry context menu.
     //TODO: It would be better to add it somehow to the standard context menu.
-    if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    if(pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
       GdkModifierType mods;
       gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );

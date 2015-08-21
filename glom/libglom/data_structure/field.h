@@ -55,21 +55,21 @@ public:
   /* Possible formats when converting from/to SQL representation.
    * TODO: Maybe we should move the code that does the conversion between gda
    * type and SQL into the connectionpool backends. */
-  enum sql_format
+  enum class sql_format
   {
-    SQL_FORMAT_POSTGRES,
-    SQL_FORMAT_SQLITE
+    POSTGRES,
+    SQLITE
   };
 
-  enum glom_field_type
+  enum class glom_field_type
   {
-    TYPE_INVALID,
-    TYPE_NUMERIC,
-    TYPE_TEXT,
-    TYPE_DATE,
-    TYPE_TIME,
-    TYPE_BOOLEAN,
-    TYPE_IMAGE //Always stored as a standard format.
+    INVALID,
+    NUMERIC,
+    TEXT,
+    DATE,
+    TIME,
+    BOOLEAN,
+    IMAGE //Always stored as a standard format.
   };
 
   Field();

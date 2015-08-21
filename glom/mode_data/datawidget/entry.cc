@@ -41,7 +41,7 @@ namespace DataWidgetChildren
 Entry::Entry(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 :
   Gtk::Entry(cobject),
-  m_glom_type(Field::TYPE_TEXT)
+  m_glom_type(Field::glom_field_type::TEXT)
 {
   init();
 }
@@ -72,13 +72,13 @@ void Entry::set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, cons
 
   //Horizontal Alignment:
   Formatting::HorizontalAlignment alignment = 
-    Formatting::HORIZONTAL_ALIGNMENT_LEFT;
+    Formatting::HorizontalAlignment::LEFT;
   std::shared_ptr<LayoutItem_Field> layout_field =
     std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
   if(layout_field)
     alignment = layout_field->get_formatting_used_horizontal_alignment(true /* for details view */);
 
-  const float x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
+  const float x_align = (alignment == Formatting::HorizontalAlignment::LEFT ? 0.0 : 1.0);
   set_alignment(x_align);
 }
 
@@ -156,7 +156,7 @@ void Entry::set_value(const Gnome::Gda::Value& value)
   set_text(text);
 
   //Show a different color if the value is numeric, if that's specified:
-  if(layout_item->get_glom_type() == Field::TYPE_NUMERIC)
+  if(layout_item->get_glom_type() == Field::glom_field_type::NUMERIC)
   {
     const Glib::ustring fg_color = 
     layout_item->get_formatting_used().get_text_format_color_foreground_to_use(value);
@@ -204,7 +204,7 @@ bool Entry::on_button_press_event(GdkEventButton *button_event)
 
     //Only show this popup in developer mode, so operators still see the default GtkEntry context menu.
     //TODO: It would be better to add it somehow to the standard context menu.
-    if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    if(pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
       GdkModifierType mods;
       gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );

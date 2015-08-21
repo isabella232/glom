@@ -63,13 +63,13 @@ void Dialog_InvalidData::set_example_data(Field::glom_field_type glom_type)
   Glib::ustring example_text;
   switch(glom_type)
   {
-    case(Field::TYPE_DATE):
+    case(Field::glom_field_type::DATE):
     {
       Glib::Date date(31, Glib::Date::JANUARY, 2005);
       example_text = Conversions::get_text_for_gda_value(glom_type, Gnome::Gda::Value(date));
       break;
     }
-    case(Field::TYPE_TIME):
+    case(Field::glom_field_type::TIME):
     {
       Gnome::Gda::Time time = {0, 0, 0, 0, 0};
       time.hour = 13;
@@ -78,14 +78,14 @@ void Dialog_InvalidData::set_example_data(Field::glom_field_type glom_type)
       example_text = Conversions::get_text_for_gda_value(glom_type, Gnome::Gda::Value(time));
       break;
     }
-    case(Field::TYPE_NUMERIC):
+    case(Field::glom_field_type::NUMERIC):
     {
       Gnome::Gda::Value gda_value;
       gda_value.set_double(12345678.91L);
       example_text = Conversions::get_text_for_gda_value(glom_type, gda_value);
       break;
     }
-    case(Field::TYPE_TEXT):
+    case(Field::glom_field_type::TEXT):
     default:
     {
       example_text = "Abcdefghi jklmnopq lmnopqr";

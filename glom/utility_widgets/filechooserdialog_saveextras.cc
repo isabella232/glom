@@ -86,9 +86,9 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   frame->set_shadow_type(Gtk::SHADOW_NONE);
   frame->show();
 
-  Gtk::Box* vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, UiUtils::DEFAULT_SPACING_SMALL));
-  vbox->set_margin_start(UiUtils::DEFAULT_SPACING_LARGE);
-  vbox->set_margin_top(UiUtils::DEFAULT_SPACING_SMALL);
+  Gtk::Box* vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, static_cast<int>(UiUtils::DefaultSpacings::SMALL)));
+  vbox->set_margin_start(static_cast<int>(UiUtils::DefaultSpacings::LARGE));
+  vbox->set_margin_top(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
   frame->add(*vbox);
   vbox->show();
 
@@ -100,7 +100,7 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   label_newdb->set_valign(Gtk::ALIGN_CENTER);
   label_newdb->show();
 
-  Gtk::Box* box_label = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, UiUtils::DEFAULT_SPACING_LARGE));
+  Gtk::Box* box_label = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, static_cast<int>(UiUtils::DefaultSpacings::LARGE)));
   Gtk::Label* label_title = Gtk::manage(new Gtk::Label(_("_Title:"), true));
   box_label->pack_start(*label_title, Gtk::PACK_SHRINK);
   label_title->show();
@@ -177,25 +177,25 @@ void FileChooserDialog_SaveExtras::set_extra_newdb_hosting_mode(Document::Hostin
   switch(mode)
   {
 #ifdef GLOM_ENABLE_POSTGRESQL
-  case Document::HOSTING_MODE_POSTGRES_CENTRAL:
+  case Document::HostingMode::POSTGRES_CENTRAL:
     m_radiobutton_server_postgres_central.set_active();
     break;
-  case Document::HOSTING_MODE_POSTGRES_SELF:
+  case Document::HostingMode::POSTGRES_SELF:
     m_radiobutton_server_postgres_selfhosted.set_active();
     break;
 #endif //GLOM_ENABLE_POSTGRESQL
 
 #ifdef GLOM_ENABLE_SQLITE
-  case Document::HOSTING_MODE_SQLITE:
+  case Document::HostingMode::SQLITE:
     m_radiobutton_server_sqlite.set_active();
     break;
 #endif //GLOM_ENABLE_SQLITE
 
 #ifdef GLOM_ENABLE_MYSQL
-  case Document::HOSTING_MODE_MYSQL_CENTRAL:
+  case Document::HostingMode::MYSQL_CENTRAL:
     m_radiobutton_server_mysql_central.set_active();
     break;
-  case Document::HOSTING_MODE_MYSQL_SELF:
+  case Document::HostingMode::MYSQL_SELF:
     m_radiobutton_server_mysql_selfhosted.set_active();
     break;
 #endif //GLOM_ENABLE_SQLITE
@@ -215,29 +215,29 @@ Document::HostingMode FileChooserDialog_SaveExtras::get_extra_newdb_hosting_mode
 {
 #ifdef GLOM_ENABLE_POSTGRESQL
   if(m_radiobutton_server_postgres_central.get_active())
-    return Document::HOSTING_MODE_POSTGRES_CENTRAL;
+    return Document::HostingMode::POSTGRES_CENTRAL;
   else if(m_radiobutton_server_postgres_selfhosted.get_active())
-    return Document::HOSTING_MODE_POSTGRES_SELF;
+    return Document::HostingMode::POSTGRES_SELF;
 #endif //GLOM_ENABLE_POSTGRESQL
 
 #ifdef GLOM_ENABLE_SQLITE
   if(m_radiobutton_server_sqlite.get_active())
-    return Document::HOSTING_MODE_SQLITE;
+    return Document::HostingMode::SQLITE;
 #endif //GLOM_ENABLE_SQLITE
 
 #ifdef GLOM_ENABLE_MYSQL
   if(m_radiobutton_server_mysql_central.get_active())
-    return Document::HOSTING_MODE_MYSQL_CENTRAL;
+    return Document::HostingMode::MYSQL_CENTRAL;
   else if(m_radiobutton_server_mysql_selfhosted.get_active())
-    return Document::HOSTING_MODE_MYSQL_SELF;
+    return Document::HostingMode::MYSQL_SELF;
 #endif //GLOM_ENABLE_MYSQL
 
   g_assert_not_reached();
 
 #ifdef GLOM_ENABLE_SQLITE
-  return Document::HOSTING_MODE_SQLITE; //Arbitrary
+  return Document::HostingMode::SQLITE; //Arbitrary
 #else
-  return Document::HOSTING_MODE_POSTGRES_SELF; //Arbitrary.
+  return Document::HostingMode::POSTGRES_SELF; //Arbitrary.
 #endif //GLOM_ENABLE_SQLITE
 }
 

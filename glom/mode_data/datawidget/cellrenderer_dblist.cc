@@ -245,7 +245,7 @@ void CellRendererDbList::set_value(const Gnome::Gda::Value& value)
 
   //Show a different color if the value is numeric, if that's specified:
   /* TODO:
-  if(layout_item->get_glom_type() == Field::TYPE_NUMERIC)
+  if(layout_item->get_glom_type() == Field::glom_field_type::NUMERIC)
   {
     std::vector<Gtk::CellRenderer*> cells = get_cells();
     if(cells.empty())

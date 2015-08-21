@@ -48,7 +48,7 @@ ComboAsRadioButtons::ComboAsRadioButtons()
 
 void ComboAsRadioButtons::init()
 {
-  //if(m_glom_type == Field::TYPE_NUMERIC)
+  //if(m_glom_type == Field::glom_field_type::NUMERIC)
    // get_entry()->set_alignment(1.0); //Align numbers to the right.
 }
 
@@ -210,7 +210,7 @@ void ComboAsRadioButtons::set_value(const Gnome::Gda::Value& value)
   set_text(Conversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format));
 
   //Show a different color if the value is numeric, if that's specified:
-  if(layout_item->get_glom_type() == Field::TYPE_NUMERIC)
+  if(layout_item->get_glom_type() == Field::glom_field_type::NUMERIC)
   {
     //TODO
   }
@@ -276,7 +276,7 @@ void ComboAsRadioButtons::show_context_menu(GdkEventButton *button_event)
 
     //Only show this popup in developer mode, so operators still see the default GtkEntry context menu.
     //TODO: It would be better to add it somehow to the standard context menu.
-    if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    if(pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
       GdkModifierType mods;
       gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );

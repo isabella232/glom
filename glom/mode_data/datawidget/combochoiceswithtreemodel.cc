@@ -266,7 +266,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
   Formatting::type_list_sort_fields choice_sort_fields;
   bool choice_show_all = false;
   format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_sort_fields, choice_show_all);
-  if(layout_choice_first->get_glom_type() == Field::TYPE_INVALID)
+  if(layout_choice_first->get_glom_type() == Field::glom_field_type::INVALID)
     std::cerr << G_STRFUNC << ": layout_choice_first has invalid type. field name: " << layout_choice_first->get_name() << std::endl;
 
   //Set full field details, cloning the group to avoid the constness:
@@ -339,7 +339,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
   const auto type = field->get_glom_type();
   switch(type)
   {
-    case(Field::TYPE_BOOLEAN):
+    case(Field::glom_field_type::BOOLEAN):
     {
       Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(cell);
       if(pDerived)
@@ -347,7 +347,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
 
       break;
     }
-    case(Field::TYPE_IMAGE):
+    case(Field::glom_field_type::IMAGE):
     {
       Gtk::CellRendererPixbuf* pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(cell);
       if(pDerived)
@@ -360,7 +360,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
         pDerived->property_pixbuf() = pixbuf;
       }
       else
-        std::cerr << G_STRFUNC << ": Field::sql(): glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY" << std::endl;
+        std::cerr << G_STRFUNC << ": Field::sql(): glom_type is enumType::IMAGE but gda type is not VALUE_TYPE_BINARY" << std::endl;
 
       break;
     }
@@ -380,7 +380,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
       }
 
       //Show a different color if the value is numeric, if that's specified:
-      if(type == Field::TYPE_NUMERIC)
+      if(type == Field::glom_field_type::NUMERIC)
       {
         const Glib::ustring fg_color =
         field->get_formatting_used().get_text_format_color_foreground_to_use(value);

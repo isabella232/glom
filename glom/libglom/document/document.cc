@@ -267,7 +267,7 @@ auto find_if_layout(T_Container& container, const Glib::ustring& layout_name, co
 }
 
 Document::Document()
-: m_hosting_mode(HOSTING_MODE_DEFAULT),
+: m_hosting_mode(HostingMode::DEFAULT),
   m_network_shared(false),
   m_connection_port(0),
   m_connection_try_other_ports(false),
@@ -336,12 +336,12 @@ bool Document::get_network_shared() const
 
   //Enforce constraints:
   const auto hosting_mode = get_hosting_mode();
-  if( (hosting_mode == HOSTING_MODE_POSTGRES_CENTRAL) ||
-    (hosting_mode == HOSTING_MODE_MYSQL_CENTRAL) )
+  if( (hosting_mode == HostingMode::POSTGRES_CENTRAL) ||
+    (hosting_mode == HostingMode::MYSQL_CENTRAL) )
   {
     shared = true; //Central hosting means that it must be shared on the network.
   }
-  else if(hosting_mode == HOSTING_MODE_SQLITE)
+  else if(hosting_mode == HostingMode::SQLITE)
     shared = false; //sqlite does not allow network sharing.
 
   return shared;
@@ -367,19 +367,19 @@ std::string Document::get_connection_self_hosted_directory_uri() const
     {
       switch(m_hosting_mode)
       {
-      case HOSTING_MODE_POSTGRES_SELF:
+      case HostingMode::POSTGRES_SELF:
         datadir = parent->get_child("glom_postgres_data");
         break;
-      case HOSTING_MODE_POSTGRES_CENTRAL:
+      case HostingMode::POSTGRES_CENTRAL:
         datadir = parent;
         break;
-      case HOSTING_MODE_SQLITE:
+      case HostingMode::SQLITE:
         datadir = parent;
         break;
-      case HOSTING_MODE_MYSQL_SELF:
+      case HostingMode::MYSQL_SELF:
         datadir = parent->get_child("glom_mysql_data");
         break;
-      case HOSTING_MODE_MYSQL_CENTRAL:
+      case HostingMode::MYSQL_CENTRAL:
         datadir = parent;
         break;
       default:
@@ -533,61 +533,61 @@ std::shared_ptr<TableInfo> Document::create_table_system_preferences(type_vec_fi
 
   auto primary_key = std::make_shared<Field>(); //It's not used, because there's only one record, but we must have one.
   primary_key->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ID);
-  primary_key->set_glom_type(Field::TYPE_NUMERIC);
+  primary_key->set_glom_type(Field::glom_field_type::NUMERIC);
   fields.push_back(primary_key);
 
   auto field_name = std::make_shared<Field>();
   field_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME);
   field_name->set_title_original(_("System Name"));
-  field_name->set_glom_type(Field::TYPE_TEXT);
+  field_name->set_glom_type(Field::glom_field_type::TEXT);
   fields.push_back(field_name);
 
   auto field_org_name = std::make_shared<Field>();
   field_org_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME);
   field_org_name->set_title_original(_("Organisation Name"));
-  field_org_name->set_glom_type(Field::TYPE_TEXT);
+  field_org_name->set_glom_type(Field::glom_field_type::TEXT);
   fields.push_back(field_org_name);
 
   auto field_org_logo = std::make_shared<Field>();
   field_org_logo->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO);
   field_org_logo->set_title_original(_("Organisation Logo"));
-  field_org_logo->set_glom_type(Field::TYPE_IMAGE);
+  field_org_logo->set_glom_type(Field::glom_field_type::IMAGE);
   fields.push_back(field_org_logo);
 
   auto field_org_address_street = std::make_shared<Field>();
   field_org_address_street->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET);
   field_org_address_street->set_title_original(_("Street"));
-  field_org_address_street->set_glom_type(Field::TYPE_TEXT);
+  field_org_address_street->set_glom_type(Field::glom_field_type::TEXT);
   fields.push_back(field_org_address_street);
 
   auto field_org_address_street2 = std::make_shared<Field>();
   field_org_address_street2->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2);
   field_org_address_street2->set_title_original(_("Street (line 2)"));
-  field_org_address_street2->set_glom_type(Field::TYPE_TEXT);
+  field_org_address_street2->set_glom_type(Field::glom_field_type::TEXT);
   fields.push_back(field_org_address_street2);
 
   auto field_org_address_town = std::make_shared<Field>();
   field_org_address_town->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN);
   field_org_address_town->set_title_original(_("City"));
-  field_org_address_town->set_glom_type(Field::TYPE_TEXT);
+  field_org_address_town->set_glom_type(Field::glom_field_type::TEXT);
   fields.push_back(field_org_address_town);
 
   auto field_org_address_county = std::make_shared<Field>();
   field_org_address_county->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY);
   field_org_address_county->set_title_original(_("State"));
-  field_org_address_county->set_glom_type(Field::TYPE_TEXT);
+  field_org_address_county->set_glom_type(Field::glom_field_type::TEXT);
   fields.push_back(field_org_address_county);
 
   auto field_org_address_country = std::make_shared<Field>();
   field_org_address_country->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY);
   field_org_address_country->set_title_original(_("Country"));
-  field_org_address_country->set_glom_type(Field::TYPE_TEXT);
+  field_org_address_country->set_glom_type(Field::glom_field_type::TEXT);
   fields.push_back(field_org_address_country);
 
   auto field_org_address_postcode = std::make_shared<Field>();
   field_org_address_postcode->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE);
   field_org_address_postcode->set_title_original(_("Zip Code"));
-  field_org_address_postcode->set_glom_type(Field::TYPE_TEXT);
+  field_org_address_postcode->set_glom_type(Field::glom_field_type::TEXT);
   fields.push_back(field_org_address_postcode);
 
   return prefs_table_info;
@@ -1705,21 +1705,21 @@ AppState::userlevels Document::get_userlevel() const
 AppState::userlevels Document::get_userlevel(userLevelReason& reason) const
 {
   //Initialize output parameter:
-  reason = USER_LEVEL_REASON_UNKNOWN;
+  reason = userLevelReason::UNKNOWN;
 
   if(get_read_only())
   {
-    reason = USER_LEVEL_REASON_FILE_READ_ONLY;
-    return AppState::USERLEVEL_OPERATOR; //A read-only document cannot be changed, so there's no point in being in developer mode. This is one way to control the user level on purpose.
+    reason = userLevelReason::FILE_READ_ONLY;
+    return AppState::userlevels::OPERATOR; //A read-only document cannot be changed, so there's no point in being in developer mode. This is one way to control the user level on purpose.
   }
   else if(get_opened_from_browse())
   {
-    reason = USER_LEVEL_REASON_OPENED_FROM_BROWSE;
-    return AppState::USERLEVEL_OPERATOR; //Developer mode would require changes to the original document.
+    reason = userLevelReason::OPENED_FROM_BROWSE;
+    return AppState::userlevels::OPERATOR; //Developer mode would require changes to the original document.
   }
   else if(m_file_uri.empty()) //If it has never been saved then this is a new default document, so the user created it, so the user can be a developer.
   {
-    return AppState::USERLEVEL_DEVELOPER;
+    return AppState::userlevels::DEVELOPER;
   }
   else
   {
@@ -1740,18 +1740,18 @@ void Document::on_app_state_userlevel_changed(AppState::userlevels userlevel)
 bool Document::set_userlevel(AppState::userlevels userlevel)
 {
   //Prevent incorrect user level:
-  if((userlevel == AppState::USERLEVEL_DEVELOPER) && get_read_only())
+  if((userlevel == AppState::userlevels::DEVELOPER) && get_read_only())
   {
     std::cout << "debug: " << G_STRFUNC << ": Developer mode denied because get_read_only() returned true." << std::endl;
     std::cout << "  DEBUG: get_read_only()=" << get_read_only() << std::endl;
     std::cout << "  DEBUG: get_file_uri()=" << get_file_uri() << std::endl;
 
-    m_app_state.set_userlevel(AppState::USERLEVEL_OPERATOR);
+    m_app_state.set_userlevel(AppState::userlevels::OPERATOR);
     return false;
   }
   else if(get_opened_from_browse())
   {
-    m_app_state.set_userlevel(AppState::USERLEVEL_OPERATOR);
+    m_app_state.set_userlevel(AppState::userlevels::OPERATOR);
     return false;
   }
 
@@ -1833,7 +1833,7 @@ void Document::save_changes()
 {
   //Save changes automatically
   //(when in developer mode - no changes should even be possible when not in developer mode)
-  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  if(get_userlevel() == AppState::userlevels::DEVELOPER)
   {
     //This rebuilds the whole XML DOM and saves the whole document,
     //so we need to be careful not to call set_modified() too often.
@@ -1851,7 +1851,7 @@ void Document::save_changes()
   }
   else
   {
-    //std::cout << "debug: " << G_STRFUNC << ": Not saving, because not AppState::USERLEVEL_DEVELOPER" << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": Not saving, because not AppState::userlevels::DEVELOPER" << std::endl;
   }
 }
 
@@ -1865,7 +1865,7 @@ void Document::set_modified(bool value)
     return;
   }
 
-  if(get_userlevel() != AppState::USERLEVEL_DEVELOPER)
+  if(get_userlevel() != AppState::userlevels::DEVELOPER)
   {
     //Some things can be legitimately changed by the user,
     //such as field information from the server,
@@ -1902,7 +1902,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
 
   auto field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
 
-  Field::glom_field_type field_type = Field::TYPE_INVALID;
+  Field::glom_field_type field_type = Field::glom_field_type::INVALID;
   if(field)
     field_type = field->get_glom_type();
 
@@ -1916,7 +1916,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
 void Document::load_after_layout_item_formatting(const xmlpp::Element* element, Formatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Numeric formatting:
-  if(!field_name.empty() && (field_type == Field::TYPE_NUMERIC))
+  if(!field_name.empty() && (field_type == Field::glom_field_type::NUMERIC))
   {
     format.m_numeric_format.m_use_thousands_separator = XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR);
     format.m_numeric_format.m_decimal_places_restricted = XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED);
@@ -1927,7 +1927,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
   }
 
   //Text formatting:
-  if(field_type == Field::TYPE_TEXT)
+  if(field_type == Field::glom_field_type::TEXT)
   {
     format.set_text_format_multiline( XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE) );
     format.set_text_format_multiline_height_lines( XmlUtils::get_node_attribute_value_as_decimal(element, 
@@ -1939,12 +1939,12 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
   format.set_text_format_color_background( XmlUtils::get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND) );
 
   //Alignment. Not-specified means auto.
-  Formatting::HorizontalAlignment alignment = Formatting::HORIZONTAL_ALIGNMENT_AUTO;
+  Formatting::HorizontalAlignment alignment = Formatting::HorizontalAlignment::AUTO;
   const auto alignment_str = XmlUtils::get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT);
   if(alignment_str == GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT)
-    alignment = Formatting::HORIZONTAL_ALIGNMENT_LEFT;
+    alignment = Formatting::HorizontalAlignment::LEFT;
   else if(alignment_str == GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT)
-    alignment = Formatting::HORIZONTAL_ALIGNMENT_RIGHT;
+    alignment = Formatting::HorizontalAlignment::RIGHT;
 
   format.set_horizontal_alignment(alignment);
 
@@ -1968,7 +1968,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
           const auto element_custom_choices = dynamic_cast<const xmlpp::Element*>(node_choices);
           if(element_custom_choices)
           {
-            if(field_type == Field::TYPE_INVALID)
+            if(field_type == Field::glom_field_type::INVALID)
             {
               //Discover the field type, so we can interpret the text as a value.
               //Not all calling functions know this, so they don't all supply the correct value.
@@ -2221,13 +2221,13 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         const auto nodeValue = XmlUtils::get_node_child_named(element, GLOM_NODE_VALUE);
         if(nodeValue)
         {
-          value_image = XmlUtils::get_node_text_child_as_value(nodeValue, Field::TYPE_IMAGE);
+          value_image = XmlUtils::get_node_text_child_as_value(nodeValue, Field::glom_field_type::IMAGE);
         }
 
         if(value_image.is_null())
         {
           //Try the deprecated way:
-          value_image = XmlUtils::get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, Field::TYPE_IMAGE);
+          value_image = XmlUtils::get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, Field::glom_field_type::IMAGE);
         }
 
         item->set_image(value_image);
@@ -2314,11 +2314,11 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
           if(navigation_type_as_string.empty() ||
              navigation_type_as_string == GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_AUTOMATIC)
           {
-            portal->set_navigation_type(LayoutItem_Portal::NAVIGATION_AUTOMATIC);
+            portal->set_navigation_type(LayoutItem_Portal::navigation_type::AUTOMATIC);
           }
           else if(navigation_type_as_string == GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_NONE)
           {
-            portal->set_navigation_type(LayoutItem_Portal::NAVIGATION_NONE);
+            portal->set_navigation_type(LayoutItem_Portal::navigation_type::NONE);
           }
           else if(navigation_type_as_string == GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_SPECIFIC)
           {
@@ -2558,7 +2558,7 @@ bool Document::load_after(int& failure_code)
       if(m_document_format_version > get_latest_known_document_format_version())
       {
         std::cerr << G_STRFUNC << ": Loading failed because format_version=" << m_document_format_version << ", but latest known format version is " << get_latest_known_document_format_version() << std::endl;
-        failure_code = LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW;
+        failure_code = static_cast<int>(load_failure_codes::FILE_VERSION_TOO_NEW);
         return false;
       }
 
@@ -2601,27 +2601,27 @@ bool Document::load_after(int& failure_code)
 
         const auto attr_mode = XmlUtils::get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE);
 
-        HostingMode mode = HOSTING_MODE_DEFAULT;
+        HostingMode mode = HostingMode::DEFAULT;
 
         if(attr_mode.empty())
         {
           // If no hosting mode is set, then try the self_hosted flag which
           // was used before sqlite support was implemented.
           const auto self_hosted = XmlUtils::get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED);
-          mode = self_hosted ? HOSTING_MODE_POSTGRES_SELF : HOSTING_MODE_POSTGRES_CENTRAL;
+          mode = self_hosted ? HostingMode::POSTGRES_SELF : HostingMode::POSTGRES_CENTRAL;
         }
         else
         {
           if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL)
-            mode = HOSTING_MODE_POSTGRES_CENTRAL;
+            mode = HostingMode::POSTGRES_CENTRAL;
           else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF)
-            mode = HOSTING_MODE_POSTGRES_SELF;
+            mode = HostingMode::POSTGRES_SELF;
           else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE)
-            mode = HOSTING_MODE_SQLITE;
+            mode = HostingMode::SQLITE;
           else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_MYSQL_CENTRAL)
-            mode = HOSTING_MODE_MYSQL_CENTRAL;
+            mode = HostingMode::MYSQL_CENTRAL;
           else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_MYSQL_SELF)
-            mode = HOSTING_MODE_MYSQL_SELF;
+            mode = HostingMode::MYSQL_SELF;
           else
 	  {
             std::cerr << G_STRFUNC << ": Hosting mode " << attr_mode << " is not supported" << std::endl;
@@ -2730,7 +2730,7 @@ bool Document::load_after(int& failure_code)
                 const auto field_type = XmlUtils::get_node_attribute_value(node_field, GLOM_ATTRIBUTE_TYPE);
 
                 //Get the type enum for this string representation of the type:
-                Field::glom_field_type field_type_enum = Field::TYPE_INVALID;
+                Field::glom_field_type field_type_enum = Field::glom_field_type::INVALID;
                 for(const auto& type_pair : type_names)
                 {
                   if(type_pair.second == field_type)
@@ -3089,7 +3089,7 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
 
   std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
 
-  Field::glom_field_type field_type = Field::TYPE_INVALID;
+  Field::glom_field_type field_type = Field::glom_field_type::INVALID;
   if(field)
     field_type = field->get_glom_type();
 
@@ -3099,9 +3099,9 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
 void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, const Formatting& format, Field::glom_field_type field_type)
 {
   //Numeric format:
-  if(field_type != Field::TYPE_INVALID)  //These options are only for fields:
+  if(field_type != Field::glom_field_type::INVALID)  //These options are only for fields:
   {
-    if(field_type == Field::TYPE_NUMERIC)
+    if(field_type == Field::glom_field_type::NUMERIC)
     {
       XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR,  format.m_numeric_format.m_use_thousands_separator);
       XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED, format.m_numeric_format.m_decimal_places_restricted);
@@ -3119,7 +3119,7 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
   }
 
   //Text formatting:
-  if(field_type == Field::TYPE_TEXT)
+  if(field_type == Field::glom_field_type::TEXT)
   {
     XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE, format.get_text_format_multiline());
     XmlUtils::set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES, 
@@ -3132,15 +3132,15 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
 
   //Alignment:
   const auto alignment = format.get_horizontal_alignment();
-  if(alignment != Formatting::HORIZONTAL_ALIGNMENT_AUTO) //Save file-size by not even writing this.
+  if(alignment != Formatting::HorizontalAlignment::AUTO) //Save file-size by not even writing this.
   {
     const Glib::ustring alignment_str =
-      (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT  ? GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT : GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT);
+      (alignment == Formatting::HorizontalAlignment::LEFT  ? GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT : GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT);
     XmlUtils::set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT, alignment_str);
   }
 
   //Choices:
-  if(field_type != Field::TYPE_INVALID)
+  if(field_type != Field::glom_field_type::INVALID)
   {
     if(format.get_has_custom_choices())
     {
@@ -3321,13 +3321,13 @@ void Document::save_before_layout_group(xmlpp::Element* node, const std::shared_
 
               switch(portal->get_navigation_type())
               {
-                case LayoutItem_Portal::NAVIGATION_AUTOMATIC:
+                case LayoutItem_Portal::navigation_type::AUTOMATIC:
                   //We leave this blank to use the default.
                   break;
-                case LayoutItem_Portal::NAVIGATION_NONE:
+                case LayoutItem_Portal::navigation_type::NONE:
                   navigation_type_string = GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_NONE;
                   break;
-                case LayoutItem_Portal::NAVIGATION_SPECIFIC:
+                case LayoutItem_Portal::navigation_type::SPECIFIC:
                   navigation_type_string = GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_SPECIFIC;
                   break;
                 default:
@@ -3465,7 +3465,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const std::shared_
                 save_before_translations(nodeItem, imageobject);
 
                 xmlpp::Element* nodeValue = nodeItem->add_child(GLOM_NODE_VALUE);
-                XmlUtils::set_node_text_child_as_value(nodeValue, imageobject->get_image(), Field::TYPE_IMAGE);
+                XmlUtils::set_node_text_child_as_value(nodeValue, imageobject->get_image(), Field::glom_field_type::IMAGE);
               }
               else
               {
@@ -3624,23 +3624,23 @@ bool Document::save_before()
 
     switch(m_hosting_mode)
     {
-    case HOSTING_MODE_POSTGRES_CENTRAL:
+    case HostingMode::POSTGRES_CENTRAL:
       XmlUtils::set_node_attribute_value(nodeConnection, 
         GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL);
       break;
-    case HOSTING_MODE_POSTGRES_SELF:
+    case HostingMode::POSTGRES_SELF:
       XmlUtils::set_node_attribute_value(nodeConnection,
         GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF);
       break;
-    case HOSTING_MODE_SQLITE:
+    case HostingMode::SQLITE:
       XmlUtils::set_node_attribute_value(nodeConnection,
         GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE);
       break;
-    case HOSTING_MODE_MYSQL_CENTRAL:
+    case HostingMode::MYSQL_CENTRAL:
       XmlUtils::set_node_attribute_value(nodeConnection, 
         GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MYSQL_CENTRAL);
       break;
-    case HOSTING_MODE_MYSQL_SELF:
+    case HostingMode::MYSQL_SELF:
       XmlUtils::set_node_attribute_value(nodeConnection,
         GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MYSQL_SELF);
       break;
@@ -4390,7 +4390,7 @@ Document::type_list_translatables Document::get_translatable_items()
       add_to_translatable_list(result, field, hint);
 
       //Custom Choices, if any:
-      if(field->get_glom_type() == Field::TYPE_TEXT) //Choices for other field types could not be translated.
+      if(field->get_glom_type() == Field::glom_field_type::TEXT) //Choices for other field types could not be translated.
       {
         const auto this_hint = hint + ", Parent Field: " + field->get_name();   
         type_list_translatables list_choice_items;
@@ -4513,7 +4513,7 @@ void Document::fill_translatable_layout_items(const std::shared_ptr<LayoutItem_F
   
   //Custom Choices, if any:
   //Only text fields can have translated choice values:
-  if(layout_field->get_glom_type() == Field::TYPE_TEXT)
+  if(layout_field->get_glom_type() == Field::glom_field_type::TEXT)
   {
     const auto choice_hint = hint + ", Parent Field: " + layout_field->get_name();
     fill_translatable_custom_choices(layout_field->m_formatting, the_list, hint);
@@ -4719,7 +4719,7 @@ void Document::set_opened_from_browse(bool val)
   //This should stop developer mode from being possible,
   //because we don't have access to the document:
   if(!val)
-    m_app_state.set_userlevel(AppState::USERLEVEL_OPERATOR);
+    m_app_state.set_userlevel(AppState::userlevels::OPERATOR);
 }
 
 bool Document::get_opened_from_browse() const

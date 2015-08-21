@@ -30,7 +30,7 @@ PrintLayout::PrintLayout()
   m_show_outlines(true),
   m_page_count(1) //A sensible default
 {
-  m_translatable_item_type = TRANSLATABLE_TYPE_PRINT_LAYOUT;
+  m_translatable_item_type = enumTranslatableItemType::PRINT_LAYOUT;
   m_layout_group = std::make_shared<LayoutGroup>();
 }
 

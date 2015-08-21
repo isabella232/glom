@@ -129,7 +129,7 @@ bool ImageGlom::on_button_press_event(GdkEventButton *button_event)
     //Only show this popup in developer mode, so operators still see the default GtkEntry context menu.
     //TODO: It would be better to add it somehow to the standard context menu.
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    if(pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
       if(mods & GDK_BUTTON3_MASK)
       {

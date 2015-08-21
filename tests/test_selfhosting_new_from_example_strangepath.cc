@@ -29,7 +29,7 @@
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   //TODO: MySQL: See if we can get this to work.
-  if(hosting_mode == Glom::Document::HOSTING_MODE_MYSQL_SELF)
+  if(hosting_mode == Glom::Document::HostingMode::MYSQL_SELF)
   {
     test_selfhosting_cleanup(false /* do not delete the file. */);
     return true;

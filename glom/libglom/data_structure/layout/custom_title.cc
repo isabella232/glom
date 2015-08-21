@@ -27,7 +27,7 @@ namespace Glom
 CustomTitle::CustomTitle()
 : m_use_custom_title(false)
 {
-  m_translatable_item_type = TRANSLATABLE_TYPE_CUSTOM_TITLE;
+  m_translatable_item_type = enumTranslatableItemType::CUSTOM_TITLE;
 }
 
 CustomTitle::CustomTitle(const CustomTitle& src)

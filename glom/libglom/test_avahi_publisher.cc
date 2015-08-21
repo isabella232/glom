@@ -28,7 +28,7 @@ private:
 
 
 TestWindow::TestWindow()
-: m_box(Gtk::ORIENTATION_VERTICAL, Glom::UiUtils::DEFAULT_SPACING_SMALL),
+: m_box(Gtk::ORIENTATION_VERTICAL, static_cast<int>(Glom::UiUtils::DefaultSpacings::SMALL)),
   m_button_start("Start"),
   m_button_stop("Stop"),
   m_avahi_publisher(nullptr)

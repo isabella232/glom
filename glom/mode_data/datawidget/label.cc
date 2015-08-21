@@ -105,7 +105,7 @@ void Label::on_menu_properties_activate()
 bool Label::on_button_press_event(GdkEventButton *button_event)
 {
   AppWindow* pApp = get_appwindow();
-  if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  if(pApp && pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
   {
     GdkModifierType mods;
     gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );

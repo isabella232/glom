@@ -110,15 +110,15 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_model_alignment = Gtk::ListStore::create(m_columns_alignment);
 
   auto iter = m_model_alignment->append();
-  (*iter)[m_columns_alignment.m_col_alignment] = Formatting::HORIZONTAL_ALIGNMENT_AUTO;
+  (*iter)[m_columns_alignment.m_col_alignment] = Formatting::HorizontalAlignment::AUTO;
   //Translators: This is Automatic text alignment.
   (*iter)[m_columns_alignment.m_col_title] = _("Automatic");
   iter = m_model_alignment->append();
-  (*iter)[m_columns_alignment.m_col_alignment] = Formatting::HORIZONTAL_ALIGNMENT_LEFT;
+  (*iter)[m_columns_alignment.m_col_alignment] = Formatting::HorizontalAlignment::LEFT;
   //Translators: This is Left text alignment.
   (*iter)[m_columns_alignment.m_col_title] = _("Left");
   iter = m_model_alignment->append();
-  (*iter)[m_columns_alignment.m_col_alignment] = Formatting::HORIZONTAL_ALIGNMENT_RIGHT;
+  (*iter)[m_columns_alignment.m_col_alignment] = Formatting::HorizontalAlignment::RIGHT;
   //Translators: This is Right text alignment.
   (*iter)[m_columns_alignment.m_col_title] = _("Right");
 
@@ -360,7 +360,7 @@ bool Box_Formatting::get_formatting(Formatting& format) const
 
   //Text formatting:
   auto iter = m_combo_format_text_horizontal_alignment->get_active();
-  Formatting::HorizontalAlignment alignment = Formatting::HORIZONTAL_ALIGNMENT_LEFT;
+  Formatting::HorizontalAlignment alignment = Formatting::HorizontalAlignment::LEFT;
   if(iter)
     alignment = (*iter)[m_columns_alignment.m_col_alignment];
   m_format.set_horizontal_alignment(alignment);
@@ -490,10 +490,10 @@ void Box_Formatting::enforce_constraints()
   if(m_field)
   {
     m_show_numeric = false;
-    if(m_field->get_glom_type() == Field::TYPE_NUMERIC)
+    if(m_field->get_glom_type() == Field::glom_field_type::NUMERIC)
       m_show_numeric = true;
 
-    if((m_field->get_glom_type() == Field::TYPE_BOOLEAN) || (m_field->get_glom_type() == Field::TYPE_IMAGE)) //TODO: Allow text options when showing booleans as Yes/No on print layouts.
+    if((m_field->get_glom_type() == Field::glom_field_type::BOOLEAN) || (m_field->get_glom_type() == Field::glom_field_type::IMAGE)) //TODO: Allow text options when showing booleans as Yes/No on print layouts.
     {
       show_text = false;
     }
@@ -504,7 +504,7 @@ void Box_Formatting::enforce_constraints()
     m_vbox_text_format->show();
 
     //Hide multiline options for non-text fields:
-    if(m_for_print_layout || !m_field || (m_field->get_glom_type() != Field::TYPE_TEXT))
+    if(m_for_print_layout || !m_field || (m_field->get_glom_type() != Field::glom_field_type::TEXT))
     {
       m_checkbox_format_text_multiline->hide();
       m_label_format_text_multiline_height->hide();

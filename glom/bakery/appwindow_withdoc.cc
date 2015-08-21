@@ -150,7 +150,7 @@ bool AppWindow_WithDoc::open_document(const Glib::ustring& file_uri)
       ui_warning_load_failed(failure_code);
 
     //Make sure that non-existant files are removed from the history list:
-    if(failure_code == Document::LOAD_FAILURE_CODE_NOT_FOUND)
+    if(failure_code == static_cast<int>(Document::LoadFailureCodes::NOT_FOUND))
       document_history_remove(file_uri);
 
     //re-initialize document.
@@ -342,13 +342,13 @@ void AppWindow_WithDoc::offer_to_save_changes()
       //Respond to button that was clicked:
       switch(buttonClicked)
       {
-        case(SAVECHANGES_Save):
+        case(enumSaveChanges::Save):
         {
           on_menu_file_save(); //If File|Exit is in progress, this could cancel it.
           break;
         }
 
-        case(SAVECHANGES_Discard):
+        case(enumSaveChanges::Discard):
         {
           //Close if this save offer was a result of a FileClose (It probably always is):
           //close_mark_or_destroy();
@@ -356,7 +356,7 @@ void AppWindow_WithDoc::offer_to_save_changes()
           break;
         }
 
-        case(SAVECHANGES_Cancel): //Cancel.
+        case(enumSaveChanges::Cancel): //Cancel.
         {
           cancel_close_or_exit();
           break;

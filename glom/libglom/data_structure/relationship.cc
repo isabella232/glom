@@ -26,7 +26,7 @@ namespace Glom
 Relationship::Relationship()
 : m_allow_edit(true), m_auto_create(false)
 {
-   m_translatable_item_type = TRANSLATABLE_TYPE_RELATIONSHIP;
+   m_translatable_item_type = enumTranslatableItemType::RELATIONSHIP;
 }
 
 Relationship::Relationship(const Relationship& src)

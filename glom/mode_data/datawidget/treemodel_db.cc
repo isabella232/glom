@@ -212,7 +212,7 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
       std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
       if(item_field)
       {
-        if(item_field->get_glom_type() == Field::TYPE_INVALID)
+        if(item_field->get_glom_type() == Field::glom_field_type::INVALID)
           std::cerr << G_STRFUNC << ": field has invalid type. field name: " << item_field->get_name() << std::endl;
 
         m_column_fields.push_back(item_field);

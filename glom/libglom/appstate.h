@@ -36,10 +36,10 @@ public:
   AppState();
   virtual ~AppState();
 
-  enum userlevels
+  enum class userlevels
   {
-    USERLEVEL_OPERATOR,
-    USERLEVEL_DEVELOPER
+    OPERATOR,
+    DEVELOPER
   };
 
   /** Returns whether we are in developer mode.

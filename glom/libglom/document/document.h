@@ -105,14 +105,14 @@ public:
   static guint get_latest_known_document_format_version();
 
   /// How the database is hosted.
-  enum HostingMode
+  enum class HostingMode
   {
-    HOSTING_MODE_POSTGRES_CENTRAL, /*!< The database is hosted on an external PostgreSQL server. */
-    HOSTING_MODE_POSTGRES_SELF, /*!< A new PostgreSQL database process is spawned that hosts the data. */
-    HOSTING_MODE_SQLITE, /*!< A sqlite database file is used. */
-    HOSTING_MODE_MYSQL_CENTRAL, /*!< The database is hosted on an external MySQL server. */
-    HOSTING_MODE_MYSQL_SELF,  /*!< A new MySQL database process is spawned that hosts the data. */
-    HOSTING_MODE_DEFAULT = HOSTING_MODE_POSTGRES_SELF /*!- Arbitrary default. */
+    POSTGRES_CENTRAL, /*!< The database is hosted on an external PostgreSQL server. */
+    POSTGRES_SELF, /*!< A new PostgreSQL database process is spawned that hosts the data. */
+    SQLITE, /*!< A sqlite database file is used. */
+    MYSQL_CENTRAL, /*!< The database is hosted on an external MySQL server. */
+    MYSQL_SELF,  /*!< A new MySQL database process is spawned that hosts the data. */
+    DEFAULT = HostingMode::POSTGRES_SELF /*!- Arbitrary default. */
   };
 
   /** Set the hosting mode of the database.
@@ -412,12 +412,12 @@ public:
    */
   void set_table_overview_position( const Glib::ustring& utable_name, float x, float y );
 
-  enum userLevelReason
+  enum class userLevelReason
   {
-    USER_LEVEL_REASON_UNKNOWN,
-    USER_LEVEL_REASON_FILE_READ_ONLY,
-    USER_LEVEL_REASON_DATABASE_ACCESS_LEVEL,
-    USER_LEVEL_REASON_OPENED_FROM_BROWSE
+    UNKNOWN,
+    FILE_READ_ONLY,
+    DATABASE_ACCESS_LEVEL,
+    OPENED_FROM_BROWSE
   };
 
   /**
@@ -489,9 +489,9 @@ public:
 #endif //SWIG
 
   /// Failure codes that could be returned by load_after()
-  enum load_failure_codes
+  enum class load_failure_codes
   {
-    LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW = LOAD_FAILURE_CODE_LAST + 1
+    FILE_VERSION_TOO_NEW = static_cast<int>(LoadFailureCodes::LAST) + 1
   };
 
 private:
@@ -502,7 +502,7 @@ private:
   void save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupBy::type_list_sort_fields& list_fields);
   void save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const std::shared_ptr<const UsesRelationship>& item);
   void save_before_layout_item_field(xmlpp::Element* nodeItem, const std::shared_ptr<const LayoutItem_Field>& item);
-  void save_before_layout_item_formatting(xmlpp::Element* nodeItem, const Formatting& format, Field::glom_field_type field_type = Field::TYPE_INVALID);
+  void save_before_layout_item_formatting(xmlpp::Element* nodeItem, const Formatting& format, Field::glom_field_type field_type = Field::glom_field_type::INVALID);
   void save_before_layout_item_formatting(xmlpp::Element* nodeItem, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item);
 
   void save_before_translations(xmlpp::Element* nodeItem, const std::shared_ptr<const TranslatableItem>& item);
@@ -516,7 +516,7 @@ private:
   void load_after_sort_by(const xmlpp::Element* node, const Glib::ustring& table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields);
   void load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const std::shared_ptr<UsesRelationship>& item);
   void load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const std::shared_ptr<LayoutItem_Field>& item);
-  void load_after_layout_item_formatting(const xmlpp::Element* element, Formatting& format, Field::glom_field_type field_type = Field::TYPE_INVALID, const Glib::ustring& table_name = Glib::ustring(), const Glib::ustring& field_name = Glib::ustring());
+  void load_after_layout_item_formatting(const xmlpp::Element* element, Formatting& format, Field::glom_field_type field_type = Field::glom_field_type::INVALID, const Glib::ustring& table_name = Glib::ustring(), const Glib::ustring& field_name = Glib::ustring());
  void load_after_layout_item_formatting(const xmlpp::Element* element, const std::shared_ptr<LayoutItem_WithFormatting>& layout_item, const Glib::ustring& table_name = Glib::ustring());
 
   void load_after_translations(const xmlpp::Element* element, const std::shared_ptr<TranslatableItem>& item);

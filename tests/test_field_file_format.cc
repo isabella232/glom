@@ -74,18 +74,18 @@ int main()
   Glom::libglom_init();
 
   const Glib::ustring str = " Some value or other with a quote \" and leading space."; //Just to be awkward.
-  if(!test_value(Glom::Field::TYPE_TEXT, Gnome::Gda::Value(str)))
+  if(!test_value(Glom::Field::glom_field_type::TEXT, Gnome::Gda::Value(str)))
     return EXIT_FAILURE;
 
   const Glib::Date date(11, Glib::Date::MAY, 1973);
-  if(!test_value(Glom::Field::TYPE_DATE, Gnome::Gda::Value(date)))
+  if(!test_value(Glom::Field::glom_field_type::DATE, Gnome::Gda::Value(date)))
     return EXIT_FAILURE;
 
   Gnome::Gda::Time time = {10, 20, 30, 0, 0};
-  if(!test_value(Glom::Field::TYPE_TIME, Gnome::Gda::Value(time)))
+  if(!test_value(Glom::Field::glom_field_type::TIME, Gnome::Gda::Value(time)))
     return EXIT_FAILURE;
 
-  if(!test_value(Glom::Field::TYPE_NUMERIC, Glom::Conversions::parse_value((double)3.91l)))
+  if(!test_value(Glom::Field::glom_field_type::NUMERIC, Glom::Conversions::parse_value((double)3.91l)))
     return EXIT_FAILURE;
 
 

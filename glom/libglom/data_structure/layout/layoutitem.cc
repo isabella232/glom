@@ -67,7 +67,7 @@ LayoutItem::LayoutItem()
   m_display_width(0),
   m_positions(0)
 {
-  m_translatable_item_type = TRANSLATABLE_TYPE_LAYOUT_ITEM;
+  m_translatable_item_type = enumTranslatableItemType::LAYOUT_ITEM;
 }
 
 LayoutItem::LayoutItem(const LayoutItem& src)

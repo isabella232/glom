@@ -30,14 +30,14 @@ namespace Glom
 CanvasRectMovable::CanvasRectMovable()
 : Goocanvas::Rect(0.0, 0.0, 0.0, 0.0),
   CanvasItemMovable(),
-  m_snap_corner(CORNER_ALL)
+  m_snap_corner(Corners::ALL)
 {
   init();
 }
 
 CanvasRectMovable::CanvasRectMovable(double x, double y, double width, double height)
 : Goocanvas::Rect(x, y, width, height),
-  m_snap_corner(CORNER_ALL)
+  m_snap_corner(Corners::ALL)
 {
   init();
 }
@@ -97,19 +97,19 @@ void CanvasRectMovable::snap_position_one_corner(Corners corner, double& x, doub
   double corner_y_offset = 0;
   switch(corner)
   {
-    case CORNER_TOP_LEFT:
+    case Corners::TOP_LEFT:
       corner_x_offset = 0;
       corner_y_offset = 0;
       break;
-    case CORNER_TOP_RIGHT:
+    case Corners::TOP_RIGHT:
       corner_x_offset = property_width();
       corner_y_offset = 0;
       break;
-    case CORNER_BOTTOM_LEFT:
+    case Corners::BOTTOM_LEFT:
       corner_x_offset = 0;
       corner_y_offset = property_height();
       break;
-    case CORNER_BOTTOM_RIGHT:
+    case Corners::BOTTOM_RIGHT:
       corner_x_offset = property_width();
       corner_y_offset = property_height();
       break;
@@ -139,7 +139,7 @@ void CanvasRectMovable::snap_position_all_corners(double& x, double& y) const
   double offset_y_min = 0;
 
   //Try snapping each corner, to choose the one that snapped closest:
-  for(int i = CORNER_TOP_LEFT; i < CORNER_COUNT; ++i)
+  for(int i = static_cast<int>(Corners::TOP_LEFT); i < static_cast<int>(Corners::COUNT); ++i)
   {
     const Corners corner = (Corners)i;
     double temp_x = x;
@@ -163,7 +163,7 @@ void CanvasRectMovable::snap_position_all_corners(double& x, double& y) const
 
 void CanvasRectMovable::snap_position(double& x, double& y) const
 {
-  if(m_snap_corner == CORNER_ALL)
+  if(m_snap_corner == Corners::ALL)
     return snap_position_all_corners(x, y);
   else
     return snap_position_one_corner(m_snap_corner, x, y);

@@ -40,7 +40,7 @@ Dialog_ChooseID::Dialog_ChooseID()
   m_pButton_QuickFind(nullptr),
   m_vbox_parent(nullptr),
   m_document(nullptr),
-  m_stage(STAGE_INVALID)
+  m_stage(enumStage::INVALID)
 {
 }
 
@@ -52,7 +52,7 @@ Dialog_ChooseID::Dialog_ChooseID(BaseObjectType* cobject, const Glib::RefPtr<Gtk
   m_pButton_QuickFind(nullptr),
   m_vbox_parent(nullptr),
   m_document(nullptr),
-  m_stage(STAGE_INVALID)
+  m_stage(enumStage::INVALID)
 {
   builder->get_widget("label_table_name", m_label_table_name);
   builder->get_widget("vbox_parent", m_vbox_parent);
@@ -85,7 +85,7 @@ void Dialog_ChooseID::setup()
   add_view(&m_box_select);
   m_box_select.set_open_button_title(_("Select"));
 
-  m_stage = STAGE_FIND;
+  m_stage = enumStage::FIND;
   update_ui_for_stage();
 }
 
@@ -134,7 +134,7 @@ void Dialog_ChooseID::on_box_find_criteria(const Gnome::Gda::SqlExpr& where_clau
     }
     else
     {
-      m_stage = STAGE_SELECT;
+      m_stage = enumStage::SELECT;
       update_ui_for_stage();
     }
   }
@@ -150,14 +150,14 @@ void Dialog_ChooseID::update_ui_for_stage()
 {
   UiUtils::container_remove_all(*m_vbox_parent);
 
-  if(m_stage == STAGE_FIND)
+  if(m_stage == enumStage::FIND)
   {
     m_pBox_QuickFind->show();
 
     m_box_find.show();
     m_vbox_parent->pack_start(m_box_find);
   }
-  else if(m_stage == STAGE_SELECT)
+  else if(m_stage == enumStage::SELECT)
   {
     m_pBox_QuickFind->hide();
 
@@ -174,7 +174,7 @@ bool Dialog_ChooseID::init_db_details(const Glib::ustring& table_name, const Gli
   m_label_table_name->set_text( get_document()->get_table_title(m_table_name, AppWindow::get_current_locale()) );
 
   //Start by asking for find criteria:
-  m_stage = STAGE_FIND;
+  m_stage = enumStage::FIND;
   update_ui_for_stage();
 
   bool result = m_box_find.init_db_details(table_name, layout_platform);

@@ -49,11 +49,11 @@ void Box_DB_Table_Relationships::init()
   m_colTitle = m_AddDel.add_column(_("Title"));
 
   //Translators: FROM as in SQL's FROM
-  m_colFromField = m_AddDel.add_column(_("From Field"), AddDelColumnInfo::STYLE_Choices);
-  m_colToTable = m_AddDel.add_column(_("Table"), AddDelColumnInfo::STYLE_Choices);
-  m_colToField = m_AddDel.add_column(_("To Field"), AddDelColumnInfo::STYLE_Choices);
-  m_colAllowEdit = m_AddDel.add_column(_("Allow Editing"),  AddDelColumnInfo::STYLE_Boolean);
-  m_colAutoCreate = m_AddDel.add_column(_("Automatic Creation"),  AddDelColumnInfo::STYLE_Boolean);
+  m_colFromField = m_AddDel.add_column(_("From Field"), AddDelColumnInfo::enumStyles::Choices);
+  m_colToTable = m_AddDel.add_column(_("Table"), AddDelColumnInfo::enumStyles::Choices);
+  m_colToField = m_AddDel.add_column(_("To Field"), AddDelColumnInfo::enumStyles::Choices);
+  m_colAllowEdit = m_AddDel.add_column(_("Allow Editing"),  AddDelColumnInfo::enumStyles::Boolean);
+  m_colAutoCreate = m_AddDel.add_column(_("Automatic Creation"),  AddDelColumnInfo::enumStyles::Boolean);
 
   m_colTitleSingular = m_AddDel.add_column(_("Title (Singular Form)"));
 

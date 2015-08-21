@@ -49,11 +49,11 @@ public:
 
   bool get_id_chosen(Gnome::Gda::Value& chosen_id) const;
 
-  enum enumStage
+  enum class enumStage
   {
-    STAGE_INVALID,
-    STAGE_FIND,
-    STAGE_SELECT
+    INVALID,
+    FIND,
+    SELECT
   };
 
 private:

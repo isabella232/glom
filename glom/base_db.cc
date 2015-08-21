@@ -166,7 +166,7 @@ AppState::userlevels Base_DB::get_userlevel() const
   else
   {
     std::cerr << G_STRFUNC << ": document not found." << std::endl;
-    return AppState::USERLEVEL_OPERATOR;
+    return AppState::userlevels::OPERATOR;
   }
 }
 

@@ -143,14 +143,14 @@ void ConnectionPool::setup_from_document(const Document* document)
 {
   switch(document->get_hosting_mode())
   {
-  case Document::HOSTING_MODE_POSTGRES_SELF:
+  case Document::HostingMode::POSTGRES_SELF:
     {
       ConnectionPoolBackends::PostgresSelfHosted* backend = new ConnectionPoolBackends::PostgresSelfHosted;
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
       set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
     }
     break;
-  case Document::HOSTING_MODE_POSTGRES_CENTRAL:
+  case Document::HostingMode::POSTGRES_CENTRAL:
     {
       ConnectionPoolBackends::PostgresCentralHosted* backend = new ConnectionPoolBackends::PostgresCentralHosted;
       backend->set_host(document->get_connection_server());
@@ -159,21 +159,21 @@ void ConnectionPool::setup_from_document(const Document* document)
       set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
     }
     break;
-  case Document::HOSTING_MODE_SQLITE:
+  case Document::HostingMode::SQLITE:
     {
       ConnectionPoolBackends::Sqlite* backend = new ConnectionPoolBackends::Sqlite;
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
       set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
     }
     break;
-  case Document::HOSTING_MODE_MYSQL_SELF:
+  case Document::HostingMode::MYSQL_SELF:
     {
       ConnectionPoolBackends::MySQLSelfHosted* backend = new ConnectionPoolBackends::MySQLSelfHosted;
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
       set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
     }
     break;
-  case Document::HOSTING_MODE_MYSQL_CENTRAL:
+  case Document::HostingMode::MYSQL_CENTRAL:
     {
       ConnectionPoolBackends::MySQLCentralHosted* backend = new ConnectionPoolBackends::MySQLCentralHosted;
       backend->set_host(document->get_connection_server());
@@ -185,7 +185,7 @@ void ConnectionPool::setup_from_document(const Document* document)
 
   default:
     //on_document_load() should have checked for this already, informing the user.
-    std::cerr << G_STRFUNC << ": Unhandled hosting mode: " << document->get_hosting_mode() << std::endl;
+    std::cerr << G_STRFUNC << ": Unhandled hosting mode: " << static_cast<int>(document->get_hosting_mode()) << std::endl;
     g_assert_not_reached();
     break;
   }
@@ -248,7 +248,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::get_and_connect()
   if(!(connection_pool->m_backend.get()))
   {
     std::cerr << G_STRFUNC << ": m_backend is null." << std::endl;
-    return result; //TODO: Return a FAILURE_NO_BACKEND error?, though that would be tedious.
+    return result; //TODO: Return a failure_type::NO_BACKEND error?, though that would be tedious.
   }
 
   result = connection_pool->connect();
@@ -631,10 +631,10 @@ static void on_linux_signal(int signum)
 ConnectionPool::StartupErrors ConnectionPool::startup(const SlotProgress& slot_progress, bool network_shared)
 {
   if(!m_backend.get())
-    return Backend::STARTUPERROR_FAILED_UNKNOWN_REASON;
+    return Backend::StartupErrors::FAILED_UNKNOWN_REASON;
 
   const auto started = m_backend->startup(slot_progress, network_shared);
-  if(started != Backend::STARTUPERROR_NONE)
+  if(started != Backend::StartupErrors::NONE)
     return started;
 
 #ifndef G_OS_WIN32
@@ -810,7 +810,7 @@ ConnectionPool::InitErrors ConnectionPool::initialize(const SlotProgress& slot_p
   if(m_backend.get())
     return m_backend->initialize(slot_progress, get_user(), get_password(), network_shared);
   else
-    return Backend::INITERROR_OTHER;
+    return Backend::InitErrors::OTHER;
 }
 
 Document* ConnectionPool::get_document()

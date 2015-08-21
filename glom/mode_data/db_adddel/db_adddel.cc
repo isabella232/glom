@@ -65,7 +65,7 @@ DbAddDel::DbAddDel()
   set_prevent_user_signals();
   set_ignore_treeview_signals(true);
 
-  set_spacing(UiUtils::DEFAULT_SPACING_SMALL);
+  set_spacing(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
 
   //Start with a useful default TreeModel:
   //set_columns_count(1);
@@ -279,7 +279,7 @@ void DbAddDel::setup_menu(Gtk::Widget* /* widget */)
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   if(pApp)
-    m_refContextLayout->set_enabled(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+    m_refContextLayout->set_enabled(pApp->get_userlevel() == AppState::userlevels::DEVELOPER);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
@@ -1451,7 +1451,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       return;
 
     const auto field_type = item_field->get_glom_type();
-    if(field_type != Field::TYPE_INVALID) //If a field type was specified for this column.
+    if(field_type != Field::glom_field_type::INVALID) //If a field type was specified for this column.
     {
       //Make sure that the entered data is suitable for this field type:
       bool success = false;
@@ -1664,7 +1664,7 @@ bool DbAddDel::get_column_to_expand(guint& column_to_expand) const
       //Only text columns should expand.
       //Number fields are right-aligned, so expansion is annoying.
       //Time and date fields don't vary their width much.
-      if(layout_item_field->get_glom_type() == Field::TYPE_TEXT)
+      if(layout_item_field->get_glom_type() == Field::glom_field_type::TEXT)
       {
         //Check that no specific width has been specified:
         const auto column_width = layout_item_field->get_display_width();
@@ -1920,7 +1920,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
       const auto type = field->get_glom_type();
       switch(type)
       {
-        case(Field::TYPE_BOOLEAN):
+        case(Field::glom_field_type::BOOLEAN):
         {
           Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(renderer);
           if(pDerived)
@@ -1928,7 +1928,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
 
           break;
         }
-        case(Field::TYPE_IMAGE):
+        case(Field::glom_field_type::IMAGE):
         {
           Gtk::CellRendererPixbuf* pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
           if(pDerived)
@@ -1942,7 +1942,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
             pDerived->property_pixbuf() = pixbuf;
           }
           else
-            std::cerr << G_STRFUNC << ": glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY" << std::endl;
+            std::cerr << G_STRFUNC << ": glom_type is enumType::IMAGE but gda type is not VALUE_TYPE_BINARY" << std::endl;
 
           break;
         }
@@ -1972,7 +1972,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
             pDerived->property_text() = text;
 
             //Show a different color if the value is numeric, if that's specified:
-            if(type == Field::TYPE_NUMERIC)
+            if(type == Field::glom_field_type::NUMERIC)
             {
                const Glib::ustring fg_color =
                  field->get_formatting_used().get_text_format_color_foreground_to_use(value);

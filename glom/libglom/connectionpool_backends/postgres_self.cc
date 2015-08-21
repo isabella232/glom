@@ -150,13 +150,13 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   if(m_database_directory_uri.empty())
   {
     std::cerr << G_STRFUNC << ": initialize: m_self_hosting_data_uri is empty." << std::endl;
-    return INITERROR_OTHER;
+    return InitErrors::OTHER;
   }
 
   if(initial_username.empty())
   {
     std::cerr << G_STRFUNC << ": PostgresSelfHosted::initialize(). Username was empty while attempting to create self-hosting database" << std::endl;
-    return INITERROR_OTHER;
+    return InitErrors::OTHER;
   }
 
   //Get the filepath of the directory that we should create:
@@ -164,7 +164,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   //std::cout << "debug: dbdir_uri=" << dbdir_uri << std::endl;
 
   if(file_exists_uri(dbdir_uri))
-    return INITERROR_DIRECTORY_ALREADY_EXISTS;
+    return InitErrors::DIRECTORY_ALREADY_EXISTS;
 
   const auto dbdir = Glib::filename_from_uri(dbdir_uri);
   //std::cout << "debug: dbdir=" << dbdir << std::endl;
@@ -175,7 +175,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   {
     std::cerr << G_STRFUNC << ": Couldn't create directory: " << dbdir << std::endl;
 
-    return INITERROR_COULD_NOT_CREATE_DIRECTORY;
+    return InitErrors::COULD_NOT_CREATE_DIRECTORY;
   }
 
   //Create the config directory:
@@ -184,7 +184,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   {
     std::cerr << G_STRFUNC << ": Couldn't create the config directory: " << dbdir << std::endl;
 
-    return INITERROR_COULD_NOT_CREATE_DIRECTORY;
+    return InitErrors::COULD_NOT_CREATE_DIRECTORY;
   }
 
   //Create these files: environment, pg_hba.conf, start.conf
@@ -196,7 +196,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   {
     std::cerr << G_STRFUNC << ": Couldn't create the data directory: " << dbdir << std::endl;
 
-    return INITERROR_COULD_NOT_CREATE_DIRECTORY;
+    return InitErrors::COULD_NOT_CREATE_DIRECTORY;
   }
 
   // initdb creates a new postgres database cluster:
@@ -222,7 +222,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   const auto temp_pwfile_removed = g_remove(temp_pwfile.c_str()); //Of course, we don't want this to stay around. It would be a security risk.
   g_assert(temp_pwfile_removed == 0);
 
-  return result ? INITERROR_NONE : INITERROR_COULD_NOT_START_SERVER;
+  return result ? InitErrors::NONE : InitErrors::COULD_NOT_START_SERVER;
 }
 
 Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgress& slot_progress)
@@ -338,7 +338,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   if(get_self_hosting_active())
   {
     std::cerr << G_STRFUNC << ": Already started." << std::endl;
-    return STARTUPERROR_NONE; //Just do it once.
+    return StartupErrors::NONE; //Just do it once.
   }
 
   const auto dbdir_uri = m_database_directory_uri;
@@ -346,7 +346,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   if(!(file_exists_uri(dbdir_uri)))
   {
     std::cerr << G_STRFUNC << ": The data directory could not be found: " << dbdir_uri << std::endl;
-    return STARTUPERROR_FAILED_NO_MAIN_DIRECTORY;
+    return StartupErrors::FAILED_NO_MAIN_DIRECTORY;
   }
 
   const auto dbdir = Glib::filename_from_uri(dbdir_uri);
@@ -362,12 +362,12 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
     {
       std::cerr << G_STRFUNC << ": There is no data, but there is backup data." << std::endl;
       //Let the caller convert the backup to real data and then try again:
-      return STARTUPERROR_FAILED_NO_DATA_HAS_BACKUP_DATA;
+      return StartupErrors::FAILED_NO_DATA_HAS_BACKUP_DATA;
     }
     else
     {
       std::cerr << G_STRFUNC << ": ConnectionPool::create_self_hosting(): The data sub-directory could not be found." << dbdir_data_uri << std::endl;
-      return STARTUPERROR_FAILED_NO_DATA;
+      return StartupErrors::FAILED_NO_DATA;
     }
   }
 
@@ -379,7 +379,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   if(available_port == 0)
   {
     std::cerr << G_STRFUNC << ": No port was available between " << PORT_POSTGRESQL_SELF_HOSTED_START << " and " << PORT_POSTGRESQL_SELF_HOSTED_END << std::endl;
-    return STARTUPERROR_FAILED_NO_PORT_AVAILABLE;
+    return StartupErrors::FAILED_NO_PORT_AVAILABLE;
   }
 
   //TODO: Performance:
@@ -420,12 +420,12 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   if(!result)
   {
     std::cerr << G_STRFUNC << ": Error while attempting to self-host a database." << std::endl;
-    return STARTUPERROR_FAILED_UNKNOWN_REASON;
+    return StartupErrors::FAILED_UNKNOWN_REASON;
   }
 
   m_port = available_port; //Remember it for later.
 
-  return STARTUPERROR_NONE;
+  return StartupErrors::NONE;
 }
 
 void PostgresSelfHosted::show_active_connections()
@@ -566,7 +566,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
 {
   if(!get_self_hosting_active())
   {
-    throw ExceptionConnection(ExceptionConnection::FAILURE_NO_BACKEND); //TODO: But there is a backend. It's just not ready.
+    throw ExceptionConnection(ExceptionConnection::failure_type::NO_BACKEND); //TODO: But there is a backend. It's just not ready.
   }
 
   Glib::RefPtr<Gnome::Gda::Connection> result;
@@ -582,7 +582,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
     }
     catch(const ExceptionConnection& ex)
     {
-      if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+      if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
       {
         //It must be using a default password, so any failure would not be due to a wrong password.
         //However, pg_ctl sometimes reports success before it is really ready to let us connect,

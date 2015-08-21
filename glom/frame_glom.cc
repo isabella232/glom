@@ -75,7 +75,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 : PlaceHolder(cobject, builder),
   m_pLabel_Table_DataMode(nullptr),
   m_pLabel_Table_FindMode(nullptr),
-  m_Box_RecordsCount(Gtk::ORIENTATION_HORIZONTAL, UiUtils::DEFAULT_SPACING_SMALL),
+  m_Box_RecordsCount(Gtk::ORIENTATION_HORIZONTAL, static_cast<int>(UiUtils::DefaultSpacings::SMALL)),
   m_Button_FindAll(_("Find All")),
   m_stack_mode(nullptr),
   m_pBox_Tables(nullptr),
@@ -107,7 +107,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 
   //QuickFind widgets:
   //We don't use Glade for these, so it easier to modify them for the Maemo port.
-  m_pBox_QuickFind = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, UiUtils::DEFAULT_SPACING_SMALL));
+  m_pBox_QuickFind = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, static_cast<int>(UiUtils::DefaultSpacings::SMALL)));
   Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Quick _search:"), true));
   m_pBox_QuickFind->pack_start(*label, Gtk::PACK_SHRINK);
 
@@ -154,8 +154,8 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     m_Notebook_Data.set_enable_layout_drag_and_drop(false);
   }
 
-  m_Mode = MODE_None;
-  m_Mode_Previous = MODE_None;
+  m_Mode = enumModes::NONE;
+  m_Mode_Previous = enumModes::NONE;
 
 
   m_Notebook_Find.signal_find_criteria.connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_find_criteria));
@@ -171,7 +171,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   add_view(&m_Notebook_Data); //Also a composite view.
   add_view(&m_Notebook_Find); //Also a composite view.
 
-  on_userlevel_changed(AppState::USERLEVEL_OPERATOR); //A default to show before a document is created or loaded.
+  on_userlevel_changed(AppState::userlevels::OPERATOR); //A default to show before a document is created or loaded.
 }
 
 Frame_Glom::~Frame_Glom()
@@ -274,14 +274,14 @@ bool Frame_Glom::set_mode(enumModes mode)
   const bool changed = (m_Mode != mode);
 
   //Choose a default mode, if necessary:
-  if(mode == MODE_None)
-    mode = MODE_Data;
+  if(mode == enumModes::NONE)
+    mode = enumModes::DATA;
 
   m_Mode_Previous = m_Mode;
   m_Mode = mode;
 
   //Hide the Quick Find widgets if we are not in Find mode.
-  const bool show_quickfind = (m_Mode == MODE_Find);
+  const bool show_quickfind = (m_Mode == enumModes::FIND);
   if(show_quickfind)
   {
     m_pBox_QuickFind->show();
@@ -302,7 +302,7 @@ bool Frame_Glom::set_mode(enumModes mode)
 
 
   //Show the main part of the UI:
-  if(m_Mode == MODE_Find)
+  if(m_Mode == enumModes::FIND)
     set_mode_widget(m_Notebook_Find);
   else
     set_mode_widget(m_Notebook_Data);
@@ -335,7 +335,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
   BusyCursor busy_cursor(pApp);
 
   //Choose a default mode, if necessary:
-  if(m_Mode == MODE_None)
+  if(m_Mode == enumModes::NONE)
     set_mode(m_Mode);
 
   //Show the table:
@@ -354,7 +354,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
 
   switch(m_Mode)
   {
-    case(MODE_Data):
+    case(enumModes::DATA):
     {
       FoundSet found_set;
 
@@ -409,7 +409,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
 
       break;
     }
-    case(MODE_Find):
+    case(enumModes::FIND):
     {
       m_Notebook_Find.init_db_details(m_table_name, get_active_layout_platform(get_document()));
       set_mode_widget(m_Notebook_Find);
@@ -476,10 +476,10 @@ bool Frame_Glom::attempt_change_usermode_to_developer()
   {
     std::cout << "DEBUG: User=" << connection_pool->get_user() << " _is_ in the developer group on the server." << std::endl;
     //Avoid double signals:
-    //if(document->get_userlevel() != AppState::USERLEVEL_DEVELOPER)
-    test = document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
+    //if(document->get_userlevel() != AppState::userlevels::DEVELOPER)
+    test = document->set_userlevel(AppState::userlevels::DEVELOPER);
     if(!test)
-      std::cout << "  DEBUG: But document->set_userlevel(AppState::USERLEVEL_DEVELOPER) failed." << std::endl;
+      std::cout << "  DEBUG: But document->set_userlevel(AppState::userlevels::DEVELOPER) failed." << std::endl;
   }
   else
   {
@@ -525,7 +525,7 @@ bool Frame_Glom::attempt_change_usermode_to_operator()
   if(!document)
     return false;
     
-  document->set_userlevel(AppState::USERLEVEL_OPERATOR);
+  document->set_userlevel(AppState::userlevels::OPERATOR);
 
   return true;
 }
@@ -618,13 +618,13 @@ void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, 
           const auto value = result->get_value_at(col_index, row_index);
 
           std::shared_ptr<const LayoutItem_Field> layout_item = fieldsSequence[col_index];
-          //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
+          //if(layout_item->m_field.get_glom_type() != Field::glom_field_type::IMAGE) //This is too much data.
           //{
 
             //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
             row_data.push_back(value);  //TODO_Performance: reserve the size.
 
-            //if(layout_item->m_field.get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
+            //if(layout_item->m_field.get_glom_type() == Field::glom_field_type::IMAGE) //This is too much data.
             //{
              //std::cout << "  field name=" << layout_item->get_name() << ", value=" << layout_item->m_field.sql(value) << std::endl;
             //}
@@ -668,7 +668,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
           const auto value = result->get_value_at(col_index, row_index);
 
           std::shared_ptr<const LayoutItem_Field> layout_item = fieldsSequence[col_index];
-          //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
+          //if(layout_item->m_field.get_glom_type() != Field::glom_field_type::IMAGE) //This is too much data.
           //{
             if(!row_string.empty())
               row_string += ",";
@@ -683,7 +683,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
 
             const auto field_text = field->to_file_format(value);
 
-            if(layout_item->get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
+            if(layout_item->get_glom_type() == Field::glom_field_type::IMAGE) //This is too much data.
             {
               // Some extra debug checks,
               // though we believe that all these problems are now fixed in File::to_file_format():
@@ -705,7 +705,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
               }
             }
 
-            if(layout_item->get_glom_type() == Field::TYPE_TEXT)
+            if(layout_item->get_glom_type() == Field::glom_field_type::TEXT)
             {
               //The CSV RFC says text may be quoted and should be if it has newlines:
               //TODO: Escape the text?
@@ -801,7 +801,7 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
   //Prevent this change if not in developer mode,
   //though the menu item should be disabled then anyway.
   Document* document = dynamic_cast<Document*>(get_document());
-  if(!document || document->get_userlevel() != AppState::USERLEVEL_DEVELOPER)
+  if(!document || document->get_userlevel() != AppState::userlevels::DEVELOPER)
     return false;
 
   if(shared == document->get_network_shared())
@@ -984,7 +984,7 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
     connectionpool->set_network_shared(sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress), shared);
     const ConnectionPool::StartupErrors started =
       connectionpool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
-    if(started != ConnectionPool::Backend::STARTUPERROR_NONE)
+    if(started != ConnectionPool::Backend::StartupErrors::NONE)
     {
       //TODO: Output more exact details of the error message.
       //TODO: Recover somehow?
@@ -1033,17 +1033,17 @@ void Frame_Glom::set_mode_find()
   //It shouldn't, but until we fix that, let's show the busy cursor while it's working:
   BusyCursor busy_cursor(get_app_window());
 
-  const bool previously_in_data_mode = (m_Mode == MODE_Data);
+  const bool previously_in_data_mode = (m_Mode == enumModes::DATA);
 
   const auto list_or_details = m_Notebook_Data.get_current_view();
 
   //A workaround hack to make sure that the list view will be active when the results are shown.
   //Because the list doesn't refresh properly (to give the first result) when the Details view was active first.
   //murrayc.
-  if(previously_in_data_mode && (list_or_details == Notebook_Data::DATA_VIEW_Details))
-    m_Notebook_Data.set_current_view(Notebook_Data::DATA_VIEW_List);
+  if(previously_in_data_mode && (list_or_details == Notebook_Data::dataview::DETAILS))
+    m_Notebook_Data.set_current_view(Notebook_Data::dataview::LIST);
 
-  if(!set_mode(MODE_Find))
+  if(!set_mode(enumModes::FIND))
     return;
 
   show_table(m_table_name);
@@ -1058,7 +1058,7 @@ void Frame_Glom::set_mode_find()
 void Frame_Glom::set_mode_data()
 {
   //Switch to data mode
-  if(!set_mode(MODE_Data))
+  if(!set_mode(enumModes::DATA))
     return;
 
   //This would lose the current found set, if any:
@@ -1400,7 +1400,7 @@ void Frame_Glom::show_table_title()
   Glib::ustring table_label = document->get_table_title(m_table_name, AppWindow::get_current_locale());
   if(!table_label.empty())
   {
-    if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    if(document->get_userlevel() == AppState::userlevels::DEVELOPER)
       table_label += " (" + m_table_name + ")"; //Show the table name as well, if in developer mode.
   }
   else //Use the table name if there is no table title.
@@ -1575,7 +1575,7 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustri
   // be in use when changing the records, so we stop the database usage
   // here. We reshow everything in on_developer_dialog_hide() anyway.
   Document* document = dynamic_cast<Document*>(get_document());
-  if(document && document->get_hosting_mode() == Document::HOSTING_MODE_SQLITE)
+  if(document && document->get_hosting_mode() == Document::HostingMode::SQLITE)
     show_no_table();
 
   // Remember the old table name so that we re-show the previous table as
@@ -1896,19 +1896,19 @@ bool Frame_Glom::handle_connection_initialize_errors(ConnectionPool::InitErrors 
   Glib::ustring title;
   Glib::ustring message;
 
-  if(error == ConnectionPool::Backend::INITERROR_NONE)
+  if(error == ConnectionPool::Backend::InitErrors::NONE)
     return true;
-  else if(error == ConnectionPool::Backend::INITERROR_DIRECTORY_ALREADY_EXISTS)
+  else if(error == ConnectionPool::Backend::InitErrors::DIRECTORY_ALREADY_EXISTS)
   {
     title = _("Directory Already Exists");
     message = _("There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead.");
   }
-  else if(error == ConnectionPool::Backend::INITERROR_COULD_NOT_CREATE_DIRECTORY)
+  else if(error == ConnectionPool::Backend::InitErrors::COULD_NOT_CREATE_DIRECTORY)
   {
     title = _("Could Not Create Directory");
     message = _("There was an error when attempting to create the directory for the new database files.");
   }
-  else if(error == ConnectionPool::Backend::INITERROR_COULD_NOT_START_SERVER)
+  else if(error == ConnectionPool::Backend::InitErrors::COULD_NOT_START_SERVER)
   {
     title = _("Could Not Start Database Server");
     message = _("There was an error when attempting to start the database server.");
@@ -1931,7 +1931,7 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
     return false;
 
   //This is only useful for self-hosted postgres:
-  if(document->get_hosting_mode() != Document::HOSTING_MODE_POSTGRES_SELF)
+  if(document->get_hosting_mode() != Document::HostingMode::POSTGRES_SELF)
     return false;
 
   //Ask for a new username and password to specify when creating a new self-hosted database.
@@ -2000,8 +2000,8 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   const auto hosting_mode = document->get_hosting_mode();
   switch(hosting_mode)
   {
-    case Document::HOSTING_MODE_POSTGRES_SELF:
-    case Document::HOSTING_MODE_MYSQL_SELF:
+    case Document::HostingMode::POSTGRES_SELF:
+    case Document::HostingMode::MYSQL_SELF:
     {
       Glib::ustring user, password;
 
@@ -2040,8 +2040,8 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
     break;
 
-    case Document::HOSTING_MODE_POSTGRES_CENTRAL:
-    case Document::HOSTING_MODE_MYSQL_CENTRAL:
+    case Document::HostingMode::POSTGRES_CENTRAL:
+    case Document::HostingMode::MYSQL_CENTRAL:
     {
       //Ask for connection details:
       m_pDialogConnection->load_from_document(); //Get good defaults.
@@ -2073,7 +2073,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
     break;
 #ifdef GLOM_ENABLE_SQLITE
-  case Document::HOSTING_MODE_SQLITE:
+  case Document::HostingMode::SQLITE:
     {
       // SQLite:
       ConnectionPool::SlotProgress slot_ignored;
@@ -2095,7 +2095,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   ShowProgressMessage progress_message(_("Starting Database Server"));
   const ConnectionPool::StartupErrors started =
     connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
-  if(started != ConnectionPool::Backend::STARTUPERROR_NONE)
+  if(started != ConnectionPool::Backend::StartupErrors::NONE)
   {
     std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
     //TODO: Output more exact details of the error message.
@@ -2145,7 +2145,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     {
       //std::cerr << G_STRFUNC << ": caught exception." << std::endl;
 
-      if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+      if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
       {
         //Warn the user, and let him try again:
         UiUtils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
@@ -2162,7 +2162,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
         // Remember host and port if the document is not self hosted
         #ifdef GLOM_ENABLE_POSTGRESQL
-        if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_CENTRAL)
+        if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_CENTRAL)
         {
           ConnectionPool::Backend* backend = connection_pool->get_backend();
           ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
@@ -2179,7 +2179,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         // connect_to_server_with_connection_settings, which is just not
         // executed because it failed with no database present. We should
         // somehow avoid this code duplication.
-        else if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_SELF)
+        else if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_SELF)
         {
           ConnectionPool::Backend* backend = connection_pool->get_backend();
           ConnectionPoolBackends::PostgresSelfHosted* self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
@@ -2216,13 +2216,13 @@ bool Frame_Glom::handle_request_password_connection_error(bool asked_for_passwor
   //Initialize input parameter:
   database_not_found = false;
 
-  if(asked_for_password && ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+  if(asked_for_password && ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
   {
     //Warn the user, and let him try again:
     UiUtils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
     return true;
   }
-  else if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE)
+  else if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_DATABASE)
   {
     cleanup_connection();
 
@@ -2255,7 +2255,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
   connection_pool->setup_from_document(document);
   const ConnectionPool::StartupErrors started =
     connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
-  if(started != ConnectionPool::Backend::STARTUPERROR_NONE)
+  if(started != ConnectionPool::Backend::StartupErrors::NONE)
   {
     std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
     return false;
@@ -2274,7 +2274,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
   //Only ask for the password if we are shared on the network, or we are using a centrally hosted server.
   //Otherwise, no password question is necessary, due to how our self-hosted database server is configured.
   if(document->get_network_shared()
-    || document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_CENTRAL)
+    || document->get_hosting_mode() == Document::HostingMode::POSTGRES_CENTRAL)
   {
     //We recreate the dialog each time to make sure it is clean of any changes:
     delete m_pDialogConnection;
@@ -2519,7 +2519,7 @@ void Frame_Glom::on_dialog_tables_hide()
     // This is never true in client only mode, so we can as well save the
     // code size.
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    if(document->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
       AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
       if(pApp)

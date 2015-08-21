@@ -411,11 +411,11 @@ int main(int argc, char* argv[])
 
 #if GLOM_ENABLE_MYSQL
     if(group.m_arg_use_mysql)
-      document.set_hosting_mode(Glom::Document::HOSTING_MODE_MYSQL_SELF);
+      document.set_hosting_mode(Glom::Document::HostingMode::MYSQL_SELF);
     else
 #endif //GLOM_ENABLE_MYSQL
     {
-      document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_SELF);
+      document.set_hosting_mode(Glom::Document::HostingMode::POSTGRES_SELF);
     }
   }
   else
@@ -424,11 +424,11 @@ int main(int argc, char* argv[])
 
 #if GLOM_ENABLE_MYSQL
     if(group.m_arg_use_mysql)
-      document.set_hosting_mode(Glom::Document::HOSTING_MODE_MYSQL_CENTRAL);
+      document.set_hosting_mode(Glom::Document::HostingMode::MYSQL_CENTRAL);
     else
 #endif //GLOM_ENABLE_MYSQL
     {
-      document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_CENTRAL);
+      document.set_hosting_mode(Glom::Document::HostingMode::POSTGRES_CENTRAL);
     }
   }
    
@@ -499,17 +499,17 @@ int main(int argc, char* argv[])
   //Startup. For instance, create the self-hosting files if necessary:
   const Glom::ConnectionPool::InitErrors initialized_errors =
     connection_pool->initialize( sigc::ptr_fun(&on_initialize_progress) );
-  g_assert(initialized_errors == Glom::ConnectionPool::Backend::INITERROR_NONE);
+  g_assert(initialized_errors == Glom::ConnectionPool::Backend::InitErrors::NONE);
 
   //Start self-hosting:
   //TODO: Let this happen automatically on first connection?
   const auto started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
-  if(started != Glom::ConnectionPool::Backend::STARTUPERROR_NONE)
+  if(started != Glom::ConnectionPool::Backend::StartupErrors::NONE)
   {
-    std::cerr << G_STRFUNC << ": connection_pool->startup(): result=" << started << std::endl;
+    std::cerr << G_STRFUNC << ": connection_pool->startup(): result=" << static_cast<int>(started) << std::endl;
     cleanup();
   }
-  g_assert(started == Glom::ConnectionPool::Backend::STARTUPERROR_NONE);
+  g_assert(started == Glom::ConnectionPool::Backend::StartupErrors::NONE);
 
   const auto recreated = Glom::DbUtils::recreate_database_from_document(&document, &on_recreate_progress);
   if(!recreated)

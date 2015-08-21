@@ -463,13 +463,13 @@ bool Dialog_GroupsList::set_table_privilege(const Glib::ustring& table_name, con
 
   //What to grant or revoke:
   Glib::ustring strPrivilege;
-  if(priv == PRIV_VIEW)
+  if(priv == enumPriv::VIEW)
     strPrivilege = "SELECT";
-  else if(priv == PRIV_EDIT)
+  else if(priv == enumPriv::EDIT)
     strPrivilege = "UPDATE";
-  else if(priv == PRIV_CREATE)
+  else if(priv == enumPriv::CREATE)
     strPrivilege = "INSERT";
-  else if(priv == PRIV_DELETE)
+  else if(priv == enumPriv::DELETE)
     strPrivilege = "DELETE";
 
   strQuery += " " + strPrivilege + " ON " + DbUtils::escape_sql_id(table_name) + " ";
@@ -506,19 +506,19 @@ void Dialog_GroupsList::on_treeview_tables_toggled_view(const Glib::ustring& pat
     const auto group_name = get_selected_group();
     const Glib::ustring table_name = row[m_model_columns_tables.m_col_name];
 
-    if(set_table_privilege(table_name, group_name, bActive, PRIV_VIEW))
+    if(set_table_privilege(table_name, group_name, bActive, enumPriv::VIEW))
       row[m_model_columns_tables.m_col_view] = bActive;
 
     //If the group cannot view, then it should not do anything else either:
     if(!bActive)
     {
-     if(set_table_privilege(table_name, group_name, bActive, PRIV_EDIT))
+     if(set_table_privilege(table_name, group_name, bActive, enumPriv::EDIT))
         row[m_model_columns_tables.m_col_edit] = false;
 
-      if(set_table_privilege(table_name, group_name, bActive, PRIV_CREATE))
+      if(set_table_privilege(table_name, group_name, bActive, enumPriv::CREATE))
         row[m_model_columns_tables.m_col_create] = false;
 
-      if(set_table_privilege(table_name, group_name, bActive, PRIV_DELETE))
+      if(set_table_privilege(table_name, group_name, bActive, enumPriv::DELETE))
         row[m_model_columns_tables.m_col_delete] = false;
     }
   }
@@ -541,7 +541,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_edit(const Glib::ustring& pat
     const auto group_name = get_selected_group();
     const Glib::ustring table_name = row[m_model_columns_tables.m_col_name];
 
-    bool test = set_table_privilege(table_name, group_name, bActive, PRIV_EDIT);
+    bool test = set_table_privilege(table_name, group_name, bActive, enumPriv::EDIT);
 
     if(test)
       row[m_model_columns_tables.m_col_edit] = bActive;
@@ -565,7 +565,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_create(const Glib::ustring& p
     const auto group_name = get_selected_group();
     const Glib::ustring table_name = row[m_model_columns_tables.m_col_name];
 
-    const auto test = set_table_privilege(table_name, group_name, bActive, PRIV_CREATE);
+    const auto test = set_table_privilege(table_name, group_name, bActive, enumPriv::CREATE);
 
     if(test)
       row[m_model_columns_tables.m_col_create] = bActive;
@@ -589,7 +589,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_delete(const Glib::ustring& p
     const auto group_name = get_selected_group();
     const Glib::ustring table_name = row[m_model_columns_tables.m_col_name];
 
-    const auto test = set_table_privilege(table_name, group_name, bActive, PRIV_DELETE);
+    const auto test = set_table_privilege(table_name, group_name, bActive, enumPriv::DELETE);
 
     if(test)
       row[m_model_columns_tables.m_col_delete] = bActive;

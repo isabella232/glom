@@ -30,7 +30,7 @@ LayoutItem_Portal::LayoutItem_Portal()
 : m_print_layout_row_height(20), //arbitrary default.
   m_print_layout_row_line_width(1), //Sensible default.
   m_print_layout_column_line_width(1), //Sensible default.
-  m_navigation_type(LayoutItem_Portal::NAVIGATION_AUTOMATIC),
+  m_navigation_type(LayoutItem_Portal::navigation_type::AUTOMATIC),
   m_rows_count_min(6), //Sensible default.
   m_rows_count_max(6) //Sensible default.
 {
@@ -115,7 +115,7 @@ void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, 
 
 std::shared_ptr<UsesRelationship> LayoutItem_Portal::get_navigation_relationship_specific()
 {
-  if(get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
+  if(get_navigation_type() == LayoutItem_Portal::navigation_type::SPECIFIC)
     return m_navigation_relationship_specific;
   else
     return std::shared_ptr<UsesRelationship>();
@@ -123,7 +123,7 @@ std::shared_ptr<UsesRelationship> LayoutItem_Portal::get_navigation_relationship
 
 std::shared_ptr<const UsesRelationship> LayoutItem_Portal::get_navigation_relationship_specific() const
 {
-  if(get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
+  if(get_navigation_type() == LayoutItem_Portal::navigation_type::SPECIFIC)
     return m_navigation_relationship_specific;
   else
     return std::shared_ptr<UsesRelationship>();
@@ -132,13 +132,13 @@ std::shared_ptr<const UsesRelationship> LayoutItem_Portal::get_navigation_relati
 void LayoutItem_Portal::set_navigation_relationship_specific(const std::shared_ptr<UsesRelationship>& relationship)
 {
   m_navigation_relationship_specific = relationship;
-  m_navigation_type = LayoutItem_Portal::NAVIGATION_SPECIFIC;
+  m_navigation_type = LayoutItem_Portal::navigation_type::SPECIFIC;
 }
 
 void LayoutItem_Portal::reset_navigation_relationship()
 {
     m_navigation_relationship_specific = std::shared_ptr<UsesRelationship>();
-    m_navigation_type = LayoutItem_Portal::NAVIGATION_AUTOMATIC;
+    m_navigation_type = LayoutItem_Portal::navigation_type::AUTOMATIC;
 }
 
 Glib::ustring LayoutItem_Portal::get_from_table() const
@@ -226,7 +226,7 @@ void LayoutItem_Portal::get_suitable_table_to_view_details(Glib::ustring& table_
   std::shared_ptr<const UsesRelationship> navigation_relationship;
 
   //Check whether a relationship was specified:
-  if(get_navigation_type() == LayoutItem_Portal::NAVIGATION_AUTOMATIC)
+  if(get_navigation_type() == LayoutItem_Portal::navigation_type::AUTOMATIC)
   {
     //std::cout << "debug: decide automatically." << std::endl;
     //Decide automatically:
@@ -253,7 +253,7 @@ void LayoutItem_Portal::get_suitable_table_to_view_details(Glib::ustring& table_
   {
     navigation_table_name = navigation_relationship->get_table_used(directly_related_table_name);
   }
-  else if(get_navigation_type() != LayoutItem_Portal::NAVIGATION_NONE)
+  else if(get_navigation_type() != LayoutItem_Portal::navigation_type::NONE)
   {
     //An empty result from get_portal_navigation_relationship_automatic() or 
     //get_navigation_relationship_specific() means we should use the directly related table:

@@ -58,7 +58,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     std::cerr << G_STRFUNC << ": Failure: field_new is null." << std::endl;
     return false;
   }
-  field_new->set_glom_type(Glom::Field::TYPE_TEXT);
+  field_new->set_glom_type(Glom::Field::glom_field_type::TEXT);
 
   Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
   if(!connection_pool)
@@ -87,7 +87,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   //Try another change:
   field_original = Glom::glom_sharedptr_clone(field_new);
-  field_new->set_glom_type(Glom::Field::TYPE_NUMERIC);
+  field_new->set_glom_type(Glom::Field::glom_field_type::NUMERIC);
   try
   {
     const auto test = connection_pool->change_column(table_name, field_original, field_new);
@@ -158,7 +158,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     //TODO: Avoid the need for this awkward use of set_g_type():
     std::shared_ptr<Glom::Field> field_numeric = std::make_shared<Glom::Field>();
     field_numeric->set_name("newfield");
-    field_numeric->set_glom_type(Glom::Field::TYPE_NUMERIC);
+    field_numeric->set_glom_type(Glom::Field::glom_field_type::NUMERIC);
     Glib::RefPtr<Gnome::Gda::Column> field_info = field_numeric->get_field_info();
     field_info->set_g_type( Glom::Field::get_gda_type_for_glom_type(field_numeric->get_glom_type()) );
     field_numeric->set_field_info(field_info);

@@ -63,11 +63,11 @@ public:
 
   ~CsvParser();
 
-  enum State {
-    STATE_NONE,
-    STATE_PARSING,  /**< Parsing is in progress. */
-    STATE_ENCODING_ERROR, /**< An error happened while parsing. */
-    STATE_PARSED /**< Finished parsing. */
+  enum class State {
+    NONE,
+    PARSING,  /**< Parsing is in progress. */
+    ENCODING_ERROR, /**< An error happened while parsing. */
+    PARSED /**< Finished parsing. */
   };
 
   /// Get the current state of the parser.

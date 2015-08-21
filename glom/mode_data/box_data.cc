@@ -109,7 +109,7 @@ Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
       if(field)
       {
         bool use_this_field = true;
-        if(field->get_glom_type() == Field::TYPE_BOOLEAN) //TODO: We need an intermediate state for boolean fields, so that they can be ignored in searches.
+        if(field->get_glom_type() == Field::glom_field_type::BOOLEAN) //TODO: We need an intermediate state for boolean fields, so that they can be ignored in searches.
         {
           if(!data.get_boolean())
             use_this_field = false;

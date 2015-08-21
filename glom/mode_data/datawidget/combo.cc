@@ -51,7 +51,7 @@ ComboGlom::ComboGlom(bool has_entry)
   setup_menu(this);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  //if(m_glom_type == Field::TYPE_NUMERIC)
+  //if(m_glom_type == Field::glom_field_type::NUMERIC)
    // get_entry()->set_alignment(1.0); //Align numbers to the right.
 
   //Let the combo be big enough:
@@ -141,7 +141,7 @@ void ComboGlom::set_choices_fixed(const Formatting::type_list_values& list_value
     cell_area->pack_start(*cell, true /* expand */, true /* align */, true /* fixed */);
 
     //Make the renderer render the column:
-    if(restricted && field && (field->get_glom_type() == Field::TYPE_TEXT))
+    if(restricted && field && (field->get_glom_type() == Field::glom_field_type::TEXT))
     {
       //Use the translation instead:
       add_attribute(*cell, "text", columns_count); //The extra text column.
@@ -272,7 +272,7 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
   m_ignore_changed = old_ignore;
 
   //Show a different color if the value is numeric, if that's specified:
-  if(layout_item->get_glom_type() == Field::TYPE_NUMERIC)
+  if(layout_item->get_glom_type() == Field::glom_field_type::NUMERIC)
   {
     std::vector<Gtk::CellRenderer*> cells = get_cells();
     if(cells.empty())
@@ -329,7 +329,7 @@ g_warning("ComboGlom::on_button_press_event()");
 
     //Only show this popup in developer mode, so operators still see the default GtkEntry context menu.
     //TODO: It would be better to add it somehow to the standard context menu.
-    if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    if(pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
       GdkModifierType mods;
       gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );

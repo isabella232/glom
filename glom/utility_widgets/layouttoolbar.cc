@@ -30,19 +30,19 @@ namespace Glom
 LayoutToolbar::LayoutToolbar()
 :  m_group_items(_("Items")), 
    m_group_containers(_("Containers")),
-   m_drag_group("glom-group.png", LayoutWidgetBase::TYPE_GROUP, 
+   m_drag_group("glom-group.png", LayoutWidgetBase::enumType::GROUP, 
      _("Group"), _("Drag this to the layout to add a new group.")),
-   m_drag_notebook("glom-notebook.png", LayoutWidgetBase::TYPE_NOTEBOOK,
+   m_drag_notebook("glom-notebook.png", LayoutWidgetBase::enumType::NOTEBOOK,
      _("Notebook"), _("Drag this to the layout to add a new notebook.")),
-   m_drag_item("glom-field.png", LayoutWidgetBase::TYPE_FIELD,
+   m_drag_item("glom-field.png", LayoutWidgetBase::enumType::FIELD,
      _("Database Field"), _("Drag this to the layout to add a new database field.")),
-   m_drag_portal("glom-related-records.png", LayoutWidgetBase::TYPE_PORTAL,
+   m_drag_portal("glom-related-records.png", LayoutWidgetBase::enumType::PORTAL,
      _("Related Records"), _("Drag this to the layout to add a new Related Record.")),
-   m_drag_button("glom-button.png", LayoutWidgetBase::TYPE_BUTTON,
+   m_drag_button("glom-button.png", LayoutWidgetBase::enumType::BUTTON,
      _("Button"), _("Drag this to the layout to add a new button.")),
-   m_drag_text("glom-text.png", LayoutWidgetBase::TYPE_TEXT,
+   m_drag_text("glom-text.png", LayoutWidgetBase::enumType::TEXT,
      _("Group"), _("Drag this to the layout to add a new static text box.")),
-   m_drag_image("glom-image.png", LayoutWidgetBase::TYPE_IMAGE,
+   m_drag_image("glom-image.png", LayoutWidgetBase::enumType::IMAGE,
      _("Image"), _("Drag this to the layout to add a new static image."))
 {
   // Looks ugly otherwise:

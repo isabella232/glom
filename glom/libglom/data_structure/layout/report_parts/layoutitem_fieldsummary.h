@@ -44,12 +44,12 @@ public:
   virtual Glib::ustring get_part_type_name() const;
   virtual Glib::ustring get_report_part_id() const;
 
-  enum summaryType
+  enum class summaryType
   {
-    TYPE_INVALID,
-    TYPE_SUM,
-    TYPE_AVERAGE,
-    TYPE_COUNT
+    INVALID,
+    SUM,
+    AVERAGE,
+    COUNT
   };
 
   summaryType get_summary_type() const;

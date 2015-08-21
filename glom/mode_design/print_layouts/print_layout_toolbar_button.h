@@ -36,15 +36,15 @@ class PrintLayoutToolbarButton : public Gtk::ToolButton
 public:
 
   //TODO: Use LayoutWidgetBase::enumType m_type instead (and just use LayoutToolbarButton?)
-  enum enumItems
+  enum class enumItems
   {
-    ITEM_INVALID,
-    ITEM_FIELD,
-    ITEM_TEXT,
-    ITEM_IMAGE,
-    ITEM_PORTAL,
-    ITEM_LINE_HORIZONTAL,
-    ITEM_LINE_VERTICAL
+    INVALID,
+    FIELD,
+    TEXT,
+    IMAGE,
+    PORTAL,
+    LINE_HORIZONTAL,
+    LINE_VERTICAL
   };
 
   PrintLayoutToolbarButton(const std::string& icon_name, enumItems type, const Glib::ustring& title, const Glib::ustring& tooltip);

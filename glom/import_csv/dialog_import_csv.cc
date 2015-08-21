@@ -592,7 +592,7 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
 
           if(field)
           {
-            if(field->get_glom_type() != Field::TYPE_IMAGE)
+            if(field->get_glom_type() != Field::glom_field_type::IMAGE)
             {
               /* Exported data is always stored in postgres format */
               bool success = false;
@@ -676,7 +676,8 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
 
 void Dialog_Import_CSV::validate_primary_key()
 {
-  if(get_parser_state() == (CsvParser::STATE_NONE | CsvParser::STATE_ENCODING_ERROR))
+  if(get_parser_state() == CsvParser::State::NONE
+   || get_parser_state() == CsvParser::State::ENCODING_ERROR)
   {
     m_error_label->hide();
     set_response_sensitive(Gtk::RESPONSE_ACCEPT, false);

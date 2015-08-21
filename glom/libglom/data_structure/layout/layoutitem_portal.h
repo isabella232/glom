@@ -89,11 +89,11 @@ public:
   /** The navigation (if any) that should be used when the user 
    * activates a related record row.
    */
-  enum navigation_type
+  enum class navigation_type
   {
-    NAVIGATION_NONE, /**< No navigation will be offered. */
-    NAVIGATION_AUTOMATIC, /**< The destination related table will be chosen automatically based on the relationship and the visible fields. */
-    NAVIGATION_SPECIFIC /**< The destination related table will be determined by a specified relationship. */
+    NONE, /**< No navigation will be offered. */
+    AUTOMATIC, /**< The destination related table will be chosen automatically based on the relationship and the visible fields. */
+    SPECIFIC /**< The destination related table will be determined by a specified relationship. */
   };
 
   /** Discover what @a type (if any) navigation should be used when the user 

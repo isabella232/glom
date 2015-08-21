@@ -31,7 +31,7 @@ namespace Glom
 
 CanvasImageMovable::CanvasImageMovable(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, double x, double y)
 : Goocanvas::Image(pixbuf, x, y),
-  m_snap_corner(CORNER_TOP_LEFT), //arbitrary default.
+  m_snap_corner(Corners::TOP_LEFT), //arbitrary default.
   m_image_empty(false)
 {
   init();
@@ -40,7 +40,7 @@ CanvasImageMovable::CanvasImageMovable(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, 
 CanvasImageMovable::CanvasImageMovable(double x, double y)
 : Goocanvas::Image(x, y), 
   CanvasItemMovable(),
-  m_snap_corner(CORNER_TOP_LEFT) //arbitrary default.
+  m_snap_corner(Corners::TOP_LEFT) //arbitrary default.
 {
   init();
 }
@@ -107,19 +107,19 @@ void CanvasImageMovable::snap_position(double& x, double& y) const
   double corner_y_offset = 0;
   switch(m_snap_corner)
   {
-    case CORNER_TOP_LEFT:
+    case Corners::TOP_LEFT:
       corner_x_offset = 0;
       corner_y_offset = 0;
       break;
-    case CORNER_TOP_RIGHT:
+    case Corners::TOP_RIGHT:
       corner_x_offset = property_width();
       corner_y_offset = 0;
       break;
-    case CORNER_BOTTOM_LEFT:
+    case Corners::BOTTOM_LEFT:
       corner_x_offset = 0;
       corner_y_offset = height;
       break;
-    case CORNER_BOTTOM_RIGHT:
+    case Corners::BOTTOM_RIGHT:
       corner_x_offset = width;
       corner_y_offset = height;
       break;

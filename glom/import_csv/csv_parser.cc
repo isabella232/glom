@@ -59,7 +59,7 @@ CsvParser::CsvParser(const std::string& encoding_charset)
   m_input_position(0),
   m_in_quotes(false),
   m_line_number(0),
-  m_state(STATE_NONE),
+  m_state(State::NONE),
   m_row_index(0)
 {
 }
@@ -71,7 +71,7 @@ void CsvParser::set_file_and_start_parsing(const std::string& file_uri)
 
   auto file = Gio::File::create_for_uri(file_uri);
 
-  set_state(CsvParser::STATE_PARSING);
+  set_state(CsvParser::State::PARSING);
   
   //TODO Get a rough estimate of the number of rows (for showing progress),
   //by counting the number of lines:
@@ -129,17 +129,18 @@ const CsvParser::type_row_strings CsvParser::fetch_next_row()
 {
   const type_row_strings empty;
 
-  g_return_val_if_fail(m_state == (CsvParser::STATE_PARSING | CsvParser::STATE_PARSED), empty);
+  g_return_val_if_fail(m_state == CsvParser::State::PARSING, empty);
+  g_return_val_if_fail(m_state == CsvParser::State::PARSED, empty);
 
   // We cannot fetch the next row, but since we are still parsing we might just have to parse a bit more!
-  if(m_state == CsvParser::STATE_PARSING && m_row_index >= m_rows.size())
+  if(m_state == CsvParser::State::PARSING && m_row_index >= m_rows.size())
   {
     on_idle_parse();
-    // The final recursion guard is m_state == CsvParser::STATE_PARSING
+    // The final recursion guard is m_state == CsvParser::State::PARSING
     return fetch_next_row();
   }
 
-  if(m_state == CsvParser::STATE_PARSED && m_row_index >= m_rows.size())
+  if(m_state == CsvParser::State::PARSED && m_row_index >= m_rows.size())
   {
     return empty;
   }
@@ -197,7 +198,7 @@ void CsvParser::set_encoding(const Glib::ustring& encoding_charset)
   //Stop parsing if the encoding changes.
   //The caller should restart the parsing when wanted.
   clear();
-  set_state(STATE_NONE);
+  set_state(State::NONE);
 }
 
 // Parse the field in a comma-separated line, returning the field including the quotes:
@@ -275,7 +276,7 @@ void CsvParser::clear()
   // Disconnect signal handlers, too.
   m_idle_connection.disconnect();
   m_line_number = 0;
-  set_state(STATE_NONE);
+  set_state(State::NONE);
 }
 
 bool CsvParser::on_idle_parse()
@@ -303,7 +304,7 @@ bool CsvParser::on_idle_parse()
     if(errno == EILSEQ)
     {
       // Invalid text in the current encoding.
-      set_state(STATE_ENCODING_ERROR);
+      set_state(State::ENCODING_ERROR);
       signal_encoding_error().emit();
       return false; //Stop calling the idle handler.
     }
@@ -317,7 +318,7 @@ bool CsvParser::on_idle_parse()
       {
         // This means that we already reached the end of the file. The file
         // should not end with an incomplete multibyte sequence.
-        set_state(STATE_ENCODING_ERROR);
+        set_state(State::ENCODING_ERROR);
         signal_encoding_error().emit();
         return false; //Stop calling the idle handler.
       }
@@ -370,7 +371,7 @@ bool CsvParser::on_idle_parse()
       // file from ISO-8859-1 to UTF-8 (note that the UTF-16 file is valid ISO-8859-1 -
       // it just contains lots of nullbytes). We therefore produce an error here.
       //std::cerr << G_STRFUNC << ": on_idle_parse(): Encoding error" << std::endl;
-      set_state(STATE_ENCODING_ERROR);
+      set_state(State::ENCODING_ERROR);
       signal_encoding_error().emit();
       return false;  //Stop calling the idle handler.
     }
@@ -449,7 +450,7 @@ bool CsvParser::on_idle_parse()
 
     // We have parsed the whole file. We have finished.
     // TODO: To only emit signal_finished_parsing here is *not* enough.
-    set_state(STATE_PARSED);
+    set_state(State::PARSED);
     signal_finished_parsing().emit();
   }
   else

@@ -105,7 +105,7 @@ int main()
 {
   Glom::libglom_init();
 
-  if(!test(Glom::Document::HOSTING_MODE_POSTGRES_SELF))
+  if(!test(Glom::Document::HostingMode::POSTGRES_SELF))
   {
     std::cerr << G_STRFUNC << ": Failed with PostgreSQL" << std::endl;
     test_selfhosting_cleanup();
@@ -113,7 +113,7 @@ int main()
   }
   
   /* TODO: Make this work with sqlite too:
-  if(!test(Glom::Document::HOSTING_MODE_SQLITE))
+  if(!test(Glom::Document::HostingMode::SQLITE))
   {
     std::cerr << G_STRFUNC << ": Failed with SQLite" << std::endl;
     test_selfhosting_cleanup();
