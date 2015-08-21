@@ -18,6 +18,7 @@
 
 #include "config.h"
 #include <libglom/document/bakery/document.h>
+#include <libglom/utils.h>
 #include <giomm/file.h>
 #include <iostream>
 #include <glibmm/i18n-lib.h>
@@ -115,7 +116,7 @@ bool Document::get_modified() const
 bool Document::load(int& failure_code)
 {
   //Initialize the output parameter:
-  failure_code = static_cast<int>(LoadFailureCodes::NONE);
+  failure_code = Glom::Utils::to_utype(LoadFailureCodes::NONE);
 
   auto bTest = read_from_disk(failure_code);
   if(bTest)
@@ -204,7 +205,7 @@ bool Document::save_before()
 
 bool Document::read_from_disk(int& failure_code)
 {
-  failure_code = static_cast<int>(LoadFailureCodes::NONE);
+  failure_code = Glom::Utils::to_utype(LoadFailureCodes::NONE);
 
   m_strContents.erase();
 
@@ -227,7 +228,7 @@ bool Document::read_from_disk(int& failure_code)
 
 
     if(ex.code() == Gio::Error::NOT_FOUND)
-      failure_code = static_cast<int>(LoadFailureCodes::NOT_FOUND);
+      failure_code = Glom::Utils::to_utype(LoadFailureCodes::NOT_FOUND);
     //  std::cout << "  File not found: " << m_file_uri << std::endl;
 
     // If the operation was not successful, print the error and abort

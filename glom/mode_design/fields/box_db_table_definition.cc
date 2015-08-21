@@ -215,7 +215,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
       Document* pDoc = static_cast<Document*>(get_document());
       if(pDoc)
       {
-        std::cout << static_cast<int>(field->get_glom_type()) << std::endl;
+        std::cout << Utils::to_utype(field->get_glom_type()) << std::endl;
         Document::type_vec_fields vecFields = pDoc->get_table_fields(m_table_name);
         vecFields.push_back(field);
         pDoc->set_table_fields(m_table_name, vecFields);

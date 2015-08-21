@@ -65,7 +65,7 @@ DbAddDel::DbAddDel()
   set_prevent_user_signals();
   set_ignore_treeview_signals(true);
 
-  set_spacing(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
+  set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   //Start with a useful default TreeModel:
   //set_columns_count(1);

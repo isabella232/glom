@@ -197,7 +197,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
     if(with_extra_widgets)
     {
       hbox_parent = Gtk::manage( new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL) ); //We put the child (and any extra stuff) in this:
-      hbox_parent->set_spacing(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
+      hbox_parent->set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
       hbox_parent->pack_start(*m_child);
       hbox_parent->show();

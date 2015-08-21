@@ -348,7 +348,7 @@ void AppWindow::init_menus()
   m_action_menu_developer_usermode =
     m_refActionGroup_Developer->add_action_radio_integer("usermode",
       sigc::mem_fun(*this, &AppWindow::on_menu_developer_usermode),
-      static_cast<int>(AppState::userlevels::OPERATOR) );
+      Utils::to_utype(AppState::userlevels::OPERATOR) );
 
   action = m_refActionGroup_Developer->add_action("database-preferences",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_database_preferences) );
@@ -524,7 +524,7 @@ void AppWindow::on_menu_developer_usermode(int parameter)
   if(!m_pFrame)
     return;
 
-  const bool developer = parameter == static_cast<int>(AppState::userlevels::DEVELOPER);
+  const bool developer = parameter == Utils::to_utype(AppState::userlevels::DEVELOPER);
 
   bool changed = false;
   if(developer)
@@ -570,7 +570,7 @@ static bool hostname_is_localhost(const Glib::ustring& hostname)
 
 void AppWindow::ui_warning_load_failed(int failure_code)
 {
-  if(failure_code == static_cast<int>(Document::LoadFailureCodes::NOT_FOUND))
+  if(failure_code == Utils::to_utype(Document::LoadFailureCodes::NOT_FOUND))
   {
     //TODO: Put this in the generic bakery code.
     ui_warning(_("Open Failed"),
@@ -580,7 +580,7 @@ void AppWindow::ui_warning_load_failed(int failure_code)
     //but the initial/welcome dialog doesn't yet update its list when the
     //recent history changes.
   }
-  else if(failure_code == static_cast<int>(Document::load_failure_codes::FILE_VERSION_TOO_NEW))
+  else if(failure_code == Utils::to_utype(Document::load_failure_codes::FILE_VERSION_TOO_NEW))
   {
     ui_warning(_("Open Failed"),
       _("The document could not be opened because it was created or modified by a newer version of Glom."));
@@ -837,7 +837,7 @@ bool AppWindow::check_document_hosting_mode_is_supported(Document* document)
     default:
     {
       //on_document_load() should have checked for this already, informing the user.
-      std::cerr << G_STRFUNC << ": Unhandled hosting mode: " << static_cast<int>(document->get_hosting_mode()) << std::endl;
+      std::cerr << G_STRFUNC << ": Unhandled hosting mode: " << Utils::to_utype(document->get_hosting_mode()) << std::endl;
      g_assert_not_reached();
      break;
     }
@@ -1328,7 +1328,7 @@ bool AppWindow::offer_new_or_existing()
 #endif
       case Dialog_ExistingOrNew::Action::NONE:
       default:
-        std::cerr << G_STRFUNC << ": Unhandled action: " << static_cast<int>(dialog->get_action()) << std::endl;
+        std::cerr << G_STRFUNC << ": Unhandled action: " << Utils::to_utype(dialog->get_action()) << std::endl;
         g_assert_not_reached();
         break;
       }

@@ -43,8 +43,8 @@ Box_Data_Portal::Box_Data_Portal()
   m_Label.show();
 
   //The AddDel or Calendar is added to this:
-  //They must use child.set_margin_start(static_cast<int>(UiUtils::DefaultSpacings::LARGE)) and
-  //child.set_margin_top(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
+  //They must use child.set_margin_start(Utils::to_utype(UiUtils::DefaultSpacings::LARGE)) and
+  //child.set_margin_top(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
   add(m_Frame);
 
   m_layout_name = "list_portal"; //Replaced by derived classes.

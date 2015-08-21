@@ -86,9 +86,9 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   frame->set_shadow_type(Gtk::SHADOW_NONE);
   frame->show();
 
-  Gtk::Box* vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, static_cast<int>(UiUtils::DefaultSpacings::SMALL)));
-  vbox->set_margin_start(static_cast<int>(UiUtils::DefaultSpacings::LARGE));
-  vbox->set_margin_top(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
+  Gtk::Box* vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)));
+  vbox->set_margin_start(Utils::to_utype(UiUtils::DefaultSpacings::LARGE));
+  vbox->set_margin_top(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
   frame->add(*vbox);
   vbox->show();
 
@@ -100,7 +100,7 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   label_newdb->set_valign(Gtk::ALIGN_CENTER);
   label_newdb->show();
 
-  Gtk::Box* box_label = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, static_cast<int>(UiUtils::DefaultSpacings::LARGE)));
+  Gtk::Box* box_label = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::LARGE)));
   Gtk::Label* label_title = Gtk::manage(new Gtk::Label(_("_Title:"), true));
   box_label->pack_start(*label_title, Gtk::PACK_SHRINK);
   label_title->show();

@@ -102,8 +102,8 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
     if(!(m_Frame.get_label_widget()))
       m_Frame.set_label_widget(m_Label);
 
-    m_AddDel.set_margin_start(static_cast<int>(UiUtils::DefaultSpacings::LARGE));
-    m_AddDel.set_margin_top(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
+    m_AddDel.set_margin_start(Utils::to_utype(UiUtils::DefaultSpacings::LARGE));
+    m_AddDel.set_margin_top(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   }
   else

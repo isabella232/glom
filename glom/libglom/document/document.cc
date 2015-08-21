@@ -2558,7 +2558,7 @@ bool Document::load_after(int& failure_code)
       if(m_document_format_version > get_latest_known_document_format_version())
       {
         std::cerr << G_STRFUNC << ": Loading failed because format_version=" << m_document_format_version << ", but latest known format version is " << get_latest_known_document_format_version() << std::endl;
-        failure_code = static_cast<int>(load_failure_codes::FILE_VERSION_TOO_NEW);
+        failure_code = Utils::to_utype(load_failure_codes::FILE_VERSION_TOO_NEW);
         return false;
       }
 

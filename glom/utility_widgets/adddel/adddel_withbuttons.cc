@@ -20,6 +20,7 @@
 
 #include "adddel_withbuttons.h"
 #include <glom/utils_ui.h>
+#include <libglom/utils.h>
 #include <glibmm/i18n.h>
 
 //#include <libgnome/gnome-i18n.h>
@@ -49,11 +50,11 @@ AddDel_WithButtons::AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefP
 void AddDel_WithButtons::init()
 {
   m_ButtonBox.set_layout(Gtk::BUTTONBOX_END);
-  m_ButtonBox.set_spacing(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
+  m_ButtonBox.set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
-  //m_Button_Add.set_border_width(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
-  //m_Button_Del.set_border_width(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
-  //m_Button_Edit.set_border_width(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
+  //m_Button_Add.set_border_width(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
+  //m_Button_Del.set_border_width(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
+  //m_Button_Edit.set_border_width(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   setup_buttons();
   pack_start(m_ButtonBox, Gtk::PACK_SHRINK);

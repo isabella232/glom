@@ -416,7 +416,7 @@ std::shared_ptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayo
   }
   else
   {
-    std::cerr << G_STRFUNC << ": Unhandled item type: " << static_cast<int>(item_type) << std::endl;
+    std::cerr << G_STRFUNC << ": Unhandled item type: " << Utils::to_utype(item_type) << std::endl;
   }
 
   //Set a default text style and size:

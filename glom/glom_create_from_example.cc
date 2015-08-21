@@ -506,7 +506,7 @@ int main(int argc, char* argv[])
   const auto started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
   if(started != Glom::ConnectionPool::Backend::StartupErrors::NONE)
   {
-    std::cerr << G_STRFUNC << ": connection_pool->startup(): result=" << static_cast<int>(started) << std::endl;
+    std::cerr << G_STRFUNC << ": connection_pool->startup(): result=" << Glom::Utils::to_utype(started) << std::endl;
     cleanup();
   }
   g_assert(started == Glom::ConnectionPool::Backend::StartupErrors::NONE);

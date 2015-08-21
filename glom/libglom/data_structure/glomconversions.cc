@@ -577,12 +577,12 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     //- UI-visible strings, but images should never be shown as text in the UI. 
     //- Values in SQL queries, but we only do that for clauses (where/sort/order) 
     //  which should never use image values.
-    std::cerr << G_STRFUNC << ": Unexpected enumType::IMAGE field type: " << static_cast<int>(glom_type) << std::endl;
+    std::cerr << G_STRFUNC << ": Unexpected enumType::IMAGE field type: " << Utils::to_utype(glom_type) << std::endl;
     return Glib::ustring();
   }
   else
   {
-    std::cerr << G_STRFUNC << ": Unexpected glom field type: " << static_cast<int>(glom_type) << std::endl;
+    std::cerr << G_STRFUNC << ": Unexpected glom field type: " << Utils::to_utype(glom_type) << std::endl;
     return value.to_string();
   }
 }
@@ -695,7 +695,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   {
     //This function is only used for :
     //- UI-visible strings, but images should never be entered as text in the UI. 
-    std::cerr << G_STRFUNC << ": Unexpected enumType::IMAGE field type: " << static_cast<int>(glom_type) << std::endl;
+    std::cerr << G_STRFUNC << ": Unexpected enumType::IMAGE field type: " << Utils::to_utype(glom_type) << std::endl;
     return Gnome::Gda::Value();
   }
 

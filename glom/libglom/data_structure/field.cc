@@ -557,7 +557,7 @@ Glib::ustring Field::get_sql_type() const
 
     if(strType == "unknowntype")
     {
-      std::cerr << G_STRFUNC << ": returning unknowntype for field name=" << get_name() << ", glom_type=" << static_cast<int>(get_glom_type()) << ", gda_type=" << (int)m_field_info->get_g_type() << std::endl;
+      std::cerr << G_STRFUNC << ": returning unknowntype for field name=" << get_name() << ", glom_type=" << Utils::to_utype(get_glom_type()) << ", gda_type=" << (int)m_field_info->get_g_type() << std::endl;
     }
 
     return strType;
@@ -617,7 +617,7 @@ GType Field::get_gda_type_for_glom_type(Field::glom_field_type glom_type)
 
   if(ideal_gda_type == G_TYPE_NONE)
   {
-    std::cerr << G_STRFUNC << ": Returning G_TYPE_NONE for glom_type=" << static_cast<int>(glom_type) << std::endl;
+    std::cerr << G_STRFUNC << ": Returning G_TYPE_NONE for glom_type=" << Utils::to_utype(glom_type) << std::endl;
   }
 
   //std::cout << "debug: " << G_STRFUNC << ": returning: " << g_type_name(ideal_gda_type) << std::endl;

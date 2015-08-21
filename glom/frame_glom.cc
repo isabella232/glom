@@ -75,7 +75,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 : PlaceHolder(cobject, builder),
   m_pLabel_Table_DataMode(nullptr),
   m_pLabel_Table_FindMode(nullptr),
-  m_Box_RecordsCount(Gtk::ORIENTATION_HORIZONTAL, static_cast<int>(UiUtils::DefaultSpacings::SMALL)),
+  m_Box_RecordsCount(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
   m_Button_FindAll(_("Find All")),
   m_stack_mode(nullptr),
   m_pBox_Tables(nullptr),
@@ -107,7 +107,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 
   //QuickFind widgets:
   //We don't use Glade for these, so it easier to modify them for the Maemo port.
-  m_pBox_QuickFind = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, static_cast<int>(UiUtils::DefaultSpacings::SMALL)));
+  m_pBox_QuickFind = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)));
   Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Quick _search:"), true));
   m_pBox_QuickFind->pack_start(*label, Gtk::PACK_SHRINK);
 

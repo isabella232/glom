@@ -19,6 +19,7 @@
 #include "config.h"
 #include <glom/bakery/appwindow_withdoc.h>
 #include <glom/bakery/dialog_offersave.h>
+#include <libglom/utils.h>
 #include <giomm/file.h>
 #include <algorithm>
 #include <glibmm/i18n-lib.h>
@@ -150,7 +151,7 @@ bool AppWindow_WithDoc::open_document(const Glib::ustring& file_uri)
       ui_warning_load_failed(failure_code);
 
     //Make sure that non-existant files are removed from the history list:
-    if(failure_code == static_cast<int>(Document::LoadFailureCodes::NOT_FOUND))
+    if(failure_code == Glom::Utils::to_utype(Document::LoadFailureCodes::NOT_FOUND))
       document_history_remove(file_uri);
 
     //re-initialize document.

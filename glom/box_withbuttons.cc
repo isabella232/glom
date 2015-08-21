@@ -32,13 +32,13 @@ namespace Glom
 
 Box_WithButtons::Box_WithButtons()
 : Gtk::Box(Gtk::ORIENTATION_VERTICAL),
-  m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, static_cast<int>(UiUtils::DefaultSpacings::SMALL)),
+  m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
   m_Button_Cancel(_("_Cancel"))
 {
   //m_pDocument = nullptr;
 
-  //set_border_width(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
-  set_spacing(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
+  //set_border_width(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
+  set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   //Connect signals:
   m_Button_Cancel.signal_clicked().connect(sigc::mem_fun(*this, &Box_WithButtons::on_Button_Cancel));
@@ -46,13 +46,13 @@ Box_WithButtons::Box_WithButtons()
 
 Box_WithButtons::Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::Box(cobject),
-  m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, static_cast<int>(UiUtils::DefaultSpacings::SMALL)),
+  m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
   m_Button_Cancel(_("_Cancel"))
 {
   //m_pDocument = nullptr;
 
-  //set_border_width(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
-  set_spacing(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
+  //set_border_width(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
+  set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   //Connect signals:
   m_Button_Cancel.signal_clicked().connect(sigc::mem_fun(*this, &Box_WithButtons::on_Button_Cancel));
@@ -60,7 +60,7 @@ Box_WithButtons::Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk
 
 Box_WithButtons::Box_WithButtons(BaseObjectType* cobject)
 : Gtk::Box(cobject),
-  m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, static_cast<int>(UiUtils::DefaultSpacings::SMALL)),
+  m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
   m_Button_Cancel(_("_Cancel"))
 {
 }

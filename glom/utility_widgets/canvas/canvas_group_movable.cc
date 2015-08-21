@@ -22,6 +22,7 @@
 #include "canvas_rect_movable.h"
 #include "canvas_line_movable.h"
 #include "canvas_text_movable.h"
+#include "libglom/utils.h"
 #include <goocanvasmm/canvas.h>
 #include <gdkmm/cursor.h>
 #include <iostream>
@@ -212,7 +213,7 @@ void CanvasGroupMovable::snap_position(double& x, double& y) const
   double offset_y_min = 0;
 
   //Try snapping each corner, to choose the one that snapped closest:
-  for(int i = static_cast<int>(Corners::TOP_LEFT); i < static_cast<int>(Corners::COUNT); ++i)
+  for(int i = Utils::to_utype(Corners::TOP_LEFT); i < Utils::to_utype(Corners::COUNT); ++i)
   {
     const Corners corner = (Corners)i;
     double temp_x = x;

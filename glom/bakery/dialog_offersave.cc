@@ -20,6 +20,7 @@
 #include <gtkmm/box.h>
 #include <glom/bakery/dialog_offersave.h>
 #include <glom/appwindow.h>
+#include <libglom/utils.h>
 #include <glibmm/convert.h> 
 #include <glibmm/i18n-lib.h>
 
@@ -52,9 +53,9 @@ Dialog_OfferSave::Dialog_OfferSave(const Glib::ustring& file_uri)
   
   set_secondary_text(get_confirmation_message(file_uri));
 
-  add_button(_("Discard"), static_cast<int>(enumButtons::Discard));
-  auto cancel_button = add_button(_("_Cancel"), static_cast<int>(enumButtons::Cancel));
-  add_button(_("_Save"), static_cast<int>(enumButtons::Save));
+  add_button(_("Discard"), Glom::Utils::to_utype(enumButtons::Discard));
+  auto cancel_button = add_button(_("_Cancel"), Glom::Utils::to_utype(enumButtons::Cancel));
+  add_button(_("_Save"), Glom::Utils::to_utype(enumButtons::Save));
 
   // Otherwise Discard has focus initially which seems inconvenient:
   cancel_button->grab_focus();

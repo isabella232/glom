@@ -20,6 +20,7 @@
 
 #include "notebook_noframe.h"
 #include <glom/utils_ui.h>
+#include <libglom/utils.h>
 #include <gtkmm/label.h>
 #include <gtkmm/togglebutton.h>
 #include <glibmm/i18n.h>
@@ -31,10 +32,10 @@ namespace Glom
 NotebookNoFrame::NotebookNoFrame()
 {
   set_orientation(Gtk::ORIENTATION_VERTICAL);
-  set_spacing(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
+  set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   m_box_top.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
-  m_box_top.set_spacing(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
+  m_box_top.set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
   m_box_top.pack_start(m_box_action_left, Gtk::PACK_SHRINK);
   m_box_top.pack_start(m_box_tabs);
   m_box_top.pack_end(m_box_action_right, Gtk::PACK_SHRINK);
@@ -48,7 +49,7 @@ NotebookNoFrame::NotebookNoFrame()
     m_box_pages.property_visible_child().signal_changed().connect(
       sigc::mem_fun(*this, &NotebookNoFrame::on_visible_child_changed));
 
-  //m_box_tabs.set_spacing(static_cast<int>(UiUtils::DefaultSpacings::SMALL));
+  //m_box_tabs.set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   m_box_tabs.show();
 

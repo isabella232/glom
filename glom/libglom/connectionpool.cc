@@ -185,7 +185,7 @@ void ConnectionPool::setup_from_document(const Document* document)
 
   default:
     //on_document_load() should have checked for this already, informing the user.
-    std::cerr << G_STRFUNC << ": Unhandled hosting mode: " << static_cast<int>(document->get_hosting_mode()) << std::endl;
+    std::cerr << G_STRFUNC << ": Unhandled hosting mode: " << Utils::to_utype(document->get_hosting_mode()) << std::endl;
     g_assert_not_reached();
     break;
   }

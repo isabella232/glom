@@ -22,6 +22,7 @@
 #include "canvas_rect_movable.h"
 #include "canvas_line_movable.h"
 #include <glom/utility_widgets/canvas/canvas_table_movable.h>
+#include <libglom/utils.h>
 #include <goocanvasmm/canvas.h>
 #include <goocanvasrect.h>
 #include <goocanvasgroup.h>
@@ -925,7 +926,7 @@ void CanvasGroupResizable::snap_position(double& x, double& y) const
   double offset_y_min = 0;
 
   //Try snapping each corner, to choose the one that snapped closest:
-  for(int i = 0; i < static_cast<int>(Corners::COUNT); ++i)
+  for(int i = 0; i < Utils::to_utype(Corners::COUNT); ++i)
   {
     const Corners corner = (Corners)i;
     double temp_x = x;

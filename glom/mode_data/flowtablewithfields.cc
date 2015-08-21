@@ -203,11 +203,11 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
       const int BASE_INDENT = 3;
       
       //std::cout << "title= " << group_title << ", with_indent=" << with_indent << std::endl;
-      event_box->set_margin_top(static_cast<int>(Glom::UiUtils::DefaultSpacings::SMALL));
+      event_box->set_margin_top(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
 
       if(with_indent) 
       {
-        event_box->set_margin_start(static_cast<int>(Glom::UiUtils::DefaultSpacings::SMALL) + BASE_INDENT);
+        event_box->set_margin_start(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL) + BASE_INDENT);
       }
       else
       {
@@ -373,7 +373,7 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
       {
         //Add a Related Records list for this portal:
         Box_Data_List_Related* portal_box = create_related(portal, false /* no label, because it's in the tab instead. */);
-        //portal_box->set_border_width(static_cast<int>(Glom::UiUtils::DefaultSpacings::SMALL)); It has margins around the frame's child widget instead.
+        //portal_box->set_border_width(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL)); It has margins around the frame's child widget instead.
         portal_box->show();
         notebook_widget->append_page(*portal_box, *tab_label);
 
@@ -405,10 +405,10 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
         //Put some space between the page child and the page edges.
         //This doesn't work (probably because we haven't implemented it in our custom container),
         //so we use GtkWidget margins instead. TODO: What's the difference.
-        event_box->set_margin_start(static_cast<int>(Glom::UiUtils::DefaultSpacings::SMALL));
-        event_box->set_margin_end(static_cast<int>(Glom::UiUtils::DefaultSpacings::SMALL));
-        event_box->set_margin_top(static_cast<int>(Glom::UiUtils::DefaultSpacings::SMALL));
-        event_box->set_margin_bottom(static_cast<int>(Glom::UiUtils::DefaultSpacings::SMALL));
+        event_box->set_margin_start(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
+        event_box->set_margin_end(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
+        event_box->set_margin_top(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
+        event_box->set_margin_bottom(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
 
         notebook_widget->append_page(*event_box, *tab_label);
 

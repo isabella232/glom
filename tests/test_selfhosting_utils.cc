@@ -162,7 +162,7 @@ bool test_selfhost(Glom::Document& document, const Glib::ustring& user, const Gl
   const auto started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
   if(started != Glom::ConnectionPool::Backend::StartupErrors::NONE)
   {
-    std::cerr << G_STRFUNC << ": connection_pool->startup(): result=" << static_cast<int>(started) << std::endl;
+    std::cerr << G_STRFUNC << ": connection_pool->startup(): result=" << Glom::Utils::to_utype(started) << std::endl;
     test_selfhosting_cleanup();
     return false;
   }
@@ -177,7 +177,7 @@ bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document
     (hosting_mode != Glom::Document::HostingMode::MYSQL_SELF) &&
     (hosting_mode != Glom::Document::HostingMode::SQLITE) )
   {
-    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << static_cast<int>(hosting_mode) << std::endl;
+    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << Glom::Utils::to_utype(hosting_mode) << std::endl;
     return false;
   }
 
@@ -349,7 +349,7 @@ bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Gl
     (hosting_mode != Glom::Document::HostingMode::MYSQL_SELF) &&
     (hosting_mode != Glom::Document::HostingMode::SQLITE) )
   {
-    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << static_cast<int>(hosting_mode) << std::endl;
+    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << Glom::Utils::to_utype(hosting_mode) << std::endl;
     return false;
   }
 
@@ -375,7 +375,7 @@ bool test_create_and_selfhost_from_data(const Glib::ustring& example_file_conten
     (hosting_mode != Glom::Document::HostingMode::MYSQL_SELF) &&
     (hosting_mode != Glom::Document::HostingMode::SQLITE) )
   {
-    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << static_cast<int>(hosting_mode) << std::endl;
+    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << Glom::Utils::to_utype(hosting_mode) << std::endl;
     return false;
   }
 
