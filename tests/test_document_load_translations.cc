@@ -46,7 +46,7 @@ typename T_Container::value_type get_titled(const T_Container& container, const 
 
   typename T_Container::const_iterator iter =
     std::find_if(container.begin(), container.end(),
-      [title] (const typename T_Container::value_type& element)
+      [&title] (const typename T_Container::value_type& element)
       {
         return (element && element->get_title_original() == title);
       }

@@ -40,7 +40,7 @@ template
 auto find_if_same_name(T_Container& container, const Glib::ustring& name) -> decltype(container.begin())
 {
   return std::find_if(container.begin(), container.end(),
-    [name](const typename T_Container::value_type& element)
+    [&name](const typename T_Container::value_type& element)
     {
       //Assume that element is a shared_ptr<>.
       return element->get_name() == name;

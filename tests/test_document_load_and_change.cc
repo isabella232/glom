@@ -49,7 +49,7 @@ static bool groups_contain_named(const Glom::Document::type_list_groups& contain
 {
   Glom::Document::type_list_groups::const_iterator iter =
     std::find_if(container.begin(), container.end(),
-      [name] (const Glom::GroupInfo& info)
+      [&name] (const Glom::GroupInfo& info)
       {
         return info.get_name() == name;
       }
