@@ -1632,7 +1632,7 @@ void Frame_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib
     Utils::get_glade_widget_derived_with_warning(m_pDialog_Relationships);
     if(!m_pDialog_Relationships)
     {
-      std::cerr << G_STRFUNC << ": m_pDialog_Relationships is null." << std::cerr;
+      std::cerr << G_STRFUNC << ": m_pDialog_Relationships is null." << std::endl;
       return;
     }
     
@@ -1703,7 +1703,7 @@ void Frame_Glom::on_menu_developer_reports()
       Utils::get_glade_child_widget_derived_with_warning(m_pBox_Reports);
     if(!m_pBox_Reports)
     {
-      std::cerr << G_STRFUNC << ": m_pBox_Reports is null." << std::cerr;
+      std::cerr << G_STRFUNC << ": m_pBox_Reports is null." << std::endl;
       return;
     }
 
@@ -1994,7 +1994,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     Utils::get_glade_widget_derived_with_warning(m_pDialogConnection);
     if(!m_pDialogConnection)
     {
-      std::cerr << G_STRFUNC << ": m_pBox_Reports is null." << std::cerr;
+      std::cerr << G_STRFUNC << ": m_pBox_Reports is null." << std::endl;
       return false;
     }
 
@@ -2392,7 +2392,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
     Utils::get_glade_widget_with_warning("glom_developer.glade", "dialog_error_create_database", dialog);
     if(!dialog)
     {
-      std::cerr << G_STRFUNC << ": dialog is null." << std::cerr;
+      std::cerr << G_STRFUNC << ": dialog is null." << std::endl;
       return false;
     }
 
