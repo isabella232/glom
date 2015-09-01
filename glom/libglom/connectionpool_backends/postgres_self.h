@@ -54,12 +54,6 @@ public:
    */
   static bool install_postgres(const SlotProgress& slot_progress);
 
-  ///This is public so it can be tested:
-  static Glib::ustring get_postgresql_utils_version_from_string(const std::string& version_output);
-
-  ///This is public so it can be tested:
-  static float get_postgresql_utils_version_as_number_from_string(const std::string& version_str);
-
 private:
   virtual InitErrors initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password, bool network_shared = false);
 
@@ -76,14 +70,6 @@ private:
    * order, and return the first one that is available.
    */
   static unsigned int discover_first_free_port(unsigned int start_port, unsigned int end_port);
-
-  /** Run the command-line with the --version option to discover what version
-   * of PostgreSQL is installed, so we can use the appropriate configuration
-   * options when self-hosting.
-   */
-  Glib::ustring get_postgresql_utils_version(const SlotProgress& slot_progress);
-
-  float get_postgresql_utils_version_as_number(const SlotProgress& slot_progress);
   
   void show_active_connections();
 
