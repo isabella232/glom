@@ -760,8 +760,7 @@ void AppWindow::new_instance(const Glib::ustring& uri) //Override
 
   try
   {
-    Glib::spawn_command_line_sync(
-      command.c_str());
+    Glib::spawn_command_line_sync(command);
   }
   catch(const Glib::Error& ex)
   {

@@ -156,7 +156,7 @@ Glib::ustring Utils::string_replace(const Glib::ustring& src, const Glib::ustrin
   size_t src_index_section_start = 0;
   while(src_index < src_length)
   {
-    const bool found = (src.find(search_for.c_str(), src_index) == src_index);
+    const bool found = (src.find(search_for, src_index) == src_index);
     if(found)
     {
       result += src.substr(src_index_section_start, src_index - src_index_section_start);
@@ -736,7 +736,7 @@ Glib::ustring Utils::create_local_image_uri(const Gnome::Gda::Value& value)
       result = ("/tmp/glom_report_image_" + Glib::ustring(pchExtraNum) + ".png");
       ++m_temp_image_uri_number;
 
-      std::fstream the_stream(result.c_str(), std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
+      std::fstream the_stream(result, std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
       if(the_stream)
       {
         the_stream.write((char*)pData, size);

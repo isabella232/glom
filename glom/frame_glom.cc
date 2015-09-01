@@ -575,7 +575,7 @@ void Frame_Glom::on_menu_file_export()
 
   const auto found_set = m_Notebook_Data.get_found_set();
 
-  std::fstream the_stream(filepath.c_str(), std::ios_base::out | std::ios_base::trunc);
+  std::fstream the_stream(filepath, std::ios_base::out | std::ios_base::trunc);
   if(!the_stream)
   {
     show_ok_dialog(_("Could Not Create File."), _("Glom could not create the specified file."), *pWindowApp, Gtk::MESSAGE_ERROR);
