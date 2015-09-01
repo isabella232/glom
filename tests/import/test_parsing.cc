@@ -1,13 +1,12 @@
 #include <glom/import_csv/csv_parser.h>
 #include <tests/import/utils.h>
-//#include <glibmm/regex.h>
 #include <giomm/file.h>
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
-#include <glibmm/regex.h>
 #include <glibmm/init.h>
 #include <giomm/init.h>
 #include <iostream>
+#include <regex>
 #include <cstdlib>
 
 namespace
@@ -51,26 +50,26 @@ void print_tokens()
 // Check that a string (or regex) exists in the parsed tokens.
 bool check_tokens(const std::string& regex)
 {
-  Glib::RefPtr<Glib::Regex> check;
+  std::regex check;
 
   try
   {
-    check = Glib::Regex::create(regex);
+    check = std::regex(regex);
   }
-  catch(const Glib::Error& ex)
+  catch(const std::regex_error& ex)
   {
-    std::cerr << G_STRFUNC << ": Glib::Regex::create() failed: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": std::regex constructor failed: " << ex.what() << std::endl;
     return false;
   }
 
-  if(!check && 0 == get_tokens_instance().size())
+  if(get_tokens_instance().empty())
     return false;
 
   for(type_tokens::const_iterator iter = get_tokens_instance().begin();
        iter != get_tokens_instance().end();
        ++iter)
   {
-    if(check->match(*iter))
+    if(std::regex_match(*iter, check))
       return true;
   }
 

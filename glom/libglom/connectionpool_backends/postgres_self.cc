@@ -29,13 +29,13 @@
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/stringutils.h>
-#include <glibmm/regex.h>
 #include <glibmm/main.h>
 #include <glibmm/shell.h>
 #include <glibmm/i18n.h>
 
 #include <sstream> //For stringstream
 #include <iostream>
+#include <regex>
 
 #ifdef G_OS_WIN32
 # include <windows.h>
@@ -225,6 +225,54 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   return result ? InitErrors::NONE : InitErrors::COULD_NOT_START_SERVER;
 }
 
+Glib::ustring PostgresSelfHosted::get_postgresql_utils_version_from_string(const std::string& version_output)
+{
+  Glib::ustring result;
+
+  //Use a regex to get the version number:
+  std::regex regex;
+  
+  //We want the characters at the end:
+  const gchar VERSION_REGEX[] = "pg_ctl \\(PostgreSQL\\) (\\S+)";
+
+  try
+  {
+    regex = std::regex(VERSION_REGEX);
+  }
+  catch(const std::regex_error& ex)
+  {
+    std::cerr << G_STRFUNC << ": std::regex constructor() failed: " << ex.what() << std::endl;
+    return result;
+  }
+
+  // We get, for instance, "\n" and 8.4.1" and "\n".
+  //TODO: Find a way to do a simple range-based for over the regex matches?
+  auto matches_begin = 
+    std::sregex_iterator(version_output.begin(), version_output.end(), regex);
+  auto matches_end = std::sregex_iterator();
+
+  for(auto iter = matches_begin; iter != matches_end; ++iter)
+  {
+    const auto match = *iter;
+
+    //We don't use a range-based for loop, so we can more easily
+    //skip the [0] match, which is the full (parent) match:
+    auto sub_matches_begin = match.cbegin();
+    ++sub_matches_begin; //Skip [0], which is the full (parent) match.
+    auto sub_matches_end = match.cend();
+    for(auto sub_iter = sub_matches_begin ; sub_iter != sub_matches_end; ++sub_iter)
+    {
+      const auto& sub = *sub_iter;
+      const auto str = sub.str();
+      //std::cout << "debug: str=" << str << std::endl;
+      if(!str.empty())
+        return str; //Found.
+    }
+  }
+
+  return result;
+}
+
 Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgress& slot_progress)
 {
   Glib::ustring result;
@@ -237,38 +285,68 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
   if(!spawn_result)
   {
     std::cerr << G_STRFUNC << ": Error while attempting to discover the pg_ctl version." << std::endl;
-    return result;
+    return Glib::ustring();
   }
 
-  //Use a regex to get the version number:
-  Glib::RefPtr<Glib::Regex> regex;
+  return get_postgresql_utils_version_from_string(output);
+}
+
+float PostgresSelfHosted::get_postgresql_utils_version_as_number_from_string(const std::string& version_str)
+{
+  //std::cout << "debug: " << G_STRFUNC << ": " << version_str << std::endl;
+
+  float result = 0;
+
+  std::regex regex;
 
   //We want the characters at the end:
-  const gchar VERSION_REGEX[] = "pg_ctl \\(PostgreSQL\\) (.*)";
+  const gchar VERSION_REGEX[] = "(\\d*)\\.(\\d*)";
 
   try
   {
-    regex = Glib::Regex::create(VERSION_REGEX);
+    regex = std::regex(VERSION_REGEX);
   }
-  catch(const Glib::Error& ex)
+  catch(const std::regex_error& ex)
   {
-    std::cerr << G_STRFUNC << ": Glom: Glib::Regex::create() failed: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": std::regex constructor() failed: " << ex.what() << std::endl;
     return result;
   }
 
-  if(!regex)
-    return result;
+  //We need to loop over the numbers because we get some "" items that we want to ignore:
+  guint count = 0; //We want 2 numbers.
 
-  typedef std::vector<Glib::ustring> type_vec_strings;
-  const type_vec_strings vec = regex->split(output, Glib::REGEX_MATCH_NOTEMPTY);
-  //std::cout << "DEBUG: output == " << output << std::endl;
-  //std::cout << "DEBUG: vec.size() == " << vec.size() << std::endl;
+  auto matches_begin = 
+    std::sregex_iterator(version_str.begin(), version_str.end(), regex);
+  auto matches_end = std::sregex_iterator();
 
-  // We get, for instance, "\n" and 8.4.1" and "\n".
-  for(const auto& str : vec)
+  for(auto iter = matches_begin; iter != matches_end; ++iter)
   {
-    if(!str.empty())
-      return str; //Found.
+    const auto match = *iter;
+    //std::cout << "match: START" << match.str() << "END" << std::endl;
+
+    //We don't use a range-based for loop, so we can more easily
+    //skip the [0] match, which is the full (parent) match:
+    auto sub_matches_begin = match.cbegin();
+    ++sub_matches_begin; //Skip [0], which is the full (parent) match.
+    auto sub_matches_end = match.cend();
+    for(auto sub_iter = sub_matches_begin ; sub_iter != sub_matches_end; ++sub_iter)
+    {
+      const auto& sub = *sub_iter;
+      const auto str = sub.str();
+      if(str.empty())
+        continue;
+
+      const auto num = atoi(str.c_str());
+      if(count == 0)
+        result = num;
+      else if(count == 1)
+      {
+        result += (0.1 * num);
+        return result;
+      }
+
+      ++count;
+    }
   }
 
   return result;
@@ -276,54 +354,9 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
 
 float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgress& slot_progress)
 {
-  float result = 0;
+  const std::string version_str = get_postgresql_utils_version(slot_progress);
 
-  const auto version_str = get_postgresql_utils_version(slot_progress);
-
-  Glib::RefPtr<Glib::Regex> regex;
-
-  //We want the characters at the end:
-  const gchar VERSION_REGEX[] = "^(\\d*)\\.(\\d*)";
-
-  try
-  {
-    regex = Glib::Regex::create(VERSION_REGEX);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": Glom: Glib::Regex::create() failed: " << ex.what() << std::endl;
-    return result;
-  }
-
-  if(!regex)
-    return result;
-
-  const auto vec = regex->split(version_str, Glib::REGEX_MATCH_NOTEMPTY);
-  //std::cout << "DEBUG: str == " << version_str << std::endl;
-  //std::cout << "DEBUG: vec.size() == " << vec.size() << std::endl;
-
-  //We need to loop over the numbers because we get some "" items that we want to ignore:
-  guint count = 0; //We want 2 numbers.
-  for(const auto& str : vec)
-  {
-    //std::cout << "regex item: START" << *iter << "END" << std::endl;
-
-    if(str.empty())
-      continue;
-
-    const auto num = atoi(str.c_str());
-    if(count == 0)
-      result = num;
-    else if(count == 1)
-    {
-      result += (0.1 * num);
-      break;
-    }
-
-    ++count;
-  }
-
-  return result;
+  return get_postgresql_utils_version_as_number_from_string(version_str);
 }
 
 

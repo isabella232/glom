@@ -54,6 +54,12 @@ public:
    */
   static bool install_postgres(const SlotProgress& slot_progress);
 
+  ///This is public so it can be tested:
+  static Glib::ustring get_postgresql_utils_version_from_string(const std::string& version_output);
+
+  ///This is public so it can be tested:
+  static float get_postgresql_utils_version_as_number_from_string(const std::string& version_str);
+
 private:
   virtual InitErrors initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password, bool network_shared = false);
 

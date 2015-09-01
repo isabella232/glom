@@ -27,6 +27,7 @@ check_PROGRAMS =						\
 	tests/test_document_autosave			\
 	tests/test_field_file_format			\
 	tests/test_parsing_time			\
+	tests/test_postgres_version_regexes \
 	tests/test_signal_reemit			\
 	tests/python/test_load_python_library\
 	tests/python/test_python_module \
@@ -68,6 +69,7 @@ TESTS =	tests/test_document_load	\
 	tests/test_field_file_format \
 	tests/test_field_file_format_in_locales.sh \
 	tests/test_parsing_time	\
+  tests/test_postgres_version_regexes \
 	tests/test_signal_reemit \
 	tests/test_dtd_file_validation.sh \
 	tests/test_glade_file_validation.sh \
@@ -183,6 +185,10 @@ tests_test_field_file_format_CPPFLAGS = $(tests_cppflags)  $(GDKMM_CFLAGS) $(glo
 tests_test_parsing_time_SOURCES = tests/test_parsing_time.cc
 tests_test_parsing_time_LDADD = $(tests_ldadd)
 tests_test_parsing_time_CPPFLAGS = $(tests_cppflags)
+
+tests_test_postgres_version_regexes_SOURCES = tests/test_postgres_version_regexes.cc
+tests_test_postgres_version_regexes_LDADD = $(tests_ldadd)
+tests_test_postgres_version_regexes_CPPFLAGS = $(tests_cppflags)
 
 tests_test_signal_reemit_SOURCES = tests/test_signal_reemit.cc
 tests_test_signal_reemit_LDADD = $(LIBGLOM_LIBS)
