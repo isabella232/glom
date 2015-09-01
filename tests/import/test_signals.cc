@@ -125,7 +125,7 @@ int main()
         std::cout << exception.what() << std::endl;
       }
 
-      parser.set_encoding((*iter).c_str());
+      parser.set_encoding((*iter));
     }
 
 

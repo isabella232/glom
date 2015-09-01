@@ -437,7 +437,7 @@ void Dialog_Import_CSV::begin_parse()
   m_sample_view->set_model(m_sample_model); // Empty model
   m_parser->clear();
 
-  m_parser->set_encoding(get_current_encoding().c_str());
+  m_parser->set_encoding(get_current_encoding());
 
   // Allow the Import button to be pressed when a field for the primary key
   // field is set. When the import button is pressed without the file being
