@@ -97,7 +97,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
   {
     connection = attempt_connect(port, database, username, password, fake_connection);
     connection_possible = true;
-    m_port = atoi(port.c_str());
+    m_port = std::stoi(port);
   }
   catch(const ExceptionConnection& ex)
   {
@@ -106,7 +106,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
     if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_DATABASE)
     {
       connection_possible = true;
-      m_port = atoi(port.c_str());
+      m_port = std::stoi(port);
     }
   }
 
@@ -121,7 +121,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
       {
         connection = attempt_connect(port, database, username, password, fake_connection);
         connection_possible = true;
-        m_port = atoi(port.c_str());
+        m_port = std::stoi(port);
       }
       catch(const ExceptionConnection& ex)
       {
@@ -132,7 +132,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
         if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_DATABASE)
         {
           connection_possible = true;
-          m_port = atoi(port.c_str());
+          m_port = std::stoi(port);
         }
       }
 
@@ -145,7 +145,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
   if(connection)
   {
     //Remember working port:
-    m_port = atoi(port.c_str());
+    m_port = std::stoi(port);
   }
   else
   {

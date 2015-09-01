@@ -351,7 +351,7 @@ bool Box_Formatting::get_formatting(Formatting& format) const
   m_format.m_numeric_format.m_decimal_places_restricted = m_checkbox_format_use_decimal_places->get_active();
 
   const auto strDecPlaces = m_entry_format_decimal_places->get_text();
-  m_format.m_numeric_format.m_decimal_places = atoi(strDecPlaces.c_str());
+  m_format.m_numeric_format.m_decimal_places = std::stoi(strDecPlaces);
 
   m_format.m_numeric_format.m_currency_symbol = m_entry_currency_symbol->get_entry()->get_text();
 

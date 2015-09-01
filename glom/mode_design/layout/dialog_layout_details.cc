@@ -1331,8 +1331,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_column_width(const Glib::ust
       if(layout_item)
       {
         //Convert the text to a number, using the same logic used by GtkCellRendererText when it stores numbers.
-        char* pchEnd = nullptr;
-        const auto new_value = static_cast<guint>( strtod(new_text.c_str(), &pchEnd) );
+        const auto new_value = static_cast<guint>( std::stod(new_text) );
 
         //Store the user's new value in the model:
         layout_item->set_display_width(new_value);
@@ -1366,8 +1365,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_group_columns(const Glib::us
       //new_value << astream; //Get it out of the stream as the numerical type.
 
       //Convert the text to a number, using the same logic used by GtkCellRendererText when it stores numbers.
-      char* pchEnd = nullptr;
-      guint new_value = static_cast<guint>( strtod(new_text.c_str(), &pchEnd) );
+      auto new_value = static_cast<guint>( std::stod(new_text) );
 
       //Don't allow a 0 columns_count:
       if(new_value == 0)

@@ -120,7 +120,7 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
     Gtk::TreeModel::Row row = *iter;
 
     //Set it in the model:
-    long new_value = atol(new_text.c_str()); //TODO: Careful of locale.
+    const auto new_value = std::stol(new_text); //TODO: Careful of locale.
     row[m_columns.m_col_next_value] = new_value;
 
 
@@ -201,7 +201,7 @@ void Dialog_Database_Preferences::load_from_document()
     row[m_columns.m_col_field] = Conversions::get_text_for_gda_value(Field::glom_field_type::TEXT, datamodel->get_value_at(1, i), numeric_format);
 
     //TODO: Careful of locale:
-    row[m_columns.m_col_next_value] = atol(datamodel->get_value_at(2, i).to_string().c_str());
+    row[m_columns.m_col_next_value] = std::stol(datamodel->get_value_at(2, i).to_string());
   }
 
   m_model_autoincrements->set_default_sort_func( sigc::mem_fun(*this, &Dialog_Database_Preferences::on_autoincrements_sort) );
