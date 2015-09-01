@@ -309,7 +309,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
     // Set the first byte to something other than '\0', to be able to
     // recognize whether strftime actually failed or just returned "".
     buf.get()[0] = '\1';
-    const auto len = strftime(buf.get(), bufsize, locale_format.c_str(), &tm_data);
+    const auto len = std::strftime(buf.get(), bufsize, locale_format.c_str(), &tm_data);
 
     if(len != 0 || buf.get()[0] == '\0')
     {
