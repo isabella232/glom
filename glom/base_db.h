@@ -197,6 +197,12 @@ protected:
       m_key = parent_key;
     }
 
+    LayoutFieldInRecord(const LayoutFieldInRecord& src) = delete;
+    LayoutFieldInRecord& operator=(const LayoutFieldInRecord& src) = delete;
+
+    LayoutFieldInRecord(LayoutFieldInRecord&& src) = delete;
+    LayoutFieldInRecord& operator=(LayoutFieldInRecord&& src) = delete;
+
     FieldInRecord get_fieldinrecord(const Document& document) const
     {
       return FieldInRecord(m_field, m_table_name, m_key, m_key_value, document);
