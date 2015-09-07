@@ -5113,7 +5113,7 @@ Document::type_list_lookups Document::get_lookup_fields(const Glib::ustring& tab
       auto relationship = field->get_lookup_relationship();
       if(relationship)
       {
-        //If the relationship is triggererd by the specified field:
+        //If the relationship is triggered by the specified field:
         if(relationship->get_from_field() == field_name)
         {
           //Add it:
