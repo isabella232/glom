@@ -5109,6 +5109,14 @@ Document::type_list_lookups Document::get_lookup_fields(const Glib::ustring& tab
     //Examine each field that looks up its data from a relationship:
     if(field && field->get_is_lookup())
     {
+      //Don't let a field trigger its own value.
+      //(for instance, if a field uses a lookup whose relationship uses that
+      //field itself as the from field.)
+      if(field->get_name() == field_name)
+      {
+        continue;
+      }
+
       //Get the relationship information:
       auto relationship = field->get_lookup_relationship();
       if(relationship)
