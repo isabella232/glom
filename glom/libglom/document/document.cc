@@ -625,24 +625,44 @@ std::shared_ptr<Relationship> Document::get_relationship(const Glib::ustring& ta
 
 Document::type_vec_relationships Document::get_relationships(const Glib::ustring& table_name, bool plus_system_prefs) const
 {
-  const std::shared_ptr<const DocumentTableInfo> info = get_table_info(table_name);
-  if(info)
-  {
-    auto result = info->m_relationships;
+  return get_relationships_excluding_triggered_by(table_name, Glib::ustring(), plus_system_prefs);
+}
 
-    //Add the system properties if necessary:
-    if(plus_system_prefs)
+Document::type_vec_relationships Document::get_relationships_excluding_triggered_by(const Glib::ustring& table_name, const Glib::ustring& excluding_triggered_by_field, bool plus_system_prefs) const
+{
+  const auto info = get_table_info(table_name);
+  if(!info)
+    return type_vec_relationships();
+
+  auto result = info->m_relationships;
+
+  //Add the system properties if necessary:
+  if(plus_system_prefs)
+  {
+    if(find_if_same_name(result, GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES) == result.end())
     {
-      if(find_if_same_name(result, GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES) == result.end())
+      result.push_back(create_relationship_system_preferences(table_name));
+    }
+  }
+
+  if(!excluding_triggered_by_field.empty())
+  {
+    //Remove self-lookups:
+    auto iter = result.begin();
+    while(iter != result.end())
+    {
+      const auto& rel = *iter;
+      if(rel && (rel->get_from_field()) == excluding_triggered_by_field)
       {
-        result.push_back(create_relationship_system_preferences(table_name));
+        iter = result.erase(iter);
+      }
+      else {
+        ++iter;
       }
     }
-
-    return result;
   }
-  else
-    return type_vec_relationships();
+
+  return result;
 }
 
 void Document::set_relationships(const Glib::ustring& table_name, const type_vec_relationships& vecRelationships) //TODO_shared_relationships

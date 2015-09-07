@@ -175,7 +175,9 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
   Document* document = dynamic_cast<Document*>(get_document());
   if(document)
   {
-    const auto vecRelationships = document->get_relationships(table_name);
+    //Get the relationships used by this table, excluding relationships triggered
+    //by this field itself (to avoid circular self-lookups):
+    const auto vecRelationships = document->get_relationships_excluding_triggered_by(table_name, m_Field->get_name());
     m_pCombo_LookupRelationship->set_relationships(vecRelationships);
   }
 
