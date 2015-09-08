@@ -184,11 +184,11 @@ void ComboBox_Relationship::set_relationships(Document* document, const Glib::us
   }
 }
 
-void ComboBox_Relationship::set_relationships(const type_vec_relationships& relationships, const Glib::ustring& parent_table_name, const Glib::ustring& parent_table_title)
+void ComboBox_Relationship::set_relationships(const type_vec_relationships& relationships)
 {
   m_model->clear();
 
-  set_display_parent_table(parent_table_name, parent_table_title);
+  set_display_parent_table(Glib::ustring(), Glib::ustring());
 
   //Fill the model:
   for(const auto& relationship : relationships)

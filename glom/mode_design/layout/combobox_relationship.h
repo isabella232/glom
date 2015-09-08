@@ -39,7 +39,7 @@ public:
   virtual ~ComboBox_Relationship();
 
   typedef std::vector< std::shared_ptr<Relationship> > type_vec_relationships;
-  void set_relationships(const type_vec_relationships& relationships, const Glib::ustring& parent_table_name = Glib::ustring(), const Glib::ustring& parent_table_title = Glib::ustring());
+  void set_relationships(const type_vec_relationships& relationship);
 
   void set_relationships(Document* document, const Glib::ustring parent_table_name, bool show_related_relationships = false, bool show_parent_table = true);
 
