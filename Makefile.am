@@ -40,8 +40,11 @@ else
 doc_subdirs =
 endif
 
-# TODO: Allow this to be disabled, by letting YELP_HELP_INIT fail nicely as it could with GNOME_DOC_INIT?
+if ENABLE_DOCUMENTATION
 yelp_doc_subdirs = docs/user-guide
+else
+yelp_doc_subdirs = docs/user-guide
+endif
 
 SUBDIRS = po $(doc_subdirs) $(yelp_doc_subdirs)
 

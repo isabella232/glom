@@ -313,8 +313,8 @@ AS_IF([test "x$glom_host_win32" != xyes && test "x$glom_enable_client_only" != x
 AC_DEFINE_UNQUOTED([MYSQL_UTILS_PATH], ["$MYSQL_UTILS_PATH"],
                    [Define to the location of the MySQL utilities.])
 
-
-YELP_HELP_INIT
+AS_IF([test "x$ENABLE_DOCUMENTATION" != xno],
+  [YELP_HELP_INIT])
 
 MM_ARG_ENABLE_DOCUMENTATION
 MM_ARG_WITH_TAGFILE_DOC([libstdc++.tag], [mm-common-libstdc++])
