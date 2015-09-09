@@ -216,6 +216,7 @@ void ComboBox_Relationship::on_cell_data_name(const Gtk::TreeModel::const_iterat
 void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_iterator& iter)
 {
   Gtk::TreeModel::Row row = *iter;
+  Glib::ustring title;
   std::shared_ptr<Relationship> relationship = row[m_model_columns.m_relationship];
   if(relationship)
   {
@@ -225,19 +226,21 @@ void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_itera
       //related relationship:
       std::shared_ptr<Relationship> parent_relationship = (*iterParent)[m_model_columns.m_relationship];
       if(parent_relationship)
-        m_renderer_title->property_text() = item_get_title_or_name(parent_relationship) + "::" + item_get_title_or_name(relationship);
+        title = item_get_title_or_name(parent_relationship) + "::" + item_get_title_or_name(relationship);
     }
     else
-      m_renderer_title->property_text() = item_get_title_or_name(relationship);
+      title = item_get_title_or_name(relationship);
   }
   else if(get_has_parent_table())
   {
-    m_renderer_title->property_text() = (m_extra_table_title.empty() ? m_extra_table_name : m_extra_table_title);
+    title = (m_extra_table_title.empty() ? m_extra_table_name : m_extra_table_title);
   }
   else
   {
     //std::cerr << G_STRFUNC << ": empty relationship and no m_extra_table_name. m_extra_table_name=" << m_extra_table_name << std::endl;
   }
+
+  m_renderer_title->property_text() = title;
 }
 
 bool ComboBox_Relationship::on_row_separator(const Glib::RefPtr<Gtk::TreeModel>& /* model */, const Gtk::TreeModel::const_iterator& iter)
