@@ -102,16 +102,16 @@ void DbAddDel_WithButtons::setup_buttons()
   const auto allow_add = get_allow_user_actions() && m_allow_add;
 
   m_Button_Add.show();
-  m_Button_Add.set_property("visible", allow_add);
+  m_Button_Add.property_visible() = allow_add;
 
   m_Button_Edit.show();
-  m_Button_Edit.set_property("visible", allow_edit);
+  m_Button_Edit.property_visible() = allow_edit;
 
   if(!m_open_button_title.empty())
     m_Button_Edit.set_label(m_open_button_title);
 
   m_Button_Del.show();
-  m_Button_Del.set_property("visible", allow_del);
+  m_Button_Del.property_visible() = allow_del;
 
   m_ButtonBox.show();
 }

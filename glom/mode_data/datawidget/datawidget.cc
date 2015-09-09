@@ -380,7 +380,7 @@ void DataWidget::set_viewable(bool viewable)
   {
     Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(child);
     if(checkbutton)
-      checkbutton->set_property("inconsistent", !viewable);
+      checkbutton->property_inconsistent() = !viewable;
   }
 }
 

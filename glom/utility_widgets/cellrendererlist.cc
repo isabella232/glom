@@ -29,9 +29,9 @@ CellRendererList::CellRendererList()
    //TODO: This should not be necessary - our gtkmm callbacks are somehow preventing the popup from appearing.
 {
   m_refModel = Gtk::ListStore::create(m_model_columns);
-  set_property("model", m_refModel);
-  set_property("text-column", 0); //This must be a text column, in m_refModel.
-  set_property("editable", true); //It would be useless if we couldn't edit it.
+  property_model() = m_refModel;
+  property_text_column() = 0; //This must be a text column, in m_refModel.
+  property_editable() = true; //It would be useless if we couldn't edit it.
 }
 
 CellRendererList::~CellRendererList()
@@ -52,7 +52,7 @@ void CellRendererList::append_list_item(const Glib::ustring& text)
 
 void CellRendererList::set_restrict_values_to_list(bool val)
 {
-  set_property("has-entry", static_cast<gboolean>(!val));
+  property_has_entry() = static_cast<gboolean>(!val);
 }
 
 

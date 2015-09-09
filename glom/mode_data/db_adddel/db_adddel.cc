@@ -578,7 +578,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const std:
       pCellRendererText->signal_editing_started().connect(sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_editing_started));
 
       //Make it editable:
-      pCellRendererText->set_property("editable", true);
+      pCellRendererText->property_editable() = true;
 
       //Connect to its signal:
       pCellRendererText->signal_edited().connect(
@@ -590,7 +590,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const std:
     Gtk::CellRendererToggle* pCellRendererToggle = dynamic_cast<Gtk::CellRendererToggle*>(pCellRenderer);
     if(pCellRendererToggle)
     {
-      pCellRendererToggle->set_property("activatable", true);
+      pCellRendererToggle->property_activatable() = true;
 
       if(item_field) //Only fields can be edited:
       {

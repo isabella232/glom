@@ -460,9 +460,9 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
   if(iter == m_iter_existing_recent)
     pixbuf_renderer->property_icon_name() = "folder";
 
-  pixbuf_renderer->set_property("stock-size", Gtk::ICON_SIZE_BUTTON);
+  pixbuf_renderer->property_stock_size() = Gtk::ICON_SIZE_BUTTON;
   pixbuf_renderer->property_icon_name() = std::string();
-  pixbuf_renderer->set_property("pixbuf", Glib::RefPtr<Gdk::Pixbuf>());
+  pixbuf_renderer->property_pixbuf() = Glib::RefPtr<Gdk::Pixbuf>();
 
   if(iter == m_iter_existing_recent)
     pixbuf_renderer->property_icon_name() = "folder";
@@ -484,13 +484,13 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
     {
       //Glib::RefPtr<Gtk::RecentInfo> info = (*iter)[m_existing_columns.m_col_recent_info];
       //pixbuf_renderer->property_pixbuf() = (*info)->get_icon(Gtk::ICON_SIZE_BUTTON);
-      pixbuf_renderer->set_property("icon-name", Glib::ustring("glom"));
+      pixbuf_renderer->property_icon_name() = Glib::ustring("glom");
     }
 #ifndef G_OS_WIN32
     else if(m_existing_model->is_ancestor(m_iter_existing_network, iter))
     {
       //pixbuf_renderer->property_icon_name() = Gtk::Stock::CONNECT.id;
-      pixbuf_renderer->set_property("icon-name", Glib::ustring("glom"));
+      pixbuf_renderer->property_icon_name() = Glib::ustring("glom");
     }
 #endif
     else
@@ -544,7 +544,7 @@ void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const
   {
     if(m_new_model->is_ancestor(m_iter_new_template, iter))
     {
-      pixbuf_renderer->set_property("icon-name", Glib::ustring("glom"));
+      pixbuf_renderer->property_icon_name() = Glib::ustring("glom");
     }
     else
     {

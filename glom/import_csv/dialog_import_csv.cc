@@ -279,7 +279,7 @@ void Dialog_Import_CSV::encoding_data_func(const Gtk::TreeModel::iterator& iter,
   const auto name = (*iter)[m_encoding_columns.m_col_name];
   const auto charset = (*iter)[m_encoding_columns.m_col_charset];
 
-  renderer.set_property("text", encoding_display(name, charset));
+  renderer.property_text() = encoding_display(name, charset);
 }
 
 bool Dialog_Import_CSV::row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& /* model */, const Gtk::TreeModel::iterator& iter) const
@@ -553,9 +553,9 @@ void Dialog_Import_CSV::line_data_func(Gtk::CellRenderer* renderer, const Gtk::T
     throw std::logic_error("CellRenderer is not a CellRendererText in line_data_func");
 
   if(row == -1)
-    renderer_text->set_property("text", Glib::ustring(_("Target Field")));
+    renderer_text->property_text() = Glib::ustring(_("Target Field"));
   else
-    renderer_text->set_property("text", Glib::ustring::compose("%1", row + 1));
+    renderer_text->property_text() = Glib::ustring::compose("%1", row + 1);
 }
 
 void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, guint column_number)
@@ -628,8 +628,8 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
     }
   }
 
-  renderer_combo->set_property("text", text);
-  renderer_combo->set_property("editable", editable);
+  renderer_combo->property_text() = text;
+  renderer_combo->property_editable() = editable;
 }
 
 

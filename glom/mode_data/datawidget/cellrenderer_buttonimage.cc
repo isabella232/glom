@@ -29,7 +29,7 @@ GlomCellRenderer_ButtonImage::GlomCellRenderer_ButtonImage():
   property_icon_name() = "document-open"; //A default.
 
   //So that it calls activate_vfunc():
-  set_property("mode", Gtk::CELL_RENDERER_MODE_ACTIVATABLE);
+  property_mode() = Gtk::CELL_RENDERER_MODE_ACTIVATABLE;
 }
 
 GlomCellRenderer_ButtonImage::~GlomCellRenderer_ButtonImage()

@@ -133,9 +133,9 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
     {
       Gtk::CellRendererPixbuf* pixbuf_renderer = Gtk::manage( new Gtk::CellRendererPixbuf() );
 
-      const Glib::RefPtr<const Gdk::Pixbuf> pixbuf = UiUtils::get_pixbuf_for_gda_value(item_image->m_image);
+      const Glib::RefPtr<Gdk::Pixbuf> pixbuf = UiUtils::get_pixbuf_for_gda_value(item_image->m_image);
       if(pixbuf)
-        pixbuf_renderer->set_property("pixbuf", pixbuf);
+        pixbuf_renderer->property_pixbuf() = pixbuf;
       else
         pixbuf_renderer->property_icon_name() = "image-missing";
 
@@ -147,7 +147,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
       if(item_text)
       {
         Gtk::CellRendererText* pCellText = Gtk::manage( new Gtk::CellRendererText() );
-        pCellText->set_property("text", item_get_title(item_text));
+        pCellText->property_text() = item_get_title(item_text);
 
         cell = pCellText;
       }
@@ -157,7 +157,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
         if(item_button)
         {
           GlomCellRenderer_ButtonText* pCellButton = Gtk::manage( new GlomCellRenderer_ButtonText() );
-          pCellButton->set_property("text", item_get_title_or_name(item_button));
+          pCellButton->property_text() = item_get_title_or_name(item_button);
           //pCellButton->set_fixed_width(50); //Otherwise it doesn't show up. TODO: Discover the width of the contents.
 
           cell = pCellButton;
