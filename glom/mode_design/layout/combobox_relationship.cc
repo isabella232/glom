@@ -186,7 +186,13 @@ void ComboBox_Relationship::set_relationships(Document* document, const Glib::us
 
 void ComboBox_Relationship::set_relationships(const type_vec_relationships& relationships)
 {
+  set_relationships_excluding_triggered_by(relationships, Glib::ustring());
+}
+
+void ComboBox_Relationship::set_relationships_excluding_triggered_by(const type_vec_relationships& relationships, const Glib::ustring& excluding_triggered_by_field)
+{
   m_model->clear();
+  m_excluding_triggered_by_field = excluding_triggered_by_field;
 
   set_display_parent_table(Glib::ustring(), Glib::ustring());
 
@@ -213,10 +219,19 @@ void ComboBox_Relationship::on_cell_data_name(const Gtk::TreeModel::const_iterat
 }
 */
 
+bool ComboBox_Relationship::get_cell_is_sensitive(const std::shared_ptr<const Relationship>& relationship) const
+{
+  if(m_excluding_triggered_by_field.empty())
+    return true;
+
+  return relationship->get_from_field() != m_excluding_triggered_by_field;
+}
+
 void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_iterator& iter)
 {
   Gtk::TreeModel::Row row = *iter;
   Glib::ustring title;
+  bool sensitive = true;
   std::shared_ptr<Relationship> relationship = row[m_model_columns.m_relationship];
   if(relationship)
   {
@@ -226,10 +241,16 @@ void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_itera
       //related relationship:
       std::shared_ptr<Relationship> parent_relationship = (*iterParent)[m_model_columns.m_relationship];
       if(parent_relationship)
+      {
         title = item_get_title_or_name(parent_relationship) + "::" + item_get_title_or_name(relationship);
+        sensitive = get_cell_is_sensitive(parent_relationship);
+      }
     }
     else
+    {
       title = item_get_title_or_name(relationship);
+      sensitive = get_cell_is_sensitive(relationship);
+    }
   }
   else if(get_has_parent_table())
   {
@@ -241,6 +262,7 @@ void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_itera
   }
 
   m_renderer_title->property_text() = title;
+  m_renderer_title->property_sensitive() = sensitive;
 }
 
 bool ComboBox_Relationship::on_row_separator(const Glib::RefPtr<Gtk::TreeModel>& /* model */, const Gtk::TreeModel::const_iterator& iter)
@@ -254,6 +276,7 @@ void ComboBox_Relationship::on_cell_data_fromfield(const Gtk::TreeModel::const_i
 {
   Gtk::TreeModel::Row row = *iter;
   Glib::ustring text;
+  bool sensitive = true;
   std::shared_ptr<Relationship> relationship = row[m_model_columns.m_relationship];
   if(relationship && relationship->get_has_fields())
   {
@@ -262,15 +285,20 @@ void ComboBox_Relationship::on_cell_data_fromfield(const Gtk::TreeModel::const_i
     {
       std::shared_ptr<Relationship> parent_relationship = (*iterParent)[m_model_columns.m_relationship];
       if(parent_relationship)
+      {
         text = Glib::ustring::compose(_(" Via: %1::%2"), item_get_title(parent_relationship), relationship->get_from_field());
+        sensitive = get_cell_is_sensitive(parent_relationship);
+      }
     }
     else
     {
       text = Glib::ustring::compose(_(" Via: %1"), relationship->get_to_field());
+      sensitive = get_cell_is_sensitive(relationship);
     }
   }
 
   m_renderer_fromfield->property_text() = text;
+  m_renderer_fromfield->property_sensitive() = sensitive;
 }
 
 void ComboBox_Relationship::set_display_parent_table(const Glib::ustring& table_name, const Glib::ustring& table_title)

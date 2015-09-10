@@ -177,8 +177,8 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
   {
     //Get the relationships used by this table, excluding relationships triggered
     //by this field itself (to avoid circular self-lookups):
-    const auto vecRelationships = document->get_relationships_excluding_triggered_by(table_name, m_Field->get_name());
-    m_pCombo_LookupRelationship->set_relationships(vecRelationships);
+    const auto vecRelationships = document->get_relationships(table_name);
+    m_pCombo_LookupRelationship->set_relationships_excluding_triggered_by(vecRelationships, m_Field->get_name());
   }
 
   std::shared_ptr<Relationship> lookup_relationship;

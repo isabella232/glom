@@ -41,6 +41,8 @@ public:
   typedef std::vector< std::shared_ptr<Relationship> > type_vec_relationships;
   void set_relationships(const type_vec_relationships& relationship);
 
+  void set_relationships_excluding_triggered_by(const type_vec_relationships& relationship, const Glib::ustring& excluding_triggered_by_field);
+
   void set_relationships(Document* document, const Glib::ustring parent_table_name, bool show_related_relationships = false, bool show_parent_table = true);
 
   void set_selected_relationship(const std::shared_ptr<const Relationship>& relationship);
@@ -64,6 +66,7 @@ private:
   void on_cell_data_fromfield(const Gtk::TreeModel::const_iterator& iter);
   bool on_row_separator(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::const_iterator& iter);
 
+  bool get_cell_is_sensitive(const std::shared_ptr<const Relationship>& relationship) const;
   bool get_has_parent_table() const;
 
   //Tree model columns:
@@ -86,6 +89,7 @@ private:
   Gtk::CellRendererText* m_renderer_fromfield;
 
   Glib::ustring m_extra_table_name, m_extra_table_title;
+  Glib::ustring m_excluding_triggered_by_field;
 };
 
 } //namespace Glom

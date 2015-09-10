@@ -189,13 +189,6 @@ public:
    */
   type_vec_relationships get_relationships(const Glib::ustring& table_name, bool plus_system_prefs = false) const;
 
-
-  /** Get relationships used by this table,
-   * excluding relationships whose from_field is the @a excluding_triggered_by_field field,
-   * to prevent self-triggering lookups.
-   */
-  type_vec_relationships get_relationships_excluding_triggered_by(const Glib::ustring& table_name, const Glib::ustring& excluding_triggered_by_field, bool plus_system_prefs = false) const;
-
   void set_relationships(const Glib::ustring& table_name, const type_vec_relationships& vecRelationships);
 
   std::shared_ptr<Relationship> get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const;
