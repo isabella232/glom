@@ -253,6 +253,7 @@ bool ComboBox_Relationship::on_row_separator(const Glib::RefPtr<Gtk::TreeModel>&
 void ComboBox_Relationship::on_cell_data_fromfield(const Gtk::TreeModel::const_iterator& iter)
 {
   Gtk::TreeModel::Row row = *iter;
+  Glib::ustring text;
   std::shared_ptr<Relationship> relationship = row[m_model_columns.m_relationship];
   if(relationship && relationship->get_has_fields())
   {
@@ -261,15 +262,15 @@ void ComboBox_Relationship::on_cell_data_fromfield(const Gtk::TreeModel::const_i
     {
       std::shared_ptr<Relationship> parent_relationship = (*iterParent)[m_model_columns.m_relationship];
       if(parent_relationship)
-        m_renderer_fromfield->property_text() = Glib::ustring::compose(_(" Via: %1::%2"), item_get_title(parent_relationship), relationship->get_from_field());
+        text = Glib::ustring::compose(_(" Via: %1::%2"), item_get_title(parent_relationship), relationship->get_from_field());
     }
     else
     {
-      m_renderer_fromfield->property_text() = Glib::ustring::compose(_(" Via: %1"), relationship->get_to_field());
+      text = Glib::ustring::compose(_(" Via: %1"), relationship->get_to_field());
     }
   }
-  else
-    m_renderer_fromfield->property_text() = Glib::ustring();
+
+  m_renderer_fromfield->property_text() = text;
 }
 
 void ComboBox_Relationship::set_display_parent_table(const Glib::ustring& table_name, const Glib::ustring& table_title)
