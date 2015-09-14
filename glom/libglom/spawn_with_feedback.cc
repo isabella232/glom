@@ -44,15 +44,6 @@ namespace Glom
 namespace Spawn
 {
 
-class CommandLineThreadData
-{
-public:
-  std::string m_command;
-  Glib::Threads::Cond* m_cond;
-  Glib::Threads::Mutex* m_mutex;
-  bool* m_result;
-};
-
 static void on_spawn_info_finished(const Glib::RefPtr<Glib::MainLoop>& mainloop)
 {
   //Allow our mainloop.run() to return:
