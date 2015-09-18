@@ -61,9 +61,15 @@ void set_node_attribute_value(xmlpp::Element* node, const Glib::ustring& strAttr
   }
 }
 
-xmlpp::Element* get_node_child_named(const xmlpp::Element* node, const Glib::ustring& strName)
+xmlpp::Element* get_node_child_named(xmlpp::Element* node, const Glib::ustring& strName)
 {
-  xmlpp::Element* nodeResult = nullptr;
+  auto result = get_node_child_named(const_cast<const xmlpp::Element*>(node), strName);
+  return const_cast<xmlpp::Element*>(result);
+}
+
+const xmlpp::Element* get_node_child_named(const xmlpp::Element* node, const Glib::ustring& strName)
+{
+  const xmlpp::Element* nodeResult = nullptr;
 
   if(node)
   { 
@@ -74,7 +80,7 @@ xmlpp::Element* get_node_child_named(const xmlpp::Element* node, const Glib::ust
     //as well as Elements with the name "text".
     for(const auto& item : list)
     {
-      nodeResult = dynamic_cast<xmlpp::Element*>(item);  
+      nodeResult = dynamic_cast<const xmlpp::Element*>(item);
       if(nodeResult)
         return nodeResult;
     }                       
