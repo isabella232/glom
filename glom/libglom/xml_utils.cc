@@ -50,7 +50,7 @@ void set_node_attribute_value(xmlpp::Element* node, const Glib::ustring& strAttr
 {
   if(node)
   {
-    xmlpp::Attribute* attribute = node->get_attribute(strAttributeName);
+    auto attribute = node->get_attribute(strAttributeName);
     if(attribute)
       attribute->set_value(strValue);
     else
@@ -67,7 +67,7 @@ xmlpp::Element* get_node_child_named(const xmlpp::Element* node, const Glib::ust
 
   if(node)
   { 
-    xmlpp::Node::NodeList list = node->get_children(strName);
+    const auto list = node->get_children(strName);
 
     //We check all of them, instead of just the first, until we find one,
     //because get_children() returns, for instance, TextNodes (which are not Elements) for "text", 
@@ -85,7 +85,7 @@ xmlpp::Element* get_node_child_named(const xmlpp::Element* node, const Glib::ust
 
 xmlpp::Element* get_node_child_named_with_add(xmlpp::Element* node, const Glib::ustring& strName)
 {
-  xmlpp::Element* nodeResult = get_node_child_named(node, strName);
+  auto nodeResult = get_node_child_named(node, strName);
 
   if(!nodeResult)
     nodeResult = node->add_child(strName);
@@ -280,7 +280,7 @@ Glib::ustring get_child_text_node(const xmlpp::Element* node, const Glib::ustrin
 
 void set_child_text_node(xmlpp::Element* node, const Glib::ustring& child_node_name, const Glib::ustring& text)
 {
-  xmlpp::Element* child = get_node_child_named(node, child_node_name);
+  auto child = get_node_child_named(node, child_node_name);
   if(!child)
   {
     if(text.empty())
@@ -291,7 +291,7 @@ void set_child_text_node(xmlpp::Element* node, const Glib::ustring& child_node_n
 
   const auto text_used = Utils::string_clean_for_xml(text);
 
-  xmlpp::TextNode* text_child = child->get_child_text();
+  auto text_child = child->get_child_text();
   if(!text_child)
     child->add_child_text(text_used);
   else
