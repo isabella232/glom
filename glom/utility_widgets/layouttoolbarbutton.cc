@@ -30,7 +30,7 @@ LayoutToolbarButton::LayoutToolbarButton(const std::string& icon_name, LayoutWid
                                          const Glib::ustring& title, const Glib::ustring& tooltip)
 : Gtk::ToolButton()
 {
-  Gtk::Image* image = Gtk::manage (new Gtk::Image());
+  auto image = Gtk::manage (new Gtk::Image());
 
   const auto resource_path = UiUtils::get_icon_path(icon_name);
   if(!Utils::get_resource_exists(resource_path))

@@ -42,7 +42,7 @@ Window_BoxHolder::Window_BoxHolder(Box_WithButtons* pBox, const Glib::ustring& t
   pBox->show();
 
   //Set the default button, if there is one:
-  Gtk::Widget* default_button = pBox->get_default_button();
+  auto default_button = pBox->get_default_button();
   if(default_button)
     set_default(*default_button);
 }

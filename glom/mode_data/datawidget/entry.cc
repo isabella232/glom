@@ -192,7 +192,7 @@ bool Entry::on_button_press_event(GdkEventButton *button_event)
 {
   //Enable/Disable items.
   //We did this earlier, but get_appwindow is more likely to work now:
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -224,7 +224,7 @@ bool Entry::on_button_press_event(GdkEventButton *button_event)
 
 AppWindow* Entry::get_appwindow() const
 {
-  Gtk::Container* pWindow = const_cast<Gtk::Container*>(get_toplevel());
+  auto pWindow = const_cast<Gtk::Container*>(get_toplevel());
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<AppWindow*>(pWindow);

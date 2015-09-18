@@ -116,7 +116,7 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
 
   if(m_portal)
   {
-    Document* document = get_document();    
+    auto document = get_document();    
     m_key_field = DbUtils::get_fields_for_table_one_field(document,
       LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
   }
@@ -233,7 +233,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
       const auto date = value_date.get_date();
 
       //Get all the values for this row:
-      type_vector_values* pVector = new type_vector_values(m_FieldsShown.size());
+      auto pVector = new type_vector_values(m_FieldsShown.size());
       for(int column_index = 0; column_index < columns_count; ++column_index)
       {
         (*pVector)[column_index] = datamodel->get_value_at(column_index, row_index);
@@ -352,7 +352,7 @@ Box_Data_Calendar_Related::type_vecConstLayoutFields Box_Data_Calendar_Related::
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Box_Data_Calendar_Related::on_dialog_layout_hide()
 {
-  Dialog_Layout_Calendar_Related* dialog_related = dynamic_cast<Dialog_Layout_Calendar_Related*>(m_pDialogLayout);
+  auto dialog_related = dynamic_cast<Dialog_Layout_Calendar_Related*>(m_pDialogLayout);
   g_assert(dialog_related);
   m_portal = dialog_related->get_portal_layout();
 
@@ -384,7 +384,7 @@ Dialog_Layout* Box_Data_Calendar_Related::create_layout_dialog() const
 
 void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)
 {
-  Dialog_Layout_Calendar_Related* related_dialog = dynamic_cast<Dialog_Layout_Calendar_Related*>(dialog);
+  auto related_dialog = dynamic_cast<Dialog_Layout_Calendar_Related*>(dialog);
   g_assert(related_dialog);
 
   std::shared_ptr<LayoutItem_CalendarPortal> derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
@@ -512,7 +512,7 @@ void Box_Data_Calendar_Related::setup_menu(Gtk::Widget* /* this */)
     sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_MenuPopup_activate_layout) );
 
   //TODO: This does not work until this widget is in a container in the window:
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -542,7 +542,7 @@ void Box_Data_Calendar_Related::on_calendar_button_press_event(GdkEventButton *b
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Enable/Disable items.
   //We did this earlier, but get_appwindow is more likely to work now:
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.

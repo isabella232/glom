@@ -172,7 +172,7 @@ void CanvasImageMovable::scale_to_size()
   double width = 0;
   double height = 0;
   get_width_height(width, height);
-  Goocanvas::Canvas* canvas = get_canvas();
+  auto canvas = get_canvas();
   if(!canvas)
   {
     std::cerr << G_STRFUNC << ": canvas is null" << std::endl;

@@ -78,15 +78,15 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   m_label_extra_message.set_halign(Gtk::ALIGN_START);
   m_label_extra_message.set_valign(Gtk::ALIGN_CENTER);
 
-  Gtk::Frame* frame = Gtk::manage(new Gtk::Frame());
-  Gtk::Label* frame_label = Gtk::manage(new Gtk::Label());
+  auto frame = Gtk::manage(new Gtk::Frame());
+  auto frame_label = Gtk::manage(new Gtk::Label());
   frame_label->set_markup(UiUtils::bold_message(_("New Database")));
   frame_label->show();
   frame->set_label_widget(*frame_label);
   frame->set_shadow_type(Gtk::SHADOW_NONE);
   frame->show();
 
-  Gtk::Box* vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)));
+  auto vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)));
   vbox->set_margin_start(Utils::to_utype(UiUtils::DefaultSpacings::LARGE));
   vbox->set_margin_top(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
   frame->add(*vbox);
@@ -94,14 +94,14 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
 
   vbox->pack_start(m_label_extra_message); /* For instance, an extra hint when saving from an example, saying that a new file must be saved. */
 
-  Gtk::Label* label_newdb = Gtk::manage(new Gtk::Label(_("Please choose a human-readable title for the new database. You can change this later in the database properties. It may contain any characters.")));
+  auto label_newdb = Gtk::manage(new Gtk::Label(_("Please choose a human-readable title for the new database. You can change this later in the database properties. It may contain any characters.")));
   vbox->pack_start(*label_newdb);
   label_newdb->set_halign(Gtk::ALIGN_START);
   label_newdb->set_valign(Gtk::ALIGN_CENTER);
   label_newdb->show();
 
-  Gtk::Box* box_label = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::LARGE)));
-  Gtk::Label* label_title = Gtk::manage(new Gtk::Label(_("_Title:"), true));
+  auto box_label = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::LARGE)));
+  auto label_title = Gtk::manage(new Gtk::Label(_("_Title:"), true));
   box_label->pack_start(*label_title, Gtk::PACK_SHRINK);
   label_title->show();
   box_label->pack_start(m_entry_title);

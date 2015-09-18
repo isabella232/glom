@@ -76,7 +76,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
   LayoutWidgetField* pFieldWidget = nullptr;  
   if(glom_type == Field::glom_field_type::BOOLEAN)
   {
-    DataWidgetChildren::CheckButton* checkbutton = Gtk::manage( new DataWidgetChildren::CheckButton() );
+    auto checkbutton = Gtk::manage( new DataWidgetChildren::CheckButton() );
     checkbutton->show();
     checkbutton->signal_toggled().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
 
@@ -91,9 +91,9 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
   }
   else if(glom_type == Field::glom_field_type::IMAGE)
   {
-    ImageGlom* image = Gtk::manage( new ImageGlom() );
+    auto image = Gtk::manage( new ImageGlom() );
     image->set_size_request(200, 200);
-    //Gtk::Image* image = Gtk::manage( new Gtk::Image("/home/murrayc/gnome-small.jpg") );
+    //auto image = Gtk::manage( new Gtk::Image("/home/murrayc/gnome-small.jpg") );
     image->show();
     //TODO: Respond to double-click: checkbutton->signal_toggled().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
 
@@ -115,7 +115,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
     //Use a Combo if there is a drop-down of choices (A "value list"), else an Entry:
     if(field->get_formatting_used().get_has_choices())
     {
-      DataWidgetChildren::ComboChoices* combo = create_combo_widget_for_field(field);
+      auto combo = create_combo_widget_for_field(field);
 
       if(field->get_formatting_used().get_has_custom_choices())
       {
@@ -144,12 +144,12 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
     {
       if((glom_type == Field::glom_field_type::TEXT) && (field->get_formatting_used().get_text_format_multiline()))
       {
-        DataWidgetChildren::TextView* textview = Gtk::manage(new DataWidgetChildren::TextView(glom_type));
+        auto textview = Gtk::manage(new DataWidgetChildren::TextView(glom_type));
         pFieldWidget = textview;
       }
       else  //DATE, NUMBER, etc.
       {
-        DataWidgetChildren::Entry* entry = Gtk::manage(new DataWidgetChildren::Entry(glom_type));
+        auto entry = Gtk::manage(new DataWidgetChildren::Entry(glom_type));
         pFieldWidget = entry;
       }
 
@@ -209,7 +209,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
     if(glom_type == Field::glom_field_type::DATE)
     {
       //Let the user choose a date from a calendar dialog:
-      Gtk::Button* button_date = Gtk::manage(new Gtk::Button(_("..."))); //TODO: A better label/icon for "Choose Date".
+      auto button_date = Gtk::manage(new Gtk::Button(_("..."))); //TODO: A better label/icon for "Choose Date".
       button_date->set_tooltip_text(_("Choose a date from an on-screen calendar."));
       button_date->show();
       hbox_parent->pack_start(*button_date, Gtk::PACK_SHRINK);
@@ -229,12 +229,12 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
       //can generally not be edited via another table's layout.
       if(field_used_in_relationship_to_one)
       {
-        Gtk::Button* button_select = Gtk::manage(new Gtk::Button(_("_Find"), true));
+        auto button_select = Gtk::manage(new Gtk::Button(_("_Find"), true));
         button_select->set_tooltip_text(_("Enter search criteria to identify records in the other table, to choose an ID for this field."));
         hbox_parent->pack_start(*button_select, Gtk::PACK_SHRINK);
         button_select->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_select_id));
 
-        Gtk::Button* button_new = Gtk::manage(new Gtk::Button(_("_New"), true));
+        auto button_new = Gtk::manage(new Gtk::Button(_("_New"), true));
         button_new->set_tooltip_text(_("Enter details for a new record in the other table, then use its ID for this field."));
         hbox_parent->pack_start(*button_new, Gtk::PACK_SHRINK);
         button_new->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_new_id));
@@ -275,8 +275,8 @@ DataWidget::type_signal_choices_changed DataWidget::signal_choices_changed()
 
 void DataWidget::set_value(const Gnome::Gda::Value& value)
 {
-  Gtk::Widget* widget = get_data_child_widget();
-  LayoutWidgetField* generic_field_widget = dynamic_cast<LayoutWidgetField*>(widget);
+  auto widget = get_data_child_widget();
+  auto generic_field_widget = dynamic_cast<LayoutWidgetField*>(widget);
   if(generic_field_widget)
   {
     //if(generic_field_widget->get_layout_item())
@@ -286,7 +286,7 @@ void DataWidget::set_value(const Gnome::Gda::Value& value)
   }
   else
   {
-    Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(widget);
+    auto checkbutton = dynamic_cast<Gtk::CheckButton*>(widget);
     if(checkbutton)
     {
       bool bValue = false;
@@ -315,12 +315,12 @@ void DataWidget::update_go_to_details_button_sensitivity()
 Gnome::Gda::Value DataWidget::get_value() const
 {
   const auto widget = get_data_child_widget();
-  const LayoutWidgetField* generic_field_widget = dynamic_cast<const LayoutWidgetField*>(widget);
+  const auto generic_field_widget = dynamic_cast<const LayoutWidgetField*>(widget);
   if(generic_field_widget)
     return generic_field_widget->get_value();
   else
   {
-    const Gtk::CheckButton* checkbutton = dynamic_cast<const Gtk::CheckButton*>(widget);
+    const auto checkbutton = dynamic_cast<const Gtk::CheckButton*>(widget);
     if(checkbutton)
     {
       return Gnome::Gda::Value(checkbutton->get_active());
@@ -372,13 +372,13 @@ int DataWidget::get_suitable_width(const std::shared_ptr<const LayoutItem_Field>
 
 void DataWidget::set_viewable(bool viewable)
 {
-  Gtk::Widget* child = get_data_child_widget();
-  Gtk::Entry* entry = dynamic_cast<Gtk::Entry*>(child);
+  auto child = get_data_child_widget();
+  auto entry = dynamic_cast<Gtk::Entry*>(child);
   if(entry)
     entry->set_visibility(viewable); //TODO: This is not an ideal way to show non-viewable fields..
   else
   {
-    Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(child);
+    auto checkbutton = dynamic_cast<Gtk::CheckButton*>(child);
     if(checkbutton)
       checkbutton->property_inconsistent() = !viewable;
   }
@@ -386,8 +386,8 @@ void DataWidget::set_viewable(bool viewable)
 
 void DataWidget::set_editable(bool editable)
 {
-  Gtk::Widget* child = get_data_child_widget();
-  Gtk::Editable* gtkeditable = dynamic_cast<Gtk::Editable*>(child);
+  auto child = get_data_child_widget();
+  auto gtkeditable = dynamic_cast<Gtk::Editable*>(child);
   if(gtkeditable)
   {
     gtkeditable->set_editable(editable);
@@ -399,7 +399,7 @@ void DataWidget::set_editable(bool editable)
   //and our TextView class actually derives from ScrolledView anyway,
   //and out LayoutWidgetBase::set_read_only() override takes care of it instead.
   //But let's leave this here just in case:
-  Gtk::TextView* textview = 
+  auto textview = 
     dynamic_cast<Gtk::TextView*>(child);
   if(textview)
   {
@@ -407,14 +407,14 @@ void DataWidget::set_editable(bool editable)
     return;
   }
   
-  LayoutWidgetBase* base = dynamic_cast<LayoutWidgetBase*>(child);
+  auto base = dynamic_cast<LayoutWidgetBase*>(child);
   if(base)
   {
     base->set_read_only(!editable);
     return;
   }
 
-  Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(child);
+  auto checkbutton = dynamic_cast<Gtk::CheckButton*>(child);
   if(checkbutton)
     checkbutton->set_sensitive(editable);
 }
@@ -426,7 +426,7 @@ bool DataWidget::on_button_press_event(GdkEventButton *button_event)
 
   //Enable/Disable items.
   //We did this earlier, but get_appwindow is more likely to work now:
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
   if(pApp)
   {
     //TODO: Avoid doing this multiple times:
@@ -504,7 +504,7 @@ std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_layout(const std::shar
   add_view(dialog); //Give it access to the document.
   dialog->set_field(start_field, m_table_name);
 
-  Gtk::Window* parent = get_appwindow();
+  auto parent = get_appwindow();
   if(parent)
     dialog->set_transient_for(*parent);
 
@@ -569,7 +569,7 @@ void DataWidget::on_child_user_requested_layout()
 
 AppWindow* DataWidget::get_appwindow() const
 {
-  Gtk::Container* pWindow = const_cast<Gtk::Container*>(get_toplevel());
+  auto pWindow = const_cast<Gtk::Container*>(get_toplevel());
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<AppWindow*>(pWindow);
@@ -635,7 +635,7 @@ void DataWidget::on_button_choose_date()
 
   if(dialog)
   {
-    Gtk::Window* parent = get_appwindow(); //This doesn't work (and would be wrong) when the widget is in a Field Definitions dialog.
+    auto parent = get_appwindow(); //This doesn't work (and would be wrong) when the widget is in a Field Definitions dialog.
     if(parent)
       dialog->set_transient_for(*parent);
     dialog->set_date_chosen(get_value());
@@ -674,7 +674,7 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
   if(dialog)
   {
     //dialog->set_document(get_document(), table_name, field);
-    Gtk::Window* parent = get_appwindow();
+    auto parent = get_appwindow();
     if(parent)
       dialog->set_transient_for(*parent);
     add_view(dialog);
@@ -723,7 +723,7 @@ bool DataWidget::offer_related_record_id_new(Gnome::Gda::Value& chosen_id)
   if(dialog)
   {
     //dialog->set_document(get_document(), table_name, field);
-    Gtk::Window* parent = get_appwindow();
+    auto parent = get_appwindow();
     if(parent)
       dialog->set_transient_for(*parent);
     add_view(dialog);

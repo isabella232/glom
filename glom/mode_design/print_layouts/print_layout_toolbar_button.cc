@@ -31,7 +31,7 @@ PrintLayoutToolbarButton::PrintLayoutToolbarButton(const std::string& icon_name,
                                          const Glib::ustring& title, const Glib::ustring& tooltip)
 : Gtk::ToolButton()
 {
-  Gtk::Image* image = Gtk::manage (new Gtk::Image());
+  auto image = Gtk::manage (new Gtk::Image());
 
   const auto resource_path = UiUtils::get_icon_path(icon_name);
   if(!Utils::get_resource_exists(resource_path))
@@ -64,8 +64,8 @@ PrintLayoutToolbarButton::enumItems PrintLayoutToolbarButton::get_item_type_from
   PrintLayoutToolbarButton::enumItems result = enumItems::INVALID;
 
   //Put this code in the toolbar class:
-  Gtk::Widget* palette_candidate = drag_get_source_widget(drag_context);
-  Gtk::ToolPalette* palette = dynamic_cast<Gtk::ToolPalette*>(palette_candidate);
+  auto palette_candidate = drag_get_source_widget(drag_context);
+  auto palette = dynamic_cast<Gtk::ToolPalette*>(palette_candidate);
   while(palette_candidate && !palette) {
     palette_candidate = palette_candidate->get_parent();
     palette = dynamic_cast<Gtk::ToolPalette*>(palette_candidate);
@@ -74,7 +74,7 @@ PrintLayoutToolbarButton::enumItems PrintLayoutToolbarButton::get_item_type_from
   if(!palette)
     return result;
 
-  Gtk::Widget* tool_item = palette->get_drag_item(selection_data);
+  auto tool_item = palette->get_drag_item(selection_data);
   if(!tool_item)
     return result;
 

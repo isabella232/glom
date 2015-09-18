@@ -134,7 +134,7 @@ void ComboGlom::set_choices_fixed(const Formatting::type_list_values& list_value
     if(i == 0 && get_has_entry())
       continue;
 
-    Gtk::CellRendererText* cell = Gtk::manage(new Gtk::CellRendererText);
+    auto cell = Gtk::manage(new Gtk::CellRendererText);
     cell->property_xalign() = 0.0f;
 
     //Use the renderer:
@@ -207,7 +207,7 @@ void ComboGlom::set_choices_related(const Document* document, const std::shared_
       continue;
     }
 
-    Gtk::CellRenderer* cell = create_cell(layout_item, m_table_name, document, get_fixed_cell_height(*this));
+    auto cell = create_cell(layout_item, m_table_name, document, get_fixed_cell_height(*this));
 
     //Add the ViewColumn:
     if(cell)
@@ -278,7 +278,7 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
     if(cells.empty())
       return;
 
-    Gtk::CellRendererText* cell = dynamic_cast<Gtk::CellRendererText*>(cells[0]);
+    auto cell = dynamic_cast<Gtk::CellRendererText*>(cells[0]);
     if(!cell)
       return;
 
@@ -317,7 +317,7 @@ g_warning("ComboGlom::on_button_press_event()");
 
   //Enable/Disable items.
   //We did this earlier, but get_appwindow is more likely to work now:
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -349,7 +349,7 @@ g_warning("ComboGlom::on_button_press_event()");
 
 AppWindow* ComboGlom::get_appwindow() const
 {
-  Gtk::Container* pWindow = const_cast<Gtk::Container*>(get_toplevel());
+  auto pWindow = const_cast<Gtk::Container*>(get_toplevel());
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<AppWindow*>(pWindow);

@@ -60,7 +60,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
   field_new->set_glom_type(Glom::Field::glom_field_type::TEXT);
 
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  auto connection_pool = Glom::ConnectionPool::get_instance();
   if(!connection_pool)
   {
     std::cerr << G_STRFUNC << ": Failure: connection_pool is null." << std::endl;

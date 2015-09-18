@@ -65,7 +65,7 @@ void LayoutWidgetUtils::setup_util_menu(Gtk::Widget* widget)
 
 void LayoutWidgetUtils::on_menu_delete_activate()
 {
-  Gtk::Widget* parent = dynamic_cast<Gtk::Widget*>(this);
+  auto parent = dynamic_cast<Gtk::Widget*>(this);
   if(!parent)
   {
     // Should never happen!

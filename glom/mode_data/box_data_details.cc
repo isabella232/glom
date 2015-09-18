@@ -85,7 +85,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_ScrolledWindow.add(m_FlowTable);
   // The FlowTable does not support native scrolling, so gtkmm adds it to a
   // viewport first that also has some shadow we do not want.
-  Gtk::Viewport* viewport = dynamic_cast<Gtk::Viewport*>(m_FlowTable.get_parent());
+  auto viewport = dynamic_cast<Gtk::Viewport*>(m_FlowTable.get_parent());
   if(viewport)
     viewport->set_shadow_type(Gtk::SHADOW_NONE);
 
@@ -214,7 +214,7 @@ void Box_Data_Details::create_layout()
   //Remove existing child widgets:
   m_FlowTable.remove_all();
 
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(document)
   {
     m_FlowTable.set_table(m_table_name); //This allows portals to get full Relationship information
@@ -343,7 +343,7 @@ bool Box_Data_Details::fill_from_database()
 
         if((result && result->get_n_rows()) || primary_key_is_empty) //either a working result or no result needed.
         {
-          const Document* pDoc = dynamic_cast<const Document*>(get_document());
+          const auto pDoc = dynamic_cast<const Document*>(get_document());
           if(pDoc)
           {
             //Get glom-specific field info:
@@ -410,10 +410,10 @@ void Box_Data_Details::on_button_new()
   {
     //Warn the user that they won't see anything if there are no fields on the layout,
     //doing an extra check:
-    Document* document = get_document();
+    auto document = get_document();
     if( document && !(document->get_data_layout_groups_have_any_fields(m_layout_name, m_table_name, m_layout_platform)) )
     {
-      Gtk::Window* parent_window = get_app_window();
+      auto parent_window = get_app_window();
       if(parent_window)
         UiUtils::show_ok_dialog(_("Layout Contains No Fields"), _("There are no fields on the layout, so there is no way to enter data in a new record."), *parent_window, Gtk::MESSAGE_ERROR);
     }
@@ -608,7 +608,7 @@ void Box_Data_Details::on_flowtable_layout_changed()
   m_FlowTable.get_layout_groups(layout_groups);
 
   //Store it in the document:
-  Document* document = get_document();
+  auto document = get_document();
   if(document)
     document->set_data_layout_groups(m_layout_name, m_table_name, m_layout_platform, layout_groups);
   //Build the view again from the new layout:
@@ -616,7 +616,7 @@ void Box_Data_Details::on_flowtable_layout_changed()
   create_layout();
 
   //Store it in the document:
-  Document* document = get_document();
+  auto document = get_document();
   if(document)
     document->set_modified();
 
@@ -707,9 +707,9 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
 
   const auto strFieldName = layout_field->get_name();
 
-  Gtk::Window* window = get_app_window();
+  auto window = get_app_window();
 
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
 
   Gnome::Gda::Value primary_key_value = get_primary_key_value_selected();
   //std::cout << "debug: " << G_STRFUNC << ": primary_key_value=" << primary_key_value.to_string() << std::endl;
@@ -922,7 +922,7 @@ void Box_Data_Details::print_layout()
   if(!table_privs.m_view)
     return;  //TODO: Warn the user.
    
-  const Document* document = dynamic_cast<const Document*>(get_document());
+  const auto document = dynamic_cast<const Document*>(get_document());
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document was null" << std::endl;
@@ -945,7 +945,7 @@ void Box_Data_Details::print_layout()
       false /* do not avoid page margins */);
   
   //Show the print preview window:
-  AppWindow* app = AppWindow::get_appwindow();
+  auto app = AppWindow::get_appwindow();
   PrintLayoutUtils::do_print_layout(layout, m_found_set,
     false /* not preview */, document, true /* avoid page margins */, app);
 }

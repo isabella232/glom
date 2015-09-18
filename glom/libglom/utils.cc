@@ -351,7 +351,7 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
     const Glib::ustring parent = layout_item->get_sql_table_or_join_alias_name(table_name);
 
     //TODO: Use std::dynamic_pointer_cast?
-    const LayoutItem_FieldSummary* fieldsummary = dynamic_cast<const LayoutItem_FieldSummary*>(layout_item.get());
+    const auto fieldsummary = dynamic_cast<const LayoutItem_FieldSummary*>(layout_item.get());
     if(fieldsummary)
     {
       const Gnome::Gda::SqlBuilder::Id id_function = builder->add_function(

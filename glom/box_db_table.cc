@@ -41,7 +41,7 @@ Box_DB_Table::~Box_DB_Table()
 
 const Gtk::Window* Box_DB_Table::get_app_window() const
 {
-  Box_DB_Table* nonconst = const_cast<Box_DB_Table*>(this);
+  auto nonconst = const_cast<Box_DB_Table*>(this);
   return nonconst->get_app_window();
 }
   

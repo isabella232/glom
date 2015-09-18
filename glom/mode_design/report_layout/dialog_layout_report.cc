@@ -152,10 +152,10 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
     // Use set_cell_data_func() to give more control over the cell attributes depending on the row:
 
     //Name column:
-    Gtk::TreeView::Column* column_part = Gtk::manage( new Gtk::TreeView::Column(_("Part")) );
+    auto column_part = Gtk::manage( new Gtk::TreeView::Column(_("Part")) );
     m_treeview_available_parts->append_column(*column_part);
 
-    Gtk::CellRendererText* renderer_part = Gtk::manage(new Gtk::CellRendererText());
+    auto renderer_part = Gtk::manage(new Gtk::CellRendererText());
     column_part->pack_start(*renderer_part);
     column_part->set_cell_data_func(*renderer_part, sigc::mem_fun(*this, &Dialog_Layout_Report::on_cell_data_available_part));
 
@@ -203,19 +203,19 @@ void Dialog_Layout_Report::setup_model(Gtk::TreeView& treeview, Glib::RefPtr<typ
   // Use set_cell_data_func() to give more control over the cell attributes depending on the row:
 
   //Name column:
-  Gtk::TreeView::Column* column_part = Gtk::manage( new Gtk::TreeView::Column(_("Part")) );
+  auto column_part = Gtk::manage( new Gtk::TreeView::Column(_("Part")) );
   treeview.append_column(*column_part);
 
-  Gtk::CellRendererText* renderer_part = Gtk::manage(new Gtk::CellRendererText);
+  auto renderer_part = Gtk::manage(new Gtk::CellRendererText);
   column_part->pack_start(*renderer_part);
   column_part->set_cell_data_func(*renderer_part,
     sigc::bind( sigc::mem_fun(*this, &Dialog_Layout_Report::on_cell_data_part), model));
 
   //Details column:
-  Gtk::TreeView::Column* column_details = Gtk::manage( new Gtk::TreeView::Column(_("Details")) );
+  auto column_details = Gtk::manage( new Gtk::TreeView::Column(_("Details")) );
   treeview.append_column(*column_details);
 
-  Gtk::CellRendererText* renderer_details = Gtk::manage(new Gtk::CellRendererText);
+  auto renderer_details = Gtk::manage(new Gtk::CellRendererText);
   column_details->pack_start(*renderer_details);
   column_details->set_cell_data_func(*renderer_details,
     sigc::bind( sigc::mem_fun(*this, &Dialog_Layout_Report::on_cell_data_details), model));
@@ -409,7 +409,7 @@ void Dialog_Layout_Report::enable_buttons()
 
   std::shared_ptr<LayoutItem> layout_item_parent;
 
-  Gtk::TreeView* treeview = get_selected_treeview();
+  auto treeview = get_selected_treeview();
   if(!treeview)
     return;
 
@@ -490,7 +490,7 @@ Glib::RefPtr<Dialog_Layout_Report::type_model> Dialog_Layout_Report::get_selecte
 {
   Glib::RefPtr <type_model> model;
 
-  Gtk::TreeView* treeview = get_selected_treeview();
+  auto treeview = get_selected_treeview();
   if(treeview)
     model = Glib::RefPtr<type_model>::cast_dynamic(treeview->get_model());
 
@@ -499,7 +499,7 @@ Glib::RefPtr<Dialog_Layout_Report::type_model> Dialog_Layout_Report::get_selecte
 
 Glib::RefPtr<const Dialog_Layout_Report::type_model> Dialog_Layout_Report::get_selected_model() const
 {
-  Dialog_Layout_Report* this_nonconst = const_cast<Dialog_Layout_Report*>(this);
+  auto this_nonconst = const_cast<Dialog_Layout_Report*>(this);
   return this_nonconst->get_selected_model();
 }
 
@@ -525,7 +525,7 @@ Gtk::TreeView* Dialog_Layout_Report::get_selected_treeview()
 
 const Gtk::TreeView* Dialog_Layout_Report::get_selected_treeview() const
 {
-  Dialog_Layout_Report* this_nonconst = const_cast<Dialog_Layout_Report*>(this);
+  auto this_nonconst = const_cast<Dialog_Layout_Report*>(this);
   return this_nonconst->get_selected_treeview();
 }
 
@@ -533,7 +533,7 @@ const Gtk::TreeView* Dialog_Layout_Report::get_selected_treeview() const
 
 void Dialog_Layout_Report::on_button_delete()
 {
-  Gtk::TreeView* treeview = get_selected_treeview();
+  auto treeview = get_selected_treeview();
   if(!treeview)
     return;
 
@@ -554,7 +554,7 @@ void Dialog_Layout_Report::on_button_delete()
 
 void Dialog_Layout_Report::on_button_up()
 {
-  Gtk::TreeView* treeview = get_selected_treeview();
+  auto treeview = get_selected_treeview();
   if(!treeview)
     return;
 
@@ -591,7 +591,7 @@ void Dialog_Layout_Report::on_button_up()
 
 void Dialog_Layout_Report::on_button_down()
 {
-  Gtk::TreeView* treeview = get_selected_treeview();
+  auto treeview = get_selected_treeview();
   if(!treeview)
     return;
 
@@ -629,7 +629,7 @@ void Dialog_Layout_Report::on_button_down()
 
 void Dialog_Layout_Report::on_button_add()
 {
-  Gtk::TreeView* treeview = get_selected_treeview();
+  auto treeview = get_selected_treeview();
   if(!treeview)
     return;
 
@@ -721,7 +721,7 @@ Gtk::TreeModel::iterator Dialog_Layout_Report::get_selected_group_parent() const
 
   Gtk::TreeModel::iterator parent;
 
-  Gtk::TreeView* treeview = const_cast<Gtk::TreeView*>(get_selected_treeview());
+  auto treeview = const_cast<Gtk::TreeView*>(get_selected_treeview());
   if(!treeview)
     return parent;
 
@@ -770,7 +770,7 @@ Gtk::TreeModel::iterator Dialog_Layout_Report::get_selected_available() const
 
 void Dialog_Layout_Report::on_button_formatting()
 {
-  Gtk::TreeView* treeview = get_selected_treeview();
+  auto treeview = get_selected_treeview();
   if(!treeview)
     return;
 
@@ -802,7 +802,7 @@ void Dialog_Layout_Report::on_button_formatting()
 
 void Dialog_Layout_Report::on_button_edit()
 {
-  Gtk::TreeView* treeview = get_selected_treeview();
+  auto treeview = get_selected_treeview();
   if(!treeview)
     return;
 
@@ -946,7 +946,7 @@ void Dialog_Layout_Report::on_cell_data_part(Gtk::CellRenderer* renderer, const 
   //TODO: If we ever use this as a real layout tree, then let's add icons for each type.
 
   //Set the view's cell properties depending on the model's data:
-  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(renderer_text)
   {
     if(iter)
@@ -965,7 +965,7 @@ void Dialog_Layout_Report::on_cell_data_part(Gtk::CellRenderer* renderer, const 
 void Dialog_Layout_Report::on_cell_data_details(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, const Glib::RefPtr<type_model>& model)
 {
 //Set the view's cell properties depending on the model's data:
-  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(renderer_text)
   {
     if(iter)
@@ -986,7 +986,7 @@ void Dialog_Layout_Report::on_cell_data_available_part(Gtk::CellRenderer* render
   //TODO: If we ever use this as a real layout tree, then let's add icons for each type.
 
   //Set the view's cell properties depending on the model's data:
-  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(renderer_text)
   {
     if(iter)

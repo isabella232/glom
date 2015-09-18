@@ -99,7 +99,7 @@ bool instantiate_widget()
 
   //GTK+ complains if the a Gtk::Dialog has no transient parent.
   Gtk::Window* parent_window = nullptr;
-  Gtk::Dialog* dialog = dynamic_cast<Gtk::Dialog*>(widget);
+  auto dialog = dynamic_cast<Gtk::Dialog*>(widget);
   if(dialog)
   {
     parent_window = new Gtk::Window();

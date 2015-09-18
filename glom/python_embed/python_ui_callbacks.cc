@@ -40,35 +40,35 @@ AppPythonUICallbacks::AppPythonUICallbacks()
 
 void AppPythonUICallbacks::on_show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value)
 {
-  AppWindow* app = AppWindow::get_appwindow();
+  auto app = AppWindow::get_appwindow();
   if(app)
     app->show_table_details(table_name, primary_key_value);
 }
 
 void AppPythonUICallbacks::on_show_table_list(const Glib::ustring& table_name)
 {
-  AppWindow* app = AppWindow::get_appwindow();
+  auto app = AppWindow::get_appwindow();
   if(app)
     app->show_table_list(table_name);
 }
 
 void AppPythonUICallbacks::on_print_report(const Glib::ustring& report_name)
 {
-  AppWindow* app = AppWindow::get_appwindow();
+  auto app = AppWindow::get_appwindow();
   if(app)
     app->print_report(report_name);
 }
 
 void AppPythonUICallbacks::on_print_layout()
 {
-  AppWindow* app = AppWindow::get_appwindow();
+  auto app = AppWindow::get_appwindow();
   if(app)
     app->print_layout();
 }
 
 void AppPythonUICallbacks::on_start_new_record()
 {
-  AppWindow* app = AppWindow::get_appwindow();
+  auto app = AppWindow::get_appwindow();
   if(app)
     app->start_new_record();
 }

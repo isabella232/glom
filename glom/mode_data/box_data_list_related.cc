@@ -327,7 +327,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Box_Data_List_Related::on_dialog_layout_hide()
 {
-  Dialog_Layout_List_Related* dialog_related = dynamic_cast<Dialog_Layout_List_Related*>(m_pDialogLayout);
+  auto dialog_related = dynamic_cast<Dialog_Layout_List_Related*>(m_pDialogLayout);
   g_assert(dialog_related);
   m_portal = dialog_related->get_portal_layout();
 
@@ -356,7 +356,7 @@ Dialog_Layout* Box_Data_List_Related::create_layout_dialog() const
 
 void Box_Data_List_Related::prepare_layout_dialog(Dialog_Layout* dialog)
 {
-  Dialog_Layout_List_Related* related_dialog = dynamic_cast<Dialog_Layout_List_Related*>(dialog);
+  auto related_dialog = dynamic_cast<Dialog_Layout_List_Related*>(dialog);
   g_assert(related_dialog);
 
   related_dialog->init_with_portal(m_layout_name, m_layout_platform, get_document(), m_portal, m_parent_table);
@@ -398,7 +398,7 @@ void Box_Data_List_Related::create_layout()
 {
   Box_Data::create_layout(); //Fills m_TableFields.
 
-  const Document* pDoc = dynamic_cast<const Document*>(get_document());
+  const auto pDoc = dynamic_cast<const Document*>(get_document());
   if(!pDoc)
     return;
 

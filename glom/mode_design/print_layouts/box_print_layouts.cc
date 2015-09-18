@@ -99,7 +99,7 @@ bool Box_Print_Layouts::fill_from_database()
   m_colTitle = m_AddDel.add_column(_("Title"), AddDelColumnInfo::enumStyles::Text, editable, true);
 
   std::vector<Glib::ustring> listItems;
-  Document* document = get_document();
+  auto document = get_document();
   if(document)
   {
     for(const auto& print_layout_name : document->get_print_layout_names(m_table_name))
@@ -161,7 +161,7 @@ void Box_Print_Layouts::on_adddel_user_requested_edit(const Gtk::TreeModel::iter
 {
   Glib::ustring name = m_AddDel.get_value_key(row);
 
-  Document* document = get_document();
+  auto document = get_document();
   if(document)
   {
      save_to_document();
@@ -205,7 +205,7 @@ void Box_Print_Layouts::on_adddel_user_changed(const Gtk::TreeModel::iterator& r
   if(get_userlevel() == AppState::userlevels::DEVELOPER)
   {
     const auto name = m_AddDel.get_value_key(row);
-    Document* document = get_document();
+    auto document = get_document();
 
     std::shared_ptr<PrintLayout> item = document->get_print_layout(m_table_name, name);
     if(item)

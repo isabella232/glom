@@ -84,7 +84,7 @@ void Box_Data_ManyRecords::print_layout()
   else
   {
     //Create a simple report on the fly:
-    Document* document = get_document();
+    auto document = get_document();
     std::shared_ptr<Report> report_temp = ReportBuilder::create_standard_list_report(document, m_table_name);
 
     //TODO: Find a way to get a full locale name from the simplified locale name from AppWindow::get_current_locale():

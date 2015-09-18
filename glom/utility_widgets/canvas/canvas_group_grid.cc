@@ -180,7 +180,7 @@ Glib::RefPtr<CanvasLineMovable> CanvasGroupGrid::create_rule_line(double pos, bo
   double top = 0.0;
   double right = 0.0;
   double bottom = 0.0;
-  Goocanvas::Canvas* canvas = get_canvas();
+  auto canvas = get_canvas();
   if(canvas)
     canvas->get_bounds(left, top, right, bottom);
 
@@ -301,7 +301,7 @@ void CanvasGroupGrid::create_grid_lines()
   double top = 0.0;
   double right = 0.0;
   double bottom = 0.0;
-  Goocanvas::Canvas* canvas = get_canvas();
+  auto canvas = get_canvas();
   if(canvas)
     canvas->get_bounds(left, top, right, bottom);
  
@@ -344,7 +344,7 @@ void CanvasGroupGrid::show_temp_rule(double x, double y, bool show)
   double top = 0.0;
   double right = 0.0;
   double bottom = 0.0;
-  Goocanvas::Canvas* canvas = get_canvas();
+  auto canvas = get_canvas();
   if(canvas)
     canvas->get_bounds(left, top, right, bottom);
 

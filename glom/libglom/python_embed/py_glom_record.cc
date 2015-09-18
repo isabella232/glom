@@ -70,7 +70,7 @@ boost::python::object PyGlomRecord::get_connection()
       return result;
     }
 
-    PyObject* cobject = pygobject_new( G_OBJECT(m_connection->gobj()) );
+    auto cobject = pygobject_new( G_OBJECT(m_connection->gobj()) );
     if(cobject)
       result = boost::python::object( boost::python::borrowed(cobject) );
   }

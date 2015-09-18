@@ -68,7 +68,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 {
   //std::cout << G_STRFUNC << ": debug: use_entered_data=" << use_entered_data << std::endl;
 
-  Document* document = get_document();
+  auto document = get_document();
 
   std::shared_ptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
@@ -314,7 +314,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
         set_entered_field_data(item_from_key, primary_key_value);
 
         //Set it in the database too:
-        Document* document = get_document();
+        auto document = get_document();
         std::shared_ptr<Field> field_from_key = DbUtils::get_fields_for_table_one_field(document,
           relationship->get_from_table(), relationship->get_from_field()); //TODO_Performance.
         if(!field_from_key)
@@ -463,7 +463,7 @@ Base_DB_Table_Data::type_vecConstLayoutFields Base_DB_Table_Data::get_related_fi
 {
   type_vecConstLayoutFields result;
 
-  const Document* document = dynamic_cast<const Document*>(get_document());
+  const auto document = dynamic_cast<const Document*>(get_document());
   if(document)
   {
     const auto field_name = field->get_name(); //At the moment, relationships can not be based on related fields on the from side.

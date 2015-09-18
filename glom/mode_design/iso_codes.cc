@@ -62,7 +62,7 @@ type_list_currencies get_list_of_currency_symbols()
 
         for(const auto& node : nodeRoot->get_children("iso_4217_entry"))
         {
-          xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(node);
+          auto nodeEntry = dynamic_cast<xmlpp::Element*>(node);
           if(nodeEntry)
           {
             Currency currency;
@@ -167,7 +167,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
 
         for(const auto& node : nodeRoot->get_children("iso_639_entry"))
         {
-          xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(node);
+          auto nodeEntry = dynamic_cast<xmlpp::Element*>(node);
           if(nodeEntry)
           {
             //TODO: There are 3 codes (not each entry has each code). Is this the correct one to identify a language?
@@ -221,7 +221,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
 
         for(const auto& node : nodeRoot->get_children("iso_3166_entry"))
         {
-          xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(node);
+          auto nodeEntry = dynamic_cast<xmlpp::Element*>(node);
           if(nodeEntry)
           {
             const auto attribute_code = nodeEntry->get_attribute("alpha_2_code");

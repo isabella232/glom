@@ -125,7 +125,7 @@ DbAddDel::DbAddDel()
 DbAddDel::~DbAddDel()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
   if(pApp)
   {
     pApp->remove_developer_action(m_refContextLayout);
@@ -243,7 +243,7 @@ void DbAddDel::setup_menu(Gtk::Widget* /* widget */)
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_layout) );
 
   //TODO: This does not work until this widget is in a container in the window:
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -288,7 +288,7 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *button_event)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Enable/Disable items.
   //We did this earlier, but get_appwindow is more likely to work now:
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -462,7 +462,7 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const std::shar
     const auto test = get_view_column_index(treemodel_col, view_column_index);
     if(test)
     {
-      Gtk::TreeView::Column* pColumn = m_TreeView.get_column(view_column_index);
+      auto pColumn = m_TreeView.get_column(view_column_index);
       if(pColumn)
       {
         if(pColumn != m_treeviewcolumn_button) //This would activate the button. Let's avoid this, though it should never happen.
@@ -562,14 +562,14 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const std:
 {
   InnerIgnore innerIgnore(this); //see comments for InnerIgnore class
 
-  Gtk::CellRenderer* pCellRenderer = create_cell(layout_item, m_table_name, get_document(), get_fixed_cell_height());
+  auto pCellRenderer = create_cell(layout_item, m_table_name, get_document(), get_fixed_cell_height());
 
   std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
 
   //Set extra cellrenderer attributes, depending on the type used,
   //to support editing:
 
-  Gtk::CellRendererText* pCellRendererText = dynamic_cast<Gtk::CellRendererText*>(pCellRenderer);
+  auto pCellRendererText = dynamic_cast<Gtk::CellRendererText*>(pCellRenderer);
   if(pCellRendererText)
   {
     //Connect to edited signal:
@@ -587,7 +587,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const std:
   }
   else
   {
-    Gtk::CellRendererToggle* pCellRendererToggle = dynamic_cast<Gtk::CellRendererToggle*>(pCellRenderer);
+    auto pCellRendererToggle = dynamic_cast<Gtk::CellRendererToggle*>(pCellRenderer);
     if(pCellRendererToggle)
     {
       pCellRendererToggle->property_activatable() = true;
@@ -601,7 +601,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const std:
     }
     else
     {
-      Gtk::CellRendererPixbuf* pCellRendererPixbuf = dynamic_cast<Gtk::CellRendererPixbuf*>(pCellRenderer);
+      auto pCellRendererPixbuf = dynamic_cast<Gtk::CellRendererPixbuf*>(pCellRenderer);
       if(pCellRendererPixbuf)
       {
         //TODO: Do something when it's clicked, such as show the big image in a window or tooltip?
@@ -609,7 +609,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const std:
     }
   }
 
-  GlomCellRenderer_ButtonText* pCellButton = Gtk::manage( new GlomCellRenderer_ButtonText() );
+  auto pCellButton = Gtk::manage( new GlomCellRenderer_ButtonText() );
   if(pCellButton)
   {
     std::shared_ptr<const LayoutItem_Button> item_button = std::dynamic_pointer_cast<const LayoutItem_Button>(layout_item);
@@ -659,7 +659,7 @@ void DbAddDel::construct_specified_columns()
   int view_column_index = 0;
 
   {
-    GlomCellRenderer_ButtonImage* pCellButton = Gtk::manage(new GlomCellRenderer_ButtonImage());
+    auto pCellButton = Gtk::manage(new GlomCellRenderer_ButtonImage());
 
     pCellButton->signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel::on_cell_button_clicked));
 
@@ -716,7 +716,7 @@ void DbAddDel::construct_specified_columns()
       }
 
       //Add the ViewColumn
-      Gtk::CellRenderer* pCellRenderer = construct_specified_columns_cellrenderer(layout_item, model_column_index, item_data_model_column_index);
+      auto pCellRenderer = construct_specified_columns_cellrenderer(layout_item, model_column_index, item_data_model_column_index);
       if(pCellRenderer)
       {
         //Get the index of the field in the query, if it is a field:
@@ -880,7 +880,7 @@ void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint mo
     return;
   }
 
-  CellRendererDbList* cell =
+  auto cell =
     dynamic_cast<CellRendererDbList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
   if(!cell)
   {
@@ -1073,7 +1073,7 @@ void DbAddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
   const auto test = get_view_column_index(col, view_column_index);
   if(test)
   {
-    CellRendererDbList* pCellRenderer =
+    auto pCellRenderer =
       dynamic_cast<CellRendererDbList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
     if(pCellRenderer)
     {
@@ -1367,14 +1367,14 @@ void DbAddDel::on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& ro
   
   guint view_column_index = 0;
   get_view_column_index(model_column_index, view_column_index);
-  Gtk::TreeView::Column* pColumn = m_TreeView.get_column(view_column_index);
+  auto pColumn = m_TreeView.get_column(view_column_index);
   if(!pColumn)
   {
     std::cerr << G_STRFUNC << ": pColumn is null." << std::endl;
     return;
   }
   
-  Gtk::CellRendererText* pCell = dynamic_cast<Gtk::CellRendererText*>(pColumn->get_first_cell());
+  auto pCell = dynamic_cast<Gtk::CellRendererText*>(pColumn->get_first_cell());
   if(!pCell)
   {
     std::cerr << G_STRFUNC << ": pCell is null." << std::endl;
@@ -1687,7 +1687,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
 {
   InnerIgnore innerIgnore(this); //see comments for InnerIgnore class
 
-  DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(Utils::string_escape_underscores(title), cellrenderer) );
+  auto pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(Utils::string_escape_underscores(title), cellrenderer) );
 
   //This is needed by fixed-height mode. We get critical warnings otherwise.
   //But we must call set_fixed_width() later or we will have a zero-width column.
@@ -1922,7 +1922,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
       {
         case(Field::glom_field_type::BOOLEAN):
         {
-          Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(renderer);
+          auto pDerived = dynamic_cast<Gtk::CellRendererToggle*>(renderer);
           if(pDerived)
             pDerived->set_active( (value.get_value_type() == G_TYPE_BOOLEAN) && value.get_boolean() );
 
@@ -1930,7 +1930,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
         }
         case(Field::glom_field_type::IMAGE):
         {
-          Gtk::CellRendererPixbuf* pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
+          auto pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
           if(pDerived)
           {
             Glib::RefPtr<Gdk::Pixbuf> pixbuf = UiUtils::get_pixbuf_for_gda_value(value);
@@ -1949,7 +1949,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
         default:
         {
           //TODO: Maybe we should have custom cellrenderers for time, date, and numbers.
-          Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
+          auto pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
           if(pDerived)
           {
             //std::cout << "debug: " << G_STRFUNC << ": field name=" << field->get_name() << ", glom type=" << field->get_glom_type() << std::endl;
@@ -1992,7 +1992,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
 
 AppWindow* DbAddDel::get_appwindow()
 {
-  Gtk::Container* pWindow = get_toplevel();
+  auto pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<AppWindow*>(pWindow);
@@ -2005,10 +2005,10 @@ void DbAddDel::on_treeview_cell_editing_started(Gtk::CellEditable* cell_editable
   if(m_validation_retry)
   {
     //This is the CellEditable inside the CellRenderer. 
-    Gtk::CellEditable* celleditable_validated = cell_editable;
+    auto celleditable_validated = cell_editable;
 
     //It's usually an Entry, at least for a CellRendererText:
-    Gtk::Entry* pEntry = dynamic_cast<Gtk::Entry*>(celleditable_validated);
+    auto pEntry = dynamic_cast<Gtk::Entry*>(celleditable_validated);
     if(pEntry)
     {
       pEntry->set_text(m_validation_invalid_text_for_retry);
@@ -2132,7 +2132,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
     Glib::ustring table_name = m_found_set.m_table_name;
     std::shared_ptr<Field> primary_key_field;
     Gnome::Gda::Value primary_key_value;
-    Gtk::Window* window = get_appwindow();
+    auto window = get_appwindow();
 
     //Just update the record:
     try
@@ -2149,7 +2149,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
         //plus how to identify the record in that table.
         const auto relationship_name = layout_field->get_relationship_name();
 
-        Document* document = dynamic_cast<Document*>(get_document());
+        auto document = dynamic_cast<Document*>(get_document());
 
         std::shared_ptr<Relationship> relationship = document->get_relationship(m_found_set.m_table_name, relationship_name);
         if(relationship)
@@ -2452,7 +2452,7 @@ void DbAddDel::treeview_delete_all_columns()
 
 const Gtk::Window* DbAddDel::get_app_window() const
 {
-  DbAddDel* nonconst = const_cast<DbAddDel*>(this);
+  auto nonconst = const_cast<DbAddDel*>(this);
   return nonconst->get_app_window();
 }
   

@@ -526,7 +526,7 @@ void Dialog_Import_CSV::setup_sample_model(const CsvParser::type_row_strings& ro
 
 Gtk::TreeViewColumn* Dialog_Import_CSV::create_sample_column(const Glib::ustring& title, guint index)
 {
-  Gtk::TreeViewColumn* col = new Gtk::TreeViewColumn(title);
+  auto col = new Gtk::TreeViewColumn(title);
   auto cell = create_sample_cell(index);
   col->pack_start(*Gtk::manage(cell), true);
   col->set_cell_data_func(*cell, sigc::bind(sigc::mem_fun(*this, &Dialog_Import_CSV::field_data_func), index));
@@ -536,7 +536,7 @@ Gtk::TreeViewColumn* Dialog_Import_CSV::create_sample_column(const Glib::ustring
 
 Gtk::CellRendererCombo* Dialog_Import_CSV::create_sample_cell(guint index)
 {
-  Gtk::CellRendererCombo* cell = new Gtk::CellRendererCombo;
+  auto cell = new Gtk::CellRendererCombo;
   cell->property_model() = m_field_model_sorted;
   cell->property_text_column() = 0;
   cell->property_has_entry() = false;

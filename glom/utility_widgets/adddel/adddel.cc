@@ -439,7 +439,7 @@ bool AddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, boo
       bool test = get_view_column_index(column, view_column_index);
       if(test)
       {
-        Gtk::TreeView::Column* pColumn = m_TreeView.get_column(view_column_index);
+        auto pColumn = m_TreeView.get_column(view_column_index);
         if(pColumn)
           m_TreeView.set_cursor(path, *pColumn, start_editing);
         else
@@ -529,7 +529,7 @@ void AddDel::set_column_title(guint col, const Glib::ustring& strText)
   bool bPreventUserSignals = get_prevent_user_signals();
   set_prevent_user_signals(true);
 
-  Gtk::TreeViewColumn* pColumn = m_TreeView.get_column(col);
+  auto pColumn = m_TreeView.get_column(col);
   if(pColumn)
     pColumn->set_title(strText);
 
@@ -609,7 +609,7 @@ void AddDel::construct_specified_columns()
         case(AddDelColumnInfo::enumStyles::Choices):
         {
           //Use a custom CellRenderer:
-          CellRendererList* pCellRendererList = Gtk::manage( new CellRendererList() );
+          auto pCellRendererList = Gtk::manage( new CellRendererList() );
 
           //Add the choices:
           for(const auto& item : m_ColumnTypes[model_column_index].m_choices)
@@ -631,7 +631,7 @@ void AddDel::construct_specified_columns()
           //Cast to the derived type, because append_column<> is templated, and needs the type at compile-time
           //to use the correct specialization:
 
-          Gtk::TreeModelColumn<bool>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<bool>* >(pModelColumn);
+          auto pModelColumnDerived = static_cast< Gtk::TreeModelColumn<bool>* >(pModelColumn);
           if(pModelColumnDerived)
             treeview_append_column(Utils::string_escape_underscores(column_name), *pModelColumnDerived, column_id);
 
@@ -643,7 +643,7 @@ void AddDel::construct_specified_columns()
 
           //Cast to the derived type, because append_column<> is templated, and needs the type at compile-time
           //to use the correct specialization:
-          Gtk::TreeModelColumn<Glib::ustring>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<Glib::ustring>* >(pModelColumn);
+          auto pModelColumnDerived = static_cast< Gtk::TreeModelColumn<Glib::ustring>* >(pModelColumn);
           if(pModelColumnDerived)
             treeview_append_column(Utils::string_escape_underscores(column_name), *pModelColumnDerived, column_id);
 
@@ -653,7 +653,7 @@ void AddDel::construct_specified_columns()
 
       if(m_ColumnTypes[model_column_index].m_editable)
       {
-        Gtk::CellRendererText* pCellRendererText = dynamic_cast<Gtk::CellRendererText*>(m_TreeView.get_column_cell_renderer(view_column_index));
+        auto pCellRendererText = dynamic_cast<Gtk::CellRendererText*>(m_TreeView.get_column_cell_renderer(view_column_index));
         if(pCellRendererText)
         {
           //Connect a signal handler:
@@ -669,7 +669,7 @@ void AddDel::construct_specified_columns()
         }
         else
         {
-           Gtk::CellRendererToggle* pCellRendererToggle = dynamic_cast<Gtk::CellRendererToggle*>(m_TreeView.get_column_cell_renderer(view_column_index));
+           auto pCellRendererToggle = dynamic_cast<Gtk::CellRendererToggle*>(m_TreeView.get_column_cell_renderer(view_column_index));
            if(pCellRendererToggle)
            {
              pCellRendererToggle->property_activatable() = true;
@@ -682,7 +682,7 @@ void AddDel::construct_specified_columns()
       }
 
       //Connect other signals:
-      Gtk::CellRenderer* pCellRenderer = m_TreeView.get_column_cell_renderer(view_column_index);
+      auto pCellRenderer = m_TreeView.get_column_cell_renderer(view_column_index);
       if(pCellRenderer)
         pCellRenderer->signal_editing_started().connect(
           sigc::bind( sigc::mem_fun(*this, &AddDel::on_treeview_cell_editing_started), model_column_index) );
@@ -706,19 +706,19 @@ void AddDel::construct_specified_columns()
         //This is necessary because TreeModelColumnBase's destructor is not virtual.
         case(AddDelColumnInfo::enumStyles::Boolean):
         {
-          Gtk::TreeModelColumn<bool>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<bool>* >(pModelColumn);
+          auto pModelColumnDerived = static_cast< Gtk::TreeModelColumn<bool>* >(pModelColumn);
           delete pModelColumnDerived;
           break;
         }
         case(AddDelColumnInfo::enumStyles::Numerical):
         {
-          Gtk::TreeModelColumn<int>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<int>* >(pModelColumn);
+          auto pModelColumnDerived = static_cast< Gtk::TreeModelColumn<int>* >(pModelColumn);
           delete pModelColumnDerived;
           break;
         }
         default:
         {
-          Gtk::TreeModelColumn<Glib::ustring>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<Glib::ustring>* >(pModelColumn);
+          auto pModelColumnDerived = static_cast< Gtk::TreeModelColumn<Glib::ustring>* >(pModelColumn);
           delete pModelColumnDerived;
           break;
         }
@@ -920,7 +920,7 @@ void AddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
   bool test = get_view_column_index(col, view_column_index);
   if(test)
   {
-    CellRendererList* pCellRenderer = dynamic_cast<CellRendererList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
+    auto pCellRenderer = dynamic_cast<CellRendererList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
     if(pCellRenderer)
     {
       //Add the choices:
@@ -1234,7 +1234,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
                   refTreeSelection->select(row); //TODO: This does not seem to work.
 
                  Gtk::TreeModel::Path path_to_activate = m_refListStore->get_path(row);
-                 Gtk::TreeView::Column* pColumn = m_TreeView.get_column(model_column_index); //TODO: This might the the view column index, not the model column index.
+                 auto pColumn = m_TreeView.get_column(model_column_index); //TODO: This might the the view column index, not the model column index.
                  m_TreeView.set_cursor(path_to_activate, *pColumn, true /* start_editing */); //This highlights the cell, but does not seem to actually start the editing.
                }
              }
@@ -1321,7 +1321,7 @@ bool AddDel::on_treeview_column_drop(Gtk::TreeView* /* treeview */, Gtk::TreeVie
 
 guint AddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, const Gtk::TreeModelColumnBase& model_column, const Glib::ustring& column_id)
 {
-  TreeViewColumnGlom* pViewColumn = Gtk::manage( new TreeViewColumnGlom(title, cellrenderer) );
+  auto pViewColumn = Gtk::manage( new TreeViewColumnGlom(title, cellrenderer) );
   pViewColumn->set_renderer(cellrenderer, model_column); //render it via the default "text" property.
   guint cols_count = m_TreeView.append_column(*pViewColumn);
 

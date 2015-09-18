@@ -69,9 +69,9 @@ populate_spread_table_wrappy(Egg::SpreadTableDnd* spread_table)
 
   for(gsize i = 0; i < G_N_ELEMENTS (strings); ++i)
     {
-      Gtk::Label* label = Gtk::manage(new Gtk::Label(strings[i]));
+      auto label = Gtk::manage(new Gtk::Label(strings[i]));
       Gtk::Frame* frame  = Gtk::manage(new Gtk::Frame());
-      Gtk::EventBox* eventbox = Gtk::manage(new Gtk::EventBox());
+      auto eventbox = Gtk::manage(new Gtk::EventBox());
       label->show();
       frame->show();
       eventbox->show();
@@ -149,10 +149,10 @@ on_togglebutton_toggled(Gtk::ToggleButton* togglebutton, bool& value)
 static Gtk::Window *
 create_window()
 {
-  Gtk::Window* window = new Gtk::Window();
-  Gtk::Box* hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 2));
+  auto window = new Gtk::Window();
+  auto hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 2));
   hbox->show();
-  Gtk::Box* vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 6));
+  auto vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 6));
   vbox->show();
 
   window->set_border_width (8);
@@ -160,11 +160,11 @@ create_window()
   window->add (*hbox);
   hbox->pack_start(*vbox, false, false, 0);
 
-  Gtk::Frame* frame = Gtk::manage(new Gtk::Frame("SpreadTable"));
+  auto frame = Gtk::manage(new Gtk::Frame("SpreadTable"));
   frame->show();
   hbox->pack_start(*frame, true, true, 0);
 
-  Gtk::ScrolledWindow* swindow = Gtk::manage(new Gtk::ScrolledWindow());
+  auto swindow = Gtk::manage(new Gtk::ScrolledWindow());
   swindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   
   swindow->show();
@@ -182,9 +182,9 @@ create_window()
   swindow->add(*paper);
 
   /* Add SpreadTable test control frame */
-  Gtk::Expander* expander = Gtk::manage(new Gtk::Expander("SpreadTable controls"));
+  auto expander = Gtk::manage(new Gtk::Expander("SpreadTable controls"));
   expander->set_expanded();
-  Gtk::Box* paper_cntl = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 2));
+  auto paper_cntl = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 2));
   paper_cntl->show();;
   expander->show();
   expander->add(*paper_cntl);
@@ -207,11 +207,11 @@ create_window()
   hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 2));
   hbox->show();
 
-  Gtk::Widget* label = Gtk::manage(new Gtk::Label("H Spacing"));
+  auto label = Gtk::manage(new Gtk::Label("H Spacing"));
   label->show();
   hbox->pack_start(*label, true, true, 0);
 
-  Gtk::SpinButton* spinbutton = Glib::wrap(GTK_SPIN_BUTTON(gtk_spin_button_new_with_range (0, 30, 1)));
+  auto spinbutton = Glib::wrap(GTK_SPIN_BUTTON(gtk_spin_button_new_with_range (0, 30, 1)));
   spinbutton->set_value(INITIAL_HSPACING);
   spinbutton->show();
 
@@ -255,7 +255,7 @@ create_window()
   paper_cntl->pack_start(*hbox, false, false, 0);
 
   /* Add widget-drop-possible controls */
-  Gtk::ToggleButton* togglebutton = Gtk::manage(new Gtk::ToggleButton("parent accept drop"));
+  auto togglebutton = Gtk::manage(new Gtk::ToggleButton("parent accept drop"));
   togglebutton->show();
   togglebutton->set_active();
   paper_cntl->pack_start(*togglebutton, false, false, 0);
@@ -299,7 +299,7 @@ create_window()
   /* Add test items control frame */
   expander = Gtk::manage(new Gtk::Expander("Test item controls"));
   expander->set_expanded();
-  Gtk::Box* items_cntl = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 2));
+  auto items_cntl = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 2));
   items_cntl->show();
   expander->show();
   expander->add(*items_cntl);
@@ -323,7 +323,7 @@ create_window()
   populate_spread_table_wrappy(paper);
 
   /* Embed another dnd spread table */
-  Egg::SpreadTableDnd* spreadtable_inner = 
+  auto spreadtable_inner = 
     Gtk::manage(new Egg::SpreadTableDnd(
       Gtk::ORIENTATION_VERTICAL,
       INITIAL_LINES));
@@ -357,6 +357,6 @@ main(int argc, char *argv[])
   Glib::RefPtr<Gtk::Application> app = 
     Gtk::Application::create(argc, argv, "org.glom.test_spreadtablednd");
 
-  Gtk::Window* window = create_window();
+  auto window = create_window();
   return app->run(*window);
 }

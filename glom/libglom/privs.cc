@@ -462,7 +462,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
 
   //std::cout << "debug: " << G_STRFUNC << ": Getting non-cached." << std::endl;
 
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   const auto current_user = connection_pool->get_user();
 
   //Is the user in the special developers group?

@@ -38,7 +38,7 @@ namespace Glom
 
 static void apply_formatting(Gtk::CellRenderer* renderer, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item)
 {
-  Gtk::CellRendererText* text_renderer = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  auto text_renderer = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(!text_renderer)
     return;
 
@@ -101,7 +101,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
         const auto formatting = item_field->get_formatting_used();
         if(formatting.get_has_choices())
         {
-          CellRendererDbList* rendererList = Gtk::manage( new CellRendererDbList() );
+          auto rendererList = Gtk::manage( new CellRendererDbList() );
           std::shared_ptr<LayoutItem> unconst = std::const_pointer_cast<LayoutItem>(layout_item); //TODO: Avoid this.
           rendererList->set_layout_item(unconst, table_name);
           bool as_radio_buttons = false; //Can't really be done in a list, so we ignore it.
@@ -131,7 +131,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
     std::shared_ptr<const LayoutItem_Image> item_image = std::dynamic_pointer_cast<const LayoutItem_Image>(layout_item);
     if(item_image)
     {
-      Gtk::CellRendererPixbuf* pixbuf_renderer = Gtk::manage( new Gtk::CellRendererPixbuf() );
+      auto pixbuf_renderer = Gtk::manage( new Gtk::CellRendererPixbuf() );
 
       const Glib::RefPtr<Gdk::Pixbuf> pixbuf = UiUtils::get_pixbuf_for_gda_value(item_image->m_image);
       if(pixbuf)
@@ -146,7 +146,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
       std::shared_ptr<const LayoutItem_Text> item_text = std::dynamic_pointer_cast<const LayoutItem_Text>(layout_item);
       if(item_text)
       {
-        Gtk::CellRendererText* pCellText = Gtk::manage( new Gtk::CellRendererText() );
+        auto pCellText = Gtk::manage( new Gtk::CellRendererText() );
         pCellText->property_text() = item_get_title(item_text);
 
         cell = pCellText;
@@ -156,7 +156,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
         std::shared_ptr<const LayoutItem_Button> item_button = std::dynamic_pointer_cast<const LayoutItem_Button>(layout_item);
         if(item_button)
         {
-          GlomCellRenderer_ButtonText* pCellButton = Gtk::manage( new GlomCellRenderer_ButtonText() );
+          auto pCellButton = Gtk::manage( new GlomCellRenderer_ButtonText() );
           pCellButton->property_text() = item_get_title_or_name(item_button);
           //pCellButton->set_fixed_width(50); //Otherwise it doesn't show up. TODO: Discover the width of the contents.
 
@@ -181,7 +181,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
   }
 
 
-  Gtk::CellRendererText* cell_text = dynamic_cast<Gtk::CellRendererText*>(cell);
+  auto cell_text = dynamic_cast<Gtk::CellRendererText*>(cell);
   if(cell_text)
   {
     //Use an ellipze to indicate excessive text,
@@ -198,8 +198,8 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
   }
 
   //Choices:
-  CellRendererList* pCellRendererList = dynamic_cast<CellRendererList*>(cell);
-  CellRendererDbList* pCellRendererDbList = dynamic_cast<CellRendererDbList*>(cell);
+  auto pCellRendererList = dynamic_cast<CellRendererList*>(cell);
+  auto pCellRendererDbList = dynamic_cast<CellRendererDbList*>(cell);
   if(pCellRendererList) //Used for custom choices:
   {
     pCellRendererList->remove_all_list_items();

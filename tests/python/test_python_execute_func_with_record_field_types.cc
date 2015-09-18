@@ -104,7 +104,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  auto connection_pool = Glom::ConnectionPool::get_instance();
   std::shared_ptr<Glom::SharedConnection> connection = connection_pool->connect();
   g_assert(connection);
 

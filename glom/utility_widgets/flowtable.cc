@@ -41,7 +41,7 @@ FlowTable::~FlowTable()
   while(!m_list_hboxes.empty())
   {
     auto iter = m_list_hboxes.begin();
-    Gtk::Box* hbox = *iter;
+    auto hbox = *iter;
     delete_and_forget_hbox(hbox);
   }
 }
@@ -83,7 +83,7 @@ void FlowTable::delete_and_forget_hbox(Gtk::Box* hbox)
   type_children children = hbox->get_children();
   while(!children.empty())
   {
-    Gtk::Widget* widget = children[0];
+    auto widget = children[0];
     hbox->remove(*widget);
     children = hbox->get_children();
   }
@@ -139,7 +139,7 @@ void FlowTable::insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool 
 {
   if(first && second)
   {
-    Gtk::Box* hbox = new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, get_horizontal_spacing());
+    auto hbox = new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, get_horizontal_spacing());
     m_list_hboxes.push_back(hbox); //So we can delete it whenever necessary.
 
     hbox->pack_start(*first, Gtk::PACK_SHRINK);
@@ -169,7 +169,7 @@ void FlowTable::remove_all()
 {
   for(const auto& item : m_list_first_widgets)
   {
-    Gtk::Widget* first_widget = const_cast<Gtk::Widget*>(item);
+    auto first_widget = const_cast<Gtk::Widget*>(item);
     
     if(first_widget)
       remove(*first_widget);
@@ -191,7 +191,7 @@ void FlowTable::remove(Gtk::Widget& first)
   //std::cout << G_STRFUNC << ": debug: remove() first=" << &first << std::endl;
   
   //Handle widgets that were added to an Box:
-  Gtk::Box* parent = const_cast<Gtk::Box*>(get_parent_hbox(&first));
+  auto parent = const_cast<Gtk::Box*>(get_parent_hbox(&first));
   if(parent)
   {
     //std::cout << "  debug: hbox=" << parent << std::endl;
@@ -283,7 +283,7 @@ bool FlowTable::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 
     int real_x = 0;
     int real_y = 0;
-    Gtk::Widget* unconst = const_cast<Gtk::Widget*>(widget);
+    auto unconst = const_cast<Gtk::Widget*>(widget);
     unconst->translate_coordinates(*this, x, y, real_x, real_y);
     //std::cout << G_STRFUNC << ": real_x: " << real_x << ", real_y: " << real_y << std::endl;
 

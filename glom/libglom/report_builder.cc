@@ -45,7 +45,7 @@ ReportBuilder::~ReportBuilder()
 bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::Element& parent_node, const std::shared_ptr<LayoutGroup>& group)
 {
   //Add XML node:
-  xmlpp::Element* node = parent_node.add_child(group->get_report_part_id());
+  auto node = parent_node.add_child(group->get_report_part_id());
 
   //Add child parts:
   type_vecLayoutItems itemsToGet;
@@ -107,7 +107,7 @@ bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
 bool ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Element& parent_node, const std::shared_ptr<LayoutItem_Summary>& summary)
 {
   //Add XML node:
-  xmlpp::Element* node = parent_node.add_child(summary->get_report_part_id());
+  auto node = parent_node.add_child(summary->get_report_part_id());
 
   //Get fields
   type_vecLayoutItems itemsToGet;
@@ -251,7 +251,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
 
 
         //Add XML node:
-        xmlpp::Element* nodeGroupBy = parent_node.add_child(group_by->get_report_part_id());
+        auto nodeGroupBy = parent_node.add_child(group_by->get_report_part_id());
         XmlUtils::set_node_attribute_value_as_decimal_double(nodeGroupBy, "border_width", group_by->get_border_width());
 
         nodeGroupBy->set_attribute("group_field", field_group_by->get_title_or_name(m_locale_id));
@@ -274,7 +274,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
         //Secondary fields. For instance, the Contact Name, in addition to the Contact ID that we group by.
         if(!(group_by->get_secondary_fields()->m_list_items.empty()))
         {
-          xmlpp::Element* nodeSecondaryFields = nodeGroupBy->add_child("secondary_fields");
+          auto nodeSecondaryFields = nodeGroupBy->add_child("secondary_fields");
 
           type_vecLayoutItems itemsToGet;
           for(const auto& item : group_by->get_secondary_fields()->m_list_items)
@@ -305,7 +305,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
   {
     //There is no group-by field, so ouput all the found records.
     //For instance, the user could use the GroupBy part just to specify a sort, though that would be a bit of a hack:
-    xmlpp::Element* nodeGroupBy = parent_node.add_child(group_by->get_report_part_id()); //We need this to create the HTML table.
+    auto nodeGroupBy = parent_node.add_child(group_by->get_report_part_id()); //We need this to create the HTML table.
     XmlUtils::set_node_attribute_value_as_decimal_double(nodeGroupBy, "border_width", group_by->get_border_width());
     return report_build_groupby_children(found_set_parent, *nodeGroupBy, group_by);
   }
@@ -347,7 +347,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
       std::shared_ptr<LayoutItem_Field> layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
 
       //This adds a field heading (and therefore, column) for fields, or for a vertical group.
-      xmlpp::Element* nodeFieldHeading = parent_node.add_child("field_heading");
+      auto nodeFieldHeading = parent_node.add_child("field_heading");
       if(layoutitem_field && layoutitem_field->get_glom_type() == Field::glom_field_type::NUMERIC)
         nodeFieldHeading->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
 
@@ -399,7 +399,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
 
       for(guint row = 0; row < rows_count; ++row)
       {
-        xmlpp::Element* nodeRow = parent_node.add_child("row");
+        auto nodeRow = parent_node.add_child("row");
 
         guint colField = 0;
         for(const auto& item : items)
@@ -453,7 +453,7 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
 {
   const auto field_type = field->get_glom_type();
 
-  xmlpp::Element* nodeField = nodeParent.add_child(field->get_report_part_id());
+  auto nodeField = nodeParent.add_child(field->get_report_part_id());
   if(field_type == Field::glom_field_type::NUMERIC)
     nodeField->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
 
@@ -514,7 +514,7 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
 bool ReportBuilder::report_build_records_text(const FoundSet& /* found_set */, xmlpp::Element& nodeParent, const std::shared_ptr<const LayoutItem_Text>& textobject, bool vertical)
 {
   //Text object:
-  xmlpp::Element* nodeField = nodeParent.add_child(textobject->get_report_part_id()); //We reuse this node type for text objects.
+  auto nodeField = nodeParent.add_child(textobject->get_report_part_id()); //We reuse this node type for text objects.
   nodeField->set_attribute("value", textobject->get_text(m_locale_id));
 
   if(vertical)
@@ -526,7 +526,7 @@ bool ReportBuilder::report_build_records_text(const FoundSet& /* found_set */, x
 bool ReportBuilder::report_build_records_image(const FoundSet& /* found_set */, xmlpp::Element& nodeParent, const std::shared_ptr<const LayoutItem_Image>& imageobject, bool vertical)
 {
   //Text object:
-  xmlpp::Element* nodeImage = nodeParent.add_child(imageobject->get_report_part_id()); //We reuse this node type for text objects.
+  auto nodeImage = nodeParent.add_child(imageobject->get_report_part_id()); //We reuse this node type for text objects.
   nodeImage->set_attribute("image_uri", imageobject->create_local_image_uri());
 
   if(vertical)
@@ -537,7 +537,7 @@ bool ReportBuilder::report_build_records_image(const FoundSet& /* found_set */, 
 
 bool ReportBuilder::report_build_records_vertical_group(const FoundSet& found_set, xmlpp::Element& parentNode, const std::shared_ptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index)
 {
-  xmlpp::Element* nodeGroupVertical = parentNode.add_child(group->get_report_part_id());
+  auto nodeGroupVertical = parentNode.add_child(group->get_report_part_id());
 
   for(const auto& item : group->m_list_items)
   {
@@ -636,8 +636,8 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::
   //Create a DOM Document with the XML:
   xmlpp::DomParser dom_parser;;
 
-  xmlpp::Document* pDocument = dom_parser.get_document();
-  xmlpp::Element* nodeRoot = pDocument->get_root_node();
+  auto pDocument = dom_parser.get_document();
+  auto nodeRoot = pDocument->get_root_node();
   if(!nodeRoot)
   {
     //Add it if it isn't there already:
@@ -654,7 +654,7 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::
 
 
   //The groups:
-  xmlpp::Element* nodeParent = nodeRoot;
+  auto nodeParent = nodeRoot;
 
 
   nodeRoot->set_attribute("title", report->get_title_or_name(m_locale_id));
@@ -712,7 +712,7 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::
   //Add top-level records, outside of any groupby or summary, if fields have been specified:
   if(!itemsToGet_TopLevel.empty())
   {
-    xmlpp::Element* nodeGroupBy = nodeParent->add_child("ungrouped_records");
+    auto nodeGroupBy = nodeParent->add_child("ungrouped_records");
     if(!report_build_records(found_set, *nodeGroupBy, itemsToGet_TopLevel))
     {
       std::cerr << G_STRFUNC << ": report_build_records() failed." << std::endl;

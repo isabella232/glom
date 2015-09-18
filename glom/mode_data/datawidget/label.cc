@@ -70,7 +70,7 @@ void Label::init()
 
 AppWindow* Label::get_appwindow() const
 {
-  Gtk::Container* pWindow = const_cast<Gtk::Container*>(get_toplevel());
+  auto pWindow = const_cast<Gtk::Container*>(get_toplevel());
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<AppWindow*>(pWindow);
@@ -104,7 +104,7 @@ void Label::on_menu_properties_activate()
 
 bool Label::on_button_press_event(GdkEventButton *button_event)
 {
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
   if(pApp && pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
   {
     GdkModifierType mods;

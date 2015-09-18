@@ -171,7 +171,7 @@ void Box_Data::create_layout()
   set_unstored_data(false);
 
   //Cache the table information, for performance:
-  const Document* document = dynamic_cast<const Document*>(get_document());
+  const auto document = dynamic_cast<const Document*>(get_document());
   m_TableFields = DbUtils::get_fields_for_table(document, m_table_name);
 }
 
@@ -239,7 +239,7 @@ Box_Data::type_vecConstLayoutFields Box_Data::get_fields_to_show() const
 
 Box_Data::type_vecConstLayoutFields Box_Data::get_table_fields_to_show(const Glib::ustring& table_name) const
 {
-  const Document* pDoc = dynamic_cast<const Document*>(get_document());
+  const auto pDoc = dynamic_cast<const Document*>(get_document());
   if(pDoc)
   {
     Document::type_list_layout_groups mapGroupSequence = pDoc->get_data_layout_groups_plus_new_fields(m_layout_name, table_name, m_layout_platform);
@@ -253,7 +253,7 @@ Document::type_list_layout_groups Box_Data::get_data_layout_groups(const Glib::u
 {
   Document::type_list_layout_groups layout_groups;
 
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(document)
   {
     if(!m_table_name.empty())

@@ -77,7 +77,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
 
   bool result = Box_DB_Table::fill_from_database();
 
-  const Document* document = get_document();
+  const auto document = get_document();
   if(!document)
     return false;
 
@@ -247,7 +247,7 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
       {
         Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
-        Document* document = get_document();
+        auto document = get_document();
         type_vec_strings vecFields = util_vecStrings_from_Fields(DbUtils::get_fields_for_table(document, table_name));
 
         //This would cause a lot of tedious re-filling:
@@ -278,7 +278,7 @@ void Box_DB_Table_Relationships::on_adddel_user_requested_delete(const Gtk::Tree
     m_AddDel.remove_item(iter);
 
     //Remove it from any layouts, reports, field lookups, etc:
-    Document* document = get_document();
+    auto document = get_document();
     if(document)
     {
       std::shared_ptr<const Relationship> relationship = document->get_relationship(m_table_name, relationship_name);

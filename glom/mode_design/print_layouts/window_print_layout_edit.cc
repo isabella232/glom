@@ -279,7 +279,7 @@ void Window_PrintLayout_Edit::init_menu()
     g_warning("GMenu not found");
 
   //Menubar:
-  Gtk::MenuBar* pMenuBar = new Gtk::MenuBar(gmenu);
+  auto pMenuBar = new Gtk::MenuBar(gmenu);
   m_box_menu->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
   pMenuBar->show();
 
@@ -287,7 +287,7 @@ void Window_PrintLayout_Edit::init_menu()
   //  all actions from the action group are in the GMenu?
 
   //TODO: Add a toolbar if it would be useful:
-  //Gtk::Toolbar* pToolBar = static_cast<Gtk::Toolbar*>(builder->get_widget("/Bakery_ToolBar"));
+  //auto pToolBar = static_cast<Gtk::Toolbar*>(builder->get_widget("/Bakery_ToolBar"));
   //m_HandleBox_Toolbar.add(*pToolBar);
   //m_HandleBox_Toolbar.show();
 
@@ -557,7 +557,7 @@ Window_PrintLayout_Edit::~Window_PrintLayout_Edit()
 
 void Window_PrintLayout_Edit::update_table_title()
 {
-  const Document* document = dynamic_cast<const Document*>(get_document());
+  const auto document = dynamic_cast<const Document*>(get_document());
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document was null" << std::endl;
@@ -842,7 +842,7 @@ void Window_PrintLayout_Edit::on_menu_insert_create_standard()
   if(response != Gtk::RESPONSE_OK)
     return;
 
-  const Document* document = dynamic_cast<const Document*>(get_document());
+  const auto document = dynamic_cast<const Document*>(get_document());
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document was null" << std::endl;
@@ -932,8 +932,8 @@ void Window_PrintLayout_Edit::do_menu_view_show_rules(bool active)
 
   m_canvas.set_rules_visibility(active);
 
-  Gtk::Widget* hruler = Glib::wrap(GTK_WIDGET(m_hruler));
-  Gtk::Widget* vruler = Glib::wrap(GTK_WIDGET(m_vruler));
+  auto hruler = Glib::wrap(GTK_WIDGET(m_hruler));
+  auto vruler = Glib::wrap(GTK_WIDGET(m_vruler));
 
   if(active)
   {
@@ -982,7 +982,7 @@ void Window_PrintLayout_Edit::on_menu_view_zoom(int parameter)
     canvas_width_pixels = canvas_width_pixels / m_canvas.property_scale();
 
     //Get the viewport size:
-    Gtk::Widget* child = m_scrolled_window.get_child();
+    auto child = m_scrolled_window.get_child();
     if(child)
     {
       Gtk::Allocation widget_allocation = child->get_allocation();
@@ -1020,7 +1020,7 @@ void Window_PrintLayout_Edit::on_menu_file_print_preview()
 {
   //Save any recent changes in the document,
   //so that the preview will show them:
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(!document)
     return;
 
@@ -1032,7 +1032,7 @@ void Window_PrintLayout_Edit::on_menu_file_print_preview()
   document->set_print_layout(m_table_name, print_layout);
 
   //Show the print preview window:
-  AppWindow* app = AppWindow::get_appwindow();
+  auto app = AppWindow::get_appwindow();
   if(app)
     app->do_print_layout(m_print_layout->get_name(), true /* preview */, this);
 }

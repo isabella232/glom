@@ -144,7 +144,7 @@ bool Box_Tables::fill_from_database()
   //Get the list of hidden tables:
 
   Document::type_listTableInfo listTablesDocument;
-  Document* document = get_document();
+  auto document = get_document();
   if(document)
   {
     listTablesDocument = document->get_tables();
@@ -252,7 +252,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
   {
     //Show the new information for this whole row:
     
-    Document* document = get_document();
+    auto document = get_document();
     if(document)
     {
       std::shared_ptr<TableInfo> table_info = document->get_table(table_name);
@@ -284,7 +284,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
 
     if(!table_name.empty())
     {
-      Document* document = get_document();
+      auto document = get_document();
       if(document)
       {
         //Don't open a table that the document does not know about, because we need information from the document:
@@ -411,7 +411,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
             set_modified();
 
             //Tell the document that this table's name has changed:
-            Document* document = get_document();
+            auto document = get_document();
             if(document)
               document->change_table_name(table_name, table_name_new);
 
@@ -428,7 +428,7 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring table_name = m_AddDel.get_value_key(row);
 
-  Document* document = get_document();
+  auto document = get_document();
   if(document)
   {
     //Don't open a table that the document does not know about, because we need information from the document:
@@ -460,7 +460,7 @@ void Box_Tables::save_to_document()
     //Save the hidden tables. TODO_usermode: Only if we are in developer mode.
     Document::type_listTableInfo listTables;
 
-    Document* document = get_document();
+    auto document = get_document();
 
     for(const auto& row : m_AddDel.get_model()->children())
     {

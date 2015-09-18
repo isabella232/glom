@@ -326,7 +326,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 
 
   //Connect to database:
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   if(connection_pool)
   {
      m_connection = connection_pool->connect();
@@ -363,7 +363,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       // a) make this code dependent on the database backend used.
       // b) fetch rows we perhaps don't need, if only the first few rows of
       // a table are accessed.
-      ConnectionPool* connection = ConnectionPool::get_instance();
+      auto connection = ConnectionPool::get_instance();
       if(connection && !connection->get_backend_supports_cursor())
         m_gda_datamodel = Gnome::Gda::DataAccessWrapper::create(m_gda_datamodel);
 
@@ -775,7 +775,7 @@ void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::Va
     //It can't work with anything else anyway.
     typedef Glib::Value< DbValue > ValueDbValue;
 
-    const ValueDbValue* pDbValue = static_cast<const ValueDbValue*>(&value);
+    const auto pDbValue = static_cast<const ValueDbValue*>(&value);
     if(!pDbValue)
       std::cerr << G_STRFUNC << ": value is not a Value< DbValue >." << std::endl;
     else

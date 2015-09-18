@@ -100,10 +100,10 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
     // Use set_cell_data_func() to give more control over the cell attributes depending on the row:
 
     //Name column:
-    Gtk::TreeView::Column* column_name = Gtk::manage( new Gtk::TreeView::Column(_("Name")) );
+    auto column_name = Gtk::manage( new Gtk::TreeView::Column(_("Name")) );
     m_treeview_fields->append_column(*column_name);
 
-    Gtk::CellRendererText* renderer_name = Gtk::manage(new Gtk::CellRendererText);
+    auto renderer_name = Gtk::manage(new Gtk::CellRendererText);
     column_name->pack_start(*renderer_name);
     column_name->set_cell_data_func(*renderer_name, sigc::mem_fun(*this, &Dialog_Layout_Details::on_cell_data_name));
 
@@ -116,7 +116,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
     m_treeview_column_title = Gtk::manage( new Gtk::TreeView::Column(_("Title")) );
     m_treeview_fields->append_column(*m_treeview_column_title);
 
-    Gtk::CellRendererText* renderer_title = Gtk::manage(new Gtk::CellRendererText);
+    auto renderer_title = Gtk::manage(new Gtk::CellRendererText);
     m_treeview_column_title->pack_start(*renderer_title);
     m_treeview_column_title->set_cell_data_func(*renderer_title, sigc::mem_fun(*this, &Dialog_Layout_Details::on_cell_data_title));
 
@@ -129,7 +129,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
     m_treeview_column_group_columns = Gtk::manage( new Gtk::TreeView::Column(_("Group Columns")) );
     m_treeview_fields->append_column(*m_treeview_column_group_columns);
 
-    Gtk::CellRendererText* renderer_count = Gtk::manage(new Gtk::CellRendererText);
+    auto renderer_count = Gtk::manage(new Gtk::CellRendererText);
     m_treeview_column_group_columns->pack_start(*renderer_count);
     m_treeview_column_group_columns->set_cell_data_func(*renderer_count, sigc::mem_fun(*this, &Dialog_Layout_Details::on_cell_data_group_columns));
 
@@ -142,7 +142,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
     m_treeview_column_column_width = Gtk::manage( new Gtk::TreeView::Column(_("Display Width")) );
     m_treeview_fields->append_column(*m_treeview_column_column_width);
 
-    Gtk::CellRendererText* renderer_column_width = Gtk::manage(new Gtk::CellRendererText);
+    auto renderer_column_width = Gtk::manage(new Gtk::CellRendererText);
     m_treeview_column_column_width->pack_start(*renderer_column_width);
     m_treeview_column_column_width->set_cell_data_func(*renderer_column_width, sigc::mem_fun(*this, &Dialog_Layout_Details::on_cell_data_column_width));
 
@@ -1045,7 +1045,7 @@ void Dialog_Layout_Details::save_to_document()
   if(m_modified)
   {
     //Set the table name and title:
-    Document* document = get_document();
+    auto document = get_document();
     if(document)
       document->set_table_title( m_table_name, m_entry_table_title->get_text(), AppWindow::get_current_locale());
 
@@ -1091,7 +1091,7 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
   //TODO: If we ever use this a real layout tree, then let's add icons for each type.
 
   //Set the view's cell properties depending on the model's data:
-  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(renderer_text)
   {
     if(iter)
@@ -1179,7 +1179,7 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
 void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
-  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(renderer_text)
   {
     if(iter)
@@ -1207,7 +1207,7 @@ void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, cons
 void Dialog_Layout_Details::on_cell_data_column_width(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
-  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(renderer_text)
   {
     if(iter)
@@ -1239,7 +1239,7 @@ void Dialog_Layout_Details::on_cell_data_column_width(Gtk::CellRenderer* rendere
 void Dialog_Layout_Details::on_cell_data_group_columns(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
-  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(renderer_text)
   {
     if(iter)

@@ -111,7 +111,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
 
     //Show the previously-shown record, if there is one, if this is not a new found-set (via a new where_clause)
     //so that returning to this table will return the user to the same record:
-    Document* document = get_document();
+    auto document = get_document();
     if(document)
     {
       Gnome::Gda::Value primary_key_for_details;
@@ -171,7 +171,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
     Glib::ustring current_layout;
     if(!details_record_specified)
     {
-      Document* document = get_document();
+      auto document = get_document();
       if(document)
         current_layout = document->get_layout_current(m_table_name);
     }
@@ -293,7 +293,7 @@ void Notebook_Data::do_menu_developer_layout()
   Gtk::Widget* pChild  = get_visible_child();
   if(pChild)
   {
-    Box_Data* pBox = dynamic_cast<Box_Data*>(pChild);
+    auto pBox = dynamic_cast<Box_Data*>(pChild);
     if(pBox)
       pBox->show_layout_dialog();
   }
@@ -309,10 +309,10 @@ void Notebook_Data::set_enable_layout_drag_and_drop(bool enable)
 
 void Notebook_Data::do_menu_file_print()
 {
-  Gtk::Widget* pChild = get_visible_child();
+  auto pChild = get_visible_child();
   if(pChild)
   {
-    Box_Data* pBox = dynamic_cast<Box_Data*>(pChild);
+    auto pBox = dynamic_cast<Box_Data*>(pChild);
     if(pBox)
       pBox->print_layout();
   }
@@ -351,10 +351,10 @@ void Notebook_Data::on_switch_page_handler(Gtk::Widget* pPage)
   Notebook_Glom::on_switch_page_handler(pPage);
 
   //Remember that currently-viewed layout, so we can show it again when the user comes back to this table from elsewhere:
-  Box_Data* box = dynamic_cast<Box_Data*>(get_visible_child());
+  auto box = dynamic_cast<Box_Data*>(get_visible_child());
   if(box)
   {
-    Document* document = get_document();
+    auto document = get_document();
     if(document)
       document->set_layout_current(m_table_name, box->get_layout_name());
 

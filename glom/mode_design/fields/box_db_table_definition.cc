@@ -212,7 +212,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
       // unnecessary extra stuff just to get the field added into the
       // document:
 
-      Document* pDoc = static_cast<Document*>(get_document());
+      auto pDoc = static_cast<Document*>(get_document());
       if(pDoc)
       {
         std::cout << Utils::to_utype(field->get_glom_type()) << std::endl;
@@ -275,7 +275,7 @@ bool Box_DB_Table_Definition::check_field_change(const std::shared_ptr<const Fie
 {
   bool result = true; //Tells the caller whether to continue.
 
-  Gtk::Window* parent_window = get_app_window();
+  auto parent_window = get_app_window();
 
   //Warn about a long slow recalculation, and offer the chance to cancel it:
   if(field_new->get_has_calculation())
@@ -364,7 +364,7 @@ bool Box_DB_Table_Definition::check_field_change(const std::shared_ptr<const Fie
 void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint /* col */)
 {
   //Get old field definition:
-  Document* pDoc = static_cast<Document*>(get_document());
+  auto pDoc = static_cast<Document*>(get_document());
   if(pDoc)
   {
     const auto strFieldNameBeingEdited = m_AddDel.get_value_key(row);
@@ -417,7 +417,7 @@ void Box_DB_Table_Definition::on_adddel_edit(const Gtk::TreeModel::iterator& row
 
   //m_dialog_field_definition->set_modified(false); //Disable [Apply] at start.
 
-  Gtk::Window* parent_window = get_app_window();
+  auto parent_window = get_app_window();
   if(parent_window)
     m_dialog_field_definition->set_transient_for(*parent_window);
 
@@ -433,7 +433,7 @@ void Box_DB_Table_Definition::on_adddel_extra(const Gtk::TreeModel::iterator& ro
 
   //m_dialog_field_definition->set_modified(false); //Disable [Apply] at start.
 
-  Gtk::Window* parent_window = get_app_window();
+  auto parent_window = get_app_window();
   if(parent_window)
     m_dialog_default_formatting->set_transient_for(*parent_window);
 
@@ -449,7 +449,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::
   const auto strFieldNameBeforeEdit = m_AddDel.get_value_key(row);
 
   //Glom field definition:
-  Document* pDoc = static_cast<Document*>(get_document());
+  auto pDoc = static_cast<Document*>(get_document());
   if(pDoc)
   {
     Document::type_vec_fields vecFields= pDoc->get_table_fields(m_table_name);
@@ -590,7 +590,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::sha
 
     //Forget the remembered currently-viewed primary key value, 
     //because it will be useless with a different field as the primary key, or with no field as primary key:
-    Document* document = get_document();
+    auto document = get_document();
     document->forget_layout_record_viewed(m_table_name);
   }
 
@@ -618,7 +618,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::sha
   }
 
   //Extra Glom field definitions:
-  Document* pDoc = static_cast<Document*>(get_document());
+  auto pDoc = static_cast<Document*>(get_document());
   if(pDoc)
   {
     //Get Table's fields:

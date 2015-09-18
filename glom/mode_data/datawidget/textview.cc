@@ -170,7 +170,7 @@ Gnome::Gda::Value TextView::get_value() const
 
   std::shared_ptr<const LayoutItem_Field>layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
 
-  TextView* pNonConstThis = const_cast<TextView*>(this); //Gtk::TextBuffer::get_text() is non-const in gtkmm <=2.6.
+  auto pNonConstThis = const_cast<TextView*>(this); //Gtk::TextBuffer::get_text() is non-const in gtkmm <=2.6.
   return Conversions::parse_value(m_glom_type, pNonConstThis->m_TextView.get_buffer()->get_text(true), layout_item->get_formatting_used().m_numeric_format, success);
 }
 
@@ -179,7 +179,7 @@ bool TextView::on_button_press_event(GdkEventButton *button_event)
 {
   //Enable/Disable items.
   //We did this earlier, but get_appwindow is more likely to work now:
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -211,7 +211,7 @@ bool TextView::on_button_press_event(GdkEventButton *button_event)
 
 AppWindow* TextView::get_appwindow() const
 {
-  Gtk::Container* pWindow = const_cast<Gtk::Container*>(get_toplevel());
+  auto pWindow = const_cast<Gtk::Container*>(get_toplevel());
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<AppWindow*>(pWindow);

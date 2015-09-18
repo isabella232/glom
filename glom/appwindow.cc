@@ -130,7 +130,7 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifndef G_OS_WIN32
   //Install UI hooks for this:
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   if(connection_pool)
   {
     connection_pool->set_avahi_publish_callbacks(
@@ -207,7 +207,7 @@ bool AppWindow::init_with_document(const Glib::ustring& document_uri, bool resto
 
   if(document_uri.empty())
   {
-    Document* pDocument = static_cast<Document*>(get_document());
+    auto pDocument = static_cast<Document*>(get_document());
     if(pDocument && pDocument->get_connection_database().empty()) //If it is a new (default) document.
     {
         return offer_new_or_existing();
@@ -243,7 +243,7 @@ void AppWindow::set_show_sql_debug(bool val)
 
 void AppWindow::set_stop_auto_server_shutdown(bool val)
 {
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   if(connection_pool)
     connection_pool->set_auto_server_shutdown(!val);
 }
@@ -619,7 +619,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
     else
     {
       //Open the document supplied by the other glom instance on the network:
-      EpcConsumer* consumer = epc_consumer_new(server);
+      auto consumer = epc_consumer_new(server);
 
       Glib::ustring username, password;
       dialog_connection->get_username_and_password(username, password);
@@ -707,7 +707,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
     //so we don't think that opening has failed because it has no URI,
     //and to stop us from allowing developer mode
     //(that would require changes to the original document).
-    Document* document = dynamic_cast<Document*>(get_document());
+    auto document = dynamic_cast<Document*>(get_document());
     if(document)
     {
       document->set_opened_from_browse();
@@ -772,7 +772,7 @@ void AppWindow::init_create_document()
 {
   if(!m_pDocument)
   {
-    Document* document_glom = new Document();
+    auto document_glom = new Document();
 
     //By default, we assume that the original is in the current locale.
     document_glom->set_translation_original_locale(AppWindow::get_current_locale());
@@ -855,7 +855,7 @@ bool AppWindow::on_document_load()
   //Link to the database described in the document.
   //Need to ask user for user/password:
   //m_pFrame->load_from_document();
-  Document* pDocument = static_cast<Document*>(get_document());
+  auto pDocument = static_cast<Document*>(get_document());
   if(!pDocument)
     return false;
 
@@ -993,7 +993,7 @@ bool AppWindow::on_document_load()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
     //Read the connection information from the document:
-    ConnectionPool* connection_pool = ConnectionPool::get_instance();
+    auto connection_pool = ConnectionPool::get_instance();
     if(!connection_pool)
       return false; //Impossible anyway.
     else
@@ -1118,7 +1118,7 @@ bool AppWindow::on_document_load()
   if(!script.empty())
   {
     Glib::ustring error_message; //TODO: Check this and tell the user.
-    ConnectionPool* connection_pool = ConnectionPool::get_instance();
+    auto connection_pool = ConnectionPool::get_instance();
     std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect();
     AppPythonUICallbacks callbacks;
     glom_execute_python_function_implementation(script,
@@ -1168,7 +1168,7 @@ void AppWindow::on_document_close()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //TODO: It would be better to do this in a AppWindow::on_document_closed() virtual method,
   //but that would need an ABI break in Bakery:
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
     return;
 
@@ -1191,7 +1191,7 @@ void AppWindow::statusbar_clear()
 
 void AppWindow::update_network_shared_ui()
 {
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(!document)
     return;
 
@@ -1333,7 +1333,7 @@ bool AppWindow::offer_new_or_existing()
       }
 
       //Check that a document was opened:
-      Document* document = dynamic_cast<Document*>(get_document());
+      auto document = dynamic_cast<Document*>(get_document());
       if(!document)
       {
         std::cerr << G_STRFUNC << ": document was NULL." << std::endl;
@@ -1377,7 +1377,7 @@ void AppWindow::existing_or_new_new()
   offer_saveas();
 
   //Check that the document was given a location:
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document is null." << std::endl;
@@ -1415,7 +1415,7 @@ void AppWindow::existing_or_new_new()
     document->set_hosting_mode(hosting_mode);
 
    //Tell the connection pool about the document:
-   ConnectionPool* connection_pool = ConnectionPool::get_instance();
+   auto connection_pool = ConnectionPool::get_instance();
    if(connection_pool)
      connection_pool->set_get_document_func( std::bind(&AppWindow::on_connection_pool_get_document, this) );
 
@@ -1502,7 +1502,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
   if(!pDocument)
     return false;
 
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
     return false; //Impossible anyway.
 
@@ -1680,11 +1680,11 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
   ShowProgressMessage progress_message(_("Creating Glom database from backup file."));
 
   //Create a database, based on the information in the current document:
-  Document* pDocument = static_cast<Document*>(get_document());
+  auto pDocument = static_cast<Document*>(get_document());
   if(!pDocument)
     return false;
 
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
     return false; //Impossible anyway.
 
@@ -1808,7 +1808,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
 
 AppState::userlevels AppWindow::get_userlevel() const
 {
-  const Document* document = dynamic_cast<const Document*>(get_document());
+  const auto document = dynamic_cast<const Document*>(get_document());
   if(document)
   {
     return document->get_userlevel();
@@ -2005,7 +2005,7 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
 
   m_refNavPrintLayoutsActionGroup = Gio::SimpleActionGroup::create();
 
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document is null." << std::endl;
@@ -2053,7 +2053,7 @@ void AppWindow::on_menu_file_save_as_example()
 
   //Show the save dialog:
   bool bTest = false;
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(!document) {
     std::cerr << G_STRFUNC << ": document was null." << std::endl;
   } else {
@@ -2146,7 +2146,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
 
   fileChooser_Save->set_do_overwrite_confirmation(); //Ask the user if the file already exists.
 
-  Gtk::Window* pWindow = dynamic_cast<Gtk::Window*>(&app);
+  auto pWindow = dynamic_cast<Gtk::Window*>(&app);
   if(pWindow)
     fileChooser_Save->set_transient_for(*pWindow);
 
@@ -2165,7 +2165,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
 
 
     //Start with something suitable:
-    Document* document = dynamic_cast<Document*>(get_document());
+    auto document = dynamic_cast<Document*>(get_document());
     g_assert(document);
     const auto filename = document->get_name(); //Get the filename without the path and extension.
 
@@ -2334,10 +2334,10 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
 
 void AppWindow::stop_self_hosting_of_document_database()
 {
-  Document* pDocument = static_cast<Document*>(get_document());
+  auto pDocument = static_cast<Document*>(get_document());
   if(pDocument)
   {
-    ConnectionPool* connection_pool = ConnectionPool::get_instance();
+    auto connection_pool = ConnectionPool::get_instance();
     if(!connection_pool)
       return;
 
@@ -2399,7 +2399,7 @@ void AppWindow::on_menu_developer_active_platform(const Glib::ustring& parameter
   //The state is not changed automatically:
   m_action_menu_developer_active_platform->change_state(parameter);
 
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(document)
    document->set_active_layout_platform(parameter);
 
@@ -2408,7 +2408,7 @@ void AppWindow::on_menu_developer_active_platform(const Glib::ustring& parameter
 
 void AppWindow::on_menu_developer_export_backup()
 {
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(!document)
     return;
 
@@ -2486,7 +2486,7 @@ void AppWindow::do_print_layout(const Glib::ustring& print_layout_name, bool pre
 
 bool AppWindow::do_restore_backup(const Glib::ustring& backup_uri)
 {
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(!document)
     return false;
     
@@ -2574,7 +2574,7 @@ void AppWindow::update_window_title()
 {
   //Set application's main window title:
 
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(!document)
     return;
 
@@ -2914,8 +2914,8 @@ void AppWindow::document_history_remove(const Glib::ustring& file_uri)
 
 void AppWindow::on_menu_edit_copy_activate()
 {
-  Gtk::Widget* widget = get_focus();
-  Gtk::Editable* editable = dynamic_cast<Gtk::Editable*>(widget);
+  auto widget = get_focus();
+  auto editable = dynamic_cast<Gtk::Editable*>(widget);
 
   if(editable)
   {
@@ -2925,7 +2925,7 @@ void AppWindow::on_menu_edit_copy_activate()
 
   //GtkTextView does not implement GtkEditable.
   //See GTK+ bug: https://bugzilla.gnome.org/show_bug.cgi?id=667008
-  Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget);
+  auto textview = dynamic_cast<Gtk::TextView*>(widget);
   if(textview)
   {
     Glib::RefPtr<Gtk::TextBuffer> buffer = textview->get_buffer();
@@ -2940,8 +2940,8 @@ void AppWindow::on_menu_edit_copy_activate()
 
 void AppWindow::on_menu_edit_cut_activate()
 {
-  Gtk::Widget* widget = get_focus();
-  Gtk::Editable* editable = dynamic_cast<Gtk::Editable*>(widget);
+  auto widget = get_focus();
+  auto editable = dynamic_cast<Gtk::Editable*>(widget);
 
   if(editable)
   {
@@ -2951,7 +2951,7 @@ void AppWindow::on_menu_edit_cut_activate()
 
   //GtkTextView does not implement GtkEditable.
   //See GTK+ bug: https://bugzilla.gnome.org/show_bug.cgi?id=667008
-  Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget);
+  auto textview = dynamic_cast<Gtk::TextView*>(widget);
   if(textview)
   {
     Glib::RefPtr<Gtk::TextBuffer> buffer = textview->get_buffer();
@@ -2966,8 +2966,8 @@ void AppWindow::on_menu_edit_cut_activate()
 
 void AppWindow::on_menu_edit_paste_activate()
 {
-  Gtk::Widget* widget = get_focus();
-  Gtk::Editable* editable = dynamic_cast<Gtk::Editable*>(widget);
+  auto widget = get_focus();
+  auto editable = dynamic_cast<Gtk::Editable*>(widget);
 
   if(editable)
   {
@@ -2977,7 +2977,7 @@ void AppWindow::on_menu_edit_paste_activate()
 
   //GtkTextView does not implement GtkEditable.
   //See GTK+ bug: https://bugzilla.gnome.org/show_bug.cgi?id=667008
-  Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget);
+  auto textview = dynamic_cast<Gtk::TextView*>(widget);
   if(textview)
   {
     Glib::RefPtr<Gtk::TextBuffer> buffer = textview->get_buffer();

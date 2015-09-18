@@ -100,7 +100,7 @@ void LayoutWidgetMenu::setup_menu(Gtk::Widget* widget)
     sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_activate_delete) );
 
   //TODO: This does not work until this widget is in a container in the window:s
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -159,7 +159,7 @@ void LayoutWidgetMenu::on_menupopup_activate_layout_properties()
 
 void LayoutWidgetMenu::on_menupopup_activate_delete()
 {
-  Gtk::Widget* parent = dynamic_cast<Gtk::Widget*>(this);
+  auto parent = dynamic_cast<Gtk::Widget*>(this);
   if(!parent)
   {
     // Should never happen:

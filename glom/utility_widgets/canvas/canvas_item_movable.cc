@@ -95,7 +95,7 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
       m_drag_latest_position_x = m_drag_start_position_x;
       m_drag_latest_position_y = m_drag_start_position_y; 
     
-      Goocanvas::Canvas* canvas = get_parent_canvas_widget();
+      auto canvas = get_parent_canvas_widget();
       if(canvas)
       {
         canvas->pointer_grab(item,
@@ -209,7 +209,7 @@ bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::It
   if(!m_allow_vertical_movement && !m_allow_horizontal_movement)
     return false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
 
-  Goocanvas::Canvas* canvas = get_parent_canvas_widget();
+  auto canvas = get_parent_canvas_widget();
   if(canvas)
     canvas->pointer_ungrab(target, event->time);
 
@@ -285,7 +285,7 @@ void CanvasItemMovable::set_drag_cursor(Gdk::CursorType cursor_type)
 
 void CanvasItemMovable::set_cursor(const Glib::RefPtr<Gdk::Cursor>& cursor)
 {
-   Goocanvas::Canvas* canvas = get_parent_canvas_widget();
+   auto canvas = get_parent_canvas_widget();
    if(!canvas)
      return;
      
@@ -296,7 +296,7 @@ void CanvasItemMovable::set_cursor(const Glib::RefPtr<Gdk::Cursor>& cursor)
 
 void CanvasItemMovable::unset_cursor()
 {
-   Goocanvas::Canvas* canvas = get_parent_canvas_widget();
+   auto canvas = get_parent_canvas_widget();
    if(canvas)
    {
      Glib::RefPtr<Gdk::Window> window = canvas->get_window();

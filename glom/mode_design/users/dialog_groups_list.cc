@@ -62,8 +62,8 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
   // Append the View columns:
 
   //Groups:
-  Gtk::CellRendererText* pCell = Gtk::manage(new Gtk::CellRendererText);
-  Gtk::TreeView::Column* pViewColumn = Gtk::manage(new Gtk::TreeView::Column(_("Name"), *pCell) );
+  auto pCell = Gtk::manage(new Gtk::CellRendererText);
+  auto pViewColumn = Gtk::manage(new Gtk::TreeView::Column(_("Name"), *pCell) );
   pViewColumn->set_cell_data_func(*pCell, sigc::mem_fun(*this, &Dialog_GroupsList::on_cell_data_group_name));
   m_treeview_groups->append_column(*pViewColumn);
 
@@ -383,7 +383,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
   //Fill the model rows:
   m_model_tables->clear();
 
- Document* pDocument = get_document();
+ auto pDocument = get_document();
   if(pDocument)
   {
     // Make sure that these are in the document,
@@ -428,12 +428,12 @@ void Dialog_GroupsList::load_from_document()
 
 void Dialog_GroupsList::treeview_append_bool_column(Gtk::TreeView& treeview, const Glib::ustring& title, Gtk::TreeModelColumn<bool>& model_column, const sigc::slot<void,  const Glib::ustring&>& slot_toggled)
 {
-  Gtk::CellRendererToggle* pCellRenderer = Gtk::manage( new Gtk::CellRendererToggle() );
+  auto pCellRenderer = Gtk::manage( new Gtk::CellRendererToggle() );
 
   //GTK+'s "activatable" really means "editable":
   pCellRenderer->property_activatable() = true;
 
-  Gtk::TreeView::Column* pViewColumn = Gtk::manage( new Gtk::TreeView::Column(title, *pCellRenderer) );
+  auto pViewColumn = Gtk::manage( new Gtk::TreeView::Column(title, *pCellRenderer) );
   pViewColumn->set_renderer(*pCellRenderer, model_column); //render it via the default "text" property.
 
   treeview.append_column(*pViewColumn);
@@ -599,7 +599,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_delete(const Glib::ustring& p
 void Dialog_GroupsList::on_cell_data_group_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
  //Set the view's cell properties depending on the model's data:
-  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(renderer_text)
   {
     if(iter)

@@ -125,7 +125,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     }
 
     //Check that the operator user still has access to database metadata:
-    Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+    auto connection_pool = Glom::ConnectionPool::get_instance();
     connection_pool->connect();
     const auto field_types = connection_pool->get_field_types();
     if(!field_types)

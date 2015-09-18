@@ -88,7 +88,7 @@ bool TreeStore_ReportLayout::row_drop_possible_vfunc(const Gtk::TreeModel::Path&
 
     //Get an iterator for the row at the requested parent's path:
     //We must unconst this. This should not be necessary with a future version of gtkmm.
-    TreeStore_ReportLayout* unconstThis = const_cast<TreeStore_ReportLayout*>(this); //TODO: Add a const version of get_iter to TreeModel:
+    auto unconstThis = const_cast<TreeStore_ReportLayout*>(this); //TODO: Add a const version of get_iter to TreeModel:
     const_iterator iter_dest_parent = unconstThis->get_iter(dest_parent);
     //const_iterator iter_dest_parent = get_iter(dest);
     if(iter_dest_parent)

@@ -56,7 +56,7 @@ Glib::ustring Dialog_InitialPassword::get_password() const
 
 void Dialog_InitialPassword::load_from_document()
 {
-  Document* document = get_document();
+  auto document = get_document();
   if(document)
   {
     Glib::ustring user = document->get_connection_user(); //TODO: Offer a drop-down list of users.

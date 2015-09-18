@@ -90,7 +90,7 @@ void Box_Data_Details_Find::fill_related()
      /*
   for(const auto& item : vecRelationships)
   {
-     Box_Data_List_Related* pBox = Gtk::manage(new Box_Data_List_Related());
+     auto pBox = Gtk::manage(new Box_Data_List_Related());
      std::cout <<  "Box_Data_Details::fill_related() 2:" << relationship->get_name() << std::endl;
      m_Notebook_Related.pages().push_back( Gtk::Notebook_Helpers::TabElem(*pBox, relationship->get_name()) );
      std::cout <<  "Box_Data_Details::fill_related() 2.5:" << std::endl;

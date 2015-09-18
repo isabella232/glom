@@ -155,7 +155,7 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
 
   connect_each_widget(m_pDataWidget_DefaultValueSimple);
 
-  Gtk::Label* pLabel = m_pDataWidget_DefaultValueSimple->get_label();
+  auto pLabel = m_pDataWidget_DefaultValueSimple->get_label();
   if(!pLabel->get_text().empty())
   {
     pLabel->set_valign(Gtk::ALIGN_START); //Because the widget might be multiline.
@@ -172,7 +172,7 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
   on_check_lookup_toggled();
 
   //Fill the lookup relationships combo:
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(document)
   {
     //Get the relationships used by this table, excluding relationships triggered
@@ -347,7 +347,7 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
   if(relationship)
   {
     //Get the relationship details:
-    Document* document = dynamic_cast<Document*>(get_document());
+    auto document = dynamic_cast<Document*>(get_document());
     if(document)
     {
       const auto to_table = relationship->get_to_table();

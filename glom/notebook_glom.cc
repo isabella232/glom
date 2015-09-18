@@ -59,7 +59,7 @@ Notebook_Glom::type_signal_leave_page Notebook_Glom::signal_leave_page()
 void Notebook_Glom::on_switch_page_handler(Gtk::Widget* /* page */)
 {
   //Remove the help hint for the previous page:
-  Gtk::Window* pApp = get_app_window();
+  auto pApp = get_app_window();
 
   //if(pAppGlom)
   //{
@@ -67,19 +67,19 @@ void Notebook_Glom::on_switch_page_handler(Gtk::Widget* /* page */)
  // }
 
   //Load the page as we enter it:
-  Gtk::Widget* pChild = get_visible_child();
+  auto pChild = get_visible_child();
   if(pChild)
   {
-    Box_WithButtons* pBox = dynamic_cast<Box_WithButtons*>(pChild);
+    auto pBox = dynamic_cast<Box_WithButtons*>(pChild);
     if(pBox)
     {
       //pBox->load_from_document();
 
       //Set the default button, if there is one:
-      AppWindow* pAppGlom = dynamic_cast<AppWindow*>(pApp);
+      auto pAppGlom = dynamic_cast<AppWindow*>(pApp);
       if(pAppGlom)
       {
-        Gtk::Widget* default_button = pBox->get_default_button();
+        auto default_button = pBox->get_default_button();
         if(default_button)
         {
           default_button->grab_default();
@@ -103,7 +103,7 @@ void Notebook_Glom::on_leave_page(guint uiPageNumber)
   {
     for(const auto& pChild : get_page_children())
     {
-      Base_DB* pBox = dynamic_cast<Base_DB*>(pChild);
+      auto pBox = dynamic_cast<Base_DB*>(pChild);
       if(pBox)
       {
         pBox->save_to_document();
@@ -126,7 +126,7 @@ void Notebook_Glom::show_hint()
   Gtk::Widget* pChild  = get_nth_page(iPageCurrent);
   if(pChild)
   {
-    Box_WithButtons* pBox = dynamic_cast<Box_WithButtons*>(pChild);
+    auto pBox = dynamic_cast<Box_WithButtons*>(pChild);
     if(pBox)
       pBox->show_hint();
   }

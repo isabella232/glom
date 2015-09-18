@@ -182,7 +182,7 @@ void Box_Data_List::set_primary_key_value(const Gtk::TreeModel::iterator& row, c
 
 void Box_Data_List::on_adddel_user_reordered_columns()
 {
-  Document* pDoc = dynamic_cast<Document*>(get_document());
+  auto pDoc = dynamic_cast<Document*>(get_document());
   if(pDoc)
   {
     auto group = std::make_shared<LayoutGroup>();
@@ -401,7 +401,7 @@ void Box_Data_List::create_layout()
 {
   Box_Data::create_layout(); //Fills m_TableFields.
 
-  const Document* pDoc = dynamic_cast<const Document*>(get_document());
+  const auto pDoc = dynamic_cast<const Document*>(get_document());
   if(!pDoc)
     return;
 
@@ -532,7 +532,7 @@ void Box_Data_List::on_adddel_user_sort_clause_changed()
 
   m_found_set = m_AddDel.get_found_set();
 
-  Document* document = get_document();
+  auto document = get_document();
   if(document)
     document->set_criteria_current(m_table_name, m_found_set);
 }

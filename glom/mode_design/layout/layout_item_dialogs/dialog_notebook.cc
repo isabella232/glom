@@ -89,7 +89,7 @@ void Dialog_Notebook::set_notebook(const std::shared_ptr<const LayoutItem_Notebo
   m_layout_item = start_notebook; //So we can preserve information for later.
   m_modified = false;
 
-  //Document* document = get_document();
+  //auto document = get_document();
 
   guint sequence = 1;
   for(const auto& base_item : start_notebook->m_list_items)

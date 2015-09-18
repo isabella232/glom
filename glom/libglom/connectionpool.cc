@@ -145,14 +145,14 @@ void ConnectionPool::setup_from_document(const Document* document)
   {
   case Document::HostingMode::POSTGRES_SELF:
     {
-      ConnectionPoolBackends::PostgresSelfHosted* backend = new ConnectionPoolBackends::PostgresSelfHosted;
+      auto backend = new ConnectionPoolBackends::PostgresSelfHosted;
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
       set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
     }
     break;
   case Document::HostingMode::POSTGRES_CENTRAL:
     {
-      ConnectionPoolBackends::PostgresCentralHosted* backend = new ConnectionPoolBackends::PostgresCentralHosted;
+      auto backend = new ConnectionPoolBackends::PostgresCentralHosted;
       backend->set_host(document->get_connection_server());
       backend->set_port(document->get_connection_port());
       backend->set_try_other_ports(document->get_connection_try_other_ports());
@@ -161,21 +161,21 @@ void ConnectionPool::setup_from_document(const Document* document)
     break;
   case Document::HostingMode::SQLITE:
     {
-      ConnectionPoolBackends::Sqlite* backend = new ConnectionPoolBackends::Sqlite;
+      auto backend = new ConnectionPoolBackends::Sqlite;
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
       set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
     }
     break;
   case Document::HostingMode::MYSQL_SELF:
     {
-      ConnectionPoolBackends::MySQLSelfHosted* backend = new ConnectionPoolBackends::MySQLSelfHosted;
+      auto backend = new ConnectionPoolBackends::MySQLSelfHosted;
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
       set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
     }
     break;
   case Document::HostingMode::MYSQL_CENTRAL:
     {
-      ConnectionPoolBackends::MySQLCentralHosted* backend = new ConnectionPoolBackends::MySQLCentralHosted;
+      auto backend = new ConnectionPoolBackends::MySQLCentralHosted;
       backend->set_host(document->get_connection_server());
       backend->set_port(document->get_connection_port());
       backend->set_try_other_ports(document->get_connection_try_other_ports());
@@ -231,7 +231,7 @@ const ConnectionPool::Backend* ConnectionPool::get_backend() const
 bool ConnectionPool::get_backend_supports_cursor() const
 {
   //TODO: Is there a generic libgda way to discover this?
-  const ConnectionPoolBackends::Sqlite* sqlite_backend =
+  const auto sqlite_backend =
     dynamic_cast<const ConnectionPoolBackends::Sqlite*>(get_backend());
   return !sqlite_backend;
 }
@@ -241,7 +241,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::get_and_connect()
 {
   std::shared_ptr<SharedConnection> result;
 
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
     return result;
 
@@ -258,7 +258,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::get_and_connect()
 
 bool ConnectionPool::get_instance_is_ready()
 {
-  ConnectionPool* instance = get_instance();
+  auto instance = get_instance();
   if(!instance)
     return false;
 
@@ -384,7 +384,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
         //to avoid duplicates.
         //TODO: Only advertize if it makes sense for the backend,
         //it does not for sqlite
-        Document* document = get_document();
+        auto document = get_document();
         if(document && document->get_network_shared())
           avahi_start_publishing(); //Stopped in the signal_finished handler.
 #endif // !G_OS_WIN32
@@ -611,7 +611,7 @@ static sighandler_t previous_sig_handler = SIG_DFL; /* Arbitrary default */
 */
 static void on_linux_signal(int signum)
 {
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
     return;
 
@@ -830,7 +830,7 @@ Document* ConnectionPool::get_document()
 //static
 EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* /* publisher */, const gchar* /* key */, gpointer user_data)
 {
-  Glom::ConnectionPool* connection_pool = static_cast<Glom::ConnectionPool*>(user_data);
+  auto connection_pool = static_cast<Glom::ConnectionPool*>(user_data);
   if(!connection_pool)
     return 0;
 
@@ -851,7 +851,7 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
 {
   g_return_val_if_fail(context, false);
 
-  ConnectionPool* connection_pool = (ConnectionPool*)(user_data);
+  auto connection_pool = (ConnectionPool*)(user_data);
   g_return_val_if_fail(connection_pool, false);
 
   // Check if the username/password are correct:
@@ -883,7 +883,7 @@ void ConnectionPool::on_epc_progress_begin(const gchar* /* title */, gpointer us
 {
   //We ignore the title parameter because there is no way that libepc could know what Glom wants to say.
 
-  ConnectionPool* connection_pool = (ConnectionPool*)user_data;
+  auto connection_pool = (ConnectionPool*)user_data;
   if(connection_pool && connection_pool->m_epc_slot_begin)
     connection_pool->m_epc_slot_begin();
 }
@@ -893,14 +893,14 @@ void ConnectionPool::on_epc_progress_update(gdouble /* progress */, const gchar*
   //We ignore the title parameter because there is no way that libepc could know what Glom wants to say.
   //TODO: Show the progress in a ProgressBar.
 
-  ConnectionPool* connection_pool = (ConnectionPool*)user_data;
+  auto connection_pool = (ConnectionPool*)user_data;
   if(connection_pool && connection_pool->m_epc_slot_progress)
     connection_pool->m_epc_slot_progress();
 }
 
 void ConnectionPool::on_epc_progress_end(gpointer user_data)
 {
-  ConnectionPool* connection_pool = (ConnectionPool*)user_data;
+  auto connection_pool = (ConnectionPool*)user_data;
   if(connection_pool && connection_pool->m_epc_slot_done)
     connection_pool->m_epc_slot_done();
 }

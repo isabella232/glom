@@ -49,7 +49,7 @@ ComboBox_Locale::ComboBox_Locale(BaseObjectType* cobject, const Glib::RefPtr<Gtk
 
   //Show this too.
   //Create the cell renderer manually, so we can specify the alignment:
-  Gtk::CellRendererText* cell = Gtk::manage(new Gtk::CellRendererText());
+  auto cell = Gtk::manage(new Gtk::CellRendererText());
   cell->property_xalign() = 0.0f;
   pack_start(*cell);
   add_attribute(cell->property_text(), m_model_columns.m_name);

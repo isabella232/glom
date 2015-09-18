@@ -90,15 +90,15 @@ void LayoutWidgetBase::set_read_only(bool /* read_only */)
 
 void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item)
 {
-  Gtk::Widget* widget_to_change = &widget;
+  auto widget_to_change = &widget;
 
-  Gtk::Button* button = dynamic_cast<Gtk::Button*>(&widget);
-  DataWidgetChildren::Label* labelglom = dynamic_cast<DataWidgetChildren::Label*>(&widget);
+  auto button = dynamic_cast<Gtk::Button*>(&widget);
+  auto labelglom = dynamic_cast<DataWidgetChildren::Label*>(&widget);
   if(button)
     widget_to_change = button->get_child();
   else
   {
-    DataWidgetChildren::TextView* textview = dynamic_cast<DataWidgetChildren::TextView*>(&widget);
+    auto textview = dynamic_cast<DataWidgetChildren::TextView*>(&widget);
     if(textview)
       widget_to_change = textview->get_textview();
     else if(labelglom)
@@ -125,7 +125,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_p
     const Gtk::Align x_align =
       (alignment == Formatting::HorizontalAlignment::LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
 
-    Gtk::Label* label = dynamic_cast<Gtk::Label*>(widget_to_change);
+    auto label = dynamic_cast<Gtk::Label*>(widget_to_change);
     if(label)
     {
       //Note that set_justify() does nothing for single lines of text,
@@ -135,7 +135,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_p
       label->set_justify(justification);
       label->set_xalign(x_align);
     } else {
-      Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget_to_change);
+      auto textview = dynamic_cast<Gtk::TextView*>(widget_to_change);
       if(textview)
       {
         //Note that, unlike Gtk::Label::set_justify(), this does have an effect
@@ -143,7 +143,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_p
         //See http://www.murrayc.com/permalink/2015/03/02/gtk-aligning-justification-in-text-widgets/
         textview->set_justification(justification);
       } else {
-        Gtk::Entry* entry = dynamic_cast<Gtk::Entry*>(widget_to_change);
+        auto entry = dynamic_cast<Gtk::Entry*>(widget_to_change);
         if(entry)
         {
           //See http://www.murrayc.com/permalink/2015/03/02/gtk-aligning-justification-in-text-widgets/

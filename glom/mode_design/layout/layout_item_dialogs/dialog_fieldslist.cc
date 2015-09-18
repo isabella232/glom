@@ -50,10 +50,10 @@ Dialog_FieldsList::Dialog_FieldsList(BaseObjectType* cobject, const Glib::RefPtr
     m_treeview_fields->set_model(m_model_fields);
 
     // Append the View columns:
-    Gtk::TreeView::Column* column_name = Gtk::manage( new Gtk::TreeView::Column(_("Name")) );
+    auto column_name = Gtk::manage( new Gtk::TreeView::Column(_("Name")) );
     m_treeview_fields->append_column(*column_name);
 
-    Gtk::CellRendererText* renderer_name = Gtk::manage(new Gtk::CellRendererText);
+    auto renderer_name = Gtk::manage(new Gtk::CellRendererText);
     column_name->pack_start(*renderer_name);
     column_name->set_cell_data_func(*renderer_name, sigc::mem_fun(*this, &Dialog_FieldsList::on_cell_data_name));
 
@@ -103,7 +103,7 @@ void Dialog_FieldsList::set_fields(const Glib::ustring& table_name, const Layout
   m_modified = false;
   m_table_name = table_name;
 
-  Document* document = get_document();
+  auto document = get_document();
 
   //Update the tree models from the document
   if(document)
@@ -287,7 +287,7 @@ void Dialog_FieldsList::on_button_delete()
 void Dialog_FieldsList::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
-  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(renderer_text)
   {
     if(iter)

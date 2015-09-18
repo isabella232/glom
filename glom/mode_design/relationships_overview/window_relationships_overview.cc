@@ -413,7 +413,7 @@ void Window_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasItemM
   if(!table)
     return;
 
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(document && table)
   {
     //Save the new position in the document:
@@ -471,7 +471,7 @@ void Window_RelationshipsOverview::setup_context_menu()
 
 void Window_RelationshipsOverview::on_context_menu_edit_fields(const Glib::VariantBase& /* parameter */, Glib::RefPtr<CanvasGroupDbTable> table)
 {
-  AppWindow* pApp = AppWindow::get_appwindow();
+  auto pApp = AppWindow::get_appwindow();
   if(pApp && table)
   {
     pApp->do_menu_developer_fields(*this, table->get_table_name());
@@ -482,7 +482,7 @@ void Window_RelationshipsOverview::on_context_menu_edit_fields(const Glib::Varia
 
 void Window_RelationshipsOverview::on_context_menu_edit_relationships(const Glib::VariantBase& /* parameter */, Glib::RefPtr<CanvasGroupDbTable> table)
 {
-  AppWindow* pApp = AppWindow::get_appwindow();
+  auto pApp = AppWindow::get_appwindow();
   if(pApp && table)
   {
     pApp->do_menu_developer_relationships(*this, table->get_table_name());

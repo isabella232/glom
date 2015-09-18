@@ -195,7 +195,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
   const auto related_table_name = m_portal->get_table_used(Glib::ustring() /* parent table - not relevant*/);
 
   //Update the tree models from the document
-  Document* document = get_document();
+  auto document = get_document();
   if(document)
   {
     //Fill the relationships combo:

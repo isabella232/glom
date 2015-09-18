@@ -77,7 +77,7 @@ void Box_WithButtons::on_Button_Cancel()
 
 const Gtk::Window* Box_WithButtons::get_app_window() const
 {
-  Box_WithButtons* nonconst = const_cast<Box_WithButtons*>(this);
+  auto nonconst = const_cast<Box_WithButtons*>(this);
   return nonconst->get_app_window();
 }
   
@@ -86,11 +86,11 @@ Gtk::Window* Box_WithButtons::get_app_window()
   return dynamic_cast<Gtk::Window*>(get_toplevel());
 /*
 
-  Gtk::Widget* pWidget = get_parent();
+  auto pWidget = get_parent();
   while(pWidget)
   {
     //Is this widget a Gtk::Window?:
-    Gtk::Window* pWindow = dynamic_cast<Gtk::Window*>(pWidget);
+    auto pWindow = dynamic_cast<Gtk::Window*>(pWidget);
     if(pWindow)
     {
       //Yes, return it.

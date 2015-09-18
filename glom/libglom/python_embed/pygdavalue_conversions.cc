@@ -43,7 +43,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
     if(G_IS_VALUE (boxed))
       g_value_unset(boxed);
       
-    PyObject* input_c = input.ptr();
+    auto input_c = input.ptr();
     
     //We check for bool first, 
     //because bool is derived from int in Python,

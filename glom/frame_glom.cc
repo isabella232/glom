@@ -108,7 +108,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   //QuickFind widgets:
   //We don't use Glade for these, so it easier to modify them for the Maemo port.
   m_pBox_QuickFind = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)));
-  Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Quick _search:"), true));
+  auto label = Gtk::manage(new Gtk::Label(_("Quick _search:"), true));
   m_pBox_QuickFind->pack_start(*label, Gtk::PACK_SHRINK);
 
   m_pEntry_QuickFind = Gtk::manage(new Gtk::Entry());
@@ -313,7 +313,7 @@ bool Frame_Glom::set_mode(enumModes mode)
 void Frame_Glom::alert_no_table()
 {
   //Ask user to choose a table first:
-  Gtk::Window* pWindowApp = get_app_window();
+  auto pWindowApp = get_app_window();
   if(pWindowApp)
   {
     //TODO: Obviously this document should have been deleted when the database-creation was cancelled.
@@ -329,7 +329,7 @@ void Frame_Glom::show_table_refresh()
 
 void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details)
 {
-  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
+  auto pApp = dynamic_cast<AppWindow*>(get_app_window());
 
   //This can take quite a long time, so we show the busy cursor while it's working:
   BusyCursor busy_cursor(pApp);
@@ -361,7 +361,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
       //Start with the last-used found set (sort order and where clause)
       //for this layout:
       //(This would be ignored anyway if a details primary key is specified.)
-      Document* document = get_document();
+      auto document = get_document();
       if(document)
         found_set = document->get_criteria_current(m_table_name);
 
@@ -455,12 +455,12 @@ void Frame_Glom::show_no_table()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 bool Frame_Glom::attempt_change_usermode_to_developer()
 {
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(!document)
     return false;
 
   //Check whether the current user has developer privileges:
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
       std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect();
 
   // Default to true; if we don't support users, we always have
@@ -521,7 +521,7 @@ bool Frame_Glom::attempt_change_usermode_to_developer()
 
 bool Frame_Glom::attempt_change_usermode_to_operator()
 {
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(!document)
     return false;
     
@@ -534,13 +534,13 @@ void Frame_Glom::on_menu_file_export()
 {
   //Start with a sequence based on the Details view:
   //The user can changed this by clicking the button in the FileChooser:
-  Document* document = get_document();
+  auto document = get_document();
   if(!document)
     return;
 
   Document::type_list_layout_groups mapGroupSequence = document->get_data_layout_groups_plus_new_fields("details", m_table_name, get_active_layout_platform(document));
 
-  Gtk::Window* pWindowApp = get_app_window();
+  auto pWindowApp = get_app_window();
   g_assert(pWindowApp);
 
   //Do not try to export the data if the user may not view it:
@@ -800,7 +800,7 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
 {
   //Prevent this change if not in developer mode,
   //though the menu item should be disabled then anyway.
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(!document || document->get_userlevel() != AppState::userlevels::DEVELOPER)
     return false;
 
@@ -844,7 +844,7 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
         if(initial_password_provided && added)
         {
           //Use the new user/password from now on:
-          ConnectionPool* connectionpool = ConnectionPool::get_instance();
+          auto connectionpool = ConnectionPool::get_instance();
           connectionpool->set_user(user);
           connectionpool->set_password(password);
         }
@@ -879,14 +879,14 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
         if(default_user_exists)
         {
           //Force a reconnection with the new password:
-          //ConnectionPool* connectionpool = ConnectionPool::get_instance();
+          //auto connectionpool = ConnectionPool::get_instance();
 
           //Remove it, after stopping it from being the database owner:
           bool disabled = true;
           Glib::ustring default_password;
           const auto default_user = Privs::get_default_developer_user_name(default_password, hosting_mode);
 
-          ConnectionPool* connectionpool = ConnectionPool::get_instance();
+          auto connectionpool = ConnectionPool::get_instance();
           const auto reowned = set_database_owner_user(connectionpool->get_user());
           bool removed = false;
           if(reowned)
@@ -969,7 +969,7 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
   //and start it again:
   if(change)
   {
-    ConnectionPool* connectionpool = ConnectionPool::get_instance();
+    auto connectionpool = ConnectionPool::get_instance();
     std::shared_ptr<SharedConnection> sharedconnection = connectionpool->connect();
     if(sharedconnection)
     {
@@ -996,7 +996,7 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
   }
 
   //Update the UI:
-  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
+  auto pApp = dynamic_cast<AppWindow*>(get_app_window());
   if(pApp)
   {
     pApp->update_network_shared_ui();
@@ -1008,7 +1008,7 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
 
 void Frame_Glom::on_menu_file_print()
 {
- Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_stack_mode->get_visible_child());
+ auto notebook_current = dynamic_cast<Notebook_Glom*>(m_stack_mode->get_visible_child());
  if(notebook_current)
    notebook_current->do_menu_file_print();
 }
@@ -1109,7 +1109,7 @@ void Frame_Glom::on_menu_Tables_AddRelatedTable()
 
   m_dialog_addrelatedtable->signal_response().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_add_related_table_response) );
 
-  Gtk::Window* parent = get_app_window();
+  auto parent = get_app_window();
 
   if(parent)
     m_dialog_addrelatedtable->set_transient_for(*parent);
@@ -1136,7 +1136,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
     Glib::ustring table_name, relationship_name, from_key_name;
     m_dialog_addrelatedtable->get_input(table_name, relationship_name, from_key_name);
 
-    Gtk::Window* parent = get_app_window();
+    auto parent = get_app_window();
 
     //It would be nice to put this in the dialog's on_response() instead,
     //but I don't think we can stop the response from being returned. murrayc
@@ -1194,7 +1194,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
       relationship->set_allow_edit(true);
       relationship->set_auto_create(true);
 
-      Document* document = get_document();
+      auto document = get_document();
       if(!document)
         return;
 
@@ -1236,7 +1236,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
     m_pDialog_Tables = new Window_BoxHolder(m_pBox_Tables, _("Edit Tables"));
     m_pDialog_Tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
 
-    Gtk::Window* pWindow = get_app_window();
+    auto pWindow = get_app_window();
     if(pWindow)
       m_pDialog_Tables->set_transient_for(*pWindow);
 
@@ -1269,17 +1269,17 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
 
 const Gtk::Window* Frame_Glom::get_app_window() const
 {
-  Frame_Glom* nonconst = const_cast<Frame_Glom*>(this);
+  auto nonconst = const_cast<Frame_Glom*>(this);
   return nonconst->get_app_window();
 }
 
 Gtk::Window* Frame_Glom::get_app_window()
 {
-  Gtk::Widget* pWidget = get_parent();
+  auto pWidget = get_parent();
   while(pWidget)
   {
     //Is this widget a Gtk::Window?:
-    Gtk::Window* pWindow = dynamic_cast<Gtk::Window*>(pWidget);
+    auto pWindow = dynamic_cast<Gtk::Window*>(pWidget);
     if(pWindow)
     {
       //Yes, return it.
@@ -1309,7 +1309,7 @@ void Frame_Glom::on_button_quickfind()
 
 void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clause)
 {
-  AppWindow* app = dynamic_cast<AppWindow*>(get_app_window());
+  auto app = dynamic_cast<AppWindow*>(get_app_window());
   if(!app)
   {
     std::cerr << G_STRFUNC << ": get_app_window() failed." << std::endl;
@@ -1392,7 +1392,7 @@ void Frame_Glom::on_userlevel_changed(AppState::userlevels /* userlevel */)
 
 void Frame_Glom::show_table_title()
 {
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(!document)
     return;
 
@@ -1432,7 +1432,7 @@ void Frame_Glom::update_table_in_document_from_database()
       " Falling back to the field details in the document." << std::endl;
   }
 
-  Document* pDoc = dynamic_cast<Document*>(get_document());
+  auto pDoc = dynamic_cast<Document*>(get_document());
   if(pDoc)
   {
     bool document_must_be_updated = false;
@@ -1513,7 +1513,7 @@ void Frame_Glom::set_document(Document* pDocument)
 {
   View_Composite_Glom::set_document(pDocument);
 
-  Document* document = get_document();
+  auto document = get_document();
   if(document)
   {
     //Connect to a signal that is only on the derived document class:
@@ -1526,7 +1526,7 @@ void Frame_Glom::set_document(Document* pDocument)
 
 void Frame_Glom::load_from_document()
 {
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(document)
   {
     //Call base class:
@@ -1556,7 +1556,7 @@ void Frame_Glom::on_menu_developer_database_preferences()
 
 void Frame_Glom::on_menu_developer_fields()
 {
-  Gtk::Window* parent = get_app_window();
+  auto parent = get_app_window();
   if(parent)
     do_menu_developer_fields(*parent);
 
@@ -1574,7 +1574,7 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustri
   // Some database backends (SQLite) require the table to change to no longer
   // be in use when changing the records, so we stop the database usage
   // here. We reshow everything in on_developer_dialog_hide() anyway.
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(document && document->get_hosting_mode() == Document::HostingMode::SQLITE)
     show_no_table();
 
@@ -1648,7 +1648,7 @@ void Frame_Glom::on_menu_developer_relationships()
   if(m_table_name.empty())
     return;
 
-  Gtk::Window* app = get_app_window();
+  auto app = get_app_window();
   if(app)
     do_menu_developer_relationships(*app, m_table_name);
 }
@@ -1681,7 +1681,7 @@ void Frame_Glom::on_menu_developer_layout()
   if(m_table_name.empty())
     return;
 
-  Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_stack_mode->get_visible_child());
+  auto notebook_current = dynamic_cast<Notebook_Glom*>(m_stack_mode->get_visible_child());
   if(notebook_current)
     notebook_current->do_menu_developer_layout();
 }
@@ -1798,7 +1798,7 @@ void Frame_Glom::add_window_to_app(Gtk::ApplicationWindow* window)
     return;
   }
 
-  Gtk::Window* app_window = get_app_window();
+  auto app_window = get_app_window();
   if(!app_window)
   {
     std::cerr << G_STRFUNC << ": app_window is null" << std::endl;
@@ -1817,7 +1817,7 @@ void Frame_Glom::add_window_to_app(Gtk::ApplicationWindow* window)
 
 void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout_name)
 {
-  Gtk::Window* app_window = get_app_window();
+  auto app_window = get_app_window();
   if(!app_window)
   {
     std::cerr << G_STRFUNC << ": app_window is null" << std::endl;
@@ -1926,7 +1926,7 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
   user = Glib::ustring();
   password = Glib::ustring();
 
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(!document)
     return false;
 
@@ -1978,11 +1978,11 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
 
 bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 {
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(!document)
     return false;
 
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   connection_pool->setup_from_document(document);
 
   if(!m_pDialogConnection)
@@ -2164,8 +2164,8 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         #ifdef GLOM_ENABLE_POSTGRESQL
         if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_CENTRAL)
         {
-          ConnectionPool::Backend* backend = connection_pool->get_backend();
-          ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
+          auto backend = connection_pool->get_backend();
+          auto central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
           g_assert(central);
 
           document->set_connection_server(central->get_host());
@@ -2181,8 +2181,8 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         // somehow avoid this code duplication.
         else if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_SELF)
         {
-          ConnectionPool::Backend* backend = connection_pool->get_backend();
-          ConnectionPoolBackends::PostgresSelfHosted* self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
+          auto backend = connection_pool->get_backend();
+          auto self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
           g_assert(self);
 
           document->set_connection_port(self->get_port());
@@ -2204,7 +2204,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
 void Frame_Glom::cleanup_connection()
 {
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   ShowProgressMessage progress_message(_("Stopping Database Server"));
   connection_pool->cleanup( sigc::mem_fun(*this, &Frame_Glom::on_connection_cleanup_progress) );
 }
@@ -2244,13 +2244,13 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
   //Initialize output parameter:
   database_not_found = false;
 
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(!document)
     return false;
 
 
   //Start a self-hosted server if necessary:
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   ShowProgressMessage progress_message(_("Starting Database Server"));
   connection_pool->setup_from_document(document);
   const ConnectionPool::StartupErrors started =
@@ -2262,7 +2262,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     //TODO: Output more exact details of the error message.
   }
 
-  AppWindow* app = dynamic_cast<AppWindow*>(get_app_window());
+  auto app = dynamic_cast<AppWindow*>(get_app_window());
   if(!app)
   {
     std::cerr << G_STRFUNC << ": app is null." << std::endl;
@@ -2346,7 +2346,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
       else
       {
         //Use the known password:
-        ConnectionPool* connectionpool = ConnectionPool::get_instance();
+        auto connectionpool = ConnectionPool::get_instance();
         connectionpool->set_user(known_username);
         connectionpool->set_password(known_password);
 
@@ -2377,7 +2377,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
 {
   bool result = false;
 
-  Gtk::Window* pWindowApp = get_app_window();
+  auto pWindowApp = get_app_window();
   g_assert(pWindowApp);
 
   {
@@ -2420,7 +2420,7 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
     return;
   }
 
-  Document* document = get_document();
+  auto document = get_document();
   std::shared_ptr<Report> report = document->get_report(m_table_name, report_name);
   if(!report)
     return;
@@ -2471,7 +2471,7 @@ void Frame_Glom::do_print_layout(const Glib::ustring& print_layout_name, bool pr
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_dialog_layout_report_hide()
 {
-  Document* document = get_document();
+  auto document = get_document();
 
   if(document && true) //m_pDialogLayoutReport->get_modified())
   {
@@ -2484,14 +2484,14 @@ void Frame_Glom::on_dialog_layout_report_hide()
   }
 
   //Update the reports menu:
-  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
+  auto pApp = dynamic_cast<AppWindow*>(get_app_window());
   if(pApp)
     pApp->fill_menu_reports(m_table_name);
 }
 
 void Frame_Glom::on_dialog_layout_print_hide()
 {
-  Document* document = get_document();
+  auto document = get_document();
 
   if(document && true) //m_pDialogLayoutReport->get_modified())
   {
@@ -2504,7 +2504,7 @@ void Frame_Glom::on_dialog_layout_print_hide()
   }
 
   //Update the print layouts menu:
-  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
+  auto pApp = dynamic_cast<AppWindow*>(get_app_window());
   if(pApp)
     pApp->fill_menu_print_layouts(m_table_name);
 }
@@ -2513,7 +2513,7 @@ void Frame_Glom::on_dialog_layout_print_hide()
 void Frame_Glom::on_dialog_tables_hide()
 {
   //If tables could have been added or removed, update the tables menu:
-  Document* document = dynamic_cast<Document*>(get_document());
+  auto document = dynamic_cast<Document*>(get_document());
   if(document)
   {
     // This is never true in client only mode, so we can as well save the
@@ -2521,7 +2521,7 @@ void Frame_Glom::on_dialog_tables_hide()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     if(document->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
-      AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
+      auto pApp = dynamic_cast<AppWindow*>(get_app_window());
       if(pApp)
         pApp->fill_menu_tables();
 
@@ -2543,7 +2543,7 @@ void Frame_Glom::on_dialog_tables_hide()
 void Frame_Glom::on_notebook_data_switch_page(Gtk::Widget* /* page */)
 {
   //Refill this menu, because it depends on whether list or details are visible:
-  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
+  auto pApp = dynamic_cast<AppWindow*>(get_app_window());
   if(pApp)
     pApp->fill_menu_print_layouts(m_table_name);
 }
@@ -2561,7 +2561,7 @@ void Frame_Glom::on_notebook_data_record_selection_changed()
   if(!found_set.m_where_clause.empty())
     something_selected = true;
   
-  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
+  auto pApp = dynamic_cast<AppWindow*>(get_app_window());
   if(pApp)
     pApp->enable_menu_print_layouts_details(something_selected);  
 }

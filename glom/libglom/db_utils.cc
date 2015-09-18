@@ -129,7 +129,7 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
     progress();
 
   //Connect to the actual database:
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   connection_pool->set_database(database_name);
 
   if(progress)
@@ -197,8 +197,8 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
       progress();
     
     //Save the port, if appropriate, so the document can be used to connect again:
-    Glom::ConnectionPool::Backend* backend = connection_pool->get_backend();
-    Glom::ConnectionPoolBackends::PostgresCentralHosted* central = 
+    auto backend = connection_pool->get_backend();
+    auto central = 
       dynamic_cast<Glom::ConnectionPoolBackends::PostgresCentralHosted*>(backend);
     if(central)
     {
@@ -216,7 +216,7 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
 
 bool recreate_database_from_document(Document* document, const std::function<void()>& progress)
 {
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
     return false; //Impossible anyway.
 
@@ -1329,7 +1329,7 @@ bool create_table_add_missing_fields(const std::shared_ptr<const TableInfo>& tab
 
 bool add_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field, Gtk::Window* /* parent_window */)
 {
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
 
   try
   {
@@ -1348,7 +1348,7 @@ bool add_column(const Glib::ustring& table_name, const std::shared_ptr<const Fie
 
 bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
 
   try
   {
@@ -1908,7 +1908,7 @@ bool layout_field_should_have_navigation(const Glib::ustring& table_name, const 
 
 Glib::ustring get_unused_database_name(const Glib::ustring& base_name)
 { 
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  auto connection_pool = Glom::ConnectionPool::get_instance();
   if(!connection_pool)
     return Glib::ustring();
 
@@ -2246,8 +2246,8 @@ bool remove_user_from_group(const Glib::ustring& user, const Glib::ustring& grou
 void set_fake_connection()
 {
   //Allow a fake connection, so sqlbuilder_get_full_query() can work:
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
-  Glom::ConnectionPoolBackends::Backend* backend = 
+  auto connection_pool = Glom::ConnectionPool::get_instance();
+  auto backend = 
     new Glom::ConnectionPoolBackends::PostgresCentralHosted();
   connection_pool->set_backend(std::shared_ptr<Glom::ConnectionPool::Backend>(backend));
   connection_pool->set_fake_connection();

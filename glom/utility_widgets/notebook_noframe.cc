@@ -106,7 +106,7 @@ std::vector<Gtk::Widget*> NotebookNoFrame::get_page_children()
 
 void NotebookNoFrame::on_visible_child_changed()
 {
-  Gtk::Widget* widget = get_visible_child();
+  auto widget = get_visible_child();
   m_signal_switch_page.emit(widget);
 }
 

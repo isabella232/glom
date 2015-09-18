@@ -305,7 +305,7 @@ void Dialog_ChooseField::on_combo_relationship_changed()
 {
   std::shared_ptr<Relationship> relationship = m_combo_relationship->get_selected_relationship();
 
-  Document* pDocument = m_document;
+  auto pDocument = m_document;
   if(pDocument)
   {
     //Show the list of fields from this relationship:

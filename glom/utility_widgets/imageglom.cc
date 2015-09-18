@@ -71,7 +71,7 @@ void ImageGlom::init()
   //Connect the the EvView's button-press-event signal, 
   //because we don't get it otherwise.
   //For some reason this is not necessary with the GtkImage.
-  Gtk::Widget* cppEvView = Glib::wrap(GTK_WIDGET(m_ev_view));
+  auto cppEvView = Glib::wrap(GTK_WIDGET(m_ev_view));
   cppEvView->signal_button_press_event().connect(
     sigc::mem_fun(*this, &ImageGlom::on_button_press_event), false);
 
@@ -114,7 +114,7 @@ bool ImageGlom::on_button_press_event(GdkEventButton *button_event)
 
   //Enable/Disable items.
   //We did this earlier, but get_appwindow is more likely to work now:
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
   if(pApp)
   {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -166,7 +166,7 @@ bool ImageGlom::on_button_press_event(GdkEventButton *button_event)
 
 AppWindow* ImageGlom::get_appwindow() const
 {
-  Gtk::Container* pWindow = const_cast<Gtk::Container*>(get_toplevel());
+  auto pWindow = const_cast<Gtk::Container*>(get_toplevel());
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<AppWindow*>(pWindow);
@@ -214,7 +214,7 @@ static void image_glom_ev_job_finished(EvJob* job, void* user_data)
 {
   g_assert(job);
   
-  ImageGlom* self = (ImageGlom*)user_data;
+  auto self = static_cast<ImageGlom*>(user_data);
   g_assert(self);
   
   self->on_ev_job_finished(job);
@@ -280,7 +280,7 @@ void ImageGlom::fill_evince_supported_mime_types()
   //Discover what mime types libevview can support.
   //Older versions supported image types too, via GdkPixbuf,
   //but that support was then removed.  
-  GList* types_list = ev_backends_manager_get_all_types_info();
+  auto types_list = ev_backends_manager_get_all_types_info();
   if(!types_list)
   {
     return;
@@ -500,7 +500,7 @@ void ImageGlom::on_menupopup_activate_open_file()
 
 void ImageGlom::on_menupopup_activate_open_file_with()
 {
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
 
   //Offer the user a choice of suitable applications:
   const auto mime_type = get_mime_type();
@@ -671,7 +671,7 @@ static void set_file_filter_images(Gtk::FileChooser& file_chooser)
 
 void ImageGlom::on_menupopup_activate_save_file()
 {
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
 
   Gtk::FileChooserDialog dialog(_("Save Image"), Gtk::FILE_CHOOSER_ACTION_SAVE);
   if(pApp)
@@ -737,7 +737,7 @@ bool ImageGlom::save_file(const Glib::ustring& uri)
   // Automatically delete the dialog when we no longer need it:
   std::shared_ptr<Gtk::Dialog> dialog_keeper(dialog_save);
 
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
   if(pApp)
     dialog_save->set_transient_for(*pApp);
 
@@ -758,7 +758,7 @@ void ImageGlom::on_menupopup_activate_select_file()
   if(m_read_only)
     return;
     
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
 
   Gtk::FileChooserDialog dialog(_("Choose Image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
   if(pApp)

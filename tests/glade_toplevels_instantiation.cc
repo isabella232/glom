@@ -120,7 +120,7 @@ int main(int argc, char* argv[])
 
     for(const auto& item : root->get_children("object"))
     {
-       const xmlpp::Element* child = dynamic_cast<const xmlpp::Element*>(item);
+       const auto child = dynamic_cast<const xmlpp::Element*>(item);
 
        //Try to instante the object with Gtk::Builder:
        if(child && !attempt_instantiation(filepath, child))

@@ -93,7 +93,7 @@ void CellRendererDbList::set_restrict_values_to_list(bool val)
 void CellRendererDbList::repack_cells_fixed(Gtk::CellLayout* combobox)
 {
   //We need an actual widget, to guess the fixed cell height.
-  Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(combobox);
+  auto widget = dynamic_cast<Gtk::Widget*>(combobox);
   if(!widget)
   {
     std::cerr << G_STRFUNC << ": widget is null." << std::endl;
@@ -102,7 +102,7 @@ void CellRendererDbList::repack_cells_fixed(Gtk::CellLayout* combobox)
   if(!m_repacked_first_cell)
   {
     //Get the default column, created by set_text_column():
-    Gtk::CellRendererText* cell = dynamic_cast<Gtk::CellRendererText*>(combobox->get_first_cell());
+    auto cell = dynamic_cast<Gtk::CellRendererText*>(combobox->get_first_cell());
     if (cell)
     {
       //Unpack and repack it with expand=false instead of expand=true:
@@ -153,7 +153,7 @@ void CellRendererDbList::repack_cells_fixed(Gtk::CellLayout* combobox)
 void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
 {
   //We need an actual widget, to guess the fixed cell height.
-  Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(combobox);
+  auto widget = dynamic_cast<Gtk::Widget*>(combobox);
   if(!widget)
   {
     std::cerr << G_STRFUNC << ": widget is null." << std::endl;
@@ -219,7 +219,7 @@ void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, co
     return;
   }
 
-  Gtk::CellLayout* combobox = dynamic_cast<Gtk::CellLayout*>(cell_editable);
+  auto combobox = dynamic_cast<Gtk::CellLayout*>(cell_editable);
   if(!combobox)
     return;
 
@@ -251,7 +251,7 @@ void CellRendererDbList::set_value(const Gnome::Gda::Value& value)
     if(cells.empty())
       return;
 
-    Gtk::CellRendererText* cell = dynamic_cast<Gtk::CellRendererText*>(cells[0]);
+    auto cell = dynamic_cast<Gtk::CellRendererText*>(cells[0]);
     if(!cell)
       return;
 

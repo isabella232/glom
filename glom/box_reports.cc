@@ -100,7 +100,7 @@ bool Box_Reports::fill_from_database()
   m_colTitle = m_AddDel.add_column(_("Title"), AddDelColumnInfo::enumStyles::Text, editable, true);
 
   std::vector<Glib::ustring> listTableReports;
-  Document* document = get_document();
+  auto document = get_document();
   if(document)
   {
     for(const auto& item : document->get_report_names(m_table_name))
@@ -162,7 +162,7 @@ void Box_Reports::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring report_name = m_AddDel.get_value_key(row);
 
-  Document* document = get_document();
+  auto document = get_document();
   if(document)
   {
      save_to_document();
@@ -208,7 +208,7 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
   if(get_userlevel() == AppState::userlevels::DEVELOPER)
   {
     const auto report_name = m_AddDel.get_value_key(row);
-    Document* document = get_document();
+    auto document = get_document();
 
     std::shared_ptr<Report> report = document->get_report(m_table_name, report_name);
     if(report)

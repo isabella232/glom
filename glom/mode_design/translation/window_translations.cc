@@ -62,23 +62,23 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
     m_treeview->set_model(m_model);
 
     // Append the View columns:
-    Gtk::TreeView::Column* column_original = Gtk::manage( new Gtk::TreeView::Column(_("Original")) );
+    auto column_original = Gtk::manage( new Gtk::TreeView::Column(_("Original")) );
     m_treeview->append_column(*column_original);
 
-    Gtk::CellRendererText* renderer_name = Gtk::manage(new Gtk::CellRendererText);
+    auto renderer_name = Gtk::manage(new Gtk::CellRendererText);
     column_original->pack_start(*renderer_name);
     column_original->set_cell_data_func(*renderer_name, sigc::mem_fun(*this, &Window_Translations::on_cell_data_original));
 
     const auto col = m_treeview->append_column_editable(_("Translation"), m_columns.m_col_translation);
-    Gtk::CellRendererText* renderer = dynamic_cast<Gtk::CellRendererText*>(m_treeview->get_column_cell_renderer(col - 1));
+    auto renderer = dynamic_cast<Gtk::CellRendererText*>(m_treeview->get_column_cell_renderer(col - 1));
     if(renderer)
       renderer->signal_edited().connect(sigc::mem_fun(*this, &Window_Translations::on_treeview_edited));
 
     //This is at the end, because it can contain a long description of the item's context.
-    Gtk::TreeView::Column* column_item_typename = Gtk::manage( new Gtk::TreeView::Column(_("Item")) );
+    auto column_item_typename = Gtk::manage( new Gtk::TreeView::Column(_("Item")) );
     m_treeview->append_column(*column_item_typename);
 
-    Gtk::CellRendererText* renderer_item_typename = Gtk::manage(new Gtk::CellRendererText);
+    auto renderer_item_typename = Gtk::manage(new Gtk::CellRendererText);
     column_item_typename->pack_start(*renderer_item_typename);
     column_item_typename->set_cell_data_func(*renderer_item_typename, sigc::mem_fun(*this, &Window_Translations::on_cell_data_item_itemhint));
   }
@@ -180,7 +180,7 @@ void Window_Translations::on_button_identify()
 void Window_Translations::on_cell_data_original(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
-  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(renderer_text)
   {
     if(iter)
@@ -206,7 +206,7 @@ void Window_Translations::on_cell_data_original(Gtk::CellRenderer* renderer, con
 void Window_Translations::on_cell_data_item_itemhint(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
-  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(!renderer_text)
     return;
 
@@ -227,7 +227,7 @@ void Window_Translations::load_from_document()
 {
   m_model->clear(); //Remove all rows.
 
-  Document* document = get_document();
+  auto document = get_document();
   if(!document)
     return;
 

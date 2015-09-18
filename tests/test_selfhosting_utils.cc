@@ -119,7 +119,7 @@ static bool delete_directory(const std::string& uri)
 
 void test_selfhosting_cleanup(bool delete_file)
 {
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  auto connection_pool = Glom::ConnectionPool::get_instance();
 
   const auto stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );
   g_assert(stopped);
@@ -152,7 +152,7 @@ void test_selfhosting_cleanup(bool delete_file)
 bool test_selfhost(Glom::Document& document, const Glib::ustring& user, const Glib::ustring& password)
 {
   //TODO: Let this happen automatically on first connection?
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  auto connection_pool = Glom::ConnectionPool::get_instance();
 
   connection_pool->setup_from_document(&document);
 
@@ -208,7 +208,7 @@ bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document
   g_assert(saved);
 
   //Specify the backend and backend-specific details to be used by the connectionpool.
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  auto connection_pool = Glom::ConnectionPool::get_instance();
   connection_pool->setup_from_document(&document);
 
   //We must specify a default username and password:

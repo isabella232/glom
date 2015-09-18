@@ -329,7 +329,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
     table_name = Glib::ustring();
     table_primary_key_value = Gnome::Gda::Value();
 
-    Gtk::Window* window = const_cast<Gtk::Window*>(get_app_window());
+    auto window = const_cast<Gtk::Window*>(get_app_window());
     if(window)
       Frame_Glom::show_ok_dialog(_("No Corresponding Record Exists"), _("No record with this value exists. Therefore navigation to the related record is not possible."), *window, Gtk::MESSAGE_WARNING); //TODO: Make it more clear to the user exactly what record, what field, and what value, we are talking about.
   }

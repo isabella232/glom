@@ -33,7 +33,7 @@ xmlpp::Element* create_element()
 
 static bool test_value(Glom::Field::glom_field_type field_type, const Gnome::Gda::Value& value)
 {
-  xmlpp::Element* element = create_element();
+  auto element = create_element();
   Glom::XmlUtils::set_node_text_child_as_value(element, value, field_type);
 
   const Gnome::Gda::Value value_retrieved =

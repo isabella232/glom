@@ -207,7 +207,7 @@ static Glib::ustring convert_filepath_to_uri(const std::string& filepath)
 
 static void cleanup()
 {
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  auto connection_pool = Glom::ConnectionPool::get_instance();
 
   const auto stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );
   g_assert(stopped);
@@ -372,7 +372,7 @@ int main(int argc, char* argv[])
 
   g_assert(document.get_is_example_file());;
 
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  auto connection_pool = Glom::ConnectionPool::get_instance();
 
   //Save a copy, specifying the path to file in a directory:
   filepath_dir = 
@@ -468,8 +468,8 @@ int main(int argc, char* argv[])
     connection_pool->set_user(group.m_arg_server_username);
     connection_pool->set_password(password); //TODO: Take this from stdin instead.
     
-    Glom::ConnectionPool::Backend* backend = connection_pool->get_backend();
-    Glom::ConnectionPoolBackends::PostgresCentralHosted* central = 
+    auto backend = connection_pool->get_backend();
+    auto central = 
       dynamic_cast<Glom::ConnectionPoolBackends::PostgresCentralHosted*>(backend);
     g_assert(central);
 

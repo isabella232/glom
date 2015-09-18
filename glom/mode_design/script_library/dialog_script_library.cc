@@ -88,7 +88,7 @@ void Dialog_ScriptLibrary::on_button_add()
   //Save any outstanding changes:
   save_current_script();
 
-  Document* document = get_document();
+  auto document = get_document();
   if(!document)
     return;
 
@@ -122,7 +122,7 @@ void Dialog_ScriptLibrary::on_button_add()
 
 void Dialog_ScriptLibrary::on_button_remove()
 {
-  Document* document = get_document();
+  auto document = get_document();
   if(!document)
     return;
 
@@ -156,7 +156,7 @@ void Dialog_ScriptLibrary::on_combo_name_changed()
 
 void Dialog_ScriptLibrary::load_current_script()
 {
-  Document* document = get_document();
+  auto document = get_document();
   if(!document)
     return;
 
@@ -178,7 +178,7 @@ void Dialog_ScriptLibrary::load_current_script()
 
 void Dialog_ScriptLibrary::save_current_script()
 {
-  Document* document = get_document();
+  auto document = get_document();
   if(!document)
     return;
 
@@ -197,7 +197,7 @@ void Dialog_ScriptLibrary::save_current_script()
 
 void Dialog_ScriptLibrary::load_from_document()
 {
-  const Document* document = get_document();
+  const auto document = get_document();
   if(!document)
     return;
 
@@ -228,7 +228,7 @@ void Dialog_ScriptLibrary::load_from_document()
 
 void Dialog_ScriptLibrary::save_to_document()
 {
-  Document* document = get_document();
+  auto document = get_document();
   if(!document)
     return;
 

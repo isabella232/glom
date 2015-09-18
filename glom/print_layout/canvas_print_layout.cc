@@ -379,7 +379,7 @@ std::shared_ptr<LayoutItem_Line> Canvas_PrintLayout::offer_line(const std::share
 
 void Canvas_PrintLayout::on_context_menu_edit()
 {
-  Gtk::Window* parent = dynamic_cast<Gtk::Window*>(get_toplevel());
+  auto parent = dynamic_cast<Gtk::Window*>(get_toplevel());
 
   m_context_item->update_layout_position_from_canvas();
 
@@ -463,7 +463,7 @@ void Canvas_PrintLayout::on_context_menu_formatting()
   Utils::get_glade_widget_derived_with_warning(m_dialog_format);
   add_view(m_dialog_format);
 
-  Gtk::Window* window = dynamic_cast<Gtk::Window*>(get_toplevel());
+  auto window = dynamic_cast<Gtk::Window*>(get_toplevel());
   if(window)
     m_dialog_format->set_transient_for(*window);
 
@@ -784,7 +784,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
         std::shared_ptr<const Relationship> relationship = layoutitem_portal->get_relationship();
         if(relationship)
         {
-          const Document* document = get_document();
+          const auto document = get_document();
           const auto from_field = DbUtils::get_fields_for_table_one_field(document,
             relationship->get_from_table(), relationship->get_from_field());
           const Gnome::Gda::Value from_key_value = get_field_value_in_database(from_field, found_set, 0 /* TODO: window */);
@@ -1066,7 +1066,7 @@ void Canvas_PrintLayout::set_grid_gap(double gap)
 
 Base_DB::type_vecConstLayoutFields Canvas_PrintLayout::get_portal_fields_to_show(const std::shared_ptr<LayoutItem_Portal>& portal)
 {
-  const Document* document = get_document();
+  const auto document = get_document();
   if(!document)
     std::cerr << G_STRFUNC << ": document is NULL." << std::endl;
 

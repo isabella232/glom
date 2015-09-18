@@ -63,7 +63,7 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
   m_treeview_autoincrements->append_column(_("Field"), m_columns.m_col_field);
   const int view_cols_count = m_treeview_autoincrements->append_column(_("Next Value"), m_columns.m_col_next_value);
 
-  Gtk::CellRendererText* pCellRenderer = dynamic_cast<Gtk::CellRendererText*>(m_treeview_autoincrements->get_column_cell_renderer(view_cols_count-1));
+  auto pCellRenderer = dynamic_cast<Gtk::CellRendererText*>(m_treeview_autoincrements->get_column_cell_renderer(view_cols_count-1));
   if(pCellRenderer)
   {
     //Make it editable:
@@ -230,7 +230,7 @@ void Dialog_Database_Preferences::save_to_document()
   m_glade_variables_map.transfer_widgets_to_variables();
   m_system_prefs.m_org_logo = m_image->get_value();
 
-  Document* document = get_document();
+  auto document = get_document();
   if(!document)
      return;
 
@@ -264,7 +264,7 @@ void Dialog_Database_Preferences::on_button_test_script()
 
   type_map_fields field_values;
 
-  Document* document = get_document();
+  auto document = get_document();
   if(!document)
     return;
 

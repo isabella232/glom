@@ -106,7 +106,7 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
         }
       }
 
-      Gtk::RadioButton* button = new Gtk::RadioButton(group, title);
+      auto button = new Gtk::RadioButton(group, title);
       m_map_buttons[value_first] = button;
       pack_start(*button);
       button->show();
@@ -125,7 +125,7 @@ void ComboAsRadioButtons::set_choices_fixed(const Formatting::type_list_values& 
   //Clear existing buttons:
   for(const auto& the_pair : m_map_buttons)
   {
-     Gtk::RadioButton* button = the_pair.second;
+     auto button = the_pair.second;
      delete button;
   }
   m_map_buttons.clear();
@@ -143,7 +143,7 @@ void ComboAsRadioButtons::set_choices_fixed(const Formatting::type_list_values& 
 
       const auto value_first = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format);
 
-      Gtk::RadioButton* button = new Gtk::RadioButton(group, value_first);
+      auto button = new Gtk::RadioButton(group, value_first);
       m_map_buttons[value_first] = button;
       pack_start(*button);
       button->show();
@@ -164,7 +164,7 @@ ComboAsRadioButtons::~ComboAsRadioButtons()
 {
   for(const auto& the_pair : m_map_buttons)
   {
-    Gtk::RadioButton* button = the_pair.second;
+    auto button = the_pair.second;
     delete button;
   }
   m_map_buttons.clear();
@@ -223,7 +223,7 @@ void ComboAsRadioButtons::set_text(const Glib::ustring& text)
   auto iter = m_map_buttons.find(text);
   if(iter != m_map_buttons.end())
   {
-    Gtk::RadioButton* button = iter->second;
+    auto button = iter->second;
     if(button)
     {
       button->set_active();
@@ -248,7 +248,7 @@ Glib::ustring ComboAsRadioButtons::get_text() const
   //Get the active row:
   for(const auto& the_pair : m_map_buttons)
   {
-    Gtk::CheckButton* button = the_pair.second;
+    auto button = the_pair.second;
     if(button && button->get_active())
     {
       return the_pair.first;
@@ -262,7 +262,7 @@ Glib::ustring ComboAsRadioButtons::get_text() const
 void ComboAsRadioButtons::show_context_menu(GdkEventButton *button_event)
 {
   std::cout << "ComboAsRadioButtons::show_context_menu()" << std::endl;
-  AppWindow* pApp = get_appwindow();
+  auto pApp = get_appwindow();
   if(pApp)
   {
     //Enable/Disable items.
@@ -305,7 +305,7 @@ bool ComboAsRadioButtons::on_button_press_event(GdkEventButton *button_event)
 
 AppWindow* ComboAsRadioButtons::get_appwindow() const
 {
-  Gtk::Container* pWindow = const_cast<Gtk::Container*>(get_toplevel());
+  auto pWindow = const_cast<Gtk::Container*>(get_toplevel());
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<AppWindow*>(pWindow);

@@ -158,7 +158,7 @@ void Base_DB::load_from_document()
 
 AppState::userlevels Base_DB::get_userlevel() const
 {
-  const Document* document = dynamic_cast<const Document*>(get_document());
+  const auto document = dynamic_cast<const Document*>(get_document());
   if(document)
   {
     return document->get_userlevel();
@@ -172,7 +172,7 @@ AppState::userlevels Base_DB::get_userlevel() const
 
 void Base_DB::set_userlevel(AppState::userlevels value)
 {
-  Document* document = get_document();
+  auto document = get_document();
   if(document)
   {
     document->set_userlevel(value);
@@ -191,7 +191,7 @@ void Base_DB::set_document(Document* pDocument)
   View_Composite_Glom::set_document(pDocument);
 
   //Connect to a signal that is only on the derived document class:
-  Document* document = get_document();
+  auto document = get_document();
   if(document)
   {
     document->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Base_DB::on_userlevel_changed) );
@@ -260,7 +260,7 @@ namespace
 
 std::shared_ptr<Field> Base_DB::change_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field_old, const std::shared_ptr<const Field>& field, Gtk::Window* parent_window) const
 {
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
   std::shared_ptr<Field> result = check_field_change_constraints(field_old, field);
 
   //TODO: change_column() doesn't throw any exception.
@@ -292,7 +292,7 @@ bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vec_con
     pass_fields[i] = fields[i];
   }
 
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  auto connection_pool = ConnectionPool::get_instance();
 
   try
   {
@@ -610,7 +610,7 @@ std::shared_ptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustr
 
 void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vec_fields& all_db_fields, const std::shared_ptr<LayoutGroup>& group, Base_DB::type_vecConstLayoutFields& vecFields) const
 {
-  const Document* document = dynamic_cast<const Document*>(get_document());
+  const auto document = dynamic_cast<const Document*>(get_document());
 
   //g_warning("Box_Data::get_table_fields_to_show_for_sequence_add_group(): table_name=%s, all_db_fields.size()=%d, group->name=%s", table_name.c_str(), all_db_fields.size(), group->get_name().c_str());
 
@@ -687,7 +687,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
 
 Base_DB::type_vecConstLayoutFields Base_DB::get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document::type_list_layout_groups& mapGroupSequence) const
 {
-  const Document* pDoc = dynamic_cast<const Document*>(get_document());
+  const auto pDoc = dynamic_cast<const Document*>(get_document());
 
   //Get field definitions from the database, with corrections from the document:
   type_vec_fields all_fields = DbUtils::get_fields_for_table(pDoc, table_name);
@@ -924,7 +924,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
           //Add it to the database (even if it is not shown in the view)
           //Using true for the last parameter means we use existing calculations where possible,
           //instead of recalculating a field that is being calculated already, and for which this dependent field is being calculated anyway.
-          Document* document = get_document();
+          auto document = get_document();
           if(document)
           {
             LayoutFieldInRecord field_in_record_layout(layout_item, field_in_record.m_table_name /* parent */, field_in_record.m_key, field_in_record.m_key_value);
@@ -962,7 +962,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& field_in_re
 
 bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations, Gtk::Window* parent_window)
 {
-  Document* document = get_document();
+  auto document = get_document();
   g_assert(document);
 
   const auto field_in_record = layoutfield_in_record.get_fieldinrecord(*document);
@@ -1162,7 +1162,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculated_fields(const Glib::
 
   type_list_const_field_items result;
 
-  const Document* document = dynamic_cast<const Document*>(get_document());
+  const auto document = dynamic_cast<const Document*>(get_document());
   if(document)
   {
     //Look at each field in the table, and get lists of what fields trigger their calculations,
@@ -1212,7 +1212,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
   if(calculation.empty())
     return result;
 
-  Document* document = get_document();
+  auto document = get_document();
   if(!document)
     return result;
 
@@ -1272,7 +1272,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
 
 void Base_DB::do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value)
 {
-  Document* document = get_document();
+  auto document = get_document();
   if(!document)
     return;
 
@@ -1378,7 +1378,7 @@ bool Base_DB::check_entered_value_for_uniqueness(const Glib::ustring& table_name
 
 bool Base_DB::get_relationship_exists(const Glib::ustring& table_name, const Glib::ustring& relationship_name)
 {
-  Document* document = get_document();
+  auto document = get_document();
   if(document)
   {
     std::shared_ptr<Relationship> relationship = document->get_relationship(table_name, relationship_name);
@@ -1459,7 +1459,7 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
   // The WHERE clause mentions the first-related table (though by the alias defined in extra_join)
   // and we add an extra JOIN to mention the second-related table.
 
-  Document* document = get_document();
+  auto document = get_document();
 
   Glib::ustring where_clause_to_table_name = relationship->get_to_table();
   std::shared_ptr<Field> where_clause_to_key_field = DbUtils::get_fields_for_table_one_field(document, relationship->get_to_table(), relationship->get_to_field());
@@ -1496,7 +1496,7 @@ bool Base_DB::set_database_owner_user(const Glib::ustring& user)
   if(user.empty())
     return false;
 
-  ConnectionPool* connectionpool = ConnectionPool::get_instance();
+  auto connectionpool = ConnectionPool::get_instance();
   const auto database_name = connectionpool->get_database();
   if(database_name.empty())
     return false;

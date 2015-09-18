@@ -53,7 +53,7 @@ bool Dialog_Design::init_db_details(const Glib::ustring& table_name)
     Glib::ustring table_label = _("None selected");
 
     //Show the table title (if any) and name:
-     Document* document = dynamic_cast<Document*>(get_document());
+     auto document = dynamic_cast<Document*>(get_document());
      if(document)
      {
        Glib::ustring table_title = document->get_table_title(table_name, AppWindow::get_current_locale());

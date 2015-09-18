@@ -64,13 +64,13 @@ FlowTableWithFields::~FlowTableWithFields()
   //Remove views. The widgets are deleted automatically because they are managed.
   for(const auto& the_pair : m_listFields)
   {
-    View_Composite_Glom* pViewFirst = dynamic_cast<View_Composite_Glom*>(the_pair.m_first);
+    auto pViewFirst = dynamic_cast<View_Composite_Glom*>(the_pair.m_first);
     if(pViewFirst)
     {
       remove_view(pViewFirst);
     }
 
-    View_Composite_Glom* pViewSecond = dynamic_cast<View_Composite_Glom*>(the_pair.m_second);
+    auto pViewSecond = dynamic_cast<View_Composite_Glom*>(the_pair.m_second);
     if(pViewSecond)
     {
       remove_view(pViewSecond);
@@ -159,12 +159,12 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
 
   if(true)//!fields.empty() && !group_name.empty())
   {
-    Gtk::Frame* frame = Gtk::manage( new Gtk::Frame ); //TODO_leak: This is possibly leaked, according to valgrind.
+    auto frame = Gtk::manage( new Gtk::Frame ); //TODO_leak: This is possibly leaked, according to valgrind.
 
     const auto group_title = item_get_title(group);
     if(!group_title.empty())
     {
-      Gtk::Label* label = Gtk::manage( new Gtk::Label ); //TODO: This is maybe leaked, according to valgrind, though it should be managed by GtkFrame.
+      auto label = Gtk::manage( new Gtk::Label ); //TODO: This is maybe leaked, according to valgrind, though it should be managed by GtkFrame.
       label->set_markup( UiUtils::bold_message(group_title) );
       label->show();
       frame->set_label_widget(*label);
@@ -173,7 +173,7 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
     frame->set_shadow_type(Gtk::SHADOW_NONE); //HIG-style
     frame->show();
 
-    FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
+    auto flow_table = Gtk::manage( new FlowTableWithFields() );
     flow_table->set_find_mode(m_find_mode);
     add_view(flow_table); //Allow these sub-flowtables to access the document too.
     flow_table->set_table(m_table_name);
@@ -185,7 +185,7 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
     flow_table->set_vertical_spacing(get_vertical_spacing());
     flow_table->show();
 
-    Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() ); //TODO_Leak: Valgrind says this is possibly leaked.
+    auto event_box = Gtk::manage( new Gtk::EventBox() ); //TODO_Leak: Valgrind says this is possibly leaked.
     event_box->add(*flow_table);
     event_box->set_visible_window(false);
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -249,10 +249,10 @@ Box_Data_List_Related* FlowTableWithFields::create_related(const std::shared_ptr
   if(!portal)
     return 0;
 
-  Document* pDocument = static_cast<Document*>(get_document());
+  auto pDocument = static_cast<Document*>(get_document());
   if(pDocument)
   {
-    Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
+    auto portal_box = Gtk::manage(new Box_Data_List_Related);
     portal_box->set_find_mode(m_find_mode);
     add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
 
@@ -289,10 +289,10 @@ Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const st
   if(!portal)
     return 0;
 
-  Document* pDocument = static_cast<Document*>(get_document());
+  auto pDocument = static_cast<Document*>(get_document());
   if(pDocument)
   {
-    Box_Data_Calendar_Related* portal_box = Gtk::manage(new Box_Data_Calendar_Related);
+    auto portal_box = Gtk::manage(new Box_Data_Calendar_Related);
     portal_box->set_find_mode(m_find_mode); //TODO: Implement this in the class
     add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
 
@@ -348,7 +348,7 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
     return;
 
   //Add the widget:
-  NotebookGlom* notebook_widget = Gtk::manage(new NotebookGlom());
+  auto notebook_widget = Gtk::manage(new NotebookGlom());
 
   notebook_widget->show();
   notebook_widget->set_layout_item(notebook, m_table_name);
@@ -359,10 +359,10 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
     if(group)
     {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-      NotebookLabel* tab_label = Gtk::manage(new NotebookLabel(notebook_widget));
+      auto tab_label = Gtk::manage(new NotebookLabel(notebook_widget));
       tab_label->show();
 #else
-      Gtk::Label* tab_label = Gtk::manage(new Gtk::Label());
+      auto tab_label = Gtk::manage(new Gtk::Label());
       tab_label->show();
 #endif
 
@@ -372,7 +372,7 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
       if(portal)
       {
         //Add a Related Records list for this portal:
-        Box_Data_List_Related* portal_box = create_related(portal, false /* no label, because it's in the tab instead. */);
+        auto portal_box = create_related(portal, false /* no label, because it's in the tab instead. */);
         //portal_box->set_border_width(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL)); It has margins around the frame's child widget instead.
         portal_box->show();
         notebook_widget->append_page(*portal_box, *tab_label);
@@ -382,7 +382,7 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
       else
       {
         //Add a FlowTable for this group:
-        FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
+        auto flow_table = Gtk::manage( new FlowTableWithFields() );
         flow_table->set_find_mode(m_find_mode);
         add_view(flow_table); //Allow these sub-flowtables to access the document too.
         flow_table->set_table(m_table_name);
@@ -393,7 +393,7 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
         flow_table->show();
 
         // Put the new flowtable in an event box to catch events
-        Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() ); //TODO_Leak: Valgrind says this is possibly leaked.
+        auto event_box = Gtk::manage( new Gtk::EventBox() ); //TODO_Leak: Valgrind says this is possibly leaked.
         event_box->add(*flow_table);
         event_box->set_visible_window(false);
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -449,7 +449,7 @@ void FlowTableWithFields::add_field(const std::shared_ptr<LayoutItem_Field>& lay
   info.m_field = layoutitem_field;
 
   //Add the entry or checkbox (handled by the DataWidget)
-  DataWidget* pDataWidget = Gtk::manage(new DataWidget(layoutitem_field, table_name, get_document()) ); //TODO_Leak: Possibly leaked, according to valgrind.
+  auto pDataWidget = Gtk::manage(new DataWidget(layoutitem_field, table_name, get_document()) ); //TODO_Leak: Possibly leaked, according to valgrind.
   add_layoutwidgetbase(pDataWidget);
   add_view(pDataWidget); //So it can get the document.
 
@@ -460,10 +460,10 @@ void FlowTableWithFields::add_field(const std::shared_ptr<LayoutItem_Field>& lay
   //We put it inside a box so that halign works as we want.
   //See https://mail.gnome.org/archives/gtk-devel-list/2014-July/msg00005.html
 
-  Gtk::Label* label = info.m_second->get_label();
+  auto label = info.m_second->get_label();
   if(label && !label->get_text().empty())
   {
-    Gtk::Box* boxLabel = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+    auto boxLabel = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
     boxLabel->show();
     boxLabel->pack_start(*label);
     info.m_first = boxLabel;
@@ -491,7 +491,7 @@ void FlowTableWithFields::add_field(const std::shared_ptr<LayoutItem_Field>& lay
       label->set_valign(Gtk::ALIGN_START); //Center is neater next to entries, but center is silly next to large images.
   }
 
-  Gtk::EventBox* eventbox = Gtk::manage(new Gtk::EventBox());
+  auto eventbox = Gtk::manage(new Gtk::EventBox());
   if(info.m_first)
       eventbox->add(*info.m_first);
 
@@ -521,7 +521,7 @@ void FlowTableWithFields::add_field(const std::shared_ptr<LayoutItem_Field>& lay
 void FlowTableWithFields::add_button(const std::shared_ptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& table_name)
 {
   //Add the widget
-  ButtonGlom* button = Gtk::manage(new ButtonGlom());
+  auto button = Gtk::manage(new ButtonGlom());
   button->set_label(item_get_title_or_name(layoutitem_button));
   button->set_layout_item(layoutitem_button, table_name);
   button->signal_clicked().connect(
@@ -536,14 +536,14 @@ void FlowTableWithFields::add_button(const std::shared_ptr<LayoutItem_Button>& l
 
   const Formatting::HorizontalAlignment alignment =
     layoutitem_button->get_formatting_used_horizontal_alignment();
-  Gtk::Widget* widget_to_add = button;
+  Gtk::Widget *widget_to_add = button;
   bool expand = false;
   if(alignment != Formatting::HorizontalAlignment::LEFT)
   {
     //Put the button in a Gtk::Box so we can have non-default alignment in
     //its space. Note that we will need a different technique if we ever
     //support center alignment.
-    Gtk::Box* box_button = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+    auto box_button = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
     box_button->show();
     if(alignment == Formatting::HorizontalAlignment::RIGHT)
       box_button->pack_end(*button, Gtk::PACK_SHRINK);
@@ -563,7 +563,7 @@ void FlowTableWithFields::add_textobject(const std::shared_ptr<LayoutItem_Text>&
 {
   //Add the widget:
   const auto text = layoutitem_text->get_text(AppWindow::get_current_locale());
-  DataWidgetChildren::Label* label = Gtk::manage(new DataWidgetChildren::Label(text));
+  auto label = Gtk::manage(new DataWidgetChildren::Label(text));
   label->set_layout_item(layoutitem_text, table_name);
 
   const Formatting::HorizontalAlignment alignment =
@@ -584,7 +584,7 @@ void FlowTableWithFields::add_textobject(const std::shared_ptr<LayoutItem_Text>&
   }
   else
   {
-    DataWidgetChildren::Label* title_label = Gtk::manage(new DataWidgetChildren::Label(title, Gtk::ALIGN_START, Gtk::ALIGN_START, false));
+    auto title_label = Gtk::manage(new DataWidgetChildren::Label(title, Gtk::ALIGN_START, Gtk::ALIGN_START, false));
     title_label->set_layout_item(layoutitem_text, table_name);
     title_label->set_halign(Gtk::ALIGN_END);
     title_label->set_valign(Gtk::ALIGN_CENTER);
@@ -598,7 +598,7 @@ void FlowTableWithFields::add_textobject(const std::shared_ptr<LayoutItem_Text>&
 void FlowTableWithFields::add_imageobject(const std::shared_ptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& table_name)
 {
   //Add the widget:
-  ImageGlom* image = Gtk::manage(new ImageGlom());
+  auto image = Gtk::manage(new ImageGlom());
   image->set_size_request(200, 200);
   image->set_value(layoutitem_image->get_image());
   image->set_read_only(); //Only field images can be changed by the user when they are on a layout.
@@ -615,7 +615,7 @@ void FlowTableWithFields::add_imageobject(const std::shared_ptr<LayoutItem_Image
   }
   else
   {
-    Gtk::Label* title_label = Gtk::manage(new Gtk::Label(title));
+    auto title_label = Gtk::manage(new Gtk::Label(title));
     title_label->set_halign(Gtk::ALIGN_END);
     title_label->set_valign(Gtk::ALIGN_CENTER);
     title_label->show();
@@ -647,13 +647,13 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
     {
       remove(*(info.m_first));
 
-      View_Composite_Glom* pViewFirst = dynamic_cast<View_Composite_Glom*>(info.m_first);
+      auto pViewFirst = dynamic_cast<View_Composite_Glom*>(info.m_first);
       if(pViewFirst)
         remove_view(pViewFirst);
 
       delete info.m_first;
 
-      View_Composite_Glom* pViewSecond = dynamic_cast<View_Composite_Glom*>(info.m_second);
+      auto pViewSecond = dynamic_cast<View_Composite_Glom*>(info.m_second);
       if(pViewSecond)
         remove_view(pViewSecond);
 
@@ -713,7 +713,7 @@ Gnome::Gda::Value FlowTableWithFields::get_field_value(const std::shared_ptr<con
   for(type_list_const_widgets::const_iterator iter = list_widgets.begin();
     iter != list_widgets.end(); ++iter)
   {
-    const DataWidget* datawidget = dynamic_cast<const DataWidget*>(*iter);
+    const auto datawidget = dynamic_cast<const DataWidget*>(*iter);
     if(!datawidget)
       continue;
 
@@ -730,7 +730,7 @@ void FlowTableWithFields::set_field_editable(const std::shared_ptr<const LayoutI
 {
   for(const auto& item : get_field(field, true))
   {
-    DataWidget* datawidget = dynamic_cast<DataWidget*>(item);
+    auto datawidget = dynamic_cast<DataWidget*>(item);
     if(datawidget)
     {
       datawidget->set_editable(editable);
@@ -742,11 +742,11 @@ void FlowTableWithFields::update_choices(const std::shared_ptr<const LayoutItem_
 {
   for(const auto& item : get_field(field, true))
   {
-    DataWidget* datawidget = dynamic_cast<DataWidget*>(item);
+    auto datawidget = dynamic_cast<DataWidget*>(item);
     if(!datawidget)
       continue;
 
-    DataWidgetChildren::ComboChoices* combo = 
+    auto combo =
       dynamic_cast<DataWidgetChildren::ComboChoices*>(datawidget->get_data_child_widget());
     if(!combo)
       continue;
@@ -819,12 +819,12 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
   //Check the single-item widgets:
   for(const auto& the_pair : m_listFields)
   {
-    DataWidget* widget = the_pair.m_second;
+    auto widget = the_pair.m_second;
     if(!widget)
       continue;
 
-    Gtk::Widget* child_widget = widget->get_data_child_widget();
-    DataWidgetChildren::ComboChoices* combochoices = dynamic_cast<DataWidgetChildren::ComboChoices*>(child_widget);
+    auto child_widget = widget->get_data_child_widget();
+    auto combochoices = dynamic_cast<DataWidgetChildren::ComboChoices*>(child_widget);
     if(!combochoices)
       continue;
 
@@ -968,11 +968,11 @@ void FlowTableWithFields::remove_all()
   //Remove views. The widgets are deleted automatically because they are managed.
   for(const auto& the_pair : m_listFields)
   {
-    View_Composite_Glom* pViewFirst = dynamic_cast<View_Composite_Glom*>(the_pair.m_first);
+    auto pViewFirst = dynamic_cast<View_Composite_Glom*>(the_pair.m_first);
     if(pViewFirst)
       remove_view(pViewFirst);
 
-   View_Composite_Glom* pViewSecond = dynamic_cast<View_Composite_Glom*>(the_pair.m_second);
+   auto pViewSecond = dynamic_cast<View_Composite_Glom*>(the_pair.m_second);
     if(pViewSecond)
       remove_view(pViewSecond);
   }
@@ -1169,7 +1169,7 @@ void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups&
   //Remove widgets from any existing size group:
   for(auto info : m_listFields)
   {
-    Gtk::Widget* widget = info.m_first;
+    auto widget = info.m_first;
     Glib::RefPtr<Gtk::SizeGroup> previous_size_group = info.m_first_in_sizegroup;
     if(!widget || !previous_size_group)
       continue;
@@ -1185,11 +1185,11 @@ void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups&
 
   for(auto info : m_listFields)
   {
-    Gtk::Widget* label = info.m_first;
+    auto label = info.m_first;
     if(!label)
       continue;
 
-    Gtk::EventBox* label_parent = info.m_first_eventbox;
+    auto label_parent = info.m_first_eventbox;
     if(!label_parent)
       continue;
 
@@ -1303,7 +1303,7 @@ void FlowTableWithFields::on_menu_delete_activate()
 
 bool FlowTableWithFields::on_button_press_event(GdkEventButton *button_event)
 {
-  AppWindow* pApp = AppWindow::get_appwindow();
+  auto pApp = AppWindow::get_appwindow();
   if(pApp && pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
   {
     GdkModifierType mods;

@@ -341,7 +341,7 @@ void Dialog_UsersList::on_button_user_edit()
           std::cerr << G_STRFUNC << ": ALTER USER failed." << std::endl;
 
         //Change the password in the current connection, if this is the current user.
-        ConnectionPool* connection_pool = ConnectionPool::get_instance();
+        auto connection_pool = ConnectionPool::get_instance();
         if(connection_pool->get_user() == user)
           connection_pool->set_password(password);
 

@@ -77,7 +77,7 @@ void ComboChoicesWithTreeModel::create_model_non_db(guint columns_count)
   {    
     //Create a value column for all columns
     //for instance for later value comparison.
-    type_model_column_value_fixed* model_column = new type_model_column_value_fixed();
+    auto model_column = new type_model_column_value_fixed();
    
     //Store it so we can use it and delete it later:
     m_vec_model_columns_value_fixed[i] = model_column;
@@ -90,7 +90,7 @@ void ComboChoicesWithTreeModel::create_model_non_db(guint columns_count)
   m_vec_model_columns_string_fixed.resize(1, 0);
   if(columns_count > 0)
   {
-    type_model_column_string_fixed* model_column = new type_model_column_string_fixed();
+    auto model_column = new type_model_column_string_fixed();
    
     //Store it so we can use it and delete it later:
     m_vec_model_columns_string_fixed.push_back(model_column);
@@ -341,7 +341,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
   {
     case(Field::glom_field_type::BOOLEAN):
     {
-      Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(cell);
+      auto pDerived = dynamic_cast<Gtk::CellRendererToggle*>(cell);
       if(pDerived)
         pDerived->set_active( (value.get_value_type() == G_TYPE_BOOLEAN) && value.get_boolean() );
 
@@ -349,7 +349,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
     }
     case(Field::glom_field_type::IMAGE):
     {
-      Gtk::CellRendererPixbuf* pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(cell);
+      auto pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(cell);
       if(pDerived)
       {
         const auto pixbuf = UiUtils::get_pixbuf_for_gda_value(value);
@@ -367,7 +367,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
     default:
     {
       //TODO: Maybe we should have custom cellcells for time, date, and numbers.
-      Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(cell);
+      auto pDerived = dynamic_cast<Gtk::CellRendererText*>(cell);
       if(pDerived)
       {
         //std::cout << "debug: " << G_STRFUNC << ": field name=" << field->get_name() << ", glom type=" << field->get_glom_type() << std::endl;

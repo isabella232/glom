@@ -198,7 +198,7 @@ void Box_Formatting::set_is_for_non_editable()
   m_show_editable_options = false;
 
   //Add labels (because we will hide the checkboxes):
-  Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Font")));
+  auto label = Gtk::manage(new Gtk::Label(_("Font")));
   label->show();
   m_hbox_font->pack_start(*label, Gtk::PACK_SHRINK);
   label = Gtk::manage(new Gtk::Label(_("Foreground Color")));
@@ -441,7 +441,7 @@ void Box_Formatting::on_combo_choices_relationship_changed()
 {
   std::shared_ptr<Relationship> relationship = m_combo_choices_relationship->get_selected_relationship();
 
-  Document* pDocument = get_document();
+  auto pDocument = get_document();
   if(pDocument)
   {
     //Show the list of fields from this relationship:

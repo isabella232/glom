@@ -20,7 +20,7 @@ static void on_cleanup_progress()
 
 void cleanup()
 {
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  auto connection_pool = Glom::ConnectionPool::get_instance();
 
   const auto stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );
   g_assert(stopped);
@@ -67,7 +67,7 @@ int main()
 
   g_assert(!document.get_is_example_file());;
 
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  auto connection_pool = Glom::ConnectionPool::get_instance();
   connection_pool->setup_from_document(&document);
 
   //This is not really necessary for sqlite-based databases.

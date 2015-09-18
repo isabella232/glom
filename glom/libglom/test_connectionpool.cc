@@ -39,7 +39,7 @@ int main()
 
   {
     //Set the connection details:
-    Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+    auto connection_pool = Glom::ConnectionPool::get_instance();
     if(connection_pool)
     {
       //Set the connection details in the ConnectionPool singleton.
@@ -50,12 +50,12 @@ int main()
       connection_pool->set_password("murraycpw");
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-      Glom::ConnectionPoolBackends::PostgresCentralHosted* backend = new Glom::ConnectionPoolBackends::PostgresCentralHosted;
+      auto backend = new Glom::ConnectionPoolBackends::PostgresCentralHosted;
       backend->set_host("localhost");
       backend->set_port(5433);
       backend->set_try_other_ports(false);
 #else
-      Glom::ConnectionPoolBackends::Sqlite* backend = new Glom::ConnectionPoolBackends::Sqlite;
+      auto backend = new Glom::ConnectionPoolBackends::Sqlite;
 #endif //GLOM_ENABLE_POSTGRESQL
 
       connection_pool->set_backend(std::shared_ptr<Glom::ConnectionPool::Backend>(backend));
