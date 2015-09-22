@@ -1,3 +1,24 @@
+1.30.0 (stable):
+
+* Dialog_FieldDefinition: Show self-triggering lookups as grayed-out.
+  (Murray Cumming) Bug #754641 (m.rick.mac)
+* Lookups: Prevent endless self lookups.
+  (Murray Cumming)
+* Use std::endl instead of std::cerr where std::endl was meant.
+  (David Evans) Bug #754294
+* Build: Disable use of yelp if --disable-documentation was used.
+  This should apparently be useful on MacOS:
+  https://trac.macports.org/ticket/44616
+  (Murray Cumming)
+* More use of C++11
+  (Murray Cumming)
+* EggSpreadTableDnd: Replace use of deprecated gtk_style_context_set_background.
+  (Murray Cumming)
+* Use property_whatever() instead of set_property("whatever").
+  (Murray Cumming)
+* ComboBox_Relationship: Fix a typo in a null check.
+  (Murray Cumming)
+
 1.29.5 (unstable):
 
 * Fix the build with python 3 and require python 3.
@@ -160,7 +181,7 @@ Build:
   * Fix the notebook vertical expansion with latest GTK+.
   (Murray Cumming)
 * Avoid a crash at shutdown.
-  (Murray Cumming) 
+  (Murray Cumming)
 * Add an AppData file for "GNOME Software".
   (Murray Cumming)
 * Remove the recent files menu items in the File menu,
@@ -323,7 +344,7 @@ Build:
 * Use Gtk::Application and Gtk::ApplicationWindow instead of Gtk::Main.
   So far this does not change anything whatosever for the user,
   though --help now doesn't list all options by default.
-  (Murray Cumming)  
+  (Murray Cumming)
 * Windows build fixes (not complete).
   (Murray Cumming) Bug ##671120 (alien), Bug #670903 (alien)
 
