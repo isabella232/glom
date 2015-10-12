@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glom master\n"
+"Project-Id-Version: glom glom-1-28\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-07-01 17:52+0000\n"
-"PO-Revision-Date: 2014-09-05 20:05+0700\n"
+"POT-Creation-Date: 2015-03-14 18:52+0000\n"
+"PO-Revision-Date: 2015-10-13 00:10+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.6.9\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.8.4\n"
 
 #: ../glom/application.cc:160 ../glom/glom_create_from_example.cc:259
 #: ../glom/glom_export_po.cc:112 ../glom/glom_export_po_all.cc:100
@@ -162,14 +162,13 @@ msgstr ""
 "Berkas ini hanya dapat dibaca, sehingga Anda tak akan bisa masuk ke mode "
 "Pengembang untuk membuat perubahan rancangan."
 
-#: ../glom/appwindow.cc:987 ../glom/appwindow.cc:2142
-#: ../glom/appwindow.cc:2419 ../glom/appwindow.cc:2456
-#: ../glom/appwindow.cc:2832 ../glom/base_db_table_data.cc:393
-#: ../glom/box_withbuttons.cc:36 ../glom/box_withbuttons.cc:50
-#: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:827
-#: ../glom/filechooser_export.cc:39 ../glom/frame_glom.cc:513
-#: ../glom/frame_glom.cc:737 ../glom/frame_glom.cc:824
-#: ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:485
+#: ../glom/appwindow.cc:987 ../glom/appwindow.cc:2149 ../glom/appwindow.cc:2426
+#: ../glom/appwindow.cc:2463 ../glom/appwindow.cc:2839
+#: ../glom/base_db_table_data.cc:393 ../glom/box_withbuttons.cc:36
+#: ../glom/box_withbuttons.cc:50 ../glom/box_withbuttons.cc:64
+#: ../glom/dialog_existing_or_new.cc:823 ../glom/filechooser_export.cc:39
+#: ../glom/frame_glom.cc:513 ../glom/frame_glom.cc:737
+#: ../glom/frame_glom.cc:824 ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:485
 #: ../glom/onlineglom_strings.cc:40 ../glom/bakery/dialog_offersave.cc:56
 #: ../glom/main.cc:267 ../glom/main.cc:323
 #: ../glom/mode_design/fields/box_db_table_definition.cc:293
@@ -269,20 +268,20 @@ msgid "Database Creation Failed"
 msgstr "Pembuatan Basis Data Gagal"
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/appwindow.cc:2101 ../glom/bakery/appwindow_withdoc.cc:241
-#: ../glom/bakery/appwindow_withdoc.cc:292
+#: ../glom/appwindow.cc:2120 ../glom/bakery/appwindow_withdoc.cc:236
+#: ../glom/bakery/appwindow_withdoc.cc:280
 msgid "Save failed."
 msgstr "Gagal menyimpan."
 
-#: ../glom/appwindow.cc:2101
+#: ../glom/appwindow.cc:2120
 msgid "There was an error while saving the example file."
 msgstr "Ada galat saat menyimpan berkas contoh."
 
-#: ../glom/appwindow.cc:2128 ../glom/appwindow.cc:2133
+#: ../glom/appwindow.cc:2135 ../glom/appwindow.cc:2140
 msgid "Save Document"
 msgstr "Simpan Dokumen"
 
-#: ../glom/appwindow.cc:2143 ../glom/appwindow.cc:2420
+#: ../glom/appwindow.cc:2150 ../glom/appwindow.cc:2427
 #: ../glom/bakery/dialog_offersave.cc:57
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:40
 #: ../glom/utility_widgets/imageglom.cc:688
@@ -292,11 +291,11 @@ msgid "_Save"
 msgstr "_Simpan"
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2220
+#: ../glom/appwindow.cc:2227
 msgid "Read-only File."
 msgstr "Berkas Hanya-baca."
 
-#: ../glom/appwindow.cc:2220
+#: ../glom/appwindow.cc:2227
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -305,11 +304,11 @@ msgstr ""
 "akses."
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2234
+#: ../glom/appwindow.cc:2241
 msgid "Read-only Directory."
 msgstr "Direktori Hanya-baca"
 
-#: ../glom/appwindow.cc:2234
+#: ../glom/appwindow.cc:2241
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -317,19 +316,19 @@ msgstr ""
 "Anda tak boleh membuat berkas pada direktori ini, karena Anda tak memiliki "
 "cukup hak akses."
 
-#: ../glom/appwindow.cc:2251
+#: ../glom/appwindow.cc:2258
 msgid "Database Title missing"
 msgstr "Kurang Judul Basis Data"
 
-#: ../glom/appwindow.cc:2251
+#: ../glom/appwindow.cc:2258
 msgid "You must specify a title for the new database."
 msgstr "Anda mesti menyatakan judul bagi basis data baru."
 
-#: ../glom/appwindow.cc:2285 ../glom/frame_glom.cc:1907
+#: ../glom/appwindow.cc:2292 ../glom/frame_glom.cc:1907
 msgid "Directory Already Exists"
 msgstr "Direktori Telah Ada"
 
-#: ../glom/appwindow.cc:2285 ../glom/frame_glom.cc:1908
+#: ../glom/appwindow.cc:2292 ../glom/frame_glom.cc:1908
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -339,60 +338,60 @@ msgstr ""
 "basis data baru. Anda mesti menyatakan nama lain."
 
 #. This actually creates the directory:
-#: ../glom/appwindow.cc:2418
+#: ../glom/appwindow.cc:2425
 msgid "Save Backup"
 msgstr "Simpan Cadangan"
 
-#: ../glom/appwindow.cc:2434
+#: ../glom/appwindow.cc:2441
 msgid "Exporting backup"
 msgstr "Mengekspor cadangan"
 
-#: ../glom/appwindow.cc:2440
+#: ../glom/appwindow.cc:2447
 msgid "Export Backup failed."
 msgstr "Ekspor Cadangan gagal."
 
-#: ../glom/appwindow.cc:2440
+#: ../glom/appwindow.cc:2447
 msgid "There was an error while exporting the backup."
 msgstr "Ada galat ketika mengekspor cadangan."
 
-#: ../glom/appwindow.cc:2446
+#: ../glom/appwindow.cc:2453
 msgid "Choose a backup file"
 msgstr "Pilih berkas cadangan"
 
-#: ../glom/appwindow.cc:2451
+#: ../glom/appwindow.cc:2458
 msgid ".tar.gz Backup files"
 msgstr "Berkas Cadangan .tar.gz"
 
-#: ../glom/appwindow.cc:2457
+#: ../glom/appwindow.cc:2464
 msgid "Restore"
 msgstr "Kembalikan"
 
-#: ../glom/appwindow.cc:2482
+#: ../glom/appwindow.cc:2489
 msgid "Restoring backup"
 msgstr "Mengembalikan dari cadangan"
 
-#: ../glom/appwindow.cc:2489
+#: ../glom/appwindow.cc:2496
 msgid "Restore Backup failed."
 msgstr "Mengembalikan dari Cadangan gagal."
 
-#: ../glom/appwindow.cc:2489
+#: ../glom/appwindow.cc:2496
 msgid "There was an error while extracting the backup."
 msgstr "Ada galat ketika mengekstrak cadangan."
 
-#: ../glom/appwindow.cc:2597
+#: ../glom/appwindow.cc:2604
 msgid " (read-only)"
 msgstr " (hanya-baca)"
 
-#: ../glom/appwindow.cc:2645 ../data/ui/operator/window_main.glade.h:2
+#: ../glom/appwindow.cc:2652 ../data/ui/operator/window_main.glade.h:2
 msgid "Processing"
 msgstr "Memroses"
 
-#: ../glom/appwindow.cc:2831
+#: ../glom/appwindow.cc:2838
 msgid "Open Document"
 msgstr "Buka Dokumen"
 
 #. Add a button for related record navigation:
-#: ../glom/appwindow.cc:2833 ../glom/dialog_existing_or_new.cc:828
+#: ../glom/appwindow.cc:2840 ../glom/dialog_existing_or_new.cc:824
 #: ../glom/frame_glom.cc:738 ../glom/onlineglom_strings.cc:32
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:34
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:44
@@ -575,7 +574,7 @@ msgid "New From Template"
 msgstr "Baru Dari Templat"
 
 #. Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
-#: ../glom/dialog_existing_or_new.cc:744
+#: ../glom/dialog_existing_or_new.cc:740
 #, c-format
 msgid "%s on %s (via %s)"
 msgstr "%s pada %s (melalui %s)"
@@ -956,17 +955,17 @@ msgstr "Mendaftar"
 msgid "Forgot Password"
 msgstr "Lupa Sandi"
 
-#: ../glom/bakery/appwindow_withdoc.cc:241
-#: ../glom/bakery/appwindow_withdoc.cc:292
+#: ../glom/bakery/appwindow_withdoc.cc:236
+#: ../glom/bakery/appwindow_withdoc.cc:280
 msgid ""
 "There was an error while saving the file. Your changes have not been saved."
 msgstr "Ada galat saat menyimpan berkas. Perubahan Anda belum disimpan."
 
-#: ../glom/bakery/appwindow_withdoc.cc:497
+#: ../glom/bakery/appwindow_withdoc.cc:485
 msgid "Open Failed."
 msgstr "Gagal Membuka."
 
-#: ../glom/bakery/appwindow_withdoc.cc:497
+#: ../glom/bakery/appwindow_withdoc.cc:485
 msgid "The document could not be opened."
 msgstr "Dokumen tak dapat dibuka."
 
@@ -1204,57 +1203,53 @@ msgid "Vietnamese"
 msgstr "Vietnam"
 
 #. Translators: This means an unknown or unnacceptable value type in a database.
-#: ../glom/libglom/data_structure/field.cc:663
+#: ../glom/libglom/data_structure/field.cc:660
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:151
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:159
 msgid "Invalid"
 msgstr "Tak valid"
 
 #. Translators: This means a numeric value type in a database.
-#: ../glom/libglom/data_structure/field.cc:666
+#: ../glom/libglom/data_structure/field.cc:663
 msgid "Number"
 msgstr "Angka"
 
 #. Translators: This means a text/string value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:669
+#: ../glom/libglom/data_structure/field.cc:666
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
-#: ../glom/libglom/data_structure/translatable_item.cc:258
+#: ../glom/libglom/data_structure/translatable_item.cc:256
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1159
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
 msgid "Text"
 msgstr "Teks"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:672
+#: ../glom/libglom/data_structure/field.cc:669
 msgid "Time"
 msgstr "Waktu"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:675
+#: ../glom/libglom/data_structure/field.cc:672
 msgid "Date"
 msgstr "Tanggal"
 
 #. Translators: This means a true/false value type in a database.
-#: ../glom/libglom/data_structure/field.cc:678
+#: ../glom/libglom/data_structure/field.cc:675
 msgid "Boolean"
 msgstr "Boolean"
 
 #. Translators: This means a picture value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:681
+#: ../glom/libglom/data_structure/field.cc:678
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
-#: ../glom/libglom/data_structure/translatable_item.cc:252
+#: ../glom/libglom/data_structure/translatable_item.cc:250
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1166
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
 #: ../glom/utility_widgets/layouttoolbar.cc:46
 msgid "Image"
 msgstr "Gambar"
 
-#. TODO: Find some way to get the %x translation that's appropriate for the value of LC_NUMERIC in the locale,
-#. because this just assumes that the main locale name will be correct,
-#. so this can fail, for instance, if gettext() is looking for the translation for en_US.UTF-8
-#. but LC_NUMERIC is set to en_GB.UTF-8 (which uses 2 digits when using %x).
 #. TRANSLATORS: Please only translate this string if you know that strftime()
 #. * shows only 2 year digits when using format "x". We want to always display
 #. * 4 year digits. For instance, en_GB should translate it to "%d/%m/%Y".
@@ -1262,13 +1257,13 @@ msgstr "Gambar"
 #. * and default to %d/%m/%Y" if it detects a problem, but that might not be
 #. * correct for your locale.
 #. * Thanks.
-#: ../glom/libglom/data_structure/glomconversions.cc:104
+#: ../glom/libglom/data_structure/glomconversions.cc:144
 #, no-c-format
 msgid "%x"
 msgstr "%d/%m/%Y"
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
-#: ../glom/libglom/data_structure/glomconversions.cc:152
+#: ../glom/libglom/data_structure/glomconversions.cc:208
 msgid ""
 "ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not "
 "parse a date's text representation that it generated itself, in this locale."
@@ -1278,7 +1273,7 @@ msgstr ""
 "locale ini."
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
-#: ../glom/libglom/data_structure/glomconversions.cc:188
+#: ../glom/libglom/data_structure/glomconversions.cc:244
 msgid ""
 "ERROR: sanity_check_date_text_representation_uses_4_digit_year(): Sanity "
 "check failed: Glom does not seem to use 4 digits to display years in a "
@@ -1303,7 +1298,7 @@ msgstr "Grup"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:68
-#: ../glom/libglom/data_structure/translatable_item.cc:248
+#: ../glom/libglom/data_structure/translatable_item.cc:246
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1152
 #: ../glom/utility_widgets/layouttoolbar.cc:42
 msgid "Button"
@@ -1428,23 +1423,19 @@ msgstr "Tabel"
 msgid "Layout Group"
 msgstr "Grup Tata Letak"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:246
-msgid "Field Title"
-msgstr "Judul Ruas"
-
-#: ../glom/libglom/data_structure/translatable_item.cc:250
+#: ../glom/libglom/data_structure/translatable_item.cc:248
 msgid "Text Item"
 msgstr "Butir Teks"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:254
+#: ../glom/libglom/data_structure/translatable_item.cc:252
 msgid "Field Choice"
 msgstr "Pilihan Ruas"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:256
+#: ../glom/libglom/data_structure/translatable_item.cc:254
 msgid "Database Title"
 msgstr "Judul Basis Data"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:260
+#: ../glom/libglom/data_structure/translatable_item.cc:258
 #: ../glom/mode_design/translation/window_translations.cc:237
 msgid "Unknown"
 msgstr "Tak dikenal"
@@ -1519,7 +1510,7 @@ msgstr "Komentar"
 #. Translators: This is a noun. It is the title of a report.
 #. Add Pages:
 #. Translators: This is a noun. It is a notebook tab title.
-#: ../glom/libglom/report_builder.cc:772 ../glom/mode_data/notebook_data.cc:39
+#: ../glom/libglom/report_builder.cc:767 ../glom/mode_data/notebook_data.cc:39
 #: ../glom/mode_find/notebook_find.cc:33
 msgid "List"
 msgstr "Daftar"
@@ -1688,6 +1679,10 @@ msgid "Po file import failed for locale: %1"
 msgstr "Impor berkas po gagal bagi locale: %1"
 
 #: ../glom/glom_import_po_all.cc:218
+msgid "Po file import failed during document saving for locale: %1"
+msgstr "Impor berkas po gagal ketika menyimpan dokumen bagi locale: %1"
+
+#: ../glom/glom_import_po_all.cc:222
 msgid "Po file imported for locale: %1 for file %2"
 msgstr "Berkas po diimpor bagi locale: %1 bagi berkas %2"
 
@@ -2087,53 +2082,53 @@ msgstr ""
 "Tak ada record dengan nilai ini. Maka navigasi ke record yang terkait tak "
 "mungkin."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1104
+#: ../glom/mode_data/flowtablewithfields.cc:1115
 #: ../glom/utility_widgets/notebooklabelglom.cc:77
 #: ../glom/utility_widgets/notebooklabelglom.cc:124
 msgid "New Group"
 msgstr "Grup Baru"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1110
+#: ../glom/mode_data/flowtablewithfields.cc:1121
 #: ../glom/mode_design/layout/dialog_layout_details.cc:736
 msgid "notebook"
 msgstr "notebook"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1116
+#: ../glom/mode_data/flowtablewithfields.cc:1127
 msgid "tab1"
 msgstr "tab1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1119
+#: ../glom/mode_data/flowtablewithfields.cc:1130
 msgid "Tab One"
 msgstr "Tab Satu"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1132
+#: ../glom/mode_data/flowtablewithfields.cc:1143
 msgid "button"
 msgstr "tombol"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1133
+#: ../glom/mode_data/flowtablewithfields.cc:1144
 #: ../glom/mode_design/layout/dialog_layout_details.cc:662
 msgid "New Button"
 msgstr "Tombol Baru"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1139
+#: ../glom/mode_data/flowtablewithfields.cc:1150
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:385
 msgid "text"
 msgstr "teks"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1140
+#: ../glom/mode_data/flowtablewithfields.cc:1151
 msgid "New Text"
 msgstr "Teks Baru"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1293
+#: ../glom/mode_data/flowtablewithfields.cc:1304
 msgid "Delete whole group \"%1\"?"
 msgstr "Hapus seluruh grup \"%1\"?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1299
+#: ../glom/mode_data/flowtablewithfields.cc:1310
 msgid "Delete whole group?"
 msgstr "Hapus seluruh grup?"
 
