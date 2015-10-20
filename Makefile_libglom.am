@@ -33,7 +33,7 @@ include $(top_srcdir)/glom/libglom/filelist.am
 # so we must assume that they are at the top of /usr/include,
 # or at least next to the python headers.
 boost_python_cflags = $(PYTHON_CPPFLAGS)
-boost_python_libs = $(PYTHON_LDFLAGS) $(PYTHON_EXTRA_LDFLAGS) -l$(BOOST_PYTHON_LIB)
+boost_python_libs = $(PYTHON_LIBS) $(PYTHON_EXTRA_LDFLAGS) -l$(BOOST_PYTHON_LIB)
 
 libglom_includedir = $(includedir)/glom-$(GLOM_ABI_VERSION)/libglom
 libglom_include_HEADERS = $(libglom_toplevel_headers)

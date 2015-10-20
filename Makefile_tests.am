@@ -201,7 +201,7 @@ tests_python_test_load_python_library_LDADD = $(LIBGLOM_LIBS) $(DL_LIB)
 tests_python_test_load_python_library_CPPFLAGS = $(tests_cppflags)
 
 tests_python_test_python_module_SOURCES = tests/python/test_python_module.cc
-tests_python_test_python_module_LDADD = $(tests_ldadd) $(PYTHON_LDFLAGS)
+tests_python_test_python_module_LDADD = $(tests_ldadd) $(PYTHON_LIBS)
 tests_python_test_python_module_CPPFLAGS = $(tests_cppflags)
 
 
@@ -490,7 +490,7 @@ tests_glade_toplevels_instantiation_LDADD = $(tests_ldadd) $(GLOM_LIBS)
 tests_glade_toplevels_instantiation_CPPFLAGS = $(tests_cppflags_ui)
 
 glom_test_pyembed_SOURCES = glom/test_pyembed.cc
-glom_test_pyembed_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LDFLAGS)
+glom_test_pyembed_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
 glom_test_pyembed_CPPFLAGS = $(tests_cppflags_ui)
 
 endif #GLOM_ENABLE_UI
