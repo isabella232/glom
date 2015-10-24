@@ -185,7 +185,7 @@ void Document_XML::add_indenting_white_space_to_node(xmlpp::Node* node, const Gl
     if(text)
     {
       if(text->is_white_space())
-        node->remove_child(text);
+        node->remove_node(text);
     }
   }
   }

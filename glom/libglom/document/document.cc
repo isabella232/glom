@@ -3573,7 +3573,7 @@ void Document::save_before_print_layout_position(xmlpp::Element* nodeItem, const
 
   //Avoid having an empty (or useless) XML element:
   if(child->get_attributes().empty())
-    nodeItem->remove_child(child);
+    nodeItem->remove_node(child);
 }
 
 void Document::save_before_choicevalue(xmlpp::Element* nodeItem, const std::shared_ptr<const ChoiceValue>& item, Field::glom_field_type field_type)
@@ -3603,7 +3603,7 @@ bool Document::save_before()
   {
     // Remove existing child nodes:
     for(const auto& item : nodeRoot->get_children())
-      nodeRoot->remove_child(item);
+      nodeRoot->remove_node(item);
 
     //Always save as the latest format,
     //possibly making it impossible to open this document in older versions of Glom:
@@ -3657,7 +3657,7 @@ bool Document::save_before()
     //Remove existing tables:
     xmlpp::Node::NodeList list_nodes_tables = nodeRoot->get_children(GLOM_NODE_TABLE);
     for(const auto& item : list_nodes_tables)
-      nodeRoot->remove_child(item);
+      nodeRoot->remove_node(item);
 
     //Add tables:
   for(const auto& table_pair : m_tables)
@@ -3864,7 +3864,7 @@ bool Document::save_before()
 
     //Remove existing groups:
     for(const auto& item : nodeRoot->get_children(GLOM_NODE_GROUPS))
-      nodeRoot->remove_child(item);
+      nodeRoot->remove_node(item);
 
     //Add groups:
     auto nodeGroups = nodeRoot->add_child_element(GLOM_NODE_GROUPS);
@@ -3905,7 +3905,7 @@ bool Document::save_before()
     //Remove existing library modules::
     auto list_nodes_lib_modules = nodeRoot->get_children(GLOM_NODE_LIBRARY_MODULES);
     for(const auto& item : list_nodes_lib_modules)
-      nodeRoot->remove_child(item);
+      nodeRoot->remove_node(item);
 
     //Add groups:
     auto nodeModules = nodeRoot->add_child_element(GLOM_NODE_LIBRARY_MODULES);
