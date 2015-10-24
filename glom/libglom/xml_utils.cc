@@ -229,7 +229,7 @@ void set_node_text_child_as_value(xmlpp::Element* node, const Gnome::Gda::Value&
     return;
 
   const auto value_as_text = Field::to_file_format(value, field_type);
-  node->set_child_text( Utils::string_clean_for_xml(value_as_text) );
+  node->set_first_child_text( Utils::string_clean_for_xml(value_as_text) );
 
   if(field_type == Field::glom_field_type::IMAGE)
   {
@@ -251,7 +251,7 @@ Gnome::Gda::Value get_node_attribute_value_as_value(const xmlpp::Element* node, 
 
 Gnome::Gda::Value get_node_text_child_as_value(const xmlpp::Element* node, Field::glom_field_type field_type)
 {
-  const auto text_child = node->get_child_text();
+  const auto text_child = node->get_first_child_text();
   if(!text_child)
     return Gnome::Gda::Value();
 
@@ -276,7 +276,7 @@ Glib::ustring get_child_text_node(const xmlpp::Element* node, const Glib::ustrin
   const auto child = get_node_child_named(node, child_node_name);
   if(child)
   {
-     const auto text_child = child->get_child_text();
+     const auto text_child = child->get_first_child_text();
      if(text_child)
        return text_child->get_content();
   }
@@ -297,7 +297,7 @@ void set_child_text_node(xmlpp::Element* node, const Glib::ustring& child_node_n
 
   const auto text_used = Utils::string_clean_for_xml(text);
 
-  auto text_child = child->get_child_text();
+  auto text_child = child->get_first_child_text();
   if(!text_child)
     child->add_child_text(text_used);
   else
