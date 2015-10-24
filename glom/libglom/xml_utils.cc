@@ -94,7 +94,7 @@ xmlpp::Element* get_node_child_named_with_add(xmlpp::Element* node, const Glib::
   auto nodeResult = get_node_child_named(node, strName);
 
   if(!nodeResult)
-    nodeResult = node->add_child(strName);
+    nodeResult = node->add_child_element(strName);
 
   return nodeResult;
 }
@@ -292,7 +292,7 @@ void set_child_text_node(xmlpp::Element* node, const Glib::ustring& child_node_n
     if(text.empty())
       return; //Keep the document smaller by avoiding empty nodes.
 
-    child = node->add_child(child_node_name);
+    child = node->add_child_element(child_node_name);
   }
 
   const auto text_used = Utils::string_clean_for_xml(text);
