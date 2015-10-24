@@ -3053,7 +3053,7 @@ bool Document::load_after(int& failure_code)
                 //The string is in a child text node:
                 Glib::ustring script;
 
-                const auto text_child = node_lib_module->get_child_text();
+                const auto text_child = node_lib_module->get_first_child_text();
                 if(text_child)
                   script = text_child->get_content();
 
@@ -3921,7 +3921,7 @@ bool Document::save_before()
       XmlUtils::set_node_attribute_value(nodeModule, GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME, name);
 
       //The script is in a child text node:
-      auto text_child = nodeModule->get_child_text();
+      auto text_child = nodeModule->get_first_child_text();
       if(!text_child)
         nodeModule->add_child_text( Utils::string_clean_for_xml(script) );
       else
