@@ -343,8 +343,7 @@ class numpunct_thousands_separator: public std::numpunct<char>
 
 class numpunct_no_thousands_separator: public std::numpunct<char>
 {
-  //Override
-  std::string do_grouping() const
+  std::string do_grouping() const override
   {
     return "";
   };

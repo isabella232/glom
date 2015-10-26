@@ -47,9 +47,9 @@ public:
   ExceptionConnection(failure_type failure);
   virtual ~ExceptionConnection() noexcept;
 
-  virtual const char* what() const noexcept;
+  virtual const char* what() const noexcept override;
 
-  virtual failure_type get_failure_type() const;
+  failure_type get_failure_type() const;
 
 private:
   failure_type m_failure_type;
