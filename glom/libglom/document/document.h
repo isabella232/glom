@@ -58,7 +58,7 @@ public:
   Document();
   virtual ~Document();
 
-  virtual void set_modified(bool value = true);
+  void set_modified(bool value = true) override;
 
   /** Set the file URI that will be used in future calls to load() and save().
    * Note that the document will not be saved immediately to the new URI. It will
@@ -66,7 +66,7 @@ public:
    * Likewise, the document at the URI will not be loaded until load() is called explicitly.
    * That is unlike in the base class's implementation.
    */
-  virtual void set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExtension = false);
+  void set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExtension = false) override;
 
   /* Loads data from disk, using the URI (set with set_file_uri()) then asks the View to update itself.
    * bool indicates success.
@@ -501,7 +501,7 @@ public:
 private:
   //Overrides:
 
-  virtual bool save_before() override;
+  bool save_before() override;
   void save_before_layout_group(xmlpp::Element* node, const std::shared_ptr<const LayoutGroup>& group, bool with_print_layout_positions = false);
   void save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupBy::type_list_sort_fields& list_fields);
   void save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const std::shared_ptr<const UsesRelationship>& item);
@@ -515,7 +515,7 @@ private:
 
   void save_changes();
 
-  virtual bool load_after(int& failure_code);
+  bool load_after(int& failure_code) override;
   void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const std::shared_ptr<LayoutGroup>& group, bool with_print_layout_positions = false);
   void load_after_sort_by(const xmlpp::Element* node, const Glib::ustring& table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields);
   void load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const std::shared_ptr<UsesRelationship>& item);
