@@ -66,8 +66,8 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder_set = 
     Glom::Utils::build_sql_update_with_where_clause(table_name,
       field, value_set, where_clause);
-  const int rows_affected = Glom::DbUtils::query_execute(builder_set);
-  if(rows_affected == -1)
+  const bool rows_affected = Glom::DbUtils::query_execute(builder_set);
+  if(!rows_affected)
   {
     std::cerr << G_STRFUNC << ": Failure: UPDATE failed." << std::endl;
     return false;
