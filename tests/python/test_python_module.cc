@@ -1,6 +1,7 @@
 #include <Python.h>
 #include <cstdio>
 #include <libglom/init.h>
+#include <iostream>
 
 #include "config.h"
 #include "glom/python_embed/glom_python.h"
