@@ -38,9 +38,9 @@ public:
   Sqlite();
 
 private:
-  virtual bool supports_remote_access() const;
-  virtual Gnome::Gda::SqlOperatorType get_string_find_operator() const;
-  virtual const char* get_public_schema_name() const;
+  bool supports_remote_access() const override;
+  Gnome::Gda::SqlOperatorType get_string_find_operator() const override;
+  const char* get_public_schema_name() const override;
 
   bool add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, GdaMetaTableColumn* column, unsigned int i);
   bool add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const std::shared_ptr<const Field>& column, unsigned int i);
@@ -51,18 +51,18 @@ private:
 
   bool recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_strings& fields_removed, const type_vec_const_fields& fields_added, const type_mapFieldChanges& fields_changed) noexcept;
 
-  virtual bool add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const std::shared_ptr<const Field>& field);
-  virtual bool drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name);
-  virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) noexcept;
+  bool add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const std::shared_ptr<const Field>& field) override;
+  bool drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name) override;
+  bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) noexcept override;
 
-  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, bool fake_connection = false);
+  Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, bool fake_connection = false) override;
 
   /** Creates a new database.
    */
-  virtual bool create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password);
+  bool create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password) override;
 
-  virtual bool save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
-  virtual bool convert_backup(const SlotProgress& slot_progress, const std::string& backup_data_file_path, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
+  bool save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name) override;
+  bool convert_backup(const SlotProgress& slot_progress, const std::string& backup_data_file_path, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name) override;
 };
 
 } //namespace ConnectionPoolBackends

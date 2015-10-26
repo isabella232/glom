@@ -47,9 +47,9 @@ public:
 
   /** Save a backup file, using the same directory layout as used by self-hosting.
    */
-  virtual bool save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
+  bool save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name) override;
 
-  virtual bool convert_backup(const SlotProgress& slot_progress, const std::string& backup_data_file_path, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
+  bool convert_backup(const SlotProgress& slot_progress, const std::string& backup_data_file_path, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name) override;
 
   /** Return the quoted path to the specified PostgreSQL utility.
    */
@@ -58,11 +58,11 @@ public:
 
 
 private:
-  virtual bool supports_remote_access() const;
-  virtual Gnome::Gda::SqlOperatorType get_string_find_operator() const;
-  virtual const char* get_public_schema_name() const;
+  bool supports_remote_access() const override;
+  Gnome::Gda::SqlOperatorType get_string_find_operator() const override;
+  const char* get_public_schema_name() const override;
 
-  virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) noexcept;
+   bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) noexcept override;
 
 protected:
   bool attempt_create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& username, const Glib::ustring& password);

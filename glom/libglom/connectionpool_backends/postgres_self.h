@@ -55,15 +55,15 @@ public:
   static bool install_postgres(const SlotProgress& slot_progress);
 
 private:
-  virtual InitErrors initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password, bool network_shared = false);
+  InitErrors initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password, bool network_shared = false) override;
 
-  virtual StartupErrors startup(const SlotProgress& slot_progress, bool network_shared = false);
-  virtual bool cleanup(const SlotProgress& slot_progress);
-  virtual bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true);
+  StartupErrors startup(const SlotProgress& slot_progress, bool network_shared = false) override;
+  bool cleanup(const SlotProgress& slot_progress) override;
+  bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true) override;
 
-  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, bool fake_connection = false);
+  Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, bool fake_connection = false) override;
 
-  virtual bool create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password);
+  bool create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password) override;
 
 private:
   /** Examine ports one by one, starting at @a starting_port, in increasing
