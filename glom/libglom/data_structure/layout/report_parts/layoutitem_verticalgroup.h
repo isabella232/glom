@@ -41,10 +41,10 @@ public:
   LayoutItem_VerticalGroup& operator=(LayoutItem_VerticalGroup&& src) = delete;
   virtual ~LayoutItem_VerticalGroup();
 
-  virtual LayoutItem* clone() const;
+  LayoutItem* clone() const override;
 
-  virtual Glib::ustring get_part_type_name() const;
-  virtual Glib::ustring get_report_part_id() const;
+  Glib::ustring get_part_type_name() const override;
+  Glib::ustring get_report_part_id() const override;
 };
 
 } //namespace Glom

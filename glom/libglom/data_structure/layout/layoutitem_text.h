@@ -44,12 +44,12 @@ public:
   LayoutItem_Text& operator=(LayoutItem_Text&& src) = delete;
   virtual ~LayoutItem_Text();
 
-  virtual LayoutItem* clone() const;
+  LayoutItem* clone() const override;
 
   bool operator==(const LayoutItem_Text& src) const;
 
-  virtual Glib::ustring get_part_type_name() const;
-  virtual Glib::ustring get_report_part_id() const;
+  Glib::ustring get_part_type_name() const override;
+  Glib::ustring get_report_part_id() const override;
 
   /** Get the text that will be shown on each record.
    */

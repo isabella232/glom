@@ -44,10 +44,10 @@ public:
   /** Create a new copied instance.
   * This allows us to deep-copy a list of LayoutItems.
   */
-  virtual LayoutItem* clone() const;
+  LayoutItem* clone() const override;
   
-  virtual Glib::ustring get_part_type_name() const;
-  virtual Glib::ustring get_report_part_id() const;
+  Glib::ustring get_part_type_name() const override;
+  Glib::ustring get_report_part_id() const override;
   
   bool operator==(const LayoutItem_Placeholder* src) const;
 };

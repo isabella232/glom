@@ -42,9 +42,9 @@ public:
   LayoutItem_Notebook& operator=(LayoutItem_Notebook&& src) = delete;
   virtual ~LayoutItem_Notebook();
 
-  virtual LayoutItem* clone() const;
+  LayoutItem* clone() const override;
 
-  virtual Glib::ustring get_part_type_name() const;
+  Glib::ustring get_part_type_name() const override;
 };
 
 } //namespace Glom

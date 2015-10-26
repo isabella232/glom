@@ -53,7 +53,7 @@ public:
   LayoutItem_Field& operator=(LayoutItem_Field&& src) = delete;
   virtual ~LayoutItem_Field();
 
-  virtual LayoutItem* clone() const;
+  LayoutItem* clone() const override;
 
   bool operator==(const LayoutItem_Field& src) const;
 
@@ -85,11 +85,11 @@ public:
 
   /** Get a text representation for the field, such as Relationship::FieldName.
    */
-  virtual Glib::ustring get_layout_display_name() const;
+  Glib::ustring get_layout_display_name() const override;
 
-  virtual Glib::ustring get_part_type_name() const;
+  Glib::ustring get_part_type_name() const override;
 
-  virtual Glib::ustring get_report_part_id() const;
+  Glib::ustring get_report_part_id() const override;
 
   void set_full_field_details(const std::shared_ptr<const Field>& field);
   std::shared_ptr<const Field> get_full_field_details() const;
@@ -123,7 +123,7 @@ public:
   /** Get the field formatting used by this layout item, which 
    * may be either custom field formatting or the default field formatting.
    */
-  virtual const Formatting& get_formatting_used() const;
+  const Formatting& get_formatting_used() const override;
 
   /** Get the alignment for the formatting used (see get_formatting_used()),
    * choosing an appropriate alignment if it is set to HorizontalAlignment::AUTO.
@@ -131,7 +131,7 @@ public:
    *
    * @param for_details_view This can change the effect of HorizontalAlignment::AUTO.
    */
-  virtual Formatting::HorizontalAlignment get_formatting_used_horizontal_alignment(bool for_details_view = false) const;
+  Formatting::HorizontalAlignment get_formatting_used_horizontal_alignment(bool for_details_view = false) const override;
 
   /** A convenience method to discover whether the formatting that is used
    * has custom choices with the values restricted to those choices,

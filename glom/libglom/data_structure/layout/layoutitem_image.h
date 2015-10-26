@@ -44,12 +44,12 @@ public:
   LayoutItem_Image& operator=(LayoutItem_Image&& src) = delete;
   virtual ~LayoutItem_Image();
 
-  virtual LayoutItem* clone() const;
+  LayoutItem* clone() const override;
 
   bool operator==(const LayoutItem_Image& src) const;
 
-  virtual Glib::ustring get_part_type_name() const;
-  virtual Glib::ustring get_report_part_id() const;
+  Glib::ustring get_part_type_name() const override;
+  Glib::ustring get_report_part_id() const override;
 
   /** Get the image that will be shown on each record.
    */

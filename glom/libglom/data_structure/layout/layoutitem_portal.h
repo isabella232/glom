@@ -52,17 +52,17 @@ public:
   LayoutItem_Portal& operator=(LayoutItem_Portal&& src) = delete;
   virtual ~LayoutItem_Portal();
 
-  virtual LayoutItem* clone() const;
+  LayoutItem* clone() const override;
 
   Glib::ustring get_title(const Glib::ustring& locale) const noexcept override;
   Glib::ustring get_title_or_name(const Glib::ustring& locale) const noexcept override;
 
   //We do not implement this, because we only ever want to use the method
   //in the derived class.
-  //virtual Glib::ustring get_part_type_name() const;
+  //Glib::ustring get_part_type_name() const override;
 
-  virtual void change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
-  virtual void change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
+  void change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new) override;
+  void change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new) override;
 
   ///A helper method to avoid extra ifs to avoid null dereferencing.
   Glib::ustring get_from_table() const;

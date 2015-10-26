@@ -37,17 +37,17 @@ public:
   LayoutItem_CalendarPortal& operator=(LayoutItem_CalendarPortal&& src) = delete;
   virtual ~LayoutItem_CalendarPortal();
 
-  virtual LayoutItem* clone() const;
+  LayoutItem* clone() const override;
 
-  virtual Glib::ustring get_part_type_name() const;
+  Glib::ustring get_part_type_name() const override;
 
   std::shared_ptr<Field> get_date_field();
   std::shared_ptr<const Field> get_date_field() const;
     
   void set_date_field(const std::shared_ptr<Field>& field);
     
-  virtual void change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
-  virtual void change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
+  void change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new) override;
+  void change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new) override;
 
 
 private:

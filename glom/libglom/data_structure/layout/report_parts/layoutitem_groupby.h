@@ -45,7 +45,7 @@ public:
   LayoutItem_GroupBy& operator=(LayoutItem_GroupBy&& src) = delete;
   virtual ~LayoutItem_GroupBy();
 
-  virtual LayoutItem* clone() const;
+  LayoutItem* clone() const override;
 
   typedef Formatting::type_pair_sort_field type_pair_sort_field;
   typedef Formatting::type_list_sort_fields type_list_sort_fields;
@@ -65,10 +65,10 @@ public:
 
   /** Get a text representation for the a layout.
    */
-  virtual Glib::ustring get_layout_display_name() const;
+  Glib::ustring get_layout_display_name() const override;
 
-  virtual Glib::ustring get_part_type_name() const;
-  virtual Glib::ustring get_report_part_id() const;
+  Glib::ustring get_part_type_name() const override;
+  Glib::ustring get_report_part_id() const override;
 
   std::shared_ptr<LayoutGroup> get_secondary_fields();
   std::shared_ptr<const LayoutGroup> get_secondary_fields() const;

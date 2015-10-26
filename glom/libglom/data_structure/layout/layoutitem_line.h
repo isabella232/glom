@@ -39,12 +39,12 @@ public:
   LayoutItem_Line& operator=(LayoutItem_Line&& src) = delete;
   virtual ~LayoutItem_Line();
 
-  virtual LayoutItem* clone() const;
+  LayoutItem* clone() const override;
 
   bool operator==(const LayoutItem_Line& src) const;
 
-  virtual Glib::ustring get_part_type_name() const;
-  virtual Glib::ustring get_report_part_id() const;
+  Glib::ustring get_part_type_name() const override;
+  Glib::ustring get_report_part_id() const override;
 
   /** Get the coordinates.
    */

@@ -37,12 +37,12 @@ public:
   LayoutItem_FieldSummary& operator=(LayoutItem_FieldSummary&& src) = delete;
   virtual ~LayoutItem_FieldSummary();
 
-  virtual LayoutItem* clone() const;
+  LayoutItem* clone() const override;
 
   bool operator==(const LayoutItem_FieldSummary& src) const;
 
-  virtual Glib::ustring get_part_type_name() const;
-  virtual Glib::ustring get_report_part_id() const;
+  Glib::ustring get_part_type_name() const override;
+  Glib::ustring get_report_part_id() const override;
 
   enum class summaryType
   {
@@ -66,7 +66,7 @@ public:
   Glib::ustring get_title(const Glib::ustring& locale) const noexcept override;
   Glib::ustring get_title_or_name(const Glib::ustring& locale) const noexcept override;
 
-  virtual Glib::ustring get_layout_display_name() const;
+  Glib::ustring get_layout_display_name() const override;
 
   Glib::ustring get_layout_display_name_field() const;
 

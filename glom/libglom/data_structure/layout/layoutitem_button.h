@@ -38,11 +38,11 @@ public:
   LayoutItem_Button& operator=(LayoutItem_Button&& src) = delete;
   virtual ~LayoutItem_Button();
 
-  virtual LayoutItem* clone() const;
+  LayoutItem* clone() const override;
 
   bool operator==(const LayoutItem_Button& src) const;
 
-  virtual Glib::ustring get_part_type_name() const;
+  Glib::ustring get_part_type_name() const override;
 
   /** Set the python code that will be executed when the button is pressed.
    */

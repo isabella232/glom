@@ -40,7 +40,7 @@ public:
   LayoutGroup& operator=(LayoutGroup&& src) = delete;
   virtual ~LayoutGroup();
 
-  virtual LayoutItem* clone() const;
+  LayoutItem* clone() const override;
 
   /** Discover whether the layout group contains the specified field (from the current table).
    * @param parent_table_name The table to which this layout belongs.
@@ -120,8 +120,8 @@ public:
    */
   type_list_const_items get_items_recursive_with_groups() const;
 
-  virtual Glib::ustring get_part_type_name() const;
-  virtual Glib::ustring get_report_part_id() const;
+  Glib::ustring get_part_type_name() const override;
+  Glib::ustring get_report_part_id() const override;
 
 //Allow more efficient access: protected:
 
