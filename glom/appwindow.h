@@ -182,14 +182,14 @@ protected:
   virtual void on_hide() override;
 
   //Overrides from AppWindow_WithDoc:
-  virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
-  virtual void document_history_remove(const Glib::ustring& file_uri); //overridden.
-  virtual void update_window_title();
-  virtual void ui_warning(const Glib::ustring& text, const Glib::ustring& secondary_text);
-  virtual Glib::ustring ui_file_select_open(const Glib::ustring& starting_folder_uri = Glib::ustring());
-  virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri);
-  virtual void ui_show_modification_status();
-  virtual enumSaveChanges ui_offer_to_save_changes();
+  void document_history_add(const Glib::ustring& file_uri) override;
+  void document_history_remove(const Glib::ustring& file_uri) override;
+  void update_window_title() override;
+  void ui_warning(const Glib::ustring& text, const Glib::ustring& secondary_text) override;
+  Glib::ustring ui_file_select_open(const Glib::ustring& starting_folder_uri = Glib::ustring()) override;
+  Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri) override;
+  void ui_show_modification_status() override;
+  enumSaveChanges ui_offer_to_save_changes() override;
 
 
   //Signal handlers:
@@ -197,10 +197,10 @@ protected:
   //Menus:
 
 
-  virtual void ui_hide();
-  virtual void ui_bring_to_front();
+  void ui_hide() override;
+  void ui_bring_to_front() override;
 
-  virtual bool on_delete_event(GdkEventAny* event) override;
+  bool on_delete_event(GdkEventAny* event) override;
 
   void on_menu_edit_copy_activate();
   void on_menu_edit_cut_activate();
@@ -224,7 +224,7 @@ protected:
   Glib::RefPtr<Gio::SimpleAction> m_action_save, m_action_saveas;
 
 protected:
-  virtual void ui_warning_load_failed(int failure_code = 0); //Override.
+  void ui_warning_load_failed(int failure_code = 0) override;
 
 private:
   virtual void init_create_document() override;
@@ -270,7 +270,7 @@ private:
   void on_connection_avahi_done();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  void on_menu_help_about();
+  void on_menu_help_about() override;
   void on_about_close();
 
 #ifndef G_OS_WIN32

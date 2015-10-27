@@ -117,11 +117,11 @@ public:
   virtual void on_menu_file_saveas(); //signal handler.
   virtual void offer_saveas(); //For direct use.
   virtual void on_menu_file_save(); //signal handler.
-  virtual void on_menu_file_close();
+  void on_menu_file_close() override;
 
-  virtual void on_menu_edit_copy();
-  virtual void on_menu_edit_paste();
-  virtual void on_menu_edit_clear();
+  void on_menu_edit_copy() override;
+  void on_menu_edit_paste() override;
+  void on_menu_edit_clear() override;
 
 protected:
   //Document:
