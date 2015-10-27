@@ -61,7 +61,7 @@ private:
   void treeview_append_bool_column(Gtk::TreeView& treeview, const Glib::ustring& title, Gtk::TreeModelColumn<bool>& model_column, const sigc::slot<void, const Glib::ustring&>& slot_toggled);
 
   //Enable/disable buttons, depending on treeview selection:
-  virtual void enable_buttons();
+  void enable_buttons() override;
 
   void save_to_document() override;
 

@@ -80,10 +80,10 @@ protected:
   virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const;
 
   //Overrides of functions from Box_Data:
-  virtual void create_layout() override;
-  virtual Document::type_list_layout_groups create_layout_get_layout();
+  void create_layout() override;
+  Document::type_list_layout_groups create_layout_get_layout();
 
-  virtual bool fill_from_database() override;
+  bool fill_from_database() override;
   virtual void enable_buttons();
 
   virtual std::shared_ptr<Field> get_field_primary_key() const;

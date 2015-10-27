@@ -53,7 +53,7 @@ protected:
   virtual void fill_group(const Gtk::TreeModel::iterator& iter, std::shared_ptr<LayoutGroup>& group);
 
   //Enable/disable buttons, depending on treeview selection:
-  virtual void enable_buttons();
+  void enable_buttons() override;
 
   void save_to_document() override;
 

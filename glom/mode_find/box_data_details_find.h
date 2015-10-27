@@ -38,7 +38,7 @@ public:
 
 private:
 
-  virtual bool fill_from_database() override;
+  bool fill_from_database() override;
   void fill_related();
 
   virtual void on_flowtable_field_edited(const std::shared_ptr<const LayoutItem_Field>& id, const Gnome::Gda::Value& value);

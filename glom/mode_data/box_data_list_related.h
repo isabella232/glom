@@ -45,7 +45,7 @@ public:
   virtual void set_find_mode(bool val = true);
 
 protected:
-  virtual bool fill_from_database() override;
+  bool fill_from_database() override;
 
   //Signal handlers:
   void on_adddel_record_changed();
@@ -73,10 +73,10 @@ protected:
   virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const;
 
   //Overrides of functions from Box_Data:
-  virtual Document::type_list_layout_groups create_layout_get_layout() override;
-  virtual void create_layout() override;
+  Document::type_list_layout_groups create_layout_get_layout() override;
+  void create_layout() override;
 
-  virtual void enable_buttons();
+  void enable_buttons() override;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual Dialog_Layout* create_layout_dialog() const override;

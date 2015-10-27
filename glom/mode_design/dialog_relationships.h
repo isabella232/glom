@@ -36,7 +36,7 @@ public:
   Dialog_Relationships(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Relationships();
 
-  virtual bool init_db_details(const Glib::ustring& table_name);
+  bool init_db_details(const Glib::ustring& table_name) override;
 
   virtual void on_hide() override;
 

@@ -36,10 +36,10 @@ public:
 
   void init(); //avoid duplication in constructors.
 
-  virtual void save_to_document() override;
+  void save_to_document() override;
 
 private:
-  virtual bool fill_from_database();
+  bool fill_from_database() override;
 
   //Signal handlers:
   void on_adddel_user_activated(const Gtk::TreeModel::iterator& row, guint col);

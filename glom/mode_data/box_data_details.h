@@ -87,7 +87,7 @@ protected:
   virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
 
 
-  virtual bool fill_from_database() override;
+  bool fill_from_database() override;
   virtual void create_layout();
   //virtual void fill_related();
 
@@ -107,7 +107,7 @@ private:
 
 protected:
 
-  virtual void on_userlevel_changed(AppState::userlevels user_level) override;
+  void on_userlevel_changed(AppState::userlevels user_level) override;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_flowtable_layout_changed();

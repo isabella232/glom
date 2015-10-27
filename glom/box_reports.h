@@ -37,7 +37,7 @@ public:
   virtual ~Box_Reports();
 
 private:
-  virtual bool fill_from_database() override;
+  bool fill_from_database() override;
 
   virtual void fill_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const Report>& report);
 
@@ -51,7 +51,7 @@ private:
   virtual void on_adddel_Edit(const Gtk::TreeModel::iterator& row);
   virtual void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column);
 
-  virtual void on_userlevel_changed(AppState::userlevels userlevel);
+  void on_userlevel_changed(AppState::userlevels userlevel) override;
 
   guint m_colReportName;
   guint m_colTitle;

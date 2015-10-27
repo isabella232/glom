@@ -93,7 +93,7 @@ protected:
   //Signal handlers:
   virtual void on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value);
 
-  virtual void on_switch_page_handler(Gtk::Widget* pPage);
+   void on_switch_page_handler(Gtk::Widget* pPage) override;
 
 private:
 

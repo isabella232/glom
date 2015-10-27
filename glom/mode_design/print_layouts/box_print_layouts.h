@@ -38,7 +38,7 @@ public:
   virtual ~Box_Print_Layouts();
 
 private:
-  virtual bool fill_from_database() override;
+  bool fill_from_database() override;
 
   virtual void fill_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const PrintLayout>& print_layout);
 
@@ -50,7 +50,7 @@ private:
   void on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row);
   void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint column);
 
-  virtual void on_userlevel_changed(AppState::userlevels userlevel);
+  void on_userlevel_changed(AppState::userlevels userlevel) override;
 
   guint m_colName;
   guint m_colTitle;

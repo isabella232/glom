@@ -38,7 +38,7 @@ public:
 
 private:
 
-  virtual bool fill_from_database() override;
+  bool fill_from_database() override;
   virtual void create_layout();
 
   //Member widgets:

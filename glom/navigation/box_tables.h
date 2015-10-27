@@ -62,7 +62,7 @@ private:
 
   void on_show_hidden_toggled();
 
-  virtual void on_userlevel_changed(AppState::userlevels userlevel);
+  void on_userlevel_changed(AppState::userlevels userlevel) override;
       
   Gtk::CheckButton* m_pCheckButtonShowHidden;
   guint m_colTableName;

@@ -232,7 +232,7 @@ private:
   void on_button_find_all();
   void on_notebook_data_switch_page(Gtk::Widget* page);
   void on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
-  void on_userlevel_changed(AppState::userlevels userlevel);
+  void on_userlevel_changed(AppState::userlevels userlevel) override;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_dialog_add_related_table_response(int response);

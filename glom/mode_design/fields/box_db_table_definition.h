@@ -37,7 +37,7 @@ public:
 
 private:
   void init(); //Avoid duplicating code in constructors.
-  virtual bool fill_from_database();
+  bool fill_from_database() override;
   virtual void fill_fields();
 
   void fill_field_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const Field>& field);

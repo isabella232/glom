@@ -50,9 +50,9 @@ public:
   virtual bool init_db_details(const Glib::ustring& parent_table, bool show_title = true);
 
 private:
-  virtual bool fill_from_database() override;
-  virtual type_vecConstLayoutFields get_fields_to_show() const override;
-  virtual void create_layout() override;
+  bool fill_from_database() override;
+  type_vecConstLayoutFields get_fields_to_show() const override;
+  void create_layout() override;
     
     
   //Implementations of pure virtual methods from Base_DB_Table_Data:
@@ -65,7 +65,7 @@ private:
   virtual void on_dialog_layout_hide() override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual void enable_buttons();
+  void enable_buttons() override;
     
   //Implementations of pure virtual methods from Base_DB_Table_Data:
   virtual Gnome::Gda::Value get_primary_key_value_selected() const;

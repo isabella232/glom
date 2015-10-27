@@ -68,7 +68,7 @@ public:
   AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~AppWindow();
 
-  virtual void init(); //Unique final overrider.
+  void init() override; //Unique final overrider.
 
   /**
    * @param restore Whether @a document_uri is a .tar.gz backup file to restore.
@@ -168,7 +168,7 @@ public:
   static AppWindow* get_appwindow();
 
   /// Overidden to add a widget in the middle, under the menu, instead of replacing the whole contents.
-  virtual void add(Gtk::Widget& child);
+  void add(Gtk::Widget& child) override;
 
   /// For instance, to create bold primary text for a dialog box, without marking the markup for translation.
   static Glib::ustring util_bold_message(const Glib::ustring& message);
@@ -255,7 +255,7 @@ private:
 
   void on_window_translations_hide();
 
-  void on_userlevel_changed(AppState::userlevels userlevel);
+  virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
   Document* on_connection_pool_get_document();
 
