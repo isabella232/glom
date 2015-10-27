@@ -38,11 +38,11 @@ private:
 public:
   static Glib::RefPtr<CanvasTableMovable> create();
 
-  virtual void get_xy(double& x, double& y) const;
-  virtual void set_xy(double x, double y);
-  virtual void get_width_height(double& width, double& height) const;
-  virtual void set_width_height(double width, double height);
-  virtual void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid);
+  void get_xy(double& x, double& y) const override;
+  void set_xy(double x, double y) override;
+  void get_width_height(double& width, double& height) const override;
+  void set_width_height(double width, double height) override;
+  void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid) override;
 
   void set_lines_details(double row_line_width, double column_line_width, const Glib::ustring& color);
 
@@ -52,7 +52,7 @@ public:
   void set_lines_visibility(bool show = true);
 
 private:
-  virtual Goocanvas::Canvas* get_parent_canvas_widget();
+  Goocanvas::Canvas* get_parent_canvas_widget() override;
 
   enum class Corners
   {
@@ -65,7 +65,7 @@ private:
 
   void snap_position_one_corner(Corners corner, double& x, double& y) const;
 
-  virtual void snap_position(double& x, double& y) const;
+  void snap_position(double& x, double& y) const override;
   
   double m_row_line_width, m_column_line_width;
   Glib::ustring m_line_color;

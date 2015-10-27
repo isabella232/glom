@@ -76,7 +76,7 @@ public:
   }
 
 private:
-  virtual void on_start_element(const Glib::ustring& name, const AttributeList& attributes)
+  void on_start_element(const Glib::ustring& name, const AttributeList& attributes) override
   {
     if(m_title.empty()) // Already found name? Wait for parse_chunk() call to return.
     {

@@ -50,11 +50,11 @@ public:
 
   virtual ~ComboAsRadioButtons();
 
-  virtual void set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted = false);
+  void set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted = false) override;
 
-  virtual void set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value);
+  void set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value) override;
 
-  virtual void set_read_only(bool read_only = true);
+  void set_read_only(bool read_only = true) override;
 
   //Override this so we can store the text to compare later.
   //This is not virtual, so you must not use it via Gtk::Entry.
@@ -64,9 +64,9 @@ public:
 
   /** Set the text from a Gnome::Gda::Value.
    */
-  virtual void set_value(const Gnome::Gda::Value& value);
+  void set_value(const Gnome::Gda::Value& value) override;
 
-  virtual Gnome::Gda::Value get_value() const;
+  Gnome::Gda::Value get_value() const override;
 
 private:
   void init();

@@ -48,27 +48,27 @@ public:
 
   virtual ~ImageGlom();
   
-  virtual void set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name);
+  void set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name) override;
 
-  virtual void set_value(const Gnome::Gda::Value& value);
-  virtual Gnome::Gda::Value get_value() const;
-  virtual bool get_has_original_data() const;
+  void set_value(const Gnome::Gda::Value& value) override;
+  Gnome::Gda::Value get_value() const override;
+  bool get_has_original_data() const override;
 
   //Optionally use this instead of set_value(), to avoid creating an unnecessary Value.
   //void set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf);
 
   void do_choose_image();
 
-  void set_read_only(bool read_only = true);
+  void set_read_only(bool read_only = true) override;
 
   void on_ev_job_finished(EvJob* job);
   
 private:
   void init();
 
-  virtual void on_size_allocate(Gtk::Allocation& allocation);
+  void on_size_allocate(Gtk::Allocation& allocation) override;
 
-  virtual bool on_button_press_event(GdkEventButton *event) override;
+  bool on_button_press_event(GdkEventButton *event) override;
 
   void on_menupopup_activate_open_file();
   void on_menupopup_activate_open_file_with();

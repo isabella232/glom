@@ -50,18 +50,18 @@ public:
   virtual ~ComboGlom();
 
   //This creates a simple ListStore, with a text cell renderer.
-  virtual void set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted = false);
+  void set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted = false) override;
 
   //This creates a db-based tree model, with appropriate cell renderers:
-  virtual void set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value);
+  void set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value) override;
 
-  virtual void set_read_only(bool read_only = true) override;
+  void set_read_only(bool read_only = true) override;
 
   /** Set the text from a Gnome::Gda::Value.
    */
-  virtual void set_value(const Gnome::Gda::Value& value) override;
+  void set_value(const Gnome::Gda::Value& value) override;
 
-  virtual Gnome::Gda::Value get_value() const override;
+  Gnome::Gda::Value get_value() const override;
 
 private:
 
@@ -69,15 +69,15 @@ private:
 
   // Note that this is a normal signal handler when glibmm was complied
   // without default signal handlers
-  virtual void on_changed() override; //From Gtk::ComboBox
+  void on_changed() override; //From Gtk::ComboBox
 
   void check_for_change();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual bool on_button_press_event(GdkEventButton *event) override;
+  bool on_button_press_event(GdkEventButton *event) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual AppWindow* get_appwindow() const override;
+  AppWindow* get_appwindow() const override;
 
 
   Gnome::Gda::Value m_old_value; //TODO: Only useful for navigation, which currently has no implementation.

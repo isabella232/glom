@@ -38,14 +38,14 @@ protected:
 public:
   static Glib::RefPtr<CanvasGroupMovable> create();
 
-  virtual void get_xy(double& x, double& y) const;
-  virtual void set_xy(double x, double y);
-  virtual void get_width_height(double& width, double& height) const;
-  virtual void set_width_height(double width, double height);
-  virtual void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid);
+  void get_xy(double& x, double& y) const override;
+  void set_xy(double x, double y) override;
+  void get_width_height(double& width, double& height) const override;
+  void set_width_height(double width, double height) override;
+  void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid) override;
 
 private:
-  virtual Goocanvas::Canvas* get_parent_canvas_widget();
+  Goocanvas::Canvas* get_parent_canvas_widget() override;
 
   enum class Corners
   {
@@ -58,7 +58,7 @@ private:
 
   void snap_position_one_corner(Corners corner, double& x, double& y) const;
 
-  virtual void snap_position(double& x, double& y) const;
+  void snap_position(double& x, double& y) const override;
 
   //We store the position so that we have something before any children wer added:
   double m_x, m_y, m_width, m_height;

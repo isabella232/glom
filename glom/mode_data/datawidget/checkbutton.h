@@ -44,8 +44,8 @@ public:
   explicit CheckButton(const Glib::ustring& title = Glib::ustring());
   virtual ~CheckButton();
 
-  virtual void set_value(const Gnome::Gda::Value& value);
-  virtual Gnome::Gda::Value get_value() const;    
+  void set_value(const Gnome::Gda::Value& value) override;
+  Gnome::Gda::Value get_value() const override;    
 
 private:
   void init();

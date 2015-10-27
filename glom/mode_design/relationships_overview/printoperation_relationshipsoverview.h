@@ -38,8 +38,8 @@ private:
   PrintOperationRelationshipsOverview();
 
   //PrintOperation default signal handler overrides:
-  virtual void on_begin_print(const Glib::RefPtr<Gtk::PrintContext>& context);
-  virtual void on_draw_page(const Glib::RefPtr<Gtk::PrintContext>& context, int page_nr);
+  void on_begin_print(const Glib::RefPtr<Gtk::PrintContext>& context) override;
+  void on_draw_page(const Glib::RefPtr<Gtk::PrintContext>& context, int page_nr) override;
 
   //Not owned by this instance:
   Goocanvas::Canvas* m_canvas;

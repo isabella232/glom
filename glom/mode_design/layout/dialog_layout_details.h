@@ -45,7 +45,7 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void init(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecConstLayoutFields& table_fields);
+  void init(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecConstLayoutFields& table_fields) override;
 
 protected:
 

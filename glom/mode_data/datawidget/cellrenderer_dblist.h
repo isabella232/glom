@@ -41,19 +41,19 @@ public:
   virtual ~CellRendererDbList();
 
   //This creates a simple ListStore, with a text cell renderer.
-  virtual void set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted = false);
+  void set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted = false) override;
 
   //This creates a db-based tree model, with appropriate cell renderers:
-  virtual void set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value);
+  void set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value) override;
 
   void set_restrict_values_to_list(bool val = true);
 
 private:
 
-  virtual void on_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path);
+  void on_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path) override;
 
-  virtual void set_value(const Gnome::Gda::Value& value);
-  virtual Gnome::Gda::Value get_value() const;
+  void set_value(const Gnome::Gda::Value& value) override;
+  Gnome::Gda::Value get_value() const override;
   
   void repack_cells_fixed(Gtk::CellLayout* combobox);
   void repack_cells_related(Gtk::CellLayout* combobox);

@@ -73,13 +73,13 @@ public:
 
   void fill_with_data(const FoundSet& found_set, bool avoid_page_margins);
 
-  virtual void set_grid_gap(double gap = 20.0);
+  void set_grid_gap(double gap = 20.0) override;
 
   void set_outlines_visibility(bool visible = true);
 
   /** Get any items that have get_selected()==true.
    */
-  virtual type_vec_items get_selected_items();
+  type_vec_items get_selected_items() override;
 
   /** Set all items as selected or unselected. 
    * @param selected Use false to unselect all.

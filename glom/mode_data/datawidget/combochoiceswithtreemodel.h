@@ -40,10 +40,10 @@ public:
   virtual ~ComboChoicesWithTreeModel();
 
   //This creates a simple ListStore, with a text cell renderer.
-  virtual void set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted = false);
+  void set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted = false) override;
 
   //This creates a db-based tree model, with appropriate cell renderers:
-  virtual void set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value);
+  void set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value) override;
 
 
   //Not named get_model(), to avoid clashing with ComboBox::get_model().

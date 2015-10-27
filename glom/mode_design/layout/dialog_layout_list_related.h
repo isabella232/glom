@@ -58,11 +58,11 @@ protected:
   void save_to_document() override;
 
   ///@inheritdoc
-  virtual Glib::ustring get_fields_table() const;
+  Glib::ustring get_fields_table() const override;
 
   //signal handlers:
-  virtual void on_button_add_field() override;
-  virtual void on_button_edit() override;
+  void on_button_add_field() override;
+  void on_button_edit() override;
  
   void on_combo_relationship_changed();
   

@@ -41,16 +41,16 @@ public:
 
   void set_hover_color(const Glib::ustring& color);
 
-  virtual void get_xy(double& x, double& y) const;
-  virtual void set_xy(double x, double y);
-  virtual void get_width_height(double& width, double& height) const;
-  virtual void set_width_height(double width, double height);
+  void get_xy(double& x, double& y) const override;
+  void set_xy(double x, double y) override;
+  void get_width_height(double& width, double& height) const override;
+  void set_width_height(double width, double height) override;
 
 private:
-  virtual Goocanvas::Canvas* get_parent_canvas_widget();
+  Goocanvas::Canvas* get_parent_canvas_widget() override;
 
-  virtual bool on_enter_notify_event(const Glib::RefPtr<Item>& target, GdkEventCrossing* event);
-  virtual bool on_leave_notify_event(const Glib::RefPtr<Item>& target, GdkEventCrossing* event);
+  bool on_enter_notify_event(const Glib::RefPtr<Item>& target, GdkEventCrossing* event) override;
+  bool on_leave_notify_event(const Glib::RefPtr<Item>& target, GdkEventCrossing* event) override;
 
   Gdk::RGBA m_stroke_color;
   Glib::ustring m_hover_color;

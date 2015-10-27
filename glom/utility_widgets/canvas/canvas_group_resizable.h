@@ -55,13 +55,13 @@ public:
   /// Get the only child:
   Glib::RefPtr<const CanvasItemMovable> get_child() const;
 
-  virtual void get_xy(double& x, double& y) const;
-  virtual void set_xy(double x_offet, double y_offset);
-  virtual void get_width_height(double& width, double& height) const;
-  virtual void set_width_height(double width, double height);
-  virtual void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid);
+  void get_xy(double& x, double& y) const override;
+  void set_xy(double x_offet, double y_offset) override;
+  void get_width_height(double& width, double& height) const override;
+  void set_width_height(double width, double height) override;
+  void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid) override;
 
-  virtual void snap_position(double& x, double& y) const;
+  void snap_position(double& x, double& y) const override;
 
   void set_outline_visible(bool visible = true);
 
@@ -77,8 +77,8 @@ public:
   static void get_outline_stroke(Glib::ustring& color, double& width);
 
 private:
-  virtual void show_selected();
-  virtual Goocanvas::Canvas* get_parent_canvas_widget();
+  void show_selected() override;
+  Goocanvas::Canvas* get_parent_canvas_widget() override;
 
   enum class Corners
   {

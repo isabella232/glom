@@ -52,10 +52,10 @@ public:
    */
   void set_snap_corner(Corners corner);
 
-  virtual void get_xy(double& x, double& y) const;
-  virtual void set_xy(double x, double y);
-  virtual void get_width_height(double& width, double& height) const;
-  virtual void set_width_height(double width, double height);
+  void get_xy(double& x, double& y) const override;
+  void set_xy(double x, double y) override;
+  void get_width_height(double& width, double& height) const override;
+  void set_width_height(double width, double height) override;
 
   /** Use this instead of property_text() (from the base class),
    * so that the desired points size will be used.
@@ -70,9 +70,9 @@ public:
   void set_font_points(const Glib::ustring& font);
 
 private:
-  virtual Goocanvas::Canvas* get_parent_canvas_widget();
+  Goocanvas::Canvas* get_parent_canvas_widget() override;
 
-  virtual void snap_position(double& x, double& y) const;
+  void snap_position(double& x, double& y) const override;
 
   void reconstruct_markup();
 

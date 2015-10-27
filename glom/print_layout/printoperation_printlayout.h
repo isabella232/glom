@@ -38,9 +38,9 @@ private:
   PrintOperationPrintLayout();
 
   //PrintOperation default signal handler overrides:
-  virtual bool on_paginate(const Glib::RefPtr<Gtk::PrintContext>& context); //Comment this out if GTK+ bug #345345 has not been fixed yet.
-  virtual void on_begin_print(const Glib::RefPtr<Gtk::PrintContext>& context);
-  virtual void on_draw_page(const Glib::RefPtr<Gtk::PrintContext>& context, int page_nr);
+  bool on_paginate(const Glib::RefPtr<Gtk::PrintContext>& context) override; //Comment this out if GTK+ bug #345345 has not been fixed yet.
+  void on_begin_print(const Glib::RefPtr<Gtk::PrintContext>& context) override;
+  void on_draw_page(const Glib::RefPtr<Gtk::PrintContext>& context, int page_nr) override;
 
   //Not owned by this instance:
   Canvas_PrintLayout* m_canvas;
