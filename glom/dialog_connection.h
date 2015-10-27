@@ -57,7 +57,7 @@ public:
   void set_password(const Glib::ustring& password);
   void get_username_and_password(Glib::ustring& user, Glib::ustring& password) const;
 
-  virtual void load_from_document() override;
+  void load_from_document() override;
   
   void set_self_hosted_user_and_password(const Glib::ustring& username, const Glib::ustring& password);
 

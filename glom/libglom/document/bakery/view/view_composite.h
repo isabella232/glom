@@ -63,7 +63,7 @@ public:
       m_vecViews.erase(iter);
   }
 
-  virtual void set_document(T_Document* pDocument)
+  void set_document(T_Document* pDocument) override
   {
     //Call base class:
     View<T_Document>::set_document(pDocument);
@@ -76,7 +76,7 @@ public:
     }
   }
 
-  virtual void load_from_document()
+  void load_from_document() override
   {
     //Delegate to the child views:
     for(const auto& pView : m_vecViews)
@@ -86,7 +86,7 @@ public:
     }
   }
 
-  virtual void save_to_document()
+  void save_to_document() override
   {
     //Delegate to the child views:
     for(const auto& pView : m_vecViews)

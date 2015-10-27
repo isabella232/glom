@@ -137,8 +137,8 @@ public:
 
   void on_dialog_tables_hide();
 
-  virtual void set_document(Document* pDocument) override; //View override
-  virtual void load_from_document() override; //View override
+  void set_document(Document* pDocument) override; //View override
+  void load_from_document() override; //View override
 
   enum class enumModes
   {

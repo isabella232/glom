@@ -55,7 +55,7 @@ public:
 
 protected:
 
-  virtual void save_to_document();
+  void save_to_document() override;
 
   ///@inheritdoc
   virtual Glib::ustring get_fields_table() const;

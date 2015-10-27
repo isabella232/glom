@@ -58,7 +58,7 @@ private:
   //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();
 
-  virtual void save_to_document();
+  void save_to_document() override;
 
   //signal handlers:
   virtual void on_button_user_delete();

@@ -42,7 +42,7 @@ private:
 
   virtual void fill_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const PrintLayout>& print_layout);
 
-  virtual void save_to_document();
+  void save_to_document() override;
 
   //Signal handlers:
   void on_adddel_user_added(const Gtk::TreeModel::iterator& row);

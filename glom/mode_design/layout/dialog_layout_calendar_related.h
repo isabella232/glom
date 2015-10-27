@@ -57,7 +57,7 @@ public:
 
 private:
 
-  virtual void save_to_document();
+  void save_to_document() override;
 
   //signal handlers:
   virtual void on_button_add_field() override;

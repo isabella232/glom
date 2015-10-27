@@ -51,7 +51,7 @@ public:
   Window_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Window_RelationshipsOverview();
   
-  virtual void load_from_document(); //overridden.
+  void load_from_document() override
 
 private:
   class TableView;

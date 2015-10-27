@@ -52,7 +52,7 @@ private:
 
   //Signal handlers:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void save_to_document();
+  void save_to_document() override;
 
   void on_adddel_Add(const Gtk::TreeModel::iterator& row);
   void on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
