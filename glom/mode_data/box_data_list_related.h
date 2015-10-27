@@ -36,13 +36,13 @@ public:
   /**
    * @param portal: The full portal details
    */
-  virtual bool init_db_details(const std::shared_ptr<const LayoutItem_Portal>& portal, bool show_title = true);
+  bool init_db_details(const std::shared_ptr<const LayoutItem_Portal>& portal, bool show_title = true) override;
 
   /** Use this if no portal is yet defined, so the user can use the context menu to define a portal.
    */
-  virtual bool init_db_details(const Glib::ustring& parent_table, bool show_title = true);
+  bool init_db_details(const Glib::ustring& parent_table, bool show_title = true) override;
 
-  virtual void set_find_mode(bool val = true);
+  void set_find_mode(bool val = true) override;
 
 protected:
   bool fill_from_database() override;
@@ -67,16 +67,16 @@ protected:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //Implementations of pure virtual methods from Base_DB_Table_Data:
-  virtual std::shared_ptr<Field> get_field_primary_key() const; //TODO: Already in base class?
-  virtual Gnome::Gda::Value get_primary_key_value_selected() const;
-  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
-  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const;
+  std::shared_ptr<Field> get_field_primary_key() const override; //TODO: Already in base class?
+  Gnome::Gda::Value get_primary_key_value_selected() const override;
+  void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) override;
+  Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const override;
 
   //Overrides of functions from Box_Data:
   Document::type_list_layout_groups create_layout_get_layout() override;
   void create_layout() override;
 
-  void enable_buttons() override;
+  void enable_buttons();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual Dialog_Layout* create_layout_dialog() const override;

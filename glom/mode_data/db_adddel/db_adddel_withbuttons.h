@@ -33,12 +33,12 @@ public:
   DbAddDel_WithButtons();
   virtual ~DbAddDel_WithButtons();
 
-  virtual void set_allow_add(bool val = true) override;
-  virtual void set_allow_delete(bool val = true) override;
-  virtual void set_allow_user_actions(bool bVal = true) override;
+  void set_allow_add(bool val = true) override;
+  void set_allow_delete(bool val = true) override;
+  void set_allow_user_actions(bool bVal = true) override;
 
   ///Whether each row should have a button, to request edit.
-  virtual void set_allow_view_details(bool val = true);
+  void set_allow_view_details(bool val = true) override;
 
 private:
   void setup_buttons();
@@ -46,9 +46,9 @@ private:
   void on_button_add();
   void on_button_del();
   void on_button_edit();
-  virtual void on_selection_changed(bool selection);
+  void on_selection_changed(bool selection) override;
 
-  virtual void show_all_vfunc() override;
+  void show_all_vfunc() override;
 
   //member widgets:
   Gtk::ButtonBox m_ButtonBox;

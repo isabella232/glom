@@ -44,7 +44,7 @@ public:
   virtual bool refresh_data_from_database_with_primary_key(const Gnome::Gda::Value& primary_key_value);
   virtual bool refresh_data_from_database_blank();
 
-  virtual void print_layout();
+  void print_layout() override;
 
 
   //Signals:
@@ -76,22 +76,22 @@ protected:
 
   //Implementations of pure virtual methods from Base_DB_Table_Data:
 public:
-  virtual Gnome::Gda::Value get_primary_key_value_selected() const; //Value in the primary key's cell.
+  Gnome::Gda::Value get_primary_key_value_selected() const override; //Value in the primary key's cell.
 
 protected:
-  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
-  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const; //Actual primary key value of this record.
+  void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) override;
+  Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const override; //Actual primary key value of this record.
 
-  virtual Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const;
-  virtual void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const override;
+  void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
+  void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
 
 
   bool fill_from_database() override;
-  virtual void create_layout();
+  void create_layout() override;
   //virtual void fill_related();
 
-  virtual std::shared_ptr<Field> get_field_primary_key() const;
+  std::shared_ptr<Field> get_field_primary_key() const override;
   void set_found_set_from_primary_key_value();
 
 private:

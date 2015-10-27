@@ -60,7 +60,7 @@ private:
   std::shared_ptr<LayoutGroup> fill_group(const Gtk::TreeModel::iterator& iter, const Glib::RefPtr<const type_model> model);
 
   //Enable/disable buttons, depending on treeview selection:
-  virtual void enable_buttons();
+  void enable_buttons() override;
 
   void save_to_document() override;
 

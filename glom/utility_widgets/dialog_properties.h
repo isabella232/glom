@@ -37,7 +37,7 @@ public:
   virtual ~Dialog_Properties();
 
   //Add a widget (probably a container) to the top half of the dialog:
-  virtual void add(Gtk::Widget& widget);
+  void add(Gtk::Widget& widget) override;
 
   virtual void set_modified(bool modified = true);
 

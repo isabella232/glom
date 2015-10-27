@@ -40,14 +40,14 @@ public:
   Gnome::Gda::Value get_primary_key_value_first() const;
 
   //Implementations of pure virtual methods from Base_DB_Table_Data:
-  virtual Gnome::Gda::Value get_primary_key_value_selected() const;
-  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
+  Gnome::Gda::Value get_primary_key_value_selected() const override;
+  void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) override;
 
-  virtual Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const;
-  virtual void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const override;
+  void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
+  void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
 
-  virtual Gtk::TreeModel::iterator get_row_selected();
+  Gtk::TreeModel::iterator get_row_selected() override;
 
   bool get_showing_multiple_records() const;
 
@@ -57,7 +57,7 @@ public:
   void set_open_button_title(const Glib::ustring& title);
 
   ///Highlight and scroll to the specified record, with primary key value @primary_key_value.
-  void set_primary_key_value_selected(const Gnome::Gda::Value& primary_key_value);
+  void set_primary_key_value_selected(const Gnome::Gda::Value& primary_key_value) override;
 
 
   //Signal Handlers:
@@ -77,7 +77,7 @@ public:
 protected:
 
   //Implementations of pure virtual methods from Base_DB_Table_Data:
-  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const;
+  Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const override;
 
   //Overrides of functions from Box_Data:
   void create_layout() override;
@@ -86,7 +86,7 @@ protected:
   bool fill_from_database() override;
   virtual void enable_buttons();
 
-  virtual std::shared_ptr<Field> get_field_primary_key() const;
+  std::shared_ptr<Field> get_field_primary_key() const override;
 
   //Signal handlers:
   void on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row);

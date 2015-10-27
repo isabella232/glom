@@ -174,7 +174,7 @@ private:
 
    bool iter_is_valid(const iterator& iter) const;
 
-   virtual void set_value_impl(const iterator& row, int column, const Glib::ValueBase& value);
+   void set_value_impl(const iterator& row, int column, const Glib::ValueBase& value) override;
 
    typedef DbTreeModelRow typeRow; //X columns, all of type Value.
 

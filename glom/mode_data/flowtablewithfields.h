@@ -113,7 +113,7 @@ public:
 
   virtual void change_group(const Glib::ustring& id, const Glib::ustring& new_group);
 
-  virtual void set_design_mode(bool value = true);
+  void set_design_mode(bool value = true) override;
 
   virtual void remove_all();
 
@@ -281,9 +281,9 @@ private:
 
   //menu
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_menu_properties_activate();
-  virtual void on_menu_delete_activate(); // override this to add a dialog box
-  virtual bool on_button_press_event(GdkEventButton *event) override;
+  void on_menu_properties_activate() override;
+  void on_menu_delete_activate() override; // override this to add a dialog box
+  bool on_button_press_event(GdkEventButton *event) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 };
 

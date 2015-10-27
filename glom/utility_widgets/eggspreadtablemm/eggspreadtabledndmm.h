@@ -94,7 +94,7 @@ public:
   SpreadTableDnd();
   explicit SpreadTableDnd(Gtk::Orientation orientation, guint lines);
 
-  void insert_child(Gtk::Widget& child, int index);
+  void insert_child(Gtk::Widget& child, int index) override;
   void remove_child(Gtk::Widget& child);
   void set_drag_enabled(EggDragEnableMode drag_enabled);
   EggDragEnableMode get_drag_enabled() const;

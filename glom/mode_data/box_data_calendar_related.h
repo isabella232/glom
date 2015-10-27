@@ -43,11 +43,11 @@ public:
   /**
    * @param portal: The full portal details
    */
-  virtual bool init_db_details(const std::shared_ptr<const LayoutItem_Portal>& portal, bool show_title = true);
+  bool init_db_details(const std::shared_ptr<const LayoutItem_Portal>& portal, bool show_title = true) override;
 
   /** Use this if no portal is yet defined, so the user can use the context menu to define a portal.
    */
-  virtual bool init_db_details(const Glib::ustring& parent_table, bool show_title = true);
+  bool init_db_details(const Glib::ustring& parent_table, bool show_title = true) override;
 
 private:
   bool fill_from_database() override;
@@ -56,7 +56,7 @@ private:
     
     
   //Implementations of pure virtual methods from Base_DB_Table_Data:
-  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
+  void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) override;
     
 
   void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row) override; //Not a signal handler.
@@ -65,15 +65,15 @@ private:
   virtual void on_dialog_layout_hide() override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  void enable_buttons() override;
+  void enable_buttons();
     
   //Implementations of pure virtual methods from Base_DB_Table_Data:
-  virtual Gnome::Gda::Value get_primary_key_value_selected() const;
-  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const;
+  Gnome::Gda::Value get_primary_key_value_selected() const override;
+  Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const override;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual Dialog_Layout* create_layout_dialog() const override;
-  virtual void prepare_layout_dialog(Dialog_Layout* dialog) override;
+  Dialog_Layout* create_layout_dialog() const override;
+  void prepare_layout_dialog(Dialog_Layout* dialog) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Glib::ustring on_calendar_details(guint year, guint month, guint day);

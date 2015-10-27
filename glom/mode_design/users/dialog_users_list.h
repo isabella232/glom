@@ -56,7 +56,7 @@ public:
 private:
 
   //Enable/disable buttons, depending on treeview selection:
-  void enable_buttons() override;
+  void enable_buttons();
 
   void save_to_document() override;
 

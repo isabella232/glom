@@ -61,8 +61,8 @@ private:
     return "flowtable";
   };
 
-  virtual void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context);
-  virtual void on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&, Gtk::SelectionData& selection_data, guint, guint);
+  void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context) override;
+  void on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&, Gtk::SelectionData& selection_data, guint, guint) override;
   
 private:
   enumItems m_type;

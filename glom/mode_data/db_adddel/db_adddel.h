@@ -277,16 +277,16 @@ private:
   void set_value(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value, bool set_specified_field_layout);
 
   //Overrides of Base_DB/Base_DB_Table methods:
-  virtual void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
-  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
-  virtual Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const override;
-  virtual Gtk::TreeModel::iterator get_row_selected();
+  void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
+  void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
+  Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const override;
+  Gtk::TreeModel::iterator get_row_selected() override;
 
   //Implementations of pure virtual methods from Base_DB_Table_Data:
-  virtual std::shared_ptr<Field> get_field_primary_key() const;
-  virtual Gnome::Gda::Value get_primary_key_value_selected() const;
-  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
-  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const;
+  std::shared_ptr<Field> get_field_primary_key() const override;
+  Gnome::Gda::Value get_primary_key_value_selected() const override;
+  void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) override;
+  Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const override;
 
   Gtk::CellRenderer* construct_specified_columns_cellrenderer(const std::shared_ptr<LayoutItem>& layout_item, int model_column_index, int data_model_column_index);
 

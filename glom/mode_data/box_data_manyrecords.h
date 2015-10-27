@@ -60,7 +60,7 @@ protected:
   //virtual Document::type_list_layout_groups create_layout_get_layout() ; //overriden in Box_Data_ManyRecords_Related.
   void create_layout_add_group(const std::shared_ptr<LayoutGroup>& layout_group);
 
-  virtual void print_layout();
+  void print_layout() override;
   virtual void print_layout_group(xmlpp::Element* node_parent, const std::shared_ptr<const LayoutGroup>& group);
 
   bool m_read_only;

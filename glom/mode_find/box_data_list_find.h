@@ -39,7 +39,7 @@ public:
 private:
 
   bool fill_from_database() override;
-  virtual void create_layout();
+  void create_layout() override;
 
   //Member widgets:
   Gtk::Box m_HBox;

@@ -36,7 +36,7 @@ public:
   PlaceHolder(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~PlaceHolder();
 
-  virtual void add(Gtk::Widget& child);
+  void add(Gtk::Widget& child) override;
   virtual void remove();
 
   virtual Gtk::Widget* get_child();
