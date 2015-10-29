@@ -58,12 +58,12 @@ public:
   ///Get the existing where clause, previously supplied to init_db_details().
   FoundSet get_found_set() const;
 
-  virtual Gnome::Gda::SqlExpr get_find_where_clause() const;
+  Gnome::Gda::SqlExpr get_find_where_clause() const;
 
-  virtual void set_unstored_data(bool bVal);
-  virtual bool get_unstored_data() const;
+  void set_unstored_data(bool bVal);
+  bool get_unstored_data() const;
 
-  virtual bool confirm_discard_unstored_data() const;
+  bool confirm_discard_unstored_data() const;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void show_layout_dialog();

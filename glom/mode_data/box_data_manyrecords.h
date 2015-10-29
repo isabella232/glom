@@ -61,7 +61,7 @@ protected:
   void create_layout_add_group(const std::shared_ptr<LayoutGroup>& layout_group);
 
   void print_layout() override;
-  virtual void print_layout_group(xmlpp::Element* node_parent, const std::shared_ptr<const LayoutGroup>& group);
+  void print_layout_group(xmlpp::Element* node_parent, const std::shared_ptr<const LayoutGroup>& group);
 
   bool m_read_only;
 

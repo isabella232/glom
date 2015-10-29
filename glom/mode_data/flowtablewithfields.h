@@ -65,7 +65,7 @@ public:
   virtual ~FlowTableWithFields();
 
   ///The table name is needed to discover details of relationships.
-  virtual void set_table(const Glib::ustring& table_name);
+  void set_table(const Glib::ustring& table_name);
 
   /** Prevent any attempts to change actual records,
    * if the widget is just being used to enter find critera,
@@ -111,11 +111,11 @@ public:
   typedef std::list<Gtk::Widget*> type_list_widgets;
   typedef std::list<const Gtk::Widget*> type_list_const_widgets;
 
-  virtual void change_group(const Glib::ustring& id, const Glib::ustring& new_group);
+  void change_group(const Glib::ustring& id, const Glib::ustring& new_group);
 
   void set_design_mode(bool value = true) override;
 
-  virtual void remove_all();
+  void remove_all();
 
   typedef std::vector< Glib::RefPtr<Gtk::SizeGroup> > type_vec_sizegroups;
 

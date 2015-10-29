@@ -49,11 +49,11 @@ private:
   void enable_buttons() override;
 
   //signal handlers:
-  virtual void on_button_up();
-  virtual void on_button_down();
-  virtual void on_button_add();
-  virtual void on_button_delete();
-  virtual void on_treeview_selection_changed();
+  void on_button_up();
+  void on_button_down();
+  void on_button_add();
+  void on_button_delete();
+  void on_treeview_selection_changed();
 
   //Tree model columns:
   class ModelColumns_Tabs : public Gtk::TreeModel::ColumnRecord

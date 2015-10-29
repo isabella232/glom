@@ -36,8 +36,8 @@ public:
   Combo_SummaryType(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Combo_SummaryType();
 
-  virtual void set_summary_type(LayoutItem_FieldSummary::summaryType summary_type);
-  virtual LayoutItem_FieldSummary::summaryType get_summary_type() const;
+  void set_summary_type(LayoutItem_FieldSummary::summaryType summary_type);
+  LayoutItem_FieldSummary::summaryType get_summary_type() const;
 
 private:
 

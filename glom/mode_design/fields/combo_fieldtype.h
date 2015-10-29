@@ -37,8 +37,8 @@ public:
   virtual ~Combo_FieldType();
 
   //set/get the text in terms of enumerated type:
-  virtual void set_field_type(Field::glom_field_type fieldType);
-  virtual Field::glom_field_type get_field_type() const;
+  void set_field_type(Field::glom_field_type fieldType);
+  Field::glom_field_type get_field_type() const;
 
 private:
 

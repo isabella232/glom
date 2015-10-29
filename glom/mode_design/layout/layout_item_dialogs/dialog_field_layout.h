@@ -49,7 +49,7 @@ public:
    * @param field The starting field information.
    * @param table_name The field's table.
    */
-  virtual void set_field(const std::shared_ptr<const LayoutItem_Field>& field, const Glib::ustring& table_name, bool show_editable_options = true);
+  void set_field(const std::shared_ptr<const LayoutItem_Field>& field, const Glib::ustring& table_name, bool show_editable_options = true);
 
   std::shared_ptr<LayoutItem_Field> get_field_chosen() const;
 

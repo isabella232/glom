@@ -91,9 +91,9 @@ protected:
   void update_records_count();
 
   //Signal handlers:
-  virtual void on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value);
+  void on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value);
 
-   void on_switch_page_handler(Gtk::Widget* pPage) override;
+  void on_switch_page_handler(Gtk::Widget* pPage) override;
 
 private:
 

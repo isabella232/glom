@@ -50,8 +50,8 @@ public:
   Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_FieldDefinition();
 
-  virtual void set_field(const std::shared_ptr<const Field>& field, const Glib::ustring& table_name);
-  virtual std::shared_ptr<Field> get_field() const; //TODO_FieldShared
+  void set_field(const std::shared_ptr<const Field>& field, const Glib::ustring& table_name);
+  std::shared_ptr<Field> get_field() const; //TODO_FieldShared
 
 private:
 

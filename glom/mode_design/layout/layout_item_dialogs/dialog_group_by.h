@@ -50,7 +50,7 @@ public:
    * @param item The starting information.
    * @param table_name The item's table.
    */
-  virtual void set_item(const std::shared_ptr<const LayoutItem_GroupBy>& item, const Glib::ustring& table_name);
+  void set_item(const std::shared_ptr<const LayoutItem_GroupBy>& item, const Glib::ustring& table_name);
 
 
   std::shared_ptr<LayoutItem_GroupBy> get_item() const;
