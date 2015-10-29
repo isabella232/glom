@@ -110,14 +110,14 @@ protected:
   void on_userlevel_changed(AppState::userlevels user_level) override;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_flowtable_layout_changed();
+  void on_flowtable_layout_changed();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //Signal handler: The last 2 args are bind-ed.
-  virtual void on_related_record_added(Gnome::Gda::Value key_value, Glib::ustring strFromKeyName);
+  void on_related_record_added(Gnome::Gda::Value key_value, Glib::ustring strFromKeyName);
 
   //Signal handler: The last arg is bind-ed.
-  //virtual void on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring table_name);
+  //void on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring table_name);
 
   //This is virtual so it can be overriden in Box_Data_Details_Find.
   virtual void on_flowtable_field_edited(const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& value);
@@ -129,7 +129,7 @@ protected:
 
   void on_flowtable_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item);
 
-  virtual void recalculate_fields_for_related_records(const Glib::ustring& relationship_name);
+  void recalculate_fields_for_related_records(const Glib::ustring& relationship_name);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Dialog_Layout* create_layout_dialog() const override;

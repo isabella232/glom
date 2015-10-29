@@ -47,8 +47,8 @@ public:
   explicit DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document* document);
   virtual ~DataWidget();
 
-  virtual Gtk::Label* get_label();
-  virtual const Gtk::Label* get_label() const;
+  Gtk::Label* get_label();
+  const Gtk::Label* get_label() const;
 
   //Override this so we can store the text to compare later.
   //This is not virtual, so you must not use it via Gtk::Entry.
@@ -58,8 +58,8 @@ public:
 
   virtual Gnome::Gda::Value get_value() const;
 
-  virtual void set_editable(bool editable = true);
-  virtual void set_viewable(bool viewable = true);
+  void set_editable(bool editable = true);
+  void set_viewable(bool viewable = true);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   static std::shared_ptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& start_field, Document* document, AppWindow* app);
@@ -96,9 +96,9 @@ private:
   void on_widget_edited(); //From Gtk::Entry, or Gtk::CheckButton.
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   bool on_button_press_event(GdkEventButton* button_event) override;
-  virtual void on_child_user_requested_layout();
-  virtual void on_child_user_requested_layout_properties();
-  virtual void on_child_layout_item_added(LayoutWidgetBase::enumType item_type);
+  void on_child_user_requested_layout();
+  void on_child_user_requested_layout_properties();
+  void on_child_layout_item_added(LayoutWidgetBase::enumType item_type);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   void on_button_open_details();
   void on_button_select_id();
@@ -114,7 +114,7 @@ private:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_menupopup_activate_layout() override;
   void on_menupopup_activate_layout_properties() override;
-  //virtual void on_menupopup_add_item(LayoutWidgetBase::enumType item);
+  //void on_menupopup_add_item(LayoutWidgetBase::enumType item);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   AppWindow* get_appwindow() const override;

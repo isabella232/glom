@@ -32,8 +32,8 @@ public:
   DbTreeViewColumnGlom(const Glib::ustring& title, Gtk::CellRenderer& cell);
   virtual ~DbTreeViewColumnGlom();
 
-  virtual Glib::ustring get_column_id() const;
-  virtual void set_column_id(const Glib::ustring& value);
+  Glib::ustring get_column_id() const;
+  void set_column_id(const Glib::ustring& value);
 
 private:
   Glib::ustring m_column_id; 

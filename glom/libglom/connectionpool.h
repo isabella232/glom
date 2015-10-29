@@ -243,7 +243,7 @@ public:
    * @param network_shared Whether the database (and document) should be available to other users over the network,
    * if possible.
    */
-  virtual bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true);
+  bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true);
 
   /** Add a field to the database.
    * The caller should then update the document's list of fields,

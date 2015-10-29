@@ -59,8 +59,8 @@ public:
   void set_has_custom_choices(bool val = true);
 
   typedef std::vector< std::shared_ptr<ChoiceValue> > type_list_values;
-  virtual type_list_values get_choices_custom() const;
-  virtual void set_choices_custom(const type_list_values& choices);
+  type_list_values get_choices_custom() const;
+  void set_choices_custom(const type_list_values& choices);
 
   /** Get the original text that corresponds to the translated choice for the 
    * current locale.

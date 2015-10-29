@@ -45,14 +45,14 @@ public:
   /** Returns whether we are in developer mode.
    * Some functionality will be deactivated when not in developer mode.
    */
-  virtual userlevels get_userlevel() const;
+  userlevels get_userlevel() const;
 
   /** This will cause the userlevel_changed signal to be emitted.
   */
-  virtual void set_userlevel(userlevels value);
+  void set_userlevel(userlevels value);
 
   /// Use this to set the initial UI state:
-  virtual void emit_userlevel_changed();
+  void emit_userlevel_changed();
 
   typedef sigc::signal<void, userlevels> type_signal_userlevel_changed;
 

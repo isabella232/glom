@@ -57,7 +57,8 @@ public:
 
   virtual void init(); //Sets it up and shows it.
 
-  virtual Glib::ustring get_version() const;
+  //TODO: Remove this?
+  Glib::ustring get_version() const;
 
   static void set_command_line_args(int argc, char** &argv); //Needed for session management.
 
