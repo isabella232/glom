@@ -70,7 +70,7 @@ public:
   void get_record_counts(gulong& total, gulong& found) const;
 
   #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_dialog_layout_hide() override;
+  void on_dialog_layout_hide() override;
   #endif //GLOM_ENABLE_CLIENT_ONLY
 
 
@@ -102,8 +102,8 @@ protected:
   bool on_script_button_idle(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual Dialog_Layout* create_layout_dialog() const override;
-  virtual void prepare_layout_dialog(Dialog_Layout* dialog) override;
+  Dialog_Layout* create_layout_dialog() const override;
+  void prepare_layout_dialog(Dialog_Layout* dialog) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //Member widgets:

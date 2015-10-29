@@ -62,7 +62,7 @@ private:
   void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row) override; //Not a signal handler.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_dialog_layout_hide() override;
+  void on_dialog_layout_hide() override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   void enable_buttons();

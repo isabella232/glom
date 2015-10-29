@@ -63,7 +63,7 @@ protected:
    */
   type_const_list_widgets get_first_child_widgets() const;
 
-  virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
+  bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
 
 private:
 

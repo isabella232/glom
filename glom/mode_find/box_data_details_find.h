@@ -34,7 +34,7 @@ public:
 
   bool init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform);
 
-  virtual Gtk::Widget* get_default_button() override;
+  Gtk::Widget* get_default_button() override;
 
 private:
 

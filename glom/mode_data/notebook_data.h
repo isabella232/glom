@@ -55,12 +55,12 @@ public:
   void select_page_for_find_results(); //Details for 1, List for > 1.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void do_menu_developer_layout() override;
+  void do_menu_developer_layout() override;
 
   void set_enable_layout_drag_and_drop(bool enable = true);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual void do_menu_file_print() override;
+  void do_menu_file_print() override;
 
   void do_menu_file_add_record();
 

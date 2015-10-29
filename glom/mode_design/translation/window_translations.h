@@ -46,8 +46,8 @@ public:
   Window_Translations(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Window_Translations();
 
-  virtual void load_from_document() override;
-  virtual void save_to_document() override;
+  void load_from_document() override;
+  void save_to_document() override;
 
 private:
 

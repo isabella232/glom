@@ -63,7 +63,7 @@ protected:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_dialog_layout_hide() override;
+  void on_dialog_layout_hide() override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //Implementations of pure virtual methods from Base_DB_Table_Data:
@@ -79,8 +79,8 @@ protected:
   void enable_buttons();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual Dialog_Layout* create_layout_dialog() const override;
-  virtual void prepare_layout_dialog(Dialog_Layout* dialog) override;
+  Dialog_Layout* create_layout_dialog() const override;
+  void prepare_layout_dialog(Dialog_Layout* dialog) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 

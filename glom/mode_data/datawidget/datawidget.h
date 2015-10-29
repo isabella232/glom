@@ -52,7 +52,7 @@ public:
 
   //Override this so we can store the text to compare later.
   //This is not virtual, so you must not use it via Gtk::Entry.
-  //virtual void set_text(const Glib::ustring& text) override;
+  //void set_text(const Glib::ustring& text) override;
 
   virtual void set_value(const Gnome::Gda::Value& value);
 
@@ -95,7 +95,7 @@ private:
   //Overrides of default signal handlers:
   void on_widget_edited(); //From Gtk::Entry, or Gtk::CheckButton.
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual bool on_button_press_event(GdkEventButton* button_event) override;
+  bool on_button_press_event(GdkEventButton* button_event) override;
   virtual void on_child_user_requested_layout();
   virtual void on_child_user_requested_layout_properties();
   virtual void on_child_layout_item_added(LayoutWidgetBase::enumType item_type);
@@ -112,8 +112,8 @@ private:
   void on_self_style_changed(const Glib::RefPtr<Gtk::Style>& style);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_menupopup_activate_layout() override;
-  virtual void on_menupopup_activate_layout_properties() override;
+  void on_menupopup_activate_layout() override;
+  void on_menupopup_activate_layout_properties() override;
   //virtual void on_menupopup_add_item(LayoutWidgetBase::enumType item);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

@@ -175,11 +175,11 @@ public:
 
 protected:
   void init_layout(); //Arranges the menu, toolbar, etc.
-  virtual void init_menus() override; //Override this to add more or different menus.
-  virtual void init_menus_file() override; //Call this from init_menus() to add the standard file menu.
-  virtual void init_menus_edit() override; //Call this from init_menus() to add the standard edit menu
+  void init_menus() override; //Override this to add more or different menus.
+  void init_menus_file() override; //Call this from init_menus() to add the standard file menu.
+  void init_menus_edit() override; //Call this from init_menus() to add the standard edit menu
 
-  virtual void on_hide() override;
+  void on_hide() override;
 
   //Overrides from AppWindow_WithDoc:
   void document_history_add(const Glib::ustring& file_uri) override;
@@ -227,9 +227,9 @@ protected:
   void ui_warning_load_failed(int failure_code = 0) override;
 
 private:
-  virtual void init_create_document() override;
-  virtual bool on_document_load() override;
-  virtual void on_document_close() override;
+  void init_create_document() override;
+  bool on_document_load() override;
+  void on_document_close() override;
 
   bool offer_new_or_existing();
 
@@ -281,7 +281,7 @@ private:
   Glib::ustring ui_file_select_open_with_browse(bool& browsed, EpcServiceInfo*& browsed_server, Glib::ustring& browsed_service_name, const Glib::ustring& starting_folder_uri = Glib::ustring());
 #endif // !G_OS_WIN32
 
-  virtual void new_instance(const Glib::ustring& uri = Glib::ustring()) override;
+  void new_instance(const Glib::ustring& uri = Glib::ustring()) override;
 
   void on_connection_create_database_progress();
   void on_connection_close_progress();

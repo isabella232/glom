@@ -132,12 +132,12 @@ protected:
   virtual void recalculate_fields_for_related_records(const Glib::ustring& relationship_name);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual Dialog_Layout* create_layout_dialog() const override;
-  virtual void prepare_layout_dialog(Dialog_Layout* dialog) override;
+  Dialog_Layout* create_layout_dialog() const override;
+  void prepare_layout_dialog(Dialog_Layout* dialog) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   std::shared_ptr<Field> m_field_primary_key;
- virtual void show_all_vfunc() override;
+ void show_all_vfunc() override;
 
   Gnome::Gda::Value m_primary_key_value;
 

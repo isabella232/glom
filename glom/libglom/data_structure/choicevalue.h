@@ -58,7 +58,7 @@ public:
    * assuming that the value is a title,
    * if it is a text value.
    */
-  virtual Glib::ustring get_title_original() const noexcept override;
+  Glib::ustring get_title_original() const noexcept override;
 
   /** Whether the value is of a type that can be translated.
    * This means that it must be a text type.

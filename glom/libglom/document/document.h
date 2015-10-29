@@ -326,7 +326,7 @@ public:
 
   type_example_rows get_table_example_data(const Glib::ustring& table_name) const;
 
-  virtual Glib::ustring get_name() const override;
+  Glib::ustring get_name() const override;
 
   Glib::ustring get_default_table() const;
   Glib::ustring get_first_table() const;

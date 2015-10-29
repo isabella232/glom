@@ -43,8 +43,8 @@ public:
   Dialog_ScriptLibrary(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ScriptLibrary();
 
-  virtual void load_from_document() override;
-  virtual void save_to_document() override;
+  void load_from_document() override;
+  void save_to_document() override;
 
 private:
   void on_button_add();

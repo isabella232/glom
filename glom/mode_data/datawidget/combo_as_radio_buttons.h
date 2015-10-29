@@ -83,12 +83,12 @@ private:
 
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual bool on_button_press_event(GdkEventButton *event) override;
+  bool on_button_press_event(GdkEventButton *event) override;
   bool on_radiobutton_button_press_event(GdkEventButton *event);
   void show_context_menu(GdkEventButton *event);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual AppWindow* get_appwindow() const override;
+  AppWindow* get_appwindow() const override;
 
 
   Glib::ustring m_old_text;

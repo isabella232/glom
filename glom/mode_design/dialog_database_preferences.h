@@ -50,8 +50,8 @@ public:
 
   std::shared_ptr<SharedConnection> connect_to_server_with_connection_settings() const;
 
-  virtual void load_from_document() override;
-  virtual void save_to_document() override;
+  void load_from_document() override;
+  void save_to_document() override;
 
 private:
   void on_response(int response_id) override;

@@ -93,7 +93,7 @@ public:
   virtual void set_find_mode(bool val = true);
 
 protected:
-  virtual type_vecConstLayoutFields get_fields_to_show() const override;
+  type_vecConstLayoutFields get_fields_to_show() const override;
     
   //Implementations of pure virtual methods from Base_DB_Table_Data:
   std::shared_ptr<Field> get_field_primary_key() const override;
@@ -103,7 +103,7 @@ protected:
   void on_record_deleted(const Gnome::Gda::Value& primary_key_value) override;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_dialog_layout_hide() override;
+  void on_dialog_layout_hide() override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 protected:

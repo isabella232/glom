@@ -55,7 +55,7 @@ private:
   void on_data_source_state_changed();
   bool on_idle_import();
 
-  virtual void on_response(int response_id) override; // From Gtk::Dialog
+  void on_response(int response_id) override; // From Gtk::Dialog
 
   Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const override; // from Base_DB_Table_Data
   void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value&  value) override; // from Base_DB

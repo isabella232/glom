@@ -69,14 +69,14 @@ private:
 
   //Overrides of default signal handlers:
   void on_buffer_changed();
-  //virtual void on_activate() override; //From Gtk::Entry.
+  //void on_activate() override; //From Gtk::Entry.
   bool on_textview_focus_out_event(GdkEventFocus* focus_event);
   //virtual void on_insert_text(const Glib::ustring& text, int* position); //From Gtk::Editable
 
   virtual void check_for_change();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual bool on_button_press_event(GdkEventButton *event) override;
+  bool on_button_press_event(GdkEventButton *event) override;
 #endif
 
   AppWindow* get_appwindow() const override;
