@@ -57,9 +57,6 @@ public:
 
   virtual void init(); //Sets it up and shows it.
 
-  //TODO: Remove this?
-  Glib::ustring get_version() const;
-
   static void set_command_line_args(int argc, char** &argv); //Needed for session management.
 
   typedef sigc::signal<void> type_signal_hide;

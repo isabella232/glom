@@ -68,7 +68,6 @@ void TextView::init()
 
   //We use connect(slot, false) to connect before the default signal handler, because the default signal handler prevents _further_ handling.
   m_TextView.signal_focus_out_event().connect(sigc::mem_fun(*this, &TextView::on_textview_focus_out_event), false);
-  // m_TextView.get_buffer()->signal_end_user_action().connect(sigc::mem_fun(*this, &TextView::on_buffer_changed));
 }
 
 TextView::~TextView()
@@ -121,33 +120,6 @@ bool TextView::on_textview_focus_out_event(GdkEventFocus* focus_event)
 
   return result;
 }
-
-
-/*
-
-void TextView::on_activate()
-{ 
-  //Call base class:
-  Gtk::TextView::on_activate();
-
-  //The user has finished editing.
-  check_for_change();
-}
-*/
-
-//TODO: Remove this? It doesn't seem to be used.
-void TextView::on_buffer_changed()
-{
-  check_for_change();
-}
-
-/*
-void TextView::on_insert_text(const Glib::ustring& text, int* position)
-{
-  Gtk::TextView::on_insert_text(text, position);
-}
-
-*/
 
 void TextView::set_value(const Gnome::Gda::Value& value)
 {

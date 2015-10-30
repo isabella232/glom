@@ -67,11 +67,7 @@ public:
 private:
   void init();
 
-  //Overrides of default signal handlers:
-  void on_buffer_changed();
-  //void on_activate() override; //From Gtk::Entry.
   bool on_textview_focus_out_event(GdkEventFocus* focus_event);
-  //void on_insert_text(const Glib::ustring& text, int* position); //From Gtk::Editable
 
   void check_for_change();
 

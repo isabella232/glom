@@ -97,11 +97,6 @@ void AppWindow::on_menu_edit_clear()
   
 }
 
-Glib::ustring AppWindow::get_version() const
-{
-  return m_strVersion;
-}
-
 void AppWindow::set_operation_cancelled(bool bVal /* = true */)
 {
   m_bOperationCancelled = bVal;

@@ -536,26 +536,6 @@ void Box_DB_Table_Definition::on_field_definition_apply()
   m_dialog_field_definition->hide();
 }
 
-void Box_DB_Table_Definition::on_default_formatting_apply()
-{
-  std::shared_ptr<Field> field_New = m_dialog_default_formatting->get_field();
-
-  if(*m_Field_BeingEdited != *field_New)
-  {
-    const auto bcontinue = check_field_change(m_Field_BeingEdited, field_New);
-    if(bcontinue)
-    {
-      change_definition(m_Field_BeingEdited, field_New);
-      m_Field_BeingEdited = field_New;
-    }
-
-    //Update the list:
-    fill_from_database();
-  }
-
-  m_dialog_default_formatting->hide();
-}
-
 std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::shared_ptr<const Field>& fieldOld, const std::shared_ptr<const Field>& field)
 {
   BusyCursor busy_cursor(get_app_window());
