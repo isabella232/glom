@@ -215,9 +215,6 @@ public:
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&, guint> type_signal_user_activated;
   type_signal_user_activated signal_user_activated();
 
-  typedef sigc::signal<void> type_signal_user_reordered_columns;
-  type_signal_user_reordered_columns signal_user_reordered_columns();
-
   bool get_model_column_index(guint view_column_index, guint& model_column_index);
 
   /** Get the last row. This will generally be the placeholder row.
@@ -333,7 +330,6 @@ private:
   type_signal_user_requested_extra m_signal_user_requested_extra;
   type_signal_user_requested_add m_signal_user_requested_add;
   type_signal_user_activated m_signal_user_activated;
-  type_signal_user_reordered_columns m_signal_user_reordered_columns;
 
   //An instance of InnerIgnore remembers the ignore settings,
   //then restores them when it goes out of scope and is destroyed.

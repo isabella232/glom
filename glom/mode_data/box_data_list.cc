@@ -49,9 +49,6 @@ Box_Data_List::Box_Data_List()
   m_AddDel.signal_sort_clause_changed().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_sort_clause_changed));
   m_AddDel.signal_record_selection_changed().connect(m_signal_record_selection_changed.make_slot());
 
-  //TODO: Re-add this signal if this is really wanted, but make it part of a complete drag-and-drop feature for list views:
-  //m_AddDel.signal_user_reordered_columns().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_reordered_columns));
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_AddDel.signal_user_requested_layout().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_layout));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -178,28 +175,6 @@ void Box_Data_List::on_adddel_user_requested_layout()
 void Box_Data_List::set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value)
 {
   m_AddDel.set_value_key(row, value);
-}
-
-void Box_Data_List::on_adddel_user_reordered_columns()
-{
-  auto pDoc = dynamic_cast<Document*>(get_document());
-  if(pDoc)
-  {
-    auto group = std::make_shared<LayoutGroup>();
-    group->set_name("toplevel");
-
-    for(const auto& field_name : m_AddDel.get_columns_order())
-    {
-      auto layout_item = std::make_shared<LayoutItem_Field>();
-      layout_item->set_name(field_name);
-      group->add_item(layout_item);
-    }
-
-    Document::type_list_layout_groups mapGroups;
-    mapGroups[1] = group;
-
-    pDoc->set_data_layout_groups("list", m_table_name, m_layout_platform, mapGroups);
-  }
 }
 
 void Box_Data_List::on_adddel_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row)

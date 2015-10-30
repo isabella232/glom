@@ -1300,11 +1300,6 @@ AddDel::type_signal_user_activated AddDel::signal_user_activated()
   return m_signal_user_activated;
 }
 
-AddDel::type_signal_user_reordered_columns AddDel::signal_user_reordered_columns()
-{
-  return m_signal_user_reordered_columns;
-}
-
 void AddDel::on_treeview_button_press_event(GdkEventButton* button_event)
 {
   on_button_press_event_Popup(button_event);
@@ -1351,7 +1346,7 @@ void AddDel::on_treeview_columns_changed()
     }
 
     //Tell other code that something has changed, so the new column order can be serialized.
-    m_signal_user_reordered_columns.emit();
+    //m_signal_user_reordered_columns.emit();
   }
 }
 
