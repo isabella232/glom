@@ -142,7 +142,7 @@ void Window_RelationshipsOverview::draw_tables()
 {
   //Disconnect signal handlers for all current items,
   //so sigc::bind()ed RefPtrs can be released.
-  while(m_list_table_connections.size())
+  while(!m_list_table_connections.empty())
   {
      type_list_connections::iterator iter = m_list_table_connections.begin();
      sigc::connection the_connection = *iter;
