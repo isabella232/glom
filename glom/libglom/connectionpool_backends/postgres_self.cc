@@ -508,7 +508,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
       }
       else
       {
-        throw ex;
+        throw;
       }
     }
 

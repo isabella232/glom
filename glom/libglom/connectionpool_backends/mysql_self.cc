@@ -632,7 +632,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQLSelfHosted::connect(const Glib::ustrin
       }
       else
       {
-        throw ex;
+        throw;
       }
     }
 
