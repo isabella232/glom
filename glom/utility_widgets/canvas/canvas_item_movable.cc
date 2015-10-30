@@ -112,13 +112,11 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
         m_shift_click = true;
 
       return true; // Handled.
-      break;
     }
     case 3:
     {
       m_signal_show_context.emit(event->button, event->time);
       return false; // Not fully Handled.
-      break;
     }
     default:
       break;

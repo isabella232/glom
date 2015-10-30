@@ -428,8 +428,6 @@ Glib::ustring Field::sql_find(const Gnome::Gda::Value& value, const Glib::RefPtr
         return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
       else
         return ("%" + value.to_string() + "%"); //TODO: Escape it before adding "%", but then prevent SqlBuilder from re-escaping it.
-        
-      break;
     }
     case(glom_field_type::DATE):
     case(glom_field_type::TIME):
@@ -438,7 +436,6 @@ Glib::ustring Field::sql_find(const Gnome::Gda::Value& value, const Glib::RefPtr
     default:
     {
       return sql(value, connection);
-      break;
     }
   }
 }
@@ -463,7 +460,6 @@ Gnome::Gda::SqlOperatorType Field::sql_find_operator() const
     default:
     {
       return Gnome::Gda::SQL_OPERATOR_TYPE_EQ;
-      break;
     }
   }
 }
