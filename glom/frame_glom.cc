@@ -1149,7 +1149,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
     {
       Frame_Glom::show_ok_dialog(_("Relationship Exists Already"), _("A relationship with this name already exists for this table. Please choose a different relationship name."), *parent, Gtk::MESSAGE_ERROR);
     }
-    else if(table_name.empty() || relationship_name.empty() || relationship_name.empty())
+    else if(table_name.empty() || relationship_name.empty())
     {
       Frame_Glom::show_ok_dialog(_("More information needed"), _("You must specify a field, a table name, and a relationship name."), *parent, Gtk::MESSAGE_ERROR);
     }
