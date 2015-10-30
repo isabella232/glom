@@ -40,14 +40,6 @@ Base_DB_Table_Data::~Base_DB_Table_Data()
 {
 }
 
-Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data_field_only(const std::shared_ptr<const Field>& field) const
-{
-  std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
-  layout_item->set_full_field_details(field);
-
-  return get_entered_field_data(layout_item);
-}
-
 Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& /* field */) const
 {
   //Override this to use Field::set_data() too.

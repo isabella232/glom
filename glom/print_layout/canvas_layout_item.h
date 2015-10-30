@@ -68,8 +68,6 @@ public:
   /// Hide the missing-image pixbuf from images, for instance.
   void remove_empty_indicators();
 
-  static int get_rows_count_for_portal(const std::shared_ptr<const LayoutItem_Portal>& portal, double& row_height);
-
   /** Make sure that the LayoutItem has the same position info as the CanvasItem that represents it.
    */
   void update_layout_position_from_canvas();

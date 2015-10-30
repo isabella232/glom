@@ -157,31 +157,6 @@ void CanvasLayoutItem::set_layout_item(const std::shared_ptr<LayoutItem>& layout
   }
 }
 
-//TODO: Remove this?
-int CanvasLayoutItem::get_rows_count_for_portal(const std::shared_ptr<const LayoutItem_Portal>& portal, double& row_height)
-{
-  if(!portal)
-  {
-    row_height = 0;
-    return 0;
-  }
-
-  row_height = std::max(portal->get_print_layout_row_height(), (double)1); //Avoid 0, because that makes the whole thing zero sized.
-
-  double ignore_x = 0;
-  double ignore_y = 0;
-  double total_width = 0;
-  double total_height = 0;
-  portal->get_print_layout_position(ignore_x, ignore_y, total_width, total_height);
-
-  const double max_rows_fraction = total_height / row_height;
-  double max_rows = 0;
-  modf(max_rows_fraction, &max_rows);
-  std::cout << "debug: max_rows=" << max_rows << ", for total_height=" << total_height << ", row_height=" << row_height << std::endl;
-
-  return max_rows;
-}
-
 Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_item(const std::shared_ptr<LayoutItem>& layout_item)
 {
   Glib::RefPtr<CanvasItemMovable> child;

@@ -202,11 +202,6 @@ void FlowTable::remove(Gtk::Widget& first)
 
   Egg::SpreadTableDnd::remove_child(first);
 }
-
-FlowTable::type_const_list_widgets FlowTable::get_first_child_widgets() const
-{
-  return m_list_first_widgets;
-}
   
 bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& column) const
 {

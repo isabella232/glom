@@ -58,11 +58,6 @@ protected:
 
   typedef std::list<const Gtk::Widget*> type_const_list_widgets;
 
-  /** This returns all first widgets added with FlowTable::add().
-   * Gtk::Container::get_children() instead returns internal widgets.
-   */
-  type_const_list_widgets get_first_child_widgets() const;
-
   bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
 
 private:

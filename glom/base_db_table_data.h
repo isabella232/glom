@@ -52,7 +52,6 @@ protected:
    */
   bool record_new(bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value());
 
-  Gnome::Gda::Value get_entered_field_data_field_only(const std::shared_ptr<const Field>& field) const;
   virtual Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const;
 
   //Gets the row being edited, for derived classes that have rows.

@@ -927,8 +927,6 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   //Do not use less than the minimum:
   rows_count = std::max(rows_count, (int)rows_count_min);
 
-  // TODO: Remove this method and/or change it to recalc the min when changing the height:
-  //CanvasLayoutItem::get_rows_count_for_portal(portal, row_height_ignored);
   const double portal_height = rows_count * portal->get_print_layout_row_height();
 
   double old_width = 0;
