@@ -61,7 +61,7 @@ class FlowTableWithFields
     public View_Composite_Glom
 {
 public:
-  FlowTableWithFields(const Glib::ustring& table_name = Glib::ustring());
+  explicit FlowTableWithFields(const Glib::ustring& table_name = Glib::ustring());
   virtual ~FlowTableWithFields();
 
   ///The table name is needed to discover details of relationships.

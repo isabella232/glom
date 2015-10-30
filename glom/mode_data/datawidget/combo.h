@@ -45,7 +45,7 @@ class ComboGlom
 public:
 
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  ComboGlom(bool has_entry = false);
+  explicit ComboGlom(bool has_entry = false);
 
   virtual ~ComboGlom();
 

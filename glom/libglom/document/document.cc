@@ -4737,6 +4737,7 @@ static void handle_archive_error(archive* a)
   std::cerr << "  " << archive_error_string(a) << std::endl;
 }
 
+// TODO: Use shared_ptr or unique_ptr?
 // We use this to make sure that the C object is always released.
 template <typename T_Object>
 class ScopedArchivePtr
@@ -4792,7 +4793,7 @@ private:
   T_Object* ptr_;
   T_ReleaseFunc release_func_;
 
-  ScopedArchiveEntryPtr(const ScopedArchivePtr<T_Object>&);
+  explicit ScopedArchiveEntryPtr(const ScopedArchivePtr<T_Object>&);
   ScopedArchiveEntryPtr<T_Object>& operator=(const ScopedArchivePtr<T_Object>&);
 
 };

@@ -37,7 +37,7 @@ namespace Glom
 class Box_Data_Details : public Box_Data
 {
 public:
-  Box_Data_Details(bool bWithNavButtons = true);
+  explicit Box_Data_Details(bool bWithNavButtons = true);
   virtual ~Box_Data_Details();
 
   bool init_db_details(const FoundSet& found_set, const Glib::ustring& layout_platform, const Gnome::Gda::Value& primary_key_value);

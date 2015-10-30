@@ -30,7 +30,7 @@ namespace GlomBakery
 class Dialog_OfferSave : public Gtk::MessageDialog
 {
 public:
-  Dialog_OfferSave(const Glib::ustring& file_uri);
+  explicit Dialog_OfferSave(const Glib::ustring& file_uri);
   virtual ~Dialog_OfferSave();
 
   ///Return values:

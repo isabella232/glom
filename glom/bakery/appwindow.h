@@ -51,7 +51,7 @@ public:
   //a virtual base class so they would otherwise need to do that.
 
   ///Don't forget to call init() too.
-  AppWindow(const Glib::ustring& appname = Glib::ustring()); 
+  explicit AppWindow(const Glib::ustring& appname = Glib::ustring());
 
   virtual ~AppWindow();
 

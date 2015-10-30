@@ -474,7 +474,7 @@ private:
   class InnerIgnore
   {
   public:
-    InnerIgnore(DbAddDel* pOuter);
+    explicit InnerIgnore(DbAddDel* pOuter);
     ~InnerIgnore();
 
   private:

@@ -341,7 +341,7 @@ private:
   class InnerIgnore
   {
   public:
-    InnerIgnore(AddDel* pOuter);
+    explicit InnerIgnore(AddDel* pOuter);
     ~InnerIgnore();
 
   protected:

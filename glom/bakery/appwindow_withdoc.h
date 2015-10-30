@@ -56,7 +56,7 @@ class AppWindow_WithDoc : public AppWindow
 {
 public: 
   ///Don't forget to call init() too.
-  AppWindow_WithDoc(const Glib::ustring& appname = ""); //TODO: appname when using get_derived_widget()
+  explicit AppWindow_WithDoc(const Glib::ustring& appname = ""); //TODO: appname when using get_derived_widget()
 
   virtual ~AppWindow_WithDoc();
 

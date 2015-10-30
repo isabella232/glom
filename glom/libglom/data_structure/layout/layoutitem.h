@@ -32,7 +32,7 @@ class LayoutItem : public TranslatableItem
 public:
 
   LayoutItem();
-  LayoutItem(const LayoutItem& src);
+  explicit LayoutItem(const LayoutItem& src);
   LayoutItem(LayoutItem&& src) = delete;
   LayoutItem& operator=(const LayoutItem& src);
   LayoutItem& operator=(LayoutItem&& src) = delete;

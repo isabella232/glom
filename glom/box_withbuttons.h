@@ -46,7 +46,7 @@ public:
   Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   ///For use with libglademm's get_widget_derived():
-  Box_WithButtons(BaseObjectType* cobject);
+  explicit Box_WithButtons(BaseObjectType* cobject);
 
   virtual ~Box_WithButtons();
 
