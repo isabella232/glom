@@ -98,7 +98,6 @@ bool Box_Print_Layouts::fill_from_database()
 
   m_colTitle = m_AddDel.add_column(_("Title"), AddDelColumnInfo::enumStyles::Text, editable, true);
 
-  std::vector<Glib::ustring> listItems;
   auto document = get_document();
   if(document)
   {

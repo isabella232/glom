@@ -1116,8 +1116,6 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document,
   const Document::type_vec_fields fields = document->get_table_fields(table_name);
 
   guint previous_id = 0;
-  typedef std::vector< std::shared_ptr<LayoutItem_Field> > type_vecLayoutFields;
-  type_vecLayoutFields fieldsToGet;
   for(const auto& field : fields)
   {
     Glib::ustring strClausePart;

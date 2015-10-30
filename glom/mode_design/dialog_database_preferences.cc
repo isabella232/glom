@@ -262,8 +262,6 @@ void Dialog_Database_Preferences::on_button_test_script()
 {
   const Glib::ustring calculation = m_text_view_script->get_buffer()->get_text();
 
-  type_map_fields field_values;
-
   auto document = get_document();
   if(!document)
     return;

@@ -747,9 +747,6 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
   typedef std::map<Glib::ustring, guint> type_map_layout_fields_index;
   type_map_layout_fields_index map_fields_index;
 
-  typedef std::list< std::shared_ptr<LayoutItem_Portal> > type_list_portals;
-  type_list_portals list_portals;
-
   //Get list of fields to get from the database.
   Utils::type_vecLayoutFields fieldsToGet;
   const int count = canvas_group->get_n_children();
