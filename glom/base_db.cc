@@ -743,8 +743,6 @@ Base_DB::type_vecConstLayoutFields Base_DB::get_table_fields_to_show_for_sequenc
     }
     else
     {
-      type_vec_fields vecFieldsInDocument = pDoc->get_table_fields(table_name);
-
       //We will show the fields that the document says we should:
       for(const auto& group : mapGroupSequence)
       {
