@@ -45,9 +45,6 @@ private:
   {
     return "glom_print_layout_palette";
   };
-
-  void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context) override;
-  void on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&, Gtk::SelectionData& selection_data, guint, guint) override;
   
 private:
   LayoutWidgetBase::enumType m_type;
