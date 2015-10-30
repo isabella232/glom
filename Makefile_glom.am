@@ -348,8 +348,6 @@ glom_source_files +=							\
 	glom/mode_design/layout/layout_item_dialogs/dialog_imageobject.h		\
 	glom/mode_design/layout/layout_item_dialogs/dialog_line.cc		\
 	glom/mode_design/layout/layout_item_dialogs/dialog_line.h			\
-	glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc			\
-	glom/mode_design/layout/layout_item_dialogs/dialog_notebook.h			\
 	glom/mode_design/layout/layout_item_dialogs/dialog_sortfields.cc	\
 	glom/mode_design/layout/layout_item_dialogs/dialog_sortfields.h		\
 	glom/mode_design/layout/layout_item_dialogs/dialog_textobject.cc		\

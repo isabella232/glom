@@ -21,7 +21,6 @@
 #include <glom/mode_design/layout/dialog_layout_details.h>
 #include <glom/mode_design/layout/dialog_choose_relationship.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.h>
-#include <glom/mode_design/layout/layout_item_dialogs/dialog_notebook.h>
 #include <glom/glade_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 //#include <libgnome/gnome-i18n.h>

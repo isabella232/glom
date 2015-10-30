@@ -31,7 +31,6 @@
 //#ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_formatting.h>
-#include <glom/mode_design/layout/layout_item_dialogs/dialog_notebook.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_textobject.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_imageobject.h>
 //#endif // !GLOM_ENABLE_CLIENT_ONLY

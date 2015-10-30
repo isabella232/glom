@@ -105,7 +105,6 @@ glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc
 glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.cc
 glom/mode_design/layout/layout_item_dialogs/dialog_imageobject.cc
 glom/mode_design/layout/layout_item_dialogs/dialog_line.cc
-glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc
 glom/mode_design/layout/layout_item_dialogs/dialog_sortfields.cc
 glom/mode_design/layout/layout_item_dialogs/dialog_textobject.cc
 glom/mode_design/report_layout/dialog_layout_report.cc
