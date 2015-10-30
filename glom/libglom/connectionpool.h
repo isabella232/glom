@@ -57,7 +57,7 @@ class SharedConnection : public sigc::trackable
 {
 public:
   SharedConnection();
-  SharedConnection(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connection);
+  explicit SharedConnection(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connection);
   virtual ~SharedConnection();
 
   Glib::RefPtr<Gnome::Gda::Connection> get_gda_connection();
