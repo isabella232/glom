@@ -73,7 +73,7 @@ protected:
   /** Override this to validate the data that the user enters into the widgets.
    * The return value indicates whether the widgets' data is valid.
    */
-  virtual bool validate_widgets();
+  /* virtual  */ bool validate_widgets();
 
   void transfer_one_widget(Gtk::Widget* pWidget, bool to_variable);
 

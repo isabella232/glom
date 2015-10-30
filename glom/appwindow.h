@@ -255,7 +255,7 @@ private:
 
   void on_window_translations_hide();
 
-  virtual void on_userlevel_changed(AppState::userlevels userlevel);
+  void on_userlevel_changed(AppState::userlevels userlevel);
 
   Document* on_connection_pool_get_document();
 

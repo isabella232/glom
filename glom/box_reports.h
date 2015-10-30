@@ -39,17 +39,17 @@ public:
 private:
   bool fill_from_database() override;
 
-  virtual void fill_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const Report>& report);
+  void fill_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const Report>& report);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void save_to_document() override;
 #endif
 
   //Signal handlers:
-  virtual void on_adddel_Add(const Gtk::TreeModel::iterator& row);
-  virtual void on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
-  virtual void on_adddel_Edit(const Gtk::TreeModel::iterator& row);
-  virtual void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column);
+  void on_adddel_Add(const Gtk::TreeModel::iterator& row);
+  void on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
+  void on_adddel_Edit(const Gtk::TreeModel::iterator& row);
+  void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column);
 
   void on_userlevel_changed(AppState::userlevels userlevel) override;
 

@@ -37,10 +37,10 @@ public:
   virtual ~PlaceHolder();
 
   void add(Gtk::Widget& child) override;
-  virtual void remove();
+  void remove();
 
-  virtual Gtk::Widget* get_child();
-  virtual const Gtk::Widget* get_child() const;  
+  Gtk::Widget* get_child();
+  const Gtk::Widget* get_child() const;  
 
 private:
   Gtk::Widget* m_pChild;

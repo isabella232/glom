@@ -41,8 +41,8 @@ public:
   virtual ~Box_Data_Details();
 
   bool init_db_details(const FoundSet& found_set, const Glib::ustring& layout_platform, const Gnome::Gda::Value& primary_key_value);
-  virtual bool refresh_data_from_database_with_primary_key(const Gnome::Gda::Value& primary_key_value);
-  virtual bool refresh_data_from_database_blank();
+  bool refresh_data_from_database_with_primary_key(const Gnome::Gda::Value& primary_key_value);
+  bool refresh_data_from_database_blank();
 
   void print_layout() override;
 

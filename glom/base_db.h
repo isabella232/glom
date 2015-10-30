@@ -61,8 +61,8 @@ public:
   /** Returns whether we are in developer mode.
    * Some functionality will be deactivated when not in developer mode.
    */
-  virtual AppState::userlevels get_userlevel() const;
-  virtual void set_userlevel(AppState::userlevels value);
+  AppState::userlevels get_userlevel() const;
+  void set_userlevel(AppState::userlevels value);
 
   static std::shared_ptr<SharedConnection> connect_to_server(Gtk::Window* parent_window = 0);
 

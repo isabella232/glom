@@ -51,7 +51,7 @@ public:
   
 protected:
 
-  virtual void treeview_fill_sequences(const Glib::RefPtr<Gtk::TreeModel> model, const Gtk::TreeModelColumn<guint>& sequence_column);
+  void treeview_fill_sequences(const Glib::RefPtr<Gtk::TreeModel> model, const Gtk::TreeModelColumn<guint>& sequence_column);
   virtual void enable_buttons();
 
   void save_to_document() override;

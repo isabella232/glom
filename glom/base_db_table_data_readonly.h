@@ -38,7 +38,7 @@ public:
   Base_DB_Table_Data_ReadOnly();
   virtual ~Base_DB_Table_Data_ReadOnly();
 
-  virtual bool refresh_data_from_database();
+  bool refresh_data_from_database();
 
 protected:
 
