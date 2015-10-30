@@ -39,8 +39,6 @@ public:
 
   bool get_showing_multiple_records() const;
 
-  void set_read_only(bool read_only = true);
-
   //For instance, change "Open" to "Select" when used to select an ID.
   void set_open_button_title(const Glib::ustring& title);
 
@@ -62,9 +60,6 @@ protected:
 
   void print_layout() override;
   void print_layout_group(xmlpp::Element* node_parent, const std::shared_ptr<const LayoutGroup>& group);
-
-  bool m_read_only;
-
 
   type_signal_user_requested_details m_signal_user_requested_details;
   type_signal_record_selection_changed m_signal_record_selection_changed;
