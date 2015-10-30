@@ -11,15 +11,11 @@
 /* Show errors from a working connection */
 static void
 get_errors (GdaConnection *connection)
-{
-  GList    *list;
-  GList    *node;
-  GdaError *error;
+{  
+  GList* list = (GList *) gda_connection_get_errors (connection);
 
-  list = (GList *) gda_connection_get_errors (connection);
-
-  for (node = g_list_first (list); node != NULL; node = g_list_next (node)) {
-    error = (GdaError *) node->data;
+  for (GList* node = g_list_first (list); node != NULL; node = g_list_next (node)) {
+    GdaError* error = (GdaError*) node->data;
     g_print ("Error no: %d\t", gda_error_get_number (error));
     g_print ("desc: %s\t", gda_error_get_description (error));
     g_print ("source: %s\t", gda_error_get_source (error));
@@ -33,9 +29,6 @@ main(int argc, char *argv[])
   const gchar* connection_string = "HOST=localhost;USER=murrayc;PASSWORD=yourpasswordhere;DATABASE=template1";
   GdaClient     *client = 0;
   GdaConnection *con = 0;
-
-  gboolean       errors = FALSE;
-  gint           rows;
 
   gda_init ("glom-gda-test", NULL, argc, argv);
 
