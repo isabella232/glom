@@ -1405,7 +1405,7 @@ std::string Utils::get_temp_file_path(const std::string& prefix, const std::stri
   try
   {
     const std::string prefix_pattern = prefix + "XXXXXX" + extension;
-    const int filehandle = Glib::file_open_tmp(filepath, prefix);
+    const int filehandle = Glib::file_open_tmp(filepath, prefix_pattern);
     ::close(filehandle);
   }
   catch(const Glib::Error& ex)
