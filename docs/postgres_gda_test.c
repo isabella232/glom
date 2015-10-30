@@ -15,9 +15,9 @@ get_errors (GdaConnection *connection)
         GList    *list;
         GList    *node;
         GdaError *error;
-      
+
         list = (GList *) gda_connection_get_errors (connection);
-      
+
         for (node = g_list_first (list); node != NULL; node = g_list_next (node)) {
 		error = (GdaError *) node->data;
 		g_print ("Error no: %d\t", gda_error_get_number (error));
@@ -33,7 +33,7 @@ main(int argc, char *argv[])
         const gchar* connection_string = "HOST=localhost;USER=murrayc;PASSWORD=yourpasswordhere;DATABASE=template1";
         GdaClient     *client = 0;
         GdaConnection *con = 0;
-        
+
         gboolean       errors = FALSE;
         gint           rows;
 
@@ -41,7 +41,7 @@ main(int argc, char *argv[])
 
         /* 3. Create a gda client */
         client = gda_client_new ();
-  
+
         /* 4. Open the connection */
         con = gda_client_open_connection_from_string (client, "PostgreSQL", connection_string, 0);
         if (!GDA_IS_CONNECTION (con)) {
@@ -56,7 +56,7 @@ main(int argc, char *argv[])
 	  g_print("** Error: gda_connection_create_database failed.\n");
           get_errors(con);
         }
-     
+
 	gda_connection_close (con);
 
 	g_object_unref (G_OBJECT (client));
