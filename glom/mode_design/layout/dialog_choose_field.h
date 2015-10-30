@@ -46,8 +46,8 @@ public:
    * @param table_name The table name.
    * @param field The starting field information.
    */
-  virtual void set_document(Document* document, const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& field);
-  virtual void set_document(Document* document, const Glib::ustring& table_name);
+  void set_document(Document* document, const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& field);
+  void set_document(Document* document, const Glib::ustring& table_name);
 
 
   //void select_item(const std::shared_ptr<const Field>& field);
@@ -59,10 +59,10 @@ public:
 
 private:
 
-  virtual void on_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* view_column);
-  virtual void on_treeview_selection_changed();
-  virtual void on_combo_relationship_changed();
-  virtual void on_checkbutton_related_relationships_toggled();
+  void on_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* view_column);
+  void on_treeview_selection_changed();
+  void on_combo_relationship_changed();
+  void on_checkbutton_related_relationships_toggled();
 
   //Tree model columns:
   class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord

@@ -41,7 +41,7 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_layout_groups(Document::type_list_layout_groups& mapGroups, Document* document, const Glib::ustring& table_name);
+  void set_layout_groups(Document::type_list_layout_groups& mapGroups, Document* document, const Glib::ustring& table_name);
 
   void get_layout_groups(Document::type_list_layout_groups& layout_groups) const;
 
@@ -51,13 +51,13 @@ private:
   void enable_buttons() override;
 
   //signal handlers:
-  virtual void on_button_up();
-  virtual void on_button_down();
-  virtual void on_button_add_field();
-  virtual void on_button_delete();
-  virtual void on_button_edit_field();
-  virtual void on_treeview_fields_selection_changed();
-  virtual void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_button_up();
+  void on_button_down();
+  void on_button_add_field();
+  void on_button_delete();
+  void on_button_edit_field();
+  void on_treeview_fields_selection_changed();
+  void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
   //Tree model columns:
   class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord

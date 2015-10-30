@@ -52,7 +52,7 @@ public:
 private:
 
   //Enable/disable buttons, depending on treeview selection:
-  virtual void enable_buttons();
+  void enable_buttons();
 
   //signal handlers:
   void on_button_identify();

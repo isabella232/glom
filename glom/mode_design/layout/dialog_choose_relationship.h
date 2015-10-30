@@ -43,7 +43,7 @@ public:
    * @param document The document, so that the dialog can load the previous layout, and save changes.
    * @param table_name The table name.
    */
-  virtual void set_document(Document* document, const Glib::ustring& table_name);
+  void set_document(Document* document, const Glib::ustring& table_name);
 
   void select_item(const std::shared_ptr<const Relationship>& relationship);
 

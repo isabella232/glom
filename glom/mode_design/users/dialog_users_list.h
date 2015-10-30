@@ -51,7 +51,7 @@ public:
    */
   void fill_list();
 
-  virtual void set_group(const Glib::ustring& group_name);
+  void set_group(const Glib::ustring& group_name);
 
 private:
 
@@ -61,21 +61,21 @@ private:
   void save_to_document() override;
 
   //signal handlers:
-  virtual void on_button_user_delete();
-  virtual void on_button_user_add();
-  virtual void on_button_user_remove();
-  virtual void on_button_user_new();
-  virtual void on_button_user_edit();
-  virtual void on_treeview_users_selection_changed();
-  virtual void on_combo_group_changed();
+  void on_button_user_delete();
+  void on_button_user_add();
+  void on_button_user_remove();
+  void on_button_user_new();
+  void on_button_user_edit();
+  void on_treeview_users_selection_changed();
+  void on_combo_group_changed();
 
   /** Warn if the group is the developer group, and there is only one user remaining.
    * @result Whether the warning was necessary.
    */
-  virtual bool warn_about_empty_standard_group();
+  bool warn_about_empty_standard_group();
 
- // virtual void on_treeview_cell_edited_text(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<Glib::ustring>& model_column);
- // virtual void on_treeview_cell_edited_numeric(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<guint>& model_column);
+ // void on_treeview_cell_edited_text(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<Glib::ustring>& model_column);
+ // void on_treeview_cell_edited_numeric(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<guint>& model_column);
 
   class ModelColumnsUsers : public Gtk::TreeModel::ColumnRecord
   {

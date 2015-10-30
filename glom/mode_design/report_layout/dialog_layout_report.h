@@ -52,7 +52,7 @@ private:
 
   typedef TreeStore_ReportLayout type_model;
 
-  virtual void add_group(const Glib::RefPtr<type_model>& model_parts, const Gtk::TreeModel::iterator& parent, const std::shared_ptr<const LayoutGroup>& group);
+  void add_group(const Glib::RefPtr<type_model>& model_parts, const Gtk::TreeModel::iterator& parent, const std::shared_ptr<const LayoutGroup>& group);
 
   void add_group_children(const Glib::RefPtr<type_model>& model_parts, const Gtk::TreeModel::iterator& parent, const std::shared_ptr<const LayoutGroup>& group);
 
@@ -79,17 +79,17 @@ private:
   void setup_model(Gtk::TreeView& treeview, Glib::RefPtr<type_model>& model);
 
   //signal handlers:
-  virtual void on_button_add();
+  void on_button_add();
 
-  virtual void on_button_up();
-  virtual void on_button_down();
-  virtual void on_button_delete();
+  void on_button_up();
+  void on_button_down();
+  void on_button_delete();
 
-  virtual void on_button_edit();
-  virtual void on_button_formatting();
+  void on_button_edit();
+  void on_button_formatting();
 
-  virtual void on_treeview_parts_selection_changed();
-  virtual void on_treeview_available_parts_selection_changed();
+  void on_treeview_parts_selection_changed();
+  void on_treeview_available_parts_selection_changed();
 
   void on_cell_data_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, const Glib::RefPtr<type_model>& model);
   void on_cell_data_details(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, const Glib::RefPtr<type_model>& model);

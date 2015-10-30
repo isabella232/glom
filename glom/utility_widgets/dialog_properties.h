@@ -51,7 +51,7 @@ protected:
   void on_button_cancel();
 
   void on_anything_changed();
-  virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& /* iter */, guint /* col */);
+  void on_adddel_user_changed(const Gtk::TreeModel::iterator& /* iter */, guint /* col */);
 
   /// Disable/enable other controls when a control is selected.
   virtual void enforce_constraints();

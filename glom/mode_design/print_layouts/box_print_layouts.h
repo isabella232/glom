@@ -40,7 +40,7 @@ public:
 private:
   bool fill_from_database() override;
 
-  virtual void fill_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const PrintLayout>& print_layout);
+  void fill_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const PrintLayout>& print_layout);
 
   void save_to_document() override;
 

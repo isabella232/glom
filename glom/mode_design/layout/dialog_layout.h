@@ -61,9 +61,9 @@ protected:
 
   //signal handlers:
   //TODO: Do these need to be virtual?
-  virtual void on_treemodel_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
-  virtual void on_entry_table_title_changed();
-  virtual void on_button_close();
+  void on_treemodel_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
+  void on_entry_table_title_changed();
+  void on_button_close();
 
   void make_sensitivity_depend_on_toggle_button(Gtk::ToggleButton& toggle_button, Gtk::Widget& widget);
   void on_sensitivity_toggle_button(Gtk::ToggleButton* toggle_button, Gtk::Widget* widget);

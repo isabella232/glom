@@ -67,16 +67,16 @@ private:
 
   //signal handlers:
 
-  virtual void on_button_group_delete();
-  virtual void on_button_group_new();
-  virtual void on_button_group_users();
-  virtual void on_treeview_groups_selection_changed();
-  virtual void on_treeview_tables_selection_changed();
+  void on_button_group_delete();
+  void on_button_group_new();
+  void on_button_group_users();
+  void on_treeview_groups_selection_changed();
+  void on_treeview_tables_selection_changed();
 
-  virtual void on_treeview_tables_toggled_view(const Glib::ustring& path_string);
-  virtual void on_treeview_tables_toggled_edit(const Glib::ustring& path_string);
-  virtual void on_treeview_tables_toggled_create(const Glib::ustring& path_string);
-  virtual void on_treeview_tables_toggled_delete(const Glib::ustring& path_string);
+  void on_treeview_tables_toggled_view(const Glib::ustring& path_string);
+  void on_treeview_tables_toggled_edit(const Glib::ustring& path_string);
+  void on_treeview_tables_toggled_create(const Glib::ustring& path_string);
+  void on_treeview_tables_toggled_delete(const Glib::ustring& path_string);
 
   enum class enumPriv
   {
@@ -90,8 +90,8 @@ private:
 
   void on_cell_data_group_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
- // virtual void on_treeview_cell_edited_text(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<Glib::ustring>& model_column);
- // virtual void on_treeview_cell_edited_numeric(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<guint>& model_column);
+ // void on_treeview_cell_edited_text(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<Glib::ustring>& model_column);
+ // void on_treeview_cell_edited_numeric(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<guint>& model_column);
 
   class ModelColumnsTables : public Gtk::TreeModel::ColumnRecord
   {

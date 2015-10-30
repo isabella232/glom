@@ -51,8 +51,8 @@ public:
 
   static Glib::RefPtr<TreeStore_Layout> create();
 
-  virtual void fill_sequences();
-  virtual void fill_sequences(const iterator& iter);
+  void fill_sequences();
+  void fill_sequences(const iterator& iter);
 
 private:
   //Overridden virtual functions:

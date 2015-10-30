@@ -48,7 +48,7 @@ public:
   Box_Formatting* m_box_formatting;
 
 private:
-  virtual void on_button_close();
+  void on_button_close();
 };
 
 } //namespace Glom

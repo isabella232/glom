@@ -44,8 +44,8 @@ public:
 
   virtual void on_menupopup_activate_layout();
   virtual void on_menupopup_activate_layout_properties();
-  virtual void on_menupopup_add_item(enumType item);
-  virtual void on_menupopup_activate_delete();
+  void on_menupopup_add_item(enumType item);
+  void on_menupopup_activate_delete();
 #endif // !GLOM_ENABLE_CLIENT_ONLY  
     
 protected:

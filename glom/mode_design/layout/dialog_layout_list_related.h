@@ -48,7 +48,7 @@ public:
    */
   void init_with_portal(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const std::shared_ptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table, bool for_print_layout = false);
 
-  virtual void update_ui(bool including_relationships_list = true);
+  void update_ui(bool including_relationships_list = true);
 
   std::shared_ptr<Relationship> get_relationship() const;
   std::shared_ptr<LayoutItem_Portal>  get_portal_layout();

@@ -50,7 +50,7 @@ public:
 
   void init_with_tablename(const Glib::ustring& layout, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& parent_table);
 
-  virtual void update_ui(bool including_relationships_list = true);
+  void update_ui(bool including_relationships_list = true);
 
   std::shared_ptr<Relationship> get_relationship() const;
   std::shared_ptr<LayoutItem_CalendarPortal>  get_portal_layout();
