@@ -214,8 +214,6 @@ Glib::ustring TranslatableItem::get_translatable_type_name_nontranslated(enumTra
     return "Custom Title";
   else if(item_type == enumTranslatableItemType::RELATIONSHIP)
     return "Relationship";
-  else if(item_type == enumTranslatableItemType::RELATIONSHIP)
-    return "Layout Item";
   else if(item_type == enumTranslatableItemType::PRINT_LAYOUT)
     return "Print Layout";
   else if(item_type == enumTranslatableItemType::REPORT)
@@ -223,7 +221,7 @@ Glib::ustring TranslatableItem::get_translatable_type_name_nontranslated(enumTra
   else if(item_type == enumTranslatableItemType::TABLE)
     return "Table";
   else if(item_type == enumTranslatableItemType::LAYOUT_ITEM)
-    return "Layout Group";
+    return "Layout Item";
   else if(item_type == enumTranslatableItemType::BUTTON)
     return "Button";
   else if(item_type == enumTranslatableItemType::TEXTOBJECT)
@@ -248,8 +246,6 @@ Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemT
     return _("Custom Title");
   else if(item_type == enumTranslatableItemType::RELATIONSHIP)
     return _("Relationship");
-  else if(item_type == enumTranslatableItemType::RELATIONSHIP)
-    return _("Layout Item");
   else if(item_type == enumTranslatableItemType::PRINT_LAYOUT)
     return _("Print Layout");
   else if(item_type == enumTranslatableItemType::REPORT)
@@ -257,7 +253,7 @@ Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemT
   else if(item_type == enumTranslatableItemType::TABLE)
     return _("Table");
   else if(item_type == enumTranslatableItemType::LAYOUT_ITEM)
-    return _("Layout Group");
+    return _("Layout Item");
   else if(item_type == enumTranslatableItemType::BUTTON)
     return _("Button");
   else if(item_type == enumTranslatableItemType::TEXTOBJECT)
