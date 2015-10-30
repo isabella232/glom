@@ -950,14 +950,6 @@ void Dialog_Layout_Details::on_button_edit()
         if(layout_notebook)
         {
           Frame_Glom::show_ok_dialog(_("Notebook Tabs"), _("Add child groups to the notebook to add tabs."), *this);
-          /*
-          std::shared_ptr<LayoutItem_Notebook> chosen = offer_notebook(layout_notebook);
-          if(chosen)
-          {
-            row[m_model_items->m_columns.m_col_layout_item] = chosen;
-            m_modified = true;
-          }
-          */
         }
         else
         {

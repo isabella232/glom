@@ -328,7 +328,6 @@ private:
   void on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index, int data_model_column_index);
   void on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& row, guint model_column_index);
 
-  bool on_treeview_column_drop(Gtk::TreeView* treeview, Gtk::TreeViewColumn* column, Gtk::TreeViewColumn* prev_column, Gtk::TreeViewColumn* next_column);
   void on_treeview_columns_changed();
 
   bool on_button_press_event_Popup(GdkEventButton* button_event);
@@ -347,7 +346,6 @@ private:
   void on_MenuPopup_activate_layout();
 #endif
 
-  bool on_treeview_columnheader_button_press_event(GdkEventButton* button_event);
   void on_treeview_column_clicked(int model_column_index);
   //void on_treeview_column_resized(int model_column_index, DbTreeViewColumnGlom* view_column);
   void on_idle_row_edit();

@@ -508,32 +508,6 @@ std::shared_ptr<LayoutItem_Image> Base_DB::offer_imageobject(const std::shared_p
   return result;
 }
 
-std::shared_ptr<LayoutItem_Notebook> Base_DB::offer_notebook(const std::shared_ptr<LayoutItem_Notebook>& start_notebook, Gtk::Window* transient_for)
-{
-  std::shared_ptr<LayoutItem_Notebook> result = start_notebook;
-
-  Dialog_Notebook* dialog = nullptr;
-  Utils::get_glade_widget_derived_with_warning(dialog);
-  if(!dialog) //Unlikely and it already warns on stderr.
-    return result;
-
-  if(transient_for)
-    dialog->set_transient_for(*transient_for);
-
-  dialog->set_notebook(start_notebook);
-  //dialog->set_transient_for(*this);
-  const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
-  dialog->hide();
-  if(response == Gtk::RESPONSE_OK)
-  {
-    //Get the chosen relationship:
-    result = dialog->get_notebook();
-  }
-
-  delete dialog;
-
-  return result;
-}
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 //static:

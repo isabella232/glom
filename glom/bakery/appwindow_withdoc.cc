@@ -458,12 +458,6 @@ void AppWindow_WithDoc::after_successful_save()
   document_history_add(m_pDocument->get_file_uri());
 }
 
-Glib::ustring AppWindow_WithDoc::get_conf_fullkey(const Glib::ustring& key)
-{
-  return "/apps/" + m_strAppName + '/' + key;
-}
-
-
 void AppWindow_WithDoc::document_history_add(const Glib::ustring& /* file_uri */)
 {
   //Override this.

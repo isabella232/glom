@@ -766,25 +766,9 @@ void Dialog_ExistingOrNew::on_existing_row_activated(const Gtk::TreeModel::Path&
     on_select_clicked();
 }
 
-void Dialog_ExistingOrNew::on_existing_button_clicked(const Gtk::TreeModel::Path& path)
-{
-  m_existing_view->get_selection()->select(path);
-
-  if(m_select_button->is_sensitive())
-    on_select_clicked();
-}
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Dialog_ExistingOrNew::on_new_row_activated(const Gtk::TreeModel::Path& /* path */, Gtk::TreeViewColumn* /* column */)
 {
-  if(m_select_button->is_sensitive())
-    on_select_clicked();
-}
-
-void Dialog_ExistingOrNew::on_new_button_clicked(const Gtk::TreeModel::Path& path)
-{
-  m_new_view->get_selection()->select(path);
-
   if(m_select_button->is_sensitive())
     on_select_clicked();
 }

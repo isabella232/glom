@@ -206,7 +206,6 @@ protected:
   void on_menu_edit_cut_activate();
   void on_menu_edit_paste_activate();
   void on_menu_edit_find();
-  void on_recent_files_activate(Gtk::RecentChooser& recent_chooser);
 
   //Menu Builder and Actions
   Glib::RefPtr<Gtk::Builder> m_builder;

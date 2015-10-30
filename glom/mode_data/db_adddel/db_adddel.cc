@@ -89,9 +89,6 @@ DbAddDel::DbAddDel()
   //Make sure that the TreeView doesn't start out only big enough for zero items.
   set_height_rows(6, 6);
 
-  //Allow the user to change the column order:
-  //m_TreeView.set_column_drag_function( sigc::mem_fun(*this, &DbAddDel::on_treeview_column_drop) );
-
   m_TreeView.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
   m_TreeView.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &DbAddDel::on_treeview_button_press_event) );
   m_TreeView.signal_columns_changed().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columns_changed) );
@@ -1537,22 +1534,6 @@ void DbAddDel::on_treeview_button_press_event(GdkEventButton* button_event)
   on_button_press_event_Popup(button_event);
 }
 
-bool DbAddDel::on_treeview_columnheader_button_press_event(GdkEventButton* button_event)
-{
-  //If this is a right-click with the mouse:
-  if( (button_event->type == GDK_BUTTON_PRESS) && (button_event->button == 3) )
-  {
-    //TODO: Is something supposed to happen here?
-  }
-
-  return false;
-}
-
-bool DbAddDel::on_treeview_column_drop(Gtk::TreeView* /* treeview */, Gtk::TreeViewColumn* /* column */, Gtk::TreeViewColumn* /* prev_column */, Gtk::TreeViewColumn* /* next_column */)
-{
-  return true;
-}
-
 /* We do not let the developer resize the columns directly in the treeview
  * because we cannot easily avoid this signal handler from being called just during the 
  * intial size allocation.
@@ -1743,8 +1724,6 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   //Save the extra ID, using the title if the column_id is empty:
   const auto column_id = m_column_items[model_column_index]->get_name();
   pViewColumn->set_column_id( (column_id.empty() ? title : column_id) );
-
-  //TODO pViewColumn->signal_button_press_event().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columnheader_button_press_event) );
 
   //Let the user click on the column header to sort.
   pViewColumn->set_clickable();

@@ -109,7 +109,6 @@ public:
   static Glib::RefPtr<const CanvasItemMovable> cast_const_to_movable(const Glib::RefPtr<const Goocanvas::Item>& item);
 
   static Glib::RefPtr<Goocanvas::Item> cast_to_item(const Glib::RefPtr<CanvasItemMovable>& item);
-  static Glib::RefPtr<const Goocanvas::Item> cast_const_to_item(const Glib::RefPtr<const CanvasItemMovable>& item);
 
   virtual void snap_position(double& x, double& y) const;
 

@@ -153,11 +153,6 @@ const CsvParser::type_row_strings CsvParser::fetch_next_row()
   g_return_val_if_reached(empty);
 }
 
-void CsvParser::reset_row_index()
-{
-  m_row_index = 0;
-}
-
 CsvParser::type_signal_file_read_error CsvParser::signal_file_read_error() const
 {
   return m_signal_file_read_error;

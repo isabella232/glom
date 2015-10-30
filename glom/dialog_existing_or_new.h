@@ -91,7 +91,6 @@ private:
   void new_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   bool on_new_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected);
   void on_new_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
-  void on_new_button_clicked(const Gtk::TreeModel::Path& path);
 
   
   bool list_examples();
@@ -108,7 +107,6 @@ private:
 #endif
 
   void on_existing_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
-  void on_existing_button_clicked(const Gtk::TreeModel::Path& path);
   void on_select_clicked();
   
   

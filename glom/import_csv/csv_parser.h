@@ -86,9 +86,6 @@ public:
   // client of this method to check for the parser's state/cache size.
   const type_row_strings fetch_next_row();
 
-  /// Resets the internal row index used for fetch_next_row().
-  void reset_row_index();
-
   // Signals:
   typedef sigc::signal<void, const Glib::ustring&> type_signal_file_read_error;
 

@@ -441,13 +441,6 @@ Glib::RefPtr<Goocanvas::Item> CanvasItemMovable::cast_to_item(const Glib::RefPtr
   return result;
 }
 
-//static:
-Glib::RefPtr<const Goocanvas::Item> CanvasItemMovable::cast_const_to_item(const Glib::RefPtr<const CanvasItemMovable>& item)
-{
-  Glib::RefPtr<CanvasItemMovable> unconst = Glib::RefPtr<CanvasItemMovable>::cast_const(item);
-  return cast_to_item(unconst);
-}
-
 void CanvasItemMovable::set_selected(bool selected)
 {
   m_selected = selected;

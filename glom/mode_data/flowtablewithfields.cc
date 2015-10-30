@@ -932,11 +932,6 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const std:
   return result;
 }
 
-void FlowTableWithFields::change_group(const Glib::ustring& /* id */, const Glib::ustring& /*new_group */)
-{
-  //TODO.
-}
-
 void FlowTableWithFields::remove_all()
 {
   FlowTable::remove_all();

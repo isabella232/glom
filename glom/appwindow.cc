@@ -3003,13 +3003,4 @@ void AppWindow::on_menu_edit_find()
     m_pFrame->set_mode_data();
 }
 
-
-void AppWindow::on_recent_files_activate(Gtk::RecentChooser& chooser)
-{
-  const auto uri = chooser.get_current_uri();
-  const auto bTest = open_document(uri);
-  if(!bTest)
-    document_history_remove(uri);
-}
-
 } //namespace Glom

@@ -115,7 +115,6 @@ protected:
 
   std::shared_ptr<LayoutItem_Text> offer_textobject(const std::shared_ptr<LayoutItem_Text>& start_textobject, Gtk::Window* transient_for = 0, bool show_title = true);
   std::shared_ptr<LayoutItem_Image> offer_imageobject(const std::shared_ptr<LayoutItem_Image>& start_imageobject, Gtk::Window* transient_for = 0, bool show_title = true);
-  std::shared_ptr<LayoutItem_Notebook> offer_notebook(const std::shared_ptr<LayoutItem_Notebook>& start_notebook, Gtk::Window* transient_for = 0);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   bool get_relationship_exists(const Glib::ustring& table_name, const Glib::ustring& relationship_name);

@@ -82,16 +82,6 @@ PrintLayoutToolbarButton::enumItems PrintLayoutToolbarButton::get_item_type_from
   return result;
 }
 
-void PrintLayoutToolbarButton::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&, 
-                                  Gtk::SelectionData& selection_data, guint, guint)
-{
-  selection_data.set(8, (guint8*)(&m_type), 4);
-}
-
-void PrintLayoutToolbarButton::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context)
-{
-  drag_context->set_icon(dynamic_cast<Gtk::Image*>(get_icon_widget())->get_pixbuf(), 0, 0);
-}
 
 } // namespace Glom
 

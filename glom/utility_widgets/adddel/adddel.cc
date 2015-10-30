@@ -117,10 +117,6 @@ void AddDel::init()
   //Make sure that the TreeView doesn't start out only big enough for zero items.
   m_TreeView.set_size_request(-1, 150);
 
-  //Allow the user to change the column order:
-  //m_TreeView.set_column_drag_function( sigc::mem_fun(*this, &AddDel::on_treeview_column_drop) );
-
-
   //m_TreeView.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
   m_TreeView.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &AddDel::on_treeview_button_press_event) );
 
@@ -1312,11 +1308,6 @@ AddDel::type_signal_user_reordered_columns AddDel::signal_user_reordered_columns
 void AddDel::on_treeview_button_press_event(GdkEventButton* button_event)
 {
   on_button_press_event_Popup(button_event);
-}
-
-bool AddDel::on_treeview_column_drop(Gtk::TreeView* /* treeview */, Gtk::TreeViewColumn* /* column */, Gtk::TreeViewColumn* /* prev_column */, Gtk::TreeViewColumn* /* next_column */)
-{
-  return true;
 }
 
 guint AddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, const Gtk::TreeModelColumnBase& model_column, const Glib::ustring& column_id)

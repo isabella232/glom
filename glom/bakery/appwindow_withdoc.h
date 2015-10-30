@@ -164,8 +164,6 @@ protected:
 
   virtual enumSaveChanges ui_offer_to_save_changes() = 0;
 
-  static Glib::ustring get_conf_fullkey(const Glib::ustring& key);
-
   //Document:
   Document* m_pDocument; //An instance of a derived type.
   bool m_bCloseAfterSave;

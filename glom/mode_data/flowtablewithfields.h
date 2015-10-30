@@ -111,8 +111,6 @@ public:
   typedef std::list<Gtk::Widget*> type_list_widgets;
   typedef std::list<const Gtk::Widget*> type_list_const_widgets;
 
-  void change_group(const Glib::ustring& id, const Glib::ustring& new_group);
-
   void set_design_mode(bool value = true) override;
 
   void remove_all();

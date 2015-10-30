@@ -260,7 +260,6 @@ private:
 
   void on_treeview_cell_editing_started(Gtk::CellEditable* editable, const Glib::ustring& path, int model_column_index);
 
-  bool on_treeview_column_drop(Gtk::TreeView* treeview, Gtk::TreeViewColumn* column, Gtk::TreeViewColumn* prev_column, Gtk::TreeViewColumn* next_column);
   void on_treeview_columns_changed();
 
   bool on_button_press_event_Popup(GdkEventButton* button_event);
