@@ -2534,11 +2534,10 @@ void AppWindow::document_history_add(const Glib::ustring& file_uri)
   if(file_uri.empty())
     return;
 
-  bool prevent = false;
   if(!file_uri.empty())
   {
-    prevent = (file_uri == m_example_uri);
-    if(prevent)
+    //Prevent saving of example file templates just because we opened them:
+    if(file_uri == m_example_uri);
       return;
   }
 

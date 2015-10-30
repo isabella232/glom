@@ -258,10 +258,9 @@ bool Dialog_ExistingOrNew::list_examples()
 {
   //std::cout << "debug: " << G_STRFUNC << ": path=" << path << std::endl;
 
-  const char* examples_dir = "/org/gnome/glom/examples/";
-
   try
   {
+    const char* examples_dir = "/org/gnome/glom/examples/";
     const auto examples = Gio::Resource::enumerate_children_global(examples_dir);
     
     bool example_found = false;

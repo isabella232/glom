@@ -1130,9 +1130,10 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
 
   m_dialog_addrelatedtable->hide();
 
-  bool stop_trying = false;
   if(response == Gtk::RESPONSE_OK)
   {
+    bool stop_trying = false;
+
     Glib::ustring table_name, relationship_name, from_key_name;
     m_dialog_addrelatedtable->get_input(table_name, relationship_name, from_key_name);
 
