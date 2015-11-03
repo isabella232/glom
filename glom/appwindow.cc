@@ -2330,6 +2330,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
   return Glib::ustring();
 }
 
+/*
 void AppWindow::stop_self_hosting_of_document_database()
 {
   auto pDocument = static_cast<Document*>(get_document());
@@ -2342,6 +2343,7 @@ void AppWindow::stop_self_hosting_of_document_database()
     connection_pool->cleanup( sigc::mem_fun(*this, &AppWindow::on_connection_close_progress ));
   }
 }
+*/
 
 void AppWindow::on_menu_developer_changelanguage()
 {

@@ -262,7 +262,7 @@ private:
   bool recreate_database_from_backup(const std::string& backup_data_file_path, bool& user_cancelled); //return indicates success.
   void on_recreate_database_progress();
 
-  void stop_self_hosting_of_document_database();
+  //void stop_self_hosting_of_document_database();
 
   void on_connection_avahi_begin();
   void on_connection_avahi_progress();
