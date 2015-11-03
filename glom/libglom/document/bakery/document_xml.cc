@@ -44,9 +44,7 @@ bool Document_XML::load_after(int& failure_code)
   if(!bTest)
     return false; //Failed.
 
-#ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
   try
-#endif
   {
     //Link the parser to the XML text that was loaded:
     //m_DOM_Parser.setDoValidation(true);
@@ -60,14 +58,12 @@ bool Document_XML::load_after(int& failure_code)
 
     return true; //Success.
   }
-#ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
   catch(const std::exception& ex)
   {
     std::cerr << G_STRFUNC << ": XML Parser error: \n" << ex.what() << std::endl;
 
     return false; //Failed.
   }
-#endif
 }
 
 
@@ -99,21 +95,17 @@ Glib::ustring Document_XML::get_xml() const
 
 void Document_XML::Util_DOM_Write(Glib::ustring& refstrXML) const
 {
-#ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
   try
-#endif
   {
     if(m_write_formatted)
       refstrXML = m_pDOM_Document->write_to_string_formatted();
     else
       refstrXML = m_pDOM_Document->write_to_string();
   }
-#ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
   catch(xmlpp::exception& ex)
   {
     std::cerr << G_STRFUNC << ": exception caught: " << ex.what() << std::endl;
   }
-#endif
 }
 
 void Document_XML::set_dtd_name(const std::string& strVal)
