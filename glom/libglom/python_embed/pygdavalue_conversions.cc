@@ -236,8 +236,6 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
         ret = boost::python::object(gda_numeric_get_double((GdaNumeric*)val));
     } else if(value_type == G_TYPE_FLOAT) {
         ret = boost::python::object(g_value_get_float(boxed));
-    } else if(value_type == GDA_TYPE_SHORT) {
-        ret = boost::python::object(gda_value_get_short(boxed));
     } else if(value_type == G_TYPE_STRING) {
         const auto val = g_value_get_string(boxed);
         ret = boost::python::object(val);
