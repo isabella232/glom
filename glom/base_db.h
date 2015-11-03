@@ -87,6 +87,8 @@ public:
 
 protected:
 
+  void clear_fields_calculation_in_progress();
+
   typedef std::list< std::shared_ptr<LayoutItem_Field> > type_list_field_items;
   typedef std::list< std::shared_ptr<const LayoutItem_Field> > type_list_const_field_items;
 
@@ -311,7 +313,7 @@ protected:
   static void handle_error(const std::exception& ex, Gtk::Window* parent); //TODO_port: This is probably useless now.
   static bool handle_error();
 
-protected:
+private:
   type_field_calcs m_FieldsCalculationInProgress; //Prevent circular calculations and recalculations.
 };
 

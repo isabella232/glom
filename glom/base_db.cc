@@ -775,7 +775,7 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
     {
       field_in_record.m_key_value = primary_key_value;
 
-      m_FieldsCalculationInProgress.clear();
+      clear_fields_calculation_in_progress();
       calculate_field(field_in_record);
     }
   }
@@ -1104,7 +1104,7 @@ void Base_DB::do_calculations(const LayoutFieldInRecord& field_changed, bool fir
   if(first_calc_field)
   {
     //g_warning("  clearing m_FieldsCalculationInProgress");
-    m_FieldsCalculationInProgress.clear();
+    clear_fields_calculation_in_progress();
   }
 
   //Recalculate fields that are triggered by a change of this field's value, not including calculations that these calculations use.
@@ -1124,7 +1124,7 @@ void Base_DB::do_calculations(const LayoutFieldInRecord& field_changed, bool fir
   }
 
   if(first_calc_field)
-    m_FieldsCalculationInProgress.clear();
+    clear_fields_calculation_in_progress();
 }
 
 Base_DB::type_list_const_field_items Base_DB::get_calculated_fields(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& field)
@@ -1513,6 +1513,11 @@ Glib::ustring Base_DB::get_active_layout_platform(Document* document)
     result = document->get_active_layout_platform();
 
   return result;
+}
+
+void Base_DB::clear_fields_calculation_in_progress()
+{
+  m_FieldsCalculationInProgress.clear();
 }
 
 

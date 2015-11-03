@@ -509,7 +509,7 @@ Gnome::Gda::Value Box_Data_Details::get_primary_key_value_selected() const
 
 void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustring& relationship_name)
 {
-  m_FieldsCalculationInProgress.clear();
+  clear_fields_calculation_in_progress();
 
   //Check all fields in the parent table:
   const auto primary_key_value = get_primary_key_value_selected();
@@ -536,7 +536,7 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
     }
   }
 
-   m_FieldsCalculationInProgress.clear();
+   clear_fields_calculation_in_progress();
 }
 
 void Box_Data_Details::on_related_record_added(Gnome::Gda::Value /* strKeyValue */, Glib::ustring /* strFromKeyName */)
