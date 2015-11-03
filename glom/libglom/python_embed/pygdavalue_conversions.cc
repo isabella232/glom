@@ -44,6 +44,12 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
       g_value_unset(boxed);
       
     PyObject* input_c = input.ptr();
+
+    if(input_c == Py_None)
+    {
+      std::cerr << G_STRFUNC << ": Returning false for Py_None" << std::endl;
+      return false;
+    }
     
     //We check for bool first, 
     //because bool is derived from int in Python,
