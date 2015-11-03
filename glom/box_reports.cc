@@ -42,10 +42,20 @@ Box_Reports::Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   //Get the Glade-instantiated widgets, and connect signal handlers:
   Gtk::Button* pButtonCancel = nullptr;
   builder->get_widget("button_cancel", pButtonCancel);
+  if(!pButtonCancel)
+  {
+    std::cerr << G_STRFUNC << "Missing widget from glade file." << std::endl;
+    return;
+  }
   set_button_cancel(*pButtonCancel);
 
   Gtk::Box* pAddDelParent = nullptr;
   builder->get_widget("vbox_adddel_parent", pAddDelParent);
+  if(!pAddDelParent)
+  {
+    std::cerr << G_STRFUNC << "Missing widget from glade file." << std::endl;
+    return;
+  }
   pAddDelParent->pack_start(m_AddDel);
 
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Reports::on_adddel_Add));
