@@ -100,7 +100,7 @@ bool CsvParser::get_rows_empty() const
   return m_rows.empty();
 }
 
-const Glib::ustring& CsvParser::get_data(guint row, guint col)
+const Glib::ustring& CsvParser::get_data(guint row, guint col) const
 {
   static Glib::ustring empty_result;
 
@@ -552,7 +552,7 @@ void CsvParser::on_buffer_read(const Glib::RefPtr<Gio::AsyncResult>& result)
   }
 }
 
-void CsvParser::on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source)
+void CsvParser::on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source) const
 {
   try
   {

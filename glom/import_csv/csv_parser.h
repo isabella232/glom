@@ -76,7 +76,7 @@ public:
   bool get_rows_empty() const;
 
   // The nasty reference return is for performance.
-  const Glib::ustring& get_data(guint row, guint col);
+  const Glib::ustring& get_data(guint row, guint col) const;
 
   /**  Fetches the next row from the parser's cache. It will block until enough
     *  data was parsed to return a row. An empty row indicates the last row was
@@ -174,7 +174,7 @@ private:
   void on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source);
   void copy_buffer_and_continue_reading(gssize size);
   void on_buffer_read(const Glib::RefPtr<Gio::AsyncResult>& result);
-  void on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source);
+  void on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source) const;
 
   void set_state(State state);
 
