@@ -269,6 +269,9 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
         ret = boost::python::object(gda_value_get_ushort(boxed));
     } else if(value_type == G_TYPE_UINT) {
         ret = boost::python::object(g_value_get_uint(boxed));
+    } else if(value_type == GDA_TYPE_NULL) {
+        std::cerr << G_STRFUNC << ": Returning Py_None for GDA_TYPE_NULL." << std::endl;
+        ret = boost::python::object();
     } else {
       std::cerr << G_STRFUNC << ": Glom: G_VALUE_TYPE() returned unknown type: " << value_type << std::endl;
     }
