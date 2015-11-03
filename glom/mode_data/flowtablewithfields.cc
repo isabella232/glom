@@ -1010,17 +1010,17 @@ void FlowTableWithFields::on_script_button_clicked(const std::shared_ptr< Layout
   m_signal_script_button_clicked.emit(layout_item);
 }
 
-void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field> field)
+void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field)
 {
   m_signal_field_edited.emit(field, value);
 }
 
-void FlowTableWithFields::on_entry_choices_changed(const std::shared_ptr<const LayoutItem_Field> field)
+void FlowTableWithFields::on_entry_choices_changed(const std::shared_ptr<const LayoutItem_Field>& field)
 {
   m_signal_field_choices_changed.emit(field);
 }
 
-void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field> field)
+void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field)
 {
   m_signal_field_open_details_requested.emit(field, value);
 }

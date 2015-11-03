@@ -203,9 +203,9 @@ private:
 
   //int get_suitable_width(Field::glom_field_type field_type);
 
-  void on_entry_edited(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field> field);
-  void on_entry_choices_changed(const std::shared_ptr<const LayoutItem_Field> field);
-  void on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field> field);
+  void on_entry_edited(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field);
+  void on_entry_choices_changed(const std::shared_ptr<const LayoutItem_Field>& field);
+  void on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field);
 
   void on_script_button_clicked(const std::shared_ptr<LayoutItem_Button>& layout_item);
 
