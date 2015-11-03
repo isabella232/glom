@@ -89,7 +89,6 @@ protected:
 
   bool fill_from_database() override;
   void create_layout() override;
-  //virtual void fill_related();
 
   std::shared_ptr<Field> get_field_primary_key() const override;
   void set_found_set_from_primary_key_value();

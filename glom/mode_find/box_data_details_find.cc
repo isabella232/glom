@@ -77,36 +77,6 @@ bool Box_Data_Details_Find::fill_from_database()
   return result;
 }
 
-//TODO: Remove this?
-void Box_Data_Details_Find::fill_related()
-{
-  //Clear existing pages:
-  //m_Notebook_Related.pages().clear();
-
-  //Get relationships from the document:
-  const auto vecRelationships = get_document()->get_relationships(m_table_name);
-
-  //Add the relationships:
-     /*
-  for(const auto& item : vecRelationships)
-  {
-     auto pBox = Gtk::manage(new Box_Data_List_Related());
-     std::cout <<  "Box_Data_Details::fill_related() 2:" << relationship->get_name() << std::endl;
-     m_Notebook_Related.pages().push_back( Gtk::Notebook_Helpers::TabElem(*pBox, relationship->get_name()) );
-     std::cout <<  "Box_Data_Details::fill_related() 2.5:" << std::endl;
-
-     guint rowKey = m_FieldsShown.get_index(relationship->get_from_field());
-     Glib::ustring strKeyValue = m_AddDel.get_value(rowKey);
-     strKeyValue = m_FieldsShown[rowKey].sql(strKeyValue); //Quote/Escape it if necessary.
-
-     std::cout <<  "Box_Data_Details::fill_related() 3:" << std::endl;
-     pBox->init_db_details(get_database_name(), relationship->get_to_table(), relationship->get_to_field(), strKeyValue);
-     pBox->show_all();
-  }
-  */
-}
-
-
 void Box_Data_Details_Find::on_flowtable_field_edited(const std::shared_ptr<const LayoutItem_Field>& /* id */, const Gnome::Gda::Value& /* value */)
 {
   //Don't do anything.

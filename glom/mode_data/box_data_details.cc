@@ -392,8 +392,6 @@ bool Box_Data_Details::fill_from_database()
       }
     } //if(!fieldsToGet.empty())
 
-    //fill_related();
-
     set_unstored_data(false);
   }
 
