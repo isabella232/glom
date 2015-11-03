@@ -138,9 +138,9 @@ protected:
     }
 
     FieldInRecord(const std::shared_ptr<const LayoutItem_Field>& layout_item, const Glib::ustring& parent_table_name, const std::shared_ptr<const Field>& parent_key, const Gnome::Gda::Value& key_value, const Document& document)
-    : m_key_value(key_value)
+    : m_field(layout_item->get_full_field_details()),
+      m_key_value(key_value)
     {
-      m_field = layout_item->get_full_field_details();
       m_table_name = layout_item->get_table_used(parent_table_name);
 
       //The key:
@@ -189,11 +189,11 @@ protected:
     {}
 
     LayoutFieldInRecord(const std::shared_ptr<const LayoutItem_Field>& layout_item, const Glib::ustring& parent_table_name, const std::shared_ptr<const Field>& parent_key, const Gnome::Gda::Value& key_value)
-    : m_key_value(key_value)
+    : m_table_name(parent_table_name),
+      m_field(layout_item),
+      m_key(parent_key),
+      m_key_value(key_value)
     {
-      m_field = layout_item;
-      m_table_name = parent_table_name;
-      m_key = parent_key;
     }
 
     LayoutFieldInRecord(const LayoutFieldInRecord& src) = delete;
