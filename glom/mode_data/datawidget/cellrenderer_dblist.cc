@@ -195,7 +195,7 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
       cell = create_cell(layout_item, m_table_name, m_document, get_fixed_cell_height(*widget));
       if(!cell)
       {
-        std::cerr << G_STRFUNC << ": create_cell() return 0." << std::endl;
+        std::cerr << G_STRFUNC << ": create_cell() returned 0." << std::endl;
       }
       else
       {
