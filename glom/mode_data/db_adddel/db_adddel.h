@@ -174,13 +174,6 @@ public:
 
   std::shared_ptr<const LayoutItem_Field> get_column_field(guint column_index) const;
 
-  typedef std::vector<Glib::ustring> type_vec_strings;
-
-  /** Retrieves the column order, even after they have been reordered by the user.
-   * @result a vector of column_id. These column_ids were provided in the call to add_column().
-   */
-  type_vec_strings get_columns_order() const;
-
   void remove_all_columns();
 
   /// For popup cells.

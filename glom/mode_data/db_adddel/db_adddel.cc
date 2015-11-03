@@ -1736,13 +1736,6 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   return cols_count;
 }
 
-
-DbAddDel::type_vec_strings DbAddDel::get_columns_order() const
-{
-  //This list is rebuilt in on_treeview_columns_changed, but maybe we could just build it here.
-  return m_vecColumnIDs;
-}
-
 Glib::RefPtr<Gtk::TreeModel> DbAddDel::get_model()
 {
   return m_refListStore;

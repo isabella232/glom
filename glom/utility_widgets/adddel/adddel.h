@@ -152,17 +152,12 @@ public:
 
   Glib::ustring get_column_field(guint column_index) const;
 
-  typedef AddDelColumnInfo::type_vec_strings type_vec_strings;
-
-  /** Retrieves the column order, even after they have been reordered by the user.
-   * @result a vector of column_id. These column_ids were provided in the call to add_column().
-   */
-  type_vec_strings get_columns_order() const;
-
   void remove_all_columns();
   //void set_columns_count(guint count);
   //void set_column_title(guint col, const Glib::ustring& strText);
   void set_column_width(guint col, guint width);
+
+  typedef AddDelColumnInfo::type_vec_strings type_vec_strings;
 
   /// For popup cells.
   void set_column_choices(guint col, const type_vec_strings& vecStrings);

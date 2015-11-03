@@ -1350,12 +1350,6 @@ void AddDel::on_treeview_columns_changed()
   }
 }
 
-AddDel::type_vec_strings AddDel::get_columns_order() const
-{
-  //This list is rebuilt in on_treeview_columns_changed, but maybe we could just build it here.
-  return m_vecColumnIDs;
-}
-
 void AddDel::set_auto_add(bool value)
 {
   m_auto_add = value;
