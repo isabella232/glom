@@ -159,7 +159,15 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
   //std::cout << "DEBUG Dates not supported." << std::endl;
 #endif
 
-    std::cerr << G_STRFUNC << ": Unhandled python type." << std::endl;
+    PyObject* as_string = PyObject_Repr(input_c);
+    boost::python::extract<std::string> extractor_string(as_string);
+    const std::string str_as_string = extractor_string;
+    Py_XDECREF(as_string);
+
+    std::cerr << G_STRFUNC << ": Unhandled python type: object as string:" <<
+      str_as_string << std::endl;
+    std::cerr << G_STRFUNC << ": PY_MAJOR_VERSION=" << PY_MAJOR_VERSION << 
+      ", PY_VERSION_HEX=" << std::hex << PY_VERSION_HEX << std::endl;
     return false; /* failed. */
 }
 
