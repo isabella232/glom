@@ -456,8 +456,6 @@ void AppWindow::on_menu_help_about()
   {
     //Re-create About box:
     delete m_pAbout;
-    m_pAbout = nullptr;
-
     m_pAbout = new Gtk::AboutDialog;
 
     m_pAbout->set_program_name(m_strAppName);
