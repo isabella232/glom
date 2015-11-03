@@ -73,13 +73,13 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
   std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
   if(item_field)
   {
-    //Ignore hiddent fields.
+    //Ignore hidden fields.
     //For instance, these are generally added to DbTreeModels when they would not otherwise contain the primary key,
     //so that the record can still be uniquely identified.
     if(item_field->get_hidden())
     {
       //std::cerr << G_STRFUNC << ": Returning 0 because the layout field is hidden. table_name=" << table_name << ", field name=" << item_field->get_name() << std::endl;
-      return 0;
+      return nullptr;
     }
 
     switch(item_field->get_glom_type())
@@ -169,7 +169,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
   if(!cell)
   {
     std::cerr << G_STRFUNC << ": Returning 0 because no cell was created." << std::endl;
-    return 0;
+    return nullptr;
   }
 
   //Use formatting:

@@ -53,7 +53,7 @@ const Gtk::Box* FlowTable::get_parent_hbox(const Gtk::Widget* first) const
   if(iter_find == m_list_first_widgets.end())
   {
     std::cerr << G_STRFUNC << ": first was not a first widget. first=" << first << std::endl;
-    return 0; //It has no Box parent because it is not even a first widget.
+    return nullptr; //It has no Box parent because it is not even a first widget.
   }
   
   for(const auto& hbox : m_list_hboxes)
@@ -72,7 +72,7 @@ const Gtk::Box* FlowTable::get_parent_hbox(const Gtk::Widget* first) const
       return hbox;
   }
 
-  return 0;
+  return nullptr;
 }
 
 void FlowTable::delete_and_forget_hbox(Gtk::Box* hbox)

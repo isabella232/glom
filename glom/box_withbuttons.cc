@@ -103,7 +103,7 @@ Gtk::Window* Box_WithButtons::get_app_window()
     }
   }
 
-  return 0; //not found.
+  return nullptr; //not found.
 */
 }
 
@@ -121,7 +121,7 @@ void Box_WithButtons::set_button_cancel(Gtk::Button& button)
 
 Gtk::Widget* Box_WithButtons::get_default_button()
 {
-  return 0; //Override this if the box has a default button.
+  return nullptr; //Override this if the box has a default button.
 }
 
 

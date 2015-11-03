@@ -139,7 +139,7 @@ static const FieldTypes* get_field_types()
 {
   auto connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
-    return 0;
+    return nullptr;
 
   return connection_pool->get_field_types();
 }

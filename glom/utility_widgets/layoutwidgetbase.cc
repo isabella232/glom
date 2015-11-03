@@ -56,7 +56,7 @@ std::shared_ptr<LayoutItem> LayoutWidgetBase::get_layout_item()
 
 AppWindow* LayoutWidgetBase::get_appwindow() const
 {
-  return 0; //override to implement.
+  return nullptr; //override to implement.
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

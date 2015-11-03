@@ -1293,7 +1293,7 @@ Gtk::Window* Frame_Glom::get_app_window()
     }
   }
 
-  return 0; //not found.
+  return nullptr; //not found.
 
 }
 

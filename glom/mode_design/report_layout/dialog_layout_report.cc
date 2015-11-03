@@ -518,7 +518,7 @@ Gtk::TreeView* Dialog_Layout_Report::get_selected_treeview()
     default:
     {
       std::cerr << G_STRFUNC << ": Dialog_Layout_Report::get_selected_treeview(): Unrecognised current notebook page:"  << m_notebook_parts->get_current_page() << std::endl;
-      return 0;
+      return nullptr;
     }
   }
 }

@@ -247,7 +247,7 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
 Box_Data_List_Related* FlowTableWithFields::create_related(const std::shared_ptr<LayoutItem_Portal>& portal, bool show_title)
 {
   if(!portal)
-    return 0;
+    return nullptr;
 
   auto pDocument = static_cast<Document*>(get_document());
   if(pDocument)
@@ -281,13 +281,13 @@ Box_Data_List_Related* FlowTableWithFields::create_related(const std::shared_ptr
     return portal_box;
   }
 
-  return 0;
+  return nullptr;
 }
 
 Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const std::shared_ptr<LayoutItem_CalendarPortal>& portal, bool show_title)
 {
   if(!portal)
-    return 0;
+    return nullptr;
 
   auto pDocument = static_cast<Document*>(get_document());
   if(pDocument)
@@ -321,7 +321,7 @@ Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const st
     return portal_box;
   }
 
-  return 0;
+  return nullptr;
 }
 
 void FlowTableWithFields::add_layout_portal(const std::shared_ptr<LayoutItem_Portal>& portal)

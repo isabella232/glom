@@ -415,7 +415,7 @@ EpcServiceInfo* Dialog_ExistingOrNew::get_service_info() const
   else
     throw std::logic_error("Dialog_ExistingOrNew::get_service_info: action is not OPEN_REMOTE");
 
-  return 0;
+  return nullptr;
 }
 
 Glib::ustring Dialog_ExistingOrNew::get_service_name() const

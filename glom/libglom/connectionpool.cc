@@ -820,7 +820,7 @@ Document* ConnectionPool::get_document()
     //Don't bother warning because all the code that calls get_document() checks 
     //for 0 and responds reasonably.
     //std::cerr << G_STRFUNC << ": m_slot_get_document is null." << std::endl;
-    return 0;
+    return nullptr;
   }
 
   return m_slot_get_document();
@@ -832,11 +832,11 @@ EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* /* pu
 {
   auto connection_pool = static_cast<Glom::ConnectionPool*>(user_data);
   if(!connection_pool)
-    return 0;
+    return nullptr;
 
   const auto document = connection_pool->get_document();
   if(!document)
-    return 0;
+    return nullptr;
 
   const auto contents = document->get_contents();
   //std::cout << "debug: " << G_STRFUNC << ": returning: " << std::endl << "  " << contents << std::endl;
