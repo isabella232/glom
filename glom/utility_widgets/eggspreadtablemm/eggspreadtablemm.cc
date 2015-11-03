@@ -182,48 +182,34 @@ guint SpreadTable::get_horizontal_spacing() const
   return egg_spread_table_get_horizontal_spacing(const_cast<EggSpreadTable*>(gobj()));
 }
 
-
-#ifdef GLIBMM_PROPERTIES_ENABLED
 Glib::PropertyProxy<guint> SpreadTable::property_vertical_spacing()
 {
   return Glib::PropertyProxy<guint>(this, "vertical-spacing");
 }
-#endif //GLIBMM_PROPERTIES_ENABLED
 
-#ifdef GLIBMM_PROPERTIES_ENABLED
 Glib::PropertyProxy_ReadOnly<guint> SpreadTable::property_vertical_spacing() const
 {
   return Glib::PropertyProxy_ReadOnly<guint>(this, "vertical-spacing");
 }
-#endif //GLIBMM_PROPERTIES_ENABLED
 
-#ifdef GLIBMM_PROPERTIES_ENABLED
 Glib::PropertyProxy<guint> SpreadTable::property_horizontal_spacing()
 {
   return Glib::PropertyProxy<guint>(this, "horizontal-spacing");
 }
-#endif //GLIBMM_PROPERTIES_ENABLED
 
-#ifdef GLIBMM_PROPERTIES_ENABLED
 Glib::PropertyProxy_ReadOnly<guint> SpreadTable::property_horizontal_spacing() const
 {
   return Glib::PropertyProxy_ReadOnly<guint>(this, "horizontal-spacing");
 }
-#endif //GLIBMM_PROPERTIES_ENABLED
 
-#ifdef GLIBMM_PROPERTIES_ENABLED
 Glib::PropertyProxy<guint> SpreadTable::property_lines()
 {
   return Glib::PropertyProxy<guint>(this, "lines");
 }
-#endif //GLIBMM_PROPERTIES_ENABLED
 
-#ifdef GLIBMM_PROPERTIES_ENABLED
 Glib::PropertyProxy_ReadOnly<guint> SpreadTable::property_lines() const
 {
   return Glib::PropertyProxy_ReadOnly<guint>(this, "lines");
 }
-#endif //GLIBMM_PROPERTIES_ENABLED
-
 
 } // namespace Egg

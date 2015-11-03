@@ -120,7 +120,6 @@ public:
   //TODO: Documentation
   void append_child(Widget& widget);
 
-  #ifdef GLIBMM_PROPERTIES_ENABLED
 /** The amount of vertical space between two children.
    *
    * You rarely need to use properties because there are get_ and set_ methods for almost all of them.
@@ -128,9 +127,7 @@ public:
    * the value of the property changes.
    */
   Glib::PropertyProxy<guint> property_vertical_spacing() ;
-#endif //#GLIBMM_PROPERTIES_ENABLED
 
-#ifdef GLIBMM_PROPERTIES_ENABLED
 /** The amount of vertical space between two children.
    *
    * You rarely need to use properties because there are get_ and set_ methods for almost all of them.
@@ -138,9 +135,7 @@ public:
    * the value of the property changes.
    */
   Glib::PropertyProxy_ReadOnly<guint> property_vertical_spacing() const;
-#endif //#GLIBMM_PROPERTIES_ENABLED
 
-  #ifdef GLIBMM_PROPERTIES_ENABLED
 /** The amount of horizontal space between two children.
    *
    * You rarely need to use properties because there are get_ and set_ methods for almost all of them.
@@ -148,9 +143,7 @@ public:
    * the value of the property changes.
    */
   Glib::PropertyProxy<guint> property_horizontal_spacing() ;
-#endif //#GLIBMM_PROPERTIES_ENABLED
 
-#ifdef GLIBMM_PROPERTIES_ENABLED
 /** The amount of horizontal space between two children.
    *
    * You rarely need to use properties because there are get_ and set_ methods for almost all of them.
@@ -158,9 +151,7 @@ public:
    * the value of the property changes.
    */
   Glib::PropertyProxy_ReadOnly<guint> property_horizontal_spacing() const;
-#endif //#GLIBMM_PROPERTIES_ENABLED
 
-  #ifdef GLIBMM_PROPERTIES_ENABLED
 /** The number of lines (rows/columns) to evenly distribute children to.
    *
    * You rarely need to use properties because there are get_ and set_ methods for almost all of them.
@@ -168,9 +159,7 @@ public:
    * the value of the property changes.
    */
   Glib::PropertyProxy<guint> property_lines() ;
-#endif //#GLIBMM_PROPERTIES_ENABLED
 
-#ifdef GLIBMM_PROPERTIES_ENABLED
 /** The number of lines (rows/columns) to evenly distribute children to.
    *
    * You rarely need to use properties because there are get_ and set_ methods for almost all of them.
@@ -178,9 +167,6 @@ public:
    * the value of the property changes.
    */
   Glib::PropertyProxy_ReadOnly<guint> property_lines() const;
-#endif //#GLIBMM_PROPERTIES_ENABLED
-
-
 };
 
 } // namespace Egg
