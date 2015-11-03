@@ -68,7 +68,7 @@ public:
   ///Transfer data from the variable to the widget.
   void transfer_variables_to_widgets();
 
-protected:
+private:
 
   /** Override this to validate the data that the user enters into the widgets.
    * The return value indicates whether the widgets' data is valid.

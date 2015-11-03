@@ -479,7 +479,7 @@ public:
   static Glib::ustring extract_backup_file(const Glib::ustring& backup_uri, std::string& backup_path, const SlotProgress& slot_progress);
   
 
-protected:
+private:
 
 
 #endif //SWIG
