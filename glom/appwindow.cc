@@ -1510,47 +1510,22 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
     return false;
 
   connection_pool->set_database(db_name);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
-#else
-  std::shared_ptr<std::exception> error;
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   {
     connection_pool->set_ready_to_connect(); //This has succeeded already.
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect();
-#else
-    std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect(error);
-    if(!error.get())
-    {
-#endif // GLIBMM_EXCEPTIONS_ENABLED
-      std::cerr << G_STRFUNC << ": Failed because database exists already." << std::endl;
+    std::cerr << G_STRFUNC << ": Failed because database exists already." << std::endl;
 
-      return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
-#ifndef GLIBMM_EXCEPTIONS_ENABLED
-    }
-#endif // !GLIBMM_EXCEPTIONS_ENABLED
+    return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const ExceptionConnection& ex)
   {
-#else
-  if(error.get())
-  {
-    const auto exptr = dynamic_cast<ExceptionConnection*>(error.get());
-    if(exptr)
+    if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
     {
-      const ExceptionConnection& ex = *exptr;
-#endif // GLIBMM_EXCEPTIONS_ENABLED
-      if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
-      {
-        user_cancelled = true; //Eventually, the user will cancel after retrying.
-        std::cerr << G_STRFUNC << ": Failed because connection to server failed, without specifying a database." << std::endl;
-        return false;
-      }
-#ifndef GLIBMM_EXCEPTIONS_ENABLED
+      user_cancelled = true; //Eventually, the user will cancel after retrying.
+      std::cerr << G_STRFUNC << ": Failed because connection to server failed, without specifying a database." << std::endl;
+      return false;
     }
-#endif // !GLIBMM_EXCEPTIONS_ENABLED
 
     //Otherwise continue, because we _expected_ connect() to fail if the db does not exist yet.
   }
@@ -1577,26 +1552,13 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
   BusyCursor busy_cursor(this);
 
   std::shared_ptr<SharedConnection> sharedconnection;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     sharedconnection = connection_pool->connect();
-#else
-    sharedconnection = connection_pool->connect(error);
-    if(!error.get())
-#endif // GLIBMM_EXCEPTIONS_ENABLED
-      connection_pool->set_database(db_name); //The database was successfully created, so specify it when connecting from now on.
+    connection_pool->set_database(db_name); //The database was successfully created, so specify it when connecting from now on.
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const ExceptionConnection& ex)
   {
-#else
-  if(error.get())
-  {
-    const auto ex = *error.get();
-#endif // GLIBMM_EXCEPTIONS_ENABLED
     std::cerr << G_STRFUNC << ": Failed to connect to the newly-created database." << std::endl;
     return false;
   }
@@ -1692,47 +1654,22 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
     return false;
 
   connection_pool->set_database(db_name);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
-#else
-  std::shared_ptr<std::exception> error;
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   {
     connection_pool->set_ready_to_connect(); //This has succeeded already.
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect();
-#else
-    std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect(error);
-    if(!error.get())
-    {
-#endif // GLIBMM_EXCEPTIONS_ENABLED
-      std::cerr << G_STRFUNC << ": Failed because database exists already." << std::endl;
+    std::cerr << G_STRFUNC << ": Failed because database exists already." << std::endl;
 
-      return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
-#ifndef GLIBMM_EXCEPTIONS_ENABLED
-    }
-#endif // !GLIBMM_EXCEPTIONS_ENABLED
+    return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const ExceptionConnection& ex)
   {
-#else
-  if(error.get())
-  {
-    const auto exptr = dynamic_cast<ExceptionConnection*>(error.get());
-    if(exptr)
+    if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
     {
-      const ExceptionConnection& ex = *exptr;
-#endif // GLIBMM_EXCEPTIONS_ENABLED
-      if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
-      {
-        user_cancelled = true; //Eventually, the user will cancel after retrying.
-        std::cerr << G_STRFUNC << ": Failed because connection to server failed, without specifying a database." << std::endl;
-        return false;
-      }
-#ifndef GLIBMM_EXCEPTIONS_ENABLED
+      user_cancelled = true; //Eventually, the user will cancel after retrying.
+      std::cerr << G_STRFUNC << ": Failed because connection to server failed, without specifying a database." << std::endl;
+      return false;
     }
-#endif // !GLIBMM_EXCEPTIONS_ENABLED
 
     //Otherwise continue, because we _expected_ connect() to fail if the db does not exist yet.
   }

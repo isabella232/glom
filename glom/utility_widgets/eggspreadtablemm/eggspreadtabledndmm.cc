@@ -46,10 +46,8 @@ static gboolean EggSpreadTableDnd_signal_widget_drop_possible_callback(EggSpread
   // Do not try to call a signal on a disassociated wrapper.
   if(Glib::ObjectBase::_get_current_wrapper((GObject*) self))
   {
-    #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-    #endif //GLIBMM_EXCEPTIONS_ENABLED
       if(sigc::slot_base *const slot = Glib::SignalProxyNormal::data_to_slot(data))
       {
         bool cpp_drop_possible = false;
@@ -57,13 +55,11 @@ static gboolean EggSpreadTableDnd_signal_widget_drop_possible_callback(EggSpread
         *drop_possible = cpp_drop_possible;
         return result;
       }
-    #ifdef GLIBMM_EXCEPTIONS_ENABLED
     }
     catch(...)
     {
       Glib::exception_handlers_invoke();
     }
-    #endif //GLIBMM_EXCEPTIONS_ENABLED
   }
 
   typedef gboolean RType;
@@ -78,10 +74,8 @@ static gboolean EggSpreadTableDnd_signal_widget_drop_possible_notify_callback(Eg
   // Do not try to call a signal on a disassociated wrapper.
   if(Glib::ObjectBase::_get_current_wrapper((GObject*) self))
   {
-    #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-    #endif //GLIBMM_EXCEPTIONS_ENABLED
       if(sigc::slot_base *const slot = Glib::SignalProxyNormal::data_to_slot(data))
       {
         bool cpp_drop_possible = false;
@@ -89,13 +83,11 @@ static gboolean EggSpreadTableDnd_signal_widget_drop_possible_notify_callback(Eg
         *drop_possible = cpp_drop_possible;
         return result;
       }
-    #ifdef GLIBMM_EXCEPTIONS_ENABLED
     }
     catch(...)
     {
       Glib::exception_handlers_invoke();
     }
-    #endif //GLIBMM_EXCEPTIONS_ENABLED
   }
 
   typedef gboolean RType;
@@ -160,10 +152,8 @@ gboolean SpreadTableDnd_Class::widget_drop_possible_callback(EggSpreadTableDnd* 
     CppObjectType *const obj = dynamic_cast<CppObjectType* const>(obj_base);
     if(obj) // This can be NULL during destruction.
     {
-      #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try // Trap C++ exceptions which would normally be lost because this is a C callback.
       {
-      #endif //GLIBMM_EXCEPTIONS_ENABLED
         // Call the virtual member method, which derived classes might override.
         bool cpp_drop_possible = false;
         const bool result = 
@@ -171,13 +161,11 @@ gboolean SpreadTableDnd_Class::widget_drop_possible_callback(EggSpreadTableDnd* 
             cpp_drop_possible));
         *drop_possible = cpp_drop_possible;
         return result;
-      #ifdef GLIBMM_EXCEPTIONS_ENABLED
       }
       catch(...)
       {
         Glib::exception_handlers_invoke();
       }
-      #endif //GLIBMM_EXCEPTIONS_ENABLED
     }
   }
 

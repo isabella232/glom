@@ -873,7 +873,6 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
   Glib::RefPtr<Gio::FileOutputStream> stream;
 
   //Create the file if it does not already exist:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     if(file->query_exists())
@@ -903,13 +902,6 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
   }
   catch(const Gio::Error& ex)
   {
-#else
-  std::shared_ptr<Gio::Error> error;
-  stream.create(error);
-  if(error.get())
-  {
-    const auto ex = *error.get();
-#endif
     // If the operation was not successful, print the error and abort
     std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): exception while creating file." << std::endl
       << "  file uri:" << file_uri << std::endl
@@ -924,7 +916,6 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
 
   gssize bytes_written = 0;
   const auto contents_size = contents.size();
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     //Write the data to the output uri
@@ -932,12 +923,6 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
   }
   catch(const Gio::Error& ex)
   {
-#else
-  bytes_written = stream->write(contents.data(), contents_size, error);
-  if(error.get())
-  {
-    auto ex = *error.get();
-#endif
     // If the operation was not successful, print the error and abort
     std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): exception while writing to file." << std::endl
       << "  file uri:" << file_uri << std::endl
