@@ -25,7 +25,6 @@
 #include <libglom/data_structure/numeric_format.h>
 
 #include <libglom/data_structure/layout/layoutitem_field.h>
-#include <libxml++/libxml++.h>
 
 namespace Glom
 {
