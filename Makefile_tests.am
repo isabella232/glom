@@ -26,6 +26,7 @@ check_PROGRAMS =						\
 	tests/test_document_change			\
 	tests/test_document_autosave			\
 	tests/test_field_file_format			\
+	tests/test_layout_item_field \
 	tests/test_parsing_time			\
 	tests/test_signal_reemit			\
 	tests/python/test_load_python_library\
@@ -67,6 +68,7 @@ TESTS =	tests/test_document_load	\
 	tests/test_document_autosave	\
 	tests/test_field_file_format \
 	tests/test_field_file_format_in_locales.sh \
+	tests/test_layout_item_field \
 	tests/test_parsing_time	\
 	tests/test_signal_reemit \
 	tests/test_dtd_file_validation.sh \
@@ -179,6 +181,10 @@ tests_test_field_file_format_SOURCES = tests/test_field_file_format.cc \
 	$(sources_test_utils_images)
 tests_test_field_file_format_LDADD = $(tests_ldadd) $(GDKMM_LIBS)
 tests_test_field_file_format_CPPFLAGS = $(tests_cppflags)  $(GDKMM_CFLAGS) $(glom_test_image_defines)
+
+tests_test_layout_item_field_SOURCES = tests/test_layout_item_field.cc
+tests_test_layout_item_field_LDADD = $(tests_ldadd)
+tests_test_layout_item_field_CPPFLAGS = $(tests_cppflags)
 
 tests_test_parsing_time_SOURCES = tests/test_parsing_time.cc
 tests_test_parsing_time_LDADD = $(tests_ldadd)

@@ -339,8 +339,10 @@ void LayoutItem_Field::set_title_custom(const std::shared_ptr<CustomTitle>& titl
 
 bool LayoutItem_Field::is_same_field(const std::shared_ptr<const LayoutItem_Field>& field) const
 {
-  const auto uses_a = this;
-  const auto uses_b = &(*field);
+  //Don't use auto here because we really want to call
+  //UsesRelationship::operator==(), not LayoutItem_Field::operator==().
+  const UsesRelationship* uses_a = this;
+  const UsesRelationship* uses_b = &(*field);
   if(!uses_a || !uses_b)
     return false; //Shouldn't happen.
     
