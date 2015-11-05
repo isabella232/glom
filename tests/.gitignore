@@ -20,6 +20,7 @@
 /test_fake_connection
 /test_glade_derived_instantiation
 /test_glom_date_in_locales.sh
+/test_layout_item_field
 /test_script_check_for_problems
 /test_selfhosting_new_empty
 /test_selfhosting_new_empty_change_sysprefs
