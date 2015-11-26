@@ -1,3 +1,11 @@
+1.31.1 (unstable):
+
+* Build: Convert the source code to C++11.
+* Build: Remove unused source code.
+* Build: Use libxml++-3.0 instead of libxml++-2.6.
+* Build: Improvements to how we find and use boost libraries.
+  (Murray Cumming)
+
 1.30.0 (stable):
 
 * Dialog_FieldDefinition: Show self-triggering lookups as grayed-out.
