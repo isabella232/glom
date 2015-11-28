@@ -15,7 +15,10 @@
     </p>
   </description>
   <screenshots>
-    <screenshot type="default">http://www.glom.org/wiki/images/7/7b/Small_glom_data_details.png</screenshot>
+    <screenshot type="default">
+      <image>http://www.glom.org/wiki/images/7/7b/Small_glom_data_details.png</image>
+      <caption>The details view showing the whole record</caption>
+      </screenshot>
   </screenshots>
   <url type="homepage">http://www.glom.org/</url>
   <updatecontact>murrayc_at_murrayc.com</updatecontact>
