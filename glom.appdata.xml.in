@@ -2,30 +2,30 @@
 <!-- Copyright 2013 Murray Cumming <murrayc@murrayc.com> -->
 <application>
   <id type="desktop">glom.desktop</id>
-  <name>Glom</name>
-  <summary>Database user interface</summary>
+  <_name>Glom</_name>
+  <_summary>Database user interface</_summary>
   <metadata_license>CC0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <description>
-    <p>
+    <_p>
       With Glom you can design database systems - the database and the user interface.
-    </p>
-    <p>
+    </_p>
+    <_p>
       Glom has high-level features such as relationships, lookups, related fields, related records, calculated fields, drop-down choices, searching, reports, users and groups. It has simple Numeric, Text, Date, Time, Boolean, and Image field types.
-    </p>
+    </_p>
   </description>
   <screenshots>
     <screenshot type="default">
       <image>http://www.glom.org/screenshots/glom_data_details.png</image>
-      <caption>The details view showing the whole record</caption>
+      <_caption>The details view showing the whole record</_caption>
     </screenshot>
     <screenshot>
       <image>http://www.glom.org/screenshots/glom_data_list.png</image>
-      <caption>The list view showing all records in the table</caption>
+      <_caption>The list view showing all records in the table</_caption>
     </screenshot>
     <screenshot>
       <image>http://www.glom.org/screenshots/glom_data_details_related.png</image>
-      <caption>The details view showing records from a related table</caption>
+      <_caption>The details view showing records from a related table</_caption>
     </screenshot>
   </screenshots>
   <url type="homepage">http://www.glom.org/</url>
