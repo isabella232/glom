@@ -17,5 +17,11 @@
   </screenshots>
   <url type="homepage">http://www.glom.org/</url>
   <updatecontact>murrayc_at_murrayc.com</updatecontact>
+
+  <kudos>
+    <kudo>HiDpiIcon</kudo>
+    <kudo>ModernToolkit</kudo>
+    <kudo>UserDocs</kudo>
+  </kudos>
 </application>
 
