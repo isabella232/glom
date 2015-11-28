@@ -2,6 +2,8 @@
 <!-- Copyright 2013 Murray Cumming <murrayc@murrayc.com> -->
 <application>
   <id type="desktop">glom.desktop</id>
+  <name>Glom</name>
+  <summary>Database user interface</summary>
   <metadata_license>CC0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <description>
