@@ -18,7 +18,15 @@
     <screenshot type="default">
       <image>http://www.glom.org/screenshots/glom_data_details.png</image>
       <caption>The details view showing the whole record</caption>
-      </screenshot>
+    </screenshot>
+    <screenshot>
+      <image>http://www.glom.org/screenshots/glom_data_list.png</image>
+      <caption>The list view showing all records in the table</caption>
+    </screenshot>
+    <screenshot>
+      <image>http://www.glom.org/screenshots/glom_data_details_related.png</image>
+      <caption>The details view showing records from a related table</caption>
+    </screenshot>
   </screenshots>
   <url type="homepage">http://www.glom.org/</url>
   <updatecontact>murrayc_at_murrayc.com</updatecontact>
