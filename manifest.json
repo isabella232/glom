@@ -198,6 +198,17 @@
             ]
         },
         {
+            "name": "postgresql",
+            "config-opts": [ "--disable-documentation"],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://ftp.postgresql.org/pub/source/v9.4.5/postgresql-9.4.5.tar.gz",
+                    "sha256": "aa1d7918ae782a0fc5e1886fd463fc8903e5ffc3eb6d3b51500065aec988a210"
+                }
+            ]
+        },
+        {
             "name": "libgda-5.0",
             "config-opts": [ "--disable-documentation" "--disable-introspection" ],
             "sources": [
