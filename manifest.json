@@ -248,7 +248,11 @@
         },
         {
             "name": "glom",
-            "build-options" : { "cxxflags": "-O2 -g -std=c++11" },
+            "build-options" : { "cxxflags": "-O2 -g -std=c++11",
+                "env": {
+                    "PYTHON": "python3.3"
+                }
+            },
             "sources": [
                 {
                     "type": "archive",
