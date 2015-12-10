@@ -213,6 +213,17 @@
             ]
         },
         {
+            "name": "mysql",
+            "cmake": true,
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.28.tar.gz",
+                    "sha256": "217cd96921abdd709b9b4ff3ce2af4cbd237de43679cf19385d19df03a037b21"
+                }
+            ]
+        },
+        {
             "name": "libgda-5.0",
             "config-opts": [ "--disable-documentation" "--disable-introspection" ],
             "sources": [
