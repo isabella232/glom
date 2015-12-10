@@ -108,7 +108,7 @@
         },
         {
             "name": "avahi",
-            "config-opts": [ "--disable-documentation" ],
+            "config-opts": [ "--disable-documentation" "--with-distro=none" ],
             "sources": [
                 {
                     "type": "archive",
