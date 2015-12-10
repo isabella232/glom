@@ -1,0 +1,27 @@
+diff -u -r avahi-0.6.31/avahi-ui/Makefile.am avahi-0.6.31_patched_by_murrayc/avahi-ui/Makefile.am
+--- avahi-0.6.31/avahi-ui/Makefile.am	2012-02-14 23:22:16.728104433 +0100
++++ avahi-0.6.31_patched_by_murrayc/avahi-ui/Makefile.am	2015-12-10 18:21:06.042972665 +0100
+@@ -15,7 +15,7 @@
+ # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+ # USA.
+ 
+-AM_CFLAGS=-I$(top_srcdir) -DG_DISABLE_DEPRECATED=1 -DGDK_DISABLE_DEPRECATED=1 -DGTK_DISABLE_DEPRECATED=1
++AM_CFLAGS=-I$(top_srcdir)
+ 
+ # This cool debug trap works on i386/gcc only
+ AM_CFLAGS+='-DDEBUG_TRAP=__asm__("int $$3")'
+Only in avahi-0.6.31_patched_by_murrayc/avahi-ui: Makefile.am~
+diff -u -r avahi-0.6.31/avahi-ui/Makefile.in avahi-0.6.31_patched_by_murrayc/avahi-ui/Makefile.in
+--- avahi-0.6.31/avahi-ui/Makefile.in	2012-02-14 23:36:37.726062616 +0100
++++ avahi-0.6.31_patched_by_murrayc/avahi-ui/Makefile.in	2015-12-10 18:21:18.822982661 +0100
+@@ -464,8 +464,7 @@
+ top_srcdir = @top_srcdir@
+ 
+ # This cool debug trap works on i386/gcc only
+-AM_CFLAGS = -I$(top_srcdir) -DG_DISABLE_DEPRECATED=1 \
+-	-DGDK_DISABLE_DEPRECATED=1 -DGTK_DISABLE_DEPRECATED=1 \
++AM_CFLAGS = -I$(top_srcdir) \
+ 	'-DDEBUG_TRAP=__asm__("int $$3")' $(am__append_1)
+ pkglibdatadir = $(libdir)/avahi
+ desktopdir = $(datadir)/applications
+Only in avahi-0.6.31_patched_by_murrayc/avahi-ui: Makefile.in~

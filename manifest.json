@@ -108,12 +108,16 @@
         },
         {
             "name": "avahi",
-            "config-opts": [ "--disable-documentation" "--with-distro=none" ],
+            "config-opts": [ "--disable-documentation" "--with-distro=none" "--disable-qt3" "--disable-qt4" "--disable-libdaemon" "--disable-python" "--disable-mono"],
             "sources": [
                 {
                     "type": "archive",
                     "url": "http://www.avahi.org/download/avahi-0.6.31.tar.gz",
                     "sha256": "8372719b24e2dd75de6f59bb1315e600db4fd092805bd1201ed0cb651a2dab48"
+                }
+                {
+                    "type": "patch",
+                    "path": "avahi_gtk_undisable_deprecated.patch"
                 }
             ]
         },
