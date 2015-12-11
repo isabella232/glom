@@ -247,6 +247,28 @@
             ]
         },
         {
+            "name": "boost-python",
+            "config-opts": [ "--with-libraries=python" ],
+            "build-options" : { "cxxflags": "-O2 -g -std=c++11" },
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.gz?r=http%3A%2F%2Fwww.boost.org%2Fusers%2Fhistory%2Fversion_1_59_0.html&ts=1449780852&use_mirror=netix",
+                    "sha256": "47f11c8844e579d02691a607fbd32540104a9ac7a2534a8ddaef50daf502baac"
+                }
+                {
+                    "type": "file",
+                    "path": "boost_python_configure",
+                    "dest-filename": "configure"
+                }
+                                {
+                    "type": "file",
+                    "path": "boost_python_Makefile",
+                    "dest-filename": "Makefile"
+                }
+            ]
+        },
+        {
             "name": "glom",
             "build-options" : { "cxxflags": "-O2 -g -std=c++11",
                 "env": {
