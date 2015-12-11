@@ -224,6 +224,17 @@
             ]
         },
         {
+            "name": "python",
+            "config-opts": [ "--enable-shared" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://www.python.org/ftp/python/3.5.1/Python-3.5.1.tar.xz",
+                    "sha256": "c6d57c0c366d9060ab6c0cdf889ebf3d92711d466cc0119c441dbf2746f725c9"
+                }
+            ]
+        },
+        {
             "name": "libgda-5.0",
             "config-opts": [ "--disable-documentation" "--disable-introspection" ],
             "sources": [
@@ -272,7 +283,7 @@
             "name": "glom",
             "build-options" : { "cxxflags": "-O2 -g -std=c++11",
                 "env": {
-                    "PYTHON": "python3.3"
+                    "PYTHON": "python3.5"
                 }
             },
             "sources": [
