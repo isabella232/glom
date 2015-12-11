@@ -1,3 +1,8 @@
+1.30.1 (stable):
+
+* Build: Improvements to how we find and use boost libraries.
+  (Murray Cumming)
+
 1.30.0 (stable):
 
 * Dialog_FieldDefinition: Show self-triggering lookups as grayed-out.
