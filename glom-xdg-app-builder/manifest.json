@@ -225,7 +225,7 @@
         },
         {
             "name": "libgda-5.0",
-            "config-opts": [ "--disable-documentation" "--enable-gda-gi" ],
+            "config-opts": [ "--disable-documentation" "--enable-gda-gi" "--enable-gi-system-install=no" ],
             "sources": [
                 {
                     "type": "archive",
