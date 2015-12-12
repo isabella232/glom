@@ -1,0 +1,12 @@
+diff -u -r Python-3.5.1-orig/Makefile.pre.in Python-3.5.1/Makefile.pre.in
+--- Python-3.5.1-orig/Makefile.pre.in	2015-12-12 15:12:05.504527644 +0100
++++ Python-3.5.1/Makefile.pre.in	2015-12-12 16:33:20.633015133 +0100
+@@ -65,7 +65,7 @@
+ # Shared libraries must be installed with executable mode on some systems;
+ # rather than figuring out exactly which, we always give them executable mode.
+ # Also, making them read-only seems to be a good idea...
+-INSTALL_SHARED= ${INSTALL} -m 555
++INSTALL_SHARED= ${INSTALL} -m 755
+ 
+ MKDIR_P=	@MKDIR_P@
+ 

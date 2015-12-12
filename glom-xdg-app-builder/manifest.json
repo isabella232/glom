@@ -236,6 +236,10 @@
                     "type": "patch",
                     "path": "python_add_symlink.patch"
                 }
+                {
+                    "type": "patch",
+                    "path": "python_install_as_writable.patch"
+                }
             ]
         },
         {
