@@ -263,7 +263,7 @@
         },
         {
             "name": "boost-python",
-            "config-opts": [ "--with-libraries=python" ],
+            "config-opts": [ "--with-libraries=python" "--with-python-root=/app" "--with-python-version=3.5m" ],
             "build-options" : { "cxxflags": "-O2 -g -std=c++11" },
             "sources": [
                 {
