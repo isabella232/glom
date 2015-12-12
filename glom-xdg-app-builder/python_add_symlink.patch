@@ -1,0 +1,14 @@
+diff -u --recursive Python-3.5.1-orig/Makefile.pre.in Python-3.5.1/Makefile.pre.in
+--- Python-3.5.1-orig/Makefile.pre.in	2015-12-12 15:12:05.504527644 +0100
++++ Python-3.5.1/Makefile.pre.in	2015-12-12 15:22:32.903074948 +0100
+@@ -1354,7 +1354,8 @@
+ 		echo $(INSTALL_DATA) $$i $(INCLUDEPY); \
+ 		$(INSTALL_DATA) $$i $(DESTDIR)$(INCLUDEPY); \
+ 	done
+-	$(INSTALL_DATA) pyconfig.h $(DESTDIR)$(CONFINCLUDEPY)/pyconfig.h
++	$(INSTALL_DATA) pyconfig.h $(DESTDIR)$(CONFINCLUDEPY)/pyconfig.h; \
++	ln -s $(INCLUDEPY) $(INCLUDEDIR)/python3.5
+ 
+ # Install the library and miscellaneous stuff needed for extending/embedding
+ # This goes into $(exec_prefix)
+Only in Python-3.5.1: Makefile.pre.in~

@@ -232,6 +232,10 @@
                     "url": "https://www.python.org/ftp/python/3.5.1/Python-3.5.1.tar.xz",
                     "sha256": "c6d57c0c366d9060ab6c0cdf889ebf3d92711d466cc0119c441dbf2746f725c9"
                 }
+                {
+                    "type": "patch",
+                    "path": "python_add_symlink.patch"
+                }
             ]
         },
         {
