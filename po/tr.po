@@ -3,22 +3,25 @@
 # This file is distributed under the same license as the glom package.
 # Evren Alim <gunesingolgesi@gunesingolgesi.com>, 2004.
 # Muhammet Kara <muhammetk@gmail.com>, 2014.
+# Necdet Yücel <necdetyucel@gmail.com>, 2015.
+# Simge Sezgin <simgesezgin88@gmail.com>, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-12-03 09:27+0000\n"
-"PO-Revision-Date: 2014-12-13 13:57+0200\n"
-"Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&ke"
+"ywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-01-12 06:46+0000\n"
+"PO-Revision-Date: 2015-01-26 18:59+0000\n"
+"Last-Translator: Simge Sezgin <simgesezgin88@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1422298787.000000\n"
 
 #: ../glom/application.cc:160 ../glom/glom_create_from_example.cc:259
 #: ../glom/glom_export_po.cc:112 ../glom/glom_export_po_all.cc:100
@@ -38,21 +41,22 @@ msgstr ""
 #: ../glom/application.cc:202 ../glom/glom_create_from_example.cc:294
 #: ../glom/glom_export_po.cc:162
 msgid "Glom: The file does not exist."
-msgstr ""
+msgstr "Glom: Dosya mevcut değil."
 
 #: ../glom/application.cc:212 ../glom/glom_create_from_example.cc:304
 #: ../glom/glom_export_po.cc:172
 msgid "Glom: The file path is a directory instead of a file."
-msgstr ""
+msgstr "Glom: Dosya yolu dosya yerine bir dizindir."
 
 #: ../glom/appwindow.cc:175
 msgid "Glom: Generating Encryption Certificates"
-msgstr ""
+msgstr "Glom: Şifreleme Sertifikaları Oluşturuluyor"
 
 #: ../glom/appwindow.cc:176
 msgid ""
 "Please wait while Glom prepares your system for publishing over the network."
 msgstr ""
+"Glom sisteminizi ağ üzerinden yayımlamak için hazırlanırken lütfen bekleyin."
 
 #: ../glom/appwindow.cc:465
 msgid "A Database GUI"
@@ -65,7 +69,7 @@ msgstr "© 2000-2011 Murray Cumming, Openismus GmbH"
 #. TODO: Put this in the generic bakery code.
 #: ../glom/appwindow.cc:577 ../glom/appwindow.cc:586
 msgid "Open Failed"
-msgstr ""
+msgstr "Açma İşlemi Başarısız"
 
 #: ../glom/appwindow.cc:578
 msgid "The document could not be found."
@@ -76,6 +80,8 @@ msgid ""
 "The document could not be opened because it was created or modified by a "
 "newer version of Glom."
 msgstr ""
+"Belge, Glom uygulamasının daha yeni sürümü ile oluşturulduğu ya da "
+"değiştirildiğinden dolayı açılamadı."
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
@@ -91,63 +97,78 @@ msgid ""
 "incorrect user name or password, or maybe the postgres database server is "
 "not running."
 msgstr ""
+"Glom veritabanı sunucusuna bağlanamadı. Belki yanlış bir kullanıcı adı ya da "
+"parola girdiniz ya da postgres veritabanı sunucusu çalışmıyor."
 
 #: ../glom/appwindow.cc:811
 msgid ""
 "The file cannot be opened because this version of Glom does not support self-"
 "hosting of databases."
 msgstr ""
+"Glom uygulamasının bu sürümü veritabanlarının kendi istemcilerini "
+"desteklemediğinden dolayı dosya açılamadı."
 
 #: ../glom/appwindow.cc:816 ../glom/appwindow.cc:825
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "PostgreSQL databases."
 msgstr ""
+"Glom uygulamasının bu sürümü PostgreSQL veritabanını desteklemediğinden "
+"dolayı dosya açılamadı."
 
 #: ../glom/appwindow.cc:833
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "SQLite databases."
 msgstr ""
+"Glom uygulamasının bu sürümü SQLite veritabanını desteklemediğinden dolayı "
+"dosya açılamadı."
 
 #. Warn the user.
 #: ../glom/appwindow.cc:851
 msgid "File Uses Unsupported Database Backend"
-msgstr ""
+msgstr "Dosya Desteklenmeyen Veritabanı Art Alan Çalışan Uygulamasını Kullanır"
 
 #: ../glom/appwindow.cc:917
 msgid "Creating From Example File"
-msgstr ""
+msgstr "Örnek Dosyadan Oluşturuluyor"
 
 #: ../glom/appwindow.cc:918
 msgid ""
 "To use this example file you must save an editable copy of the file. A new "
 "database will also be created on the server."
 msgstr ""
+"Bu örnek dosyayı kullanmak için dosyanın düzenlenebilir bir kopyasını "
+"kaydetmelisiniz. Ayrıca sunucu üzerinde yeni veritabanı da oluşturulacaktır."
 
 #: ../glom/appwindow.cc:922
 msgid "Creating From Backup File"
-msgstr ""
+msgstr "Yedekleme Dosyalarından Oluşturuluyor"
 
 #: ../glom/appwindow.cc:923
 msgid ""
 "To use this backup file you must save an editable copy of the file. A new "
 "database will also be created on the server."
 msgstr ""
+"Bu yedekleme dosyalarını kullanmak için dosyanın düzenlenebilir bir "
+"kopyasını kaydetmelisiniz. Ayrıca sunucu üzerinde yeni veritabanıda "
+"oluşturulacaktır."
 
 #: ../glom/appwindow.cc:984
 msgid "Opening Read-Only File."
-msgstr ""
+msgstr "Salt Okunur Dosya Açılıyor."
 
 #: ../glom/appwindow.cc:985
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes."
 msgstr ""
+"Dosya salt okunurdur, yani, tasarım değişiklikleri yapmak için Geliştirici "
+"kipine giriş yapamayacaksınız."
 
-#: ../glom/appwindow.cc:987 ../glom/appwindow.cc:2149
-#: ../glom/appwindow.cc:2426 ../glom/appwindow.cc:2463
-#: ../glom/appwindow.cc:2839 ../glom/base_db_table_data.cc:393
+#: ../glom/appwindow.cc:987 ../glom/appwindow.cc:2173
+#: ../glom/appwindow.cc:2450 ../glom/appwindow.cc:2487
+#: ../glom/appwindow.cc:2863 ../glom/base_db_table_data.cc:393
 #: ../glom/box_withbuttons.cc:36 ../glom/box_withbuttons.cc:50
 #: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:807
 #: ../glom/filechooser_export.cc:39 ../glom/frame_glom.cc:513
@@ -206,62 +227,65 @@ msgstr "_Vazgeç"
 
 #: ../glom/appwindow.cc:988
 msgid "Continue without Developer Mode"
-msgstr ""
+msgstr "Geliştirici Kipi Olmaksızın Devam Et"
 
 #. The connection to the server is OK, but the database is not there yet.
 #: ../glom/appwindow.cc:1047
 msgid "Database Not Found On Server"
-msgstr ""
+msgstr "Sunucu Üzerinde Veritabanı Bulunamadı"
 
 #: ../glom/appwindow.cc:1047
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
 msgstr ""
+"Sunucu üzerinde veritabanı bulunamadı. Lütfen sistem yöneticinize danışın."
 
 #. std::cerr might show some hints, but we don't want to confront the user with them:
 #. TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
 #: ../glom/appwindow.cc:1057
 msgid "Problem Loading Document"
-msgstr ""
+msgstr "Belge Yükleme Sorunu"
 
 #: ../glom/appwindow.cc:1057
 msgid "Glom could not load the document."
-msgstr ""
+msgstr "Glom belge yükleyemedi."
 
-#: ../glom/appwindow.cc:1499
+#: ../glom/appwindow.cc:1505
 msgid "Creating Glom database from example file."
-msgstr ""
+msgstr "Örnek dosyadan Glom veritabanı oluşturuluyor."
 
-#: ../glom/appwindow.cc:1685
+#: ../glom/appwindow.cc:1691
 msgid "Creating Glom database from backup file."
-msgstr ""
+msgstr "Yedek dosyadan Glom veritabanı oluşturuluyor."
 
-#: ../glom/appwindow.cc:1769
+#: ../glom/appwindow.cc:1775
 msgid ""
 "Glom could not create the new database. Maybe you do not have the necessary "
 "access rights. Please contact your system administrator."
 msgstr ""
+"Glom yeni veritabanı oluşturamadı. Belki gerekli erişim haklarına sahip "
+"değilsinizdir. Lütfen sistem yöneticinize başvurun."
 
-#: ../glom/appwindow.cc:1770
+#: ../glom/appwindow.cc:1776
 msgid "Database Creation Failed"
-msgstr ""
+msgstr "Veritabanı Oluşturma İşlemi Başarısız Oldu"
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/appwindow.cc:2120 ../glom/bakery/appwindow_withdoc.cc:236
-#: ../glom/bakery/appwindow_withdoc.cc:280
+#: ../glom/appwindow.cc:2144 ../glom/bakery/appwindow_withdoc.cc:229
+#: ../glom/bakery/appwindow_withdoc.cc:273
 msgid "Save failed."
 msgstr "Kaydetme başarısız oldu."
 
-#: ../glom/appwindow.cc:2120
+#: ../glom/appwindow.cc:2144
 msgid "There was an error while saving the example file."
-msgstr ""
+msgstr "Örnek dosya kaydedilirken bir hata oluştu."
 
-#: ../glom/appwindow.cc:2135 ../glom/appwindow.cc:2140
+#: ../glom/appwindow.cc:2159 ../glom/appwindow.cc:2164
 msgid "Save Document"
 msgstr "Belgeyi Kaydet"
 
-#: ../glom/appwindow.cc:2150 ../glom/appwindow.cc:2427
+#: ../glom/appwindow.cc:2174 ../glom/appwindow.cc:2451
 #: ../glom/bakery/dialog_offersave.cc:57
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:40
 #: ../glom/utility_widgets/imageglom.cc:688
@@ -271,101 +295,108 @@ msgid "_Save"
 msgstr "_Kaydet"
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2227
+#: ../glom/appwindow.cc:2251
 msgid "Read-only File."
-msgstr ""
+msgstr "Salt-Okunur Dosya."
 
-#: ../glom/appwindow.cc:2227
+#: ../glom/appwindow.cc:2251
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
 msgstr ""
+"Varolan dosyanın üzerine yazamazsınız, çünkü yeterli erişim haklarına sahip "
+"değilsiniz."
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2241
+#: ../glom/appwindow.cc:2265
 msgid "Read-only Directory."
-msgstr ""
+msgstr "Salt-Okunur Dizin."
 
-#: ../glom/appwindow.cc:2241
+#: ../glom/appwindow.cc:2265
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
 msgstr ""
+"Bu dizinde dosya oluşturamazsınız, çünkü yeterli erişim haklarına sahip "
+"değilsiniz."
 
-#: ../glom/appwindow.cc:2258
+#: ../glom/appwindow.cc:2282
 msgid "Database Title missing"
-msgstr ""
+msgstr "Eksik Veritabanı Başlığı"
 
-#: ../glom/appwindow.cc:2258
+#: ../glom/appwindow.cc:2282
 msgid "You must specify a title for the new database."
-msgstr ""
+msgstr "Yeni veritabanı için bir başlık belirtmelisiniz."
 
-#: ../glom/appwindow.cc:2292 ../glom/frame_glom.cc:1907
+#: ../glom/appwindow.cc:2316 ../glom/frame_glom.cc:1907
 msgid "Directory Already Exists"
-msgstr ""
+msgstr "Dizin Zaten Mevcut"
 
-#: ../glom/appwindow.cc:2292 ../glom/frame_glom.cc:1908
+#: ../glom/appwindow.cc:2316 ../glom/frame_glom.cc:1908
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
 "filename to use a new directory instead."
 msgstr ""
+"Yeni veritabanı dosyaları için oluşturulması gereken dizinle aynı isimde bir "
+"dizin var. Bunun yerine yeni bir dizin kullanmak için farklı bir dosya adı "
+"belirtmelisiniz."
 
 #. This actually creates the directory:
-#: ../glom/appwindow.cc:2425
+#: ../glom/appwindow.cc:2449
 msgid "Save Backup"
-msgstr ""
+msgstr "Yedeklemeyi Kaydet"
 
-#: ../glom/appwindow.cc:2441
+#: ../glom/appwindow.cc:2465
 msgid "Exporting backup"
-msgstr ""
+msgstr "Yedek Dışa Aktarılıyor"
 
-#: ../glom/appwindow.cc:2447
+#: ../glom/appwindow.cc:2471
 msgid "Export Backup failed."
-msgstr ""
+msgstr "Yedek Dışa Aktarma işlemi başarısız oldu."
 
-#: ../glom/appwindow.cc:2447
+#: ../glom/appwindow.cc:2471
 msgid "There was an error while exporting the backup."
-msgstr ""
+msgstr "Yedek dışa aktarılırken bir hata oluştu."
 
-#: ../glom/appwindow.cc:2453
+#: ../glom/appwindow.cc:2477
 msgid "Choose a backup file"
-msgstr ""
+msgstr "Bir yedek dosya seç"
 
-#: ../glom/appwindow.cc:2458
+#: ../glom/appwindow.cc:2482
 msgid ".tar.gz Backup files"
-msgstr ""
+msgstr ".tar.gz Yedek dosyalar"
 
-#: ../glom/appwindow.cc:2464
+#: ../glom/appwindow.cc:2488
 msgid "Restore"
-msgstr ""
+msgstr "Geri Yükle"
 
-#: ../glom/appwindow.cc:2489
+#: ../glom/appwindow.cc:2513
 msgid "Restoring backup"
-msgstr ""
+msgstr "Yedek geri yükleniyor"
 
-#: ../glom/appwindow.cc:2496
+#: ../glom/appwindow.cc:2520
 msgid "Restore Backup failed."
-msgstr ""
+msgstr "Yedek Geri Yükleme işlemi başarısız oldu."
 
-#: ../glom/appwindow.cc:2496
+#: ../glom/appwindow.cc:2520
 msgid "There was an error while extracting the backup."
-msgstr ""
+msgstr "Yedek açılırken bir hata oluştu."
 
-#: ../glom/appwindow.cc:2604
+#: ../glom/appwindow.cc:2628
 msgid " (read-only)"
-msgstr ""
+msgstr " (salt-okunur)"
 
-#: ../glom/appwindow.cc:2652 ../data/ui/operator/window_main.glade.h:2
+#: ../glom/appwindow.cc:2676 ../data/ui/operator/window_main.glade.h:2
 msgid "Processing"
-msgstr ""
+msgstr "İşleniyor"
 
-#: ../glom/appwindow.cc:2838
+#: ../glom/appwindow.cc:2862
 msgid "Open Document"
 msgstr "Belge Aç"
 
 #. Add a button for related record navigation:
-#: ../glom/appwindow.cc:2840 ../glom/dialog_existing_or_new.cc:808
+#: ../glom/appwindow.cc:2864 ../glom/dialog_existing_or_new.cc:808
 #: ../glom/frame_glom.cc:738 ../glom/onlineglom_strings.cc:32
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:34
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:44
@@ -379,15 +410,16 @@ msgstr "_Aç"
 msgid "Internal error"
 msgstr "İç hata"
 
-#: ../glom/base_db.cc:1388
+#: ../glom/base_db.cc:1393
 msgid "Value Is Not Unique"
 msgstr "Değer Özgün Değil"
 
-#: ../glom/base_db.cc:1388
+#: ../glom/base_db.cc:1393
 msgid ""
 "The field's value must be unique, but a record with this value already "
 "exists."
 msgstr ""
+"Alanın değeri eşsiz olmalıdır fakat bu değere sahip bir kayıt zaten var."
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
@@ -397,10 +429,12 @@ msgid ""
 "does not yet exist, and the relationship does not allow automatic creation "
 "of new related records."
 msgstr ""
+"İlgili kayıt henüz mevcut olmadığından dolayı bu alana veri girilemez ve "
+"ilişki ilgili yeni kaydın otomatik oluşmasına izin vermez."
 
 #: ../glom/base_db_table_data.cc:257
 msgid "Related Record Does Not Exist"
-msgstr ""
+msgstr "İlgili Kayıt Mevcut Değil"
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
@@ -410,10 +444,13 @@ msgid ""
 "does not yet exist, and the key in the related record is auto-generated and "
 "therefore can not be created with the key value in this record."
 msgstr ""
+"Bu alana veri girilemeyebilir çünkü ilgili kayıt henüz mevcut değil ve "
+"ilgili kayıttaki anahtar otomatik oluşturulur, bu nedenle veri bu kayıttaki "
+"anahtar ile oluşturulamaz."
 
 #: ../glom/base_db_table_data.cc:278
 msgid "Related Record Cannot Be Created"
-msgstr ""
+msgstr "İlgili Kayıt Oluşturulamaz"
 
 #. Ask the user for confirmation:
 #: ../glom/base_db_table_data.cc:389
@@ -421,10 +458,12 @@ msgid ""
 "Are you sure that you would like to delete this record? The data in this "
 "record will then be permanently lost."
 msgstr ""
+"Bu kaydı silmek istediğinizden emin misiniz? Sildiğinizde bu kayıttaki "
+"veriyi kalıcı olarak kaybedeceksiniz."
 
 #: ../glom/base_db_table_data.cc:390
 msgid "Delete record"
-msgstr ""
+msgstr "Kayıt Sil"
 
 #: ../glom/base_db_table_data.cc:394 ../glom/mode_data/box_data_details.cc:47
 #: ../glom/mode_design/users/dialog_groups_list.cc:85
@@ -469,7 +508,7 @@ msgstr "Ad"
 #. Don't allow a relationship to be added twice.
 #: ../glom/box_reports.cc:98
 msgid "This report already exists. Please choose a different report name"
-msgstr ""
+msgstr "Bu rapor zaten mevcut. Lütfen farklı bir rapor adı seçin"
 
 #. Title column:
 #: ../glom/box_reports.cc:100
@@ -486,12 +525,12 @@ msgstr "Başlık"
 
 #: ../glom/box_reports.cc:228
 msgid "Are you sure that you want to rename this report?"
-msgstr ""
+msgstr "Bu raporu yeniden adlandırmak istediğinizden emin misiniz?"
 
 #. TODO: Show old and new names?
 #: ../glom/box_reports.cc:229
 msgid "Rename Report"
-msgstr ""
+msgstr "Raporu Yeniden Adlandır"
 
 #. namespace Glom
 #: ../glom.desktop.in.in.h:1 ../data/ui/operator/window_main.glade.h:1
@@ -500,23 +539,22 @@ msgstr "Glom"
 
 #: ../glom.desktop.in.in.h:2
 msgid "A user-friendly database environment."
-msgstr ""
+msgstr "Kullanıcı dostu veritabanı ortamı."
 
 #: ../glom/dialog_connection.cc:205
 msgid "Not yet created."
-msgstr ""
+msgstr "Henüz oluşturulmadı."
 
 #: ../glom/dialog_existing_or_new.cc:51
 msgid "No sessions found on the local network."
-msgstr ""
+msgstr "Yerel ağda oturum bulunamadı."
 
 #: ../glom/dialog_existing_or_new.cc:119
 msgid "Open a Document"
-msgstr ""
+msgstr "Bir Belge Aç"
 
 #: ../glom/dialog_existing_or_new.cc:138
 #: ../glom/utility_widgets/imageglom.cc:958
-#| msgid "Select Field"
 msgid "Select File"
 msgstr "Dosya Seç"
 
@@ -526,53 +564,51 @@ msgstr "Yerel Ağ"
 
 #: ../glom/dialog_existing_or_new.cc:146
 msgid "Recently Opened"
-msgstr ""
+msgstr "Son Açılanlar"
 
 #: ../glom/dialog_existing_or_new.cc:187
 msgid "No recently used documents available."
-msgstr ""
+msgstr "Son kullanılan belge mevcut değil."
 
 #: ../glom/dialog_existing_or_new.cc:219
 msgid "New Empty Document"
-msgstr ""
+msgstr "Yeni Boş Belge"
 
 #: ../glom/dialog_existing_or_new.cc:222
 msgid "New From Template"
-msgstr ""
+msgstr "Şablondan Yeni"
 
 #. Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
 #: ../glom/dialog_existing_or_new.cc:724
 #, c-format
 msgid "%s on %s (via %s)"
-msgstr ""
+msgstr "%s makinesi üzerinde %s (%s yolu ile)"
 
 #: ../glom/filechooser_export.cc:31
 msgid "Export to File"
-msgstr ""
+msgstr "Dosyaya Dışa Aktar"
 
 #: ../glom/filechooser_export.cc:34
-#, fuzzy
 #| msgid "example data format"
 msgid "Define Data _Format"
-msgstr "örnek veri biçimi"
+msgstr "Tarih _Biçimini Tanımla"
 
 #: ../glom/filechooser_export.cc:40 ../data/ui/operator/window_main.glade.h:7
 msgid "_Export"
-msgstr ""
+msgstr "_Dışa Aktar"
 
 #: ../glom/frame_glom.cc:79
 msgid "Find All"
-msgstr ""
+msgstr "Tümünü Bul"
 
 #: ../glom/frame_glom.cc:100 ../glom/frame_glom.cc:104
-#, fuzzy
 #| msgid "None selected"
 msgid "No Table Selected"
-msgstr "Hiçbiri seçilmedi"
+msgstr "Seçilen Tablo Yok"
 
 #: ../glom/frame_glom.cc:111 ../data/ui/operator/dialog_find_id.glade.h:5
 msgid "Quick _search:"
-msgstr ""
+msgstr "Hızlı _arama:"
 
 #: ../glom/frame_glom.cc:122 ../glom/mode_data/box_data.cc:42
 #: ../glom/mode_data/datawidget/datawidget.cc:232
@@ -597,32 +633,36 @@ msgstr "Tablo yok"
 
 #: ../glom/frame_glom.cc:321
 msgid "This database has no tables yet."
-msgstr ""
+msgstr "Bu veritabanında henüz tablo yok."
 
 #. TODO: Obviously this could be possible but it would require a network protocol and some work:
 #: ../glom/frame_glom.cc:495
 msgid "Developer mode not available."
-msgstr ""
+msgstr "Geliştirici kipi kullanılabilir değil."
 
 #: ../glom/frame_glom.cc:496
 msgid ""
 "Developer mode is not available because the file was opened over the network "
 "from a running Glom. Only the original file may be edited."
 msgstr ""
+"Geliştirici kipi kullanılamıyor çünkü çalışan bir Glom uygulaması tarafından "
+"ağ üzerinde bir dosya açılmış. Sadece özgün dosya düzenlenebilir."
 
 #: ../glom/frame_glom.cc:502
 msgid "Developer mode not available"
-msgstr ""
+msgstr "Geliştirici kipi kullanılamıyor"
 
 #: ../glom/frame_glom.cc:503
 msgid ""
 "Developer mode is not available. Check that you have sufficient database "
 "access rights and that the glom file is not read-only."
 msgstr ""
+"Geliştirici kipi kullanılabilir değil. Yeterli veritabanı erişim haklarına "
+"sahipliğinizi ve glom dosyasının salt-okunurluğunu kontrol edin."
 
 #: ../glom/frame_glom.cc:510
 msgid "Saving in new document format"
-msgstr ""
+msgstr "Yeni belge biçiminde kaydediliyor"
 
 #: ../glom/frame_glom.cc:511
 msgid ""
@@ -630,6 +670,9 @@ msgid ""
 "changes to the document will mean that the document cannot be opened by some "
 "earlier versions of the application."
 msgstr ""
+"Belge uygulamanın daha eski bir sürümü ile oluşturuldu. Belge için "
+"değişiklik yapma uygulamanın bazı daha eski sürümleri ile açılamayacağı "
+"anlamına gelir."
 
 #: ../glom/frame_glom.cc:514
 msgid "Continue"
@@ -637,34 +680,35 @@ msgstr "Devam"
 
 #: ../glom/frame_glom.cc:550
 msgid "Export Not Allowed."
-msgstr ""
+msgstr "Dışa Aktarmaya İzin Verilmedi."
 
 #: ../glom/frame_glom.cc:550
 msgid ""
 "You do not have permission to view the data in this table, so you may not "
 "export the data."
 msgstr ""
+"Bu tablodaki verileri görüntüleme iznine sahip değilsiniz, yani verileri "
+"dışa aktaramazsınız."
 
 #: ../glom/frame_glom.cc:581
 msgid "Could Not Create File."
-msgstr ""
+msgstr "Dosya Oluşturulamadı."
 
 #: ../glom/frame_glom.cc:581
 msgid "Glom could not create the specified file."
-msgstr ""
+msgstr "Glom belirtilen dosyayı oluşturamadı."
 
 #: ../glom/frame_glom.cc:732
-#| msgid "Table:"
 msgid "No Table"
 msgstr "Tablo Yok"
 
 #: ../glom/frame_glom.cc:732
 msgid "There is no table in to which data could be imported."
-msgstr ""
+msgstr "Tabloya aktarılacak veri yok."
 
 #: ../glom/frame_glom.cc:736
 msgid "Open CSV Document"
-msgstr ""
+msgstr "CSV Belgesini Aç"
 
 #: ../glom/frame_glom.cc:740
 msgid "CSV files"
@@ -676,11 +720,13 @@ msgstr "Tüm dosyalar"
 
 #: ../glom/frame_glom.cc:821
 msgid "Share on the network"
-msgstr ""
+msgstr "Ağ üzerinde Paylaş"
 
 #: ../glom/frame_glom.cc:822
 msgid "This will allow other users on the network to use this database."
 msgstr ""
+"Bu seçenek ağ üzerindeki diğer kullanıcıların bu veritabanını kullanmalarına "
+"olanak sağlayacak."
 
 #: ../glom/frame_glom.cc:825
 msgid "_Share"
@@ -689,156 +735,163 @@ msgstr "_Paylaş"
 #. TODO: Warn about connected users if possible.
 #: ../glom/frame_glom.cc:927
 msgid "Stop sharing on the network"
-msgstr ""
+msgstr "Ağ üzerindeki paylaşımı durdur"
 
 #: ../glom/frame_glom.cc:928
 msgid "This will prevent other users on the network from using this database."
 msgstr ""
+"Bu seçenek ağ üzerindeki diğer kullanıcıların bu veritabanını kullanmalarını "
+"engelleyecek."
 
 #: ../glom/frame_glom.cc:931
 msgid "_Stop Sharing"
-msgstr ""
+msgstr "Paylaşımı _Durdur"
 
 #: ../glom/frame_glom.cc:980 ../glom/frame_glom.cc:2212
 msgid "Stopping Database Server"
-msgstr ""
+msgstr "Veritabanı Sunucusu Durduruluyor"
 
 #. Do startup, such as starting the self-hosting database server
 #: ../glom/frame_glom.cc:983 ../glom/frame_glom.cc:2099
 #: ../glom/frame_glom.cc:2258
 msgid "Starting Database Server"
-msgstr ""
+msgstr "Veritabanı Sunucusu Başlatılıyor"
 
 #: ../glom/frame_glom.cc:1145
 msgid "Table Exists Already"
-msgstr ""
+msgstr "Tablo Zaten Var"
 
 #: ../glom/frame_glom.cc:1145
 msgid ""
 "A table with this name already exists in the database. Please choose a "
 "different table name."
 msgstr ""
+"Bu isimdeki tablo veritabanında zaten var. Lütfen farklı bir tablo adı seçin."
 
 #: ../glom/frame_glom.cc:1149
-#, fuzzy
 #| msgid "Relationship"
 msgid "Relationship Exists Already"
-msgstr "İlişki"
+msgstr "İlişki Zaten Var"
 
 #: ../glom/frame_glom.cc:1149
 msgid ""
 "A relationship with this name already exists for this table. Please choose a "
 "different relationship name."
 msgstr ""
+"Tablo için bu isimdeki ilişki zaten var. Lütfen farklı bir ilişki adı seçin."
 
 #: ../glom/frame_glom.cc:1153
 msgid "More information needed"
-msgstr ""
+msgstr "Daha fazla bilgiye ihtiyaç var"
 
 #: ../glom/frame_glom.cc:1153
 msgid "You must specify a field, a table name, and a relationship name."
-msgstr ""
+msgstr "Bir alan, tablo ve ilişki adı belirtmelisiniz."
 
 #: ../glom/frame_glom.cc:1207
 msgid "Related Table Created"
-msgstr ""
+msgstr "İlgili Tablo Oluşturuldu"
 
 #: ../glom/frame_glom.cc:1207
 msgid "The new related table has been created."
-msgstr ""
+msgstr "İlgili yeni tablo oluşturulamadı."
 
 #. namespace Glom
 #: ../glom/frame_glom.cc:1237
 #: ../data/ui/operator/box_navigation_tables.glade.h:1
 msgid "Edit Tables"
-msgstr ""
+msgstr "Tabloları Düzenle"
 
 #: ../glom/frame_glom.cc:1334
 msgid ""
 "You have not entered any find criteria. Try entering information in the "
 "fields."
-msgstr ""
+msgstr "Herhangi bir bulma kriteri girmediniz. Bu alana bilgi girmeyi deneyin."
 
 #: ../glom/frame_glom.cc:1336
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:104
 msgid "No Find Criteria"
-msgstr ""
+msgstr "Bulma Kriteri Yok"
 
 #: ../glom/frame_glom.cc:1712 ../glom/onlineglom_strings.cc:33
 #: ../data/ui/developer/box_reports.glade.h:1
 msgid "Reports"
-msgstr ""
+msgstr "Raporlar"
 
 #: ../glom/frame_glom.cc:1756 ../data/ui/developer/box_print_layouts.glade.h:1
-#, fuzzy
 #| msgid "List Layout"
 msgid "Print Layouts"
-msgstr "Liste Düzeni"
+msgstr "Yerleşimleri Yazdır"
 
 #: ../glom/frame_glom.cc:1912
 msgid "Could Not Create Directory"
-msgstr ""
+msgstr "Dizin Oluşturulamadı"
 
 #: ../glom/frame_glom.cc:1913
 msgid ""
 "There was an error when attempting to create the directory for the new "
 "database files."
 msgstr ""
+"Yeni veritabanı dosyaları için dizin oluşturmaya çalışılırken bir hata "
+"oluştu."
 
 #: ../glom/frame_glom.cc:1917
 msgid "Could Not Start Database Server"
-msgstr ""
+msgstr "Veritabanı Sunucusu Başlatılamadı"
 
 #: ../glom/frame_glom.cc:1918
 msgid "There was an error when attempting to start the database server."
-msgstr ""
+msgstr "Veritabanı sunucusu başlatılmaya çalışılırken bir hata oluştu."
 
 #: ../glom/frame_glom.cc:2031
 msgid "Initializing Database Data"
-msgstr ""
+msgstr "Veritabanı Verileri Başlatılıyor"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2587
+#: ../glom/frame_glom.cc:2593
 msgid "All"
-msgstr ""
+msgstr "Tümü"
 
 #: ../glom/utils_ui.cc:141
 msgid "No help file available"
-msgstr ""
+msgstr "Hiçbir yardım dosyası mevcut değil"
 
 #: ../glom/utils_ui.cc:159
 msgid "Could not display help: %1"
-msgstr ""
+msgstr "Yardım görüntülenemedi: %1"
 
 #: ../glom/utils_ui.cc:479
 msgid "Your find criteria did not match any records in the table."
-msgstr ""
+msgstr "Bulma kriteriniz tablodaki hiçbir kayıt ile eşleşmedi."
 
 #: ../glom/utils_ui.cc:481
 msgid "No Records Found"
-msgstr ""
+msgstr "Kayıt Bulunamadı"
 
 #: ../glom/utils_ui.cc:486
 msgid "New Find"
-msgstr ""
+msgstr "Yeni Bul"
 
 #: ../glom/utils_ui.cc:497
 msgid "Report Finished"
-msgstr ""
+msgstr "Rapor Bitti"
 
 #: ../glom/utils_ui.cc:497
 msgid "The report will now be opened in your web browser."
-msgstr ""
+msgstr "Rapor şu anda web tarayıcınızda açılacaktır."
 
 #: ../glom/utils_ui.cc:536
 msgid "Script Uses PyGTK 2"
-msgstr ""
+msgstr "Betik PyGTK 2 kullanır"
 
 #: ../glom/utils_ui.cc:537
 msgid ""
 "Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, "
 "and attempting to use pygtk 2 would cause Glom to crash."
 msgstr ""
+"Glom bu betiği çalıştıramaz çünkü betik pygtk 2 kullanıyor, halbuki Glom "
+"uygulaması GTK+ 3 kullanır ve pygtk 2 kullanma girişimi Glom uygulamasının "
+"çökmesine neden olur."
 
 #. These strings are not actually used by Glom.
 #. I am putting them here so that GNOME's translators can translate them
@@ -847,11 +900,11 @@ msgstr ""
 #. murrayc
 #: ../glom/onlineglom_strings.cc:29
 msgid "Search"
-msgstr ""
+msgstr "Ara"
 
 #: ../glom/onlineglom_strings.cc:30
 msgid "Back to List"
-msgstr ""
+msgstr "Listeye Geri Dön"
 
 #. Translators: This is a noun. It is a notebook tab title.
 #. Details column:
@@ -859,28 +912,26 @@ msgstr ""
 #: ../glom/mode_data/notebook_data.cc:42
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:215
 #: ../glom/mode_find/notebook_find.cc:38
-#, fuzzy
 #| msgid "Details Layout"
 msgid "Details"
-msgstr "Ayrıntılı Düzen"
+msgstr "Ayrıntılar"
 
 #: ../glom/onlineglom_strings.cc:34
 msgid "Generating the report..."
-msgstr ""
+msgstr "Rapor Oluşturuluyor..."
 
 #: ../glom/onlineglom_strings.cc:35
 msgid "Login"
-msgstr ""
+msgstr "Giriş"
 
 #: ../glom/onlineglom_strings.cc:36
 msgid "Enter the username and password."
-msgstr ""
+msgstr "Kullanıcı adı ve parola girin."
 
 #: ../glom/onlineglom_strings.cc:37
-#, fuzzy
 #| msgid "User"
 msgid "Username"
-msgstr "Kullanıcı"
+msgstr "Kullanıcı adı"
 
 #: ../glom/onlineglom_strings.cc:38
 #: ../data/ui/operator/dialog_connection.glade.h:7
@@ -889,11 +940,11 @@ msgstr "Parola"
 
 #: ../glom/onlineglom_strings.cc:39
 msgid "Log Out"
-msgstr ""
+msgstr "Oturumu Kapat"
 
 #: ../glom/onlineglom_strings.cc:41
 msgid "The username or password are not correct."
-msgstr ""
+msgstr "Kullanıcı adı ya da parola doğru değil."
 
 #: ../glom/onlineglom_strings.cc:42
 msgid ""
@@ -901,36 +952,39 @@ msgid ""
 "being served via HTTPS, which is required for secure login. Please contact "
 "your system administrator."
 msgstr ""
+"Oturum açma gerekli gibi görünüyor. Bu site güvenli oturum açma gerektiren "
+"HTTPS yolu ile yayınlanmıyor. Lütfen sistem yöneticinize başvurun."
 
 #. / Translators: This is the title of a button used to register a new user.
 #: ../glom/onlineglom_strings.cc:45
 msgid "Register"
-msgstr ""
+msgstr "Kaydol"
 
 #. / Translators: This is the title of a button used to reset a user's password.
 #: ../glom/onlineglom_strings.cc:48
-#, fuzzy
 #| msgid "Password"
 msgid "Forgot Password"
-msgstr "Parola"
+msgstr "Parolamı Unuttum"
 
-#: ../glom/bakery/appwindow_withdoc.cc:236
-#: ../glom/bakery/appwindow_withdoc.cc:280
+#: ../glom/bakery/appwindow_withdoc.cc:229
+#: ../glom/bakery/appwindow_withdoc.cc:273
 msgid ""
 "There was an error while saving the file. Your changes have not been saved."
-msgstr ""
+msgstr "Dosya kaydedilirken bir hata oluştu. Değişiklikleriniz kaydedilemedi."
 
-#: ../glom/bakery/appwindow_withdoc.cc:485
+#: ../glom/bakery/appwindow_withdoc.cc:478
 msgid "Open Failed."
-msgstr ""
+msgstr "Açma İşlemi Başarısız Oldu."
 
-#: ../glom/bakery/appwindow_withdoc.cc:485
+#: ../glom/bakery/appwindow_withdoc.cc:478
 msgid "The document could not be opened."
-msgstr ""
+msgstr "Belge açılamadı."
 
 #: ../glom/bakery/dialog_offersave.cc:30
 msgid "This document has unsaved changes. Would you like to save the document?"
 msgstr ""
+"Bu belge kaydedilmemiş değişiklikler içeriyor. Belgeyi kaydetmek ister "
+"misiniz?"
 
 #. TODO: Can we use filename_display_basename() with a URI?
 #. No, almost certainly not. murrayc.
@@ -948,11 +1002,11 @@ msgstr "Kaydetmeden Kapat"
 
 #: ../glom/bakery/dialog_offersave.cc:55
 msgid "Discard"
-msgstr ""
+msgstr "Vazgeç"
 
-#: ../glom/import_csv/dialog_import_csv.cc:99
+#: ../glom/import_csv/dialog_import_csv.cc:101
 msgid "Auto Detect"
-msgstr ""
+msgstr "Otomatik Algıla"
 
 #. We mean 22nd November 2008:
 #. C years start are the AD year - 1900. So, 01 is 1901.
@@ -961,111 +1015,123 @@ msgstr ""
 #. Get the ISO (not current locale) text representation:
 #. ignored
 #. iso_format
-#: ../glom/import_csv/dialog_import_csv.cc:154
+#: ../glom/import_csv/dialog_import_csv.cc:156
 msgid ""
 "Note that the source file should contain numbers and dates in international "
 "ISO format. For instance, 22nd November 2008 should be %1."
 msgstr ""
+"Kaynak dosyaların uluslararası ISO biçiminde tarih ve numara içermesi "
+"gerektiğine dikkat edin. Örneğin, 22 Kasım 2008 %1 olmalıdır."
 
-#: ../glom/import_csv/dialog_import_csv.cc:183
+#: ../glom/import_csv/dialog_import_csv.cc:185
 msgid "No Document Available"
-msgstr ""
+msgstr "Kullanılabilir Belge Yok"
 
-#: ../glom/import_csv/dialog_import_csv.cc:183
+#: ../glom/import_csv/dialog_import_csv.cc:185
 msgid "You need to open a document to import the data into a table."
-msgstr ""
+msgstr "Tabloya veri aktarmak için bir belge açmanız gerekir."
 
-#: ../glom/import_csv/dialog_import_csv.cc:194
+#: ../glom/import_csv/dialog_import_csv.cc:196
 msgid "Import From CSV File"
-msgstr ""
+msgstr "CSV Dosyasından İçeri Aktar"
 
-#: ../glom/import_csv/dialog_import_csv.cc:199
-#: ../glom/import_csv/dialog_import_csv.cc:576
+#: ../glom/import_csv/dialog_import_csv.cc:201
+#: ../glom/import_csv/dialog_import_csv.cc:578
 msgid "<None>"
-msgstr ""
+msgstr "<None>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:274
+#: ../glom/import_csv/dialog_import_csv.cc:276
 msgid "Error Importing CSV File"
-msgstr ""
+msgstr "CSV Dosyası İçeri Aktarılırken Hata"
 
-#: ../glom/import_csv/dialog_import_csv.cc:428
+#: ../glom/import_csv/dialog_import_csv.cc:430
 msgid "Encoding detected as: %1"
-msgstr ""
+msgstr "Kodlama algılandı: %1"
 
-#: ../glom/import_csv/dialog_import_csv.cc:467
+#: ../glom/import_csv/dialog_import_csv.cc:469
 msgid "Encoding detection failed. Please manually choose one from the box."
 msgstr ""
+"Kodlama algılama başarısız oldu. Lütfen kutudan elle bir tanesini seçin."
 
-#: ../glom/import_csv/dialog_import_csv.cc:471
+#: ../glom/import_csv/dialog_import_csv.cc:473
 msgid ""
 "The file contains data not in the specified encoding. Please choose another "
 "one, or try \"Auto Detect\"."
 msgstr ""
+"Dosya belirtilen kodlamada olmayan veriler içeriyor. Lütfen başka bir "
+"tanesini seçin ya da \"Otomatik Algıla\" seçeneğini deneyin."
 
 #. Translators: This is the name of a UI element (a layout part name).
 #. This is a straight line, not a database row.
-#: ../glom/import_csv/dialog_import_csv.cc:513
+#: ../glom/import_csv/dialog_import_csv.cc:515
 #: ../glom/libglom/data_structure/layout/layoutitem_line.cc:91
 msgid "Line"
 msgstr "Satır"
 
-#: ../glom/import_csv/dialog_import_csv.cc:556
-#, fuzzy
+#: ../glom/import_csv/dialog_import_csv.cc:558
 #| msgid "Select Field"
 msgid "Target Field"
-msgstr "Alan Seç"
+msgstr "Hedef Alan"
 
-#: ../glom/import_csv/dialog_import_csv.cc:601
+#: ../glom/import_csv/dialog_import_csv.cc:603
 msgid "<Import Failure>"
-msgstr ""
+msgstr "<Import Failure>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:611
+#: ../glom/import_csv/dialog_import_csv.cc:613
 msgid "<Picture>"
 msgstr "<Resim>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:710
+#: ../glom/import_csv/dialog_import_csv.cc:712
 msgid ""
 "One column needs to be assigned the table's primary key (<b>%1</b>) as "
 "target field before importing"
 msgstr ""
+"İçeri aktarmadan önce bir sütun hedef alan olarak tablonun birincil "
+"anahtarının (<b>%1</b>) atanmış olmasına ihtiyaç duyar"
 
-#: ../glom/import_csv/dialog_import_csv.cc:738
+#: ../glom/import_csv/dialog_import_csv.cc:740
 msgid "Could Not Open file"
-msgstr ""
+msgstr "Dosya Açılamadı"
 
-#: ../glom/import_csv/dialog_import_csv.cc:739
+#: ../glom/import_csv/dialog_import_csv.cc:741
 msgid "The file at \"%1\" could not be opened: %2"
-msgstr ""
+msgstr "\"%1\" konumundaki dosya açılamadı: %2"
 
-#: ../glom/import_csv/dialog_import_csv.cc:745
+#: ../glom/import_csv/dialog_import_csv.cc:747
 msgid "Import From CSV File: %1"
-msgstr ""
+msgstr "CVS Dosyasından İçeri Aktar: %1"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:85
+#: ../glom/import_csv/dialog_import_csv_progress.cc:87
 msgid "Parsing CSV file %1"
-msgstr ""
+msgstr "CSV dosyası %1 Ayrıştırılıyor"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:175
+#: ../glom/import_csv/dialog_import_csv_progress.cc:177
 msgid "Import complete\n"
-msgstr ""
+msgstr "İçeri aktarma işlemi tamamlandı\n"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:204
+#: ../glom/import_csv/dialog_import_csv_progress.cc:206
 msgid ""
 "Warning: Importing row %1: The value for field %2 must be unique, but is "
 "already in use. The value will not be imported.\n"
 msgstr ""
+"Uyarı: %1 satırı içeri aktarılıyor: %2 alanı için değer benzersiz olmalıdır "
+"fakat zaten kullanımda. Değer içeri aktarılamayacak.\n"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:213
+#: ../glom/import_csv/dialog_import_csv_progress.cc:215
 msgid ""
 "Warning: Importing row %1: The value for field %2, \"%3\" could not be "
 "converted to the field's type. The value will not be imported.\n"
 msgstr ""
+"Uyarı: %1 satırı içeri aktarılıyor: %2 alanı için değer \"%3\", alanın "
+"türüne dönüştürülemedi. Değer içeri aktarılamayacak.\n"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:238
+#: ../glom/import_csv/dialog_import_csv_progress.cc:240
 msgid ""
 "Error importing row %1: Cannot import the row because the primary key is "
 "empty.\n"
 msgstr ""
+"%1 satırı içeri aktarılırken hata: Satır içeri aktarılamıyor çünkü birincil "
+"anahtar boş.\n"
 
 #. TODO: Can we get this from anywhere else, such as iso-codes? murrayc
 #. TODO: Make this generally more efficient.
@@ -1134,7 +1200,7 @@ msgstr "Türkçe"
 
 #: ../glom/import_csv/file_encodings.cc:112
 msgid "Nordic"
-msgstr ""
+msgstr "İskandinav"
 
 #: ../glom/import_csv/file_encodings.cc:114
 msgid "Celtic"
@@ -1164,7 +1230,7 @@ msgstr "Sayı"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/field.cc:666
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
-#: ../glom/libglom/data_structure/translatable_item.cc:256
+#: ../glom/libglom/data_structure/translatable_item.cc:254
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1159
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
 msgid "Text"
@@ -1189,7 +1255,7 @@ msgstr "Mantıksal Değer"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/field.cc:678
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
-#: ../glom/libglom/data_structure/translatable_item.cc:250
+#: ../glom/libglom/data_structure/translatable_item.cc:248
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1166
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
 #: ../glom/utility_widgets/layouttoolbar.cc:46
@@ -1218,6 +1284,9 @@ msgid ""
 "ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not "
 "parse a date's text representation that it generated itself, in this locale."
 msgstr ""
+"HATA: sanity_check_date_parsing(): Tutarlılık kontrolü başarısız oldu: Glom "
+"yereldeki kendisi tarafından oluşturulan tarih metin gösterimini "
+"ayrıştıramadı."
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
 #: ../glom/libglom/data_structure/glomconversions.cc:188
@@ -1228,19 +1297,23 @@ msgid ""
 "this might be incorrect for your locale. This needs attention from a "
 "translator. Please file a bug - see http://www.glom.org"
 msgstr ""
+"HATA: sanity_check_date_text_representation_uses_4_digit_year(): Tutarlılık "
+"kontrolü başarısız oldu: Glom lokaldeki tarih metni gösteriminde yılı "
+"göstermek için 4 basamak kullanmaz. dd/mm/yyyy varsaymak lokaliniz için "
+"yanlış olabilir. Bu durum çevirmenin dikkatini gerektiriyor. Lütfen bir hata "
+"kayda geçirin - http://www.glom.org bakın"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:422
 #: ../glom/utility_widgets/layouttoolbar.cc:34
 #: ../glom/utility_widgets/layouttoolbar.cc:44
 #: ../glom/utility_widgets/notebooklabelglom.cc:78
-#| msgid "Add _Group"
 msgid "Group"
 msgstr "Grup"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:68
-#: ../glom/libglom/data_structure/translatable_item.cc:246
+#: ../glom/libglom/data_structure/translatable_item.cc:244
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1152
 #: ../glom/utility_widgets/layouttoolbar.cc:42
 msgid "Button"
@@ -1249,11 +1322,11 @@ msgstr "Düğme"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_calendarportal.cc:58
 msgid "Calendar Portal"
-msgstr ""
+msgstr "Takvim Portalı"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:229
-#: ../glom/libglom/data_structure/translatable_item.cc:230
+#: ../glom/libglom/data_structure/translatable_item.cc:228
 #: ../glom/mode_design/dialog_database_preferences.cc:62
 #: ../data/ui/developer/window_field_definition_edit.glade.h:8
 msgid "Field"
@@ -1264,12 +1337,12 @@ msgstr "Alan"
 #: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:57
 #: ../glom/utility_widgets/layouttoolbar.cc:36
 msgid "Notebook"
-msgstr ""
+msgstr "Not Defteri"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_placeholder.cc:60
 msgid "Placeholder"
-msgstr ""
+msgstr "Ayrılmış Bilgi Alanı"
 
 #. TODO: This prevents "" as a real title.
 #. parent table - not relevant
@@ -1280,183 +1353,178 @@ msgstr ""
 #: ../glom/mode_data/box_data_portal.cc:113
 #: ../glom/mode_data/box_data_portal.cc:125
 msgid "Undefined Table"
-msgstr ""
+msgstr "Belirsiz Tablo"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:79
 #: ../data/ui/developer/dialog_field_summary.glade.h:1
 msgid "Field Summary"
-msgstr ""
+msgstr "Özet Alanı"
 
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:134
 msgid "No summary chosen"
-msgstr ""
+msgstr "Seçilmiş özet yok"
 
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:153
 msgid "Sum"
-msgstr ""
+msgstr "Toplam"
 
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:155
 msgid "Average"
-msgstr ""
+msgstr "Ortalama"
 
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:157
 msgid "Count"
-msgstr ""
+msgstr "Sayı"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:56
 #: ../data/ui/developer/window_report_layout.glade.h:13
 msgid "Footer"
-msgstr ""
+msgstr "Alt Bilgi"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc:103
 #: ../data/ui/developer/dialog_group_by.glade.h:1
 msgid "Group By"
-msgstr ""
+msgstr "Grupla"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:56
 #: ../data/ui/developer/window_report_layout.glade.h:10
 msgid "Header"
-msgstr ""
+msgstr "Üst Bilgi"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_summary.cc:62
 msgid "Summary"
-msgstr ""
+msgstr "Özet"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.cc:56
 msgid "Vertical Group"
-msgstr ""
+msgstr "Dikey Grup"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:230
+msgid "Custom Title"
+msgstr "Özel Başlık"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:232
-msgid "Custom Title"
-msgstr ""
-
-#: ../glom/libglom/data_structure/translatable_item.cc:234
 msgid "Relationship"
 msgstr "İlişki"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:236
+#: ../glom/libglom/data_structure/translatable_item.cc:234
 msgid "Layout Item"
-msgstr ""
+msgstr "Yerleşim Ögesi"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:238
-#, fuzzy
+#: ../glom/libglom/data_structure/translatable_item.cc:236
 #| msgid "List Layout"
 msgid "Print Layout"
-msgstr "Liste Düzeni"
+msgstr "Baskı Düzeni"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:240
+#: ../glom/libglom/data_structure/translatable_item.cc:238
 msgid "Report"
-msgstr ""
+msgstr "Rapor"
 
 #. Tables:
-#: ../glom/libglom/data_structure/translatable_item.cc:242
+#: ../glom/libglom/data_structure/translatable_item.cc:240
 #: ../glom/mode_design/box_db_table_relationships.cc:53
 #: ../glom/mode_design/dialog_database_preferences.cc:61
 #: ../glom/mode_design/users/dialog_groups_list.cc:73
 #: ../glom/navigation/box_tables.cc:131
-#, fuzzy
 #| msgid "Table:"
 msgid "Table"
-msgstr "Tablo:"
+msgstr "Tablo"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:244
+#: ../glom/libglom/data_structure/translatable_item.cc:242
 msgid "Layout Group"
-msgstr ""
+msgstr "Yerleşim Grubu"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:248
+#: ../glom/libglom/data_structure/translatable_item.cc:246
 msgid "Text Item"
-msgstr ""
+msgstr "Metin Ögesi"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:250
+msgid "Field Choice"
+msgstr "Alan Seçimi"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:252
-msgid "Field Choice"
-msgstr ""
-
-#: ../glom/libglom/data_structure/translatable_item.cc:254
-#, fuzzy
 msgid "Database Title"
-msgstr "Veri"
+msgstr "Veritabanı Başlığı"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:258
+#: ../glom/libglom/data_structure/translatable_item.cc:256
 #: ../glom/mode_design/translation/window_translations.cc:237
 msgid "Unknown"
-msgstr ""
+msgstr "Bilinmeyen"
 
 #: ../glom/libglom/document/document.cc:519
 #: ../glom/libglom/document/document.cc:537
 msgid "System Preferences"
-msgstr ""
+msgstr "Sistem Tercihleri"
 
 #: ../glom/libglom/document/document.cc:550
 msgid "System Name"
-msgstr ""
+msgstr "Sistem Adı"
 
 #: ../glom/libglom/document/document.cc:556
 msgid "Organisation Name"
-msgstr ""
+msgstr "Organizasyon Adı"
 
 #: ../glom/libglom/document/document.cc:562
 msgid "Organisation Logo"
-msgstr ""
+msgstr "Organizasyon İşareti"
 
 #: ../glom/libglom/document/document.cc:568
 msgid "Street"
-msgstr ""
+msgstr "Cadde"
 
 #: ../glom/libglom/document/document.cc:574
 msgid "Street (line 2)"
-msgstr ""
+msgstr "Cadde (hat 2)"
 
 #: ../glom/libglom/document/document.cc:580
 msgid "City"
-msgstr ""
+msgstr "Şehir"
 
 #: ../glom/libglom/document/document.cc:586
 msgid "State"
-msgstr ""
+msgstr "İlçe"
 
 #: ../glom/libglom/document/document.cc:592
 msgid "Country"
-msgstr ""
+msgstr "Ülke"
 
 #: ../glom/libglom/document/document.cc:598
 msgid "Zip Code"
-msgstr ""
+msgstr "Posta Kodu"
 
 #: ../glom/libglom/document/document.cc:1429
 msgid "Overview"
-msgstr ""
+msgstr "Genel Bakış"
 
 #: ../glom/libglom/document/bakery/document.cc:424
-#, fuzzy
 #| msgid "Title"
 msgid "Untitled"
-msgstr "Başlık"
+msgstr "Başlıksız"
 
 #. Show only debug output
 #: ../glom/libglom/translations_po.cc:70
 msgid "Gettext-Warning: "
-msgstr ""
+msgstr "Gettext-Uyarısı: "
 
 #: ../glom/libglom/db_utils.cc:514
-#, fuzzy
 #| msgid "Auto-increment"
 msgid "System: Auto Increments"
-msgstr "Otomatik artış"
+msgstr "Sistem: Otomatik Artırır"
 
 #: ../glom/libglom/db_utils.cc:1186
 #: ../glom/mode_design/users/dialog_groups_list.cc:70
 msgid "Description"
-msgstr ""
+msgstr "Tanımlama"
 
 #: ../glom/libglom/db_utils.cc:1193
 msgid "Comments"
-msgstr ""
+msgstr "Açıklamalar"
 
 #. Translators: This is a noun. It is the title of a report.
 #. Add Pages:
@@ -1464,195 +1532,207 @@ msgstr ""
 #: ../glom/libglom/report_builder.cc:767 ../glom/mode_data/notebook_data.cc:39
 #: ../glom/mode_find/notebook_find.cc:33
 msgid "List"
-msgstr ""
+msgstr "Liste"
 
 #: ../glom/glom_create_from_example.cc:73 ../glom/glom_export_po.cc:51
 #: ../glom/glom_export_po_all.cc:49 ../glom/glom_import_po_all.cc:50
 #: ../glom/glom_test_connection.cc:60
 msgid "Glom options"
-msgstr ""
+msgstr "Glom seçenekleri"
 
 #: ../glom/glom_create_from_example.cc:73 ../glom/glom_export_po.cc:51
 #: ../glom/glom_export_po_all.cc:49 ../glom/glom_import_po_all.cc:50
 #: ../glom/glom_test_connection.cc:60
 msgid "Command-line options"
-msgstr ""
+msgstr "Komut satırı seçenekleri"
 
 #: ../glom/glom_create_from_example.cc:84
 msgid "The example .glom file to open."
-msgstr ""
+msgstr "Açmak için örnek .glom dosyası."
 
 #: ../glom/glom_create_from_example.cc:89
 msgid ""
 "The directory in which to save the created .glom file, or sub-directory if "
 "necessary, such as /home/someuser/ ."
 msgstr ""
+"Oluşturulan .glom dosyasının kaydedileceği dizin ya da eğer gerekirse alt "
+"dizin, örnek olarak /evdizini/kullanıcı/ ."
 
 #: ../glom/glom_create_from_example.cc:94
 msgid "The name for the created .glom file, such as something.glom ."
-msgstr ""
+msgstr ".glom dosyası oluşturmak için ad, örneğin birşey.glom ."
 
 #: ../glom/glom_create_from_example.cc:99 ../glom/glom_export_po.cc:72
 #: ../glom/glom_export_po_all.cc:60 ../glom/glom_import_po_all.cc:61
 #: ../glom/glom_test_connection.cc:72 ../glom/main_local_options.cc:47
 msgid "The version of this application."
-msgstr ""
+msgstr "Uygulamanın sürümü."
 
 #: ../glom/glom_create_from_example.cc:105
 msgid ""
 "The hostname of the PostgreSQL server, such as localhost. If this is not "
 "specified then a self-hosted database will be created."
 msgstr ""
+"PostgreSQL ana bilgisayar adı, örneğin localhost. Eğer bu belirtilmezse o "
+"zaman kendi üzerinde veritabanı oluşturulacaktır."
 
 #: ../glom/glom_create_from_example.cc:110 ../glom/glom_test_connection.cc:82
 msgid "The port of the PostgreSQL server, such as 5434."
-msgstr ""
+msgstr "PostgreSQL sunucusunun bağlantı noktası, 5434."
 
 #: ../glom/glom_create_from_example.cc:115 ../glom/glom_test_connection.cc:87
 msgid "The username for the PostgreSQL server."
-msgstr ""
+msgstr "PostgreSQL sunucusu için kullanıcı adı."
 
 #: ../glom/glom_create_from_example.cc:121 ../glom/glom_test_connection.cc:100
 msgid "Use MySQL instead of PostgreSQL."
-msgstr ""
+msgstr "PostgreSQL yerine MySQL kullan."
 
 #: ../glom/glom_create_from_example.cc:335
 msgid "Glom: The output directory does not exist."
-msgstr ""
+msgstr "Glom: Çıktı dizini bulunamadı."
 
 #: ../glom/glom_create_from_example.cc:345
 msgid "Glom: The output path is not a directory."
-msgstr ""
+msgstr "Glom: Çıktı yolu bir dizin değildir."
 
 #: ../glom/glom_create_from_example.cc:458
 msgid "Please enter the database server's password for the user %1: "
-msgstr ""
+msgstr "Lütfen kullanıcı için veritabanı sunucusunun parolasını girin: "
 
 #: ../glom/glom_export_po.cc:57
 msgid ""
 "The path at which to save the created .po file, such as /home/someuser/"
 "somefile.po ."
 msgstr ""
+"Oluşturulan .po dosyasının kaydedileceği yol, örnek olarak "
+"/evdizini/kullanıcı/dosya.po ."
 
 #: ../glom/glom_export_po.cc:62
 msgid ""
 "The locale whose translations should be written to the .po file, such as "
 "de_DE."
-msgstr ""
+msgstr "Çevirilerin bölgesi .po dosyasına yazılmalıdır, örnek olarak de_DE."
 
 #: ../glom/glom_export_po.cc:67
 msgid "Generate a .pot template file instead of a .po file for a locale."
-msgstr ""
+msgstr "Yerel ayar için .po dosyası yerine .pot şablon dosyası oluştur."
 
 #: ../glom/glom_export_po.cc:142 ../glom/glom_export_po_all.cc:130
 #: ../glom/glom_import_po_all.cc:131
 msgid "Please specify a glom file."
-msgstr ""
+msgstr "Bir glom dosyası belirtin."
 
 #: ../glom/glom_export_po.cc:149
 msgid "Please use either the --locale-id option or the --template option."
-msgstr ""
+msgstr "Lütfen ya --locale-id ya da --template seçeneği kullanın."
 
 #: ../glom/glom_export_po.cc:180 ../glom/glom_export_po_all.cc:161
 msgid "Please specify an output path."
-msgstr ""
+msgstr "Lütfen bir çıktı yolu belirtin."
 
 #: ../glom/glom_export_po.cc:220
 msgid "Pot file creation failed."
-msgstr ""
+msgstr "Pot dosyası oluşturma işlemi başarısız oldu."
 
 #: ../glom/glom_export_po.cc:224
 msgid "Pot file created at: %1"
-msgstr ""
+msgstr "Pot dosyası oluşturuldu: %1"
 
 #: ../glom/glom_export_po.cc:232 ../glom/glom_export_po_all.cc:223
 msgid "Po file creation failed."
-msgstr ""
+msgstr "Po dosyası oluşturma işlemi başarısız oldu."
 
 #: ../glom/glom_export_po.cc:236 ../glom/glom_export_po_all.cc:227
 msgid "Po file created at: %1"
-msgstr ""
+msgstr "Po dosyası oluşturuldu: %1"
 
 #: ../glom/glom_export_po_all.cc:55
 msgid ""
 "The directory path at which to save the created .po files, such as /home/"
 "someuser/po_files/ ."
 msgstr ""
+".po dosyasının oluşturulacağı dizin yolu, örneğin "
+"/home/kullanıcı/po_dosyaları/."
 
 #: ../glom/glom_export_po_all.cc:143 ../glom/glom_import_po_all.cc:144
 msgid "The Glom file does not exist."
-msgstr ""
+msgstr "Glom dosyası mevcut değil."
 
 #: ../glom/glom_export_po_all.cc:153 ../glom/glom_import_po_all.cc:154
 msgid "The Glom file path is a directory instead of a file."
-msgstr ""
+msgstr "Glom dosya yolu dosya yerine bir dizindir."
 
 #: ../glom/glom_export_po_all.cc:174
 msgid "The ouput directory could not be created."
-msgstr ""
+msgstr "Çıktı dizini oluşturulamadı."
 
 #: ../glom/glom_export_po_all.cc:182
 msgid "Glom: The output file path is not a directory."
-msgstr ""
+msgstr "Glom: Çıktı dosya yolu bir dizin değildir."
 
 #: ../glom/glom_export_po_all.cc:204
 msgid "The Glom document has no translations."
-msgstr ""
+msgstr "Glom belgesi hiçbir çeviri içermiyor."
 
 #: ../glom/glom_import_po_all.cc:56
 msgid ""
 "The path to a directory containing .po files, such as /home/someuser/"
 "po_files/ ."
 msgstr ""
+".po dosyası içeren dizin yolu, örnek olarak /evdizini/kullanıcı/po_dosyaları/"
+" ."
 
 #: ../glom/glom_import_po_all.cc:162
 msgid "Please specify the path to a directory containing po files."
-msgstr ""
+msgstr "Lütfen po dosyaları içeren dizin yolu belirtin."
 
 #: ../glom/glom_import_po_all.cc:173
 msgid "Glom: The po files directory path is not a directory."
-msgstr ""
+msgstr "Glom: po dosyaları dizin yolu bir dizin değildir."
 
 #: ../glom/glom_import_po_all.cc:213
 msgid "Po file import failed for locale: %1"
-msgstr ""
+msgstr "Yerel ayar için po dosyası içeri aktarma işlemi başarısız oldu: %1"
 
 #: ../glom/glom_import_po_all.cc:218
 msgid "Po file import failed during document saving for locale: %1"
 msgstr ""
+"Yerel ayar için belge kaydetme sırasında po dosyası içeri aktarma işlemi "
+"başarısız oldu: %1"
 
 #: ../glom/glom_import_po_all.cc:222
 msgid "Po file imported for locale: %1 for file %2"
-msgstr ""
+msgstr "Yerel ayar için po dosyası içeri aktarıldı: %2 dosyası için %1"
 
 #: ../glom/glom_test_connection.cc:77
 msgid "The hostname of the PostgreSQL server, such as localhost."
-msgstr ""
+msgstr "PostgreSQL sunucusunun ana bilgisayar adı, örnek olarak localhost."
 
 #: ../glom/glom_test_connection.cc:93
 msgid "The specific database on the PostgreSQL server (Optional)."
-msgstr ""
+msgstr "PostgreSQL sunucusu üzerinde belirli bir veritabanı (İsteğe Bağlı)."
 
 #: ../glom/glom_test_connection.cc:173
 msgid "Please provide a database username."
-msgstr ""
+msgstr "Lütfen bir veritabanı kullanıcı adı girin."
 
 #: ../glom/glom_test_connection.cc:183
 msgid "Please enter the PostgreSQL server's password for the user %1: "
-msgstr ""
+msgstr "Lütfen %1 kullanıcısı için PostgreSQL sunucusunun parolasını girin: "
 
 #: ../glom/glom_test_connection.cc:264
 msgid ""
 "Error: Could not connect to the server even without specifying a database."
-msgstr ""
+msgstr "Hata: Bir veritabanı belirtilmese bile sunucuya bağlanılamadı."
 
 #: ../glom/glom_test_connection.cc:272
 msgid "Error: Could not connect to the specified database."
-msgstr ""
+msgstr "Hata: Belirtilen veritabanına bağlanılamadı."
 
 #: ../glom/glom_test_connection.cc:278
 msgid "Successful connection."
-msgstr ""
+msgstr "Başarılı bağlantı."
 
 #: ../glom/main.cc:199
 msgid ""
@@ -1660,6 +1740,10 @@ msgid ""
 "may not be run with such privileges for security reasons.\n"
 "Please login to your system as a normal user."
 msgstr ""
+"Glom uygulamasını yönetici haklarına sahip bir kullanıcı ile çalıştırmış "
+"görünüyorsunuz. Glom güvenlik nedenleriyle bu tür ayrıcalıklar ile "
+"çalıştırılamayabilir.\n"
+"Lütfen sisteminize normal bir kullanıcı ile giriş yapın."
 
 #. Warn the user:
 #: ../glom/main.cc:213
@@ -1667,10 +1751,13 @@ msgid ""
 "You seem to be running Glom as root. Glom may not be run as root.\n"
 "Please login to your system as a normal user."
 msgstr ""
+"Glom uygulamasını root ile çalıştırmış görünüyorsunuz. Glom root kullanıcısı "
+"ile çalıştırılamayabilir.\n"
+"Lütfen sisteminize normal bir kullanıcı ile giriş yapın."
 
 #: ../glom/main.cc:222
 msgid "Running As Root"
-msgstr ""
+msgstr "Root olarak Çalıştırılıyor"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
@@ -1681,7 +1768,7 @@ msgstr ""
 #: ../glom/main.cc:265 ../glom/main.cc:283 ../glom/main.cc:321
 #: ../glom/main.cc:334 ../glom/main.cc:517
 msgid "Incomplete Glom Installation"
-msgstr ""
+msgstr "Tamamlanmamış Glom Kurulumu"
 
 #. use_markup
 #. modal
@@ -1693,10 +1780,14 @@ msgid ""
 "\n"
 "You may now install PostgreSQL to complete the Glom installation."
 msgstr ""
+"Glom kurulumunuz tamamlanamadı çünkü sisteminizdeki PostgreSQL mevcut değil. "
+"Glom veritabanlarının kendi üzerinde olması için PostgreSQL gereklidir.\n"
+"\n"
+"Glom kurulumunuzu tamamlamak için şu anda PostgreSQL kurabilirsiniz."
 
 #: ../glom/main.cc:268
 msgid "Install PostgreSQL"
-msgstr ""
+msgstr "PostgreSQL Kur"
 
 #. Show message to the user about the broken installation:
 #: ../glom/main.cc:278
@@ -1708,6 +1799,11 @@ msgid ""
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
+"Glom kurulumunuz tamamlanamadı çünkü sisteminizdeki PostgreSQL mevcut değil. "
+"Glom veritabanlarının kendi üzerinde olması için PostgreSQL gereklidir.\n"
+"\n"
+"Lütfen bu hatayı düzeltilebilmesi için satıcınıza ya da sistem yöneticinize "
+"bildirin."
 
 #. use_markup
 #. modal
@@ -1718,10 +1814,15 @@ msgid ""
 "\n"
 "You may now install MySQL to complete the Glom installation."
 msgstr ""
+"Glom kurulumunuz tamamlanamadı çünkü sisteminizde MySQL mevcut değil. Bazı "
+"Glom veritabanlarının kendi üzerlerinde barındırılması için MySQL gereklidir."
+"\n"
+"\n"
+"Glom kurulumunuzu tamamlamak için şu anda MySQL kurabilirsiniz."
 
 #: ../glom/main.cc:324
 msgid "Install MySQL"
-msgstr ""
+msgstr "MySQL Kur"
 
 #. use_markup
 #. modal
@@ -1733,6 +1834,11 @@ msgid ""
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
+"Glom kurulumunuz tamamlanamadı çünkü bazı Glom veritabanlarının kendi "
+"üzerinde barındırılması için MySQL gereklidir.\n"
+"\n"
+"Lütfen bu hatayı düzeltilebilmesi için satıcınıza ya da sistem yöneticinize "
+"bildirin."
 
 #. The python module could not be imported by Glom, so warn the user:
 #: ../glom/main.cc:351
@@ -1743,10 +1849,15 @@ msgid ""
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
+"Glom kurulumunuz tamamlanamadı çünkü Glom Python modülü sisteminizde mevcut "
+"değil.\n"
+"\n"
+"Lütfen bu hatayı düzeltilebilmesi için satıcınıza ya da sistem yöneticinize "
+"bildirin."
 
 #: ../glom/main.cc:356
 msgid "Glom Python Module Not Installed"
-msgstr ""
+msgstr "Glom Python Modülü Kurulu Değil"
 
 #. The python module could not be imported by Glom, so warn the user:
 #: ../glom/main.cc:369
@@ -1757,10 +1868,15 @@ msgid ""
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
+"Glom kurulumunuz tamamlanamadı çünkü sisteminizde gi.repository Python "
+"modülü mevcut değil.\n"
+"\n"
+"Lütfen bu hatayı düzeltilebilmesi için satıcınıza ya da sistem yöneticinize "
+"bildirin."
 
 #: ../glom/main.cc:374
 msgid "gi.repository Python Module Not Installed"
-msgstr ""
+msgstr "gi.repository Python Modülü kurulmadı"
 
 #. The python module could not be imported by Glom, so warn the user:
 #: ../glom/main.cc:387
@@ -1771,10 +1887,15 @@ msgid ""
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
+"Glom kurulumunuz tamamlanmadı, çünkü gi.repository.Gda python modülü "
+"sisteminizde kullanılabilir değil.\n"
+"\n"
+"Lütfen bu hatayı düzeltilebilmesi için satıcınıza ya da sistem yöneticinize "
+"bildirin."
 
 #: ../glom/main.cc:392
 msgid "gi.repository.Gda Python Module Not Installed"
-msgstr ""
+msgstr "gi.repository.Gda Python Modülü Kurulu Değil"
 
 #. The Postgres provider was not found, so warn the user:
 #: ../glom/main.cc:512
@@ -1786,44 +1907,54 @@ msgid ""
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
+"Glom kurulumunuz tamamlanmadı, çünkü PostgreSQL libgda sağlayıcısı "
+"sisteminizde kullanılabilir değil. Bu sağlayıcının Postgres veritabanı "
+"sunucularına erişmesi gerekir.\n"
+"\n"
+"Lütfen bu hatayı düzeltilebilmesi için satıcınıza ya da sistem yöneticinize "
+"bildirin. "
 
 #: ../glom/main_local_options.cc:39
 msgid "Extra Glom options"
-msgstr ""
+msgstr "Fazladan Glom seçenekleri"
 
 #: ../glom/main_local_options.cc:39
 msgid "Extra command-line options for glom"
-msgstr ""
+msgstr "Glom için fazladan komut satırı seçenekleri"
 
 #: ../glom/main_local_options.cc:52
 msgid "Show how Glom outputs a date in this locale, then stop."
 msgstr ""
+"Lokalde Glom uygulamasının tarih çıktısının nasıl olduğunu göster sonra dur."
 
 #: ../glom/main_remote_options.cc:31
 msgid "Main Glom options"
-msgstr ""
+msgstr "Ana Glom seçenekleri"
 
 #: ../glom/main_remote_options.cc:31
 msgid "Main command-line options for glom"
-msgstr ""
+msgstr "Glom için ana komut satırı seçenekleri"
 
 #: ../glom/main_remote_options.cc:39
 msgid "The Filename"
-msgstr ""
+msgstr "Dosya adı"
 
 #: ../glom/main_remote_options.cc:44
 msgid "Whether the filename is a .tar.gz backup to be restored."
-msgstr ""
+msgstr "Dosya adının geri yüklenecek bir .tar.gz yedeği olup olmaması."
 
 #: ../glom/main_remote_options.cc:49
 msgid ""
 "Do not automatically stop the database server if Glom quits. This is helpful "
 "for debugging with gdb."
 msgstr ""
+"Eğer Glom uygulamasından çıkarsanız, veritabanı sunucusu otomatik bir "
+"şekilde durmaz. Bu özellik gdb ile hata ayıklama için yararlıdır."
 
 #: ../glom/main_remote_options.cc:54
 msgid "Show the generated SQL queries on stdout, for debugging."
 msgstr ""
+"Oluşturulan SQL sorgularını hata ayıklamak için stdout çıktısında göster."
 
 #: ../glom/mode_data/box_data_calendar_related.cc:532
 #: ../glom/mode_design/users/dialog_groups_list.cc:79
@@ -1841,18 +1972,16 @@ msgstr ""
 #: ../data/ui/developer/window_print_layout_edit.glade.h:4
 #: ../data/ui/developer/window_report_layout.glade.h:16
 #: ../data/ui/developer/window_users.glade.h:9
-#, fuzzy
 #| msgid "Edit"
 msgid "_Edit"
-msgstr "Düzenle"
+msgstr "_Düzenle"
 
 #: ../glom/mode_data/box_data_calendar_related.cc:533
 #: ../glom/mode_data/db_adddel/db_adddel.cc:263
 #: ../data/ui/operator/window_main.glade.h:28
-#, fuzzy
 #| msgid "List Layout"
 msgid "_Layout"
-msgstr "Liste Düzeni"
+msgstr "_Yerleşim"
 
 #: ../glom/mode_data/box_data.cc:189
 msgid ""
@@ -1860,11 +1989,13 @@ msgid ""
 "primary key.\n"
 "Do you really want to discard this data?"
 msgstr ""
+"Bu veriler veritabanında depolanamaz çünkü birincil anahtar girmediniz.\n"
+"Bu verilerden gerçekten vazgeçmek istiyor musunuz?"
 
 #. Ask user to confirm loss of data:
 #: ../glom/mode_data/box_data.cc:191
 msgid "No primary key value"
-msgstr ""
+msgstr "Birincil anahtar değeri yok"
 
 #: ../glom/mode_data/box_data_details.cc:46
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:32
@@ -1880,183 +2011,185 @@ msgstr ""
 #: ../data/ui/developer/window_report_layout.glade.h:9
 #: ../data/ui/developer/window_users.glade.h:7
 msgid "_Add"
-msgstr ""
+msgstr "_Ekle"
 
 #: ../glom/mode_data/box_data_details.cc:48
 msgid "_First"
-msgstr ""
+msgstr "_İlk"
 
 #: ../glom/mode_data/box_data_details.cc:49
 msgid "_Back"
-msgstr ""
+msgstr "_Geri"
 
 #: ../glom/mode_data/box_data_details.cc:50
 msgid "_Forward"
-msgstr ""
+msgstr "_İleri"
 
 #: ../glom/mode_data/box_data_details.cc:51
 msgid "_Last"
-msgstr ""
+msgstr "_Son"
 
 #: ../glom/mode_data/box_data_details.cc:111
 msgid "Create a new record."
-msgstr ""
+msgstr "Yeni bir kayıt oluştur."
 
 #: ../glom/mode_data/box_data_details.cc:112
 msgid "Remove this record."
-msgstr ""
+msgstr "Bu kaydı sil."
 
 #: ../glom/mode_data/box_data_details.cc:113
 msgid "View the first record in the list."
-msgstr ""
+msgstr "Listedeki ilk kaydı görüntüle."
 
 #: ../glom/mode_data/box_data_details.cc:114
 msgid "View the previous record in the list."
-msgstr ""
+msgstr "Listedeki önceki kaydı görüntüle."
 
 #: ../glom/mode_data/box_data_details.cc:115
 msgid "View the next record in the list."
-msgstr ""
+msgstr "Listedeki sonraki kaydı görüntüle."
 
 #: ../glom/mode_data/box_data_details.cc:116
 msgid "View the last record in the list."
-msgstr ""
+msgstr "Listedeki son kaydı görüntüle."
 
 #: ../glom/mode_data/box_data_details.cc:418
 msgid "Layout Contains No Fields"
-msgstr ""
+msgstr "Yerleşim hiçbir alan içermez"
 
 #: ../glom/mode_data/box_data_details.cc:418
 msgid ""
 "There are no fields on the layout, so there is no way to enter data in a new "
 "record."
 msgstr ""
+"Yerleşimde hiçbir alan yok, bu yüzden yeni bir kayda veri girmek için hiçbir "
+"yol yok."
 
 #. Tell user that a primary key is needed to delete a record:
 #: ../glom/mode_data/box_data_details.cc:445
 msgid "No primary key value."
-msgstr ""
+msgstr "Birincil anahtar değeri yok."
 
 #: ../glom/mode_data/box_data_details.cc:446
 msgid "This record cannot be deleted because there is no primary key."
-msgstr ""
+msgstr "Bu kayıt silinemez çünkü birincil anahtarı yok."
 
 #. Warn user that they can't choose their own primary key:
 #: ../glom/mode_data/box_data_details.cc:855
 msgid "Primary key auto increments"
-msgstr ""
+msgstr "Birincil anahtar otomatik artar"
 
 #: ../glom/mode_data/box_data_details.cc:856
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
 msgstr ""
+"Birincil anahtar otomatik artırılmış.\n"
+" Kendi birincil anahtar değerinizi giremezsiniz."
 
 #: ../glom/mode_data/box_data_portal.cc:334
 msgid "No Corresponding Record Exists"
-msgstr ""
+msgstr "Uyuşan Kayıt Mevcut Değil"
 
 #: ../glom/mode_data/box_data_portal.cc:334
 msgid ""
 "No record with this value exists. Therefore navigation to the related record "
 "is not possible."
 msgstr ""
+"Bu değere sahip kayıt mevcut değil. Bu nedenle ilgili kayda gitmek mümkün "
+"değil."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1115
+#: ../glom/mode_data/flowtablewithfields.cc:1117
 #: ../glom/utility_widgets/notebooklabelglom.cc:77
 #: ../glom/utility_widgets/notebooklabelglom.cc:124
-#, fuzzy
 #| msgid "Add _Group"
 msgid "New Group"
-msgstr "_Grup Ekle"
+msgstr "Yeni Grup"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1121
+#: ../glom/mode_data/flowtablewithfields.cc:1123
 #: ../glom/mode_design/layout/dialog_layout_details.cc:736
 msgid "notebook"
-msgstr ""
+msgstr "not defteri"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1127
+#: ../glom/mode_data/flowtablewithfields.cc:1129
 msgid "tab1"
-msgstr ""
+msgstr "sekme1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1130
+#: ../glom/mode_data/flowtablewithfields.cc:1132
 msgid "Tab One"
-msgstr ""
+msgstr "Birinci Sekme"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1143
+#: ../glom/mode_data/flowtablewithfields.cc:1145
 msgid "button"
-msgstr ""
+msgstr "buton"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1144
+#: ../glom/mode_data/flowtablewithfields.cc:1146
 #: ../glom/mode_design/layout/dialog_layout_details.cc:662
 msgid "New Button"
-msgstr ""
+msgstr "Yeni Buton"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1150
+#: ../glom/mode_data/flowtablewithfields.cc:1152
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:385
 msgid "text"
-msgstr ""
+msgstr "metin"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1151
+#: ../glom/mode_data/flowtablewithfields.cc:1153
 msgid "New Text"
-msgstr ""
+msgstr "Yeni Metin"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1304
+#: ../glom/mode_data/flowtablewithfields.cc:1306
 msgid "Delete whole group \"%1\"?"
-msgstr ""
+msgstr "\"%1\" grubunun tümü silinsin mi?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1310
+#: ../glom/mode_data/flowtablewithfields.cc:1312
 msgid "Delete whole group?"
-msgstr ""
+msgstr "Tüm grup silinsin mi?"
 
 #. Translators: This is a title, not an action.
 #: ../glom/mode_data/notebook_data.cc:47
 msgid "List Or Details View"
-msgstr ""
+msgstr "Liste ya da Ayrıntılar Görünümü"
 
 #. Don't allow a relationship to be added twice.
 #: ../glom/mode_design/box_db_table_relationships.cc:47
 msgid ""
 "This relationship already exists. Please choose a different relationship name"
-msgstr ""
+msgstr "İlişki zaten mevcut. Lütfen farklı bir ilişki adı seçin"
 
 #. Translators: FROM as in SQL's FROM
 #: ../glom/mode_design/box_db_table_relationships.cc:52
-#, fuzzy
 #| msgid "Field"
 msgid "From Field"
-msgstr "Alan"
+msgstr "Alandan"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:54
-#, fuzzy
 #| msgid "Field"
 msgid "To Field"
-msgstr "Alan"
+msgstr "Alana"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:55
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:5
 msgid "Allow Editing"
-msgstr ""
+msgstr "Düzenlemeye İzin Ver"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:56
 msgid "Automatic Creation"
-msgstr ""
+msgstr "Otomatik Oluşturma"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:58
 #: ../glom/navigation/box_tables.cc:142
 msgid "Title (Singular Form)"
-msgstr ""
+msgstr "Başlık (Tekil Biçem)"
 
 #: ../glom/mode_design/dialog_database_preferences.cc:63
-#, fuzzy
 #| msgid "Default Value"
 msgid "Next Value"
-msgstr "Öntanımlı Değer"
+msgstr "Sonraki Değer"
 
 #: ../glom/mode_design/dialog_design.cc:53
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:570
@@ -2066,40 +2199,39 @@ msgstr "Hiçbiri seçilmedi"
 
 #: ../glom/mode_design/dialog_initial_password.cc:83
 msgid "Username Is Empty"
-msgstr ""
+msgstr "Kullanıcıadı boş"
 
 #: ../glom/mode_design/dialog_initial_password.cc:83
 msgid "Please enter a login name for the new user."
-msgstr ""
+msgstr "Lütfen yeni kullanıcı için bir oturum açma adı girin."
 
 #: ../glom/mode_design/dialog_initial_password.cc:88
 #: ../glom/mode_design/users/dialog_user.cc:58
 msgid "Passwords Do Not Match"
-msgstr ""
+msgstr "Parolalar Eşleşmiyor"
 
 #: ../glom/mode_design/dialog_initial_password.cc:88
 #: ../glom/mode_design/users/dialog_user.cc:58
 msgid ""
 "The entered password does not match the entered password confirmation. "
 "Please try again."
-msgstr ""
+msgstr "Girilen parola doğrulanamadı. Lütfen tekrar deneyin."
 
 #: ../glom/mode_design/dialog_initial_password.cc:93
 #: ../glom/mode_design/users/dialog_user.cc:63
-#, fuzzy
 #| msgid "Password"
 msgid "Password Is Empty"
-msgstr "Parola"
+msgstr "Parola Boş"
 
 #: ../glom/mode_design/dialog_initial_password.cc:93
 #: ../glom/mode_design/users/dialog_user.cc:63
 msgid "Please enter a password for this user."
-msgstr ""
+msgstr "Lütfen bu kullanıcı için bir parola girin."
 
 #. Don't allow adding of fields that already exist.
 #: ../glom/mode_design/fields/box_db_table_definition.cc:63
 msgid "This field already exists. Please choose a different field name."
-msgstr ""
+msgstr "Bu alan zaten mevcut. Lütfen farklı bir alan adı seçin."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:67
 msgid "Type"
@@ -2108,19 +2240,18 @@ msgstr "Tür"
 #. TODO: Auto-size columns.
 #. Setup the buttons:
 #: ../glom/mode_design/fields/box_db_table_definition.cc:72
-#, fuzzy
 #| msgid "Field Definition"
 msgid "_Field Definition"
-msgstr "Alan Tanımı"
+msgstr "_Alan Tanımı"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:73
 msgid "_Default Formatting"
-msgstr ""
+msgstr "_Öntanımlı Biçimlendirme"
 
 #. TODO: Only show this when there are > 100 records?
 #: ../glom/mode_design/fields/box_db_table_definition.cc:288
 msgid "Recalculation Required"
-msgstr ""
+msgstr "Yeniden hesaplama Gerekli"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:289
 msgid ""
@@ -2128,16 +2259,18 @@ msgid ""
 "the value in all records. If the table contains many records then this could "
 "take a long time."
 msgstr ""
+"Bu alan tarafından kullanılan hesaplamayı değiştirdiniz bu yüzden Glom bütün "
+"kayıtlardaki değerleri yeniden hesaplamalı. Eğer tablo birçok kayıt "
+"içeriyorsa bu işlem uzun zaman alabilir."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:294
-#, fuzzy
 #| msgid "Calculate value"
 msgid "Recalculate"
-msgstr "Değeri hesapla"
+msgstr "Yeniden Hesapla"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:303
 msgid "Invalid database structure"
-msgstr ""
+msgstr "Geçersiz veritabanı yapısı"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:304
 msgid ""
@@ -2145,95 +2278,102 @@ msgid ""
 "type that is not supported by Glom. Your system administrator may be able to "
 "correct this."
 msgstr ""
+"Bu veritabanı alanı Glom dışında oluşturuldu ya da düzenlendi. Veritabanı "
+"Glom tarafından desteklenmeyen bir veri türüne sahip. Sistem yöneticiniz bu "
+"durumu düzeltebilir."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:312
-#, fuzzy
 #| msgid "Primary Key"
 msgid "Primary key required"
-msgstr "Birincil Anahtar"
+msgstr "Birincil anahtar gereklidir"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:313
 msgid ""
 "You may not unset the primary key because the table must have a primary key. "
 "You may set another field as the primary key instead."
 msgstr ""
+"Birincil anahtarı geri almamalısınız çünkü tablo birincil anahtara sahip "
+"olmalıdır. Başka bir alanı birincil anahtar olarak belirleyebilirsiniz."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:325
 msgid "Field contains empty values."
-msgstr ""
+msgstr "Alan boş değerler içeriyor."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:325
 msgid ""
 "The field may not yet be used as a primary key because it contains empty "
 "values."
 msgstr ""
+"Alan boş değerler içerdiğinden dolayı henüz birincil anahtar olarak "
+"kullanılamaz."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:334
 msgid "Field contains non-unique values."
-msgstr ""
+msgstr "Alan benzersiz olmayan değerler içeriyor."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:334
 msgid ""
 "The field may not yet be used as a primary key because it contains values "
 "that are not unique."
 msgstr ""
+"Alan benzersiz olmayan değerler içerdiğinden dolayı henüz birincil anahtar "
+"olarak kullanılamaz."
 
 #. Ask the user to confirm this major change:
 #: ../glom/mode_design/fields/box_db_table_definition.cc:339
-#, fuzzy
 #| msgid "Primary Key"
 msgid "Change primary key"
-msgstr "Birincil Anahtar"
+msgstr "Birincil anahtarı değiştir"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:340
 msgid ""
 "Are you sure that you wish to set this field as the primary key, instead of "
 "the existing primary key?"
 msgstr ""
+"Bu alanın varolan birincil anahtar yerine ayarlanmasını istediğinize emin "
+"misiniz?"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:345
-#, fuzzy
 #| msgid "Primary Key"
 msgid "Change Primary Key"
-msgstr "Birincil Anahtar"
+msgstr "Birincil Anahtarı Değiştir"
 
 #. Warn the user and refuse to make the change:
 #: ../glom/mode_design/fields/box_db_table_definition.cc:357
 msgid "Field Name Already Exists"
-msgstr ""
+msgstr "Alan Adı Zaten Mevcut"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:358
 msgid "This field already exists. Please choose a different field name"
-msgstr ""
+msgstr "Bu alan zaten var. Lütfen farklı bir alan adı seçin"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:103
-#, fuzzy
 #| msgid "Field Calculation"
 msgid "Calculation Error"
-msgstr "Alan Hesaplaması"
+msgstr "Hesaplama Hatası"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:103
 msgid "The calculation does not have a return statement."
-msgstr ""
+msgstr "Hesaplama bir dönüş ifadesine sahip değil."
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:148
-#, fuzzy
 #| msgid "Field Calculation"
 msgid "Calculation result"
-msgstr "Alan Hesaplaması"
+msgstr "Hesaplama sonucu"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:148
 msgid ""
 "The result of the calculation is:\n"
 "%1"
 msgstr ""
+"Hesaplama sonucu:\n"
+"%1"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:150
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:140
-#, fuzzy
 #| msgid "Calculate value"
 msgid "Calculation failed"
-msgstr "Değeri hesapla"
+msgstr "Hesaplama başarısız oldu"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:150
 #, c-format
@@ -2241,6 +2381,8 @@ msgid ""
 "The calculation failed with this error:\n"
 "%s"
 msgstr ""
+"Hesaplama bu hata ile başarısız oldu:\n"
+"%s"
 
 #: ../glom/mode_design/fields/dialog_fielddefinition.cc:150
 msgid "Default Value"
@@ -2254,98 +2396,95 @@ msgstr "Öntanımlı Değer"
 #. TODO: Add a template specialization to Glib::ObjectBase::set_property() to allow this?
 #: ../glom/mode_design/layout/combobox_fields.cc:216
 msgid "(None)"
-msgstr ""
+msgstr "(Hiçbiri)"
 
 #: ../glom/mode_design/layout/combobox_relationship.cc:268
 msgid " Via: %1::%2"
-msgstr ""
+msgstr " Yolu ile: %1::%2"
 
 #: ../glom/mode_design/layout/combobox_relationship.cc:272
 msgid " Via: %1"
-msgstr ""
+msgstr " Yolu ile: %1"
 
 #: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:249
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:313
 msgid "None: No visible tables are specified by the fields."
-msgstr ""
+msgstr "Hiçbiri: Alana göre görünür tablo belirtilmemiş."
 
 #. Columns-count column:
 #. Note to translators: This is the number of columns in a group (group being a noun)
 #: ../glom/mode_design/layout/dialog_layout_details.cc:129
 msgid "Group Columns"
-msgstr ""
+msgstr "Grup Sütunları"
 
 #. Column-Width column: (only for list views)
 #. Note to translators: This is a name (the width of a UI element in the display), not an action.
 #: ../glom/mode_design/layout/dialog_layout_details.cc:142
 msgid "Display Width"
-msgstr ""
+msgstr "Görüntü Genişliği"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:687
-#, fuzzy
 #| msgid "Title"
 msgid "Text Title"
-msgstr "Başlık"
+msgstr "Metin Başlığı"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:712
-#, fuzzy
 #| msgid "Title"
 msgid "Image Title"
-msgstr "Başlık"
+msgstr "Görüntü Başlığı"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:867
 msgid "group"
-msgstr ""
+msgstr "grup"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:959
 #: ../data/ui/developer/dialog_notebook.glade.h:1
 msgid "Notebook Tabs"
-msgstr ""
+msgstr "Not defteri Sekmeleri"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:959
 msgid "Add child groups to the notebook to add tabs."
-msgstr ""
+msgstr "Not defterine sekme eklemek için alt gruplar ekle."
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1122
 msgid "Related Calendar: %1"
-msgstr ""
+msgstr "İlgili Takvim: %1"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1124
 msgid "Related List: %1"
-msgstr ""
+msgstr "İlgili Liste: %1"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1141
-#, fuzzy
 #| msgid "Field"
 msgid "Field: %1"
-msgstr "Alan"
+msgstr "Alan: %1"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1200
 msgid "(Notebook)"
-msgstr ""
+msgstr "(Not defteri)"
 
 #. Append the View columns:
 #: ../glom/mode_design/layout/dialog_layout_export.cc:55
-#, fuzzy
 #| msgid "Field"
 msgid "Fields"
-msgstr "Alan"
+msgstr "Alanlar"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:425
-#, fuzzy
 #| msgid "Relationship"
 msgid "Invalid Relationship"
-msgstr "İlişki"
+msgstr "Geçersiz İlişki"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:426
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship does not specify a field in the related table."
 msgstr ""
+"İlişki ilgili kayıtları göstermek için kullanılamayabilir çünkü ilgili "
+"tabloda bir alan belirtmez."
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:432
 msgid "Relationship Uses a Related Primary Key"
-msgstr ""
+msgstr "İlişki İlgili Birincil Anahtar Kullanır"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:433
 msgid ""
@@ -2354,10 +2493,13 @@ msgid ""
 "contain unique values. This would prevent the relationship from specifying "
 "multiple related records."
 msgstr ""
+"İlişki ilgili kayıtları göstermek için kullanılamayabilir çünkü ilgili "
+"tabloda benzersiz değerler içermesi gereken birincil anahtar alanı kullanır. "
+"Bu durum birden fazla kayıt belirten ilişkiyi engelleyecek."
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:439
 msgid "Relationship Uses a Related Unique Field"
-msgstr ""
+msgstr "İlişki İlgili Benzersiz bir Alanı Kullanır"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:440
 msgid ""
@@ -2365,66 +2507,71 @@ msgid ""
 "relationship uses a unique-values field in the related table. This would "
 "prevent the relationship from specifying multiple related records."
 msgstr ""
+"İlişki ilgili kayıtları göstermek için kullanılamayabilir çünkü ilişki "
+"ilgili tabloda benzersiz değer alanını kullanır. Bu ilişkinin çoklu kayıt "
+"belirtmesini engeller."
 
 #. Translators: This is Automatic text alignment.
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:115
 msgid "Automatic"
-msgstr ""
+msgstr "Otomatik"
 
 #. Translators: This is Left text alignment.
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:119
 msgid "Left"
-msgstr ""
+msgstr "Sol"
 
 #. Translators: This is Right text alignment.
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:123
 msgid "Right"
-msgstr ""
+msgstr "Sağ"
 
 #. Give it access to the document.
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:166
 msgid "Extra Fields"
-msgstr ""
+msgstr "Fazladan Alanlar"
 
 #. Give it access to the document.
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:174
 msgid "Sort Order"
-msgstr ""
+msgstr "Sıralama Düzeni"
 
 #. Add labels (because we will hide the checkboxes):
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:201
 msgid "Font"
-msgstr ""
+msgstr "Yazı Tipi"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:204
 msgid "Foreground Color"
-msgstr ""
+msgstr "Önplan Rengi"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:207
 msgid "Background Color"
-msgstr ""
+msgstr "Arkaplan Rengi"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:140
 msgid ""
 "The calculation failed with this error:\n"
 "%1"
 msgstr ""
+"Hesaplama hatası:\n"
+"%1"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:32
 #: ../data/ui/developer/dialog_fieldslist.glade.h:9
 #: ../data/ui/developer/dialog_group_by.glade.h:5
 #: ../data/ui/developer/window_data_layout.glade.h:27
 msgid "Formatting"
-msgstr ""
+msgstr "Biçimlendirme"
 
 #. Give it access to the document.
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc:163
 msgid "Group By - Secondary Fields"
-msgstr ""
+msgstr "Grupla - İkincil Alanlar"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_sortfields.cc:59
 msgid "Ascending"
-msgstr ""
+msgstr "Artan"
 
 #. Append the View columns:
 #. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
@@ -2432,92 +2579,93 @@ msgstr ""
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:155
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:206
 msgid "Part"
-msgstr ""
+msgstr "Bölüm"
 
 #. Don't allow a relationship to be added twice.
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:97
 msgid "This item already exists. Please choose a different item name"
-msgstr ""
+msgstr "Bu öge zaten var. Lütfen farklı bir öge adı seçin"
 
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:225
 msgid "Are you sure that you want to rename this print layout?"
-msgstr ""
+msgstr "Bu baskı düzenini yeniden adlandırmak istediğinizden emin misiniz?"
 
 #. TODO: Show old and new names?
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:226
 msgid "<b>Rename Print Layout</b>"
-msgstr ""
+msgstr "<b>Baskı Düzenini Yeniden Adlandır</b>"
 
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:228
 #: ../glom/navigation/box_tables.cc:402
-#, fuzzy
 #| msgid "table name"
 msgid "Rename"
-msgstr "tablo adı"
+msgstr "Yeniden Adlandır"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:29
 #: ../glom/utility_widgets/layouttoolbar.cc:31
 msgid "Items"
-msgstr ""
+msgstr "Ögeler"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:30
 msgid "Lines"
-msgstr ""
+msgstr "Satırlar"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:31
 msgid "Records"
-msgstr ""
+msgstr "Kayıtlar"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:33
 #: ../glom/utility_widgets/layouttoolbar.cc:38
-#, fuzzy
 msgid "Database Field"
-msgstr "Veri"
+msgstr "Veritabanı Alanı"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:33
 #: ../glom/utility_widgets/layouttoolbar.cc:38
 msgid "Drag this to the layout to add a new database field."
 msgstr ""
+"Yeni bir veritabanı alanı eklemek için bunu yerleşim alanına sürükleyin."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
 #: ../glom/utility_widgets/layouttoolbar.cc:44
 msgid "Drag this to the layout to add a new static text box."
 msgstr ""
+"Yeni statik bir metin kutusu eklemek için bunu yerleşim alanına sürükleyin."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
 #: ../glom/utility_widgets/layouttoolbar.cc:46
 msgid "Drag this to the layout to add a new static image."
-msgstr ""
+msgstr "Yeni statik görüntü eklemek için bunu yerleşim alanına sürükleyin."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:39
 msgid "Horizontal Line"
-msgstr ""
+msgstr "Yatay Satır"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:39
 msgid "Drag this to the layout to add a new horizontal line."
-msgstr ""
+msgstr "Yeni yatay çizgi eklemek için yerleşim alanına bunu sürükleyin."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:41
 msgid "Vertical Line"
-msgstr ""
+msgstr "Dikey Çizgi"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:41
 msgid "Drag this to the layout to add a new vertical line."
-msgstr ""
+msgstr "Yeni dikey çizgi eklemek için yerleşim alanına bunu sürükleyin."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
 #: ../glom/utility_widgets/layouttoolbar.cc:40
 msgid "Related Records"
-msgstr ""
+msgstr "İlgili Kayıtlar"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
 msgid "Drag this to the layout to add a new related records portal."
 msgstr ""
+"Yeni ilgili kayıt portalı eklemek için yerleşim alanına bunu sürükleyin."
 
 #. Ask for confirmation:
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:838
 msgid "Create Standard Layout"
-msgstr ""
+msgstr "Standart Yerleşim Oluştur"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:839
 msgid ""
@@ -2525,62 +2673,66 @@ msgid ""
 "layout and then try to create a layout similar to the layout of the detail "
 "view."
 msgstr ""
+"Bu deneysel bir özelliktir. Baskı yerleşiminden bütün ögeleri silecek ve "
+"daha sonra ayrıntı görünümünün yerleşimine benzer bir yerleşim oluşturmayı "
+"deneyecek."
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:842
 #: ../glom/mode_design/users/dialog_groups_list.cc:82
 msgid "Create"
-msgstr ""
+msgstr "Oluştur"
 
 #. Ask the user to confirm:
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:882
 msgid "Remove page"
-msgstr ""
+msgstr "Sayfayı sil"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:883
 msgid ""
 "Are you sure that you wish to remove the last page and any items on that "
 "page?"
 msgstr ""
+"Son sayfayı ve bu sayfadaki herhangi bir ögeyi silmek istediğinizden emin "
+"misiniz?"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:886
 msgid "Remove Page"
-msgstr ""
+msgstr "Sayfayı Sil"
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:129
 msgid "Remove library script"
-msgstr ""
+msgstr "Kütüphane betiğini sil"
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:130
 msgid ""
 "Do you really want to delete this script? This data can not be recovered"
-msgstr ""
+msgstr "Bu betiği gerçekten silmek istiyor musunuz? Bu veriler geri alınamaz "
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:132
 #: ../data/ui/developer/dialog_script_library.glade.h:7
 #: ../data/ui/developer/window_users.glade.h:8
 msgid "_Remove"
-msgstr ""
+msgstr "_Sil"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:76
 msgid "View"
-msgstr ""
+msgstr "Görünüm"
 
 #. TODO: Prevent deletion of standard groups
 #: ../glom/mode_design/users/dialog_groups_list.cc:218
 msgid "Delete Group"
-msgstr ""
+msgstr "Grup Sil"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:219
 msgid "Are your sure that you wish to delete this group?"
-msgstr ""
+msgstr "Bu grubu silmek istediğinizden emin misiniz?"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:361
 msgid "Full access."
-msgstr ""
+msgstr "Tam erişim."
 
 #. Append the View columns:
 #: ../glom/mode_design/users/dialog_users_list.cc:66
-#, fuzzy
 #| msgid "User"
 msgctxt "Users List"
 msgid "User"
@@ -2588,50 +2740,51 @@ msgstr "Kullanıcı"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:161
 msgid "Delete User"
-msgstr ""
+msgstr "Kullanıcı Sil"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:162
 msgid "Are your sure that you wish to delete this user?"
-msgstr ""
+msgstr "Bu kullanıcının silinmesini istediğinizden emin misiniz?"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:187
 msgid "Error Retrieving the List of Users"
-msgstr ""
+msgstr "Kullanıcı listesi alınırken hata"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:188
 msgid ""
 "Glom could not get the list of users from the database server. You probably "
 "do not have enough permissions. You should be a superuser."
 msgstr ""
+"Glom veritabanı sunucusundan kullanıcı listesi alınamadı. Muhtemelen yeterli "
+"izinlere sahip değilsiniz. Süper kullanıcı olmalısınız."
 
-#: ../glom/mode_design/users/dialog_users_list.cc:414
+#: ../glom/mode_design/users/dialog_users_list.cc:418
 msgid "Developer group may not be empty."
-msgstr ""
+msgstr "Geliştirici grup boş olamaz."
 
-#: ../glom/mode_design/users/dialog_users_list.cc:415
+#: ../glom/mode_design/users/dialog_users_list.cc:419
 msgid "The developer group must contain at least one user."
-msgstr ""
+msgstr "Geliştirici grup en az bir kullanıcı içermelidir."
 
 #. Prevent two tables with the same name from being added.
 #: ../glom/navigation/box_tables.cc:133
 msgid "This table already exists. Please choose a different table name"
-msgstr ""
+msgstr "Bu tablo zaten var. Lütfen farklı bir tablo seçin"
 
 #: ../glom/navigation/box_tables.cc:135
 msgid "Hidden"
-msgstr ""
+msgstr "Gizli"
 
 #. TODO: This should really be a radio, but the use of AddDel makes it awkward to change that CellRenderer property.
 #: ../glom/navigation/box_tables.cc:139
-#, fuzzy
 #| msgid "Default Value"
 msgid "Default"
-msgstr "Öntanımlı Değer"
+msgstr "Öntanımlı"
 
 #. Ask the user if they want us to try to cope with this:
 #: ../glom/navigation/box_tables.cc:235
 msgid "Table Already Exists"
-msgstr ""
+msgstr "Tablo Zaten Mevcut"
 
 #: ../glom/navigation/box_tables.cc:236
 msgid ""
@@ -2639,6 +2792,9 @@ msgid ""
 "in the .glom file. This should not happen. Would you like Glom to attempt to "
 "use the existing table?"
 msgstr ""
+".glom dosyasında belirtilmemesini rağmen veritabanı sunucusunda bu tablo "
+"zaten mevcut. Bu olmamalı. Varolan tabloyu Glom uygulamasına kullandırmak "
+"ister misiniz?"
 
 #. TODO: Do not show tables that are not in the document.
 #: ../glom/navigation/box_tables.cc:296
@@ -2646,6 +2802,7 @@ msgid ""
 "You cannot delete this table, because there is no information about this "
 "table in the document."
 msgstr ""
+"Bu tabloyu silemezsiniz çünkü belgede bu tablo ile ilgili hiçbir bilgi yok."
 
 #. Ask the user to confirm:
 #: ../glom/navigation/box_tables.cc:303
@@ -2653,156 +2810,163 @@ msgid ""
 "Are you sure that you want to delete this table?\n"
 "Table name: %1"
 msgstr ""
+"Bu tabloyu silmek istediğinizden emin misiniz?\n"
+"Tablo adı: %1"
 
 #: ../glom/navigation/box_tables.cc:304
 msgid "Delete Table"
-msgstr ""
+msgstr "Tabloyu Sil"
 
 #: ../glom/navigation/box_tables.cc:399
 msgid "Are you sure that you want to rename this table?"
-msgstr ""
+msgstr "Bu tabloyu yeniden adlandırmak ister misiniz?"
 
 #. TODO: Show old and new names?
 #: ../glom/navigation/box_tables.cc:400
-#, fuzzy
 #| msgid "<b>Table: </b>"
 msgid "<b>Rename Table</b>"
-msgstr "<b>Tablo: </b>"
+msgstr "<b>Tabloyu Yeniden Adlandır</b>"
 
 #: ../glom/navigation/box_tables.cc:442
 msgid "Unknown Table"
-msgstr ""
+msgstr "Bilinmeyen Tablo"
 
 #: ../glom/navigation/box_tables.cc:443
 msgid ""
 "You cannot open this table, because there is no information about this table "
 "in the document."
 msgstr ""
+"Bu tabloyu açamazsınız çünkü belgede bu tablo ile ilgili hiçbir bilgi yok."
 
 #: ../glom/print_layout/canvas_layout_item.cc:263
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:119
 msgid "Choose Field"
-msgstr ""
+msgstr "Alan Seç"
 
 #: ../glom/print_layout/canvas_print_layout.cc:293
 #: ../data/ui/developer/window_report_layout.glade.h:17
 msgid "_Formatting"
-msgstr ""
+msgstr "_Biçimlendirme"
 
 #. Append the View columns:
 #: ../glom/mode_design/translation/window_translations.cc:65
 msgid "Original"
-msgstr ""
+msgstr "Özgün"
 
 #: ../glom/mode_design/translation/window_translations.cc:72
 msgid "Translation"
-msgstr ""
+msgstr "Çeviri"
 
 #. This is at the end, because it can contain a long description of the item's context.
 #: ../glom/mode_design/translation/window_translations.cc:78
 msgid "Item"
-msgstr ""
+msgstr "Öge"
 
 #. Show the file-chooser dialog, to select an output .po file:
 #: ../glom/mode_design/translation/window_translations.cc:352
 #: ../glom/mode_design/translation/window_translations.cc:392
 msgid "Choose .po File Name"
-msgstr ""
+msgstr ".po dosya adı seçin"
 
 #: ../glom/mode_design/translation/window_translations.cc:358
 #: ../glom/mode_design/translation/window_translations.cc:397
 msgid "Po files"
-msgstr ""
+msgstr "Po dosyaları"
 
 #: ../glom/mode_design/translation/window_translations.cc:363
 #: ../data/ui/developer/window_translations.glade.h:7
 msgid "Export"
-msgstr ""
+msgstr "Dışa Aktar"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
 #: ../glom/mode_design/translation/window_translations.cc:404
 #: ../data/ui/developer/window_translations.glade.h:6
 msgid "Import"
-msgstr ""
+msgstr "İçeri Aktar"
 
 #: ../glom/utility_widgets/adddel/adddel.cc:158
 msgid "This item already exists. Please try again."
-msgstr ""
+msgstr "Bu öge zaten mevcut. Lütfen tekrar deneyin."
 
 #. Something more specific and helpful.
 #: ../glom/utility_widgets/adddel/adddel.cc:162
 msgid "Duplicate"
-msgstr ""
+msgstr "Çoğalt"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
 #: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:476
 msgid "Example"
-msgstr ""
+msgstr "Örnek"
 
 #. The GNOME HIG says that labels should have ":" at the end:
 #. http://library.gnome.org/devel/hig-book/stable/design-text-labels.html.en
 #: ../glom/mode_data/datawidget/datawidget.cc:73
 msgid "%1:"
-msgstr ""
+msgstr "%1:"
 
 #. Let the user choose a date from a calendar dialog:
 #: ../glom/mode_data/datawidget/datawidget.cc:212
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #. TODO: A better label/icon for "Choose Date".
 #: ../glom/mode_data/datawidget/datawidget.cc:213
 msgid "Choose a date from an on-screen calendar."
-msgstr ""
+msgstr "Ekrandaki takvimden bir tarih seçin."
 
 #: ../glom/mode_data/datawidget/datawidget.cc:223
 msgid "Open the record identified by this ID, in the other table."
-msgstr ""
+msgstr "Diğer tablodaki bu ID ile tanımlanmış kaydı açın."
 
 #: ../glom/mode_data/datawidget/datawidget.cc:233
 msgid ""
 "Enter search criteria to identify records in the other table, to choose an "
 "ID for this field."
 msgstr ""
+"Diğer tablodaki kayıtları tanımlamak ve bu alana bir ID seçmek için arama "
+"kriteri girin."
 
 #: ../glom/mode_data/datawidget/datawidget.cc:237
 #: ../data/ui/operator/window_main.glade.h:4
 #: ../data/ui/developer/window_groups.glade.h:5
 #: ../data/ui/developer/window_users.glade.h:5
 msgid "_New"
-msgstr ""
+msgstr "_Yeni"
 
 #: ../glom/mode_data/datawidget/datawidget.cc:238
 msgid ""
 "Enter details for a new record in the other table, then use its ID for this "
 "field."
 msgstr ""
+"Diğer tablodaki yeni bir kayıt için ayrıntı girin, daha sonra bu alan için "
+"onun ID'sini kullanın."
 
 #: ../glom/mode_data/db_adddel/db_adddel.cc:78
-#, fuzzy
 #| msgid "table name"
 msgid "Table Content"
-msgstr "tablo adı"
+msgstr "Tablo İçeriği"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
 #: ../glom/mode_data/db_adddel/db_adddel.cc:538
 msgid "ExampleEg"
-msgstr ""
+msgstr "Örnek"
 
 #: ../glom/mode_data/db_adddel/db_adddel.cc:2066
 msgid "Right-click to layout, to specify the related fields."
-msgstr ""
+msgstr "İlgili alanları belirlemek için yerleşime sağ tıkla."
 
 #. Tell user that they can't do that:
 #: ../glom/mode_data/db_adddel/db_adddel.cc:2283
 msgid "Extra Related Records Not Possible"
-msgstr ""
+msgstr "Fazladan İlgili Kayıt Mümkün Değil"
 
 #: ../glom/mode_data/db_adddel/db_adddel.cc:2284
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
 msgstr ""
+"Yeni bir ilgili kayıt eklemeyi denediniz fakat ilgili sadece bir kayıt "
+"olabilir çünkü ilişki benzersiz anahtar kullanır."
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:86
 #: ../glom/utility_widgets/imageglom.cc:775
@@ -2813,32 +2977,31 @@ msgstr "Seç"
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:103
 msgid "You have not entered any quick find criteria."
-msgstr ""
+msgstr "Herhangi bir hızlı bul kriteri girmediniz."
 
-#: ../glom/utility_widgets/dialog_image_load_progress.cc:105
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:108
 msgid "Not enough memory available to load the image"
-msgstr ""
+msgstr "Görüntü yüklemek için yeterli hafıza yok"
 
-#: ../glom/utility_widgets/dialog_image_load_progress.cc:157
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:160
 msgid "Error loading %1"
-msgstr ""
+msgstr "%1 yüklenirken hata"
 
-#: ../glom/utility_widgets/dialog_image_load_progress.cc:158
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:161
 msgid "Error loading image"
-msgstr ""
+msgstr "Görüntü yükleme hatası"
 
-#: ../glom/utility_widgets/dialog_image_save_progress.cc:135
+#: ../glom/utility_widgets/dialog_image_save_progress.cc:137
 msgid "Error Saving"
-msgstr ""
+msgstr "Kaydetme Hatası"
 
-#: ../glom/utility_widgets/dialog_image_save_progress.cc:136
+#: ../glom/utility_widgets/dialog_image_save_progress.cc:138
 msgid "Error saving image"
-msgstr ""
+msgstr "Görüntü kaydedilirken hata"
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:83
-#, fuzzy
 msgid "New Database"
-msgstr "Veri"
+msgstr "Yeni Veritabanı"
 
 #. For instance, an extra hint when saving from an example, saying that a new file must be saved.
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:97
@@ -2846,173 +3009,189 @@ msgid ""
 "Please choose a human-readable title for the new database. You can change "
 "this later in the database properties. It may contain any characters."
 msgstr ""
+"Yeni veritabanı için lütfen okunabilir bir başlık seçin. Bu başlığı daha "
+"sonra veritabanı özelliklerinde değiştirebilirsiniz. Başlık için herhangi "
+"bir karakteri içerebilir."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:104
 #: ../data/ui/developer/window_field_definition_edit.glade.h:3
 #: ../data/ui/developer/window_report_layout.glade.h:7
-#, fuzzy
 #| msgid "Title"
 msgid "_Title:"
-msgstr "Başlık"
+msgstr "_Başlık:"
 
 #. Use titles that show the distinction between PostgreSQL and the alternatives:
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:119
 msgid ""
 "Create PostgreSQL database in its own folder, to be hosted by this computer."
 msgstr ""
+"Bu bilgisayar üzerinde barındırılan kendi klasöründe PostgreSQL veritabanı "
+"oluştur."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:120
 msgid ""
 "Create database on an external PostgreSQL database server, to be specified "
 "in the next step."
 msgstr ""
+"Bir sonraki adımda belirtilen harici bir PostgreSQL veritabanı sunucusunda "
+"veritabanı oluştur."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:122
 msgid "Create database in its own folder, to be hosted by this computer."
 msgstr ""
+"Bu bilgisayar tarafından barındırılan kendi klasöründe veritabanı oluştur."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:123
 msgid ""
 "Create database on an external database server, to be specified in the next "
 "step."
 msgstr ""
+"Sonraki adımda belirtilen harici bir veritabanı sunucusunda veritabanı "
+"oluştur."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:140
 msgid ""
 "Create SQLite database in its own folder, to be hosted by this computer."
 msgstr ""
+"Bu bilgisayar tarafından barındırılan kendi klasöründe SQLite veritabanı "
+"oluştur."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:141
 msgid ""
 "SQLite does not support authentication or remote access but is suitable for "
 "embedded devices."
 msgstr ""
+"SQLite kimlik doğrulamayı ya da uzaktan erişimi desteklemez fakat gömülü "
+"aygıtlar için uygundur."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:148
 msgid "Create MySQL database in its own folder, to be hosted by this computer."
 msgstr ""
+"Bu bilgisayar tarafından barındırılan kendi klasöründe MySQL veritabanı "
+"oluştur."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:149
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:155
 msgid "MySQL support in Glom is experimental and unlikely to work properly."
 msgstr ""
+"Glom uygulamasındaki MySQL deneyseldir ve doğru çalışmama olasılığı vardır."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:154
 msgid ""
 "Create database on an external MySQL database server, to be specified in the "
 "next step."
 msgstr ""
+"Sonraki adımda belirtilen harici MySQL veritabanı sunucusunda veritabanı "
+"oluştur."
 
 #: ../glom/utility_widgets/imageglom.cc:660
 msgid "Images"
-msgstr ""
+msgstr "Görüntüler"
 
 #: ../glom/utility_widgets/imageglom.cc:681
 msgid "Save Image"
-msgstr ""
+msgstr "Görüntü Kaydet"
 
 #: ../glom/utility_widgets/imageglom.cc:768
 #: ../data/ui/developer/dialog_database_preferences.glade.h:15
 msgid "Choose Image"
-msgstr ""
+msgstr "Görüntü Seç"
 
 #: ../glom/utility_widgets/imageglom.cc:956
 msgid "_Open File"
-msgstr ""
+msgstr "Dosya _Aç"
 
 #: ../glom/utility_widgets/imageglom.cc:957
 msgid "Open File With"
-msgstr ""
+msgstr "Dosyayı Birlikte Aç"
 
 #: ../glom/utility_widgets/imageglom.cc:959
 #: ../data/ui/operator/window_main.glade.h:15
 #: ../data/ui/developer/window_print_layout_edit.glade.h:6
 msgid "_Copy"
-msgstr ""
+msgstr "_Kopyala"
 
 #: ../glom/utility_widgets/imageglom.cc:960
 #: ../data/ui/operator/window_main.glade.h:16
 #: ../data/ui/developer/window_print_layout_edit.glade.h:7
 msgid "_Paste"
-msgstr ""
+msgstr "_Yapıştır"
 
 #: ../glom/utility_widgets/imageglom.cc:961
 #: ../data/ui/operator/window_main.glade.h:17
 msgid "_Clear"
-msgstr ""
+msgstr "_Temizle"
 
 #: ../glom/utility_widgets/layouttoolbar.cc:32
 msgid "Containers"
-msgstr ""
+msgstr "Taşıyıcılar"
 
 #: ../glom/utility_widgets/layouttoolbar.cc:34
 msgid "Drag this to the layout to add a new group."
-msgstr ""
+msgstr "Yeni bir grup eklemek için bunu yerleşim alanına sürükleyin."
 
 #: ../glom/utility_widgets/layouttoolbar.cc:36
 msgid "Drag this to the layout to add a new notebook."
-msgstr ""
+msgstr "Yeni bir not defteri eklemek için bunu yerleşim alanına sürükleyin."
 
 #: ../glom/utility_widgets/layouttoolbar.cc:40
 msgid "Drag this to the layout to add a new Related Record."
-msgstr ""
+msgstr "Yeni İlgili Kayıt eklemek için bunu yerleşim alanına sürükleyin."
 
 #: ../glom/utility_widgets/layouttoolbar.cc:42
 msgid "Drag this to the layout to add a new button."
-msgstr ""
+msgstr "Yeni bir buton eklemek için bunu yerleşim alanına sürükleyin."
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:120
 msgid "Field Layout Properties"
-msgstr ""
+msgstr "Alan Yerleşim Özellikleri"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:121
 #: ../data/ui/developer/window_data_layout.glade.h:19
 msgid "Add Related Records"
-msgstr ""
+msgstr "İlgili Kayıtları Ekle"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:122
 #: ../data/ui/developer/window_data_layout.glade.h:17
 msgid "Add Notebook"
-msgstr ""
+msgstr "Not defteri Ekle"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:123
 #: ../data/ui/developer/window_data_layout.glade.h:15
-#, fuzzy
 #| msgid "Add _Group"
 msgid "Add Group"
-msgstr "_Grup Ekle"
+msgstr "Grup Ekle"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:124
 #: ../data/ui/developer/window_data_layout.glade.h:13
 msgid "Add Button"
-msgstr ""
+msgstr "Buton Ekle"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:125
 #: ../data/ui/developer/window_data_layout.glade.h:9
 msgid "Add Text"
-msgstr ""
+msgstr "Metin Ekle"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:126
 msgid "Delete"
-msgstr ""
+msgstr "Sil"
 
 #: ../glom/utility_widgets/layoutwidgetutils.cc:58
 msgid "Properties"
-msgstr ""
+msgstr "Özellikler"
 
 #: ../glom/utility_widgets/notebooklabelglom.cc:92
 msgid "Delete whole notebook \"%1\"?"
-msgstr ""
+msgstr "\"%1\" not defterinin tümü silinsin mi?"
 
 #: ../glom/utility_widgets/notebooklabelglom.cc:97
 msgid "Delete whole notebook?"
-msgstr ""
+msgstr "Not defterinin tümü silinsin mi?"
 
 #: ../data/ui/operator/box_navigation_tables.glade.h:2
-#, fuzzy
 #| msgid "Show hidden tables"
 msgid "_Show hidden tables"
-msgstr "Gizli tabloları göster"
+msgstr "Gizli tabloları _göster"
 
 #: ../data/ui/operator/box_navigation_tables.glade.h:3
 #: ../data/ui/operator/dialog_new_record.glade.h:2
@@ -3029,11 +3208,11 @@ msgstr "Gizli tabloları göster"
 #: ../data/ui/developer/window_text_format.glade.h:2
 #: ../data/ui/developer/window_users.glade.h:3
 msgid "_Close"
-msgstr ""
+msgstr "_Kapat"
 
 #: ../data/ui/operator/dialog_choose_date.glade.h:1
 msgid "Choose Date"
-msgstr ""
+msgstr "Tarih Seç"
 
 #: ../data/ui/operator/dialog_choose_date.glade.h:2
 #: ../data/ui/operator/dialog_connection.glade.h:2
@@ -3062,7 +3241,7 @@ msgstr ""
 #: ../data/ui/developer/window_textobject.glade.h:2
 #: ../data/ui/developer/window_users.glade.h:2
 msgid "_Help"
-msgstr ""
+msgstr "_Yardım"
 
 #: ../data/ui/operator/dialog_choose_date.glade.h:4
 #: ../data/ui/operator/dialog_data_invalid_format.glade.h:3
@@ -3084,10 +3263,9 @@ msgstr ""
 #: ../data/ui/developer/window_textobject.glade.h:4
 #: ../data/ui/developer/window_translations.glade.h:11
 msgid "_OK"
-msgstr ""
+msgstr "_TAMAM"
 
 #: ../data/ui/operator/dialog_choose_date.glade.h:5
-#, fuzzy
 #| msgid ""
 #| "<span weight=\"bold\" size=\"larger\">Title</span>\n"
 #| "\n"
@@ -3097,23 +3275,22 @@ msgid ""
 "\n"
 "Please select a date to enter in this field."
 msgstr ""
-"<span·weight=\"bold\"·size=\"larger\">Başlık</span>\n"
+"<span·weight=\"bold\"·size=\"larger\">Tarih Seç</span>\n"
 "\n"
-"Bilgi metni.\n"
+"Lütfen bu alana girmek için bir tarih seçin."
 
 #: ../data/ui/operator/dialog_connection.glade.h:1
 msgid "Connect to Server"
-msgstr ""
+msgstr "Sunucuya Bağlan"
 
 #: ../data/ui/operator/dialog_connection.glade.h:4
-#, fuzzy
 #| msgid "Connect"
 msgid "C_onnect"
-msgstr "Bağlan"
+msgstr "B_ağlan"
 
 #: ../data/ui/operator/dialog_connection.glade.h:5
 msgid "Please enter the connection details for your database server."
-msgstr ""
+msgstr "Lütfen veritabanı sunucunuz için bağlantı ayrıntılarını girin."
 
 #: ../data/ui/operator/dialog_connection.glade.h:6
 msgid "Host"
@@ -3126,43 +3303,36 @@ msgid "User"
 msgstr "Kullanıcı"
 
 #: ../data/ui/operator/dialog_connection.glade.h:9
-#, fuzzy
 #| msgid "Host"
 msgid "_Host:"
-msgstr "Makine"
+msgstr "_Makine:"
 
 #: ../data/ui/operator/dialog_connection.glade.h:10
-#, fuzzy
 msgid "Database:"
-msgstr "Veri"
+msgstr "_Veritabanı:"
 
 #: ../data/ui/operator/dialog_connection.glade.h:11
 #: ../data/ui/developer/dialog_initial_password.glade.h:6
-#, fuzzy
 #| msgid "User"
 msgid "_User:"
-msgstr "Kullanıcı"
+msgstr "_Kullanıcı:"
 
 #: ../data/ui/operator/dialog_connection.glade.h:12
 #: ../data/ui/developer/dialog_initial_password.glade.h:7
-#, fuzzy
 #| msgid "Password"
 msgid "_Password:"
-msgstr "Parola"
+msgstr "_Parola:"
 
 #: ../data/ui/operator/dialog_connection.glade.h:13
-#, fuzzy
 msgid "Database"
-msgstr "Veri"
+msgstr "Veritabanı"
 
 #: ../data/ui/operator/dialog_data_invalid_format.glade.h:2
-#, fuzzy
 #| msgid "Revert"
 msgid "_Revert"
-msgstr "Geriye al"
+msgstr "_Geri Al"
 
 #: ../data/ui/operator/dialog_data_invalid_format.glade.h:4
-#, fuzzy
 #| msgid ""
 #| "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 #| "\n"
@@ -3176,10 +3346,11 @@ msgid ""
 "revert to the previous value. Here is an example of correctly-formatted data "
 "for this field.\n"
 msgstr ""
-"<span·weight=\"bold\"·size=\"larger\">Geçersiz biçim</span>\n"
+"<span weight=\"bold\" size=\"larger\">Geçersiz Biçim</span>\n"
 "\n"
-"Alandaki veri tanımlanamadı. Veriyi düzeltmeli veya önceki değerine geri "
-"döndürmelisiniz. Bu alan için uygun biçimdeki veriye örnek şu şekildedir.\n"
+"Alandaki veriler tanınmadı. Lütfen veriyi düzeltmeyi deneyin ya da önceki "
+"değerine geri alın. Bu alan için doğru biçimlendirilmiş örnek veri şu "
+"şekildedir.\n"
 
 #: ../data/ui/operator/dialog_data_invalid_format.glade.h:8
 msgid "example data format"
@@ -3187,47 +3358,42 @@ msgstr "örnek veri biçimi"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:1
 msgid "Welcome to Glom"
-msgstr ""
+msgstr "Glom'a Hoş Geldiniz"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:3
 msgid "_Quit"
-msgstr ""
+msgstr "_Çık"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:4
 #: ../data/ui/developer/dialog_choose_field.glade.h:3
 #: ../data/ui/developer/dialog_choose_relationship.glade.h:3
-#, fuzzy
 #| msgid "Select"
 msgid "_Select"
-msgstr "Seç"
+msgstr "_Seç"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:5
-#, fuzzy
 #| msgid ""
 #| "<span weight=\"bold\" size=\"larger\">Title</span>\n"
 #| "\n"
 #| "Information text.\n"
 msgid "<span weight=\"bold\" size=\"larger\">Open or Create a Document</span>"
-msgstr ""
-"<span·weight=\"bold\"·size=\"larger\">Başlık</span>\n"
-"\n"
-"Bilgi metni.\n"
+msgstr "<span weight=\"bold\" size=\"larger\">Bir Belge Aç ya da Oluştur</span>"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:6
 msgid "Open or create Document"
-msgstr ""
+msgstr "Belge Aç ya da Oluştur"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:7
 msgid "Open Existing Document"
-msgstr ""
+msgstr "Varolan Belgeyi Aç"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:8
 msgid "Create New Document"
-msgstr ""
+msgstr "Yeni Belge Oluştur"
 
 #: ../data/ui/operator/dialog_find_id.glade.h:1
 msgid "Find Related Record"
-msgstr ""
+msgstr "İlgili Kaydı Bul"
 
 #: ../data/ui/operator/dialog_find_id.glade.h:3
 #: ../data/ui/operator/dialog_new_record.glade.h:3
@@ -3235,236 +3401,225 @@ msgstr ""
 #: ../data/ui/developer/window_data_layout.glade.h:2
 #: ../data/ui/developer/window_design.glade.h:2
 #: ../data/ui/developer/window_report_layout.glade.h:2
-#, fuzzy
 #| msgid "<b>Table: </b>"
 msgid "<b>Table:</b>"
-msgstr "<b>Tablo: </b>"
+msgstr "<b>Tablo:</b>"
 
 #: ../data/ui/operator/dialog_find_id.glade.h:4
 #: ../data/ui/operator/dialog_new_record.glade.h:4
-#, fuzzy
 #| msgid "table name"
 msgid "table_name"
-msgstr "tablo adı"
+msgstr "tablo_adı"
 
 #: ../data/ui/operator/dialog_new_record.glade.h:1
 msgid "New Related Record"
-msgstr ""
+msgstr "Yeni İlgili Kayıt"
 
 #: ../data/ui/operator/dialog_image_load_progress.glade.h:1
 msgid "Loading image"
-msgstr ""
+msgstr "Görüntü yükleniyor"
 
 #: ../data/ui/operator/dialog_image_save_progress.glade.h:1
 msgid "Saving Image"
-msgstr ""
+msgstr "Görüntü Kaydediliyor"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:1
 msgid "bla.blub - Import from CSV"
-msgstr ""
+msgstr "bla.blub - CSV'den içeri aktar"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:3
 #: ../data/ui/operator/window_main.glade.h:8
 msgid "I_mport"
-msgstr ""
+msgstr "İ_çeri Aktar"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:5
 #: ../data/ui/developer/box_formatting.glade.h:23
 msgid "label"
-msgstr ""
+msgstr "etiket"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:6
 msgid "_First line as title"
-msgstr ""
+msgstr "Başlık olarak _ilk satır"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:7
 msgid "_Encoding:"
-msgstr ""
+msgstr "_Kodlama:"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:8
 msgid "Import Into _Table:"
-msgstr ""
+msgstr "_Tabloya Aktar:"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:9
 msgid "Encoding detected as: UTF-8"
-msgstr ""
+msgstr "Tespit edilen kodlama: UTF-8"
 
 #. Import is a noun here. This is the title for a window showing options for an import operation.
 #: ../data/ui/operator/dialog_import_csv.glade.h:11
-#, fuzzy
 #| msgid "<b>Connection</b>"
 msgid "<b>Import Options</b>"
-msgstr "<b>Bağlantı</b>"
+msgstr "<b>Seçenekleri İçeri Aktar</b>"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:12
 msgid "_Number of sample rows:"
-msgstr ""
+msgstr "Örnek satır _sayısı:"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:13
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #. Import is a noun here. This is the title for a list of fields to import.
 #: ../data/ui/operator/dialog_import_csv.glade.h:15
-#, fuzzy
 #| msgid "<b>Fields</b>"
 msgid "<b>Import Fields</b>"
-msgstr "<b>Alanlar</b>"
+msgstr "<b>Alanları İçeri Aktar</b>"
 
 #. This is a status message for a progress dialog. It says that importing is currently happenning.
 #: ../data/ui/operator/dialog_import_csv_progress.glade.h:2
 msgid "Importing Data"
-msgstr ""
+msgstr "Veriler İçeri Aktarılıyor"
 
 #: ../data/ui/operator/dialog_import_csv_progress.glade.h:5
 msgid "Please wait while your data is imported."
-msgstr ""
+msgstr "Veriniz içeri aktarılırken lütfen bekleyiniz."
 
 #: ../data/ui/operator/window_main.glade.h:3
 #: ../data/ui/developer/window_print_layout_edit.glade.h:1
 #: ../data/ui/developer/window_relationships_overview.glade.h:1
 msgid "_File"
-msgstr ""
+msgstr "_Dosya"
 
 #: ../data/ui/operator/window_main.glade.h:6
 msgid "_Save as Example"
-msgstr ""
+msgstr "Örnek olarak _Kaydet"
 
 #: ../data/ui/operator/window_main.glade.h:9
 msgid "S_hared on Network"
-msgstr ""
+msgstr "Ağ üzerinde P_aylaşıldı"
 
 #: ../data/ui/operator/window_main.glade.h:10
 #: ../data/ui/developer/window_relationships_overview.glade.h:3
 msgid "_Print"
-msgstr ""
+msgstr "_Yazdır"
 
 #: ../data/ui/operator/window_main.glade.h:11
-#, fuzzy
 #| msgid "List Layout"
 msgid "_Edit Print Layouts"
-msgstr "Liste Düzeni"
+msgstr "Baskı Düzenini _Düzenle"
 
 #: ../data/ui/operator/window_main.glade.h:14
 #: ../data/ui/developer/window_print_layout_edit.glade.h:5
 msgid "Cu_t"
-msgstr ""
+msgstr "Ke_s"
 
 #: ../data/ui/operator/window_main.glade.h:19
-#, fuzzy
 #| msgid "Table:"
 msgid "_Tables"
-msgstr "Tablo:"
+msgstr "_Tablolar"
 
 #: ../data/ui/operator/window_main.glade.h:20
 msgid "_Edit Tables"
-msgstr ""
+msgstr "Tabloları _Düzenle"
 
 #: ../data/ui/operator/window_main.glade.h:21
 msgid "R_eports"
-msgstr ""
+msgstr "R_aporlar"
 
 #: ../data/ui/operator/window_main.glade.h:22
 msgid "_Edit Reports"
-msgstr ""
+msgstr "Raporları _Düzenle"
 
 #: ../data/ui/operator/window_main.glade.h:23
 msgid "_Developer"
-msgstr ""
+msgstr "_Geliştiriciler"
 
 #: ../data/ui/operator/window_main.glade.h:24
 msgid "_Operator"
-msgstr ""
+msgstr "_Operatör"
 
 #: ../data/ui/operator/window_main.glade.h:25
-#, fuzzy
 #| msgid "Field"
 msgid "_Fields"
-msgstr "Alan"
+msgstr "_Alanlar"
 
 #: ../data/ui/operator/window_main.glade.h:26
-#, fuzzy
 #| msgid "Relationship"
 msgid "_Relationships"
-msgstr "İlişki"
+msgstr "_İlişkiler"
 
 #: ../data/ui/operator/window_main.glade.h:27
-#, fuzzy
 #| msgid "Relationship"
 msgid "Relationships _Overview"
-msgstr "İlişki"
+msgstr "İlişkiler _Görünümü"
 
 #: ../data/ui/operator/window_main.glade.h:29
-#, fuzzy
 #| msgid "List Layout"
 msgid "_Print Layouts"
-msgstr "Liste Düzeni"
+msgstr "_Baskı Düzeni"
 
 #: ../data/ui/operator/window_main.glade.h:30
 msgid "_Reports"
-msgstr ""
+msgstr "_Raporlar"
 
 #: ../data/ui/operator/window_main.glade.h:31
 msgid "_Database Preferences"
-msgstr ""
+msgstr "_Veritabanı Tercihleri"
 
 #: ../data/ui/operator/window_main.glade.h:32
-#, fuzzy
 #| msgid "User"
 msgid "_Users"
-msgstr "Kullanıcı"
+msgstr "_Kullanıcılar"
 
 #: ../data/ui/operator/window_main.glade.h:33
 msgid "Script _Library"
-msgstr ""
+msgstr "Betik _Kütüphanesi"
 
 #: ../data/ui/operator/window_main.glade.h:34
 msgid "_Translations"
-msgstr ""
+msgstr "_Çeviriler"
 
 #: ../data/ui/operator/window_main.glade.h:35
 msgid "Test Tra_nslation"
-msgstr ""
+msgstr "Test Çevi_risi"
 
 #: ../data/ui/operator/window_main.glade.h:36
 msgid "Active Platform"
-msgstr ""
+msgstr "Etkin Platform"
 
 #: ../data/ui/operator/window_main.glade.h:37
 msgid "_Normal"
-msgstr ""
+msgstr "_Normal"
 
 #: ../data/ui/operator/window_main.glade.h:38
 msgid "_Maemo"
-msgstr ""
+msgstr "_Maemo"
 
 #: ../data/ui/operator/window_main.glade.h:39
 msgid "_Drag and Drop Layout"
-msgstr ""
+msgstr "_Sürükle ve Bırak Alanı"
 
 #: ../data/ui/operator/window_main.glade.h:40
 msgid "_Export Backup"
-msgstr ""
+msgstr "Yedeği _Dışa Aktar"
 
 #: ../data/ui/operator/window_main.glade.h:41
 msgid "_Restore Backup"
-msgstr ""
+msgstr "Yedeği _Geri Yükle"
 
 #: ../data/ui/operator/window_main.glade.h:43
 msgid "_About"
-msgstr ""
+msgstr "_Hakkında"
 
 #: ../data/ui/operator/window_main.glade.h:44
 msgid "_Contents"
-msgstr ""
+msgstr "_İçerikler"
 
 #: ../data/ui/developer/dialog_add_related_table.glade.h:1
 msgid "Add Related Table"
-msgstr ""
+msgstr "İlgili Tablo Ekle"
 
 #: ../data/ui/developer/dialog_add_related_table.glade.h:3
 msgid "C_reate Table"
-msgstr ""
+msgstr "Tablo O_luştur"
 
 #: ../data/ui/developer/dialog_add_related_table.glade.h:4
 msgid ""
@@ -3474,34 +3629,37 @@ msgid ""
 "If a suitable related table already exists then you should instead cancel "
 "and just add a relationship."
 msgstr ""
+"Bu, ayrı adımlarda işlem yapmak için uygun bir alternatif olarak, yeni bir "
+"tablo ekleyecek ve bu yeni  tabloyu gösteren bir ilişki ekleyecek.\n"
+"\n"
+"Eğer uygun ilgili tablo zaten varsa o zaman iptal etmek yerine sadece bir "
+"ilişki eklemelisiniz."
 
 #. Translators: FROM as in SQL's FROM
 #: ../data/ui/developer/dialog_add_related_table.glade.h:8
-#, fuzzy
 #| msgid "Field"
 msgid "From field:"
-msgstr "Alan"
+msgstr "Alandan:"
 
 #: ../data/ui/developer/dialog_add_related_table.glade.h:9
 msgid "_Edit Fields"
-msgstr ""
+msgstr "Alanları _Düzenle"
 
 #: ../data/ui/developer/dialog_add_related_table.glade.h:10
 msgid "Name of new related table:"
-msgstr ""
+msgstr "Yeni ilgili tablonun adı:"
 
 #: ../data/ui/developer/dialog_add_related_table.glade.h:11
-#, fuzzy
 msgid "Name of new relationship:"
-msgstr "İlişki"
+msgstr "Yeni ilişki adı:"
 
 #: ../data/ui/developer/dialog_change_language.glade.h:1
 msgid "Test Translation"
-msgstr ""
+msgstr "Test Çevirisi"
 
 #: ../data/ui/developer/dialog_change_language.glade.h:4
 msgid "Change Language"
-msgstr ""
+msgstr "Dili Değiştir"
 
 #: ../data/ui/developer/dialog_change_language.glade.h:5
 msgid ""
@@ -3515,30 +3673,36 @@ msgid ""
 "dialog windows, will only be translated when you start Glom on a computer "
 "that uses that language."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Test Çevirisi</span>\n"
+"\n"
+"Çevirileri test etmek için geçici olarak kullanılacak bir dil seçin. Bu dili "
+"kullanan bir bilgisayarda uygulama başlatıldığında, genellikle çeviriler "
+"otomatik olarak kullanılır.\n"
+"\n"
+"Bu dili kullanan bir bilgisayarda Glom başlatırsanız, sadece Glom kullanıcı "
+"arayüzünün standart parçaları, örnek olarak menüler ve diyalog pencereleri "
+"çevrilecektir."
 
 #: ../data/ui/developer/dialog_change_language.glade.h:10
 msgid "Locale:"
-msgstr ""
+msgstr "Yerel:"
 
 #: ../data/ui/developer/dialog_choose_field.glade.h:1
 msgid "Select Field"
 msgstr "Alan Seç"
 
 #: ../data/ui/developer/dialog_choose_field.glade.h:4
-#, fuzzy
 msgid "Show _Related Relationships"
-msgstr "İlişki"
+msgstr "_İlgili İlişkileri Göster"
 
 #: ../data/ui/developer/dialog_choose_field.glade.h:5
-#, fuzzy
 #| msgid "Table:"
 msgid "_Table:"
-msgstr "Tablo:"
+msgstr "_Tablo:"
 
 #: ../data/ui/developer/dialog_choose_relationship.glade.h:1
-#, fuzzy
 msgid "Select Relationship"
-msgstr "İlişki"
+msgstr "İlişki Seç"
 
 #: ../data/ui/developer/dialog_choose_relationship.glade.h:4
 msgid "Table:"
@@ -3546,7 +3710,7 @@ msgstr "Tablo:"
 
 #: ../data/ui/developer/dialog_choose_user.glade.h:1
 msgid "Choose User"
-msgstr ""
+msgstr "Kullanıcı Seç"
 
 #: ../data/ui/developer/dialog_choose_user.glade.h:5
 msgid ""
@@ -3554,69 +3718,71 @@ msgid ""
 "\n"
 "Which user should be added to this group?"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Gruba Kullanıcı Ekle</span>\n"
+"\n"
+"Hangi kullanıcılar bu gruba eklenmeli?"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:1
 msgid "Database Preferences"
-msgstr ""
+msgstr "Veritabanı Tercihleri"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:5
 msgid "System Name:"
-msgstr ""
+msgstr "Sistem Adı:"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:6
-#, fuzzy
 #| msgid "Name"
 msgid "Name:"
-msgstr "Ad"
+msgstr "Ad:"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:7
 msgid "Country:"
-msgstr ""
+msgstr "Ülke:"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:8
 msgid "Zip/Postal Code:"
-msgstr ""
+msgstr "Posta Kodu:"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:9
 msgid "State/County:"
-msgstr ""
+msgstr "İlçe/Ülke:"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:10
 msgid "Town:"
-msgstr ""
+msgstr "Şehir:"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:11
 msgid "Street (Line 2):"
-msgstr ""
+msgstr "Cadde (Hat 2):"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:12
 msgid "Street:"
-msgstr ""
+msgstr "Cadde:"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:13
-#, fuzzy
 #| msgid "<b>Fields</b>"
 msgid "<b>Address</b>"
-msgstr "<b>Alanlar</b>"
+msgstr "<b>Adres</b>"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:14
 msgid "Organisation"
-msgstr ""
+msgstr "Organizasyon"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:16
 msgid "Logo"
-msgstr ""
+msgstr "Amblem"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:17
-#, fuzzy
 #| msgid "Auto-increment"
 msgid "Auto-increment values"
-msgstr "Otomatik artış"
+msgstr "Değerleri otomatik artır"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:18
 msgid ""
 "When the database is opened the python function implemented here will run."
 msgstr ""
+"Veritabanı açıldığında burada gerçekleştirilen python fonksiyonu "
+"çalıştırılacak."
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:19
 #: ../data/ui/developer/window_button_script.glade.h:7
@@ -3626,14 +3792,13 @@ msgstr "Test"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:20
 msgid "Startup Script"
-msgstr ""
+msgstr "Başlangıç Betiği"
 
 #: ../data/ui/developer/dialog_fieldslist.glade.h:4
 #: ../data/ui/developer/dialog_sort_fields.glade.h:5
-#, fuzzy
 #| msgid "Table:"
 msgid "Table: "
-msgstr "Tablo:"
+msgstr "Tablo: "
 
 #: ../data/ui/developer/dialog_fieldslist.glade.h:5
 #: ../data/ui/developer/dialog_notebook.glade.h:5
@@ -3642,7 +3807,7 @@ msgstr "Tablo:"
 #: ../data/ui/developer/window_data_layout.glade.h:23
 #: ../data/ui/developer/window_report_layout.glade.h:14
 msgid "_Up"
-msgstr ""
+msgstr "_Yukarı"
 
 #: ../data/ui/developer/dialog_fieldslist.glade.h:6
 #: ../data/ui/developer/dialog_notebook.glade.h:6
@@ -3651,7 +3816,7 @@ msgstr ""
 #: ../data/ui/developer/window_data_layout.glade.h:24
 #: ../data/ui/developer/window_report_layout.glade.h:15
 msgid "_Down"
-msgstr ""
+msgstr "_Aşağı"
 
 #: ../data/ui/developer/dialog_fieldslist.glade.h:11
 #: ../data/ui/developer/window_data_layout.glade.h:29
@@ -3661,56 +3826,51 @@ msgstr "<b>Alanlar</b>"
 #: ../data/ui/developer/dialog_field_summary.glade.h:4
 #: ../data/ui/developer/dialog_group_by.glade.h:4
 #: ../data/ui/developer/box_formatting.glade.h:21
-#, fuzzy
 #| msgid "Field"
 msgid "Field:"
-msgstr "Alan"
+msgstr "Alan:"
 
 #: ../data/ui/developer/dialog_field_summary.glade.h:6
 msgid "Summary Type:"
-msgstr ""
+msgstr "Özet Türü:"
 
 #: ../data/ui/developer/dialog_flowtable.glade.h:1
 msgid "Group Properties"
-msgstr ""
+msgstr "Grup Özellikleri"
 
 #: ../data/ui/developer/dialog_flowtable.glade.h:4
 msgid "Columns:"
-msgstr ""
+msgstr "Sütunlar:"
 
 #: ../data/ui/developer/dialog_flowtable.glade.h:5
 #: ../data/ui/developer/window_print_layout_edit.glade.h:42
-#, fuzzy
 #| msgid "Title"
 msgid "Title:"
-msgstr "Başlık"
+msgstr "Başlık:"
 
 #: ../data/ui/developer/dialog_group_by.glade.h:7
-#, fuzzy
 #| msgid "Select Field"
 msgid "Sort Fields:"
-msgstr "Alan Seç"
+msgstr "Sıralama Alanları:"
 
 #: ../data/ui/developer/dialog_group_by.glade.h:9
-#, fuzzy
 #| msgid "Select Field"
 msgid "Secondary Fields:"
-msgstr "Alan Seç"
+msgstr "İkincil Alanlar:"
 
 #: ../data/ui/developer/dialog_group_by.glade.h:10
 msgid "Border Width (ems):"
-msgstr ""
+msgstr "Kenarlık Genişliği (ems):"
 
 #: ../data/ui/developer/dialog_initial_password.glade.h:1
-#, fuzzy
 msgid "Database User"
-msgstr "Veri"
+msgstr "Veritabanı Kullanıcısı"
 
 #: ../data/ui/developer/dialog_initial_password.glade.h:4
 #: ../data/ui/developer/dialog_new_group.glade.h:4
 #: ../data/ui/developer/dialog_new_library_script.glade.h:4
 msgid "C_reate"
-msgstr ""
+msgstr "O_luştur"
 
 #: ../data/ui/developer/dialog_initial_password.glade.h:5
 msgid ""
@@ -3718,73 +3878,71 @@ msgid ""
 "additional users later. Remember to keep this password secret because it "
 "allows access to your data from other computers on the network."
 msgstr ""
+"Lütfen veritabanınız için başlangıç bağlantı detaylarını girin. Ek "
+"kullanıcıları daha sonra ekleyebilirsiniz. Bu parolayı gizli tutmayı "
+"unutmayın çünkü bu, ağ üzerindeki diğer bilgisayarlardan verilerinize "
+"erişime olanak sağlar. "
 
 #: ../data/ui/developer/dialog_initial_password.glade.h:8
-#, fuzzy
 #| msgid "Password"
 msgid "_Confirm Password:"
-msgstr "Parola"
+msgstr "Parolayı _Onayla:"
 
 #: ../data/ui/developer/dialog_line.glade.h:1
 #: ../data/ui/developer/window_textobject.glade.h:1
 msgid "Text Object"
-msgstr ""
+msgstr "Metin Nesnesi"
 
 #: ../data/ui/developer/dialog_line.glade.h:5
 msgid "Line Width:"
-msgstr ""
+msgstr "Satır Genişliği:"
 
 #: ../data/ui/developer/dialog_line.glade.h:6
 msgid "Color:"
-msgstr ""
+msgstr "Renk:"
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:1
-#, fuzzy
 #| msgid "List Layout"
 msgid "Field Layout"
-msgstr "Liste Düzeni"
+msgstr "Alan Düzeni"
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:4
-#, fuzzy
 #| msgid "<b>Fields</b>"
 msgid "<b>Field:</b>"
-msgstr "<b>Alanlar</b>"
+msgstr "<b>Alan:</b>"
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:6
 msgid "Use default field title: "
-msgstr ""
+msgstr "Öntanımlı alan başlığı kullan: "
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:7
 msgid "Use custom title:"
-msgstr ""
+msgstr "Özel başlık kullan:"
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:8
-#, fuzzy
 #| msgid "<b>Title:</b>"
 msgid "<b>Title</b>"
 msgstr "<b>Başlık:</b>"
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:9
 msgid "Use default formatting"
-msgstr ""
+msgstr "Öntanımlı biçimlendirme kullan"
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:10
 msgid "Use custom formatting"
-msgstr ""
+msgstr "Özel biçimlendirme kullan"
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:11
-#, fuzzy
 #| msgid "<b>Connection</b>"
 msgid "<b>Formatting</b>"
-msgstr "<b>Bağlantı</b>"
+msgstr "<b>Biçimlendirme</b>"
 
 #: ../data/ui/developer/dialog_new_group.glade.h:1
 #: ../data/ui/developer/dialog_new_library_script.glade.h:1
 msgid "Create Group"
-msgstr ""
+msgstr "Grup Oluştur"
 
 #: ../data/ui/developer/dialog_new_group.glade.h:5
-#, fuzzy
 #| msgid ""
 #| "<span weight=\"bold\" size=\"larger\">Title</span>\n"
 #| "\n"
@@ -3794,16 +3952,15 @@ msgid ""
 "\n"
 "What name should this group have?"
 msgstr ""
-"<span·weight=\"bold\"·size=\"larger\">Başlık</span>\n"
+"<span weight=\"bold\" size=\"larger\">Grup Oluştur</span>\n"
 "\n"
-"Bilgi metni.\n"
+"Bu grubun ismi ne olmalı?"
 
 #: ../data/ui/developer/dialog_new_group.glade.h:8
 msgid "Group name:"
-msgstr ""
+msgstr "Grup adı:"
 
 #: ../data/ui/developer/dialog_new_library_script.glade.h:5
-#, fuzzy
 #| msgid ""
 #| "<span weight=\"bold\" size=\"larger\">Title</span>\n"
 #| "\n"
@@ -3813,59 +3970,58 @@ msgid ""
 "\n"
 "What name should this module have?"
 msgstr ""
-"<span·weight=\"bold\"·size=\"larger\">Başlık</span>\n"
+"<span weight=\"bold\" size=\"larger\">Modül Ekle</span>\n"
 "\n"
-"Bilgi metni.\n"
+"Bu modülün adı ne olmalı?"
 
 #: ../data/ui/developer/dialog_new_library_script.glade.h:8
 msgid "Script name:"
-msgstr ""
+msgstr "Betik adı:"
 
 #: ../data/ui/developer/dialog_notebook.glade.h:9
-#, fuzzy
 #| msgid "<b>Databases</b>"
 msgid "<b>Notebook Tabs</b>"
-msgstr "<b>Veritabanları</b>"
+msgstr "<b>Not Defteri Sekmeleri</b>"
 
 #: ../data/ui/developer/dialog_script_library.glade.h:1
 msgid "Script Library"
-msgstr ""
+msgstr "Betik Kütüphanesi"
 
 #: ../data/ui/developer/dialog_script_library.glade.h:4
 msgid ""
 "These modules will be available to your button scripts and field "
 "calculations via the python import keyword."
 msgstr ""
+"Bu modüller buton betikleriniz ve python içe aktar anahtar kelimeleriniz "
+"yoluyla alan hesaplamaları için kullanılabilir."
 
 #: ../data/ui/developer/dialog_script_library.glade.h:5
-#, fuzzy
 #| msgid "table name"
 msgid "Module name:"
-msgstr "tablo adı"
+msgstr "Modül adı:"
 
 #. Translators: This is the verb. It is for checking that a Python script works.
 #: ../data/ui/developer/dialog_script_library.glade.h:9
 msgid "_Check"
-msgstr ""
+msgstr "_Kontrol et"
 
 #: ../data/ui/developer/dialog_sort_fields.glade.h:1
 msgid "Group By - Sort Fields"
-msgstr ""
+msgstr "Grupla - Alanları Sırala"
 
 #: ../data/ui/developer/dialog_sort_fields.glade.h:11
-#, fuzzy
 #| msgid "<b>Fields</b>"
 msgid "<b>Sort Fields</b>"
-msgstr "<b>Alanlar</b>"
+msgstr "<b>Sıralama Alanları</b>"
 
 #: ../data/ui/developer/dialog_translation_copy.glade.h:1
 #: ../data/ui/developer/dialog_translation_identify_original.glade.h:1
 msgid "Identify Original"
-msgstr ""
+msgstr "Orjinal Tanımlayın"
 
 #: ../data/ui/developer/dialog_translation_copy.glade.h:4
 msgid "Copy Translation"
-msgstr ""
+msgstr "Çeviriyi Kopyala"
 
 #: ../data/ui/developer/dialog_translation_copy.glade.h:5
 msgid ""
@@ -3874,11 +4030,15 @@ msgid ""
 "From what language would you like to copy the translations to use as the "
 "start of the current translation?"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Çeviri Kopyala</span>\n"
+"\n"
+"Mevcut çevirinin başlangıcı olarak kullanmak için hangi dilden çeviri "
+"kopyalanmasını istersiniz?"
 
 #: ../data/ui/developer/dialog_translation_copy.glade.h:8
 #: ../data/ui/developer/dialog_translation_identify_original.glade.h:9
 msgid "Language:"
-msgstr ""
+msgstr "Dil:"
 
 #: ../data/ui/developer/dialog_translation_identify_original.glade.h:4
 msgid ""
@@ -3886,46 +4046,44 @@ msgid ""
 "\n"
 "The language of the original text is currently identified as:"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Orjinal Tanımla</span>\n"
+"\n"
+"Şu anda orjinal metnin dili tanımlanır:"
 
 #: ../data/ui/developer/dialog_translation_identify_original.glade.h:7
-#, fuzzy
 #| msgid "<b>Fields</b>"
 msgid "<b>English</b>"
-msgstr "<b>Alanlar</b>"
+msgstr "<b>İngilizce</b>"
 
 #: ../data/ui/developer/dialog_translation_identify_original.glade.h:8
 msgid ""
 "If the text is not actually in this language, please choose the correct "
 "language."
-msgstr ""
+msgstr "Metin aslında bu dilde değilse, lütfen doğru dili seçin."
 
 #: ../data/ui/developer/dialog_user.glade.h:5
-#, fuzzy
 #| msgid "Add _Group"
 msgid "Group:"
-msgstr "_Grup Ekle"
+msgstr "Grup:"
 
 #: ../data/ui/developer/dialog_user.glade.h:6
-#, fuzzy
 #| msgid "Password"
 msgid "Password:"
-msgstr "Parola"
+msgstr "Parola:"
 
 #: ../data/ui/developer/dialog_user.glade.h:7
-#, fuzzy
 #| msgid "Password"
 msgid "Confirm Password:"
-msgstr "Parola"
+msgstr "Parola Onayla:"
 
 #: ../data/ui/developer/dialog_user.glade.h:8
-#, fuzzy
 #| msgid "User"
 msgid "User:"
-msgstr "Kullanıcı"
+msgstr "Kullanıcı:"
 
 #: ../data/ui/developer/window_button_script.glade.h:1
 msgid "Button Script"
-msgstr ""
+msgstr "Buton Betiği"
 
 #: ../data/ui/developer/window_button_script.glade.h:5
 #: ../data/ui/developer/window_data_layout.glade.h:6
@@ -3935,7 +4093,6 @@ msgid "<b>Title:</b>"
 msgstr "<b>Başlık:</b>"
 
 #: ../data/ui/developer/window_button_script.glade.h:6
-#, fuzzy
 #| msgid ""
 #| "The field value will be the return value of the python function, which "
 #| "you implement here."
@@ -3943,18 +4100,17 @@ msgid ""
 "When the button is clicked it will run the python function which you "
 "implement here."
 msgstr ""
-"Bu alanın değeri burada gerçeklediğiniz python işlevinin geri dönüş değeri "
-"olacaktır."
+"Bu butonu tıkladığınızda burada uygulayacağınız python fonksiyonunu "
+"çalıştıracak."
 
 #: ../data/ui/developer/window_data_layout_export.glade.h:1
 msgid "Export Format"
-msgstr ""
+msgstr "Biçimi Dışa Aktar"
 
 #: ../data/ui/developer/window_data_layout.glade.h:1
-#, fuzzy
 #| msgid "List Layout"
 msgid "Layout"
-msgstr "Liste Düzeni"
+msgstr "Konumlama"
 
 #: ../data/ui/developer/window_data_layout.glade.h:3
 #: ../data/ui/developer/window_report_layout.glade.h:3
@@ -3962,36 +4118,37 @@ msgid "table name"
 msgstr "tablo adı"
 
 #: ../data/ui/developer/window_data_layout.glade.h:4
-#, fuzzy
 msgid "<b>Relationship:</b>"
-msgstr "<b>Alan Seçimi</b>"
+msgstr "<b>İlişki:</b>"
 
 #: ../data/ui/developer/window_data_layout.glade.h:5
-#, fuzzy
 msgid "Show child relationships"
-msgstr "İlişki"
+msgstr "Alt ilişkileri göster"
 
 #: ../data/ui/developer/window_data_layout.glade.h:7
-#, fuzzy
 #| msgid "Field"
 msgid "Add Field"
-msgstr "Alan"
+msgstr "Alan Ekle"
 
 #: ../data/ui/developer/window_data_layout.glade.h:8
 msgid ""
 "Add a layout item that shows the data from a field in the record, and allows "
 "the user to edit that value."
 msgstr ""
+"Kayıttaki bir alandan veri gösteren ve kullanıcıların bu değeri "
+"düzenlemesine olanak sağlayan bir düzen ögesi ekle."
 
 #: ../data/ui/developer/window_data_layout.glade.h:10
 msgid ""
 "Add text to a layout, such as an explanation or a warning. The text will be "
 "the same for every record viewed."
 msgstr ""
+"Yerleşime açıklama ya da uyarı gibi bir metin ekle. Bu metin görüntülenen "
+"her kayıt için aynı olacaktır."
 
 #: ../data/ui/developer/window_data_layout.glade.h:11
 msgid "Add Image"
-msgstr ""
+msgstr "Görüntü Ekle"
 
 #: ../data/ui/developer/window_data_layout.glade.h:12
 msgid ""
@@ -3999,24 +4156,33 @@ msgid ""
 "every record viewed. To show an image field from a record, to show different "
 "images for each field, use the field layout item."
 msgstr ""
+"Yerleşime amblem gibi bir görüntü ekle. Bu görüntü görüntülenen her kayıt "
+"için aynı olacaktır. Kayıttan bir görüntü alanı ya da her alan için farklı "
+"görüntüler göstermek için alan yerleşim ögesini kullan."
 
 #: ../data/ui/developer/window_data_layout.glade.h:14
 msgid ""
 "Add a button. Edit the button to define the script that will be run when the "
 "button is clicked."
 msgstr ""
+"Bir buton ekle. Buton tıklandığında çalıştırılacak betiği tanımlamak için "
+"butonu düzenle."
 
 #: ../data/ui/developer/window_data_layout.glade.h:16
 msgid ""
 "Add a group which can contain other layout items. Use this to group items "
 "together, such as fields."
 msgstr ""
+"Diğer yerleşim ögelerini içerebilen bir grup ekle. Bunu ögeleri gruplamak "
+"için kullan, örnek olarak alanlar."
 
 #: ../data/ui/developer/window_data_layout.glade.h:18
 msgid ""
 "Add a tabbed notebook. Each page of the notebook may contain several other "
 "layout items, but only one page will be visible at one time."
 msgstr ""
+"Sekmeli not defteri ekle. Not defterinin her sayfası farklı yerleşim ögeleri "
+"içerebilir fakat tek seferde sadece bir sayfa görünür olacaktır."
 
 #: ../data/ui/developer/window_data_layout.glade.h:20
 msgid ""
@@ -4024,10 +4190,13 @@ msgid ""
 "Remember to edit this layout item to specify the relationship to use, and "
 "the fields to show from the related table."
 msgstr ""
+"İlgili kayıt portalı ekle. Bu ilgili tablodaki kayıtların listesidir. Bu "
+"yerleşim ögesini kullanılacak ilişkiyi belirtmek için ve ilgili tablodan "
+"alanları göstermek içindüzenleyebileceğinizi hatırlayın."
 
 #: ../data/ui/developer/window_data_layout.glade.h:21
 msgid "Add Related Calendar"
-msgstr ""
+msgstr "İlgili Takvimi Ekle"
 
 #: ../data/ui/developer/window_data_layout.glade.h:22
 msgid ""
@@ -4035,6 +4204,9 @@ msgid ""
 "from a related table. Remember to edit this layout item to specify the "
 "relationship to use, and the fields to show from the related table."
 msgstr ""
+"İlgili kayıt takvim portalı ekle. Bu ilgili tablodan kayıtları gösteren bir "
+"takvimdir. Bu yerleşim ögesini kullanılacak ilişkiyi belirtmek için ve "
+"ilgili tablodan alanları göstermek için düzenleyebileceğinizi hatırlayın."
 
 #: ../data/ui/developer/window_data_layout.glade.h:26
 msgid ""
@@ -4042,80 +4214,80 @@ msgid ""
 "not remove the field from the table itself. It just will not be seen on the "
 "layout."
 msgstr ""
+"Yerleşimden ögeyi sil. Eğer bir yerleşim ögesi olan alan silerseniz, bu alan "
+"tablodan kendiliğinden silinmeyecek. Alan sadece yerleşim üzerinde "
+"görüntülenmeyecektir."
 
 #: ../data/ui/developer/window_data_layout.glade.h:30
 msgid ""
 "Clicking the row button takes the user to the table specified by this "
 "relationship:"
 msgstr ""
+"Satır butonunu tıklama bu ilişkiler ile belirtilen tabloya kullanıcı alır:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:31
 msgid "Automatic:"
-msgstr ""
+msgstr "Otomatik:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:32
 msgid "None"
-msgstr ""
+msgstr "Hiçbiri"
 
 #: ../data/ui/developer/window_data_layout.glade.h:33
-#, fuzzy
 #| msgid "<b>Connection</b>"
 msgid "<b>Navigation</b>"
-msgstr "<b>Bağlantı</b>"
+msgstr "<b>Gezinti</b>"
 
 #: ../data/ui/developer/window_data_layout.glade.h:35
-#, fuzzy
 #| msgid "Field"
 msgid "Date Field:"
-msgstr "Alan"
+msgstr "Tarih Alanı:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:36
-#, fuzzy
 #| msgid "<b>Databases</b>"
 msgid "<b>Dates</b>"
-msgstr "<b>Veritabanları</b>"
+msgstr "<b>Tarihler</b>"
 
 #: ../data/ui/developer/window_data_layout.glade.h:37
 msgid "Minimum number of rows:"
-msgstr ""
+msgstr "Asgari satır sayısı:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:38
 msgid "Show at least this many rows."
-msgstr ""
+msgstr "En azından bu satırları göster."
 
 #: ../data/ui/developer/window_data_layout.glade.h:39
 msgid "Maximum number of rows:"
-msgstr ""
+msgstr "Azami satır sayısı:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:40
 msgid "Show no more than this many rows."
-msgstr ""
+msgstr "Bu satırlardan daha fazla gösterme."
 
 #: ../data/ui/developer/window_data_layout.glade.h:41
 msgid "Row Line Width:"
-msgstr ""
+msgstr "Satır Çizgisi Genişliği:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:42
 msgid "0.000"
-msgstr ""
+msgstr "0.000"
 
 #: ../data/ui/developer/window_data_layout.glade.h:43
 msgid "Column Line Width:"
-msgstr ""
+msgstr "Sütun Çizgisi Genişliği:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:44
 msgid "Line Color:"
 msgstr "Satır Rengi:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:45
-#, fuzzy
 #| msgid "<b>Fields</b>"
 msgid "<b>Lines</b>"
-msgstr "<b>Alanlar</b>"
+msgstr "<b>Çizgiler</b>"
 
 #: ../data/ui/developer/window_default_formatting.glade.h:1
 msgid "Default Formatting"
-msgstr ""
+msgstr "Öntanımlı Biçimlendirme"
 
 #: ../data/ui/developer/window_design.glade.h:1
 msgid "Field Definitions"
@@ -4135,7 +4307,7 @@ msgstr ""
 
 #: ../data/ui/developer/window_field_calculation.glade.h:7
 msgid "Triggered by:"
-msgstr ""
+msgstr "Tetikleyen:"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:1
 msgid "Field Definition"
@@ -4143,54 +4315,46 @@ msgstr "Alan Tanımı"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:2
 msgid "Typ_e:"
-msgstr ""
+msgstr "Tü_r:"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:4
-#| msgid "Name"
 msgid "_Name:"
 msgstr "_İsim:"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:5
-#| msgid "Primary Key"
 msgid "_Primary Key"
 msgstr "_Birincil Anahtar"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:6
-#| msgid "Unique"
 msgid "_Unique"
 msgstr "_Özgün"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:7
-#, fuzzy
 #| msgid "Auto-increment"
 msgid "_Auto-increment"
-msgstr "Otomatik artış"
+msgstr "_Otomatik artır"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:9
-#, fuzzy
 #| msgid "Lookup value when a field changes."
 msgid "_Lookup value when a field changes."
-msgstr "Alan değiştiğinde bakılacak değer."
+msgstr "Alan değiştiğinde _bakılacak değer."
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:10
-#| msgid "Relationship"
 msgid "_Relationship:"
 msgstr "_İlişki:"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:11
-#| msgid "Field"
 msgid "_Field:"
 msgstr "_Alan:"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:12
 msgid "_User Entry"
-msgstr ""
+msgstr "_Kullanıcı Girişi"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:14
-#, fuzzy
 #| msgid "Calculate value"
 msgid "_Calculate Value"
-msgstr "Değeri hesapla"
+msgstr "_Değeri Hesapla"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:15
 msgid "Value"
@@ -4198,7 +4362,7 @@ msgstr "Değer"
 
 #: ../data/ui/developer/box_formatting.glade.h:1
 msgid "Use 1000s separator"
-msgstr ""
+msgstr "1000'ler ayıracı kullan"
 
 #: ../data/ui/developer/box_formatting.glade.h:2
 msgid ""
@@ -4206,46 +4370,53 @@ msgid ""
 "your locale would normally use one. If it is selected then a thousands "
 "separator will be used only if your locale normally uses one."
 msgstr ""
+"Eğer bu seçili değilse, binler ayıracı normalde lokalinizde kullanılsa bile "
+"kullanılamayacaktır. Eğer seçiliyse, normalde sadece lokalinizde "
+"kullanılıyorsa binler ayıracı kullanılabilecektir."
 
 #: ../data/ui/developer/box_formatting.glade.h:3
 msgid "Decimal Places:"
-msgstr ""
+msgstr "Ondalık Yerler:"
 
 #: ../data/ui/developer/box_formatting.glade.h:4
 msgid "Currency Symbol:"
-msgstr ""
+msgstr "Para Birimi Sembolü:"
 
 #: ../data/ui/developer/box_formatting.glade.h:5
 msgid "Alternative Color for Negative Values"
-msgstr ""
+msgstr "Negatif Değerler için Alternatif Renk"
 
 #: ../data/ui/developer/box_formatting.glade.h:6
 msgid ""
 "Click this check box to use a different foreground color to display negative "
 "values."
 msgstr ""
+"Negatif değerleri gösterecek farklı bir önplan rengi kullanmak için bu onay "
+"kutusunu tıklayın."
 
 #: ../data/ui/developer/box_formatting.glade.h:7
 msgid "Numeric Formatting"
-msgstr ""
+msgstr "Sayısal Biçimlendirme"
 
 #: ../data/ui/developer/box_formatting.glade.h:8
 msgid "Horizontal Alignment:"
-msgstr ""
+msgstr "Yatay Hizalama:"
 
 #: ../data/ui/developer/box_formatting.glade.h:9
 msgid "Multi-line"
-msgstr ""
+msgstr "Çoklu-satır"
 
 #: ../data/ui/developer/box_formatting.glade.h:10
 msgid ""
 "If this is selected then the field value will be shown in a multi-line box "
 "with a scrollbar."
 msgstr ""
+"Eğer seçiliyse o zaman alan değeri kaydırma çubuğu olan çok-satırlı kutuda "
+"gösterilecek."
 
 #: ../data/ui/developer/box_formatting.glade.h:11
 msgid "Height (lines)"
-msgstr ""
+msgstr "Yükseklik (çizgiler)"
 
 #: ../data/ui/developer/box_formatting.glade.h:12
 msgid "Font:"
@@ -4253,41 +4424,42 @@ msgstr "Yazıtipi:"
 
 #: ../data/ui/developer/box_formatting.glade.h:13
 msgid "Click this check box to use a non-standard font."
-msgstr ""
+msgstr "Standart olmayan yazı tipi kullanmak için bu onay kutucuğunu tıklayın."
 
 #: ../data/ui/developer/box_formatting.glade.h:14
 msgid "Foreground Color:"
-msgstr ""
+msgstr "Önplan Rengi:"
 
 #: ../data/ui/developer/box_formatting.glade.h:15
 msgid "Click this check box to use a non-standard foreground color."
 msgstr ""
+"Standart olmayan bir önplan rengi kullanmak için bu onay kutusunu tıklayın."
 
 #: ../data/ui/developer/box_formatting.glade.h:16
 msgid "Background Color:"
-msgstr ""
+msgstr "Arkaplan Rengi:"
 
 #: ../data/ui/developer/box_formatting.glade.h:17
 msgid "Click this check box to use a non-standard background color."
 msgstr ""
+"Standart olmayan bir arkaplan rengi kullanmak için bu onay kutusunu tıklayın."
 
 #: ../data/ui/developer/box_formatting.glade.h:18
 msgid "Text Formatting"
-msgstr ""
+msgstr "Metin Biçimlendirme"
 
 #: ../data/ui/developer/box_formatting.glade.h:19
 msgid "No Choices"
-msgstr ""
+msgstr "Seçenek yok"
 
 #: ../data/ui/developer/box_formatting.glade.h:20
-#, fuzzy
 #| msgid "Relationship"
 msgid "Relationship:"
-msgstr "İlişki"
+msgstr "İlişki:"
 
 #: ../data/ui/developer/box_formatting.glade.h:22
 msgid "Also show:"
-msgstr ""
+msgstr "Ayrıca göster:"
 
 #: ../data/ui/developer/box_formatting.glade.h:24
 msgid "Edit"
@@ -4295,7 +4467,7 @@ msgstr "Düzenle"
 
 #: ../data/ui/developer/box_formatting.glade.h:25
 msgid "Sort Order:"
-msgstr ""
+msgstr "Sıralama Düzeni:"
 
 #: ../data/ui/developer/box_formatting.glade.h:26
 msgid "Show all records"
@@ -4307,10 +4479,13 @@ msgid ""
 "records in the related table. If this option is not selected then the "
 "choices will list values only from related records."
 msgstr ""
+"Eğer bu seçenek seçilirse o zaman seçimler ilgili tablodaki bütün kayıtların "
+"değerlerini listeleyecek. Eğer seçilmezse, seçimler sadece ilgili kayıtların "
+"değerlerini listeleyecek."
 
 #: ../data/ui/developer/box_formatting.glade.h:28
 msgid "Choices From Related Records"
-msgstr ""
+msgstr "İlgili Kayıtlardan Seçimler"
 
 #: ../data/ui/developer/box_formatting.glade.h:29
 msgid "Custom Choice List"
@@ -4318,104 +4493,97 @@ msgstr "Özel Seçim Listesi"
 
 #: ../data/ui/developer/box_formatting.glade.h:30
 msgid "Restrict data to these choices"
-msgstr ""
+msgstr "Bu seçimler için verileri kısıtla"
 
 #: ../data/ui/developer/box_formatting.glade.h:31
 msgid "Display as radio buttons"
-msgstr ""
+msgstr "Radyo buton olarak göster"
 
 #: ../data/ui/developer/box_formatting.glade.h:32
 msgid "Choices"
 msgstr "Seçimler"
 
 #: ../data/ui/developer/window_groups.glade.h:1
-#| msgid "Add _Group"
 msgid "Groups"
 msgstr "Gruplar"
 
 #: ../data/ui/developer/window_groups.glade.h:6
 #: ../data/ui/developer/window_users.glade.h:1
-#| msgid "User"
 msgid "Users"
 msgstr "Kullanıcılar"
 
 #: ../data/ui/developer/window_groups.glade.h:7
-#, fuzzy
 #| msgid "<b>Fields</b>"
 msgid "<b>Groups</b>"
-msgstr "<b>Alanlar</b>"
+msgstr "<b>Gruplar</b>"
 
 #: ../data/ui/developer/window_groups.glade.h:8
-#, fuzzy
 #| msgid "<b>Table: </b>"
 msgid "<b>Tables</b>"
-msgstr "<b>Tablo: </b>"
+msgstr "<b>Tablolar</b>"
 
 #: ../data/ui/developer/window_imageobject.glade.h:1
 msgid "Image Object"
-msgstr ""
+msgstr "Görüntü Nesnesi"
 
 #: ../data/ui/developer/window_imageobject.glade.h:6
-#, fuzzy
 #| msgid "<b>Table: </b>"
 msgid "<b>Image:</b>"
-msgstr "<b>Tablo: </b>"
+msgstr "<b>Görüntü: </b>"
 
 #: ../data/ui/developer/window_imageobject.glade.h:7
 msgid "C_hoose Image"
-msgstr ""
+msgstr "Görüntü S_eçin"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:2
 msgid "Page Set_up"
-msgstr ""
+msgstr "Sayfa Aya_rı"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:3
 msgid "Print Pre_view"
-msgstr ""
+msgstr "Baskı Ön_izleme"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:9
-#, fuzzy
 #| msgid "Select"
 msgid "Select _All"
-msgstr "Seç"
+msgstr "_Tümünü Seç"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:10
 msgid "_Unselect All"
-msgstr ""
+msgstr "Tümünün _Seçimini Kaldır"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:11
 msgid "_Insert"
-msgstr ""
+msgstr "_Ekle"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:12
-#, fuzzy
 #| msgid "Select Field"
 msgid "Insert _Field"
-msgstr "Alan Seç"
+msgstr "_Alan Ekle"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:13
 msgid "Insert _Text"
-msgstr ""
+msgstr "_Metin Ekle"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:14
 msgid "Insert _Image"
-msgstr ""
+msgstr "_Görüntü Ekle"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:15
 msgid "Insert _Related Records"
-msgstr ""
+msgstr "_İlgili Kayıtları Ekle"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:16
 msgid "Insert _Horizontal Line"
-msgstr ""
+msgstr "_Yatay Çizgi Ekle"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:17
 msgid "Insert _Vertical Line"
-msgstr ""
+msgstr "_Dikey Çizgi Ekle"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:18
 msgid "Create _Standard"
-msgstr ""
+msgstr "_Standart Oluştur"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:19
 msgid "Add Page"
@@ -4427,45 +4595,45 @@ msgstr "Sayfayı Sil"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:21
 msgid "_Align"
-msgstr ""
+msgstr "_Hizala"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:22
 msgid "Align _Top"
-msgstr ""
+msgstr "_Üste Hizala"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:23
 msgid "Align _Bottom"
-msgstr ""
+msgstr "_Alta Hizala"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:24
 msgid "Align _Left"
-msgstr ""
+msgstr "_Sola Hizala"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:25
 msgid "Align _Right"
-msgstr ""
+msgstr "_Sağa Hizala"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:26
 #: ../data/ui/developer/window_relationships_overview.glade.h:4
 msgid "_View"
-msgstr ""
+msgstr "_Görünüm"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:27
 #: ../data/ui/developer/window_relationships_overview.glade.h:5
 msgid "Show _Grid"
-msgstr ""
+msgstr "_Izgarayı Göster"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:28
 msgid "Show _Rules"
-msgstr ""
+msgstr "_Kuralları Göster"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:29
 msgid "Show _Outlines"
-msgstr ""
+msgstr "_Ana hatları Göster"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:30
 msgid "Fit Page _Width"
-msgstr ""
+msgstr "Sayfa _Genişliğine Sığdır"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:32
 #, no-c-format
@@ -4488,12 +4656,10 @@ msgid "Zoom 25%"
 msgstr "25% Yakınlaştır"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:39
-#| msgid "List Layout"
 msgid "Print Layout Editor"
 msgstr "Yazdırma Düzeni Düzenleyicisi"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:40
-#| msgid "<b>Table: </b>"
 msgid "<b>Table Name</b>"
 msgstr "<b>Tablo Adı</b>"
 
@@ -4519,67 +4685,62 @@ msgstr "Yükseklik:"
 
 #: ../data/ui/developer/window_relationships_overview.glade.h:2
 msgid "Page _Setup"
-msgstr ""
+msgstr "Sayfa _Ayarı"
 
 #: ../data/ui/developer/window_relationships_overview.glade.h:6
 msgid "Edit _Fields"
 msgstr "_Alanları Düzenle"
 
 #: ../data/ui/developer/window_relationships_overview.glade.h:7
-#, fuzzy
 #| msgid "Relationship"
 msgid "Edit _Relationships"
-msgstr "İlişki"
+msgstr "_İlişkileri Düzenle"
 
 #: ../data/ui/developer/window_relationships_overview.glade.h:8
-#, fuzzy
 #| msgid "Relationship"
 msgid "Relationships Overview"
-msgstr "İlişki"
+msgstr "İlişkiler Genel Bakış"
 
 #: ../data/ui/developer/window_report_layout.glade.h:1
-#| msgid "List Layout"
 msgid "Report Layout"
 msgstr "Rapor Düzeni"
 
 #: ../data/ui/developer/window_report_layout.glade.h:4
 msgid "_Show table title"
-msgstr ""
+msgstr "Tablo başlığını _göster"
 
 #: ../data/ui/developer/window_report_layout.glade.h:5
 msgid ""
 "When this is checked the table's title will be shown at the top of the "
 "report in addition to the report title."
 msgstr ""
+"Bu işaretlendiğinde, tablonun başlığı rapor başlığına ek olarak raporun en "
+"üstünde gösterilecek."
 
 #: ../data/ui/developer/window_report_layout.glade.h:6
 msgid "_Report name:"
 msgstr "_Rapor adı:"
 
 #: ../data/ui/developer/window_report_layout.glade.h:8
-#, fuzzy
 #| msgid "<b>Table: </b>"
 msgid "<b>Available Parts</b>"
-msgstr "<b>Tablo: </b>"
+msgstr "<b>Mevcut Parçalar</b>"
 
 #. Translators: The Main part of the report (not the footer or header)
 #: ../data/ui/developer/window_report_layout.glade.h:12
 msgid "Main"
-msgstr ""
+msgstr "Ana Bölüm"
 
 #: ../data/ui/developer/window_report_layout.glade.h:19
-#, fuzzy
 #| msgid "<b>Databases</b>"
 msgid "<b>Parts</b>"
-msgstr "<b>Veritabanları</b>"
+msgstr "<b>Parçalar</b>"
 
 #: ../data/ui/developer/window_text_format.glade.h:1
-#| msgid "example data format"
 msgid "Text Format"
 msgstr "Metin Biçimi"
 
 #: ../data/ui/developer/window_textobject.glade.h:6
-#| msgid "<b>Title:</b>"
 msgid "<b>Text:</b>"
 msgstr "<b>Metin:</b>"
 
@@ -4597,31 +4758,30 @@ msgstr "İngilizce"
 
 #: ../data/ui/developer/window_translations.glade.h:4
 msgid "Identify Source"
-msgstr ""
+msgstr "Kaynak Tanımla"
 
 #: ../data/ui/developer/window_translations.glade.h:5
-#, fuzzy
 #| msgid "<b>Databases</b>"
 msgid "<b>Target Language:</b>"
-msgstr "<b>Veritabanları</b>"
+msgstr "<b>Hedef Dil:</b>"
 
 #: ../data/ui/developer/window_translations.glade.h:8
 msgid "Copy From Existing Translation"
-msgstr ""
+msgstr "Varolan Çeviriden Kopyala"
 
 #: ../data/ui/developer/window_translations.glade.h:9
 msgid ""
 "Start a translation for this target locale by copying the strings from "
 "another target locale."
 msgstr ""
+"Başka hedef lokalden karakter dizilerini kopyalayarak bu hedef lokal için "
+"bir çeviri başlatın."
 
 #: ../data/ui/developer/window_users.glade.h:4
-#| msgid "<b>Mode: </b>"
 msgid "<b>Group:</b>"
 msgstr "<b>Grup:</b>"
 
 #: ../data/ui/developer/window_users.glade.h:10
-#| msgid "<b>Fields</b>"
 msgid "<b>Users</b>"
 msgstr "<b>Kullanıcılar</b>"
 
