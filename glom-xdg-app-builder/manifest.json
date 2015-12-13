@@ -215,7 +215,7 @@
         },
         {
             "name": "mysql",
-            "cleanup": [ "/bin" ],
+            "cleanup": [ "/bin" "/mysql-test" "/scripts" "/share"  "/sql-bench" "/support-files" "/INSTALL-BINARY"],
             "cmake": true,
             "sources": [
                 {
