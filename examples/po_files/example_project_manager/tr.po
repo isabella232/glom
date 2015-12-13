@@ -1,0 +1,321 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: example-project-manager master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-01-12 14:11+0000\n"
+"PO-Revision-Date: 2015-02-27 07:55+0000\n"
+"Last-Translator: İşbaran Akçayır <isbaran@gmail.com>\n"
+"Language-Team: Türkçe <gnome-turk@gnome.org>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1425023717.000000\n"
+
+msgctxt "Database Title"
+msgid "Project Manager Example"
+msgstr "Proje Yönetici Örneği"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Bağlantılar"
+
+msgctxt "Field (contact_id). Parent table: contacts"
+msgid "Contact ID"
+msgstr "Kişi Kimliği"
+
+msgctxt "Field (name_first). Parent table: contacts"
+msgid "First Name"
+msgstr "İlk Ad"
+
+msgctxt "Field (name_middle). Parent table: contacts"
+msgid "Middle Name"
+msgstr "İkinci İsim"
+
+msgctxt "Field (name_last). Parent table: contacts"
+msgid "Last Name"
+msgstr "Soyad"
+
+msgctxt "Field (name_title). Parent table: contacts"
+msgid "Title"
+msgstr "Sıfat"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mr"
+msgstr "Sn"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Sn"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Ms"
+msgstr "Sn"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Miss"
+msgstr "Sn"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof"
+
+msgctxt "Field (address_street). Parent table: contacts"
+msgid "Street"
+msgstr "Sokak"
+
+msgctxt "Field (address_town). Parent table: contacts"
+msgid "Town"
+msgstr "Kasaba"
+
+msgctxt "Field (address_state). Parent table: contacts"
+msgid "State"
+msgstr "Şehir"
+
+msgctxt "Field (address_country). Parent table: contacts"
+msgid "Country"
+msgstr "Ülke"
+
+msgctxt "Field (address_postcode). Parent table: contacts"
+msgid "Postcode"
+msgstr "Posta kodu"
+
+msgctxt "Field (date_of_birth). Parent table: contacts"
+msgid "Date of Birth"
+msgstr "Doğum Tarihi"
+
+msgctxt "Field (comments). Parent table: contacts"
+msgid "Comments"
+msgstr "Yorumlar"
+
+msgctxt "Field (name_full). Parent table: contacts"
+msgid "Full Name"
+msgstr "Tam isim"
+
+msgctxt "Field (picture). Parent table: contacts"
+msgid "Picture"
+msgstr "Resim"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email Address"
+msgstr "E-Posta Adresi"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Web Sitesi"
+
+msgctxt "Field (tel_home). Parent table: contacts"
+msgid "Home Telephone"
+msgstr "Ev Telefonu"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "İş Telefonu"
+
+msgctxt "Field (tel_mobile). Parent table: contacts"
+msgid "Mobile Telephone"
+msgstr "Mobil Telefon"
+
+msgctxt "Field (tel_fax). Parent table: contacts"
+msgid "Fax"
+msgstr "Belgegeçer"
+
+msgctxt "Relationship (team_members). Parent table: contacts"
+msgid "Team Membership"
+msgstr "Takım Üyeliği"
+
+msgctxt "Report (by_country). Parent table: contacts"
+msgid "Contacts By Country"
+msgstr "Ülkeye Göre Bağlantılar"
+
+msgctxt "Report (by_country_by_town). Parent table: contacts"
+msgid "By Country, By Town"
+msgstr "Ülkeye Göre, Şehre Göre"
+
+msgctxt "Layout Group (overview). Parent table: contacts"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Layout Group (notebook). Parent table: contacts, Parent Group: details"
+msgid "(Notebook)"
+msgstr "(Not defterİ)"
+
+msgctxt ""
+"Layout Group (telephone). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt ""
+"Layout Group (address). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Address"
+msgstr "Adres"
+
+msgctxt ""
+"Layout Group (name). Parent table: contacts, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Name"
+msgstr "İsim"
+
+msgctxt "Table (projects)"
+msgid "Projects"
+msgstr "Projeler"
+
+msgctxt "Field (project_id). Parent table: projects"
+msgid "Project ID"
+msgstr "Proje Kimliği"
+
+msgctxt "Field (description). Parent table: projects"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Field (comments). Parent table: projects"
+msgid "Comments"
+msgstr "Yorumlar"
+
+msgctxt "Field (name). Parent table: projects"
+msgid "Name"
+msgstr "İsim"
+
+msgctxt "Relationship (teams). Parent table: projects"
+msgid "Teams"
+msgstr "Takımlar"
+
+msgctxt "Layout Group (overview). Parent table: projects"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Layout Group (details). Parent table: projects"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Table (project_teams)"
+msgid "Project Teams"
+msgstr "Proje Takımları"
+
+msgctxt "Field (project_team_id). Parent table: project_teams"
+msgid "Project Team ID"
+msgstr "Proje Takım Kimliği"
+
+msgctxt "Field (comments). Parent table: project_teams"
+msgid "Comments"
+msgstr "Yorumlar"
+
+msgctxt "Field (team_id). Parent table: project_teams"
+msgid "Team ID"
+msgstr "Takım Kimliği"
+
+msgctxt "Field (project_id). Parent table: project_teams"
+msgid "Project ID"
+msgstr "Proje Kimliği"
+
+msgctxt "Relationship (team). Parent table: project_teams"
+msgid "Team"
+msgstr "Takım"
+
+msgctxt "Relationship (project). Parent table: project_teams"
+msgid "Project"
+msgstr "Proje"
+
+msgctxt "Layout Group (overview). Parent table: project_teams"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Layout Group (details). Parent table: project_teams"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Custom Title. Parent table: project_teams"
+msgid "Team Name"
+msgstr "Takım Adı"
+
+msgctxt "Custom Title. Parent table: project_teams"
+msgid "Project Name"
+msgstr "Proje Adı"
+
+msgctxt "Table (team_members)"
+msgid "Team Members"
+msgstr "Takım Üyeleri"
+
+msgctxt "Field (team_members_id). Parent table: team_members"
+msgid "team_members ID"
+msgstr "takım_üyeleri kimliği"
+
+msgctxt "Field (description). Parent table: team_members"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Field (comments). Parent table: team_members"
+msgid "Comments"
+msgstr "Yorumlar"
+
+msgctxt "Field (contact_id). Parent table: team_members"
+msgid "Contact ID"
+msgstr "Kişi Kimliği"
+
+msgctxt "Field (team_id). Parent table: team_members"
+msgid "Team ID"
+msgstr "Takım Kimliği"
+
+msgctxt "Field (role). Parent table: team_members"
+msgid "Role"
+msgstr "Rol"
+
+msgctxt "Relationship (contacts). Parent table: team_members"
+msgid "Contacts"
+msgstr "Bağlantılar"
+
+msgctxt "Relationship (team). Parent table: team_members"
+msgid "Team"
+msgstr "Takım"
+
+msgctxt "Layout Group (overview). Parent table: team_members"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Layout Group (details). Parent table: team_members"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Table (teams)"
+msgid "Teams"
+msgstr "Takımlar"
+
+msgctxt "Field (team_id). Parent table: teams"
+msgid "Team ID"
+msgstr "Takım Kimliği"
+
+msgctxt "Field (description). Parent table: teams"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Field (comments). Parent table: teams"
+msgid "Comments"
+msgstr "Yorumlar"
+
+msgctxt "Field (name). Parent table: teams"
+msgid "Name"
+msgstr "İsim"
+
+msgctxt "Relationship (members). Parent table: teams"
+msgid "Members"
+msgstr "Üyeler"
+
+msgctxt "Relationship (projects). Parent table: teams"
+msgid "Projects"
+msgstr "Projeler"
+
+msgctxt "Layout Group (overview). Parent table: teams"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Layout Group (details). Parent table: teams"
+msgid "Details"
+msgstr "Ayrıntılar"
