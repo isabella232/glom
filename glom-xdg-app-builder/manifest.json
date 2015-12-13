@@ -214,6 +214,7 @@
         },
         {
             "name": "mysql",
+            "cleanup": [ "/bin" ],
             "cmake": true,
             "sources": [
                 {
