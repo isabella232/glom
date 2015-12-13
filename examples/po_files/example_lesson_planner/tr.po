@@ -1,0 +1,355 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: example-lesson-planer master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-01-12 14:11+0000\n"
+"PO-Revision-Date: 2015-02-23 20:05+0000\n"
+"Last-Translator: Necdet Yücel <necdetyucel@gmail.com>\n"
+"Language-Team: Turkish <gnome-turk@gnome.org>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1424721923.000000\n"
+
+msgctxt "Database Title"
+msgid "Lesson Planner"
+msgstr "Ders Planlayıcı"
+
+msgctxt "Field (product_name). Parent table: invoice_lines"
+msgid "Product Name"
+msgstr "Ürün Adı"
+
+msgctxt "Field (product_id). Parent table: invoice_lines"
+msgid "Product Id"
+msgstr "Ürün Kimliği"
+
+msgctxt "Field (product_price). Parent table: invoice_lines"
+msgid "Product Price"
+msgstr "Ürün Fiyatı"
+
+msgctxt "Field (invoice_id). Parent table: invoice_lines"
+msgid "Invoice ID"
+msgstr "Bildirim Kimliği"
+
+msgctxt "Field (count). Parent table: invoice_lines"
+msgid "Number Of"
+msgstr "Sayı"
+
+msgctxt "Field (total_price). Parent table: invoice_lines"
+msgid "Total Price"
+msgstr "Toplam Fiyat"
+
+msgctxt "Field (vat_percentage). Parent table: invoice_lines"
+msgid "VAT Percentage"
+msgstr "KDV Yüzdesi"
+
+msgctxt "Field (total_price_vat). Parent table: invoice_lines"
+msgid "Total VAT"
+msgstr "Toplam KDV"
+
+msgctxt "Table (lessons)"
+msgid "Lessons"
+msgstr "Dersler"
+
+msgctxt "Field (lesson_id). Parent table: lessons"
+msgid "Lesson ID"
+msgstr "Ders Kimliği"
+
+msgctxt "Field (description). Parent table: lessons"
+msgid "Description"
+msgstr "Tanımlama"
+
+msgctxt "Field (comments). Parent table: lessons"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Field (subject_id). Parent table: lessons"
+msgid "Subject ID"
+msgstr "Konu Kimliği"
+
+msgctxt "Field (teacher_id). Parent table: lessons"
+msgid "Teacher ID"
+msgstr "Öğretmen Kimliği"
+
+msgctxt "Field (date). Parent table: lessons"
+msgid "Date"
+msgstr "Tarih"
+
+msgctxt "Field (time_start). Parent table: lessons"
+msgid "Start Time"
+msgstr "Başlangıç Zamanı"
+
+msgctxt "Field (hours). Parent table: lessons"
+msgid "Hours"
+msgstr "Saat"
+
+msgctxt "Field (room_id). Parent table: lessons"
+msgid "Room ID"
+msgstr "Oda"
+
+msgctxt "Relationship (subject). Parent table: lessons"
+msgid "Subject"
+msgstr "Konu"
+
+msgctxt "Relationship (teacher). Parent table: lessons"
+msgid "Teacher"
+msgstr "Öğretmen"
+
+msgctxt "Relationship (room). Parent table: lessons"
+msgid "Room"
+msgstr "Oda"
+
+msgctxt "Layout Group (overview). Parent table: lessons"
+msgid "Overview"
+msgstr "Genel Görünüm"
+
+msgctxt "Layout Group (details). Parent table: lessons"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Layout Group (subject). Parent table: lessons, Parent Group: details"
+msgid "Subject"
+msgstr "Konu"
+
+msgctxt "Layout Group (room). Parent table: lessons, Parent Group: details"
+msgid "Room"
+msgstr "Oda"
+
+msgctxt "Layout Group (teacher). Parent table: lessons, Parent Group: details"
+msgid "Teacher"
+msgstr "Öğretmen"
+
+msgctxt "Table (rooms)"
+msgid "Rooms"
+msgstr "Oda"
+
+msgctxt "Field (room_id). Parent table: rooms"
+msgid "Room ID"
+msgstr "Oda"
+
+msgctxt "Field (description). Parent table: rooms"
+msgid "Description"
+msgstr "Tanımlama"
+
+msgctxt "Field (comments). Parent table: rooms"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Field (floor). Parent table: rooms"
+msgid "Floor"
+msgstr "Zemin"
+
+msgctxt "Field (building). Parent table: rooms"
+msgid "Building"
+msgstr "Bina"
+
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Main Building"
+msgstr "Ana Bina"
+
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Science Block"
+msgstr "Fen Binası"
+
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Sports Hall"
+msgstr "Spor Salonu"
+
+msgctxt "Layout Group (overview). Parent table: rooms"
+msgid "Overview"
+msgstr "Genel Görünüm"
+
+msgctxt "Layout Group (details). Parent table: rooms"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Table (subjects)"
+msgid "Subjects"
+msgstr "Konular"
+
+msgctxt "Field (subject_id). Parent table: subjects"
+msgid "Subject ID"
+msgstr "Konu"
+
+msgctxt "Field (name). Parent table: subjects"
+msgid "Name"
+msgstr "İsim"
+
+msgctxt "Field (comments). Parent table: subjects"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Relationship (lessons). Parent table: subjects"
+msgid "Lessons"
+msgstr "Dersler"
+
+msgctxt "Layout Group (overview). Parent table: subjects"
+msgid "Overview"
+msgstr "Genel Görünüm"
+
+msgctxt "Layout Group (details). Parent table: subjects"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Custom Title. Parent table: subjects, Parent Group: details"
+msgid "Teacher Name"
+msgstr "Öğretmen Adı"
+
+msgctxt "Table (teachers)"
+msgid "Teachers"
+msgstr "Öğretmenler"
+
+msgctxt "Field (teacher_id). Parent table: teachers"
+msgid "Teacher ID"
+msgstr "Öğretmen"
+
+msgctxt "Field (name_first). Parent table: teachers"
+msgid "First Name"
+msgstr "Ad"
+
+msgctxt "Field (name_middle). Parent table: teachers"
+msgid "Middle Name"
+msgstr "İkinci İsim"
+
+msgctxt "Field (name_last). Parent table: teachers"
+msgid "Last Name"
+msgstr "Soyad"
+
+msgctxt "Field (name_title). Parent table: teachers"
+msgid "Title"
+msgstr "Başlık"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Mr"
+msgstr "Bay"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Bayan"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Ms"
+msgstr "Bayan"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Miss"
+msgstr "Bayan"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof."
+
+msgctxt "Field (address_street). Parent table: teachers"
+msgid "Street"
+msgstr "Sokak"
+
+msgctxt "Field (address_town). Parent table: teachers"
+msgid "Town"
+msgstr "Şehir"
+
+msgctxt "Field (address_state). Parent table: teachers"
+msgid "State"
+msgstr "Eyalet"
+
+msgctxt "Field (address_country). Parent table: teachers"
+msgid "Country"
+msgstr "Ülke"
+
+msgctxt "Field (address_postcode). Parent table: teachers"
+msgid "Postcode"
+msgstr "Posta Kodu"
+
+msgctxt "Field (date_of_birth). Parent table: teachers"
+msgid "Date of Birth"
+msgstr "Doğum Tarihi"
+
+msgctxt "Field (comments). Parent table: teachers"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Field (name_full). Parent table: teachers"
+msgid "Full Name"
+msgstr "Tam İsim"
+
+msgctxt "Field (picture). Parent table: teachers"
+msgid "Picture"
+msgstr "Resim"
+
+msgctxt "Field (email). Parent table: teachers"
+msgid "Email Address"
+msgstr "E-Posta Adresi"
+
+msgctxt "Field (website). Parent table: teachers"
+msgid "Web Site"
+msgstr "Web Sayfası"
+
+msgctxt "Field (tel_home). Parent table: teachers"
+msgid "Home Telephone"
+msgstr "Ev Telefonu"
+
+msgctxt "Field (tel_work). Parent table: teachers"
+msgid "Work Telephone"
+msgstr "İş Telefonu"
+
+msgctxt "Field (tel_mobile). Parent table: teachers"
+msgid "Mobile Telephone"
+msgstr "Cep Telefonu"
+
+msgctxt "Field (tel_fax). Parent table: teachers"
+msgid "Fax"
+msgstr "Faks"
+
+msgctxt "Relationship (lessons). Parent table: teachers"
+msgid "Lessons"
+msgstr "Dersler"
+
+msgctxt "Report (by_country). Parent table: teachers"
+msgid "Contacts By Country"
+msgstr "Ülkeye Göre Bağlantılar"
+
+msgctxt "Report (by_country_by_town). Parent table: teachers"
+msgid "By Country, By Town"
+msgstr "Ülkeye göre, şehre göre"
+
+msgctxt "Layout Group (overview). Parent table: teachers"
+msgid "Overview"
+msgstr "Genel Görünüm"
+
+msgctxt "Layout Group (details). Parent table: teachers"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt ""
+"Layout Group (name). Parent table: teachers, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Name"
+msgstr "İsim"
+
+msgctxt ""
+"Layout Group (address). Parent table: teachers, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Address"
+msgstr "Adres"
+
+msgctxt ""
+"Layout Group (telephone). Parent table: teachers, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt ""
+"Layout Group (other). Parent table: teachers, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Other"
+msgstr "Diğer"
+
+msgctxt "Custom Title. Parent table: teachers, Parent Group: details"
+msgid "Subject Name"
+msgstr "Konu Adı"
