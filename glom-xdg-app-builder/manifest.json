@@ -108,6 +108,7 @@
         },
         {
             "name": "avahi",
+            "cleanup": [ "/bin" ],
             "config-opts": [ "--disable-documentation" "--with-distro=none" "--disable-qt3" "--disable-qt4" "--disable-libdaemon" "--disable-python" "--disable-mono"],
             "sources": [
                 {
