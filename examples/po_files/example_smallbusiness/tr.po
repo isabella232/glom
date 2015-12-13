@@ -1,0 +1,468 @@
+# Necdet Yücel <necdetyucel@gmail.com>, 2015.
+msgid ""
+msgstr ""
+"Project-Id-Version: example small business master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-06-11 12:14+0000\n"
+"PO-Revision-Date: 2015-06-15 22:44+0000\n"
+"Last-Translator: Necdet Yücel <necdetyucel@gmail.com>\n"
+"Language-Team: Turkish <gnome-turk@gnome.org>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1434408278.000000\n"
+
+msgctxt "Database Title"
+msgid "Small Business Example"
+msgstr "Küçük İş Örneği"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Kişiler"
+
+msgctxt "Field (contact_id). Parent table: contacts"
+msgid "Contact ID"
+msgstr "Kişi Kimliği"
+
+msgctxt "Field (name_first). Parent table: contacts"
+msgid "First Name"
+msgstr "Ad"
+
+msgctxt "Field (name_middle). Parent table: contacts"
+msgid "Middle Name"
+msgstr "İkinci İsim"
+
+msgctxt "Field (name_last). Parent table: contacts"
+msgid "Last Name"
+msgstr "Soyad"
+
+msgctxt "Field (name_title). Parent table: contacts"
+msgid "Title"
+msgstr "Sıfat"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mr"
+msgstr "Bay"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Bayan"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Ms"
+msgstr "Bayan"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Miss"
+msgstr "Bayan"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof"
+
+msgctxt "Field (address_street). Parent table: contacts"
+msgid "Street"
+msgstr "Sokak"
+
+msgctxt "Field (address_town). Parent table: contacts"
+msgid "Town"
+msgstr "Şehir"
+
+msgctxt "Field (address_state). Parent table: contacts"
+msgid "State"
+msgstr "Eyalet"
+
+msgctxt "Field (address_country). Parent table: contacts"
+msgid "Country"
+msgstr "Ülke"
+
+msgctxt "Field (address_postcode). Parent table: contacts"
+msgid "Postcode"
+msgstr "Posta Kodu"
+
+msgctxt "Field (date_of_birth). Parent table: contacts"
+msgid "Date of Birth"
+msgstr "Doğum Tarihi"
+
+msgctxt "Field (comments). Parent table: contacts"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Field (name_full). Parent table: contacts"
+msgid "Full Name"
+msgstr "Tam İsim"
+
+msgctxt "Field (picture). Parent table: contacts"
+msgid "Picture"
+msgstr "Resim"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email Address"
+msgstr "E-Posta Adresi"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Web Sayfası"
+
+msgctxt "Field (tel_home). Parent table: contacts"
+msgid "Home Telephone"
+msgstr "Ev Telefonu"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "İş Telefonu"
+
+msgctxt "Field (tel_mobile). Parent table: contacts"
+msgid "Mobile Telephone"
+msgstr "Mobil Telefon"
+
+msgctxt "Field (tel_fax). Parent table: contacts"
+msgid "Fax"
+msgstr "Faks"
+
+msgctxt "Report (by_country). Parent table: contacts"
+msgid "Contacts By Country"
+msgstr "Ülkeye Göre Bağlantılar"
+
+msgctxt "Report (by_country_by_town). Parent table: contacts"
+msgid "By Country, By Town"
+msgstr "Ülkeye Göre, Şehre Göre"
+
+msgctxt "Print Layout (contact_details). Parent table: contacts"
+msgid "Contact Details"
+msgstr "Kişi Ayrıntıları"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Contacts"
+msgstr "Kişiler"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Overview"
+msgstr "Genel Görünüm"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Contact ID:"
+msgstr "Kişi Kimliği:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Full Name:"
+msgstr "Tam İsim:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Name"
+msgstr "İsim"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Title:"
+msgstr "Başlık:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "First Name:"
+msgstr "İsim:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Middle Name:"
+msgstr "İkinci İsim:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Last Name:"
+msgstr "Soyad:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Address"
+msgstr "Adres"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Street:"
+msgstr "Sokak:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Town:"
+msgstr "Şehir:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "State:"
+msgstr "Eyalet:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Postcode:"
+msgstr "Posta Kodu:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Country:"
+msgstr "Ülke:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Work Telephone:"
+msgstr "İş Telefonu:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Mobile Telephone:"
+msgstr "Mobil Telefon:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Home Telephone:"
+msgstr "Ev Telefonu:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Fax:"
+msgstr "Faks:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Date of Birth:"
+msgstr "Doğum Tarihi:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Picture:"
+msgstr "Resim:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Comments:"
+msgstr "Açıklamalar:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Web Site:"
+msgstr "Web Sayfası:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Email Address:"
+msgstr "E-posta Adresi:"
+
+msgctxt "Layout Group (overview). Parent table: contacts"
+msgid "Overview"
+msgstr "Genel Görünüm"
+
+msgctxt "Layout Group (name). Parent table: contacts, Parent Group: details"
+msgid "Name"
+msgstr "İsim"
+
+msgctxt "Layout Group (address). Parent table: contacts, Parent Group: details"
+msgid "Address"
+msgstr "Adres"
+
+msgctxt "Layout Group (telephone). Parent table: contacts, Parent Group: details"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt "Button. Parent table: contacts, Parent Group: details"
+msgid "Test Button"
+msgstr "Test Düğmesi"
+
+msgctxt "Field (product_name). Parent table: invoice_lines"
+msgid "Product Name"
+msgstr "Ürün Adı"
+
+msgctxt "Field (product_id). Parent table: invoice_lines"
+msgid "Product Id"
+msgstr "Ürün Kimliği"
+
+msgctxt "Field (product_price). Parent table: invoice_lines"
+msgid "Product Price"
+msgstr "Ürün Fiyatı"
+
+msgctxt "Field (invoice_id). Parent table: invoice_lines"
+msgid "Invoice ID"
+msgstr "Fatura Kimliği"
+
+msgctxt "Field (count). Parent table: invoice_lines"
+msgid "Number Of"
+msgstr "Numara"
+
+msgctxt "Field (total_price). Parent table: invoice_lines"
+msgid "Total Price"
+msgstr "Toplam Fiyat"
+
+msgctxt "Field (vat_percentage). Parent table: invoice_lines"
+msgid "VAT Percentage"
+msgstr "KDV Oranı"
+
+msgctxt "Field (total_price_vat). Parent table: invoice_lines"
+msgid "Total VAT"
+msgstr "Toplam KDV"
+
+msgctxt "Relationship (products). Parent table: invoice_lines"
+msgid "Products"
+msgstr "Ürünler"
+
+msgctxt "Table (invoices)"
+msgid "Invoices"
+msgstr "Faturalar"
+
+msgctxt "Field (invoice_id). Parent table: invoices"
+msgid "Invoice ID"
+msgstr "Fatura Kimliği"
+
+msgctxt "Field (contact_id). Parent table: invoices"
+msgid "Contact ID"
+msgstr "Kişi Kimliği"
+
+msgctxt "Field (date). Parent table: invoices"
+msgid "Date"
+msgstr "Tarih"
+
+msgctxt "Field (comment). Parent table: invoices"
+msgid "Comment"
+msgstr "Açıklama"
+
+msgctxt "Field (price_total). Parent table: invoices"
+msgid "Total Price"
+msgstr "Toplam Fiyat"
+
+msgctxt "Field (vat_total). Parent table: invoices"
+msgid "Total VAT"
+msgstr "Toplam KDV"
+
+msgctxt "Field (price_total_with_vat). Parent table: invoices"
+msgid "Total Price With Vat"
+msgstr "KDV Dahil Fiyat"
+
+msgctxt "Relationship (invoice_lines). Parent table: invoices"
+msgid "Invoice Lines"
+msgstr "Fatura Satırları"
+
+msgctxt "Relationship (contacts). Parent table: invoices"
+msgid "Contacts"
+msgstr "Kişiler"
+
+msgctxt "Report (by_customer). Parent table: invoices"
+msgid "By Customer"
+msgstr "Müşteriye Göre"
+
+msgctxt "Layout Group (overview). Parent table: invoices"
+msgid "Overview"
+msgstr "Genel Görünüm"
+
+msgctxt "Layout Group (customer). Parent table: invoices, Parent Group: details"
+msgid "Customer"
+msgstr "Müşteri"
+
+msgctxt "Table (products)"
+msgid "Products"
+msgstr "Ürünler"
+
+msgctxt "Field (product_id). Parent table: products"
+msgid "Product ID"
+msgstr "Ürün Kimliği"
+
+msgctxt "Field (comment). Parent table: products"
+msgid "Comment"
+msgstr "Açıklama"
+
+msgctxt "Field (description). Parent table: products"
+msgid "Description"
+msgstr "Tanımlama"
+
+msgctxt "Field (name). Parent table: products"
+msgid "Name"
+msgstr "İsim"
+
+msgctxt "Field (price). Parent table: products"
+msgid "Price"
+msgstr "Fiyat"
+
+msgctxt "Field (vat_percent). Parent table: products"
+msgid "Vat Percent"
+msgstr "KDV Yüzdesi"
+
+msgctxt "Layout Group (overview). Parent table: products"
+msgid "Overview"
+msgstr "Genel Görünüm"
+
+msgctxt "Layout Group (details). Parent table: products"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Table (staff)"
+msgid "Staff"
+msgstr "Çalışanlar"
+
+msgctxt "Field (staff_id). Parent table: staff"
+msgid "Staff ID"
+msgstr "Çalışan Kimliği"
+
+msgctxt "Field (name_title). Parent table: staff"
+msgid "Title"
+msgstr "Başlık"
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Mr"
+msgstr "Bay"
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Bayan"
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Miss"
+msgstr "Bayan"
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr"
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof"
+
+msgctxt "Field (name_first). Parent table: staff"
+msgid "First Name"
+msgstr "Ad"
+
+msgctxt "Field (name_second). Parent table: staff"
+msgid "Second Name"
+msgstr "İkinci İsim"
+
+msgctxt "Field (name_last). Parent table: staff"
+msgid "Last Name"
+msgstr "Soyad"
+
+msgctxt "Field (address_street). Parent table: staff"
+msgid "Street"
+msgstr "Sokak"
+
+msgctxt "Field (address_town). Parent table: staff"
+msgid "Town"
+msgstr "Şehir"
+
+msgctxt "Field (address_state). Parent table: staff"
+msgid "State"
+msgstr "Eyalet"
+
+msgctxt "Field (address_country). Parent table: staff"
+msgid "Country"
+msgstr "Ülke"
+
+msgctxt "Field (address_postcode). Parent table: staff"
+msgid "Postcode"
+msgstr "Posta Kodu"
+
+msgctxt "Field (date_of_birth). Parent table: staff"
+msgid "Date Of Birth"
+msgstr "Doğum Tarihi"
+
+msgctxt "Field (position). Parent table: staff"
+msgid "Position"
+msgstr "Konum"
+
+msgctxt "Layout Group (overview). Parent table: staff"
+msgid "Overview"
+msgstr "Genel Görünüm"
+
+msgctxt "Layout Group (name). Parent table: staff, Parent Group: details"
+msgid "Name"
+msgstr "İsim"
+
+msgctxt "Layout Group (address). Parent table: staff, Parent Group: details"
+msgid "Address"
+msgstr "Adres"
