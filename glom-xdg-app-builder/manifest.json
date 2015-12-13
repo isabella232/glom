@@ -181,6 +181,7 @@
         },
         {
             "name": "poppler",
+            "cleanup": [ "/bin" ],
             "config-opts": [ "--disable-documentation" ],
             "sources": [
                 {
@@ -227,6 +228,7 @@
         },
         {
             "name": "libgda-5.0",
+            "cleanup": [ "/bin" ],
             "config-opts": [ "--disable-documentation" "--enable-gda-gi" "--enable-gi-system-install=no" ],
             "sources": [
                 {
