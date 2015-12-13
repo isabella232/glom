@@ -1528,7 +1528,7 @@ LayoutGroup::type_list_items Utils::get_layout_items_plus_primary_key(const Layo
 
 bool Utils::script_check_for_pygtk2(const Glib::ustring& script)
 {
-  //There are probably other code that this will not catch,
+  //There is probably other code that this will not catch,
   //but this is better than nothing.
   //TODO: Instead override python's import mechanism somehow?
   if(script.find("import pygtk") != std::string::npos)
