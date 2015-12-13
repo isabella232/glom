@@ -1,0 +1,1356 @@
+# Necdet Yücel <necdetyucel@gmail.com>, 2015.
+msgid ""
+msgstr ""
+"Project-Id-Version: film-manager master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-01-12 14:11+0000\n"
+"PO-Revision-Date: 2015-04-04 19:50+0000\n"
+"Last-Translator: Necdet Yücel <necdetyucel@gmail.com>\n"
+"Language-Team: Türkçe <gnome-turk@gnome.org>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1428177047.000000\n"
+
+msgctxt "Database Title"
+msgid "Openismus Film Manager"
+msgstr "Openismus Film Yöneticisi"
+
+msgctxt "Table (accommodation)"
+msgid "Accommodation"
+msgstr "Konaklama"
+
+msgctxt "Field (accommodation_id). Parent table: accommodation"
+msgid "Accommodation ID"
+msgstr "Konaklama Kimliği"
+
+msgctxt "Field (description). Parent table: accommodation"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Field (comments). Parent table: accommodation"
+msgid "Comments"
+msgstr "Yorumlar"
+
+msgctxt "Field (address_street). Parent table: accommodation"
+msgid "Street"
+msgstr "Cadde"
+
+msgctxt "Field (address_town). Parent table: accommodation"
+msgid "Town"
+msgstr "Şehir"
+
+msgctxt "Field (address_county). Parent table: accommodation"
+msgid "County"
+msgstr "Ülke"
+
+msgctxt "Field (name). Parent table: accommodation"
+msgid "Name"
+msgstr "Ad"
+
+msgctxt "Layout Group (overview). Parent table: accommodation"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt ""
+"Layout Group (address). Parent table: accommodation, Parent Group: details"
+msgid "Address"
+msgstr "Adres"
+
+msgctxt ""
+"Layout Group (contact). Parent table: accommodation, Parent Group: details"
+msgid "Contact"
+msgstr "Kişi"
+
+msgctxt "Field (car_id). Parent table: cars"
+msgid "Car ID"
+msgstr "Araba Kimliği"
+
+msgctxt "Field (manufacturer). Parent table: cars"
+msgid "Manufacturer"
+msgstr "Üretici"
+
+msgctxt "Field (model). Parent table: cars"
+msgid "Model"
+msgstr "Model"
+
+msgctxt "Field (description). Parent table: cars"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Field (comment). Parent table: cars"
+msgid "Comment"
+msgstr "Açıklama"
+
+msgctxt "Layout Group (overview). Parent table: cars"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Field (comments). Parent table: characters"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Field (contact_id). Parent table: characters"
+msgid "Contact ID"
+msgstr "Kişi Kimliği"
+
+msgctxt "Field (mainpart). Parent table: characters"
+msgid "Main Part"
+msgstr "Ana Kısım"
+
+msgctxt "Relationship (scenes). Parent table: characters"
+msgid "Scenes"
+msgstr "Sahneler"
+
+msgctxt "Report (cast_list). Parent table: characters"
+msgid "Cast List"
+msgstr "Oyuncu Listesi"
+
+msgctxt "Layout Group (overview). Parent table: characters, Parent Group: main"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Custom Title. Parent table: characters"
+msgid "Actor's Contact ID"
+msgstr "Aktörün Bağlantı Kimliği"
+
+msgctxt "Layout Group (overview). Parent table: characters"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Layout Group (actor). Parent table: characters, Parent Group: details"
+msgid "Actor"
+msgstr "Aktör"
+
+msgctxt "Custom Title. Parent table: characters, Parent Group: details"
+msgid "Actor's Name"
+msgstr "Aktörün Adı"
+
+msgctxt "Field (comments). Parent table: companies"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Field (description). Parent table: companies"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Field (logo). Parent table: companies"
+msgid "Logo"
+msgstr "Amblem"
+
+msgctxt "Field (website). Parent table: companies"
+msgid "Web Site"
+msgstr "Web Sitesi"
+
+msgctxt "Relationship (staff). Parent table: companies"
+msgid "Staff"
+msgstr "Çalışanlar"
+
+msgctxt "Layout Group (overview). Parent table: companies"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Kişiler"
+
+msgctxt "Field (contact_id). Parent table: contacts"
+msgid "Contact ID"
+msgstr "Kişi Kimliği"
+
+msgctxt "Field (name_last). Parent table: contacts"
+msgid "Last Name"
+msgstr "Soyad"
+
+msgctxt "Field (name_title). Parent table: contacts"
+msgid "Title"
+msgstr "Başlık"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mr"
+msgstr "Bay"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Ms"
+msgstr "Bayan"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Bayan"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Miss"
+msgstr "Bayan"
+
+msgctxt "Field (address_town). Parent table: contacts"
+msgid "Town"
+msgstr "Şehir"
+
+msgctxt "Field (address_state). Parent table: contacts"
+msgid "State"
+msgstr "Eyalet"
+
+msgctxt "Field (address_country). Parent table: contacts"
+msgid "Country"
+msgstr "Ülke"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "Germany"
+msgstr "Almanya"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "USA"
+msgstr "ABD"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "France"
+msgstr "Fransa"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "Spain"
+msgstr "İspanya"
+
+msgctxt "Field (address_postcode). Parent table: contacts"
+msgid "Postcode"
+msgstr "Posta Kodu"
+
+msgctxt "Field (name_full). Parent table: contacts"
+msgid "Full Name"
+msgstr "Tam Ad"
+
+msgctxt "Field (company_id). Parent table: contacts"
+msgid "Company ID"
+msgstr "Şirket Kimliği"
+
+msgctxt "Field (picture). Parent table: contacts"
+msgid "Picture"
+msgstr "Resim"
+
+msgctxt "Field (tel_home). Parent table: contacts"
+msgid "Home Telephone"
+msgstr "Ev Telefonu"
+
+msgctxt "Field (tel_mobile). Parent table: contacts"
+msgid "Mobile Telephone"
+msgstr "Cep Telefonu"
+
+msgctxt "Field (tel_fax). Parent table: contacts"
+msgid "Fax"
+msgstr "Faks"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email"
+msgstr "Eposta"
+
+msgctxt "Field (address_street1). Parent table: contacts"
+msgid "Street (line 1)"
+msgstr "Cadde (1. hat)"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Web Sitesi"
+
+msgctxt "Relationship (cast). Parent table: contacts"
+msgid "Cast"
+msgstr "Oyuncu"
+
+msgctxt "Report (by_country). Parent table: contacts"
+msgid "Contacts By Country"
+msgstr "Ülkeye Göre Kişiler"
+
+msgctxt "Print Layout (contact_details). Parent table: contacts"
+msgid "Contact Details"
+msgstr "Kişi Ayrıntıları"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Contacts"
+msgstr "Kişiler"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Company"
+msgstr "Şirket"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Name:"
+msgstr "Ad:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Address"
+msgstr "Adres"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Street (line 1):"
+msgstr "Cadde (1. Hat):"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Street (line 2):"
+msgstr "Cadde (2. Hat):"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Town:"
+msgstr "Şehir:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Postcode:"
+msgstr "Posta Kodu:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Mobile Telephone:"
+msgstr "Cep Telefonu:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Home Telephone:"
+msgstr "Ev Telefonu:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Agent"
+msgstr "Aracı"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Agent ID:"
+msgstr "Aracı Kimliği:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Crew"
+msgstr "Ekip"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Cast"
+msgstr "Oyuncu"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Web Site:"
+msgstr "Web Sitesi:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Date Of Birth:"
+msgstr "Doğum Tarihi:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Picture:"
+msgstr "Resim:"
+
+msgctxt "Layout Group (overview). Parent table: contacts"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Layout Group (details). Parent table: contacts"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt ""
+"Layout Group (name). Parent table: contacts, Parent Group: details, Parent "
+"Group: notebook_contact"
+msgid "Name"
+msgstr "Ad"
+
+msgctxt ""
+"Layout Group (company). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook_contact"
+msgid "Company"
+msgstr "Şirket"
+
+msgctxt ""
+"Layout Group (address). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook_contact"
+msgid "Address"
+msgstr "Adres"
+
+msgctxt ""
+"Layout Group (telephone). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook_contact"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt "Custom Title. Parent table: contacts"
+msgid "Company Name"
+msgstr "Şirket Adı"
+
+msgctxt "Table (costume)"
+msgid "Costume"
+msgstr "Kostüm"
+
+msgctxt "Field (costume_id). Parent table: costume"
+msgid "Costume ID"
+msgstr "Kostüm Numarası"
+
+msgctxt "Field (name). Parent table: costume"
+msgid "Name"
+msgstr "Ad"
+
+msgctxt "Layout Group (overview). Parent table: costume"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Field (description). Parent table: crew"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Field (comments). Parent table: crew"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Field (dept_id). Parent table: crew"
+msgid "Department ID"
+msgstr "Bölüm Numarası"
+
+msgctxt "Relationship (contacts). Parent table: crew"
+msgid "Contacts"
+msgstr "Kişiler"
+
+msgctxt "Report (crew_list). Parent table: crew"
+msgid "Crew List"
+msgstr "Ekip Listesi"
+
+msgctxt "Custom Title. Parent table: crew, Parent Report: crew_list"
+msgid "Department Name"
+msgstr "Bölüm Adı"
+
+msgctxt "Layout Group (overview). Parent table: crew"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Layout Group (department). Parent table: crew, Parent Group: details"
+msgid "Department"
+msgstr "Bölüm"
+
+msgctxt ""
+"Layout Group (address). Parent table: crew, Parent Group: details, Parent "
+"Group: contact"
+msgid "Address"
+msgstr "Adres"
+
+msgctxt "Custom Title. Parent table: crew"
+msgid "Department Name"
+msgstr "Bölüm Adı"
+
+msgctxt "Field (arrival_date). Parent table: deliveries"
+msgid "Arrival Date"
+msgstr "Varış Tarihi"
+
+msgctxt "Field (arrival_place). Parent table: deliveries"
+msgid "Arrival Place"
+msgstr "Geliş Yeri"
+
+msgctxt "Field (departure_time). Parent table: deliveries"
+msgid "Departure Time"
+msgstr "Hareket Saati"
+
+msgctxt "Field (departure_place). Parent table: deliveries"
+msgid "Departure Place"
+msgstr "Hareket Yeri"
+
+msgctxt "Field (comments). Parent table: deliveries"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Relationship (departure_contact). Parent table: deliveries"
+msgid "Departure Contact"
+msgstr "Hareket İletişim"
+
+msgctxt "Custom Title. Parent table: deliveries"
+msgid "Departure Name"
+msgstr "Kalkış Adı"
+
+msgctxt "Custom Title. Parent table: deliveries"
+msgid "Arrival Name"
+msgstr "Varış Adı"
+
+msgctxt "Layout Group (arrival). Parent table: deliveries, Parent Group: details"
+msgid "Arrival"
+msgstr "Kalkış"
+
+msgctxt "Table (departments)"
+msgid "Departments"
+msgstr "Bölümler"
+
+msgctxt "Field (departments_id). Parent table: departments"
+msgid "Department ID"
+msgstr "Bölüm Numarası"
+
+msgctxt "Field (name). Parent table: departments"
+msgid "Name"
+msgstr "Ad"
+
+msgctxt "Field (comments). Parent table: departments"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Relationship (department_crew). Parent table: departments"
+msgid "Department Crew"
+msgstr "Bölüm Ekibi"
+
+msgctxt "Layout Group (overview). Parent table: departments"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Table (equipment)"
+msgid "Equipment"
+msgstr "Ekipman:"
+
+msgctxt "Field (description). Parent table: equipment"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Field (comments). Parent table: equipment"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Relationship (scenes). Parent table: equipment"
+msgid "Scenes"
+msgstr "Sahneler"
+
+msgctxt "Layout Group (overview). Parent table: equipment"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Layout Group (details). Parent table: equipment"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Field (description). Parent table: journeys"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Field (arrival_time). Parent table: journeys"
+msgid "Arrival Time"
+msgstr "Varış Zamanı"
+
+msgctxt "Field (arrival_place). Parent table: journeys"
+msgid "Arrival Place"
+msgstr "Varış Yeri"
+
+msgctxt "Field (departure_date). Parent table: journeys"
+msgid "Departure Date"
+msgstr "Kalkış Tarihi"
+
+msgctxt "Field (departure_time). Parent table: journeys"
+msgid "Departure Time"
+msgstr "Kalkış Zamanı"
+
+msgctxt "Field (departure_place). Parent table: journeys"
+msgid "Departure Place"
+msgstr "Kalkış Yeri"
+
+msgctxt "Field (contact_id). Parent table: journeys"
+msgid "Contact ID"
+msgstr "Kişi Kimliği"
+
+msgctxt "Relationship (contacts). Parent table: journeys"
+msgid "Contacts"
+msgstr "Kişiler"
+
+msgctxt "Layout Group (overview). Parent table: journeys"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Layout Group (person). Parent table: journeys, Parent Group: details"
+msgid "Person"
+msgstr "Kişi"
+
+msgctxt "Layout Group (departure). Parent table: journeys, Parent Group: details"
+msgid "Departure"
+msgstr "Kalkış"
+
+msgctxt "Table (locations)"
+msgid "Locations"
+msgstr "Konumlar"
+
+msgctxt "Field (location_id). Parent table: locations"
+msgid "Location ID"
+msgstr "Konum Bilgisi"
+
+msgctxt "Field (name). Parent table: locations"
+msgid "Name"
+msgstr "Ad"
+
+msgctxt "Field (address_town). Parent table: locations"
+msgid "Town"
+msgstr "Şehir"
+
+msgctxt "Field (address_county). Parent table: locations"
+msgid "County"
+msgstr "Ülke"
+
+msgctxt "Field (address_postcode). Parent table: locations"
+msgid "Postcode"
+msgstr "Posta Kodu"
+
+msgctxt "Field (comments). Parent table: locations"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Field (rent). Parent table: locations"
+msgid "Rent"
+msgstr "Kira"
+
+msgctxt "Relationship (scenes). Parent table: locations"
+msgid "Scenes"
+msgstr "Sahneler"
+
+msgctxt "Layout Group (overview). Parent table: locations"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Field (prop_id). Parent table: props"
+msgid "Prop ID"
+msgstr "Malzeme Numarası"
+
+msgctxt "Field (description). Parent table: props"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Field (comments). Parent table: props"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Layout Group (overview). Parent table: props"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Layout Group (details). Parent table: props"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Field (comments). Parent table: scene_cast"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Field (scene_id). Parent table: scene_cast"
+msgid "Scene ID"
+msgstr "Sahne Numarası"
+
+msgctxt "Relationship (cast). Parent table: scene_cast"
+msgid "Cast"
+msgstr "Oyuncu"
+
+msgctxt "Table (scene_costume)"
+msgid "Scene Costume"
+msgstr "Sahne Kostümü"
+
+msgctxt "Relationship (costume). Parent table: scene_costume"
+msgid "Costume"
+msgstr "Kostüm"
+
+msgctxt "Layout Group (overview). Parent table: scene_costume"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Field (scene_id). Parent table: scene_crew"
+msgid "Scene ID"
+msgstr "Sahne Numarası"
+
+msgctxt "Field (department_id). Parent table: scene_crew"
+msgid "Department ID"
+msgstr "Bölüm Numarası"
+
+msgctxt "Relationship (department). Parent table: scene_crew"
+msgid "Department"
+msgstr "Bölüm"
+
+msgctxt "Relationship (scenes). Parent table: scene_crew"
+msgid "Scenes"
+msgstr "Sahneler"
+
+msgctxt "Layout Group (details). Parent table: scene_crew, Parent Group: main"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Field (scene_equipment_id). Parent table: scene_equipment"
+msgid "Scene Equipment ID"
+msgstr "Sahne Ekipmanı Numarası"
+
+msgctxt "Field (comments). Parent table: scene_equipment"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Layout Group (overview). Parent table: scene_equipment"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Table (scene_extras)"
+msgid "Scene Extras"
+msgstr "Sahne Ekstraları"
+
+msgctxt "Field (scene_extras_id). Parent table: scene_extras"
+msgid "Scene Extras ID"
+msgstr "Sahne Ekstraları Numarası"
+
+msgctxt "Field (scene_id). Parent table: scene_extras"
+msgid "Scene ID"
+msgstr "Sahne Numarası"
+
+msgctxt "Field (contact_id). Parent table: scene_extras"
+msgid "Contact ID"
+msgstr "Kişi Kimliği"
+
+msgctxt "Field (scene_makeup_id). Parent table: scene_makeup"
+msgid "Scene Makeup ID"
+msgstr "Sahne Makyajı Numarası"
+
+msgctxt "Field (description). Parent table: scene_makeup"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Field (comments). Parent table: scene_makeup"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Layout Group (details). Parent table: scene_makeup"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Table (scene_props)"
+msgid "Scene Props"
+msgstr "Sahne Malzemeleri"
+
+msgctxt "Field (scene_props_id). Parent table: scene_props"
+msgid "Scene Prop ID"
+msgstr "Sahne Malzeme Numarası"
+
+msgctxt "Field (prop_id). Parent table: scene_props"
+msgid "Prop ID"
+msgstr "Malzeme Numarası"
+
+msgctxt "Relationship (props). Parent table: scene_props"
+msgid "Props"
+msgstr "Özellikler"
+
+msgctxt "Layout Group (overview). Parent table: scene_props"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Layout Group (details). Parent table: scene_props"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Field (scene_id). Parent table: scenes"
+msgid "Scene ID"
+msgstr "Sahne Numarası"
+
+msgctxt "Field (location_id). Parent table: scenes"
+msgid "Location ID"
+msgstr "Konum Bilgisi"
+
+msgctxt "Field (date). Parent table: scenes"
+msgid "Date"
+msgstr "Tarih"
+
+msgctxt "Field (minutes). Parent table: scenes"
+msgid "Stop (minutes)"
+msgstr "Dur (dakikalar)"
+
+msgctxt "Field (day_or_night). Parent table: scenes"
+msgid "Day/Night"
+msgstr "Gündüz/Gece"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Night"
+msgstr "Gece"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Morning"
+msgstr "Sabah"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Evening"
+msgstr "Akşam"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Dawn"
+msgstr "Şafak Vakti"
+
+msgctxt "Field (interior_or_exterior). Parent table: scenes"
+msgid "Interior/Exterior"
+msgstr "İç / Dış"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: interior_or_exterior"
+msgid "Interior"
+msgstr "İç"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: interior_or_exterior"
+msgid "Exterior"
+msgstr "Dış"
+
+msgctxt "Field (name). Parent table: scenes"
+msgid "Name"
+msgstr "Ad"
+
+msgctxt "Field (pages). Parent table: scenes"
+msgid "Pages"
+msgstr "Sayfalar"
+
+msgctxt "Field (script_day). Parent table: scenes"
+msgid "Script Day"
+msgstr "Betik Günü"
+
+msgctxt "Relationship (scene_cast). Parent table: scenes"
+msgid "Cast"
+msgstr "Oyuncular"
+
+msgctxt "Relationship (scene_equipment). Parent table: scenes"
+msgid "Additional Equipment"
+msgstr "Ek Ekipman"
+
+msgctxt "Relationship (scene_extras). Parent table: scenes"
+msgid "Extras"
+msgstr "Ekstralar"
+
+msgctxt "Relationship (scene_makeup). Parent table: scenes"
+msgid "Additional Makeup"
+msgstr "Ek Makyaj"
+
+msgctxt "Layout Group (overview). Parent table: scenes"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Layout Group (details). Parent table: scenes"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Text. Parent table: scenes, Parent Group: details"
+msgid "The location name will be used if the name is empty."
+msgstr "Eğer ad boş ise konum adı kullanılacak."
+
+msgctxt "Custom Title. Parent table: scenes, Parent Group: details"
+msgid "Contact Name"
+msgstr "Kişi Adı"
+
+msgctxt ""
+"Custom Title. Parent table: scenes, Parent Group: details_lower, Parent "
+"Group: notebook"
+msgid "Actor's Name"
+msgstr "Aktörün Adı"
+
+msgctxt "Field (address_country). Parent table: accommodation"
+msgid "Country"
+msgstr "Ülke"
+
+msgctxt "Field (address_postcode). Parent table: accommodation"
+msgid "Postcode"
+msgstr "Posta Kodu"
+
+msgctxt "Field (contact_id). Parent table: accommodation"
+msgid "Contact ID"
+msgstr "Kişi Kimliği"
+
+msgctxt "Relationship (contacts). Parent table: accommodation"
+msgid "Contacts"
+msgstr "Kişiler"
+
+msgctxt "Table (cars)"
+msgid "Cars"
+msgstr "Arabalar"
+
+msgctxt "Field (registration). Parent table: cars"
+msgid "Registration"
+msgstr "Kayıt"
+
+msgctxt "Layout Group (details). Parent table: cars"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Table (characters)"
+msgid "Characters"
+msgstr "Karakterler"
+
+msgctxt "Field (character_id). Parent table: characters"
+msgid "Cast ID"
+msgstr "Oyuncu Kimliği"
+
+msgctxt "Field (character). Parent table: characters"
+msgid "Character"
+msgstr "Karakter"
+
+msgctxt "Relationship (contacts_actor). Parent table: characters"
+msgid "Actor"
+msgstr "Aktör"
+
+msgctxt "Custom Title. Parent table: characters, Parent Report: cast_list"
+msgid "Actor"
+msgstr "Aktör"
+
+msgctxt "Custom Title. Parent table: characters, Parent Report: cast_list"
+msgid "Agent"
+msgstr "Aracı"
+
+msgctxt "Layout Group (details). Parent table: characters, Parent Group: main"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt ""
+"Layout Group (actor). Parent table: characters, Parent Group: main, Parent "
+"Group: details"
+msgid "Actor"
+msgstr "Aktör"
+
+msgctxt ""
+"Custom Title. Parent table: characters, Parent Group: main, Parent Group: "
+"details"
+msgid "Actor's Name"
+msgstr "Aktör Adı"
+
+msgctxt "Custom Title. Parent table: characters"
+msgid "Actor's Name"
+msgstr "Aktörün Adı"
+
+msgctxt "Layout Group (details). Parent table: characters"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Custom Title. Parent table: characters"
+msgid "Actor"
+msgstr "Aktör"
+
+msgctxt "Table (companies)"
+msgid "Companies"
+msgstr "Şirketler"
+
+msgctxt "Field (company_id). Parent table: companies"
+msgid "Company ID"
+msgstr "Şirket Kimliği"
+
+msgctxt "Field (name). Parent table: companies"
+msgid "Name"
+msgstr "Ad"
+
+msgctxt "Layout Group (details). Parent table: companies"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Field (name_first). Parent table: contacts"
+msgid "First Name"
+msgstr "İlk Ad"
+
+msgctxt "Field (name_middle). Parent table: contacts"
+msgid "Second Name"
+msgstr "İkinci Ad"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr."
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof."
+
+msgctxt "Field (address_street2). Parent table: contacts"
+msgid "Street (line 2)"
+msgstr "Cadde (2. Hat)"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "United Kingdom"
+msgstr "Birleşik Krallık"
+
+msgctxt "Field (date_of_birth). Parent table: contacts"
+msgid "Date Of Birth"
+msgstr "Doğum Tarihi"
+
+msgctxt "Field (comments). Parent table: contacts"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "İş Telefonu"
+
+msgctxt "Field (agent_id). Parent table: contacts"
+msgid "Agent ID"
+msgstr "Aracı Kimliği"
+
+msgctxt "Field (stagename). Parent table: contacts"
+msgid "Stagename"
+msgstr "Sahne adı"
+
+msgctxt "Relationship (company). Parent table: contacts"
+msgid "Company"
+msgstr "Şirket"
+
+msgctxt "Relationship (agent). Parent table: contacts"
+msgid "Agent"
+msgstr "Aracı"
+
+msgctxt "Relationship (crew). Parent table: contacts"
+msgid "Crew"
+msgstr "Ekip"
+
+msgctxt "Report (by_country_by_town). Parent table: contacts"
+msgid "By Country, By Town"
+msgstr "Ülkeye Göre, Şehre Göre"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Contact ID:"
+msgstr "Kişi Kimliği:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Full Name:"
+msgstr "Tam Ad:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Name"
+msgstr "Ad"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Title:"
+msgstr "Başlık:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "First Name:"
+msgstr "İlk Ad:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Second Name:"
+msgstr "İkinci Ad:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Last Name:"
+msgstr "Soyad:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Company ID:"
+msgstr "Şirket Kimliği:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "State:"
+msgstr "Eyalet:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Country:"
+msgstr "Ülke:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Work Telephone:"
+msgstr "İş Telefonu:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Fax:"
+msgstr "Faks:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Email:"
+msgstr "Eposta:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Comments:"
+msgstr "Açıklamalar:"
+
+msgctxt ""
+"Layout Group (agent). Parent table: contacts, Parent Group: details, Parent "
+"Group: notebook_contact"
+msgid "Agent"
+msgstr "Aracı"
+
+msgctxt "Field (description). Parent table: costume"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Field (comments). Parent table: costume"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Layout Group (details). Parent table: costume"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Table (crew)"
+msgid "Crew"
+msgstr "Ekip"
+
+msgctxt "Field (crew_id). Parent table: crew"
+msgid "Crew ID"
+msgstr "Ekip Kimliği"
+
+msgctxt "Field (contact_id). Parent table: crew"
+msgid "Contact ID"
+msgstr "Kişi Kimliği"
+
+msgctxt "Relationship (departments). Parent table: crew"
+msgid "Departments"
+msgstr "Bölümler"
+
+msgctxt "Relationship (scenes). Parent table: crew"
+msgid "Scenes"
+msgstr "Sahneler"
+
+msgctxt "Layout Group (contact). Parent table: crew, Parent Group: details"
+msgid "Contact"
+msgstr "Kişi"
+
+msgctxt ""
+"Layout Group (agent). Parent table: crew, Parent Group: details, Parent "
+"Group: contact"
+msgid "Agent"
+msgstr "Aracı"
+
+msgctxt "Table (deliveries)"
+msgid "Deliveries"
+msgstr "Teslimatlar"
+
+msgctxt "Field (delivery_id). Parent table: deliveries"
+msgid "Delivery ID"
+msgstr "Teslimat Numarı"
+
+msgctxt "Field (departure_contact_id). Parent table: deliveries"
+msgid "Contact ID"
+msgstr "Kişi Kimliği"
+
+msgctxt "Field (arrival_contact_id). Parent table: deliveries"
+msgid "Contact ID"
+msgstr "Kişi Kimliği"
+
+msgctxt "Field (arrival_time). Parent table: deliveries"
+msgid "Arrival Time"
+msgstr "Varış Tarihi"
+
+msgctxt "Field (departure_date). Parent table: deliveries"
+msgid "Departure Date"
+msgstr "Hareket Tarihi"
+
+msgctxt "Field (description). Parent table: deliveries"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Relationship (arrival_contact). Parent table: deliveries"
+msgid "Arrival Contact"
+msgstr "Varış İletişim"
+
+msgctxt "Layout Group (overview). Parent table: deliveries"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt ""
+"Layout Group (departure). Parent table: deliveries, Parent Group: details"
+msgid "Departure"
+msgstr "Kalkış"
+
+msgctxt "Field (equipment_id). Parent table: equipment"
+msgid "Equipment ID"
+msgstr "Ekipman Numarası"
+
+msgctxt "Table (journeys)"
+msgid "Journeys"
+msgstr "Yolculuklar"
+
+msgctxt "Field (journey_id). Parent table: journeys"
+msgid "Journey ID"
+msgstr "Yolculuk Numarası"
+
+msgctxt "Field (comment). Parent table: journeys"
+msgid "Comment"
+msgstr "Açıklama"
+
+msgctxt "Field (arrival_date). Parent table: journeys"
+msgid "Arrival Date"
+msgstr "Varış Tarihi"
+
+msgctxt "Layout Group (arrival). Parent table: journeys, Parent Group: details"
+msgid "Arrival"
+msgstr "Varış"
+
+msgctxt "Field (address_street). Parent table: locations"
+msgid "Street"
+msgstr "Cadde"
+
+msgctxt "Field (address_country). Parent table: locations"
+msgid "Country"
+msgstr "Ülke"
+
+msgctxt "Field (contact_id). Parent table: locations"
+msgid "Contact ID"
+msgstr "Kişi Kimliği"
+
+msgctxt "Relationship (contacts). Parent table: locations"
+msgid "Contacts"
+msgstr "Kişiler"
+
+msgctxt "Layout Group (address). Parent table: locations, Parent Group: details"
+msgid "Address"
+msgstr "Adres"
+
+msgctxt ""
+"Layout Group (contact_person). Parent table: locations, Parent Group: details"
+msgid "Contact Person"
+msgstr "İlgili Kişi"
+
+msgctxt "Table (props)"
+msgid "Props"
+msgstr "Malzemeler"
+
+msgctxt "Field (name). Parent table: props"
+msgid "Name"
+msgstr "Ad"
+
+msgctxt "Table (scene_cast)"
+msgid "Scene Cast"
+msgstr "Sahne Oyuncusu"
+
+msgctxt "Field (scene_cast_id). Parent table: scene_cast"
+msgid "Scene Cast ID"
+msgstr "Sahne Oyuncuları Kimliği"
+
+msgctxt "Field (cast_id). Parent table: scene_cast"
+msgid "Cast ID"
+msgstr "Oyuncu Kimliği"
+
+msgctxt "Layout Group (overview). Parent table: scene_cast, Parent Group: main"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Layout Group (details). Parent table: scene_cast, Parent Group: main"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Field (scene_costume_id). Parent table: scene_costume"
+msgid "Scene Costume ID"
+msgstr "Sahne Kostümü Numarası"
+
+msgctxt "Field (comments). Parent table: scene_costume"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Field (scene_id). Parent table: scene_costume"
+msgid "Scene Id"
+msgstr "Sahne Numarası"
+
+msgctxt "Field (costume_id). Parent table: scene_costume"
+msgid "Costume ID"
+msgstr "Kostüm Numarası"
+
+msgctxt "Layout Group (details). Parent table: scene_costume"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Custom Title. Parent table: scene_costume"
+msgid "Costume Name"
+msgstr "Kostüm Adı"
+
+msgctxt "Table (scene_crew)"
+msgid "Scene Crew"
+msgstr "Sahne Ekibi"
+
+msgctxt "Field (scene_crew_id). Parent table: scene_crew"
+msgid "Scene Crew ID"
+msgstr "Sahne Ekibi Kimlikleri"
+
+msgctxt "Field (comments). Parent table: scene_crew"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Layout Group (overview). Parent table: scene_crew, Parent Group: main"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Field (equipment_id). Parent table: scene_equipment"
+msgid "Equipment ID"
+msgstr "Ekipman Numarası"
+
+msgctxt "Field (scene_id). Parent table: scene_equipment"
+msgid "Scene ID"
+msgstr "Sahne Numarası"
+
+msgctxt "Layout Group (details). Parent table: scene_equipment"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Field (description). Parent table: scene_extras"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Field (comments). Parent table: scene_extras"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Relationship (contact). Parent table: scene_extras"
+msgid "Contact"
+msgstr "Kişi"
+
+msgctxt "Layout Group (overview). Parent table: scene_extras, Parent Group: main"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Layout Group (details). Parent table: scene_extras, Parent Group: main"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Table (scene_makeup)"
+msgid "Scene Makeup"
+msgstr "Sahne Makyajı"
+
+msgctxt "Field (scene_id). Parent table: scene_makeup"
+msgid "Scene ID"
+msgstr "Sahne Numarası"
+
+msgctxt "Layout Group (overview). Parent table: scene_makeup"
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgctxt "Field (comments). Parent table: scene_props"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Field (scene_id). Parent table: scene_props"
+msgid "Scene ID"
+msgstr "Sahne Numarası"
+
+msgctxt "Table (scenes)"
+msgid "Scenes"
+msgstr "Sahneler"
+
+msgctxt "Field (comments). Parent table: scenes"
+msgid "Comments"
+msgstr "Açıklamalar"
+
+msgctxt "Field (description). Parent table: scenes"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Field (time). Parent table: scenes"
+msgid "Time"
+msgstr "Zaman"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Day"
+msgstr "Gündüz"
+
+msgctxt "Field (overview_name). Parent table: scenes"
+msgid "Scene"
+msgstr "Sahne"
+
+msgctxt "Relationship (location). Parent table: scenes"
+msgid "Locations"
+msgstr "Konumlar"
+
+msgctxt "Relationship (scene_crew). Parent table: scenes"
+msgid "Additional Crew"
+msgstr "Ek Ekip"
+
+msgctxt "Relationship (scene_props). Parent table: scenes"
+msgid "Props"
+msgstr "Özellikler"
+
+msgctxt "Relationship (scene_costume). Parent table: scenes"
+msgid "Costume"
+msgstr "Kostüm"
+
+msgctxt "Layout Group (scenario). Parent table: scenes, Parent Group: details"
+msgid "Scenario"
+msgstr "Senaryo"
+
+msgctxt "Layout Group (location). Parent table: scenes, Parent Group: details"
+msgid "Location"
+msgstr "Konum"
