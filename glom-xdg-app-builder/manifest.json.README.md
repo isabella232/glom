@@ -1,7 +1,8 @@
 *** Create the xdg-app package like so:
 
-$ xdg-app-builder --require-changes ../../glom-xdgapp manifest.json
-$ xdg-app build-export --gpg-sign="murrayc@murrayc.com" /repos/glom ../../glom-xdgapp
+$ cd glom-xdg-app-builder
+$ xdg-app-builder --require-changes ../glom-xdgapp manifest.json
+$ xdg-app build-export --gpg-sign="murrayc@murrayc.com" /repos/glom ../glom-xdgapp
 $ xdg-app repo-update /repos/glom
 
 Then copy all of /repos/glom/* into the repos/ directory that appears

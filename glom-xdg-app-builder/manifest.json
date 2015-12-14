@@ -118,7 +118,7 @@
                 }
                 {
                     "type": "patch",
-                    "path": "avahi_gtk_undisable_deprecated.patch"
+                    "path": "glom-xdg-app-builder/avahi_gtk_undisable_deprecated.patch"
                 }
             ]
         },
@@ -262,12 +262,12 @@
                 }
                 {
                     "type": "file",
-                    "path": "boost_python_configure",
+                    "path": "glom-xdg-app-builder/boost_python_configure",
                     "dest-filename": "configure"
                 }
-                                {
+                {
                     "type": "file",
-                    "path": "boost_python_Makefile",
+                    "path": "glom-xdg-app-builder/boost_python_Makefile",
                     "dest-filename": "Makefile"
                 }
             ]
