@@ -6,7 +6,7 @@
     "sdk": "org.gnome.Sdk",
     "command": "glom",
     "rename-desktop-file": "glom.desktop",
-    "finish-args": ["--share=ipc", "--socket=x11", "--socket=pulseaudio", "--filesystem=host" ],
+    "finish-args": ["--share=network" "--socket=x11", "--filesystem=host" ],
     "build-options" : {
         "cflags": "-O2 -g",
         "cxxflags": "-O2 -g",
