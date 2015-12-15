@@ -171,7 +171,7 @@ int main(int argc, char* argv[])
   {
     if(!(file_output->make_directory_with_parents()))
     {
-      std::cerr << _("The ouput directory could not be created.") << std::endl;
+      std::cerr << _("The output directory could not be created.") << std::endl;
       return EXIT_FAILURE;
     }
   }

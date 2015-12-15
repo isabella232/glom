@@ -184,13 +184,13 @@ int main(int argc, char* argv[])
 
   //Get a URI (file://something) from the filepath:
   Glib::RefPtr<Gio::File> file_output = Gio::File::create_for_commandline_arg(group.m_arg_filepath_output);
-  const auto ouput_uri = file_output->get_uri();
+  const auto output_uri = file_output->get_uri();
 
   /* Silently overwriting is easier when we use this in a batch:
   if(file_output->query_exists())
   {
     std::cerr << _("Glom: The output file aready exists.") << std::endl;
-    std::cerr << G_STRFUNC << ": uri: " << ouput_uri << std::endl;
+    std::cerr << G_STRFUNC << ": uri: " << output_uri << std::endl;
 
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
@@ -214,26 +214,26 @@ int main(int argc, char* argv[])
   if(group.m_arg_template)
   {
     const bool succeeded = 
-      Glom::write_pot_file(&document, ouput_uri);
+      Glom::write_pot_file(&document, output_uri);
     if(!succeeded)
     {
       std::cerr << _("Pot file creation failed.") << std::endl;
       return EXIT_FAILURE;
     }
 
-    std::cout << Glib::ustring::compose(_("Pot file created at: %1"), ouput_uri) << std::endl;
+    std::cout << Glib::ustring::compose(_("Pot file created at: %1"), output_uri) << std::endl;
   }
   else
   {
     const bool succeeded = 
-      Glom::write_translations_to_po_file(&document, ouput_uri, group.m_arg_locale_id);
+      Glom::write_translations_to_po_file(&document, output_uri, group.m_arg_locale_id);
     if(!succeeded)
     {
       std::cerr << _("Po file creation failed.") << std::endl;
       return EXIT_FAILURE;
     }
 
-    std::cout << Glib::ustring::compose(_("Po file created at: %1"), ouput_uri) << std::endl;
+    std::cout << Glib::ustring::compose(_("Po file created at: %1"), output_uri) << std::endl;
   }
 
   Glom::libglom_deinit();
