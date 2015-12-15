@@ -73,7 +73,8 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   const auto default_database = "template1";
   //const auto actual_database = (!database.empty()) ? database : default_database;;
   const auto cnc_string_main = "HOST=" + DbUtils::gda_cnc_string_encode(m_host)
-   + ";PORT=" + DbUtils::gda_cnc_string_encode(port);
+   + ";PORT=" + DbUtils::gda_cnc_string_encode(port)
+   + ";CONNECT_TIMEOUT=10"; //10 seconds timeout, instead of indefinite.
   const auto cnc_string = cnc_string_main + ";DB_NAME=" + DbUtils::gda_cnc_string_encode(database);
 
   Glib::RefPtr<Gnome::Gda::Connection> connection;
