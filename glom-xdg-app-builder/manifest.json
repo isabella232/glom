@@ -1,0 +1,293 @@
+{
+    "app-id": "org.glom.Glom",
+    "version": "master",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "3.18",
+    "sdk": "org.gnome.Sdk",
+    "command": "glom",
+    "rename-desktop-file": "glom.desktop",
+    "finish-args": ["--share=network" "--socket=x11", "--filesystem=host" ],
+    "build-options" : {
+        "cflags": "-O2 -g",
+        "cxxflags": "-O2 -g",
+        "env": {
+            "V": "1"
+        }
+    },
+    "cleanup": ["/include", "/lib/*/include", "/lib/pkgconfig", "/share/pkgconfig", "/share/aclocal", "/man", "/share/man", "/share/info", "/share/gtk-doc", "*.la", "*.a" ],
+    "modules": [
+        {
+           "name": "mm-common",
+           "cleanup": [ "/" ],
+           "sources": [
+               {
+                   "type": "archive",
+                   "url": "http://ftp.gnome.org/pub/GNOME/sources/mm-common/0.9/mm-common-0.9.9.tar.xz",
+                   "sha256": "9d00bc77e77794e0bd2ae68132c4b4136aa115d255e34b310f7449b29db50b7a"
+               }
+           ]
+        },
+        {
+            "name": "sigc++",
+            "config-opts": [ "--disable-documentation" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.6/libsigc++-2.6.2.tar.xz",
+                    "sha256": "fdace7134c31de792c17570f9049ca0657909b28c4c70ec4882f91a03de54437"
+                }
+            ]
+        },
+        {
+            "name": "glibmm",
+            "config-opts": [ "--disable-documentation" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.46/glibmm-2.46.2.tar.xz",
+                    "sha256": "7221a01a768c1cce2bb994cb6ebfe634246dba4788f910484d04e3b0d903a3c8"
+                }
+            ]
+        },
+        {
+            "name": "cairomm",
+            "config-opts": [ "--disable-documentation" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://cairographics.org/releases/cairomm-1.12.0.tar.gz",
+                    "sha256": "50435aec6fdd976934b791e808993160113ad19ca53a5634a9b64ccbe55874cc"
+                }
+            ]
+        },
+        {
+            "name": "pangomm",
+            "config-opts": [ "--disable-documentation" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/pangomm/2.38/pangomm-2.38.1.tar.xz",
+                    "sha256": "effb18505b36d81fc32989a39ead8b7858940d0533107336a30bc3eef096bc8b"
+                }
+            ]
+        },
+        {
+            "name": "atkmm",
+            "config-opts": [ "--disable-documentation" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/atkmm/2.24/atkmm-2.24.2.tar.xz",
+                    "sha256": "ff95385759e2af23828d4056356f25376cfabc41e690ac1df055371537e458bd"
+                }
+            ]
+        },
+        {
+            "name": "gtkmm",
+            "config-opts": [ "--disable-documentation" ],
+            "build-options" : { "cxxflags": "-O2 -g -std=c++11" },
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/gtkmm/3.18/gtkmm-3.18.0.tar.xz",
+                    "sha256": "829fa113daed74398c49c3f2b7672807f58ba85d0fa463f5bc726e1b0138b86b"
+                }
+            ]
+        },
+        {
+            "name": "libxml++",
+            "config-opts": [ "--disable-documentation" ],
+            "build-options" : { "cxxflags": "-O2 -g -std=c++11" },
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/libxml++/2.40/libxml++-2.40.1.tar.xz",
+                    "sha256": "4ad4abdd3258874f61c2e2a41d08e9930677976d303653cd1670d3e9f35463e9"
+                }
+            ]
+        },
+        {
+            "name": "avahi",
+            "cleanup": [ "/bin" ],
+            "config-opts": [ "--disable-documentation" "--with-distro=none" "--disable-qt3" "--disable-qt4" "--disable-libdaemon" "--disable-python" "--disable-mono"],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://www.avahi.org/download/avahi-0.6.31.tar.gz",
+                    "sha256": "8372719b24e2dd75de6f59bb1315e600db4fd092805bd1201ed0cb651a2dab48"
+                }
+                {
+                    "type": "patch",
+                    "path": "glom-xdg-app-builder/avahi_gtk_undisable_deprecated.patch"
+                }
+            ]
+        },
+        {
+            "name": "libepc",
+            "config-opts": [ "--disable-documentation" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/libepc/0.4/libepc-0.4.4.tar.xz",
+                    "sha256": "4f98fc306c0f9d361e1381484744246efd084053732924741078270c49afc33b"
+                }
+            ]
+        },
+        {
+            "name": "gtksourceview",
+            "config-opts": [ "--disable-documentation" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/gtksourceview/3.18/gtksourceview-3.18.1.tar.xz",
+                    "sha256": "7be95faf068b9f0ac7540cc1e8d607baa98a482850ef11a6471b53c9327aede6"
+                }
+            ]
+        },
+        {
+            "name": "gtksourceviewmm-5.0",
+            "config-opts": [ "--disable-documentation" ],
+            "build-options" : { "cxxflags": "-O2 -g -std=c++11" },
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/gtksourceviewmm/3.18/gtksourceviewmm-3.18.0.tar.xz",
+                    "sha256": "51081ae3d37975dae33d3f6a40621d85cb68f4b36ae3835eec1513482aacfb39"
+                }
+            ]
+        },
+        {
+            "name": "goocanvas",
+            "config-opts": [ "--disable-documentation" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/goocanvas/2.0/goocanvas-2.0.2.tar.xz",
+                    "sha256": "f20e5fbef8d1a2633033edbd886dd13146a1b948d1813a9c353a80a29295d1d0"
+                }
+            ]
+        },
+        {
+            "name": "goocanvasmm-5.0",
+            "config-opts": [ "--disable-documentation" ],
+            "build-options" : { "cxxflags": "-O2 -g -std=c++11" },
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/goocanvasmm/1.90/goocanvasmm-1.90.11.tar.xz",
+                    "sha256": "80ff11873ec0e73d9e38b0eb2ffb1586621f0b804093b990e49fdb546476ed6e"
+                }
+            ]
+        },
+        {
+            "name": "poppler",
+            "cleanup": [ "/bin" ],
+            "config-opts": [ "--disable-documentation" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://poppler.freedesktop.org/poppler-0.38.0.tar.xz",
+                    "sha256": "6f0c0d49c8346d7c0cfe6348124e7f19cc901b5d35c9cd89944aac6e454e8a8b"
+                }
+            ]
+        },
+        {
+            "name": "evince-view",
+            "cleanup": [ "/bin" ],
+            "config-opts": [ "--disable-documentation" "--disable-nautilus" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/evince/3.18/evince-3.18.2.tar.xz",
+                    "sha256": "42ad6c7354d881a9ecab136ea84ff867acb942605bcfac48b6c12e1c2d8ecb17"
+                }
+            ]
+        },
+        {
+            "name": "postgresql",
+            "config-opts": [ "--disable-documentation"],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://ftp.postgresql.org/pub/source/v9.4.5/postgresql-9.4.5.tar.gz",
+                    "sha256": "aa1d7918ae782a0fc5e1886fd463fc8903e5ffc3eb6d3b51500065aec988a210"
+                }
+            ]
+        },
+        {
+            "name": "mysql",
+            "cleanup": [ "/bin" "/mysql-test" "/scripts" "/share"  "/sql-bench" "/support-files" "/INSTALL-BINARY"],
+            "cmake": true,
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.28.tar.gz",
+                    "sha256": "217cd96921abdd709b9b4ff3ce2af4cbd237de43679cf19385d19df03a037b21"
+                }
+            ]
+        },
+        {
+            "name": "libgda-5.0",
+            "cleanup": [ "/bin" ],
+            "config-opts": [ "--disable-documentation" "--enable-gda-gi" "--enable-gi-system-install=no" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/libgda/5.2/libgda-5.2.4.tar.xz",
+                    "sha256": "2cee38dd583ccbaa5bdf6c01ca5f88cc08758b9b144938a51a478eb2684b765e"
+                }
+            ]
+        },
+        {
+            "name": "libgdamm-5.0",
+            "config-opts": [ "--disable-documentation" ],
+            "build-options" : { "cxxflags": "-O2 -g -std=c++11" },
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/libgdamm/4.99/libgdamm-4.99.11.tar.xz",
+                    "sha256": "e9820070a1b258fbdfa9b6583d97dfdb1340c90bb353c5f5e21522375609d0bb"
+                }
+            ]
+        },
+        {
+            "name": "boost-python",
+            "config-opts": [ "--with-libraries=python" "--with-python-version=3.3" ],
+            "build-options" : { "cxxflags": "-O2 -g -std=c++11" },
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.gz?r=http%3A%2F%2Fwww.boost.org%2Fusers%2Fhistory%2Fversion_1_59_0.html&ts=1449780852&use_mirror=netix",
+                    "sha256": "47f11c8844e579d02691a607fbd32540104a9ac7a2534a8ddaef50daf502baac"
+                }
+                {
+                    "type": "file",
+                    "path": "glom-xdg-app-builder/boost_python_configure",
+                    "dest-filename": "configure"
+                }
+                {
+                    "type": "file",
+                    "path": "glom-xdg-app-builder/boost_python_Makefile",
+                    "dest-filename": "Makefile"
+                }
+            ]
+        },
+        {
+            "name": "glom",
+            "config-opts": [ "--disable-documentation" ],
+            "build-options" : { "cxxflags": "-O2 -g -std=c++11",
+                "env": {
+                    "PYTHON": "python3.3m"
+                }
+            },
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/glom/1.30/glom-1.30.1.tar.xz",
+                    "sha256": "f360eccd004c7c935b928fdc57c1625af129bd77022318e73732710722309a1f"
+                }
+            ]
+        }
+    ]
+}
+
