@@ -17,8 +17,8 @@ https://github.com/murraycu/glom/tree/gh-pages/keys
 
 ** Install the xdg-app package like so:
 
-$ wget https://murraycu.github.io/glom/keys/glom.gpg
-$ xdg-app add-remote --user --gpg-import=glom.gpg glom https://murraycu.github.io/glom/repo/
+$ wget http://www.murrayc.com/xdg-app/keys/murrayc.gpg
+$ xdg-app add-remote --user --gpg-import=murrayc.gpg glom http://www.murrayc.com/xdg-app/repos/glom/
 $ xdg-app install-app --user glom org.glom.Glom
 
 ** Run the xdg-app like so:
