@@ -193,8 +193,8 @@
         },
         {
             "name": "evince-view",
-            "cleanup": [ "/bin" ],
-            "config-opts": [ "--disable-gtk-doc" "--disable-nautilus" ],
+            "cleanup": [ "/bin" "/share/help" ],
+            "config-opts": [ "--disable-gtk-doc" "--disable-nautilus" "--disable-browser-plugin" "--disable-thumbnailer" "--disable-previewer" "--disable-introspection" ],
             "sources": [
                 {
                     "type": "archive",
