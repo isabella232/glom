@@ -17,6 +17,18 @@
     "cleanup": ["/include", "/lib/*/include", "/lib/pkgconfig", "/share/pkgconfig", "/share/aclocal", "/man", "/share/man", "/share/info", "/share/gtk-doc", "*.la", "*.a" ],
     "modules": [
         {
+            "name": "gettext",
+            "cleanup": [ "/share" "/bin"],
+            "config-opts": [ "--disable-java" "--disable-c++" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnu.org/pub/gnu/gettext/gettext-0.19.6.tar.xz",
+                    "sha256": "9b95816620fd1168cb4eeca0e9dc0ffd86e864fc668f76f5e37cc054d6982e51"
+                }
+            ]
+        },
+        {
            "name": "mm-common",
            "cleanup": [ "/" ],
            "sources": [
