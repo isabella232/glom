@@ -124,7 +124,7 @@
         },
         {
             "name": "libepc",
-            "config-opts": [ "--disable-documentation" ],
+            "config-opts": [ "--disable-gtk-doc" ],
             "sources": [
                 {
                     "type": "archive",
@@ -135,7 +135,7 @@
         },
         {
             "name": "gtksourceview",
-            "config-opts": [ "--disable-documentation" ],
+            "config-opts": [ "--disable-gtk-doc" ],
             "sources": [
                 {
                     "type": "archive",
@@ -158,7 +158,7 @@
         },
         {
             "name": "goocanvas",
-            "config-opts": [ "--disable-documentation" ],
+            "config-opts": [ "--disable-gtk-doc" ],
             "sources": [
                 {
                     "type": "archive",
@@ -182,7 +182,7 @@
         {
             "name": "poppler",
             "cleanup": [ "/bin" ],
-            "config-opts": [ "--disable-documentation" ],
+            "config-opts": [ "--disable-gtk-doc" ],
             "sources": [
                 {
                     "type": "archive",
@@ -194,7 +194,7 @@
         {
             "name": "evince-view",
             "cleanup": [ "/bin" ],
-            "config-opts": [ "--disable-documentation" "--disable-nautilus" ],
+            "config-opts": [ "--disable-gtk-doc" "--disable-nautilus" ],
             "sources": [
                 {
                     "type": "archive",
@@ -228,8 +228,7 @@
         },
         {
             "name": "libgda-5.0",
-            "cleanup": [ "/bin" ],
-            "config-opts": [ "--disable-documentation" "--enable-gda-gi" "--enable-gi-system-install=no" ],
+            "config-opts": [ "--disable-gtk-doc" "--enable-gda-gi" "--enable-gi-system-install=no" ],
             "sources": [
                 {
                     "type": "archive",
