@@ -135,7 +135,7 @@
         },
         {
             "name": "gtksourceview",
-            "config-opts": [ "--disable-gtk-doc" ],
+            "config-opts": [ "--disable-gtk-doc" "--disable-introspection" "--disable-vala" ],
             "sources": [
                 {
                     "type": "archive",
