@@ -2037,10 +2037,9 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       m_pDialogConnection->set_self_hosted_user_and_password(connection_pool->get_user(), connection_pool->get_password());
 
       //std::cout << "DEBUG: after connection_pool->initialize(). The database cluster should now exist." << std::endl;
+
+      break;
     }
-
-    break;
-
     case Document::HostingMode::POSTGRES_CENTRAL:
     case Document::HostingMode::MYSQL_CENTRAL:
     {
@@ -2070,11 +2069,10 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         // The user cancelled
         return false;
       }
+      break;
     }
-
-    break;
 #ifdef GLOM_ENABLE_SQLITE
-  case Document::HostingMode::SQLITE:
+    case Document::HostingMode::SQLITE:
     {
       // SQLite:
       ConnectionPool::SlotProgress slot_ignored;
@@ -2083,13 +2081,13 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
       m_pDialogConnection->load_from_document(); //Get good defaults.
       // No authentication required
+      
+      break;
     }
-
-    break;
 #endif //GLOM_ENABLE_SQLITE
-  default:
-    g_assert_not_reached();
-    break;
+    default:
+      g_assert_not_reached();
+      break;
   }
 
   // Do startup, such as starting the self-hosting database server
