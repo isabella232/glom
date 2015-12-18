@@ -2002,163 +2002,176 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   auto connection_pool = ConnectionPool::get_instance();
   connection_pool->setup_from_document(document);
 
-  const auto hosting_mode = document->get_hosting_mode();
-  switch(hosting_mode)
-  {
-    case Document::HostingMode::POSTGRES_SELF:
-    case Document::HostingMode::MYSQL_SELF:
-    {
-      Glib::ustring user, password;
+  //Sometimes the password is automatic:
+  bool password_requested = false;
+  bool startup_done = false;
 
-      if(document->get_network_shared()) //Usually not the case when creating new documents.
+  Glib::ustring database_name_possible;
+  while(database_name_possible.empty()) {
+    const auto hosting_mode = document->get_hosting_mode();
+    switch(hosting_mode)
+    {
+      case Document::HostingMode::POSTGRES_SELF:
+      case Document::HostingMode::MYSQL_SELF:
       {
-        const auto test = connection_request_initial_password(user, password);
-        if(!test)
+        Glib::ustring user, password;
+
+        if(document->get_network_shared()) //Usually not the case when creating new documents.
+        {
+          const auto test = connection_request_initial_password(user, password);
+          if(!test)
+            return false;
+        }
+        else
+        {
+          //Use the default user because we are not network shared:
+          user = Privs::get_default_developer_user_name(password, hosting_mode);
+        }
+
+        // Create the requested self-hosting database:
+
+        //Set the connection details in the ConnectionPool singleton.
+        //The ConnectionPool will now use these every time it tries to connect.
+        connection_pool->set_user(user);
+        connection_pool->set_password(password);
+
+        ShowProgressMessage progress_message(_("Initializing Database Data"));
+        const auto initialized = handle_connection_initialize_errors( connection_pool->initialize(
+           sigc::mem_fun(*this, &Frame_Glom::on_connection_initialize_progress) ) );
+
+        if(!initialized)
           return false;
+
+        //std::cout << "DEBUG: after connection_pool->initialize(). The database cluster should now exist." << std::endl;
+
+        break;
       }
-      else
+      case Document::HostingMode::POSTGRES_CENTRAL:
+      case Document::HostingMode::MYSQL_CENTRAL:
       {
-        //Use the default user because we are not network shared:
-        user = Privs::get_default_developer_user_name(password, hosting_mode);
+        instantiate_dialog_connection();
+
+        //Ask for connection details:
+        m_pDialogConnection->load_from_document(); //Get good defaults.
+        m_pDialogConnection->set_transient_for(*get_app_window());
+
+        const auto response = Glom::UiUtils::dialog_run_with_help(m_pDialogConnection);
+        m_pDialogConnection->hide();
+        password_requested = true; //So we can ask again if it didn't work.
+
+        if(response == Gtk::RESPONSE_OK)
+        {
+          // We are not self-hosting, but we also call initialize() for
+          // consistency (the backend will ignore it anyway).
+          ConnectionPool::SlotProgress slot_ignored;
+          if(!handle_connection_initialize_errors( connection_pool->initialize(slot_ignored)) )
+            return false;
+
+          Glib::ustring username, password;
+          m_pDialogConnection->get_username_and_password(username, password);
+          connection_pool->set_user(username);
+          connection_pool->set_password(password);
+
+          // Remember the user name in the document, to be able to open the
+          // document again later:
+          document->set_connection_user(username);
+        }
+        else
+        {
+          // The user cancelled
+          return false;
+        }
+        break;
       }
-
-      // Create the requested self-hosting database:
-
-      //Set the connection details in the ConnectionPool singleton.
-      //The ConnectionPool will now use these every time it tries to connect.
-      connection_pool->set_user(user);
-      connection_pool->set_password(password);
-
-      ShowProgressMessage progress_message(_("Initializing Database Data"));
-      const auto initialized = handle_connection_initialize_errors( connection_pool->initialize(
-         sigc::mem_fun(*this, &Frame_Glom::on_connection_initialize_progress) ) );
-
-      if(!initialized)
-        return false;
-
-      //std::cout << "DEBUG: after connection_pool->initialize(). The database cluster should now exist." << std::endl;
-
-      break;
-    }
-    case Document::HostingMode::POSTGRES_CENTRAL:
-    case Document::HostingMode::MYSQL_CENTRAL:
-    {
-      instantiate_dialog_connection();
-
-      //Ask for connection details:
-      m_pDialogConnection->load_from_document(); //Get good defaults.
-      m_pDialogConnection->set_transient_for(*get_app_window());
-
-      const auto response = Glom::UiUtils::dialog_run_with_help(m_pDialogConnection);
-      m_pDialogConnection->hide();
-
-      if(response == Gtk::RESPONSE_OK)
+  #ifdef GLOM_ENABLE_SQLITE
+      case Document::HostingMode::SQLITE:
       {
-        // We are not self-hosting, but we also call initialize() for
-        // consistency (the backend will ignore it anyway).
+        // SQLite:
         ConnectionPool::SlotProgress slot_ignored;
         if(!handle_connection_initialize_errors( connection_pool->initialize(slot_ignored)) )
           return false;
 
-        Glib::ustring username, password;
-        m_pDialogConnection->get_username_and_password(username, password);
-        connection_pool->set_user(username);
-        connection_pool->set_password(password);
-
-        // Remember the user name in the document, to be able to open the
-        // document again later:
-        document->set_connection_user(username);
+        //m_pDialogConnection->load_from_document(); //Get good defaults.
+        // No authentication required
+        
+        break;
       }
-      else
+  #endif //GLOM_ENABLE_SQLITE
+      default:
+        g_assert_not_reached();
+        break;
+    }
+
+    // Do startup, such as starting the self-hosting database server.
+    if (!startup_done)
+    {
+      ShowProgressMessage progress_message(_("Starting Database Server"));
+      const ConnectionPool::StartupErrors started =
+        connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
+      if(started != ConnectionPool::Backend::StartupErrors::NONE)
       {
-        // The user cancelled
+        std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
+        //TODO: Output more exact details of the error message.
+        cleanup_connection();
         return false;
       }
-      break;
     }
-#ifdef GLOM_ENABLE_SQLITE
-    case Document::HostingMode::SQLITE:
+
+    const auto database_name = document->get_connection_database();
+    database_name_possible = DbUtils::get_unused_database_name(database_name);
+    if (database_name_possible.empty())
     {
-      // SQLite:
-      ConnectionPool::SlotProgress slot_ignored;
-      if(!handle_connection_initialize_errors( connection_pool->initialize(slot_ignored)) )
+      //This can only happen if we couldn't connect to the server at all.
+      //Warn the user, and let him try again:
+      UiUtils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
+
+      //If we didn't ask the user for a password then there's nothing for us to try again.
+      //Otherwise let the while() loop try again.
+      if (!password_requested) {
+        cleanup_connection();
         return false;
-
-      //m_pDialogConnection->load_from_document(); //Get good defaults.
-      // No authentication required
-      
-      break;
+      }
     }
-#endif //GLOM_ENABLE_SQLITE
-    default:
-      g_assert_not_reached();
-      break;
   }
 
-  // Do startup, such as starting the self-hosting database server
-  ShowProgressMessage progress_message(_("Starting Database Server"));
-  const ConnectionPool::StartupErrors started =
-    connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
-  if(started != ConnectionPool::Backend::StartupErrors::NONE)
+
+  std::cout << "debug: " << G_STRFUNC << ": unused database name successfully found: " << database_name_possible << std::endl;
+
+  //std::cout << "debug: unused database name found: " << database_name_possible << std::endl;
+  document->set_connection_database(database_name_possible);
+
+  // Remember host and port if the document is not self hosted
+  #ifdef GLOM_ENABLE_POSTGRESQL
+  if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_CENTRAL)
   {
-    std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
-    //TODO: Output more exact details of the error message.
-    return false;
+    auto backend = connection_pool->get_backend();
+    auto central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
+    g_assert(central);
+
+    document->set_connection_server(central->get_host());
+    document->set_connection_port(central->get_port());
+    document->set_connection_try_other_ports(false);
   }
 
-  const auto database_name = document->get_connection_database();
-  const auto database_name_possible = DbUtils::get_unused_database_name(database_name);
-  if (database_name_possible.empty())
+  // Remember port if the document is self-hosted, so that remote
+  // connections to the database (usinc browse network) know what port to use.
+  // TODO: There is already similar code in
+  // connect_to_server_with_connection_settings, which is just not
+  // executed because it failed with no database present. We should
+  // somehow avoid this code duplication.
+  else if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_SELF)
   {
-    //This can only happen if we couldn't connect to the server at all.
-    //Warn the user, and let him try again:
-    UiUtils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
-    return false;
-  }
-  else
-  {
-    std::cout << "debug: " << G_STRFUNC << ": unused database name successfully found: " << database_name_possible << std::endl;
+    auto backend = connection_pool->get_backend();
+    auto self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
+    g_assert(self);
 
-    //std::cout << "debug: unused database name found: " << database_name_possible << std::endl;
-    document->set_connection_database(database_name_possible);
-
-    // Remember host and port if the document is not self hosted
-    #ifdef GLOM_ENABLE_POSTGRESQL
-    if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_CENTRAL)
-    {
-      auto backend = connection_pool->get_backend();
-      auto central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
-      g_assert(central);
-
-      document->set_connection_server(central->get_host());
-      document->set_connection_port(central->get_port());
-      document->set_connection_try_other_ports(false);
-    }
-
-    // Remember port if the document is self-hosted, so that remote
-    // connections to the database (usinc browse network) know what port to use.
-    // TODO: There is already similar code in
-    // connect_to_server_with_connection_settings, which is just not
-    // executed because it failed with no database present. We should
-    // somehow avoid this code duplication.
-    else if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_SELF)
-    {
-      auto backend = connection_pool->get_backend();
-      auto self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
-      g_assert(self);
-
-      document->set_connection_port(self->get_port());
-      document->set_connection_try_other_ports(false);
-    }
-
-    #endif //GLOM_ENABLE_POSTGRESQL
-
-    return true;
+    document->set_connection_port(self->get_port());
+    document->set_connection_try_other_ports(false);
   }
 
-  cleanup_connection();
+  #endif //GLOM_ENABLE_POSTGRESQL
 
-  return false;
+  return true;
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
