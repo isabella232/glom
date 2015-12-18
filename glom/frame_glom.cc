@@ -1976,6 +1976,22 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
   return (response == Gtk::RESPONSE_OK);
 }
 
+void Frame_Glom::instantiate_dialog_connection()
+{
+  if(m_pDialogConnection)
+    return;
+
+  Utils::get_glade_widget_derived_with_warning(m_pDialogConnection);
+  if(!m_pDialogConnection)
+  {
+    std::cerr << G_STRFUNC << ": m_pDialogConnection is null." << std::endl;
+  }
+
+  add_view(m_pDialogConnection); //Also a composite view.
+
+  m_pDialogConnection->set_transient_for(*get_app_window());
+}
+
 bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 {
   auto document = dynamic_cast<Document*>(get_document());
@@ -2026,17 +2042,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     case Document::HostingMode::POSTGRES_CENTRAL:
     case Document::HostingMode::MYSQL_CENTRAL:
     {
-      if(!m_pDialogConnection)
-      {
-        Utils::get_glade_widget_derived_with_warning(m_pDialogConnection);
-        if(!m_pDialogConnection)
-        {
-          std::cerr << G_STRFUNC << ": m_pBox_Reports is null." << std::endl;
-          return false;
-        }
-
-        add_view(m_pDialogConnection); //Also a composite view.
-      }
+      instantiate_dialog_connection();
 
       //Ask for connection details:
       m_pDialogConnection->load_from_document(); //Get good defaults.
@@ -2232,18 +2238,9 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     //We recreate the dialog each time to make sure it is clean of any changes:
     delete m_pDialogConnection;
     m_pDialogConnection = nullptr;
-
-    Utils::get_glade_widget_derived_with_warning(m_pDialogConnection);
-    if(!m_pDialogConnection)
-    {
-      std::cerr << G_STRFUNC << ": m_pDialogConnection is null." << std::endl;
-      return false;
-    }
-
-    add_view(m_pDialogConnection); //Also a composite view.
+    instantiate_dialog_connection();
 
     m_pDialogConnection->load_from_document(); //Get good defaults.
-    m_pDialogConnection->set_transient_for(*get_app_window());
 
     //Show alternative text if necessary:
     if(confirm_known_user)
