@@ -226,6 +226,8 @@ private:
 
   void alert_no_table();
 
+  void instantiate_dialog_connection();
+
   //Signal handlers:
   void on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clause);
   void on_button_quickfind();
