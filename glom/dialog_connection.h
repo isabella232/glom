@@ -58,8 +58,6 @@ public:
   void get_username_and_password(Glib::ustring& user, Glib::ustring& password) const;
 
   void load_from_document() override;
-  
-  void set_self_hosted_user_and_password(const Glib::ustring& username, const Glib::ustring& password);
 
   /** Use this to override the data from load_from_document().
    * For instance, if you want to try to connect to a renamed database.
