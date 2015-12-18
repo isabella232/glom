@@ -1985,18 +1985,6 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   auto connection_pool = ConnectionPool::get_instance();
   connection_pool->setup_from_document(document);
 
-  if(!m_pDialogConnection)
-  {
-    Utils::get_glade_widget_derived_with_warning(m_pDialogConnection);
-    if(!m_pDialogConnection)
-    {
-      std::cerr << G_STRFUNC << ": m_pBox_Reports is null." << std::endl;
-      return false;
-    }
-
-    add_view(m_pDialogConnection); //Also a composite view.
-  }
-
   const auto hosting_mode = document->get_hosting_mode();
   switch(hosting_mode)
   {
@@ -2031,10 +2019,6 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       if(!initialized)
         return false;
 
-      //Put the details into m_pDialogConnection too, because that's what we use to connect.
-      //This is a bit of a hack:
-      m_pDialogConnection->set_self_hosted_user_and_password(connection_pool->get_user(), connection_pool->get_password());
-
       //std::cout << "DEBUG: after connection_pool->initialize(). The database cluster should now exist." << std::endl;
 
       break;
@@ -2042,6 +2026,18 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     case Document::HostingMode::POSTGRES_CENTRAL:
     case Document::HostingMode::MYSQL_CENTRAL:
     {
+      if(!m_pDialogConnection)
+      {
+        Utils::get_glade_widget_derived_with_warning(m_pDialogConnection);
+        if(!m_pDialogConnection)
+        {
+          std::cerr << G_STRFUNC << ": m_pBox_Reports is null." << std::endl;
+          return false;
+        }
+
+        add_view(m_pDialogConnection); //Also a composite view.
+      }
+
       //Ask for connection details:
       m_pDialogConnection->load_from_document(); //Get good defaults.
       m_pDialogConnection->set_transient_for(*get_app_window());
@@ -2057,10 +2053,13 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         if(!handle_connection_initialize_errors( connection_pool->initialize(slot_ignored)) )
           return false;
 
-        // Remember the user name in the document, to be able to open the
-        // document again later:
         Glib::ustring username, password;
         m_pDialogConnection->get_username_and_password(username, password);
+        connection_pool->set_user(username);
+        connection_pool->set_password(password);
+
+        // Remember the user name in the document, to be able to open the
+        // document again later:
         document->set_connection_user(username);
       }
       else
@@ -2078,7 +2077,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       if(!handle_connection_initialize_errors( connection_pool->initialize(slot_ignored)) )
         return false;
 
-      m_pDialogConnection->load_from_document(); //Get good defaults.
+      //m_pDialogConnection->load_from_document(); //Get good defaults.
       // No authentication required
       
       break;
@@ -2101,97 +2100,53 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   }
 
   const auto database_name = document->get_connection_database();
-
-  //std::cout << "debug: database_name to create=" << database_name << std::endl;
-
-
-  //TODO: Use DbUtils::get_unused_database_name() instead:
-  bool keep_trying = true;
-  size_t extra_num = 0;
-  while(keep_trying)
+  const auto database_name_possible = DbUtils::get_unused_database_name(database_name);
+  if (database_name_possible.empty())
   {
-    Glib::ustring database_name_possible;
-    if(extra_num == 0)
+    //This can only happen if we couldn't connect to the server at all.
+    //Warn the user, and let him try again:
+    UiUtils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
+    return false;
+  }
+  else
+  {
+    std::cout << "debug: " << G_STRFUNC << ": unused database name successfully found: " << database_name_possible << std::endl;
+
+    //std::cout << "debug: unused database name found: " << database_name_possible << std::endl;
+    document->set_connection_database(database_name_possible);
+
+    // Remember host and port if the document is not self hosted
+    #ifdef GLOM_ENABLE_POSTGRESQL
+    if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_CENTRAL)
     {
-      //Try the original name first,
-      //removing any characters that are likely to cause problems when used in a SQL identifier name:
-      database_name_possible = Utils::trim_whitespace(database_name);
-      database_name_possible = Utils::string_replace(database_name_possible, "\"", "");
-      database_name_possible = Utils::string_replace(database_name_possible, "'", "");
-      database_name_possible = Utils::string_replace(database_name_possible, "\t", "");
-      database_name_possible = Utils::string_replace(database_name_possible, "\n", "");
+      auto backend = connection_pool->get_backend();
+      auto central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
+      g_assert(central);
+
+      document->set_connection_server(central->get_host());
+      document->set_connection_port(central->get_port());
+      document->set_connection_try_other_ports(false);
     }
-    else
+
+    // Remember port if the document is self-hosted, so that remote
+    // connections to the database (usinc browse network) know what port to use.
+    // TODO: There is already similar code in
+    // connect_to_server_with_connection_settings, which is just not
+    // executed because it failed with no database present. We should
+    // somehow avoid this code duplication.
+    else if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_SELF)
     {
-      //Create a new database name by appending a number to the original name:
-      Glib::ustring pchExtraNum = Glib::ustring::compose("%1", extra_num);
-      database_name_possible = (database_name + pchExtraNum);
+      auto backend = connection_pool->get_backend();
+      auto self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
+      g_assert(self);
+
+      document->set_connection_port(self->get_port());
+      document->set_connection_try_other_ports(false);
     }
-    ++extra_num;
 
-    m_pDialogConnection->set_database_name(database_name_possible);
-    //std::cout << "debug: possible name=" << database_name_possible << std::endl;
+    #endif //GLOM_ENABLE_POSTGRESQL
 
-    try
-    {
-      g_assert(m_pDialogConnection);
-      std::shared_ptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
-      //If no exception was thrown then the database exists.
-      //But we are looking for an unused database name, so we will try again.
-    }
-    catch(const ExceptionConnection& ex)
-    {
-      //std::cerr << G_STRFUNC << ": caught exception." << std::endl;
-
-      if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
-      {
-        //Warn the user, and let him try again:
-        UiUtils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
-        keep_trying = false;
-      }
-      else
-      {
-        std::cout << "debug: " << G_STRFUNC << ": unused database name successfully found: " << database_name_possible << std::endl;
-        //The connection to the server is OK, but the specified database does not exist.
-        //That's good - we were looking for an unused database name.
-
-        //std::cout << "debug: unused database name found: " << database_name_possible << std::endl;
-        document->set_connection_database(database_name_possible);
-
-        // Remember host and port if the document is not self hosted
-        #ifdef GLOM_ENABLE_POSTGRESQL
-        if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_CENTRAL)
-        {
-          auto backend = connection_pool->get_backend();
-          auto central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
-          g_assert(central);
-
-          document->set_connection_server(central->get_host());
-          document->set_connection_port(central->get_port());
-          document->set_connection_try_other_ports(false);
-        }
-
-        // Remember port if the document is self-hosted, so that remote
-        // connections to the database (usinc browse network) know what port to use.
-        // TODO: There is already similar code in
-        // connect_to_server_with_connection_settings, which is just not
-        // executed because it failed with no database present. We should
-        // somehow avoid this code duplication.
-        else if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_SELF)
-        {
-          auto backend = connection_pool->get_backend();
-          auto self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
-          g_assert(self);
-
-          document->set_connection_port(self->get_port());
-          document->set_connection_try_other_ports(false);
-        }
-
-        #endif //GLOM_ENABLE_POSTGRESQL
-
-        return true;
-      }
-    }
+    return true;
   }
 
   cleanup_connection();
