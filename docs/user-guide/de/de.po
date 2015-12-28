@@ -1,24 +1,340 @@
 # German translation of the Glom manual.
-# Mario Blättermann <mariobl@gnome.org>, 2008, 2010.
+# Mario Blättermann <mario.blaettermann@gmail.com>, 2008, 2010, 2015.
 # Christian Kirbach <Christian.Kirbach@googlemail.com>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-23 17:27+0000\n"
-"PO-Revision-Date: 2012-07-23 17:52+0100\n"
-"Last-Translator: Christian Kirbach <Christian.Kirbach@gmail.com>\n"
+"POT-Creation-Date: 2013-12-18 19:42+0000\n"
+"PO-Revision-Date: 2015-12-28 12:58+0100\n"
+"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
-"Language: \n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.5\n"
 
-#: C/legal.xml:2(para) C/glom.xml:2(para)
+#. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
+msgctxt "_"
+msgid "translator-credits"
+msgstr ""
+"Mario Blättermann <mario.blaettermann@gmail.com>, 2008, 2010, 2015\n"
+"Christian Kirbach <Christian.Kirbach@googlemail.com>, 2010."
+
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#.
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:181(imagedata)
+#, fuzzy
+#| msgid "@@image: 'figures/start.png'; md5=b8c9acc03f9f1cdb213e37c9da91817a"
+msgctxt "_"
+msgid ""
+"external ref='figures/start_open.png' md5='adac27f11f2324c3da2349f72d554994'"
+msgstr "ok"
+
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#.
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:195(imagedata)
+#, fuzzy
+#| msgid "@@image: 'figures/start.png'; md5=b8c9acc03f9f1cdb213e37c9da91817a"
+msgctxt "_"
+msgid ""
+"external ref='figures/start_create.png' "
+"md5='f1e4c22fd6811e4ba908e290e76f0474'"
+msgstr "ok"
+
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#.
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:226(imagedata)
+#, fuzzy
+#| msgid ""
+#| "@@image: 'figures/glom_data_list.png'; "
+#| "md5=3c43533f6b0ce3e645b29402f59af76f"
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_tables.png' md5='a61ac5516314b38c6c7a3f3fd534427f'"
+msgstr "ok"
+
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#.
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:252(imagedata)
+#, fuzzy
+#| msgid ""
+#| "@@image: 'figures/glom_data_list.png'; "
+#| "md5=3c43533f6b0ce3e645b29402f59af76f"
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_data_list.png' "
+"md5='3b7469ee1de77081b435db5ac2d48953'"
+msgstr "ok"
+
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#.
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:275(imagedata)
+#, fuzzy
+#| msgid ""
+#| "@@image: 'figures/glom_data_details.png'; "
+#| "md5=5444ab817d4e4e4da6899abbc5cbfd2f"
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_data_details.png' "
+"md5='455bde435350fd53401213dff235bfb3'"
+msgstr "ok"
+
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#.
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:305(imagedata)
+#, fuzzy
+#| msgid ""
+#| "@@image: 'figures/glom_design_reports.png'; "
+#| "md5=74c35ae3dd601490b9f4f2276383a518"
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_report_result.png' "
+"md5='2b752779eb0ed68724d094f6e1fef699'"
+msgstr "ok"
+
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#.
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:343(imagedata)
+#, fuzzy
+#| msgid ""
+#| "@@image: 'figures/glom_design_fields.png'; "
+#| "md5=e7137a37c7c74a96a914b0df777f5f6b"
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_fields.png' "
+"md5='39a13053db33b9c45bc1f61a0f31a199'"
+msgstr "ok"
+
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#.
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:393(imagedata)
+#, fuzzy
+#| msgid ""
+#| "@@image: 'figures/glom_design_layout_list.png'; "
+#| "md5=5c5fc16b70e39173785ef3167d66aceb"
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_layout_list.png' "
+"md5='213888ef5cd3037b2fa61155b4fe5136'"
+msgstr "ok"
+
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#.
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:412(imagedata)
+#, fuzzy
+#| msgid ""
+#| "@@image: 'figures/glom_design_layout_details.png'; "
+#| "md5=34946df95ce29f04b3d204ba0cbca904"
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_layout_details.png' "
+"md5='6f1d78f90d6ec0ea338014d2ac697a90'"
+msgstr "ok"
+
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#.
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:458(imagedata)
+#, fuzzy
+#| msgid ""
+#| "@@image: 'figures/glom_design_translations.png'; "
+#| "md5=94376c6bf38d86581d56b3309441a792"
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_translations.png' "
+"md5='92b8e4905d0b85ef7f7d248420942a97'"
+msgstr "ok"
+
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#.
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:485(imagedata)
+#, fuzzy
+#| msgid ""
+#| "@@image: 'figures/glom_design_reports.png'; "
+#| "md5=74c35ae3dd601490b9f4f2276383a518"
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_reports.png' "
+"md5='697eb7cc6baebae8b374e474b4fa0899'"
+msgstr "ok"
+
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#.
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:517(imagedata)
+#, fuzzy
+#| msgid ""
+#| "@@image: 'figures/glom_design_reports_details.png'; "
+#| "md5=b75a1a60a48659c6166f4fdd7da6c68c"
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_reports_details.png' "
+"md5='00ac05c3515a4db2175a47047ec3b98e'"
+msgstr "ok"
+
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#.
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:534(imagedata)
+#, fuzzy
+#| msgid ""
+#| "@@image: 'figures/glom_design_reports_group_by.png'; "
+#| "md5=3d6a191a50ca351183a6690ce0039a9d"
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_reports_group_by.png' "
+"md5='21168c2a89f9febf6905a59c24a3d6de'"
+msgstr "ok"
+
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#.
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:550(imagedata)
+#, fuzzy
+#| msgid ""
+#| "@@image: 'figures/glom_design_reports_vertical_group.png'; "
+#| "md5=0328958fcf2f55c27045dbc203761214"
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_reports_vertical_group.png' "
+"md5='001b3021da2dc0de68358b0b41215afb'"
+msgstr "ok"
+
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#.
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:766(imagedata)
+#, fuzzy
+#| msgid ""
+#| "@@image: 'figures/glom_design_reports_vertical_group.png'; "
+#| "md5=0328958fcf2f55c27045dbc203761214"
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_fields_dialog_calculated.png' "
+"md5='21b9fc570ff40883d1d283d960e45767'"
+msgstr "ok"
+
+#: C/index.docbook:28(articleinfo/title)
+msgid "Glom User Guide V0.2"
+msgstr "Glom-Benutzerhandbuch V0.2"
+
+#: C/index.docbook:29(articleinfo/subtitle)
+msgid "for Glom v1.6"
+msgstr "für glom v1.6"
+
+#: C/index.docbook:31(articleinfo/copyright)
+msgid "<year>2004</year> <holder>Murray Cumming</holder>"
+msgstr "<year>2004</year> <holder>Murray Cumming</holder>"
+
+#: C/index.docbook:47(publisher/publishername)
+msgid "Glom Development Team"
+msgstr "Glom Entwickler-Team"
+
+#: C/index.docbook:2(legalnotice/para)
 msgid ""
 "Permission is granted to copy, distribute and/or modify this document under "
 "the terms of the GNU Free Documentation License (GFDL), Version 1.1 or any "
@@ -35,7 +351,7 @@ msgstr ""
 "<ulink type=\"help\" url=\"ghelp:fdl\">Link</ulink> oder in der mit diesem "
 "Handbuch gelieferten Datei COPYING-DOCS."
 
-#: C/legal.xml:12(para) C/glom.xml:12(para)
+#: C/index.docbook:12(legalnotice/para) C/legal.xml:12(legalnotice/para)
 msgid ""
 "This manual is part of a collection of GNOME manuals distributed under the "
 "GFDL. If you want to distribute this manual separately from the collection, "
@@ -48,7 +364,7 @@ msgstr ""
 "der Lizenz zum Handbuch hinzufügen, wie es in Abschnitt 6 der Lizenz "
 "beschrieben ist."
 
-#: C/legal.xml:19(para) C/glom.xml:19(para)
+#: C/index.docbook:19(legalnotice/para) C/legal.xml:19(legalnotice/para)
 msgid ""
 "Many of the names used by companies to distinguish their products and "
 "services are claimed as trademarks. Where those names appear in any GNOME "
@@ -63,7 +379,7 @@ msgstr ""
 "großen Anfangsbuchstaben geschrieben, wenn das GNOME-Dokumentationsprojekt "
 "auf diese Warenzeichen hingewiesen wird."
 
-#: C/legal.xml:35(para) C/glom.xml:35(para)
+#: C/index.docbook:35(listitem/para) C/legal.xml:35(listitem/para)
 msgid ""
 "DOCUMENT IS PROVIDED ON AN \"AS IS\" BASIS, WITHOUT WARRANTY OF ANY KIND, "
 "EITHER EXPRESSED OR IMPLIED, INCLUDING, WITHOUT LIMITATION, WARRANTIES THAT "
@@ -91,7 +407,7 @@ msgstr ""
 "EINES DOKUMENTS ODER EINER VERÄNDERTEN VERSION DES DOKUMENTS IST NICHT "
 "GESTATTET AUßER UNTER BEACHTUNG DIESES HAFTUNGSAUSSCHLUSSES UND"
 
-#: C/legal.xml:55(para) C/glom.xml:55(para)
+#: C/index.docbook:55(listitem/para) C/legal.xml:55(listitem/para)
 msgid ""
 "UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL THEORY, WHETHER IN TORT (INCLUDING "
 "NEGLIGENCE), CONTRACT, OR OTHERWISE, SHALL THE AUTHOR, INITIAL WRITER, ANY "
@@ -117,236 +433,48 @@ msgstr ""
 "ERGEBEN, AUCH WENN DIE OBEN GENANNTEN PARTEIEN ÜBER DIE MÖGLICHKEIT SOLCHER "
 "SCHÄDEN INFORMIERT WAREN."
 
-#: C/legal.xml:28(para) C/glom.xml:28(para)
+#: C/index.docbook:28(legalnotice/para) C/legal.xml:28(legalnotice/para)
 msgid ""
 "DOCUMENT AND MODIFIED VERSIONS OF THE DOCUMENT ARE PROVIDED UNDER THE TERMS "
 "OF THE GNU FREE DOCUMENTATION LICENSE WITH THE FURTHER UNDERSTANDING THAT: "
-"<placeholder-1/>"
+"<_:orderedlist-1/>"
 msgstr ""
 "DAS DOKUMENT UND VERÄNDERTE FASSUNGEN DES DOKUMENTS WERDEN UNTER DEN "
 "BEDINGUNGEN DER GNU FREE DOCUMENTATION LICENSE ZUR VERFÜGUNG GESTELLT MIT "
-"DEM WEITERGEHENDEN VERSTÄNDNIS, DASS: <placeholder-1/>"
+"DEM WEITERGEHENDEN VERSTÄNDNIS, DASS: <_:orderedlist-1/>"
 
-#. When image changes, this message will be marked fuzzy or untranslated for you.
-#. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:181(None)
-#, fuzzy
-#| msgid "@@image: 'figures/start.png'; md5=b8c9acc03f9f1cdb213e37c9da91817a"
-msgid "@@image: 'figures/start_open.png'; md5=adac27f11f2324c3da2349f72d554994"
-msgstr "ok"
-
-#. When image changes, this message will be marked fuzzy or untranslated for you.
-#. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:195(None)
-#, fuzzy
-#| msgid "@@image: 'figures/start.png'; md5=b8c9acc03f9f1cdb213e37c9da91817a"
+#: C/index.docbook:56(authorgroup/author)
 msgid ""
-"@@image: 'figures/start_create.png'; md5=f1e4c22fd6811e4ba908e290e76f0474"
-msgstr "ok"
+"<firstname>Murray</firstname> <surname>Cumming</surname> <affiliation> "
+"<orgname>Glom Development Team</orgname> <address> <email>murrayc@murrayc."
+"com</email> </address> </affiliation>"
+msgstr ""
+"<firstname>Murray</firstname> <surname>Cumming</surname> <affiliation> "
+"<orgname>Glom Development Team</orgname> <address> <email>murrayc@murrayc."
+"com</email> </address> </affiliation>"
 
-#. When image changes, this message will be marked fuzzy or untranslated for you.
-#. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:226(None)
-#, fuzzy
-#| msgid ""
-#| "@@image: 'figures/glom_data_list.png'; "
-#| "md5=3c43533f6b0ce3e645b29402f59af76f"
-msgid ""
-"@@image: 'figures/glom_tables.png'; md5=a61ac5516314b38c6c7a3f3fd534427f"
-msgstr "ok"
-
-#. When image changes, this message will be marked fuzzy or untranslated for you.
-#. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:252(None)
-#, fuzzy
-#| msgid ""
-#| "@@image: 'figures/glom_data_list.png'; "
-#| "md5=3c43533f6b0ce3e645b29402f59af76f"
-msgid ""
-"@@image: 'figures/glom_data_list.png'; md5=3b7469ee1de77081b435db5ac2d48953"
-msgstr "ok"
-
-#. When image changes, this message will be marked fuzzy or untranslated for you.
-#. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:275(None)
-#, fuzzy
-#| msgid ""
-#| "@@image: 'figures/glom_data_details.png'; "
-#| "md5=5444ab817d4e4e4da6899abbc5cbfd2f"
-msgid ""
-"@@image: 'figures/glom_data_details.png'; "
-"md5=455bde435350fd53401213dff235bfb3"
-msgstr "ok"
-
-#. When image changes, this message will be marked fuzzy or untranslated for you.
-#. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:305(None)
-#, fuzzy
-#| msgid ""
-#| "@@image: 'figures/glom_design_reports.png'; "
-#| "md5=74c35ae3dd601490b9f4f2276383a518"
-msgid ""
-"@@image: 'figures/glom_report_result.png'; "
-"md5=2b752779eb0ed68724d094f6e1fef699"
-msgstr "ok"
-
-#. When image changes, this message will be marked fuzzy or untranslated for you.
-#. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:343(None)
-#, fuzzy
-#| msgid ""
-#| "@@image: 'figures/glom_design_fields.png'; "
-#| "md5=e7137a37c7c74a96a914b0df777f5f6b"
-msgid ""
-"@@image: 'figures/glom_design_fields.png'; "
-"md5=39a13053db33b9c45bc1f61a0f31a199"
-msgstr "ok"
-
-#. When image changes, this message will be marked fuzzy or untranslated for you.
-#. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:393(None)
-#, fuzzy
-#| msgid ""
-#| "@@image: 'figures/glom_design_layout_list.png'; "
-#| "md5=5c5fc16b70e39173785ef3167d66aceb"
-msgid ""
-"@@image: 'figures/glom_design_layout_list.png'; "
-"md5=213888ef5cd3037b2fa61155b4fe5136"
-msgstr "ok"
-
-#. When image changes, this message will be marked fuzzy or untranslated for you.
-#. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:412(None)
-#, fuzzy
-#| msgid ""
-#| "@@image: 'figures/glom_design_layout_details.png'; "
-#| "md5=34946df95ce29f04b3d204ba0cbca904"
-msgid ""
-"@@image: 'figures/glom_design_layout_details.png'; "
-"md5=6f1d78f90d6ec0ea338014d2ac697a90"
-msgstr "ok"
-
-#. When image changes, this message will be marked fuzzy or untranslated for you.
-#. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:458(None)
-#, fuzzy
-#| msgid ""
-#| "@@image: 'figures/glom_design_translations.png'; "
-#| "md5=94376c6bf38d86581d56b3309441a792"
-msgid ""
-"@@image: 'figures/glom_design_translations.png'; "
-"md5=92b8e4905d0b85ef7f7d248420942a97"
-msgstr "ok"
-
-#. When image changes, this message will be marked fuzzy or untranslated for you.
-#. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:485(None)
-#, fuzzy
-#| msgid ""
-#| "@@image: 'figures/glom_design_reports.png'; "
-#| "md5=74c35ae3dd601490b9f4f2276383a518"
-msgid ""
-"@@image: 'figures/glom_design_reports.png'; "
-"md5=697eb7cc6baebae8b374e474b4fa0899"
-msgstr "ok"
-
-#. When image changes, this message will be marked fuzzy or untranslated for you.
-#. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:517(None)
-#, fuzzy
-#| msgid ""
-#| "@@image: 'figures/glom_design_reports_details.png'; "
-#| "md5=b75a1a60a48659c6166f4fdd7da6c68c"
-msgid ""
-"@@image: 'figures/glom_design_reports_details.png'; "
-"md5=00ac05c3515a4db2175a47047ec3b98e"
-msgstr "ok"
-
-#. When image changes, this message will be marked fuzzy or untranslated for you.
-#. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:534(None)
-#, fuzzy
-#| msgid ""
-#| "@@image: 'figures/glom_design_reports_group_by.png'; "
-#| "md5=3d6a191a50ca351183a6690ce0039a9d"
-msgid ""
-"@@image: 'figures/glom_design_reports_group_by.png'; "
-"md5=21168c2a89f9febf6905a59c24a3d6de"
-msgstr "ok"
-
-#. When image changes, this message will be marked fuzzy or untranslated for you.
-#. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:550(None)
-#, fuzzy
-#| msgid ""
-#| "@@image: 'figures/glom_design_reports_vertical_group.png'; "
-#| "md5=0328958fcf2f55c27045dbc203761214"
-msgid ""
-"@@image: 'figures/glom_design_reports_vertical_group.png'; "
-"md5=001b3021da2dc0de68358b0b41215afb"
-msgstr "ok"
-
-#. When image changes, this message will be marked fuzzy or untranslated for you.
-#. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:766(None)
-#, fuzzy
-#| msgid ""
-#| "@@image: 'figures/glom_design_reports_vertical_group.png'; "
-#| "md5=0328958fcf2f55c27045dbc203761214"
-msgid ""
-"@@image: 'figures/glom_design_fields_dialog_calculated.png'; "
-"md5=21b9fc570ff40883d1d283d960e45767"
-msgstr "ok"
-
-#: C/glom.xml:28(title)
-msgid "Glom User Guide V0.2"
-msgstr "Glom-Benutzerhandbuch V0.2"
-
-#: C/glom.xml:29(subtitle)
-msgid "for Glom v1.6"
-msgstr "für glom v1.6"
-
-#: C/glom.xml:32(year)
-msgid "2004"
-msgstr "2004"
-
-#: C/glom.xml:33(holder) C/glom.xml:99(para) C/glom.xml:100(para)
+#: C/index.docbook:99(revdescription/para)
+#: C/index.docbook:100(revdescription/para)
 msgid "Murray Cumming"
 msgstr "Murray Cumming"
 
-#: C/glom.xml:47(publishername) C/glom.xml:60(orgname)
-msgid "Glom Development Team"
-msgstr "Glom Entwickler-Team"
+#: C/index.docbook:95(revhistory/revision)
+msgid ""
+"<revnumber>Glom 1.6</revnumber> <date>20 June 2004</date> <_:"
+"revdescription-1/>"
+msgstr ""
+"<revnumber>Glom 1.6</revnumber> <date>20. Juni 2004</date> <_:"
+"revdescription-1/>"
 
-#: C/glom.xml:57(firstname)
-msgid "Murray"
-msgstr "Murray"
-
-#: C/glom.xml:58(surname)
-msgid "Cumming"
-msgstr "Cumming"
-
-#: C/glom.xml:61(email)
-msgid "murrayc@murrayc.com"
-msgstr "murrayc@murrayc.com"
-
-#: C/glom.xml:96(revnumber)
-msgid "Glom 1.6"
-msgstr "Glom 1.6"
-
-#: C/glom.xml:97(date)
-msgid "20 June 2004"
-msgstr "20. juni 2004"
-
-#: C/glom.xml:105(releaseinfo)
+#: C/index.docbook:105(articleinfo/releaseinfo)
 msgid "This manual describes version 1.6 of Glom"
 msgstr "Dieses Handbuch beschreibt Version 1.6 von Glom"
 
-#: C/glom.xml:108(title)
+#: C/index.docbook:108(legalnotice/title)
 msgid "Feedback"
 msgstr "Rückmeldungen"
 
-#: C/glom.xml:109(para)
+#: C/index.docbook:109(legalnotice/para)
 msgid ""
 "To report a bug or make a suggestion regarding the Glom or this manual can "
 "be submitted to the <ulink url=\"http://bugzilla.gnome.org\" type=\"http"
@@ -360,55 +488,55 @@ msgstr ""
 "application> auswählen. Bitte durchsuchen Sie zunächst die Fehlerdatenbank, "
 "um sicher zu gehen, dass über Ihr Anliegen nicht bereits berichtet wurde."
 
-#: C/glom.xml:119(para)
+#: C/index.docbook:119(abstract/para)
 msgid "User manual for Glom."
 msgstr "User manual for Glom."
 
-#: C/glom.xml:124(primary)
-msgid "MY-GNOME-APP"
-msgstr "MY-GNOME-APP"
+#: C/index.docbook:123(article/indexterm)
+msgid "<primary>MY-GNOME-APP</primary>"
+msgstr "<primary>MY-GNOME-APP</primary>"
 
-#: C/glom.xml:127(primary)
-msgid "mygnomeapp"
-msgstr "mygnomeapp"
+#: C/index.docbook:126(article/indexterm)
+msgid "<primary>mygnomeapp</primary>"
+msgstr "<primary>mygnomeapp</primary>"
 
-#: C/glom.xml:135(title)
+#: C/index.docbook:135(sect1/title)
 msgid "Introduction"
 msgstr "Einführung"
 
-#: C/glom.xml:136(para)
+#: C/index.docbook:136(sect1/para)
 msgid "Glom allows you to design and use database systems."
 msgstr "Glom erlaubt Ihnen das Erstellen und Benutzen von Datenbanksystemen."
 
-#: C/glom.xml:150(title)
+#: C/index.docbook:150(sect1/title)
 msgid "Getting Started"
 msgstr "Erste Schritte"
 
-#: C/glom.xml:153(title)
+#: C/index.docbook:153(sect2/title)
 msgid "Starting Glom"
 msgstr "Glom starten"
 
-#: C/glom.xml:154(para)
+#: C/index.docbook:154(sect2/para)
 msgid "You can start <application>Glom</application> in the following ways:"
 msgstr "Sie können <application>Glom</application> auf folgende Arten starten:"
 
-#: C/glom.xml:158(term)
+#: C/index.docbook:158(varlistentry/term)
 msgid "<guimenu>Applications</guimenu> menu"
 msgstr "Menü <guimenu>Anwendungen</guimenu>"
 
-#: C/glom.xml:160(para)
+#: C/index.docbook:160(listitem/para)
 msgid ""
-"Choose <menuchoice><guisubmenu>Office</guisubmenu><guimenuitem>Glom</"
-"guimenuitem></menuchoice>."
+"Choose <menuchoice> <guisubmenu>Office</guisubmenu> <guimenuitem>Glom</"
+"guimenuitem> </menuchoice>."
 msgstr ""
-"Wählen Sie <menuchoice><guisubmenu>Büroprogramme</"
-"guisubmenu><guimenuitem>Glom</guimenuitem></menuchoice>."
+"Wählen Sie <menuchoice> <guisubmenu>Büroprogramme</guisubmenu> "
+"<guimenuitem>Glom</guimenuitem> </menuchoice>."
 
-#: C/glom.xml:171(title)
+#: C/index.docbook:171(sect2/title)
 msgid "When You Start Glom"
 msgstr "Beim Start von <application>Glom</application>"
 
-#: C/glom.xml:172(para)
+#: C/index.docbook:172(sect2/para)
 msgid ""
 "When you start <application>Glom</application>, the following window is "
 "displayed. You may open an existing Glom file or create a new one, possibly "
@@ -419,30 +547,33 @@ msgstr ""
 "eine neue Datei erstellen, die gegebenenfalls auf einem der Beispiele "
 "basiert."
 
-#: C/glom.xml:177(title)
+#: C/index.docbook:177(figure/title)
 msgid "Glom Start Up Window, Opening an Existing File"
 msgstr "Glom-Startfenster, Öffnen einer bestehenden Datei"
 
-#: C/glom.xml:184(phrase)
-msgid "Shows Glom main window used to open an existing Glom file."
+#: C/index.docbook:179(screenshot/mediaobject)
+msgid ""
+"<imageobject><imagedata fileref=\"figures/start_open.png\" format=\"PNG\"/> "
+"</imageobject> <textobject> <phrase>Shows Glom main window used to open an "
+"existing Glom file.</phrase> </textobject>"
 msgstr ""
-"Zeigt das Haupfenster von Glom während eine bestehende Glom-Datei geöffnet "
-"wird."
 
-#: C/glom.xml:191(title)
+#: C/index.docbook:191(figure/title)
 msgid "Glom Start Up Window, Creating a New File"
 msgstr "Glom-Startfenster, Erstellen einer neuen Datei"
 
-#: C/glom.xml:198(phrase)
-msgid "Shows Glom main window used to create a new Glom file."
+#: C/index.docbook:193(screenshot/mediaobject)
+msgid ""
+"<imageobject><imagedata fileref=\"figures/start_create.png\" format=\"PNG\"/"
+"> </imageobject> <textobject> <phrase>Shows Glom main window used to create "
+"a new Glom file.</phrase> </textobject>"
 msgstr ""
-"Zeigt das Glom-Hauptfenster während der Erstellung einer neuen Glom-Datei."
 
-#: C/glom.xml:212(title)
+#: C/index.docbook:212(sect1/title)
 msgid "Using Glom as an Operator"
 msgstr "Glom als Operator verwenden"
 
-#: C/glom.xml:213(para)
+#: C/index.docbook:213(sect1/para)
 msgid ""
 "To open an existing Glom document, either open that document from the File "
 "Manager, or choose Glom from the Applications menu, and then choose the "
@@ -457,10 +588,10 @@ msgstr ""
 "Datenbank. Ihren Benutzernamen und Ihr Passwort stellt Ihnen Ihr "
 "Systemverwalter zur Verfügung."
 
-#: C/glom.xml:215(para)
+#: C/index.docbook:215(sect1/para)
 msgid ""
 "When you open an existing document, Glom will be in <literal>Operator</"
-"literal><literal>user level</literal>. This user level allows you to find "
+"literal> <literal>user level</literal>. This user level allows you to find "
 "and edit records, but does not allow you to change the fundamental structure "
 "of the database."
 msgstr ""
@@ -469,11 +600,11 @@ msgstr ""
 "Ihnen die Suche und Bearbeitung von Datensätzen, verbietet aber Änderungen "
 "an der grundlegenden Struktur der Datenbank."
 
-#: C/glom.xml:218(title)
+#: C/index.docbook:218(sect2/title)
 msgid "Navigation"
 msgstr "Navigation"
 
-#: C/glom.xml:219(para)
+#: C/index.docbook:219(sect2/para)
 msgid ""
 "Each database has several tables. To look at a different table, choose "
 "<literal>Tables</literal> from the <literal>Navigate</literal> menu. Then "
@@ -486,19 +617,22 @@ msgstr ""
 "Tabelle aus oder wählen Sie diese aus und klicken auf den Knopf "
 "<guibutton>Öffnen</guibutton>."
 
-#: C/glom.xml:222(title)
+#: C/index.docbook:222(figure/title)
 msgid "Navigating to a Table"
 msgstr "Navigieren zu einer Tabelle"
 
-#: C/glom.xml:229(phrase)
-msgid "Navigating to a Table."
-msgstr "Navigieren zu einer Tabelle."
+#: C/index.docbook:224(screenshot/mediaobject)
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_tables.png\" format=\"PNG\"/> "
+"</imageobject> <textobject> <phrase>Navigating to a Table.</phrase> </"
+"textobject>"
+msgstr ""
 
-#: C/glom.xml:238(title)
+#: C/index.docbook:238(sect2/title)
 msgid "Viewing and Entering Data"
 msgstr "Betrachten und Eingeben von Daten"
 
-#: C/glom.xml:239(para)
+#: C/index.docbook:239(sect2/para)
 msgid ""
 "When in <literal>Data Mode</literal>, you can view or enter information in "
 "either the <literal>List</literal> or <literal>Details</literal> view."
@@ -507,11 +641,11 @@ msgstr ""
 "<literal>Listenansicht</literal> oder <literal>Detailansicht</literal> "
 "eingeben."
 
-#: C/glom.xml:242(title) C/glom.xml:248(title)
+#: C/index.docbook:242(sect3/title) C/index.docbook:248(figure/title)
 msgid "The List View"
 msgstr "Die Listenansicht"
 
-#: C/glom.xml:243(para)
+#: C/index.docbook:243(sect3/para)
 msgid ""
 "The List view shows many records at once and usually shows only the most "
 "important fields."
@@ -519,7 +653,7 @@ msgstr ""
 "Die Listenansicht zeigt sehr viele Datensätze gleichzeitig und zeigt "
 "üblicherweise nur die wichtigsten Felder an."
 
-#: C/glom.xml:244(para) C/glom.xml:267(para)
+#: C/index.docbook:244(sect3/para) C/index.docbook:267(sect3/para)
 msgid ""
 "When you enter data into a field it will be saved into the database "
 "immediately after you finish editing the field. If it is a date or time "
@@ -530,7 +664,7 @@ msgstr ""
 "Falls es sich um ein Feld mit Datums-oder Zeitangaben handelt, werden diese "
 "Daten für Sie überprüft."
 
-#: C/glom.xml:245(para)
+#: C/index.docbook:245(sect3/para)
 msgid ""
 "To create a new record just click the <literal>New</literal> button, or "
 "start typing into a field in the last empty row. A new record row will be "
@@ -541,11 +675,14 @@ msgstr ""
 "der letzten leeren Zeile. Eine Zeile mit leeren Feldern für einen neuen "
 "Datensatz wird erstellt, die Sie nun ausfüllen können."
 
-#: C/glom.xml:255(phrase)
-msgid "The List View."
-msgstr "Die Listenansicht."
+#: C/index.docbook:250(screenshot/mediaobject)
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_data_list.png\" format=\"PNG"
+"\"/> </imageobject> <textobject> <phrase>The List View.</phrase> </"
+"textobject>"
+msgstr ""
 
-#: C/glom.xml:261(para)
+#: C/index.docbook:261(sect3/para)
 msgid ""
 "To sort the records just click on a column header. For instance, you could "
 "might click on a date column to list invoices in order of their date, and "
@@ -556,11 +693,11 @@ msgstr ""
 "Eingänge nach Datum zu sortieren. Wenn Sie anschließend erneut darauf "
 "klicken, wird die Reihenfolge der Liste umgekehrt."
 
-#: C/glom.xml:265(title) C/glom.xml:271(title)
+#: C/index.docbook:265(sect3/title) C/index.docbook:271(figure/title)
 msgid "The Details View"
 msgstr "Die Detailansicht"
 
-#: C/glom.xml:266(para)
+#: C/index.docbook:266(sect3/para)
 msgid ""
 "The details view shows only one record and usually shows all the fields "
 "arranged suitably."
@@ -568,7 +705,7 @@ msgstr ""
 "Die Detailansicht zeigt nur einen Datensatz und stellt alle Felder in "
 "sinnvoller Anordnung dar."
 
-#: C/glom.xml:268(para)
+#: C/index.docbook:268(sect3/para)
 msgid ""
 "To create a new record just click the <literal>New</literal> button. A new "
 "record will be created with blank fields for you to fill in."
@@ -577,15 +714,18 @@ msgstr ""
 "<guibutton>Neu</guibutton>. Ein neuer Datensatz mit leeren Feldern wird "
 "angelegt, welche Sie ausfüllen können."
 
-#: C/glom.xml:278(phrase)
-msgid "The Details View."
-msgstr "Die Detailansicht."
+#: C/index.docbook:273(screenshot/mediaobject)
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_data_details.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>The Details View.</phrase> </"
+"textobject>"
+msgstr ""
 
-#: C/glom.xml:289(title)
+#: C/index.docbook:289(sect2/title)
 msgid "Finding Data"
 msgstr "Daten suchen"
 
-#: C/glom.xml:290(para)
+#: C/index.docbook:290(sect2/para)
 msgid ""
 "Choose <literal>Find Mode</literal> from the Mode menu. The fields in the "
 "List and Details views will now be empty, and a Find button will appear at "
@@ -596,7 +736,7 @@ msgstr ""
 "Außerdem erscheint ein <guibutton>Suchen</guibutton>-Knopf am unteren Rand "
 "des Fensters."
 
-#: C/glom.xml:291(para)
+#: C/index.docbook:291(sect2/para)
 msgid ""
 "Enter information, or part of the information, into a field to find records "
 "with that information in that field. For instance, enter Jim into a name "
@@ -608,7 +748,7 @@ msgstr ""
 "Datensätze zu finden, die in diesem Feld »Jim« oder »Jimmy« im Namen "
 "enthalten."
 
-#: C/glom.xml:292(para)
+#: C/index.docbook:292(sect2/para)
 msgid ""
 "When you press the <literal>Find</literal> button, Glom will search for "
 "records and then display them. If only one record is found then it will show "
@@ -620,11 +760,11 @@ msgstr ""
 "wird dieser in der Detailansicht angezeigt. Falls mehrere Datensätze "
 "gefunden wurden, werden diese in der Listenansicht angezeigt."
 
-#: C/glom.xml:297(title)
+#: C/index.docbook:297(sect2/title)
 msgid "Printing Reports"
 msgstr "Drucken von Berichten"
 
-#: C/glom.xml:298(para)
+#: C/index.docbook:298(sect2/para)
 msgid ""
 "If your database developer has defined some reports for a table then you "
 "will seem them listed in the <literal>Reports</literal> menu. Just choose "
@@ -643,22 +783,25 @@ msgstr ""
 "Tabelle eigene Berichte gibt. Sie werden daher zu der entsprechenden Tabelle "
 "wechseln müssen, um einen bestimmten Bericht erstellen zu können."
 
-#: C/glom.xml:301(title)
+#: C/index.docbook:301(figure/title)
 msgid "A report"
 msgstr "Ein Bericht"
 
-#: C/glom.xml:308(phrase)
-msgid "A report."
-msgstr "Ein Bericht."
+#: C/index.docbook:303(screenshot/mediaobject)
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_report_result.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>A report.</phrase> </"
+"textobject>"
+msgstr ""
 
-#: C/glom.xml:320(title)
+#: C/index.docbook:320(sect1/title)
 msgid "Using Glom as a Developer"
 msgstr "Glom als Entwickler benutzen"
 
-#: C/glom.xml:321(para)
+#: C/index.docbook:321(sect1/para)
 msgid ""
 "When you create a new document, Glom will be in the <literal>Developer</"
-"literal><literal>user level</literal>. You can also change to the Developer "
+"literal> <literal>user level</literal>. You can also change to the Developer "
 "user level after opening an existing document, with the <literal>User Level</"
 "literal> menu. Glom will only allow this if the administrator has allowed it."
 msgstr ""
@@ -668,11 +811,11 @@ msgstr ""
 "<guimenu>Benutzerebene</guimenu> in die Entwicklerebene wechseln. Das ist "
 "Ihnen nur dann gestattet, wenn Ihr Systemverwalter dies erlaubt hat."
 
-#: C/glom.xml:324(title)
+#: C/index.docbook:324(sect2/title)
 msgid "Adding Tables"
 msgstr "Tabellen hinzufügen"
 
-#: C/glom.xml:325(para)
+#: C/index.docbook:325(sect2/para)
 msgid ""
 "You can see the list of existing tables by choosing <literal>Tables</"
 "literal> from the <literal>Navigate</literal> menu. You will also see this "
@@ -699,8 +842,7 @@ msgstr ""
 "niemals die Möglichkeit erhalten, direkt zur Tabelle »Rechnungszeilen« zu "
 "navigieren."
 
-#. TODO: screenshot
-#: C/glom.xml:327(para)
+#: C/index.docbook:327(sect2/para)
 msgid ""
 "You can also specify one table as the <literal>default table</literal>. This "
 "table will be shown whenever an operator opens an existing document, without "
@@ -711,23 +853,23 @@ msgstr ""
 "vorhandenes Dokument öffnet, ohne dass er darum gebeten wird, eine Tabelle "
 "aus einer Liste zu wählen."
 
-#: C/glom.xml:328(para)
+#: C/index.docbook:328(sect2/para)
 msgid "You can also use this window to rename an existing table."
 msgstr ""
 "Sie können dieses Fenster auch dazu verwenden, eine vorhandene Tabelle "
 "umzubenennen."
 
-#: C/glom.xml:329(para)
+#: C/index.docbook:329(sect2/para)
 msgid "Click the <literal>Open</literal> button to look at the selected table."
 msgstr ""
 "Klicken Sie auf den Knopf <guibutton>Öffnen</guibutton>, um die ausgewählte "
 "Tabelle zu betrachten."
 
-#: C/glom.xml:333(title) C/glom.xml:339(title)
+#: C/index.docbook:333(sect2/title) C/index.docbook:339(figure/title)
 msgid "Editing Fields"
 msgstr "Bearbeiten von Feldern"
 
-#: C/glom.xml:334(para)
+#: C/index.docbook:334(sect2/para)
 msgid ""
 "Choose <literal>Fields</literal> from the <literal>Developer</literal> menu. "
 "This shows the list of fields in the table. New tables automatically have a "
@@ -738,7 +880,7 @@ msgstr ""
 "angezeigt. Neue Tabellen erhalten automatisch ein Feld für den "
 "Primärschlüssel. Bei Bedarf können Sie dieses Feld ändern."
 
-#: C/glom.xml:335(para)
+#: C/index.docbook:335(sect2/para)
 msgid ""
 "Click the <literal>Add</literal> button to add a new field, then enter the "
 "name of the new field. Glom will guess an appropriate human-readable title "
@@ -751,7 +893,7 @@ msgstr ""
 "<literal>Operator</literal> sehen Sie diesen Namen anstelle des Namens des "
 "aktuellen Feldes."
 
-#: C/glom.xml:336(para)
+#: C/index.docbook:336(sect2/para)
 msgid ""
 "To specify more field details, select the field and click the "
 "<literal>Details</literal> button."
@@ -759,15 +901,18 @@ msgstr ""
 "Um für ein Feld weitere Details festzulegen, wählen Sie das Feld aus und "
 "klicken Sie auf den Knopf <guibutton>Details</guibutton>."
 
-#: C/glom.xml:346(phrase)
-msgid "Editing the table's fields."
-msgstr "Bearbeiten der Tabellenfelder."
+#: C/index.docbook:341(screenshot/mediaobject)
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_fields.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>Editing the table's fields.</"
+"phrase> </textobject>"
+msgstr ""
 
-#: C/glom.xml:354(title)
+#: C/index.docbook:354(sect3/title)
 msgid "Primary Keys"
 msgstr "Primärschlüssel"
 
-#: C/glom.xml:355(para)
+#: C/index.docbook:355(sect3/para)
 msgid ""
 "Each table must have one, and only one, <literal>Primary Key</literal>. The "
 "value in this field will be unique, meaning that each value in this field "
@@ -787,43 +932,43 @@ msgstr ""
 "Beziehungen</link> finden Sie weitere Informationen darüber, wie Sie Bezüge "
 "von Tabellen zueinander erstellen können."
 
-#: C/glom.xml:359(title)
+#: C/index.docbook:359(sect3/title)
 msgid "Field Types"
 msgstr "Feldtypen"
 
-#: C/glom.xml:362(simpara)
+#: C/index.docbook:362(listitem/simpara)
 msgid "Number"
 msgstr "Zahl"
 
-#: C/glom.xml:363(simpara)
+#: C/index.docbook:363(listitem/simpara)
 msgid "Text"
 msgstr "Text"
 
-#: C/glom.xml:364(simpara)
+#: C/index.docbook:364(listitem/simpara)
 msgid "Date"
 msgstr "Datum"
 
-#: C/glom.xml:365(simpara)
+#: C/index.docbook:365(listitem/simpara)
 msgid "Time"
 msgstr "Zeit"
 
-#: C/glom.xml:366(simpara)
+#: C/index.docbook:366(listitem/simpara)
 msgid "Boolean - either true or false"
 msgstr "Boolesche Werte - entweder wahr oder falsch"
 
-#: C/glom.xml:367(simpara)
+#: C/index.docbook:367(listitem/simpara)
 msgid "Image"
 msgstr "Bild"
 
-#: C/glom.xml:360(para)
-msgid "Glom offers a few simple field types: <placeholder-1/>"
-msgstr "Glom bietet einige einfache Feldtypen: <placeholder-1/>"
+#: C/index.docbook:360(sect3/para)
+msgid "Glom offers a few simple field types: <_:orderedlist-1/>"
+msgstr "Glom bietet einige einfache Feldtypen: <_:orderedlist-1/>"
 
-#: C/glom.xml:373(title)
+#: C/index.docbook:373(sect3/title)
 msgid "Calculated Fields"
 msgstr "Berechnete Felder"
 
-#: C/glom.xml:374(para)
+#: C/index.docbook:374(sect3/para)
 msgid ""
 "Field values can be calculated in terms of other fields, using the Python "
 "programming language. This calculation should be the implementation of a "
@@ -840,7 +985,7 @@ msgstr ""
 "funktioniert dies nur für Vorgabewerte. Sie können in der Berechnung noch "
 "keine Feldwerte verwenden."
 
-#: C/glom.xml:375(para)
+#: C/index.docbook:375(sect3/para)
 msgid ""
 "You can also use calculations to specify a default value for fields, by "
 "selecting the <literal>Default Value</literal> tab in the <literal>Field "
@@ -855,11 +1000,11 @@ msgstr ""
 "Berechnung ein. Sie können diese Berechnung im Fenster <guilabel>Bearbeiten</"
 "guilabel> überprüfen."
 
-#: C/glom.xml:381(title)
+#: C/index.docbook:381(sect2/title)
 msgid "Arranging Layouts"
 msgstr "Erzeugung von Layouts"
 
-#: C/glom.xml:382(para)
+#: C/index.docbook:382(sect2/para)
 msgid ""
 "Each table has <literal>List</literal> and <literal>Details</literal> views, "
 "and by default these show all fields in the table, in order of creation. You "
@@ -872,11 +1017,11 @@ msgstr ""
 "dieses Layout ändern, indem Sie <guilabel>Layout</guilabel> aus dem Menü "
 "<guilabel>Entwickler</guilabel> wählen."
 
-#: C/glom.xml:385(title)
+#: C/index.docbook:385(sect3/title)
 msgid "Arranging the List View"
 msgstr "Anordnen der Listenansicht"
 
-#: C/glom.xml:386(para)
+#: C/index.docbook:386(sect3/para)
 msgid ""
 "For the <literal>List</literal> view, you can specify the sequence of field "
 "columns, and whether some fields are hidden."
@@ -884,19 +1029,22 @@ msgstr ""
 "Für die <literal>Listenansicht</literal> können Sie die Reihenfolge der "
 "angezeigten Spalten angeben, sowie ob einige Felder verborgen werden sollen."
 
-#: C/glom.xml:389(title)
+#: C/index.docbook:389(figure/title)
 msgid "Editing the List Layout"
 msgstr "Bearbeiten der Listenansicht"
 
-#: C/glom.xml:396(phrase)
-msgid "Editing the list layout."
-msgstr "Bearbeiten der Listenansicht."
+#: C/index.docbook:391(screenshot/mediaobject)
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_layout_list.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing the list layout."
+"</phrase> </textobject>"
+msgstr ""
 
-#: C/glom.xml:404(title)
+#: C/index.docbook:404(sect3/title)
 msgid "Arranging the Details View"
 msgstr "Festlegen der Anordnung der Detailansicht"
 
-#: C/glom.xml:405(para)
+#: C/index.docbook:405(sect3/para)
 msgid ""
 "For the <literal>Details</literal> view, you can create groups of fields, "
 "and give these groups titles. You can then place fields in these groups and "
@@ -914,19 +1062,22 @@ msgstr ""
 "und die Felder »Titel«, »Vorname« und »Nachname« in diese Gruppe einfügen. "
 "Für die »Adresse«-Felder könnten Sie dann wiederum andere Gruppen verwenden."
 
-#: C/glom.xml:408(title)
+#: C/index.docbook:408(figure/title)
 msgid "Editing the details Layout"
 msgstr "Bearbeiten der Detailansicht"
 
-#: C/glom.xml:415(phrase)
-msgid "Editing the Details Layout."
-msgstr "Bearbeiten der Detailansicht."
+#: C/index.docbook:410(screenshot/mediaobject)
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_layout_details.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing the Details "
+"Layout.</phrase> </textobject>"
+msgstr ""
 
-#: C/glom.xml:425(title)
+#: C/index.docbook:425(sect2/title)
 msgid "Creating Relationships"
 msgstr "Erstellen von Beziehungen"
 
-#: C/glom.xml:426(para)
+#: C/index.docbook:426(sect2/para)
 msgid ""
 "Tables in the Database are often related together. For instance, an "
 "\"Invoices\" table might have a \"Customer ID\" field. A value in this field "
@@ -944,7 +1095,7 @@ msgstr ""
 "eine Liste verschiedener Bezugsdatensätze, zum Beispiel »Rechnungszeilen«, "
 "die einen Bezug zum Datensatz in der Tabelle »Rechnungen« haben."
 
-#: C/glom.xml:427(para)
+#: C/index.docbook:427(sect2/para)
 msgid ""
 "To create relationships, choose <literal>Relationships</literal> from the "
 "<literal>Developer</literal> menu. This will show the list of existing "
@@ -964,15 +1115,15 @@ msgstr ""
 "Datensätze in der anderen Tabelle, für die die Werte in beiden Feldern "
 "gleich sind."
 
-#: C/glom.xml:432(simpara)
+#: C/index.docbook:432(listitem/simpara)
 msgid "To show a related field on the List or Details view."
 msgstr "Anzeige eines Bezugsfeldes in der Listen- oder Detailansicht."
 
-#: C/glom.xml:433(simpara)
+#: C/index.docbook:433(listitem/simpara)
 msgid "To show a list of related records on the Details view."
 msgstr "Anzeige einer Liste von Bezugsdatensätzen in der Detailsansicht."
 
-#: C/glom.xml:434(simpara)
+#: C/index.docbook:434(listitem/simpara)
 msgid ""
 "To lookup a value from a field in a related record. For instance, to copy "
 "the current price of a \"Product\" into the \"Price\" field of an \"Invoice "
@@ -982,21 +1133,22 @@ msgstr ""
 "Beispielsweise um den aktuellen Preis eines »Produkts« in einem »Preis«-Feld "
 "eines »Rechnungszeilen«-Datensatzes zu kopieren."
 
-#: C/glom.xml:435(simpara)
+#: C/index.docbook:435(listitem/simpara)
 msgid "To calculate a field value."
 msgstr "Berechnung eines Feldwertes."
 
-#. TODO: screenshot
-#: C/glom.xml:429(para)
-msgid "You can use the relationship in the following places. <placeholder-1/>"
+#: C/index.docbook:429(sect2/para)
+msgid ""
+"You can use the relationship in the following places. <_:orderedlist-1/>"
 msgstr ""
-"Sie können die Beziehung an den folgenden Stellen verwenden. <placeholder-1/>"
+"Sie können die Beziehung an den folgenden Stellen verwenden. <_:"
+"orderedlist-1/>"
 
-#: C/glom.xml:441(title)
+#: C/index.docbook:441(sect2/title)
 msgid "Users Administration"
 msgstr "Benutzer-Administration"
 
-#: C/glom.xml:442(para)
+#: C/index.docbook:442(sect2/para)
 msgid ""
 "To define the <literal>Operators</literal> who can use your database, and to "
 "specify what access they have to the various tables, choose <literal>Users</"
@@ -1007,11 +1159,11 @@ msgstr ""
 "verschiedenen Tabellen erhalten sollen, wählen Sie <guilabel>Benutzer</"
 "guilabel> im Menü <guimenu>Entwickler</guimenu>."
 
-#: C/glom.xml:447(title) C/glom.xml:454(title)
+#: C/index.docbook:447(sect2/title) C/index.docbook:454(figure/title)
 msgid "Translations"
 msgstr "Übersetzungen"
 
-#: C/glom.xml:448(para)
+#: C/index.docbook:448(sect2/para)
 msgid ""
 "Glom's user interface (and this document) is translated into several "
 "languages, as you should see already if you are using your computer with a "
@@ -1030,7 +1182,7 @@ msgstr ""
 "deutscher Benutzer der gleichen Datenbank den Preis als 1,99 und das Datum "
 "als 13.1.2008 sehen würde."
 
-#: C/glom.xml:449(para)
+#: C/index.docbook:449(sect2/para)
 msgid ""
 "However, the Glom system that you create also contains text that must be "
 "translated if it will be used by people who speak different languages. For "
@@ -1054,11 +1206,14 @@ msgstr ""
 "einem Benutzer der jeweiligen Sprache geöffnet wird, dann werden diese "
 "Textobjekte in der Benutzeroberfläche angezeigt."
 
-#: C/glom.xml:461(phrase)
-msgid "Translations."
-msgstr "Übersetzungen."
+#: C/index.docbook:456(screenshot/mediaobject)
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_translations.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Translations.</phrase> "
+"</textobject>"
+msgstr ""
 
-#: C/glom.xml:467(para)
+#: C/index.docbook:467(sect2/para)
 msgid ""
 "Experienced translators may be more familiar with the .po file format, or "
 "you might wish to use the many tools that work with the .po file format. By "
@@ -1074,15 +1229,15 @@ msgstr ""
 "Übersetzung können Sie dann mit dem Knopf <guibutton>Importieren</guibutton> "
 "wieder in das System einfügen."
 
-#: C/glom.xml:472(title)
+#: C/index.docbook:472(sect2/title)
 msgid "Defining Reports"
 msgstr "Anfertigen von Berichten"
 
-#: C/glom.xml:475(title)
+#: C/index.docbook:475(sect3/title)
 msgid "Adding or Editing Reports"
 msgstr "Hinzufügen oder Bearbeiten von Berichten"
 
-#: C/glom.xml:477(para)
+#: C/index.docbook:477(sect3/para)
 msgid ""
 "Glom can produce reports to show specific fields for sets of records, sorted "
 "and grouped. For instance, a shop might need a report listing all products "
@@ -1097,7 +1252,7 @@ msgstr ""
 "sortiert. Jede Tabelle verfügt über ihre eigenen Berichte, die für den "
 "Operator im Menü <guilabel>Berichte</guilabel> einsehbar sind."
 
-#: C/glom.xml:479(para)
+#: C/index.docbook:479(sect3/para)
 msgid ""
 "To define a report, or to change the definition of an existing report, "
 "choose <literal>Reports</literal> from the <literal>Developer</literal> menu."
@@ -1106,15 +1261,18 @@ msgstr ""
 "zu ändern, wählen Sie <guilabel>Berichte</guilabel> im Menü "
 "<guimenu>Entwickler</guimenu>."
 
-#: C/glom.xml:481(title)
+#: C/index.docbook:481(figure/title)
 msgid "Creating or Editing Reports"
 msgstr "Erzeugen oder Bearbeiten von Berichten"
 
-#: C/glom.xml:488(phrase)
-msgid "Creating or editing reports."
-msgstr "Erstellen oder Bearbeiten von Berichten."
+#: C/index.docbook:483(screenshot/mediaobject)
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>Creating or editing reports.</"
+"phrase> </textobject>"
+msgstr ""
 
-#: C/glom.xml:494(para)
+#: C/index.docbook:494(sect3/para)
 msgid ""
 "Notice that each report has an ID as well as a human-readable name. This "
 "allows your report to have a translated title when used on a computer that "
@@ -1125,15 +1283,15 @@ msgstr ""
 "Namens, falls der Bericht auf einem Rechner in einer anderen Sprache genutzt "
 "wird."
 
-#: C/glom.xml:499(title) C/glom.xml:513(title)
+#: C/index.docbook:499(sect3/title) C/index.docbook:513(figure/title)
 msgid "Editing a Report"
 msgstr "Bearbeiten eines Berichts"
 
-#: C/glom.xml:503(simpara)
+#: C/index.docbook:503(listitem/simpara)
 msgid "The Header, which appears at the start of the report"
 msgstr "Die Kopfzeile, welche am Beginn des Berichts erscheint."
 
-#: C/glom.xml:504(simpara)
+#: C/index.docbook:504(listitem/simpara)
 msgid ""
 "The Main area, in which the records and summary lines are shown, with the "
 "actual data from the database."
@@ -1141,15 +1299,15 @@ msgstr ""
 "Der Hauptteil, in welchem die Datensätze und die Zeilen der Zusammenfassung "
 "erscheinen, mit den aktuellen Daten aus der Datenbank."
 
-#: C/glom.xml:505(simpara)
+#: C/index.docbook:505(listitem/simpara)
 msgid "The Footer, which appears at the end of the report."
 msgstr "Die Fußzeile, welche am Ende des Berichts erscheint."
 
-#: C/glom.xml:501(para)
-msgid "A Glom report has three areas: <placeholder-1/>"
-msgstr "Ein Glom-Bericht gliedert sich in drei Bereiche: <placeholder-1/>"
+#: C/index.docbook:501(sect3/para)
+msgid "A Glom report has three areas: <_:orderedlist-1/>"
+msgstr "Ein Glom-Bericht gliedert sich in drei Bereiche: <_:orderedlist-1/>"
 
-#: C/glom.xml:509(para)
+#: C/index.docbook:509(sect3/para)
 msgid ""
 "Inside an area, such as the Main part, you may add report <literal>Parts</"
 "literal>, such as fields, text, or images. These will usually appear in a "
@@ -1168,7 +1326,7 @@ msgstr ""
 "auf den Knopf <guibutton>Hinzufügen</guibutton> klicken. Der Teil wird dann "
 "zur <literal>Teileliste</literal> im ausgewählten Bereich hinzugefügt."
 
-#: C/glom.xml:510(para)
+#: C/index.docbook:510(sect3/para)
 msgid ""
 "To specify details for the parts, such as the text or image to display, or "
 "to choose the field to display, select the part in the <literal>Parts</"
@@ -1183,11 +1341,14 @@ msgstr ""
 "<guibutton>Formatierung</guibutton> die Feldformatierung anpassen, wenn Sie "
 "ein Detail- oder Listenlayout angeben wollen."
 
-#: C/glom.xml:520(phrase) C/glom.xml:537(phrase)
-msgid "Editing a report."
-msgstr "Bearbeiten eines Berichts."
+#: C/index.docbook:515(screenshot/mediaobject)
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports_details.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing a report.</"
+"phrase> </textobject>"
+msgstr ""
 
-#: C/glom.xml:526(para)
+#: C/index.docbook:526(sect3/para)
 msgid ""
 "Some parts may contain other parts and have extra properties to control how "
 "they present their child parts. For instance, the <literal>Group By</"
@@ -1211,7 +1372,7 @@ msgstr ""
 "Teil</guilabel> hinzu. Sie könnten so beispielsweise Ihre Produkte innerhalb "
 "jeder Produkttypgruppe nach Hersteller gruppieren."
 
-#: C/glom.xml:527(para)
+#: C/index.docbook:527(sect3/para)
 msgid ""
 "To specify the field by which the records should be grouped, select your "
 "<literal>Group By</literal> part in the <literal>Parts</literal> list and "
@@ -1233,11 +1394,18 @@ msgstr ""
 "zum Beispiel Produkte anhand der Herstellerkennung gruppieren, aber trotzdem "
 "den Herstellernamen anzeigen."
 
-#: C/glom.xml:530(title)
+#: C/index.docbook:530(figure/title)
 msgid "Editing a Group By Part"
 msgstr "Bearbeiten eines <guilabel>Gruppieren nach</guilabel>-Teils"
 
-#: C/glom.xml:543(para)
+#: C/index.docbook:532(screenshot/mediaobject)
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports_group_by.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing a report.</"
+"phrase> </textobject>"
+msgstr ""
+
+#: C/index.docbook:543(sect3/para)
 msgid ""
 "The <literal>Vertical Group</literal> part may contain other items. For "
 "instance, it allows you to arrange fields below each other instead of just "
@@ -1252,15 +1420,18 @@ msgstr ""
 "einfach nur, um mehr Informationen in der Zeile des Datensatzes im Bericht "
 "anzuzeigen."
 
-#: C/glom.xml:546(title)
+#: C/index.docbook:546(figure/title)
 msgid "A Report with Vertical Groups"
 msgstr "Ein Bericht mit vertikalen Gruppen"
 
-#: C/glom.xml:553(phrase)
-msgid "A Report with Vertical Groups."
-msgstr "Ein Bericht mit vertikalen Gruppen."
+#: C/index.docbook:548(screenshot/mediaobject)
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports_vertical_group."
+"png\" format=\"PNG\"/> </imageobject> <textobject> <phrase>A Report with "
+"Vertical Groups.</phrase> </textobject>"
+msgstr ""
 
-#: C/glom.xml:559(para)
+#: C/index.docbook:559(sect3/para)
 msgid ""
 "When you have finished, click the <literal>Close</literal> button to save "
 "the report's definition. Your report can then be chosen from the "
@@ -1273,15 +1444,15 @@ msgstr ""
 "Informationen hierzu finden Sie im Abschnitt <link linkend=\"glom-operator-"
 "printing-reports\">Drucken von Berichten</link>."
 
-#: C/glom.xml:573(title)
+#: C/index.docbook:573(sect1/title)
 msgid "Dialogs"
 msgstr "Dialoge"
 
-#: C/glom.xml:576(title)
+#: C/index.docbook:576(sect2/title)
 msgid "Dialog: Initial dialog"
 msgstr "Dialog: Startdialog"
 
-#: C/glom.xml:577(para)
+#: C/index.docbook:577(sect2/para)
 msgid ""
 "This dialog allows the user to choose an existing document or create a new "
 "document. Existing documents may be selecting from the list of recently "
@@ -1300,19 +1471,19 @@ msgstr ""
 "einer vorhandenen Vorlagendatei erstellt werden, die bereits einige Tabellen "
 "und Datensätze enthält, oder durch Erstellen eines leeren Dokuments."
 
-#: C/glom.xml:581(title)
+#: C/index.docbook:581(sect2/title)
 msgid "Dialog: New database"
 msgstr "Dialog: Neue Datenbank"
 
-#: C/glom.xml:586(title)
+#: C/index.docbook:586(sect2/title)
 msgid "Dialog: Create database"
 msgstr "Dialog: Datenbank anlegen"
 
-#: C/glom.xml:591(title)
+#: C/index.docbook:591(sect2/title)
 msgid "Dialog: Connection"
 msgstr "Dialog: Verbindung"
 
-#: C/glom.xml:592(para)
+#: C/index.docbook:592(sect2/para)
 msgid ""
 "This dialog requests a user name and password for connection to a database "
 "server. This is usually not the same username and password combination with "
@@ -1330,11 +1501,11 @@ msgstr ""
 "(»localhost«), dann müssen Sie außerdem den Namen des entsprechenden "
 "Rechners im Netzwerk angeben, wie »glomserver.openismus.com«, als Beispiel."
 
-#: C/glom.xml:593(para)
+#: C/index.docbook:593(sect2/para)
 msgid "Your system administrator can provide these database login details."
 msgstr "Ihr Systemverwalter kann die folgenden Anmeldedetails bereitstellen."
 
-#: C/glom.xml:594(para)
+#: C/index.docbook:594(sect2/para)
 msgid ""
 "If you are the system administrator, see Glom's <ulink url=\"http://www.glom."
 "org/wiki/index.php?title=Initial_Postgres_Configuration\" type=\"http"
@@ -1346,11 +1517,11 @@ msgstr ""
 "type=\"http\">Glom-Webseite zur PostgreSQL-Konfiguration</ulink> Hilfe zur "
 "Installation und Konfiguration eines Datenbankservers."
 
-#: C/glom.xml:598(title)
+#: C/index.docbook:598(sect2/title)
 msgid "Dialog: Connection Error"
 msgstr "Dialog: Verbindungsfehler"
 
-#: C/glom.xml:599(para)
+#: C/index.docbook:599(sect2/para)
 msgid ""
 "This dialog is shown when Glom could not connect to the specified database "
 "server. Either the database server is not running at the specified hostname, "
@@ -1364,83 +1535,83 @@ msgstr ""
 "vom Datenbankserver nicht anerkannt. Weitere Informationen hierzu finden Sie "
 "im Abschnitt <link linkend=\"dialog_connection\">Verbindungsdialog</link>"
 
-#: C/glom.xml:605(title)
+#: C/index.docbook:605(sect2/title)
 msgid "Dialog: Database preferences"
 msgstr "Dialog: Datenbankeinstellungen"
 
-#: C/glom.xml:610(title)
+#: C/index.docbook:610(sect2/title)
 msgid "Dialog: Change language"
 msgstr "Dialog: Ändern der Spracheinstellungen"
 
-#: C/glom.xml:615(title)
+#: C/index.docbook:615(sect2/title)
 msgid "Window: Textobject"
 msgstr "Fenster: Textobjekt"
 
-#: C/glom.xml:620(title)
+#: C/index.docbook:620(sect2/title)
 msgid "Window: Imageobject"
 msgstr "Fenster: Bildobjekt"
 
-#: C/glom.xml:625(title)
+#: C/index.docbook:625(sect2/title)
 msgid "Dialog: Notebook"
 msgstr "Dialog: Reitermappen"
 
-#: C/glom.xml:630(title)
+#: C/index.docbook:630(sect2/title)
 msgid "Dialog: Data invalid format"
 msgstr "Dialog: Ungültige Formatierung"
 
-#: C/glom.xml:635(title)
+#: C/index.docbook:635(sect2/title)
 msgid "Dialog: Relationship overview"
 msgstr "Dialog: Überblick über Beziehungen"
 
-#: C/glom.xml:640(title)
+#: C/index.docbook:640(sect2/title)
 msgid "Window: Groups"
 msgstr "Fenster: Gruppen"
 
-#: C/glom.xml:645(title)
+#: C/index.docbook:645(sect2/title)
 msgid "Dialog: Group by sort fields"
 msgstr "Dialog: Gruppieren nach sortierten Feldern"
 
-#: C/glom.xml:650(title)
+#: C/index.docbook:650(sect2/title)
 msgid "Dialog: Group by secondary fields"
 msgstr "Dialog: Gruppieren nach sekundären Feldern"
 
-#: C/glom.xml:655(title)
+#: C/index.docbook:655(sect2/title)
 msgid "Window: Button script"
 msgstr "Fenster: Knopfskript"
 
-#: C/glom.xml:660(title)
+#: C/index.docbook:660(sect2/title)
 msgid "Window: Field calculation"
 msgstr "Fenster: Feldberechnung"
 
-#: C/glom.xml:665(title)
+#: C/index.docbook:665(sect2/title)
 msgid "Dialog: New group"
 msgstr "Dialog: Benutzer wählen"
 
-#: C/glom.xml:670(title)
+#: C/index.docbook:670(sect2/title)
 msgid "Dialog: Choose user"
 msgstr "Dialog: Benutzer wählen"
 
-#: C/glom.xml:675(title)
+#: C/index.docbook:675(sect2/title)
 msgid "Dialog: User"
 msgstr "Dialog: Benutzer"
 
-#: C/glom.xml:680(title)
+#: C/index.docbook:680(sect2/title)
 msgid "Dialog: Translation identify original"
 msgstr "Dialog: Identifizierung der Übersetzung am Original"
 
-#: C/glom.xml:685(title)
+#: C/index.docbook:685(sect2/title)
 msgid "Dialog: Translation copy"
 msgstr "Dialog: Übersetzungskopie"
 
-#: C/glom.xml:690(title)
+#: C/index.docbook:690(sect2/title)
 msgid "Dialog: Choose Date"
 msgstr "Dialog: Datum wählen"
 
-#: C/glom.xml:695(title)
+#: C/index.docbook:695(sect2/title)
 msgid "Dialog: Import Into Table"
 msgstr "Dialog: In Tabelle importieren"
 
-#: C/glom.xml:696(para)
+#: C/index.docbook:696(sect2/para)
 msgid ""
 "This dialog allows the user to import a CSV (comma separated value) file "
 "into the current database table. It shows the first few rows of the file to "
@@ -1457,11 +1628,11 @@ msgstr ""
 "Primärschlüsselfeld nicht als Zielfeld verwendet werden, aber anderenfalls "
 "muss eine Spalte in das Primärschlüsselfeld importiert werden."
 
-#: C/glom.xml:719(title)
+#: C/index.docbook:719(sect1/title)
 msgid "About Glom"
 msgstr "Über Glom"
 
-#: C/glom.xml:720(para)
+#: C/index.docbook:720(sect1/para)
 msgid ""
 "Glom is maintained by Glom and GNOME community volunteers. To find more "
 "information about Glom, please visit the <ulink url=\"http://www.glom.org/\" "
@@ -1472,7 +1643,7 @@ msgstr ""
 "<application>Glom</application> finden Sie auf <ulink url=\"http://www.glom."
 "org/\" type=\"http\">dessen Webseite</ulink>."
 
-#: C/glom.xml:725(para)
+#: C/index.docbook:725(sect1/para)
 msgid ""
 "To report a bug or make a suggestion regarding this application or this "
 "manual, you can submit them using <ulink url=\"http://bugzilla.gnome.org\" "
@@ -1482,7 +1653,7 @@ msgstr ""
 "diesem Handbuch zu machen, benutzen Sie bitte <ulink url=\"http://bugzilla."
 "gnome.org\" type=\"help\">das Fehlererfassungssystem von GNOME</ulink>."
 
-#: C/glom.xml:731(para)
+#: C/index.docbook:731(sect1/para)
 msgid ""
 "Another excellent source of information are the Glom <ulink url=\"http://www."
 "glom.org\" type=\"http\">mailing lists</ulink>."
@@ -1490,7 +1661,7 @@ msgstr ""
 "Eine weitere exzellente Informationsquelle sind die <ulink url=\"http://www."
 "glom.org\" type=\"http\">Mailinglisten</ulink> von Glom."
 
-#: C/glom.xml:736(para)
+#: C/index.docbook:736(sect1/para)
 msgid ""
 "This program is distributed under the terms of the GNU General Public "
 "license as published by the Free Software Foundation; either version 2 of "
@@ -1506,11 +1677,11 @@ msgstr ""
 "diesem <ulink url=\"ghelp:gpl\" type=\"help\">Link</ulink>, oder in der "
 "Datei COPYING, die im Quellcode dieses Programms enthalten ist."
 
-#: C/glom.xml:745(title)
+#: C/index.docbook:745(appendix/title)
 msgid "Concepts"
 msgstr "Konzepte"
 
-#: C/glom.xml:748(simpara)
+#: C/index.docbook:748(listitem/simpara)
 msgid ""
 "<literal>Database</literal>: Each Glom document allows access to one "
 "database."
@@ -1518,7 +1689,7 @@ msgstr ""
 "<literal>Datenbank</literal>: Jedes Glom-Dokument ermöglicht den Zugriff auf "
 "eine Datenbank."
 
-#: C/glom.xml:749(simpara)
+#: C/index.docbook:749(listitem/simpara)
 msgid ""
 "<literal>Table</literal>: Each database contains several tables, such as "
 "\"Customers\" and \"Invoices\" tables."
@@ -1526,7 +1697,7 @@ msgstr ""
 "<literal>Tabelle</literal>: Jede Datenbank enthält verschiedene Tabellen, "
 "wie z.B. »Kunden« oder »Rechnungen«."
 
-#: C/glom.xml:750(simpara)
+#: C/index.docbook:750(listitem/simpara)
 msgid ""
 "<literal>Field</literal>: Each table has several fields, such as \"Customer "
 "ID\", \"First Name\", and \"Date of Birth\" fields. In other documents and "
@@ -1536,7 +1707,7 @@ msgstr ""
 "z.B. »Kundennummer«, »Vorname« oder »Geburtsdatum«. In anderen Dokumenten "
 "oder Anwendungen werden diese Felder manchmal »Spalten« genannt."
 
-#: C/glom.xml:751(simpara)
+#: C/index.docbook:751(listitem/simpara)
 msgid ""
 "<literal>Records</literal>: Each table contains several records, each of "
 "which has values for each of the fields. For instance, the \"Customers\" "
@@ -1549,7 +1720,7 @@ msgstr ""
 "Dokumenten oder Anwendungen werden diese Datensätze manchmal »Zeilen« "
 "genannt."
 
-#: C/glom.xml:752(simpara)
+#: C/index.docbook:752(listitem/simpara)
 msgid ""
 "<literal>Relationships</literal>: Each table might be related to other "
 "tables, via fields in both tables. For instance, a \"Customers\" table could "
@@ -1565,19 +1736,19 @@ msgstr ""
 "brauchen nur Entwickler dieses Konzept zu verstehen. In anderen Dokumenten "
 "und Anwendungen werden solche Beziehungen auch »Verknüpfungen« genannt."
 
-#: C/glom.xml:746(para)
+#: C/index.docbook:746(appendix/para)
 msgid ""
 "Glom is easy to use, but you must understand the following basic concepts. "
-"<placeholder-1/>"
+"<_:orderedlist-1/>"
 msgstr ""
 "Glom ist recht einfach benutzbar, aber Sie sollten zunächst die folgenden "
-"grundlegenden Konzepte verinnerlichen. <placeholder-1/>"
+"grundlegenden Konzepte verinnerlichen. <_:orderedlist-1/>"
 
-#: C/glom.xml:758(title)
+#: C/index.docbook:758(appendix/title)
 msgid "Calculated fields and button scripts"
 msgstr "Berechnete Felder und Knopfskripte"
 
-#: C/glom.xml:759(para)
+#: C/index.docbook:759(appendix/para)
 msgid ""
 "Calculated fields and button scripts use the Python programming language. "
 "The calculation or script is the implementation of a function whose "
@@ -1587,101 +1758,105 @@ msgstr ""
 "Die Berechnung oder das Skript ist die Implementierung einer Funktion, deren "
 "Signatur Ihnen zur Verfügung gestellt wird."
 
-#: C/glom.xml:762(title)
+#: C/index.docbook:762(figure/title)
 msgid "Editing the definition of a calculated field"
 msgstr "Bearbeiten der Definition eines berechneten Feldes"
 
-#: C/glom.xml:769(phrase)
-msgid "Editing the definition of a calculated field."
-msgstr "Bearbeiten der Definition eines berechneten Feldes."
+#: C/index.docbook:764(screenshot/mediaobject)
+msgid ""
+"<imageobject><imagedata fileref=\"figures/"
+"glom_design_fields_dialog_calculated.png\" format=\"PNG\"/> </imageobject> "
+"<textobject> <phrase>Editing the definition of a calculated field.</phrase> "
+"</textobject>"
+msgstr ""
 
-#: C/glom.xml:776(title)
+#: C/index.docbook:776(sect1/title)
 msgid "Field values"
 msgstr "Feldwerte"
 
-#: C/glom.xml:777(programlisting)
+#: C/index.docbook:777(para/programlisting)
 #, no-wrap
 msgid "record[\"name_first\"]"
 msgstr "record[\"name_first\"]"
 
-#: C/glom.xml:777(para)
+#: C/index.docbook:777(sect1/para)
 msgid ""
-"For instance, <placeholder-1/> is the value of the name_first field in the "
-"current record."
+"For instance, <_:programlisting-1/> is the value of the name_first field in "
+"the current record."
 msgstr ""
-"Beispielsweise ist <placeholder-1/> der Wert des Feldes name_first im "
+"Beispielsweise ist <_:programlisting-1/> der Wert des Feldes name_first im "
 "aktuellen Datensatz."
 
-#: C/glom.xml:781(title)
+#: C/index.docbook:781(sect1/title)
 msgid "Related Records"
 msgstr "Bezugsdatensätze"
 
-#: C/glom.xml:782(programlisting)
+#: C/index.docbook:782(para/programlisting)
 #, no-wrap
 msgid "record.related[\"location\"]"
 msgstr "record.related[\"location\"]"
 
-#: C/glom.xml:782(para)
+#: C/index.docbook:782(sect1/para)
 msgid ""
-"For instance, <placeholder-1/> provides the related records for the current "
-"record."
+"For instance, <_:programlisting-1/> provides the related records for the "
+"current record."
 msgstr ""
-"Beispielsweise stellt <placeholder-1/> die Bezugsdatensätze für den "
+"Beispielsweise stellt <_:programlisting-1/> die Bezugsdatensätze für den "
 "aktuellen Datensatz bereit."
 
-#: C/glom.xml:785(title)
+#: C/index.docbook:785(sect2/title)
 msgid "Single related records"
 msgstr "Einzelbeziehungen"
 
-#: C/glom.xml:786(programlisting)
+#: C/index.docbook:786(para/programlisting)
 #, no-wrap
 msgid "record.related[\"location\"][\"name\"]"
 msgstr "record.related[»Ort«][»Name«]"
 
-#: C/glom.xml:786(para)
+#: C/index.docbook:786(sect2/para)
 msgid ""
 "For relationships that specify a single record, you can get the value of a "
-"field in that record. For instance, <placeholder-1/> is the value of the "
-"name field in the table indicated by the location relationship (often called "
-"location::name)."
+"field in that record. For instance, <_:programlisting-1/> is the value of "
+"the name field in the table indicated by the location relationship (often "
+"called location::name)."
 msgstr ""
 "Für Beziehungen, die einen einzelnen Datensatz angeben, können Sie den Wert "
-"des Feldes in diesem Datensatz erhalten. Beispielsweise ist <placeholder-1/> "
-"der Wert des »name«-Feldes in der Tabelle, die durch die Beziehung angegeben "
-"wird (oft als location::name bezeichnet)."
+"des Feldes in diesem Datensatz erhalten. Beispielsweise ist <_:"
+"programlisting-1/> der Wert des »name«-Feldes in der Tabelle, die durch die "
+"Beziehung angegeben wird (oft als location::name bezeichnet)."
 
-#: C/glom.xml:790(title)
+#: C/index.docbook:790(sect2/title)
 msgid "Multiple related records"
 msgstr "Datensätze mit mehrfachen Bezügen"
 
-#: C/glom.xml:791(programlisting)
+#: C/index.docbook:791(para/programlisting)
 #, no-wrap
 msgid "record.related[\"invoice_lines\"].sum(\"total_price\")"
 msgstr "record.related[\"invoice_lines\"].sum(\"total_price\")"
 
-#: C/glom.xml:791(para)
+#: C/index.docbook:791(sect2/para)
 msgid ""
 "For relationships that specify multiple records, you can use the aggregate "
-"functions (sum, count, average) to get overall values. For instance, "
-"<placeholder-1/>."
+"functions (sum, count, average) to get overall values. For instance, <_:"
+"programlisting-1/>."
 msgstr ""
 "Für Beziehungen, die mehrere Datensätze umfassen, können Sie die "
 "Aggregatfunktionen (sum, count, average) benutzen, um allgemeine Werte zu "
-"erhalten. Beispielsweise <placeholder-1/>."
+"erhalten. Beispielsweise <_:programlisting-1/>."
 
-#: C/glom.xml:797(title)
+#: C/index.docbook:797(sect1/title)
 msgid "Testing for empty values"
 msgstr "Prüfen auf leere Werte"
 
-#: C/glom.xml:798(para)
+#: C/index.docbook:798(sect1/para)
 msgid "How you test for empty values depends on the type of field:"
 msgstr "So überprüfen Sie auf leere Werte, abhängig vom Feldtyp:"
 
-#: C/glom.xml:803(title)
+#: C/index.docbook:803(sect2/title)
 msgid "Non-text fields"
 msgstr "Nicht-Text-Felder"
 
-#: C/glom.xml:804(para)
+#: C/index.docbook:804(sect2/para)
 msgid ""
 "Non-text fields may be empty, indicating that the user has not entered any "
 "value in the field. For instance, Glom does not assume that an empty value "
@@ -1691,14 +1866,14 @@ msgstr ""
 "keinerlei Wert in dieses Feld eingegeben hat. Beispielsweise nimmt Glom "
 "nicht an, dass ein leerer Wert in einem numerischen Feld den Wert 0 hat."
 
-#: C/glom.xml:805(para)
+#: C/index.docbook:805(sect2/para)
 msgid ""
 "You can test whether a field is empty by using Python's None. For instance:"
 msgstr ""
 "Sie können testen, ob ein Feld leer ist, indem Sie »None« aus Python "
 "verwenden. Zum Beispiel:"
 
-#: C/glom.xml:807(programlisting)
+#: C/index.docbook:807(para/programlisting)
 #, no-wrap
 msgid ""
 "\n"
@@ -1715,13 +1890,13 @@ msgstr ""
 "    return record.related[\"contacts\"][\"name_full\"]\n"
 "  "
 
-#: C/glom.xml:814(para)
+#: C/index.docbook:814(sect2/para)
 msgid ""
 "You might also test whether there are any related records. For instance:"
 msgstr ""
 "Sie können auch überprüfen, ob Bezugsdatensätze vorhanden sind. Zum Beispiel:"
 
-#: C/glom.xml:816(programlisting)
+#: C/index.docbook:816(para/programlisting)
 #, no-wrap
 msgid ""
 "\n"
@@ -1738,11 +1913,11 @@ msgstr ""
 "    return record.related[\"contacts\"][\"name_full\"]\n"
 "  "
 
-#: C/glom.xml:826(title)
+#: C/index.docbook:826(sect2/title)
 msgid "Text fields"
 msgstr "Textfelder"
 
-#: C/glom.xml:827(para)
+#: C/index.docbook:827(sect2/para)
 msgid ""
 "For text fields, you should check for zero-length strings. It is not "
 "possible in Glom to distinguish between zero-length strings and the absence "
@@ -1753,7 +1928,7 @@ msgstr ""
 "Länge Null und fehlenden Zeichenketten unterscheiden, weil dies keinerlei "
 "Vorteile hätte. Zum Beispiel:"
 
-#: C/glom.xml:829(programlisting)
+#: C/index.docbook:829(para/programlisting)
 #, no-wrap
 msgid ""
 "\n"
@@ -1770,11 +1945,11 @@ msgstr ""
 "    return record[\"name_full\"]\n"
 "  "
 
-#: C/glom.xml:841(title)
+#: C/index.docbook:841(sect1/title)
 msgid "Using the full pygda API"
 msgstr "Benutzung der vollen Pygda-API"
 
-#: C/glom.xml:842(para)
+#: C/index.docbook:842(sect1/para)
 msgid ""
 "pygda is a python API for the libgda API. The record's <literal>connection</"
 "literal> attribute provides a gda.connection that can be used to access the "
@@ -1791,7 +1966,7 @@ msgstr ""
 "einer UPDATE-Anweisung. Bedenken Sie, dass die Verbindung bereits offen ist, "
 "so dass die Eingabe der Verbindungsdetails nicht mehr erforderlich ist."
 
-#: C/glom.xml:843(para)
+#: C/index.docbook:843(sect1/para)
 msgid ""
 "The record's <literal>table_name</literal> attribute also provides the name "
 "of the current table."
@@ -1799,7 +1974,7 @@ msgstr ""
 "Das Attribut <literal>table_name</literal> des Datensatzes stellt auch den "
 "Namen der aktuellen Tabelle zur Verfügung."
 
-#: C/glom.xml:844(para)
+#: C/index.docbook:844(sect1/para)
 msgid ""
 "This example reads all data from the current table and prints the values to "
 "the terminal:"
@@ -1807,7 +1982,7 @@ msgstr ""
 "Dieses Beispiel liest alle Daten aus der aktuellen Tabelle und gibt deren "
 "Werte im Terminal aus:"
 
-#: C/glom.xml:846(programlisting)
+#: C/index.docbook:846(para/programlisting)
 #, no-wrap
 msgid ""
 "\n"
@@ -1885,31 +2060,23 @@ msgstr ""
 "    print \"\\n\";\n"
 "  "
 
-#. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2
-#: C/glom.xml:0(None)
-msgid "translator-credits"
+#: C/legal.xml:9(para/ulink)
+msgid "link"
+msgstr "Link"
+
+#: C/legal.xml:2(legalnotice/para)
+msgid ""
+"Permission is granted to copy, distribute and/or modify this document under "
+"the terms of the GNU Free Documentation License (GFDL), Version 1.1 or any "
+"later version published by the Free Software Foundation with no Invariant "
+"Sections, no Front-Cover Texts, and no Back-Cover Texts. You can find a copy "
+"of the GFDL at this <_:ulink-1/> or in the file COPYING-DOCS distributed "
+"with this manual."
 msgstr ""
-"Mario Blättermann <mariobl@gnome.org>, 2008, 2010\n"
-"Christian Kirbach <Christian.Kirbach@googlemail.com>, 2010."
+"Das vorliegende Dokument kann gemäß den Bedingungen der GNU Free "
+"Documentation License (GFDL), Version 1.1 oder jeder späteren, von der Free "
+"Software Foundation veröffentlichten Version ohne unveränderbare Abschnitte "
+"sowie ohne Texte auf dem vorderen und hinteren Buchdeckel kopiert, verteilt "
+"und/oder modifiziert werden. Eine Kopie der GFDL finden Sie unter diesem <_:"
+"ulink-1/> oder in der mit diesem Handbuch gelieferten Datei COPYING-DOCS."
 
-#~ msgid ""
-#~ "@@image: 'figures/glom_tables.png'; md5=e725285aae974272ca99dc991c7ae9ed"
-#~ msgstr "ok"
-
-#~ msgid ""
-#~ "When you start <application>Glom</application>, the following window is "
-#~ "displayed."
-#~ msgstr ""
-#~ "Wenn Sie <application>Glom</application> starten, wird folgendes Fenster "
-#~ "angezeigt."
-
-#~ msgid "Shows Glom main window."
-#~ msgstr "Zeigt das Hauptfenster von Glom."
-
-#~ msgid ""
-#~ "(Note that the <literal>record.connection</literal> and <literal>record."
-#~ "table_name</literal> attributes are only available since Glom 1.1.6.)"
-#~ msgstr ""
-#~ "(Beachten Sie, dass die Attribute <literal>record.connection</literal> "
-#~ "und <literal>record.table_name</literal> erst seit Glom 1.1.6 verfügbar "
-#~ "sind.)"
