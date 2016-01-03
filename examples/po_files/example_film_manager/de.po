@@ -1,15 +1,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Openismus Film Manager\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2014-02-09 20:04+0100\n"
-"Last-Translator: Benjamin Steinwender <b@stbe.at>\n"
+"PO-Revision-Date: 2016-01-03 21:26+0100\n"
+"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.3\n"
+"X-Generator: Poedit 1.8.6\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgctxt "Database Title"
@@ -520,19 +521,19 @@ msgstr "Fax:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Agent"
-msgstr ""
+msgstr "Agent"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Agent ID:"
-msgstr ""
+msgstr "Agent-Kennung:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Crew"
-msgstr ""
+msgstr "Crew"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Cast"
-msgstr ""
+msgstr "Besetzung"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Email:"
@@ -959,7 +960,7 @@ msgstr "Kontakterson"
 
 msgctxt "Table (props)"
 msgid "Props"
-msgstr ""
+msgstr "Eigsch."
 
 msgctxt "Field (prop_id). Parent table: props"
 msgid "Prop ID"
@@ -1201,7 +1202,7 @@ msgstr "Themenkennung"
 
 msgctxt "Relationship (props). Parent table: scene_props"
 msgid "Props"
-msgstr ""
+msgstr "Eigsch."
 
 msgctxt "Layout Group (overview). Parent table: scene_props"
 msgid "Overview"
@@ -1265,7 +1266,7 @@ msgstr "Abend"
 
 msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
 msgid "Dawn"
-msgstr ""
+msgstr "Dämm."
 
 msgctxt "Field (interior_or_exterior). Parent table: scenes"
 msgid "Interior/Exterior"
@@ -1319,7 +1320,7 @@ msgstr "Extras"
 
 msgctxt "Relationship (scene_props). Parent table: scenes"
 msgid "Props"
-msgstr ""
+msgstr "Eigsch."
 
 msgctxt "Relationship (scene_costume). Parent table: scenes"
 msgid "Costume"
@@ -1339,7 +1340,7 @@ msgstr "Details"
 
 msgctxt "Text. Parent table: scenes, Parent Group: details"
 msgid "The location name will be used if the name is empty."
-msgstr ""
+msgstr "Der Ortsname wird verwendet, wenn der Name leer ist."
 
 msgctxt "Layout Group (scenario). Parent table: scenes, Parent Group: details"
 msgid "Scenario"
