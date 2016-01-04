@@ -46,7 +46,7 @@ typename T_Container::value_type get_titled(const T_Container& container, const 
 
   typename T_Container::const_iterator iter =
     std::find_if(container.begin(), container.end(),
-      [&title] (const typename T_Container::value_type& element)
+      [&title](const auto& element)
       {
         return (element && element->get_title_original() == title);
       }
@@ -62,7 +62,7 @@ bool contains_item_type(const Glom::Document::type_list_translatables& container
 {
   Glom::Document::type_list_translatables::const_iterator iter =
     std::find_if(container.begin(), container.end(),
-      [] (const Glom::Document::type_list_translatables::value_type& element)
+      [](const auto& element)
       {
         std::shared_ptr<Glom::TranslatableItem> item = element.first;
         std::shared_ptr<T_TypeToFind> derived = std::dynamic_pointer_cast<T_TypeToFind>(item);

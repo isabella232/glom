@@ -61,7 +61,7 @@ static bool get_group_named(const Glom::Document::type_list_groups& container, c
 {
   Glom::Document::type_list_groups::const_iterator iter =
     std::find_if(container.begin(), container.end(),
-      [&name] (const Glom::GroupInfo& info)
+      [&name](const auto& info)
       {
         return info.get_name() == name;
       }

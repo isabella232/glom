@@ -110,7 +110,7 @@ Glib::ustring get_name_of_charset(const Glib::ustring& charset)
 
   type_list_encodings::const_iterator iter = 
     std::find_if(list_encodings.begin(), list_encodings.end(),
-      [&charset] (const Encoding& encoding) {
+      [&charset](const auto& encoding) {
         return encoding.get_charset() == charset;
     }
   );

@@ -169,7 +169,7 @@ template
 auto find_if_layout_item_field_is_same_field(T_Container& container, const std::shared_ptr<const LayoutItem_Field>& layout_item) -> decltype(container.begin())
 {
   return std::find_if(container.begin(), container.end(),
-    [&layout_item](const typename T_Container::value_type& element)
+    [&layout_item](const auto& element)
     {
       //Assume that element is a shared_ptr<>.
 

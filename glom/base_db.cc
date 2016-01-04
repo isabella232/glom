@@ -63,7 +63,7 @@ template
 auto find_if_layout_item_is_equal(T_Container& container, const typename T_Container::value_type& layout_item) -> decltype(container.begin())
 {
   return std::find_if(container.begin(), container.end(),
-    [&layout_item](const typename T_Container::value_type& element)
+    [&layout_item](const auto& element)
     {
       //Assume that element is a shared_ptr<>.
 
