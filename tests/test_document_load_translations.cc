@@ -39,7 +39,8 @@ bool contains(const T_Container& container, const T_Value& name)
 }
 
 template<typename T_Container>
-typename T_Container::value_type get_titled(const T_Container& container, const Glib::ustring& title)
+decltype(auto)
+get_titled(const T_Container& container, const Glib::ustring& title)
 {
   typedef typename T_Container::value_type type_sharedptr;
   type_sharedptr result;

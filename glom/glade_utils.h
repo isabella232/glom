@@ -47,7 +47,8 @@ inline std::string get_glade_resource_path(const std::string& filename)
  * such as a GtkSpinButton's GtkAdjustment.
  */
 template<class T_Widget>
-Glib::RefPtr<Gtk::Builder> helper_get_glade_widget_derived_with_warning(const std::string& filename, const Glib::ustring& id, T_Widget*& widget, bool load_all)
+decltype(auto)
+helper_get_glade_widget_derived_with_warning(const std::string& filename, const Glib::ustring& id, T_Widget*& widget, bool load_all)
 {
   Glib::RefPtr<Gtk::Builder> refXml;
 
@@ -92,7 +93,8 @@ Glib::RefPtr<Gtk::Builder> helper_get_glade_widget_derived_with_warning(const st
  * will be deleted immediately.
  */
 template<class T_Widget>
-Glib::RefPtr<Gtk::Builder> get_glade_child_widget_derived_with_warning(T_Widget*& widget)
+decltype(auto)
+get_glade_child_widget_derived_with_warning(T_Widget*& widget)
 {
   // Check the path to the installed .glade file:
   // The id is the same as the filename, in a developer/operator sub-directory:

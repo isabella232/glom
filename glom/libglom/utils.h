@@ -256,7 +256,7 @@ bool script_check_for_pygtk2(const Glib::ustring& script);
 bool get_resource_exists(const std::string& resource_path);
 
 template<typename E>
-constexpr typename std::underlying_type<E>::type
+decltype(auto)
 to_utype(E enumerator) noexcept
 {
   return static_cast<typename std::underlying_type<E>::type>(enumerator);
