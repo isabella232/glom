@@ -1356,19 +1356,15 @@ std::string Utils::get_file_path_without_extension(const std::string& filepath)
 
 Glib::ustring Utils::get_list_of_layout_items_for_display(const LayoutGroup::type_list_items& list_layout_fields)
 {
-  Glib::ustring result;
-  for(const auto& item : list_layout_fields)
-  {
-    if(item)
+  return string_join(list_layout_fields,
+    [](const auto& item)
     {
-      if(!result.empty())
-       result += ", ";
+      if(!item)
+        return Glib::ustring();
 
-      result += item->get_layout_display_name();
-    }
-  }
-
-  return result;
+      return item->get_layout_display_name();
+    },
+    ", ");
 }
 
 Glib::ustring Utils::get_list_of_layout_items_for_display(const std::shared_ptr<const LayoutGroup>& layout_group)
@@ -1381,21 +1377,16 @@ Glib::ustring Utils::get_list_of_layout_items_for_display(const std::shared_ptr<
 
 Glib::ustring Utils::get_list_of_sort_fields_for_display(const Formatting::type_list_sort_fields& sort_fields)
 {
-  Glib::ustring text;
-  for(const auto& the_pair : sort_fields)
-  {
-    const auto item = the_pair.first;
-    if(!item)
-      continue;
-    
-    if(!text.empty())
-      text += ", ";
+  return string_join(sort_fields,
+    [](const auto& item)
+    {
+      if(!item.first)
+        return Glib::ustring();
 
-    text += item->get_layout_display_name();
-    //TODO: Show Ascending/Descending?
-  }
-
-  return text;
+      return item.first->get_layout_display_name();
+      //TODO: Show Ascending/Descending?
+    },
+    ", ");
 }
 
 std::string Utils::get_temp_file_path(const std::string& prefix, const std::string& extension)

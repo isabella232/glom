@@ -20,6 +20,7 @@
  
 #include <libglom/data_structure/layout/report_parts/layoutitem_groupby.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
+#include <libglom/utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -125,16 +126,13 @@ Glib::ustring LayoutItem_GroupBy::get_layout_display_name() const
   {
     result += "(sort by: ";
 
-    Glib::ustring sort_fields_names;
-
     //List all the sort fields:
-    for(const auto& sort_by : m_fields_sort_by)
-    {
-      if(!sort_fields_names.empty())
-        sort_fields_names += ", ";
-
-      sort_fields_names += sort_by.first->get_layout_display_name();
-    }
+    const auto sort_fields_names = Utils::string_join(m_fields_sort_by,
+      [](const auto& item)
+      {
+        return item.first->get_layout_display_name();
+      },
+      ", ");
 
     result += sort_fields_names + ')';
   }

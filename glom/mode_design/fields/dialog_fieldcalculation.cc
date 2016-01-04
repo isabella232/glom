@@ -154,16 +154,17 @@ void Dialog_FieldCalculation::on_button_test()
   layoutitem_temp->set_full_field_details(temp);
   const auto triggered_fields = get_calculation_fields(m_table_name, layoutitem_temp);
 
-  Glib::ustring field_names;
-  for(const auto& field : triggered_fields)
-  {
-    field_names += ( field->get_layout_display_name() + ", " );
-  }
+  auto field_names = Utils::string_join(triggered_fields,
+    [](const auto& field)
+    {
+      return field->get_layout_display_name() + ", ";
+    });
 
-  for(const auto& field : temp->get_calculation_relationships())
-  {
-    field_names += ( "related(" + field + "), " );
-  }
+  field_names += Utils::string_join(temp->get_calculation_relationships(),
+    [](const auto& field)
+    {
+      return "related(" + Glib::ustring(field) + "), ";
+    });
 
   m_label_triggered_by->set_text(field_names);
 }

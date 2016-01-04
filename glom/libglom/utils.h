@@ -173,6 +173,30 @@ Glib::ustring title_from_string(const Glib::ustring& text);
 typedef std::vector<Glib::ustring> type_vec_strings;
 type_vec_strings string_separate(const Glib::ustring& str, const Glib::ustring& separator, bool ignore_quoted_separator = false);
 
+template<class T_container, class T_functor>
+Glib::ustring string_join(const T_container& container, const T_functor& f, const Glib::ustring& delim = Glib::ustring())
+{
+  //We could do this like so, but std::boost::algorithm::join() is apparently hard-coded to use std::string,
+  //so it won't work with Glib::ustring.
+  //
+  // std::vector<Glib::ustring> display_names(m_fields_sort_by.size());
+  // std::transform(container.begin(), container.end(),
+  //  display_names.begin(), f);
+  // return boost::algorithm::join(display_names, delim);
+
+  Glib::ustring result;
+
+  for(const auto& thing : container)
+  {
+    if(!delim.empty() && !result.empty())
+      result += delim;
+
+    result += f(thing);
+  }
+
+  return result;
+}
+
 Glib::ustring string_trim(const Glib::ustring& str, const Glib::ustring& to_remove);
 
 Glib::ustring string_remove_suffix(const Glib::ustring& str, const Glib::ustring& suffix, bool case_sensitive = true);
