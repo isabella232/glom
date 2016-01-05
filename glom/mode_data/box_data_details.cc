@@ -305,8 +305,7 @@ bool Box_Data_Details::fill_from_database()
         //TODO_Performance: Do this for create_layout() only, instead of repeating it for each refresh?:
         int index_primary_key = -1; //Arbitrary default.
         //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
-        const auto iterFind = find_if_layout_item_field_is_same_field(fieldsToGet, layout_item_pk);
-        if(iterFind == fieldsToGet.end())
+        if(!find_if_layout_item_field_is_same_field_exists(fieldsToGet, layout_item_pk))
         {
           fieldsToGet.push_back(layout_item_pk);
           index_primary_key = fieldsToGet.size() - 1;

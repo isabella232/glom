@@ -167,9 +167,9 @@ private:
  */
 template
 <typename T_Container>
-auto find_if_layout_item_field_is_same_field(T_Container& container, const std::shared_ptr<const LayoutItem_Field>& layout_item) -> decltype(container.begin())
+bool find_if_layout_item_field_is_same_field_exists(T_Container& container, const std::shared_ptr<const LayoutItem_Field>& layout_item)
 {
-  return Utils::find_if(container,
+  return Utils::find_if_exists(container,
     [&layout_item](const typename T_Container::value_type& element)
     {
       //Assume that element is a shared_ptr<>.
