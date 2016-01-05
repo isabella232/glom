@@ -65,7 +65,6 @@ public:
   bool refresh_data_from_database_with_foreign_key(const Document* document, const Gnome::Gda::Value& foreign_key_value);
 
 protected:
-  void init();
 
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
 };

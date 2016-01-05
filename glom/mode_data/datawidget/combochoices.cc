@@ -39,11 +39,6 @@ namespace DataWidgetChildren
 
 ComboChoices::ComboChoices()
 {
-  init();
-}
-
-void ComboChoices::init()
-{
 }
 
 bool ComboChoices::refresh_data_from_database_with_foreign_key(const Document* /* document */, const Gnome::Gda::Value& /* foreign_key_value */)

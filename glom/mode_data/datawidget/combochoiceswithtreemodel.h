@@ -50,7 +50,6 @@ public:
   Glib::RefPtr<Gtk::TreeModel> get_choices_model();
 
 protected:
-  void init();
   void create_model_non_db(guint columns_count);
 
   /** Get a suitable fixed height for cells, so we can display them more efficiently.

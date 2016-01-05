@@ -42,17 +42,11 @@ namespace DataWidgetChildren
 ComboChoicesWithTreeModel::ComboChoicesWithTreeModel()
 : m_fixed_cell_height(0)
 {
-  init();
 }
 
 ComboChoicesWithTreeModel::~ComboChoicesWithTreeModel()
 {
   delete_model();
-}
-
-void ComboChoicesWithTreeModel::init()
-{
-  ComboChoices::init();
 }
 
 int ComboChoicesWithTreeModel::get_fixed_model_text_column() const

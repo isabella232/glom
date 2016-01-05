@@ -47,8 +47,6 @@ public:
   Gnome::Gda::Value get_value() const override;    
 
 private:
-  void init();
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   bool on_button_press_event(GdkEventButton *event) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY

@@ -69,7 +69,6 @@ public:
   Gnome::Gda::Value get_value() const override;
 
 private:
-  void init();
 
   typedef std::vector<Gnome::Gda::Value> type_list_values;
   typedef std::vector< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second;

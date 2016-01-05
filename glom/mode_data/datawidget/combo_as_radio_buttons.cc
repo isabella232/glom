@@ -42,14 +42,6 @@ ComboAsRadioButtons::ComboAsRadioButtons()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu(this);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  init();
-}
-
-void ComboAsRadioButtons::init()
-{
-  //if(m_glom_type == Field::glom_field_type::NUMERIC)
-   // get_entry()->set_alignment(1.0); //Align numbers to the right.
 }
 
 void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_second& list_values)
