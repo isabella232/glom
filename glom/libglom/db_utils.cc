@@ -800,9 +800,8 @@ void handle_error(const std::exception& ex)
 
 bool get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
-  const type_vec_fields vecFields = get_fields_for_table_from_database(table_name);
-  auto iterFind = find_if_same_name(vecFields, field_name);
-  return iterFind != vecFields.end();
+  const auto vecFields = get_fields_for_table_from_database(table_name);
+  return find_if_same_name_exists(vecFields, field_name);
 }
 
 type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_name, bool /* including_system_fields */)
@@ -1025,10 +1024,8 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
     const auto field_name = (*iter)->get_name();
 
     //Look in the result so far:
-    type_vec_fields::const_iterator iterFind = find_if_same_name(result, field_name);
-
     //Add it if it is not there:
-    if(iterFind == result.end() )
+    if(!find_if_same_name_exists(result, field_name))
       result.push_back(*iter);
   }
   */
@@ -1223,7 +1220,7 @@ bool create_table(Document::HostingMode hosting_mode, const std::shared_ptr<cons
 
   //Create the standard field too:
   //(We don't actually use this yet)
-  if(find_if_same_name(fields, GLOM_STANDARD_FIELD_LOCK) == fields.end())
+  if(find_if_same_name_exists(fields, GLOM_STANDARD_FIELD_LOCK))
   {
     std::shared_ptr<Field> field = std::make_shared<Field>();
     field->set_name(GLOM_STANDARD_FIELD_LOCK);

@@ -48,6 +48,17 @@ auto find_if_same_name(T_Container& container, const Glib::ustring& name) -> dec
   );
 }
 
+/**
+ * Find if there is an element in the container whose name is the same as @name.
+ * This assumes that the element is a shared_ptr<>.
+ */
+template
+<typename T_Container>
+bool find_if_same_name_exists(T_Container& container, const Glib::ustring& name)
+{
+  return find_if_same_name(container, name) != container.end();
+}
+
 //Field info, such as Name, Title, definitions, and, sometimes, contents.
 class Field : public TranslatableItem
 {

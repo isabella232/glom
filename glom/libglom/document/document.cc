@@ -635,7 +635,7 @@ Document::type_vec_relationships Document::get_relationships(const Glib::ustring
   //Add the system properties if necessary:
   if(plus_system_prefs)
   {
-    if(find_if_same_name(result, GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES) == result.end())
+    if(find_if_same_name_exists(result, GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES))
     {
       result.push_back(create_relationship_system_preferences(table_name));
     }
@@ -1162,7 +1162,7 @@ Document::type_listConstTableInfo Document::get_tables(bool plus_system_prefs) c
   //Add the system properties if necessary:
   if(plus_system_prefs)
   {
-    if(find_if_same_name(result, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME) == result.end())
+    if(find_if_same_name_exists(result, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
       result.push_back(create_table_system_preferences());
   }
 
@@ -1185,7 +1185,7 @@ Document::type_listTableInfo Document::get_tables(bool plus_system_prefs)
   //Add the system properties if necessary:
   if(plus_system_prefs)
   {
-    if(find_if_same_name(result, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME) == result.end())
+    if(find_if_same_name_exists(result, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
       result.push_back(create_table_system_preferences());
   }
 

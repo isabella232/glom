@@ -1492,8 +1492,7 @@ void Frame_Glom::update_table_in_document_from_database()
       for(const auto& field : fieldsDocument)
       {
         //Check whether it's in the database:
-        auto iterFindDatabase = find_if_same_name(fieldsDatabase, field->get_name());
-        if(iterFindDatabase != fieldsDatabase.end()) //If it was found
+        if(find_if_same_name_exists(fieldsDatabase, field->get_name())) //If it was found
         {
           fieldsActual.push_back(field);
         }

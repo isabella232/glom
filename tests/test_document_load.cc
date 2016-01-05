@@ -38,9 +38,7 @@ bool contains(const T_Container& container, const T_Value& name)
 template<typename T_Container>
 bool contains_named(const T_Container& container, const Glib::ustring& name)
 {
-  typename T_Container::const_iterator iter =
-    Glom::find_if_same_name(container, name);
-  return iter != container.end();
+  return Glom::find_if_same_name_exists(container, name);
 }
 
 template<typename T_Container>
