@@ -37,6 +37,14 @@ find_exists(const T_container& container, const T_element& element)
   return std::find(std::begin(container), end, element) != end;
 }
 
+template<typename T_container, typename T_callable>
+bool
+find_if_exists(const T_container& container, const T_callable& callable)
+{
+  const auto end = std::end(container);
+  return std::find_if(std::begin(container), end, callable) != end;
+}
+
 
 template<typename T_container, typename T_element>
 typename T_container::iterator

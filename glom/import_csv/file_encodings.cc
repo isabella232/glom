@@ -21,7 +21,7 @@
 //#include "config.h" //For ISO_CODES_PREFIX.
 
 #include <glom/import_csv/file_encodings.h>
-#include <libglom/algorithm_utils.h>
+#include <libglom/algorithms_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

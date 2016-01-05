@@ -59,22 +59,17 @@ typename T_Container::value_type get_titled(const T_Container& container, const 
 template<typename T_TypeToFind>
 bool contains_item_type(const Glom::Document::type_list_translatables& container)
 {
-  Glom::Document::type_list_translatables::const_iterator iter =
-    Utils::find_if(container,
-      [] (const Glom::Document::type_list_translatables::value_type& element)
-      {
-        std::shared_ptr<Glom::TranslatableItem> item = element.first;
-        std::shared_ptr<T_TypeToFind> derived = std::dynamic_pointer_cast<T_TypeToFind>(item);
-        if(derived)
-          return true;
-        else
-          return false;
-      }
-    );
-  if(iter != container.end())
-    return true;
-
-  return false;
+  return Glom::Utils::find_if_exists(container,
+    [] (const Glom::Document::type_list_translatables::value_type& element)
+    {
+      std::shared_ptr<Glom::TranslatableItem> item = element.first;
+      std::shared_ptr<T_TypeToFind> derived = std::dynamic_pointer_cast<T_TypeToFind>(item);
+      if(derived)
+        return true;
+      else
+        return false;
+    }
+  );
 }
 
 static std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Document& document, const Glib::ustring& layout_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name)

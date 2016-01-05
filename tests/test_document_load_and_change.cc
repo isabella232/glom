@@ -47,14 +47,12 @@ static bool field_is_on_a_layout(Glom::Document& document, const Glib::ustring& 
 
 static bool groups_contain_named(const Glom::Document::type_list_groups& container, const Glib::ustring& name)
 {
-  Glom::Document::type_list_groups::const_iterator iter =
-    Utils::find_if(container,
-      [&name] (const Glom::GroupInfo& info)
-      {
-        return info.get_name() == name;
-      }
-    );
-  return iter != container.end();
+  return Glom::Utils::find_if_exists(container,
+    [&name] (const Glom::GroupInfo& info)
+    {
+      return info.get_name() == name;
+    }
+  );
 }
 
 int main()
