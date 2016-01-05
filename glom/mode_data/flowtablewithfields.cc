@@ -640,7 +640,7 @@ std::shared_ptr<LayoutGroup> FlowTableWithFields::get_layout_group()
 
 void FlowTableWithFields::remove_field(const Glib::ustring& id)
 {
-  for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
+  for(auto iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
     Info info = *iter;
     if(info.m_field->get_name() == id)
@@ -710,7 +710,7 @@ void FlowTableWithFields::set_other_field_value(const std::shared_ptr<const Layo
 Gnome::Gda::Value FlowTableWithFields::get_field_value(const std::shared_ptr<const LayoutItem_Field>& field) const
 {
   type_list_const_widgets list_widgets = get_field(field, true);
-  for(type_list_const_widgets::const_iterator iter = list_widgets.begin();
+  for(auto iter = list_widgets.begin();
     iter != list_widgets.end(); ++iter)
   {
     const auto datawidget = dynamic_cast<const DataWidget*>(*iter);

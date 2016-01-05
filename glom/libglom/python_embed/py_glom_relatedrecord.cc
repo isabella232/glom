@@ -59,7 +59,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
 {
   const std::string field_name = boost::python::extract<std::string>(cppitem);
 
-  PyGlomRelatedRecord::type_map_field_values::const_iterator iterFind = m_map_field_values.find(field_name);
+  const auto iterFind = m_map_field_values.find(field_name);
   if(iterFind != m_map_field_values.end())
   {
     //If the value has already been stored, then just return it again:

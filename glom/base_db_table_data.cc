@@ -75,7 +75,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   for(const auto& item : m_TableFields)
   {
     //TODO: Search for the non-related field with the name, not just the field with the name:
-    type_vecConstLayoutFields::const_iterator iterFind = find_if_same_name(fieldsToAdd, item->get_name());
+    const auto iterFind = find_if_same_name(fieldsToAdd, item->get_name());
     if(iterFind == fieldsToAdd.end())
     {
       std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
@@ -99,7 +99,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
     const Glib::ustring field_name = layout_item->get_name();
     if(!layout_item->get_has_relationship_name()) //TODO: Allow people to add a related record also by entering new data in a related field of the related record.
     {
-      type_map_added::const_iterator iterFind = map_added.find(field_name);
+      const auto iterFind = map_added.find(field_name);
       if(iterFind == map_added.end()) //If it was not added already
       {
         Gnome::Gda::Value value;
@@ -510,7 +510,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
       //Field contents:
       if(result->get_n_rows())
       {
-        type_vecConstLayoutFields::const_iterator iterFields = fieldsToGet.begin();
+        auto iterFields = fieldsToGet.begin();
 
         const guint cols_count = result->get_n_columns();
         if(cols_count <= 0)

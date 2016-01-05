@@ -619,7 +619,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
       }
       else //It's a regular field in the table:
       {
-        type_vec_fields::const_iterator iterFind = find_if_same_name(all_db_fields, field_name);
+        const auto iterFind = find_if_same_name(all_db_fields, field_name);
 
         //If the field does not exist anymore then we won't try to show it:
         if(iterFind != all_db_fields.end() )
@@ -1151,7 +1151,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculated_fields(const Glib::
       //Does this field's calculation use the field?
       const auto fields_triggered = get_calculation_fields(table_name, layoutitem_field_to_examine);
       //std::cout << "    debug: field_triggered.size()=" << fields_triggered.size() << std::endl;
-      type_list_const_field_items::const_iterator iterFind = find_if_layout_item_is_equal(fields_triggered, field);
+      const auto iterFind = find_if_layout_item_is_equal(fields_triggered, field);
       if(iterFind != fields_triggered.end())
       {
         //std::cout << "      debug: FOUND: name=" << layoutitem_field_to_examine->get_name() << std::endl;

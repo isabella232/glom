@@ -285,7 +285,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
 
   Glib::ustring result;
 
-  type_map_locales::const_iterator iter = map_locales.find(locale_id);
+  const auto iter = map_locales.find(locale_id);
   if(iter != map_locales.end())
     result = iter->second.m_name;
 

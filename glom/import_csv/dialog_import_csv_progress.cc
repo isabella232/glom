@@ -261,7 +261,7 @@ void Dialog_Import_CSV_Progress::on_response(int /* response_id */)
 
 Gnome::Gda::Value Dialog_Import_CSV_Progress::get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const
 {
-  type_mapValues::const_iterator iter = m_current_row_values.find(field->get_name());
+  const auto iter = m_current_row_values.find(field->get_name());
   if(iter == m_current_row_values.end())
     return Gnome::Gda::Value();
 
@@ -280,7 +280,7 @@ std::shared_ptr<Field> Dialog_Import_CSV_Progress::get_field_primary_key() const
 
 Gnome::Gda::Value Dialog_Import_CSV_Progress::get_primary_key_value_selected() const
 {
-  type_mapValues::const_iterator iter = m_current_row_values.find(m_field_primary_key->get_name());
+  const auto iter = m_current_row_values.find(m_field_primary_key->get_name());
   if(iter == m_current_row_values.end())
     return Gnome::Gda::Value();
 

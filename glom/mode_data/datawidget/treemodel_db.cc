@@ -170,7 +170,7 @@ DbTreeModelRow::DbValue DbTreeModelRow::get_value(DbTreeModel& model, int column
 {
   fill_values_if_necessary(model, row);
 
-  type_vec_values::const_iterator iterFind = m_db_values.find(column);
+  const auto iterFind = m_db_values.find(column);
   if(iterFind != m_db_values.end())
     return iterFind->second;
   else
@@ -890,7 +890,7 @@ void DbTreeModel::clear()
 
 bool DbTreeModel::row_was_removed(const type_datamodel_row_index& datamodel_row) const
 {
-  type_map_rows::const_iterator iterFind = m_map_rows.find(datamodel_row);
+  const auto iterFind = m_map_rows.find(datamodel_row);
   if(iterFind != m_map_rows.end())
     return iterFind->second.m_removed;
   else
@@ -948,7 +948,7 @@ Gtk::TreeModel::iterator DbTreeModel::get_placeholder_row()
       }
     }
 
-    type_map_rows::const_iterator iter_map = m_map_rows.find(row);
+    const auto iter_map = m_map_rows.find(row);
     if(iter_map != m_map_rows.end())
     {
       //std::cerr << G_STRFUNC << ": returning row=" << row << std::endl;

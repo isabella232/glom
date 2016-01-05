@@ -431,7 +431,7 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
   Glib::Date date(day, datemonth, year);
 
   //Examine the cached data:
-  type_map_values::const_iterator iter_find = m_map_values.find(date);
+  const auto iter_find = m_map_values.find(date);
   if(iter_find == m_map_values.end())
     return Glib::ustring(); //No data was found for this date.
 

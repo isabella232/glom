@@ -76,7 +76,7 @@ void Box_DB_Table_Definition::init()
 
   Field::type_map_type_names mapFieldTypes = Field::get_usable_type_names();
   AddDel::type_vec_strings vecTypes;
-  for(Field::type_map_type_names ::iterator iter = mapFieldTypes.begin(); iter != mapFieldTypes.end();++iter)
+  for(auto iter = mapFieldTypes.begin(); iter != mapFieldTypes.end();++iter)
   {
     const Glib::ustring& name = (*iter).second;
     vecTypes.push_back(name);
@@ -373,7 +373,7 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
     m_Field_BeingEdited = constfield;
 
     //Get DB field info: (TODO: This might be unnecessary).
-    type_vec_fields::const_iterator iterFind = find_if_same_name(m_vecFields, strFieldNameBeingEdited);
+    const auto iterFind = find_if_same_name(m_vecFields, strFieldNameBeingEdited);
     if(iterFind == m_vecFields.end()) //If it was not found:
       std::cerr << G_STRFUNC << ": field not found: " << strFieldNameBeingEdited << std::endl;
     else

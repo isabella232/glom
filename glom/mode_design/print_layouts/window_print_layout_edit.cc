@@ -1403,7 +1403,7 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
   m_connections_items_selected_moved.clear();
   
 
-  for(Canvas_PrintLayout::type_vec_items::const_iterator iter = items.begin();
+  for(auto iter = items.begin();
     iter != items.end(); ++iter)
   {
     Glib::RefPtr<CanvasLayoutItem> item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(*iter);

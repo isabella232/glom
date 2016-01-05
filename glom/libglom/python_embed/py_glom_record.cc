@@ -115,7 +115,7 @@ boost::python::object PyGlomRecord::getitem(const boost::python::object& cppitem
 {
   const std::string key = boost::python::extract<std::string>(cppitem);
 
-  PyGlomRecord::type_map_field_values::const_iterator iterFind = m_map_field_values.find(key);
+  const auto iterFind = m_map_field_values.find(key);
   if(iterFind != m_map_field_values.end())
   {
     return glom_pygda_value_as_boost_pyobject(iterFind->second);

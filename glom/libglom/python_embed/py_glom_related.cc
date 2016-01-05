@@ -63,7 +63,7 @@ boost::python::object PyGlomRelated::getitem(const boost::python::object& cppite
       else
       {
         //If the relationship exists:
-        PyGlomRelated::type_map_relationships::const_iterator iterFind = m_map_relationships.find(key);
+        const auto iterFind = m_map_relationships.find(key);
         if(iterFind != m_map_relationships.end())
         {
           //Get the value of the from_key in the parent record.
@@ -74,7 +74,7 @@ boost::python::object PyGlomRelated::getitem(const boost::python::object& cppite
           if(extractor_record.check())
           {
             PyGlomRecord* record = extractor_record;
-            PyGlomRecord::type_map_field_values::const_iterator iterFromKey = record->m_map_field_values.find(from_key);
+            const auto iterFromKey = record->m_map_field_values.find(from_key);
             if(iterFromKey != record->m_map_field_values.end())
             {
               const Gnome::Gda::Value& from_key_value = iterFromKey->second;

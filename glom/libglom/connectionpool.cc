@@ -783,8 +783,8 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
   //Add or remove any auto-increment rows:
   //The new auto-increment row would actually be added automatically,
   //but this makes it available even before a record has been added. 
-  type_vec_const_fields::const_iterator iter_old = old_fields.begin();
-  type_vec_const_fields::const_iterator iter_new = new_fields.begin();
+  auto iter_old = old_fields.begin();
+  auto iter_new = new_fields.begin();
   while( (iter_old != old_fields.end()) && (iter_new != new_fields.end()) )
   {
     const std::shared_ptr<const Field> field_old = *iter_old;

@@ -339,7 +339,7 @@ Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, cons
       type_list_indexes list_indexes = get_data_model_column_index(layout_item);
       if(!list_indexes.empty())
       {
-        type_list_indexes::const_iterator iter_begin = list_indexes.begin(); //Just get the first displayed instance of this field->
+        const auto iter_begin = list_indexes.begin(); //Just get the first displayed instance of this field->
 
         const guint col_real = *iter_begin + get_count_hidden_system_columns();
         treerow.get_value(col_real, value);

@@ -73,8 +73,8 @@ bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
     //Get an iterator for the row at this path:
     //We must unconst this. This should not be necessary with a future version of gtkmm.
     auto unconstThis = const_cast<TreeStore_Layout*>(this); //TODO: Add a const version of get_iter to TreeModel:
-    const_iterator iter_dragged = unconstThis->get_iter(path_dragged_row);
-    //const_iterator iter_dragged = get_iter(path_dragged_row);
+    const auto iter_dragged = unconstThis->get_iter(path_dragged_row);
+    //const auto iter_dragged = get_iter(path_dragged_row);
 
     if(iter_dragged)
     {
@@ -95,8 +95,8 @@ bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
     //Get an iterator for the row at the requested parent's path:
     //We must unconst this. This should not be necessary with a future version of gtkmm.
     auto unconstThis = const_cast<TreeStore_Layout*>(this); //TODO: Add a const version of get_iter to TreeModel:
-    const_iterator iter_dest_parent = unconstThis->get_iter(dest_parent);
-    //const_iterator iter_dest_parent = get_iter(dest);
+    const auto iter_dest_parent = unconstThis->get_iter(dest_parent);
+    //const auto iter_dest_parent = get_iter(dest);
     if(iter_dest_parent)
     {
       Gtk::TreeModel::Row row_parent = *iter_dest_parent;
@@ -116,7 +116,7 @@ bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
 void TreeStore_Layout::fill_sequences()
 {
   guint sequence = 1;
-  for(iterator iter_children = children().begin(); iter_children != children().end(); ++iter_children)
+  for(auto iter_children = children().begin(); iter_children != children().end(); ++iter_children)
   {
     Gtk::TreeModel::Row row = *iter_children;
     row[m_columns.m_col_sequence] = sequence;
@@ -130,7 +130,7 @@ void TreeStore_Layout::fill_sequences()
 void TreeStore_Layout::fill_sequences(const iterator& iter)
 {
   guint sequence = 1;
-  for(iterator iter_children = iter->children().begin(); iter_children != iter->children().end(); ++iter_children)
+  for(auto iter_children = iter->children().begin(); iter_children != iter->children().end(); ++iter_children)
   {
     Gtk::TreeModel::Row row = *iter_children;
     row[m_columns.m_col_sequence] = sequence;

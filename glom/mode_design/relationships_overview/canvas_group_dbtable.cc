@@ -125,7 +125,7 @@ double CanvasGroupDbTable::get_table_width() const
 
 double CanvasGroupDbTable::get_field_y(const Glib::ustring& field_name) const
 {
-  type_map_fields_y::const_iterator iterFind = m_map_fields_y.find(field_name);
+  const auto iterFind = m_map_fields_y.find(field_name);
   if(iterFind !=  m_map_fields_y.end())
     return iterFind->second + 10.0; //Added an offset so that lines point approximately to the middle of the text.
   else

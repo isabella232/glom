@@ -23,7 +23,7 @@ type_tokens& get_tokens_instance()
 
 void on_line_scanned(const std::vector<Glib::ustring>& row, guint /*line_number*/)
 {
-  for(std::vector<Glib::ustring>::const_iterator iter = row.begin();
+  for(auto iter = row.begin();
       iter != row.end();
       ++iter)
   {
@@ -36,7 +36,7 @@ void on_line_scanned(const std::vector<Glib::ustring>& row, guint /*line_number*
 /*
 void print_tokens()
 {
-  for(type_tokens::const_iterator iter = get_tokens_instance().begin();
+  for(auto iter = get_tokens_instance().begin();
       iter != get_tokens_instance().end();
       ++iter)
   {
@@ -65,7 +65,7 @@ bool check_tokens(const std::string& regex)
   if(get_tokens_instance().empty())
     return false;
 
-  for(type_tokens::const_iterator iter = get_tokens_instance().begin();
+  for(auto iter = get_tokens_instance().begin();
        iter != get_tokens_instance().end();
        ++iter)
   {

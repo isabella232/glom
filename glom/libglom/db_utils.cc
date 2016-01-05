@@ -993,7 +993,7 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
 
     //Get the field info from the database:
     //This is in the document as well, but it _might_ have changed.
-    type_vec_fields::const_iterator iterFindDatabase = 
+    const auto iterFindDatabase = 
       find_if_same_name(fieldsDatabase, field_name);
 
     if(iterFindDatabase != fieldsDatabase.end() ) //Ignore fields that don't exist in the database anymore.

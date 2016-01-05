@@ -99,14 +99,14 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
   remove_rules();
 
   const PrintLayout::type_vec_doubles h_rules = print_layout->get_horizontal_rules();
-  for(PrintLayout::type_vec_doubles::const_iterator iter = h_rules.begin();
+  for(auto iter = h_rules.begin();
     iter != h_rules.end(); ++iter)
   {
     add_horizontal_rule(*iter);
   }
 
   const PrintLayout::type_vec_doubles v_rules = print_layout->get_vertical_rules();
-  for(PrintLayout::type_vec_doubles::const_iterator iter = v_rules.begin();
+  for(auto iter = v_rules.begin();
     iter != v_rules.end(); ++iter)
   {
     add_vertical_rule(*iter);
@@ -840,7 +840,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
     std::shared_ptr<LayoutItem_Field> layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
     if(layoutitem_field)
     {
-      type_map_layout_fields_index::const_iterator iterFind = map_fields_index.find( layoutitem_field->get_layout_display_name() );
+      const auto iterFind = map_fields_index.find( layoutitem_field->get_layout_display_name() );
       if(iterFind != map_fields_index.end())
       {
         //Set the data from the database:
@@ -950,7 +950,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   for(int row = 0; row < rows_count; ++row)
   {
     int db_col = 0;
-    LayoutGroup::type_list_items::const_iterator iter_child_layout_items = child_layout_items.begin();
+    auto iter_child_layout_items = child_layout_items.begin();
     for(int col = 0; col < cols_count; ++col)
     {
       //Glib::RefPtr<Goocanvas::Item> canvas_child = base_item->get_cell_child(row, col); //TODO: Add this to Goocanvas::Table.

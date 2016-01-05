@@ -109,7 +109,7 @@ int main()
     const char* raw = "\0xc0\0x00\n";
     ImportTests::set_parser_contents(parser, raw);
 
-    for (type_encodings::const_iterator iter = encodings.begin();
+    for (auto iter = encodings.begin();
          iter != encodings.end();
          ++iter)
     {
@@ -129,7 +129,7 @@ int main()
     }
 
 
-    const const bool passed = (2 == get_encoding_error_count_instance() &&
+    const bool passed = (2 == get_encoding_error_count_instance() &&
                    0 == get_line_scanned_count_instance());
 
     if(!ImportTests::check("test_wrong_encoding", passed, report))

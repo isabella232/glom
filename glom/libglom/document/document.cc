@@ -3727,7 +3727,7 @@ bool Document::save_before()
           XmlUtils::set_child_text_node(elemField, GLOM_NODE_CALCULATION, field->get_calculation());
 
           Glib::ustring field_type;
-          Field::type_map_type_names::const_iterator iterTypes = type_names.find( field->get_glom_type() );
+          const auto iterTypes = type_names.find( field->get_glom_type() );
           if(iterTypes != type_names.end())
             field_type = iterTypes->second;
 
@@ -4040,7 +4040,7 @@ std::shared_ptr<Report> Document::get_report(const Glib::ustring& table_name, co
   const std::shared_ptr<const DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
-    DocumentTableInfo::type_reports::const_iterator iterFindReport = info->m_reports.find(report_name);
+    const auto iterFindReport = info->m_reports.find(report_name);
     if(iterFindReport != info->m_reports.end())
     {
       return iterFindReport->second;
@@ -4099,7 +4099,7 @@ std::shared_ptr<PrintLayout> Document::get_print_layout(const Glib::ustring& tab
   const std::shared_ptr<const DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
-    DocumentTableInfo::type_print_layouts::const_iterator iterFindPrintLayout = info->m_print_layouts.find(print_layout_name);
+    const auto iterFindPrintLayout = info->m_print_layouts.find(print_layout_name);
     if(iterFindPrintLayout != info->m_print_layouts.end())
     {
       return iterFindPrintLayout->second;
@@ -4205,7 +4205,7 @@ Gnome::Gda::Value Document::get_layout_record_viewed(const Glib::ustring& table_
   const std::shared_ptr<const DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
-    DocumentTableInfo::type_map_layout_primarykeys::const_iterator iterLayoutKeys = info->m_map_current_record.find(layout_name);
+    const auto iterLayoutKeys = info->m_map_current_record.find(layout_name);
     if(iterLayoutKeys != info->m_map_current_record.end())
       return iterLayoutKeys->second;
   }
@@ -4669,7 +4669,7 @@ void Document::set_library_module(const Glib::ustring& name, const Glib::ustring
 
 Glib::ustring Document::get_library_module(const Glib::ustring& name) const
 {
-  type_map_library_scripts::const_iterator iter = m_map_library_scripts.find(name);
+  const auto iter = m_map_library_scripts.find(name);
   if(iter != m_map_library_scripts.end())
   {
     return iter->second;

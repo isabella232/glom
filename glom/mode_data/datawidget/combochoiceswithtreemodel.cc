@@ -173,7 +173,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
       if(layout_choice_extra && !extra_values.empty())
       {
         guint model_index = 1; //0 is for the main field.
-        type_list_values::const_iterator iterValues = extra_values.begin();
+        const auto iterValues = extra_values.begin();
         for(const auto& extra_field : extra_fields)
         {
           if(model_index >= columns_count)

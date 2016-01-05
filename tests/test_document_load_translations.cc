@@ -43,7 +43,7 @@ typename T_Container::value_type get_titled(const T_Container& container, const 
   typedef typename T_Container::value_type type_sharedptr;
   type_sharedptr result;
 
-  typename T_Container::const_iterator iter =
+  const auto iter =
     Glom::Utils::find_if(container,
       [&title] (const typename T_Container::value_type& element)
       {

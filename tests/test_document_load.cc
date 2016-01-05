@@ -56,7 +56,7 @@ bool contains_value(const T_Container& container, const Glib::ustring& name)
 
 static bool get_group_named(const Glom::Document::type_list_groups& container, const Glib::ustring& name, Glom::GroupInfo& group_info)
 {
-  Glom::Document::type_list_groups::const_iterator iter =
+  const auto iter =
     Glom::Utils::find_if(container,
       [&name] (const Glom::GroupInfo& info)
       {
@@ -342,7 +342,7 @@ int main()
 
   Glom::GroupInfo group_info_accounts;
   g_assert(get_group_named(user_groups, "props_department", group_info_accounts));
-  Glom::GroupInfo::type_map_table_privileges::const_iterator iterFind =
+  const auto iterFind =
     group_info_accounts.m_map_privileges.find("scenes");
   const bool privileges_found = (iterFind != group_info_accounts.m_map_privileges.end());
   g_assert(privileges_found);

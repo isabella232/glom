@@ -99,7 +99,7 @@ Glib::ustring Utils::trim_whitespace(const Glib::ustring& text)
  //Find non-whitespace from back:
   Glib::ustring::size_type posBack = Glib::ustring::npos;
   pos = 0;
-  for(Glib::ustring::reverse_iterator iter = result.rbegin(); iter != result.rend(); ++iter)
+  for(auto iter = result.rbegin(); iter != result.rend(); ++iter)
   {
     if(!Glib::Unicode::isspace(*iter))
     {
@@ -241,7 +241,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
     return;
 
   //If this is a related relationship, add the first-level relationship too, so that the related relationship can be defined in terms of it:
-  type_list_relationships::const_iterator iterFind = find_if_uses_relationship_has_relationship(list_relationships, layout_item, true /* top_level_only */);
+  auto iterFind = find_if_uses_relationship_has_relationship(list_relationships, layout_item, true /* top_level_only */);
   if(iterFind == list_relationships.end()) //If the table is not yet in the list:
   {
     std::shared_ptr<UsesRelationship> uses_rel = std::make_shared<UsesRelationship>();
@@ -1486,7 +1486,7 @@ LayoutGroup::type_list_const_items Utils::get_layout_items_plus_primary_key(cons
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
   
-  const LayoutGroup::type_list_const_items::const_iterator iterFind =
+  const auto iterFind =
     find_if_layout_item_field_is_same_field(items, pk_layout_item);
   if(iterFind != items.end())
     return items; //It is already in the list:
@@ -1516,7 +1516,7 @@ LayoutGroup::type_list_items Utils::get_layout_items_plus_primary_key(const Layo
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
   
-  const LayoutGroup::type_list_items::const_iterator iterFind = 
+  const auto iterFind = 
     find_if_layout_item_field_is_same_field(items, pk_layout_item);
   if(iterFind != items.end())
     return items; //It is already in the list:

@@ -88,7 +88,7 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
       const auto extra_values = the_pair.second;
       if(layout_choice_extra && !extra_values.empty())
       {
-        type_list_values::const_iterator iterValues = extra_values.begin();
+        auto iterValues = extra_values.begin();
         for(const auto& item : extra_fields)
         {
           if(iterValues != extra_values.end()) {
