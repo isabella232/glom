@@ -21,6 +21,7 @@
 #include "config.h"
 
 #include <libglom/document/document.h>
+#include <libglom/algorithms_utils.h>
 #include <libglom/init.h>
 #include <libglom/db_utils.h>
 #include <giomm/file.h>
@@ -33,9 +34,7 @@
 template<typename T_Container, typename T_Value>
 bool contains(const T_Container& container, const T_Value& name)
 {
-  typename T_Container::const_iterator iter =
-    std::find(container.begin(), container.end(), name);
-  return iter != container.end();
+  return Glom::Utils::find_exists(container, name);
 }
 
 template<typename T_Container>

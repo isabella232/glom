@@ -20,6 +20,7 @@
 
 #include <libglom/document/document.h>
 #include <libglom/xml_utils.h>
+#include <libglom/algorithms_utils.h>
 #include <libglom/utils.h>
 //#include <libglom/data_structure/glomconversions.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>
@@ -2476,8 +2477,8 @@ void Document::load_after_translations(const xmlpp::Element* element, const std:
         item->set_title(translation, locale);
 
         //Remember any new translation locales in our cached list:
-        if(std::find(m_translation_available_locales.begin(), 
-          m_translation_available_locales.end(), locale) == m_translation_available_locales.end())
+        //TODO: Use a set instead?
+        if(!Utils::find_exists(m_translation_available_locales, locale))
         {
           m_translation_available_locales.push_back(locale);
         }

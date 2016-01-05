@@ -18,6 +18,7 @@
  * Boston, MA 02110-1301 USA.
  */
 
+#include <libglom/algorithms_utils.h>
 #include <libglom/data_structure/field.h>
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/glomconversions.h>
@@ -736,8 +737,7 @@ bool Field::get_conversion_possible(glom_field_type field_type_src, glom_field_t
   if(iterFind != m_map_conversions.end())
   {
     const auto list_conversions = iterFind->second;
-    auto iterConversionFind = std::find(list_conversions.begin(), list_conversions.end(), field_type_dest);
-    if(iterConversionFind != list_conversions.end())
+    if(Utils::find_exists(list_conversions, field_type_dest))
       return true; //Success: conversion found.
   }
   

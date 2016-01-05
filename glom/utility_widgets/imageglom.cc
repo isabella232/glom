@@ -23,6 +23,7 @@
 #include <glom/appwindow.h>
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
+#include <libglom/algorithms_utils.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/utility_widgets/dialog_image_load_progress.h>
 #include <glom/utility_widgets/dialog_image_save_progress.h>
@@ -327,11 +328,7 @@ void ImageGlom::show_image_data()
   //std::cout << "mime_type=" << mime_type << std::endl; 
   
   fill_evince_supported_mime_types();
-  const auto iterFind = 
-    std::find(m_evince_supported_mime_types.begin(),
-      m_evince_supported_mime_types.end(),
-      mime_type);
-  if(iterFind != m_evince_supported_mime_types.end())
+  if(Utils::find_exists(m_evince_supported_mime_types, mime_type))
   {
     use_evince = true;
   }  
@@ -401,11 +398,7 @@ void ImageGlom::show_image_data()
       
     bool use_gdkpixbuf = false;
     fill_gdkpixbuf_supported_mime_types();
-    const auto iter_find_mime_type = 
-      std::find(m_gdkpixbuf_supported_mime_types.begin(),
-        m_gdkpixbuf_supported_mime_types.end(),
-        mime_type);
-    if(iter_find_mime_type != m_gdkpixbuf_supported_mime_types.end())
+    if(Utils::find_exists(m_gdkpixbuf_supported_mime_types, mime_type))
     {
       use_gdkpixbuf = true;
     }

@@ -22,6 +22,7 @@
 #include <glom/appwindow.h>
 #include <gtkmm/alignment.h>
 #include <gtkmm/messagedialog.h>
+#include <libglom/algorithms_utils.h>
 #include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
 
@@ -182,7 +183,7 @@ void Box_Print_Layouts::save_to_document()
     {
       const auto name = m_AddDel.get_value(row, m_colName);
 
-      if(!name.empty() && std::find(listItems.begin(), listItems.end(), name) == listItems.end())
+      if(!name.empty() && !Utils::find_exists(listItems, name))
       {
         auto item = std::make_shared<PrintLayout>();
         item->set_name(name);

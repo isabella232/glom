@@ -33,6 +33,7 @@
 
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
+#include <libglom/algorithms_utils.h>
 #include <libglom/db_utils.h>
 #include <libglom/privs.h>
 #include <glom/python_embed/python_ui_callbacks.h>
@@ -1234,7 +1235,7 @@ void AppWindow::update_table_sensitive_ui()
     bool sensitive = has_table;
 
     const bool is_developer_item = 
-      (std::find(m_listDeveloperActions.begin(), m_listDeveloperActions.end(), action) != m_listDeveloperActions.end());
+      (Utils::find_exists(m_listDeveloperActions, action));
     if(is_developer_item)
       sensitive = sensitive && (userlevel == AppState::userlevels::DEVELOPER);
 

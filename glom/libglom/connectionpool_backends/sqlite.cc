@@ -18,9 +18,11 @@
  * Boston, MA 02110-1301 USA.
  */
 
+#include <libglom/algorithms_utils.h>
 #include <libglom/libglom_config.h>
 #include <libglom/connectionpool_backends/sqlite.h>
 #include <libglom/utils.h>
+#include <libglom/algorithms_utils.h>
 #include <libglom/db_utils.h>
 #include <giomm/file.h>
 #include <libgdamm/metastore.h>
@@ -205,7 +207,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     GdaMetaTableColumn* column = GDA_META_TABLE_COLUMN(item->data);
 
     // Don't add if field was removed
-    if(std::find(fields_removed.begin(), fields_removed.end(), column->column_name) != fields_removed.end())
+    if(Utils::find_exists(fields_removed, column->column_name))
       continue;
 #if 0
     {
@@ -300,33 +302,32 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   {
     // Add new fields to the table. Fields that have changed have already
     // been handled above.
-    auto removed_iter = std::find(fields_removed.begin(), fields_removed.end(), field->get_name());
-    if(removed_iter == fields_removed.end())
-    {
-      add_column_to_server_operation(operation, field, i++);
+    if(Utils::find_exists(fields_removed, field->get_name()))
+      continue;
 
-      if(!trans_fields.empty())
-        trans_fields += ',';
-      const auto default_value = field->get_default_value();
-      if(default_value.get_value_type() != G_TYPE_NONE && !default_value.is_null())
-        trans_fields += field->sql(default_value, connection);
-      else
+    add_column_to_server_operation(operation, field, i++);
+
+    if(!trans_fields.empty())
+      trans_fields += ',';
+    const auto default_value = field->get_default_value();
+    if(default_value.get_value_type() != G_TYPE_NONE && !default_value.is_null())
+      trans_fields += field->sql(default_value, connection);
+    else
+    {
+      switch(field->get_glom_type())
       {
-        switch(field->get_glom_type())
-        {
-        case Field::glom_field_type::NUMERIC:
-          trans_fields += '0';
-          break;
-        case Field::glom_field_type::BOOLEAN:
-          trans_fields += '0';
-          break;
-        case Field::glom_field_type::TEXT:
-          trans_fields += "''";
-          break;
-        default:
-          trans_fields += "NULL";
-          break;
-        }
+      case Field::glom_field_type::NUMERIC:
+        trans_fields += '0';
+        break;
+      case Field::glom_field_type::BOOLEAN:
+        trans_fields += '0';
+        break;
+      case Field::glom_field_type::TEXT:
+        trans_fields += "''";
+        break;
+      default:
+        trans_fields += "NULL";
+        break;
       }
     }
   }

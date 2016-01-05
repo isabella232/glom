@@ -19,6 +19,7 @@
  */
 
 #include "privs.h"
+#include <libglom/algorithms_utils.h>
 #include <libglom/standard_table_prefs_fields.h>
 #include <libglom/db_utils.h>
 #include <libglom/utils.h>
@@ -64,8 +65,7 @@ bool Privs::get_default_developer_user_exists(Document::HostingMode hosting_mode
   const auto default_user = get_default_developer_user_name(default_password, hosting_mode);
 
   const auto users = get_database_users();
-  type_vec_strings::const_iterator iterFind = std::find(users.begin(), users.end(), default_user);
-  if(iterFind != users.end())
+  if(Utils::find_exists(users, default_user))
     return true; //We assume that the password is what it should be and that it has developer rights.
 
   return false; //The default user is not there.
@@ -415,8 +415,7 @@ Privs::type_vec_strings Privs::get_groups_of_user(const Glib::ustring& user)
 bool Privs::get_user_is_in_group(const Glib::ustring& user, const Glib::ustring& group)
 {
   const auto users = get_database_users(group);
-  type_vec_strings::const_iterator iterFind = std::find(users.begin(), users.end(), user);
-  return (iterFind != users.end());
+  return Utils::find_exists(users, user);
 }
 
 bool Privs::on_privs_privileges_cache_timeout(const Glib::ustring& table_name)
@@ -467,9 +466,8 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
 
   //Is the user in the special developers group?
   /*
-  type_vec_strings developers = get_database_users(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
-  type_vec_strings::const_iterator iterFind = std::find(developers.begin(), developers.end(), current_user);
-  if(iterFind != developers.end())
+  const auto developers = get_database_users(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+  if(Utils::find_exists(developers, current_user))
   {
     result.m_developer = true;
   }

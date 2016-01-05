@@ -20,6 +20,7 @@
 
 #include "flowtable.h"
 #include "layoutwidgetbase.h"
+#include <libglom/algorithms_utils.h>
 #include <iostream>
 #include <gtkmm/eventbox.h>
 #include <gdkmm/window.h>
@@ -48,9 +49,7 @@ FlowTable::~FlowTable()
 
 const Gtk::Box* FlowTable::get_parent_hbox(const Gtk::Widget* first) const
 {
-  const type_const_list_widgets::const_iterator iter_find = 
-    std::find(m_list_first_widgets.begin(), m_list_first_widgets.end(), first);
-  if(iter_find == m_list_first_widgets.end())
+  if(!Utils::find_exists(m_list_first_widgets, first))
   {
     std::cerr << G_STRFUNC << ": first was not a first widget. first=" << first << std::endl;
     return nullptr; //It has no Box parent because it is not even a first widget.
@@ -66,9 +65,7 @@ const Gtk::Box* FlowTable::get_parent_hbox(const Gtk::Widget* first) const
     if(box_children.empty())
       continue;
 
-    const auto iter_find_box = 
-      std::find(box_children.begin(), box_children.end(), first);
-    if(iter_find_box != box_children.end())
+    if(Utils::find_exists(box_children, first))
       return hbox;
   }
 
@@ -216,9 +213,7 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
   const Gtk::Widget* child = nullptr;
       
   //Check that it is really a child widget:
-  const type_const_list_widgets::const_iterator iter_find = 
-    std::find(m_list_first_widgets.begin(), m_list_first_widgets.end(), &first);
-  if(iter_find == m_list_first_widgets.end())
+  if(!Utils::find_exists(m_list_first_widgets, &first))
     return false; //It is not a first widget.
     
   child = &first;

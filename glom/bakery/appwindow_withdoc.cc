@@ -19,6 +19,7 @@
 #include "config.h"
 #include <glom/bakery/appwindow_withdoc.h>
 #include <glom/bakery/dialog_offersave.h>
+#include <libglom/algorithms_utils.h>
 #include <libglom/utils.h>
 #include <giomm/file.h>
 #include <algorithm>
@@ -46,7 +47,7 @@ AppWindow_WithDoc::~AppWindow_WithDoc()
 //static
 void AppWindow_WithDoc::add_mime_type(const Glib::ustring& mime_type)
 {
-  if( std::find(m_mime_types.begin(), m_mime_types.end(), mime_type) == m_mime_types.end() )
+  if( !Glom::Utils::find_exists(m_mime_types, mime_type) )
     m_mime_types.push_back(mime_type);
 }
 

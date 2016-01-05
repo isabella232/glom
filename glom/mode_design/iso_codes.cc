@@ -23,6 +23,7 @@
 #include <glom/mode_design/iso_codes.h>
 #include <libxml++/libxml++.h>
 //#include <libglom/document/document.h>
+#include <libglom/algorithms_utils.h>
 #include <libglom/utils.h>
 #include <glibmm/fileutils.h>
 #include <glibmm/i18n.h>
@@ -138,7 +139,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     //Add the non-specific locales:
     for(const auto& id : list_ids_simple)
     {
-      if(std::find(list_ids.begin(), list_ids.end(), id) == list_ids.end())
+      if(!Utils::find_exists(list_ids, id))
         list_ids.push_back(id);
     }
 

@@ -21,6 +21,7 @@
 #include "config.h"
 #include <glom/mode_data/box_data_details.h>
 #include <glom/frame_glom.h> //For show_ok_dialog().
+#include <libglom/algorithms_utils.h>
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/relationship.h>
 #include <libglom/data_structure/glomconversions.h>
@@ -515,8 +516,7 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
   {
     //Is this field triggered by this relationship?
     const auto triggered_by = field->get_calculation_relationships();
-    Field::type_list_strings::const_iterator iterFind = std::find(triggered_by.begin(), triggered_by.end(), relationship_name);
-    if(iterFind != triggered_by.end()) //If it was found
+    if(Utils::find_exists(triggered_by, relationship_name))
     {
       if(field)
       {

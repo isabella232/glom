@@ -20,6 +20,7 @@
 
 #include <glom/box_reports.h>
 #include <glom/appwindow.h>
+#include <libglom/algorithms_utils.h>
 #include <libglom/utils.h> //For bold_message()).
 #include <gtkmm/alignment.h>
 #include <gtkmm/dialog.h>
@@ -194,7 +195,7 @@ void Box_Reports::save_to_document()
     {
       const auto report_name = m_AddDel.get_value(item, m_colReportName);
 
-      if(!report_name.empty() && std::find(listReports.begin(), listReports.end(), report_name) == listReports.end())
+      if(!report_name.empty() && !Utils::find_exists(listReports, report_name))
       {
         auto report = std::make_shared<Report>();
         report->set_name(report_name);

@@ -18,6 +18,7 @@
  * Boston, MA 02110-1301 USA.
  */
 
+#include <libglom/algorithms_utils.h>
 #include <libglom/db_utils.h>
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/glomconversions.h>
@@ -587,55 +588,56 @@ bool add_standard_groups(Document* document)
   if(gda_connection->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
   {
     const auto vecGroups = Glom::Privs::get_database_groups();
-    type_vec_strings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
-    if(iterFind == vecGroups.end())
-    {
-      //TODO: Escape and quote the user and group names here?
-      //The "SUPERUSER" here has no effect because SUPERUSER is not "inherited" to member users.
-      //But let's keep it to make the purpose of this group obvious.
-      bool test = query_execute_string(
-        DbUtils::build_query_create_group(GLOM_STANDARD_GROUP_NAME_DEVELOPER, true /* superuser */));
-      if(!test)
-      {
-        std::cerr << G_STRFUNC << ": CREATE GROUP failed when adding the developer group." << std::endl;
-        return false;
-      }
-
-      //Make sure the current user is in the developer group.
-      //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
-      const auto current_user = ConnectionPool::get_instance()->get_user();
-      const auto strQuery = build_query_add_user_to_group(GLOM_STANDARD_GROUP_NAME_DEVELOPER, current_user);
-      test = query_execute_string(strQuery);
-      if(!test)
-      {
-        std::cerr << G_STRFUNC << ": ALTER GROUP failed when adding the user to the developer group." << std::endl;
-        return false;
-      }
-
-      //std::cout << "DEBUG: Added user " << current_user << " to glom developer group on postgres server." << std::endl;
-
-      Privileges priv_devs;
-      priv_devs.m_view = true;
-      priv_devs.m_edit = true;
-      priv_devs.m_create = true;
-      priv_devs.m_delete = true;
-
-      for(const auto& table_info : document->get_tables(true /* including system prefs */))
-      {
-        if(table_info)
-        {
-          const auto table_name = table_info->get_name();
-          if(get_table_exists_in_database(table_name)) //Maybe the table has not been created yet.
-            Glom::Privs::set_table_privileges(devgroup, table_name, priv_devs, true /* developer privileges */);
-        }
-      }
-
-      //Make sure that it is in the database too:
-      GroupInfo group_info;
-      group_info.set_name(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
-      group_info.m_developer = true;
-      document->set_group(group_info);
+    if(Utils::find_exists(vecGroups, devgroup)) {
+      //The group already exists.
+      return true;
     }
+
+    //TODO: Escape and quote the user and group names here?
+    //The "SUPERUSER" here has no effect because SUPERUSER is not "inherited" to member users.
+    //But let's keep it to make the purpose of this group obvious.
+    bool test = query_execute_string(
+      DbUtils::build_query_create_group(GLOM_STANDARD_GROUP_NAME_DEVELOPER, true /* superuser */));
+    if(!test)
+    {
+      std::cerr << G_STRFUNC << ": CREATE GROUP failed when adding the developer group." << std::endl;
+      return false;
+    }
+
+    //Make sure the current user is in the developer group.
+    //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
+    const auto current_user = ConnectionPool::get_instance()->get_user();
+    const auto strQuery = build_query_add_user_to_group(GLOM_STANDARD_GROUP_NAME_DEVELOPER, current_user);
+    test = query_execute_string(strQuery);
+    if(!test)
+    {
+      std::cerr << G_STRFUNC << ": ALTER GROUP failed when adding the user to the developer group." << std::endl;
+      return false;
+    }
+
+    //std::cout << "DEBUG: Added user " << current_user << " to glom developer group on postgres server." << std::endl;
+
+    Privileges priv_devs;
+    priv_devs.m_view = true;
+    priv_devs.m_edit = true;
+    priv_devs.m_create = true;
+    priv_devs.m_delete = true;
+
+    for(const auto& table_info : document->get_tables(true /* including system prefs */))
+    {
+      if(table_info)
+      {
+        const auto table_name = table_info->get_name();
+        if(get_table_exists_in_database(table_name)) //Maybe the table has not been created yet.
+          Glom::Privs::set_table_privileges(devgroup, table_name, priv_devs, true /* developer privileges */);
+      }
+    }
+
+    //Make sure that it is in the database too:
+    GroupInfo group_info;
+    group_info.set_name(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+    group_info.m_developer = true;
+    document->set_group(group_info);
   }
   else
   {
@@ -668,8 +670,7 @@ bool add_groups_from_document(const Document* document)
     //std::cout << G_STRFUNC << ": DEBUG: group=" << name << std::endl;
 
     //See if the group exists in the database:
-    type_vec_strings::const_iterator iterFind = std::find(database_groups.begin(), database_groups.end(), name);
-    if(!name.empty() && iterFind == database_groups.end())
+    if(!name.empty() && !Utils::find_exists(database_groups, name))
     {
       if(!add_group(document, name, group.m_developer))
       {
@@ -710,8 +711,7 @@ bool set_table_privileges_groups_from_document(const Document* document)
     const auto group_name = group_info.get_name();
 
     //See if the group exists in the database:
-    type_vec_strings::const_iterator iterFind = std::find(database_groups.begin(), database_groups.end(), group_name);
-    if(!group_name.empty() && iterFind == database_groups.end())
+    if(!group_name.empty() && !Utils::find_exists(database_groups, group_name))
     {
       std::cerr << G_STRFUNC << ": group does not exist in the database. group name=" << group_name << std::endl;
       result = false;
@@ -1143,10 +1143,8 @@ bool get_table_exists_in_database(const Glib::ustring& table_name)
   //TODO_Performance
 
   const auto tables = get_table_names_from_database();
-  type_vec_strings::const_iterator iterFind = std::find(tables.begin(), tables.end(), table_name);
-  return (iterFind != tables.end());
+  return Utils::find_exists(tables, table_name);
 }
-
 
 bool create_table_with_default_fields(Document* document, const Glib::ustring& table_name)
 {
@@ -2198,7 +2196,7 @@ bool add_group(const Document* document, const Glib::ustring& group, bool superu
 
   //Let them edit the autoincrements too:
   //Do not fail if the autoincrements table does not yet exist, because this can happen during restoring of a backup.
-  if(std::find(table_list.begin(), table_list.end(), GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME) == table_list.end())
+  if(!Utils::find_exists(table_list, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME))
     return true;
     
   if(!Privs::set_table_privileges(group, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv))

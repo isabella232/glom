@@ -19,6 +19,7 @@
  */
 
 #include "tests/test_selfhosting_utils.h"
+#include <libglom/algorithms_utils.h>
 #include <libglom/init.h>
 #include <libglom/utils.h>
 #include <libglom/db_utils.h>
@@ -31,9 +32,7 @@
 template<typename T_Container, typename T_Value>
 bool contains(const T_Container& container, const T_Value& name)
 {
-  typename T_Container::const_iterator iter =
-    std::find(container.begin(), container.end(), name);
-  return iter != container.end();
+  return Glom::Utils::find_exists(container, name);
 }
 
 static bool test_add_group(const Glom::Document& document, const Glib::ustring& group)
