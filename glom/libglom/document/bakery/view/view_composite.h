@@ -20,6 +20,7 @@
 #define GLOM_BAKERY_VIEW_COMPOSITE_H
 
 #include <libglom/document/bakery/view/view.h>
+#include <libglom/algorithms_utils.h>
 #include <vector>
 #include <algorithm> //For std::find
 
@@ -58,7 +59,7 @@ public:
 
   virtual void remove_view(type_view* pView)
   {
-    auto iter = std::find(m_vecViews.begin(), m_vecViews.end(), pView);
+    auto iter = Glom::Utils::find(m_vecViews, pView);
     if(iter != m_vecViews.end())
       m_vecViews.erase(iter);
   }

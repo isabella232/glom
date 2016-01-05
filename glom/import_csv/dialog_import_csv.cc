@@ -649,7 +649,7 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
     {
       std::shared_ptr<Field> field = (*field_iter)[m_field_columns.m_col_field];
       // Check whether another column is already using that field
-      auto vec_field_iter = std::find(m_fields.begin(), m_fields.end(), field);
+      auto vec_field_iter = Utils::find(m_fields, field);
       // Reset the old column since two different columns cannot be imported into the same field
       if(vec_field_iter != m_fields.end()) *vec_field_iter = std::shared_ptr<Field>();
 

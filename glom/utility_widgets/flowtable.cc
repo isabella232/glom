@@ -89,8 +89,7 @@ void FlowTable::delete_and_forget_hbox(Gtk::Box* hbox)
   //if(hbox->get_parent() == this)
   
   //Check that it is in our list of hboxes:
-  const auto iter = std::find(
-    m_list_hboxes.begin(), m_list_hboxes.end(), hbox);
+  const auto iter = Utils::find(m_list_hboxes, hbox);
   if(iter == m_list_hboxes.end())
   {
     std::cerr << G_STRFUNC << ": hbox=" << hbox << " is not in our list of hboxes." << std::endl;

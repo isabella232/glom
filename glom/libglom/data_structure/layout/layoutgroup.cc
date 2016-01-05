@@ -21,6 +21,7 @@
 #include <libglom/data_structure/layout/layoutgroup.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <libglom/data_structure/layout/layoutitem_portal.h>
+#include <libglom/algorithms_utils.h>
 #include <glibmm/i18n.h>
 #include <iostream> 
 
@@ -147,7 +148,7 @@ void LayoutGroup::add_item(const std::shared_ptr<LayoutItem>& item, const std::s
 {
   //Find the position of the item.
   auto unconst = std::const_pointer_cast<LayoutItem>(position);
-  auto iter = std::find(m_list_items.begin(), m_list_items.end(), unconst);
+  auto iter = Utils::find(m_list_items, unconst);
 
   //std::vector::insert() adds before rather than after:
   // jhs: We want to add after rather than before - at least for dnd
@@ -156,10 +157,10 @@ void LayoutGroup::add_item(const std::shared_ptr<LayoutItem>& item, const std::s
   m_list_items.insert(iter, item);
 }
 
-void LayoutGroup::remove_item (const std::shared_ptr<LayoutItem>& item)
+void LayoutGroup::remove_item(const std::shared_ptr<LayoutItem>& item)
 {
   auto unconst = std::const_pointer_cast<LayoutItem>(item);
-  auto iter = std::find(m_list_items.begin(), m_list_items.end(), unconst);
+  auto iter = Utils::find(m_list_items, unconst);
   m_list_items.erase(iter);
 }
 

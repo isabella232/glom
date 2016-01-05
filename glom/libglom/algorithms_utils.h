@@ -37,6 +37,21 @@ find_exists(const T_container& container, const T_element& element)
   return std::find(std::begin(container), end, element) != end;
 }
 
+
+template<typename T_container, typename T_element>
+typename T_container::iterator
+find(T_container& container, const T_element& element)
+{
+  return std::find(std::begin(container), std::end(container), element);
+}
+
+template<typename T_container, typename T_element>
+typename T_container::const_iterator
+find(const T_container& container, const T_element& element)
+{
+  return std::find(std::begin(container), std::end(container), element);
+}
+
 } //namespace Utils
 
 } //namespace Glom
