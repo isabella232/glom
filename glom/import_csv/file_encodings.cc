@@ -21,7 +21,7 @@
 //#include "config.h" //For ISO_CODES_PREFIX.
 
 #include <glom/import_csv/file_encodings.h>
-#include <algorithm>
+#include <libglom/algorithm_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -108,12 +108,11 @@ Glib::ustring get_name_of_charset(const Glib::ustring& charset)
   //Make sure that the list is full:
   get_list_of_encodings();
 
-  type_list_encodings::const_iterator iter = 
-    std::find_if(list_encodings.begin(), list_encodings.end(),
+  const auto iter =
+    Utils::find_if(list_encodings,
       [&charset] (const Encoding& encoding) {
         return encoding.get_charset() == charset;
-    }
-  );
+    });
 
   if(iter != list_encodings.end())
     return iter->get_name();

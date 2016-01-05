@@ -59,7 +59,7 @@ bool contains_value(const T_Container& container, const Glib::ustring& name)
 static bool get_group_named(const Glom::Document::type_list_groups& container, const Glib::ustring& name, Glom::GroupInfo& group_info)
 {
   Glom::Document::type_list_groups::const_iterator iter =
-    std::find_if(container.begin(), container.end(),
+    Glom::Utils::find_if(container,
       [&name] (const Glom::GroupInfo& info)
       {
         return info.get_name() == name;

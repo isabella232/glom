@@ -27,6 +27,7 @@
 #include <libglom/data_structure/numeric_format.h>
 #include <libglom/data_structure/relationship.h>
 #include <libglom/data_structure/layout/custom_title.h>
+#include <libglom/algorithms_utils.h>
 
 namespace Glom
 {
@@ -168,7 +169,7 @@ template
 <typename T_Container>
 auto find_if_layout_item_field_is_same_field(T_Container& container, const std::shared_ptr<const LayoutItem_Field>& layout_item) -> decltype(container.begin())
 {
-  return std::find_if(container.begin(), container.end(),
+  return Utils::find_if(container,
     [&layout_item](const typename T_Container::value_type& element)
     {
       //Assume that element is a shared_ptr<>.

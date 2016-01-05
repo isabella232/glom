@@ -258,7 +258,7 @@ template
 <typename T_Container>
 auto find_if_layout(T_Container& container, const Glib::ustring& layout_name, const Glib::ustring& layout_platform) -> decltype(container.begin())
 {
-  return std::find_if(container.begin(), container.end(),
+  return Utils::find_if(container,
     [&layout_name, &layout_platform](const typename T_Container::value_type& element)
     {
       return (element.m_layout_name == layout_name) &&
@@ -4305,7 +4305,7 @@ template
 <typename T_Container>
 auto find_if_item_and_hint_equal(T_Container& container, const Document::pair_translatable_item_and_hint& item_and_hint) -> decltype(container.begin())
 {
-  return std::find_if(container.begin(), container.end(),
+  return Utils::find_if(container,
     [&item_and_hint](const typename T_Container::value_type& element)
     {
       if(!element.first && item_and_hint.first)

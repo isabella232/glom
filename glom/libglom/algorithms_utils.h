@@ -52,6 +52,21 @@ find(const T_container& container, const T_element& element)
   return std::find(std::begin(container), std::end(container), element);
 }
 
+
+template<typename T_container, typename T_callable>
+typename T_container::iterator
+find_if(T_container& container, const T_callable& callable)
+{
+  return std::find_if(std::begin(container), std::end(container), callable);
+}
+
+template<typename T_container, typename T_callable>
+typename T_container::const_iterator
+find_if(const T_container& container, const T_callable& callable)
+{
+  return std::find_if(std::begin(container), std::end(container), callable);
+}
+
 } //namespace Utils
 
 } //namespace Glom

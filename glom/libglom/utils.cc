@@ -62,7 +62,7 @@ auto find_if_uses_relationship_has_relationship(T_Container& container, const st
   if(first_level_only)
     related_relationship_name = Glib::ustring();
 
-  return std::find_if(container.begin(), container.end(),
+  return Utils::find_if(container,
     [&relationship_name, &related_relationship_name](const typename T_Container::value_type& element)
     {
       //Assume that element is a shared_ptr<>.
