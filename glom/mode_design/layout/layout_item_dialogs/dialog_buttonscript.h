@@ -42,7 +42,6 @@ public:
   static const bool glade_developer;
   
   Dialog_ButtonScript(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_ButtonScript();
 
   void set_script(const std::shared_ptr<const LayoutItem_Button>& script, const Glib::ustring& table_name);
   std::shared_ptr<LayoutItem_Button> get_script() const;

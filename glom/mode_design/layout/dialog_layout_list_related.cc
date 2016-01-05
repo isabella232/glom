@@ -128,11 +128,6 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
     m_label_table_title->hide(); // We don't use this (it's from the base class).
 }
 
-Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
-{
-}
-
-
 void Dialog_Layout_List_Related::init_with_portal(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const std::shared_ptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table, bool for_print_layout)
 {
   m_for_print_layout = for_print_layout;

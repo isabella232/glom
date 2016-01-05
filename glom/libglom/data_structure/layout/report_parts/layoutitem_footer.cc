@@ -33,10 +33,6 @@ LayoutItem_Footer::LayoutItem_Footer(const LayoutItem_Footer& src)
 {
 }
 
-LayoutItem_Footer::~LayoutItem_Footer()
-{
-}
-
 LayoutItem* LayoutItem_Footer::clone() const
 {
   return new LayoutItem_Footer(*this);

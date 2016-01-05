@@ -34,10 +34,6 @@ LayoutWidgetBase::LayoutWidgetBase()
 {
 }
 
-LayoutWidgetBase::~LayoutWidgetBase()
-{
-}
-
 void LayoutWidgetBase::set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
 {
   m_pLayoutItem = layout_item;

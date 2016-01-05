@@ -41,10 +41,6 @@ CanvasTableMovable::CanvasTableMovable()
   signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_leave_notify_event));
 }
 
-CanvasTableMovable::~CanvasTableMovable()
-{
-}
-
 Glib::RefPtr<CanvasTableMovable> CanvasTableMovable::create()
 {
   return Glib::RefPtr<CanvasTableMovable>(new CanvasTableMovable());

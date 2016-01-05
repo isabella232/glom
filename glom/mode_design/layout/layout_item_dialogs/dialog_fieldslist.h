@@ -40,8 +40,6 @@ public:
   static const bool glade_developer;
 
   Dialog_FieldsList(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_FieldsList();
-
 
   void set_fields(const Glib::ustring& table_name, const LayoutGroup::type_list_items& table_fields);
   LayoutGroup::type_list_items get_fields() const;

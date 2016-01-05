@@ -72,10 +72,6 @@ Dialog_ScriptLibrary::Dialog_ScriptLibrary(BaseObjectType* cobject, const Glib::
   show_all_children();
 }
 
-Dialog_ScriptLibrary::~Dialog_ScriptLibrary()
-{
-}
-
 void Dialog_ScriptLibrary::on_button_check()
 {
   const auto script = m_text_view->get_buffer()->get_text();

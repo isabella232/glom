@@ -53,7 +53,6 @@ class Base_DB :
 {
 public:
   Base_DB();
-  virtual ~Base_DB();
 
   /// Specify the structure of what will be shown, and fill it.
   bool init_db_details();

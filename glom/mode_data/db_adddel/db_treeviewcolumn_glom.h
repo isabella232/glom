@@ -30,7 +30,6 @@ class DbTreeViewColumnGlom : public Gtk::TreeViewColumn
 {
 public:
   DbTreeViewColumnGlom(const Glib::ustring& title, Gtk::CellRenderer& cell);
-  virtual ~DbTreeViewColumnGlom();
 
   Glib::ustring get_column_id() const;
   void set_column_id(const Glib::ustring& value);

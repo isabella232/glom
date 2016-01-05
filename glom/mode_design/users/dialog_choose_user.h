@@ -36,7 +36,6 @@ public:
   static const bool glade_developer;
 
   Dialog_ChooseUser(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_ChooseUser();
 
   typedef std::vector<Glib::ustring> type_vec_strings;
   void set_user_list(const type_vec_strings& users);

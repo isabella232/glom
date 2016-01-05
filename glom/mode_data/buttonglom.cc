@@ -43,9 +43,6 @@ ButtonGlom::ButtonGlom()
   init();
 }
 
-ButtonGlom::~ButtonGlom()
-{
-}
 
 void ButtonGlom::init()
 {

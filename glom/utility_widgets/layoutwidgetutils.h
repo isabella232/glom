@@ -35,7 +35,6 @@ class LayoutWidgetUtils : public LayoutWidgetBase
 {
 public:
   LayoutWidgetUtils();
-  virtual ~LayoutWidgetUtils();
   
 protected:
   void setup_util_menu(Gtk::Widget* widget);

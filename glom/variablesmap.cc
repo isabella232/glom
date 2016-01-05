@@ -32,11 +32,6 @@ VariablesMap::VariablesMap(const Glib::RefPtr<Gtk::Builder>& builder)
 {
 }
 
-VariablesMap::~VariablesMap()
-{
-}
-
-
 void VariablesMap::connect_widget(const Glib::ustring& widget_name, bool& variable)
 {
   Gtk::ToggleButton* pToggleButton = nullptr;

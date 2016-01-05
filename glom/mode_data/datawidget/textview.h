@@ -44,7 +44,6 @@ class TextView
 public:
   explicit TextView(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   explicit TextView(Field::glom_field_type glom_type = Field::glom_field_type::TEXT);
-  virtual ~TextView();
 
   void set_glom_type(Field::glom_field_type glom_type);
 

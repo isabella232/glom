@@ -45,10 +45,6 @@ Dialog_FieldSummary::Dialog_FieldSummary(BaseObjectType* cobject, const Glib::Re
   show_all_children();
 }
 
-Dialog_FieldSummary::~Dialog_FieldSummary()
-{
-}
-
 void Dialog_FieldSummary::set_item(const std::shared_ptr<const LayoutItem_FieldSummary>& item, const Glib::ustring& table_name)
 {
   m_layout_item = glom_sharedptr_clone(item);

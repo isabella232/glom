@@ -67,10 +67,6 @@ Canvas_PrintLayout::Canvas_PrintLayout()
   set_page_setup(page_setup);
 }
 
-Canvas_PrintLayout::~Canvas_PrintLayout()
-{
-}
-
 void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const std::shared_ptr<PrintLayout>& print_layout)
 {
   m_table_name = table_name;

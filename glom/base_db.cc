@@ -87,10 +87,6 @@ Base_DB::Base_DB()
   //m_pDocument = nullptr;
 }
 
-Base_DB::~Base_DB()
-{
-}
-
 bool Base_DB::init_db_details()
 {
   return fill_from_database();

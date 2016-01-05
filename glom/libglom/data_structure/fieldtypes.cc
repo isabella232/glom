@@ -114,10 +114,6 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
   m_mapFallbackTypes[G_TYPE_DATE] = G_TYPE_STRING;
 }
 
-FieldTypes::~FieldTypes()
-{
-}
-
 void FieldTypes::fill_with_default_data()
 {
   //This is based on the values normally retrieved from the database server,

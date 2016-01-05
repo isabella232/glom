@@ -37,8 +37,4 @@ Dialog_NewGroup::Dialog_NewGroup(BaseObjectType* cobject, const Glib::RefPtr<Gtk
   //m_entry_name->signal_changed().connect( sigc::mem_fun(*this, &Dialog_NewGroup::on_entry_name_changed) );
 }
 
-Dialog_NewGroup::~Dialog_NewGroup()
-{
-}
-
 } //namespace Glom

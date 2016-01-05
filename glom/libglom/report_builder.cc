@@ -38,10 +38,6 @@ ReportBuilder::ReportBuilder(const std::locale& locale)
   m_locale_id = Utils::locale_simplify(locale.name());
 }
 
-ReportBuilder::~ReportBuilder()
-{
-}
-
 bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::Element& parent_node, const std::shared_ptr<LayoutGroup>& group)
 {
   //Add XML node:

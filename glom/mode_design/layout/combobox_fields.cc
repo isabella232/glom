@@ -48,11 +48,6 @@ ComboBox_Fields::ComboBox_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gtk
   set_row_separator_func(sigc::mem_fun(*this, &ComboBox_Fields::on_row_separator));
 }
 
-ComboBox_Fields::~ComboBox_Fields()
-{
-
-}
-
 std::shared_ptr<Field> ComboBox_Fields::get_selected_field() const
 {
   auto iter = get_active();

@@ -56,7 +56,6 @@ class Document : public GlomBakery::Document_XML
 {
 public:
   Document();
-  virtual ~Document();
 
   void set_modified(bool value = true) override;
 

@@ -36,7 +36,6 @@ class LayoutWidgetBase : virtual public sigc::trackable
 {
 public:
   LayoutWidgetBase();
-  virtual ~LayoutWidgetBase();
 
   ///Takes ownership.
   virtual void set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name);

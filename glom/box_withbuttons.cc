@@ -65,10 +65,6 @@ Box_WithButtons::Box_WithButtons(BaseObjectType* cobject)
 {
 }
 
-Box_WithButtons::~Box_WithButtons()
-{
-}
-
 void Box_WithButtons::on_Button_Cancel()
 {
   //Tell the parent dialog that the user has clicked [Cancel]:

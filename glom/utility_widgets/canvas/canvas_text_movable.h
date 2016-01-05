@@ -33,7 +33,6 @@ class CanvasTextMovable
 {
 private:
   explicit CanvasTextMovable(const Glib::ustring& string = Glib::ustring(), double x = 0.0, double y = 0.0, double width = 0.0, Goocanvas::AnchorType anchor = Goocanvas::ANCHOR_NORTH_WEST);
-  virtual ~CanvasTextMovable();
 
   void init();
 

@@ -46,7 +46,6 @@ class CanvasLayoutItem : public CanvasGroupResizable
 {
 private:
   CanvasLayoutItem();
-  virtual ~CanvasLayoutItem();
 
 public:
 

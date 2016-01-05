@@ -45,12 +45,6 @@ ComboEntry_BorderWidth::ComboEntry_BorderWidth(BaseObjectType* cobject, const Gl
   set_entry_text_column(m_model_columns.m_value);
 }
 
-
-ComboEntry_BorderWidth::~ComboEntry_BorderWidth()
-{
-
-}
-
 Glib::ustring ComboEntry_BorderWidth::string_for_number(double number)
 {
   std::stringstream the_stream;

@@ -35,10 +35,6 @@ LayoutItem_Button::LayoutItem_Button(const LayoutItem_Button& src)
 {
 }
 
-LayoutItem_Button::~LayoutItem_Button()
-{
-}
-
 LayoutItem* LayoutItem_Button::clone() const
 {
   return new LayoutItem_Button(*this);

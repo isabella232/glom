@@ -39,7 +39,6 @@ public:
   LayoutItem_VerticalGroup(LayoutItem_VerticalGroup&& src) = delete;
   LayoutItem_VerticalGroup& operator=(const LayoutItem_VerticalGroup& src);
   LayoutItem_VerticalGroup& operator=(LayoutItem_VerticalGroup&& src) = delete;
-  virtual ~LayoutItem_VerticalGroup();
 
   LayoutItem* clone() const override;
 

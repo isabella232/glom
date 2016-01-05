@@ -35,10 +35,6 @@ PlaceHolder::PlaceHolder(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
 {
 }
 
-PlaceHolder::~PlaceHolder()
-{
-}
-
 void PlaceHolder::add(Gtk::Widget& child)
 {
   remove();

@@ -46,10 +46,6 @@ Dialog_ChooseDate::Dialog_ChooseDate(BaseObjectType* cobject, const Glib::RefPtr
   m_calendar->signal_day_selected_double_click().connect(sigc::mem_fun(*this, &Dialog_ChooseDate::on_day_selected_double_click));
 }
 
-Dialog_ChooseDate::~Dialog_ChooseDate()
-{
-}
-
 void Dialog_ChooseDate::set_date_chosen(const Gnome::Gda::Value& value)
 {
   if(value.get_value_type() == G_TYPE_DATE) //Otherwise GtkCalendar defaults to the current (today's) date.

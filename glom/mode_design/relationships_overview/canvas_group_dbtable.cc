@@ -104,10 +104,6 @@ CanvasGroupDbTable::CanvasGroupDbTable(const Glib::ustring& table_name, const Gl
   }
 }
 
-CanvasGroupDbTable::~CanvasGroupDbTable()
-{
-}
-
 Glib::RefPtr<CanvasGroupDbTable> CanvasGroupDbTable::create(const Glib::ustring& table_name, const Glib::ustring& table_title, const Document::type_vec_fields& fields, double x, double y)
 {
   return Glib::RefPtr<CanvasGroupDbTable>(new CanvasGroupDbTable(table_name, table_title, fields, x, y));

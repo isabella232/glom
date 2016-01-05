@@ -38,10 +38,6 @@ Dialog_CopyTranslation::Dialog_CopyTranslation(BaseObjectType* cobject, const Gl
     m_combo_locale->set_selected_locale(AppWindow::get_current_locale());
 }
 
-Dialog_CopyTranslation::~Dialog_CopyTranslation()
-{
-}
-
 Glib::ustring Dialog_CopyTranslation::get_locale() const
 {
   return m_combo_locale->get_selected_locale();

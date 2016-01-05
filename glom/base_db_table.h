@@ -35,7 +35,6 @@ class Base_DB_Table : public Base_DB
 {
 public: 
   Base_DB_Table();
-  virtual ~Base_DB_Table();
 
   bool init_db_details(const Glib::ustring& table_name);
 

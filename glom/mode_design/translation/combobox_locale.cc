@@ -55,12 +55,6 @@ ComboBox_Locale::ComboBox_Locale(BaseObjectType* cobject, const Glib::RefPtr<Gtk
   add_attribute(cell->property_text(), m_model_columns.m_name);
 }
 
-
-ComboBox_Locale::~ComboBox_Locale()
-{
-
-}
-
 Glib::ustring ComboBox_Locale::get_selected_locale() const
 {
   auto iter = get_active();

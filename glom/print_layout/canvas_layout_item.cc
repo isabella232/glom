@@ -49,10 +49,6 @@ CanvasLayoutItem::CanvasLayoutItem()
   signal_resized().connect( sigc::mem_fun(*this, &CanvasLayoutItem::on_resized) );
 }
 
-CanvasLayoutItem::~CanvasLayoutItem()
-{
-}
-
 Glib::RefPtr<CanvasLayoutItem> CanvasLayoutItem::create()
 {
   return Glib::RefPtr<CanvasLayoutItem>(new CanvasLayoutItem());

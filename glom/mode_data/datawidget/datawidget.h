@@ -45,7 +45,6 @@ class DataWidget
 {
 public:
   explicit DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document* document);
-  virtual ~DataWidget();
 
   Gtk::Label* get_label();
   const Gtk::Label* get_label() const;

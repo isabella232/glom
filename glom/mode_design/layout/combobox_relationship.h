@@ -36,7 +36,6 @@ class ComboBox_Relationship : public Gtk::ComboBox
 {
 public:
   ComboBox_Relationship(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~ComboBox_Relationship();
 
   typedef std::vector< std::shared_ptr<Relationship> > type_vec_relationships;
   void set_relationships(const type_vec_relationships& relationship);

@@ -48,8 +48,6 @@ public:
   ///For use with libglademm's get_widget_derived():
   explicit Box_WithButtons(BaseObjectType* cobject);
 
-  virtual ~Box_WithButtons();
-
   Gtk::Window* get_app_window();
   const Gtk::Window* get_app_window() const;
 

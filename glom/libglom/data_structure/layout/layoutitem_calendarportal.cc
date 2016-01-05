@@ -34,15 +34,10 @@ LayoutItem_CalendarPortal::LayoutItem_CalendarPortal(const LayoutItem_CalendarPo
 {
 }
 
-LayoutItem_CalendarPortal::~LayoutItem_CalendarPortal()
-{
-}
-
 LayoutItem* LayoutItem_CalendarPortal::clone() const
 {
   return new LayoutItem_CalendarPortal(*this);
 }
-
 
 LayoutItem_CalendarPortal& LayoutItem_CalendarPortal::operator=(const LayoutItem_CalendarPortal& src)
 {

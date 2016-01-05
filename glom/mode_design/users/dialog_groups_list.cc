@@ -112,10 +112,6 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
   show_all_children();
 }
 
-Dialog_GroupsList::~Dialog_GroupsList()
-{
-}
-
 /*
 void Dialog_GroupsList::set_document(const Glib::ustring& layout, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
 {

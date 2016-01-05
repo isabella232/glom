@@ -32,7 +32,6 @@ class AddDel_WithButtons : public AddDel
 public: 
   AddDel_WithButtons();
   AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~AddDel_WithButtons();
 
   void set_allow_add(bool val = true) override;
   void set_allow_delete(bool val = true) override;

@@ -37,10 +37,6 @@ LayoutItem_Image::LayoutItem_Image(const LayoutItem_Image& src)
 {
 }
 
-LayoutItem_Image::~LayoutItem_Image()
-{
-}
-
 LayoutItem* LayoutItem_Image::clone() const
 {
   return new LayoutItem_Image(*this);

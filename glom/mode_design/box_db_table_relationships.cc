@@ -67,10 +67,6 @@ void Box_DB_Table_Relationships::init()
   show_all_children();
 }
 
-Box_DB_Table_Relationships::~Box_DB_Table_Relationships()
-{
-}
-
 bool Box_DB_Table_Relationships::fill_from_database()
 {
   BusyCursor busy_cursor(get_app_window());

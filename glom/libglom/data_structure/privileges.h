@@ -35,7 +35,6 @@ public:
   Privileges();
   Privileges(const Privileges& src);
   Privileges(Privileges&& src);
-  virtual ~Privileges();
 
   Privileges& operator=(const Privileges& src);
   Privileges& operator=(Privileges&& src);

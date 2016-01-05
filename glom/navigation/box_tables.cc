@@ -66,10 +66,6 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   show_all_children();
 }
 
-Box_Tables::~Box_Tables()
-{
-}
-
 void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const TableInfo>& table_info)
 {
   if(!table_info)

@@ -70,10 +70,6 @@ void TextView::init()
   m_TextView.signal_focus_out_event().connect(sigc::mem_fun(*this, &TextView::on_textview_focus_out_event), false);
 }
 
-TextView::~TextView()
-{
-}
-
 void TextView::set_glom_type(Field::glom_field_type glom_type)
 {
   m_glom_type = glom_type;

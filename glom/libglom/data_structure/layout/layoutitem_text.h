@@ -42,7 +42,6 @@ public:
   LayoutItem_Text(LayoutItem_Text&& src) = delete;
   LayoutItem_Text& operator=(const LayoutItem_Text& src);
   LayoutItem_Text& operator=(LayoutItem_Text&& src) = delete;
-  virtual ~LayoutItem_Text();
 
   LayoutItem* clone() const override;
 

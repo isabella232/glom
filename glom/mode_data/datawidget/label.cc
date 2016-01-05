@@ -50,10 +50,6 @@ Label::Label(const Glib::ustring& label, Gtk::Align xalign, Gtk::Align yalign, b
   init();
 }
 
-Label::~Label()
-{
-}
-
 void Label::init()
 {
   setup_util_menu(this);

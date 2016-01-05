@@ -51,10 +51,6 @@ LayoutItem_Portal::LayoutItem_Portal(const LayoutItem_Portal& src)
 {
 }
 
-LayoutItem_Portal::~LayoutItem_Portal()
-{
-}
-
 LayoutItem* LayoutItem_Portal::clone() const
 {
   return new LayoutItem_Portal(*this);

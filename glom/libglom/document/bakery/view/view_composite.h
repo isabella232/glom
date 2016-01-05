@@ -38,10 +38,6 @@ public:
   {
   }
 
-  virtual ~View_Composite()
-  {
-  }
-
   typedef View<T_Document> type_view;
 
   virtual void add_view(type_view* pView)

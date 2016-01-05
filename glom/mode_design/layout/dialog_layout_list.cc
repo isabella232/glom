@@ -57,9 +57,4 @@ Dialog_Layout_List::Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefP
     m_treeview_column_column_width->set_visible();
 }
 
-Dialog_Layout_List::~Dialog_Layout_List()
-{
-}
-
-
 } //namespace Glom

@@ -33,7 +33,6 @@ class CanvasTableMovable
 {
 private:
   CanvasTableMovable();
-  virtual ~CanvasTableMovable();
 
 public:
   static Glib::RefPtr<CanvasTableMovable> create();

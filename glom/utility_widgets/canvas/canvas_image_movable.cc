@@ -45,10 +45,6 @@ CanvasImageMovable::CanvasImageMovable(double x, double y)
   init();
 }
 
-CanvasImageMovable::~CanvasImageMovable()
-{
-}
-
 void CanvasImageMovable::init()
 {
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));

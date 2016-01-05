@@ -42,10 +42,6 @@ CheckButton::CheckButton(const Glib::ustring& title)
   init();
 }
 
-CheckButton::~CheckButton()
-{
-}
-
 void CheckButton::init()
 {
 }

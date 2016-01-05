@@ -28,10 +28,6 @@ DbTreeViewColumnGlom::DbTreeViewColumnGlom(const Glib::ustring& title, Gtk::Cell
 {
 }
 
-DbTreeViewColumnGlom::~DbTreeViewColumnGlom()
-{
-}
-
 Glib::ustring DbTreeViewColumnGlom::get_column_id() const
 {
   return m_column_id;

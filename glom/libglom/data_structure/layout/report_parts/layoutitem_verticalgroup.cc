@@ -33,10 +33,6 @@ LayoutItem_VerticalGroup::LayoutItem_VerticalGroup(const LayoutItem_VerticalGrou
 {
 }
 
-LayoutItem_VerticalGroup::~LayoutItem_VerticalGroup()
-{
-}
-
 LayoutItem* LayoutItem_VerticalGroup::clone() const
 {
   return new LayoutItem_VerticalGroup(*this);

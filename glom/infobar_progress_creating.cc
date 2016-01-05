@@ -36,10 +36,6 @@ Infobar_ProgressCreating::Infobar_ProgressCreating(BaseObjectType* cobject, cons
   builder->get_widget("label_message", m_label_message);
 }
 
-Infobar_ProgressCreating::~Infobar_ProgressCreating()
-{
-}
-
 void Infobar_ProgressCreating::pulse()
 {
   m_progress->pulse();

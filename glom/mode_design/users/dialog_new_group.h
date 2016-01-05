@@ -35,7 +35,6 @@ public:
   static const bool glade_developer;
 
   Dialog_NewGroup(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_NewGroup();
 
   Gtk::Entry* m_entry_name;
 };

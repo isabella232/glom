@@ -42,7 +42,6 @@ public:
   static const bool glade_developer;
 
   Dialog_FieldSummary(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_FieldSummary();
 
   /**
    * @param item The starting information.

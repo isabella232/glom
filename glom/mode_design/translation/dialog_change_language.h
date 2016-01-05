@@ -38,7 +38,6 @@ public:
   static const bool glade_developer;
 
   Dialog_ChangeLanguage(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_ChangeLanguage();
 
   Glib::ustring get_locale() const;
 

@@ -42,7 +42,6 @@ class CheckButton
 {
 public:
   explicit CheckButton(const Glib::ustring& title = Glib::ustring());
-  virtual ~CheckButton();
 
   void set_value(const Gnome::Gda::Value& value) override;
   Gnome::Gda::Value get_value() const override;    

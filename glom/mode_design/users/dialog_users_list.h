@@ -45,7 +45,6 @@ public:
   /** Call fill_list() after instantiating this class.
    */
   Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_UsersList();
 
   /** Fill the list of users.
    */

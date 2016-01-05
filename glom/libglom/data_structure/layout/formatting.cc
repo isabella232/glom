@@ -61,10 +61,6 @@ Formatting::Formatting(const Formatting& src)
 {
 }
 
-Formatting::~Formatting()
-{
-}
-
 bool Formatting::operator==(const Formatting& src) const
 {
   return UsesRelationship::operator==(src) &&

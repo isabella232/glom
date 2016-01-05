@@ -56,11 +56,6 @@ FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras(Gtk::Window& parent, 
   create_child_widgets();
 }
 
-FileChooserDialog_SaveExtras::~FileChooserDialog_SaveExtras()
-{
-}
-
-
 void FileChooserDialog_SaveExtras::set_extra_message(const Glib::ustring& message)
 {
   m_label_extra_message.set_text(message);

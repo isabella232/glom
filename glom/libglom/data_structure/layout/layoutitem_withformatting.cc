@@ -34,10 +34,6 @@ LayoutItem_WithFormatting::LayoutItem_WithFormatting(const LayoutItem_WithFormat
 {
 }
 
-LayoutItem_WithFormatting::~LayoutItem_WithFormatting()
-{
-}
-
 bool LayoutItem_WithFormatting::operator==(const LayoutItem_WithFormatting& src) const
 {
   auto result = LayoutItem::operator==(src) && 

@@ -34,10 +34,6 @@ CellRendererList::CellRendererList()
   property_editable() = true; //It would be useless if we couldn't edit it.
 }
 
-CellRendererList::~CellRendererList()
-{
-}
-
 void CellRendererList::remove_all_list_items()
 {
   if(m_refModel)

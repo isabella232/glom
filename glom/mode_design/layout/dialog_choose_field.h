@@ -39,7 +39,6 @@ public:
   static const bool glade_developer;
   
   Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_ChooseField();
 
   /**
    * @param document The document, so that the dialog can load the previous layout, and save changes.

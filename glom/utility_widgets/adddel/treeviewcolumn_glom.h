@@ -30,7 +30,6 @@ class TreeViewColumnGlom : public Gtk::TreeViewColumn
 {
 public:
   TreeViewColumnGlom(const Glib::ustring& title, Gtk::CellRenderer& cell);
-  virtual ~TreeViewColumnGlom();
 
   Glib::ustring get_column_id() const;
   void set_column_id(const Glib::ustring& value);

@@ -57,10 +57,6 @@ NotebookNoFrame::NotebookNoFrame()
   m_box_pages.show();
 }
 
-NotebookNoFrame::~NotebookNoFrame()
-{
-}
-
 NotebookNoFrame::type_signal_switch_page NotebookNoFrame::signal_switch_page()
 {
   return m_signal_switch_page;

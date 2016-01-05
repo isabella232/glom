@@ -37,7 +37,6 @@ class CanvasGroupGrid : public Goocanvas::Group
 {
 private:
   CanvasGroupGrid();
-  virtual ~CanvasGroupGrid();
 
 public:
   static Glib::RefPtr<CanvasGroupGrid> create();

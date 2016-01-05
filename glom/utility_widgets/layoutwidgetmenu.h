@@ -33,7 +33,6 @@ class LayoutWidgetMenu : public LayoutWidgetBase
 {
 public: 
   LayoutWidgetMenu();
-  virtual ~LayoutWidgetMenu();
   
   //Popup-menu:
 #ifndef GLOM_ENABLE_CLIENT_ONLY

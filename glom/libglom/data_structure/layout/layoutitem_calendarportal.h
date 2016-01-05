@@ -35,7 +35,6 @@ public:
   LayoutItem_CalendarPortal(LayoutItem_CalendarPortal&& src) = delete;
   LayoutItem_CalendarPortal& operator=(const LayoutItem_CalendarPortal& src);
   LayoutItem_CalendarPortal& operator=(LayoutItem_CalendarPortal&& src) = delete;
-  virtual ~LayoutItem_CalendarPortal();
 
   LayoutItem* clone() const override;
 

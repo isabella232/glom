@@ -40,7 +40,6 @@ public:
   static const bool glade_developer;
 
   Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_Connection();
 
   std::shared_ptr<SharedConnection> connect_to_server_with_connection_settings() const;
 

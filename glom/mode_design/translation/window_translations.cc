@@ -141,10 +141,6 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
   }
 }
 
-Window_Translations::~Window_Translations()
-{
-}
-
 
 void Window_Translations::enable_buttons()
 {

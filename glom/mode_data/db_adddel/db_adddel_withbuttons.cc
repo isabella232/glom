@@ -52,10 +52,6 @@ DbAddDel_WithButtons::DbAddDel_WithButtons()
   setup_buttons();
 }
 
-DbAddDel_WithButtons::~DbAddDel_WithButtons()
-{
-}
-
 void DbAddDel_WithButtons::on_button_add()
 {
   on_MenuPopup_activate_Add();

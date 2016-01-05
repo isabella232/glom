@@ -52,10 +52,6 @@ Entry::Entry(Field::glom_field_type glom_type)
   init();
 }
 
-Entry::~Entry()
-{
-}
-
 void Entry::init()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY

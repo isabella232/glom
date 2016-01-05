@@ -39,7 +39,6 @@ public:
   static const bool glade_developer;
 
   Dialog_AddRelatedTable(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_AddRelatedTable();
 
   void set_fields(const Glib::ustring& table_name);
 

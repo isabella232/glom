@@ -87,10 +87,6 @@ Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<G
   show_all_children();
 }
 
-Dialog_UsersList::~Dialog_UsersList()
-{
-}
-
 void Dialog_UsersList::enable_buttons()
 {
   if(!m_button_user_edit)

@@ -45,7 +45,6 @@ public:
   };
 
   ExceptionConnection(failure_type failure);
-  virtual ~ExceptionConnection() noexcept;
 
   const char* what() const noexcept override;
 

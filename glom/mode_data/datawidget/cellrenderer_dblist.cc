@@ -35,11 +35,6 @@ CellRendererDbList::CellRendererDbList()
 {
 }
 
-CellRendererDbList::~CellRendererDbList()
-{
-}
-
-
 void CellRendererDbList::set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted)
 {
   ComboChoicesWithTreeModel::set_choices_fixed(list_values, restricted);

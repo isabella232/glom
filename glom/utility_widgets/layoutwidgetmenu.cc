@@ -48,10 +48,6 @@ LayoutWidgetMenu::LayoutWidgetMenu()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
-LayoutWidgetMenu::~LayoutWidgetMenu()
-{
-}
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
 void LayoutWidgetMenu::add_action(const Glib::RefPtr<Gio::SimpleAction>& action, const Gio::ActionMap::ActivateSlot& slot)

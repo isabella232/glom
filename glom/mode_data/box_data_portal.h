@@ -42,7 +42,6 @@ class Box_Data_Portal :
 {
 public: 
   Box_Data_Portal();
-  virtual ~Box_Data_Portal();
   
   /**
    * @param portal: The full portal details

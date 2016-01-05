@@ -43,7 +43,6 @@ public:
   FileChooserDialog_SaveExtras(Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action, const Glib::ustring& backend);
   explicit FileChooserDialog_SaveExtras(const Glib::ustring& title, Gtk::FileChooserAction action = Gtk::FILE_CHOOSER_ACTION_OPEN);
   FileChooserDialog_SaveExtras(Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action = Gtk::FILE_CHOOSER_ACTION_OPEN);
-  virtual ~FileChooserDialog_SaveExtras();
 
   void set_extra_message(const Glib::ustring& message);
   void set_extra_newdb_title(const Glib::ustring& title);

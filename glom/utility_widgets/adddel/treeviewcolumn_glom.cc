@@ -28,10 +28,6 @@ TreeViewColumnGlom::TreeViewColumnGlom(const Glib::ustring& title, Gtk::CellRend
 {
 }
 
-TreeViewColumnGlom::~TreeViewColumnGlom()
-{
-}
-
 Glib::ustring TreeViewColumnGlom::get_column_id() const
 {
   return m_column_id;

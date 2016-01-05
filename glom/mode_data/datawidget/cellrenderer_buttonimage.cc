@@ -32,9 +32,6 @@ GlomCellRenderer_ButtonImage::GlomCellRenderer_ButtonImage():
   property_mode() = Gtk::CELL_RENDERER_MODE_ACTIVATABLE;
 }
 
-GlomCellRenderer_ButtonImage::~GlomCellRenderer_ButtonImage()
-{}
-
 GlomCellRenderer_ButtonImage::type_signal_clicked GlomCellRenderer_ButtonImage::signal_clicked()
 {
   return m_signal_clicked;

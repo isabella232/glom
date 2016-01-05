@@ -69,10 +69,6 @@ Dialog_ButtonScript::Dialog_ButtonScript(BaseObjectType* cobject, const Glib::Re
   show_all_children();
 }
 
-Dialog_ButtonScript::~Dialog_ButtonScript()
-{
-}
-
 void Dialog_ButtonScript::set_script(const std::shared_ptr<const LayoutItem_Button>& script, const Glib::ustring& table_name)
 {
   //set_blocked();

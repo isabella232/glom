@@ -34,7 +34,6 @@ class AppState
 {
 public:
   AppState();
-  virtual ~AppState();
 
   enum class userlevels
   {

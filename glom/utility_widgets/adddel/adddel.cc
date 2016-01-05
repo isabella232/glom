@@ -134,11 +134,6 @@ void AddDel::init()
   show_all_children();
 }
 
-
-AddDel::~AddDel()
-{
-}
-
 void AddDel::set_treeview_accessible_name(const Glib::ustring& name)
 {
 #ifdef GTKMM_ATKMM_ENABLED

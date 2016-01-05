@@ -42,7 +42,6 @@ public:
   LayoutItem_Image(LayoutItem_Image&& src) = delete;
   LayoutItem_Image& operator=(const LayoutItem_Image& src);
   LayoutItem_Image& operator=(LayoutItem_Image&& src) = delete;
-  virtual ~LayoutItem_Image();
 
   LayoutItem* clone() const override;
 

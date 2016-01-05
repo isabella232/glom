@@ -61,10 +61,4 @@ Dialog_OfferSave::Dialog_OfferSave(const Glib::ustring& file_uri)
   cancel_button->grab_focus();
 }
 
-Dialog_OfferSave::~Dialog_OfferSave()
-{
-
-}
-
-
 } //namespace

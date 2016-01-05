@@ -35,7 +35,6 @@ public:
   static const bool glade_developer;
 
   Dialog_NewScript(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_NewScript();
 
   Gtk::Entry* m_entry_name;
 };

@@ -33,10 +33,6 @@ Dialog_ChooseUser::Dialog_ChooseUser(BaseObjectType* cobject, const Glib::RefPtr
   builder->get_widget_derived("combo_user_name", m_combo_name);
 }
 
-Dialog_ChooseUser::~Dialog_ChooseUser()
-{
-}
-
 void Dialog_ChooseUser::set_user_list(const type_vec_strings& users)
 {
   for(const auto& item : users)

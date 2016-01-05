@@ -36,10 +36,6 @@ Relationship::Relationship(const Relationship& src)
   operator=(src); //TODO_Performance: Implement properly.
 }
 
-Relationship::~Relationship()
-{
-}
-
 Relationship& Relationship::operator=(const Relationship& src)
 {
   TranslatableItem::operator=(src);

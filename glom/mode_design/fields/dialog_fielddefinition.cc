@@ -105,10 +105,6 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   show_all_children();
 }
 
-Dialog_FieldDefinition::~Dialog_FieldDefinition()
-{
-}
-
 void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field, const Glib::ustring& table_name)
 {
   set_blocked();

@@ -54,10 +54,6 @@ Dialog_InvalidData::Dialog_InvalidData(BaseObjectType* cobject, const Glib::RefP
   builder->get_widget("label_example_data", m_label);
 }
 
-Dialog_InvalidData::~Dialog_InvalidData()
-{
-}
-
 void Dialog_InvalidData::set_example_data(Field::glom_field_type glom_type)
 {
   Glib::ustring example_text;

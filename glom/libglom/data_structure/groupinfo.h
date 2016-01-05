@@ -34,7 +34,6 @@ public:
   GroupInfo();
   GroupInfo(const GroupInfo& src);
   GroupInfo(GroupInfo&& src);
-  virtual ~GroupInfo();
 
   GroupInfo& operator=(const GroupInfo& src);
   GroupInfo& operator=(GroupInfo&& src);

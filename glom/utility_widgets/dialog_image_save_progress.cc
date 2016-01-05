@@ -51,10 +51,6 @@ DialogImageSaveProgress::DialogImageSaveProgress(BaseObjectType* cobject, const 
   }
 }
 
-DialogImageSaveProgress::~DialogImageSaveProgress()
-{
-}
-
 void DialogImageSaveProgress::save(const Glib::ustring& uri)
 {
   g_assert(m_data);

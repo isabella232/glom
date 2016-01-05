@@ -35,7 +35,6 @@ class LayoutToolbarButton : public Gtk::ToolButton
 {
 public:
   LayoutToolbarButton(const std::string& icon_name, LayoutWidgetBase::enumType type, const Glib::ustring& title, const Glib::ustring& tooltip);
-  virtual ~LayoutToolbarButton();
 
 private:
 

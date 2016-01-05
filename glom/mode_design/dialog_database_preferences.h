@@ -46,7 +46,6 @@ public:
   static const bool glade_developer;
 
   Dialog_Database_Preferences(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_Database_Preferences();
 
   std::shared_ptr<SharedConnection> connect_to_server_with_connection_settings() const;
 

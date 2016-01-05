@@ -34,7 +34,6 @@ class CanvasRectMovable
 private:
   CanvasRectMovable();
   CanvasRectMovable(double x, double y, double width, double height);
-  virtual ~CanvasRectMovable();
 
   void init();
 

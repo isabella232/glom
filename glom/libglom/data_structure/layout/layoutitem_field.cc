@@ -49,10 +49,6 @@ LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
   m_field = src.m_field;
 }
 
-LayoutItem_Field::~LayoutItem_Field()
-{
-}
-
 LayoutItem* LayoutItem_Field::clone() const
 {
   return new LayoutItem_Field(*this);

@@ -63,11 +63,6 @@ void Combo_FieldType::init()
   //set_value_in_list(true, false);
 }
 
-Combo_FieldType::~Combo_FieldType()
-{
-
-}
-
 void Combo_FieldType::set_field_type(Field::glom_field_type fieldType)
 {
    for(const auto& row : m_refTreeModel->children())

@@ -35,10 +35,6 @@ Base_DB_Table_Data_ReadOnly::Base_DB_Table_Data_ReadOnly()
 {
 }
 
-Base_DB_Table_Data_ReadOnly::~Base_DB_Table_Data_ReadOnly()
-{
-}
-
 bool Base_DB_Table_Data_ReadOnly::refresh_data_from_database()
 {
   if(!ConnectionPool::get_instance()->get_ready_to_connect())

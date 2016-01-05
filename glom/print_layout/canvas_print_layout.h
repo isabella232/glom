@@ -43,7 +43,6 @@ class Canvas_PrintLayout
 {
 public:
   Canvas_PrintLayout();
-  virtual ~Canvas_PrintLayout();
 
   void set_print_layout(const Glib::ustring& table_name, const std::shared_ptr<PrintLayout>& print_layout);
   std::shared_ptr<PrintLayout> get_print_layout();

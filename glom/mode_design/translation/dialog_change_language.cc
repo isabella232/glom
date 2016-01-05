@@ -37,10 +37,6 @@ Dialog_ChangeLanguage::Dialog_ChangeLanguage(BaseObjectType* cobject, const Glib
     m_combo_locale->set_selected_locale(AppWindow::get_current_locale());
 }
 
-Dialog_ChangeLanguage::~Dialog_ChangeLanguage()
-{
-}
-
 Glib::ustring Dialog_ChangeLanguage::get_locale() const
 {
   return m_combo_locale->get_selected_locale();

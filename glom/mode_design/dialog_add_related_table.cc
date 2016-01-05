@@ -54,10 +54,6 @@ Dialog_AddRelatedTable::Dialog_AddRelatedTable(BaseObjectType* cobject, const Gl
 
 }
 
-Dialog_AddRelatedTable::~Dialog_AddRelatedTable()
-{
-}
-
 void Dialog_AddRelatedTable::get_input(Glib::ustring& table_name, Glib::ustring& relationship_name, Glib::ustring& from_key_name)
 {
   table_name = m_entry_table_name->get_text();

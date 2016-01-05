@@ -34,7 +34,6 @@ class PrintLayoutToolbar : public Gtk::ToolPalette
 {
 public:
   PrintLayoutToolbar();
-  virtual ~PrintLayoutToolbar();
 
 private:
   Gtk::ToolItemGroup m_group_items, m_group_lines, m_group_records;

@@ -42,10 +42,6 @@ Box_Data_List_Find::Box_Data_List_Find()
   show_all_children();
 }
 
-Box_Data_List_Find::~Box_Data_List_Find()
-{
-}
-
 void Box_Data_List_Find::create_layout()
 {
   Box_Data_List::create_layout();

@@ -47,10 +47,6 @@ Window_BoxHolder::Window_BoxHolder(Box_WithButtons* pBox, const Glib::ustring& t
     set_default(*default_button);
 }
 
-Window_BoxHolder::~Window_BoxHolder()
-{
-}
-
 void Window_BoxHolder::on_box_cancelled()
 {
   hide();

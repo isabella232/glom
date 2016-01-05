@@ -37,7 +37,6 @@ class Dialog_Design
 {
 public:
   Dialog_Design(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_Design();
 
   virtual bool init_db_details(const Glib::ustring& table_name);
 

@@ -29,10 +29,6 @@ PrintOperationPrintLayout::PrintOperationPrintLayout()
   set_n_pages(1); //There is always at least one page.
 }
 
-PrintOperationPrintLayout::~PrintOperationPrintLayout()
-{
-}
-
 Glib::RefPtr<PrintOperationPrintLayout> PrintOperationPrintLayout::create()
 {
   return Glib::RefPtr<PrintOperationPrintLayout>(new PrintOperationPrintLayout());

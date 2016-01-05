@@ -35,10 +35,6 @@ LayoutItem_FieldSummary::LayoutItem_FieldSummary(const LayoutItem_FieldSummary& 
 {
 }
 
-LayoutItem_FieldSummary::~LayoutItem_FieldSummary()
-{
-}
-
 LayoutItem* LayoutItem_FieldSummary::clone() const
 {
   return new LayoutItem_FieldSummary(*this);

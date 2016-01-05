@@ -41,7 +41,6 @@ public:
   static const bool glade_developer;
   
   Dialog_Line(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_Line();
 
   void set_line(const std::shared_ptr<const LayoutItem_Line>& line);
   std::shared_ptr<LayoutItem_Line> get_line() const;

@@ -44,11 +44,6 @@ NotebookLabel::NotebookLabel(const Glib::ustring& label, NotebookGlom* notebook)
   init();
 }
 
-NotebookLabel::~NotebookLabel()
-{
-
-}
-
 void NotebookLabel::init()
 {
   add(m_label);

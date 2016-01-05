@@ -34,10 +34,6 @@ UsesRelationship::UsesRelationship(const UsesRelationship& src)
 {
 }
 
-UsesRelationship::~UsesRelationship()
-{
-}
-
 bool UsesRelationship::operator==(const UsesRelationship& src) const
 {
   return (m_relationship == src.m_relationship)

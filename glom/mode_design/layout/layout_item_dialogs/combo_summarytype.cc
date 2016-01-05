@@ -49,12 +49,6 @@ Combo_SummaryType::Combo_SummaryType(BaseObjectType* cobject, const Glib::RefPtr
   pack_start(m_model_columns.m_name);
 }
 
-
-Combo_SummaryType::~Combo_SummaryType()
-{
-
-}
-
 void Combo_SummaryType::set_summary_type(LayoutItem_FieldSummary::summaryType summary_type)
 {
   for(const auto& row : m_model->children())

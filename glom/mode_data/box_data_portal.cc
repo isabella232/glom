@@ -50,10 +50,6 @@ Box_Data_Portal::Box_Data_Portal()
   m_layout_name = "list_portal"; //Replaced by derived classes.
 }
 
-Box_Data_Portal::~Box_Data_Portal()
-{
-}
-
 void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_record_primary_key_value)
 {
   std::shared_ptr<Field> field_primary_key = get_field_primary_key();

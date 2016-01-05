@@ -91,10 +91,6 @@ Dialog_SortFields::Dialog_SortFields(BaseObjectType* cobject, const Glib::RefPtr
   show_all_children();
 }
 
-Dialog_SortFields::~Dialog_SortFields()
-{
-}
-
 void Dialog_SortFields::set_fields(const Glib::ustring& table_name, const LayoutItem_GroupBy::type_list_sort_fields& fields)
 {
   m_modified = false;

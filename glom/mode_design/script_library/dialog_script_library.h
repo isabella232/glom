@@ -41,7 +41,6 @@ public:
   static const bool glade_developer;
 
   Dialog_ScriptLibrary(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_ScriptLibrary();
 
   void load_from_document() override;
   void save_to_document() override;

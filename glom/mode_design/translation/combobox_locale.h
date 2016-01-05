@@ -36,7 +36,6 @@ class ComboBox_Locale : public Gtk::ComboBox
 {
 public:
   ComboBox_Locale(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~ComboBox_Locale();
 
   void set_selected_locale(const Glib::ustring& locale);
   Glib::ustring get_selected_locale() const;

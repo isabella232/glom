@@ -44,7 +44,6 @@ public:
   static const bool glade_developer;
 
   Window_Translations(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Window_Translations();
 
   void load_from_document() override;
   void save_to_document() override;

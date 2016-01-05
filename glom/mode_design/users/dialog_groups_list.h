@@ -39,7 +39,6 @@ public:
   static const bool glade_developer;
 
   Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_GroupsList();
 
   //Refresh the UI when we get the document, from add_view:
   void load_from_document() override;

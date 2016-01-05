@@ -44,10 +44,6 @@ Box_Data_ManyRecords::Box_Data_ManyRecords()
 
 }
 
-Box_Data_ManyRecords::~Box_Data_ManyRecords()
-{
-}
-
 void Box_Data_ManyRecords::refresh_data_from_database_blank()
 {
   //Overridden by derived classes.

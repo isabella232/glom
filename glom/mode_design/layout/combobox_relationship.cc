@@ -53,11 +53,6 @@ ComboBox_Relationship::ComboBox_Relationship(BaseObjectType* cobject, const Glib
   set_row_separator_func(sigc::mem_fun(*this, &ComboBox_Relationship::on_row_separator));
 }
 
-ComboBox_Relationship::~ComboBox_Relationship()
-{
-
-}
-
 std::shared_ptr<Relationship> ComboBox_Relationship::get_selected_relationship() const
 {
   auto iter = get_active();

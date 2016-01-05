@@ -35,8 +35,4 @@ Dialog_NewScript::Dialog_NewScript(BaseObjectType* cobject, const Glib::RefPtr<G
   //m_entry_name->signal_changed().connect( sigc::mem_fun(*this, &Dialog_NewScript::on_entry_name_changed) );
 }
 
-Dialog_NewScript::~Dialog_NewScript()
-{
-}
-
 } //namespace Glom

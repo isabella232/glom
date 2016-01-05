@@ -46,10 +46,6 @@ Dialog_Properties::Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr
   show_all_children();
 }
 
-Dialog_Properties::~Dialog_Properties()
-{
-}
-
 Dialog_Properties::type_signal_apply Dialog_Properties::signal_apply()
 {
   return m_signal_apply;

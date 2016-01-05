@@ -37,8 +37,6 @@ class ReportBuilder
 public:
   explicit ReportBuilder(const std::locale& locale);
 
-  virtual ~ReportBuilder();
-
   static std::shared_ptr<Report> create_standard_list_report(const Document* document, const Glib::ustring& table_name);
 
   //TODO: Remove set_document() and get_document()?

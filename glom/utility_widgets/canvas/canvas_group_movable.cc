@@ -42,10 +42,6 @@ CanvasGroupMovable::CanvasGroupMovable()
   signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_leave_notify_event));
 }
 
-CanvasGroupMovable::~CanvasGroupMovable()
-{
-}
-
 Glib::RefPtr<CanvasGroupMovable> CanvasGroupMovable::create()
 {
   return Glib::RefPtr<CanvasGroupMovable>(new CanvasGroupMovable());

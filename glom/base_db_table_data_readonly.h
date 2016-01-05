@@ -36,7 +36,6 @@ class Base_DB_Table_Data_ReadOnly : public Base_DB_Table
 {
 public:
   Base_DB_Table_Data_ReadOnly();
-  virtual ~Base_DB_Table_Data_ReadOnly();
 
   bool refresh_data_from_database();
 

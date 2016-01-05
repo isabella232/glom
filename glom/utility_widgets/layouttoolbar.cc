@@ -69,10 +69,5 @@ LayoutToolbar::LayoutToolbar()
   show_all_children();
 }
 
-LayoutToolbar::~LayoutToolbar()
-{
-  
-}
-
 } // namespace Glom
 

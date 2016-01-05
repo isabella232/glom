@@ -53,8 +53,6 @@ public:
   ///Don't forget to call init() too.
   explicit AppWindow(const Glib::ustring& appname = Glib::ustring());
 
-  virtual ~AppWindow();
-
   virtual void init(); //Sets it up and shows it.
 
   static void set_command_line_args(int argc, char** &argv); //Needed for session management.

@@ -69,10 +69,6 @@ CanvasItemMovable::CanvasItemMovable()
   */
 }
 
-CanvasItemMovable::~CanvasItemMovable()
-{
-}
-
 bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
 {
   //std::cout << G_STRFUNC << ": DEBUG" << std::endl;

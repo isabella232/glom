@@ -94,10 +94,6 @@ Dialog_FieldsList::Dialog_FieldsList(BaseObjectType* cobject, const Glib::RefPtr
   show_all_children();
 }
 
-Dialog_FieldsList::~Dialog_FieldsList()
-{
-}
-
 void Dialog_FieldsList::set_fields(const Glib::ustring& table_name, const LayoutGroup::type_list_items& fields)
 {
   m_modified = false;

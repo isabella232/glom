@@ -47,8 +47,6 @@ public:
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
   explicit ComboGlom(bool has_entry = false);
 
-  virtual ~ComboGlom();
-
   //This creates a simple ListStore, with a text cell renderer.
   void set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted = false) override;
 

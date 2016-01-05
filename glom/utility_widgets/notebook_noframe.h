@@ -37,7 +37,6 @@ class NotebookNoFrame
 {
 public:
   explicit NotebookNoFrame();
-  virtual ~NotebookNoFrame();
 
   void append_page(Widget& child, const Glib::ustring& name, const Glib::ustring& tab_label);
 

@@ -30,7 +30,6 @@ class Box_Data_List_Find : public Box_Data_List
 {
 public: 
   Box_Data_List_Find();
-  virtual ~Box_Data_List_Find();
 
   virtual bool init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform);
 

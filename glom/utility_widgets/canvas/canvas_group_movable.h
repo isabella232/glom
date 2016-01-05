@@ -33,7 +33,6 @@ class CanvasGroupMovable
 {
 protected:
   CanvasGroupMovable();
-  virtual ~CanvasGroupMovable();
 
 public:
   static Glib::RefPtr<CanvasGroupMovable> create();

@@ -47,10 +47,6 @@ LayoutItem_Line::LayoutItem_Line(const LayoutItem_Line& src)
 {
 }
 
-LayoutItem_Line::~LayoutItem_Line()
-{
-}
-
 LayoutItem* LayoutItem_Line::clone() const
 {
   return new LayoutItem_Line(*this);

@@ -39,10 +39,6 @@ CanvasLineMovable::CanvasLineMovable()
   signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasLineMovable::on_leave_notify_event));
 }
 
-CanvasLineMovable::~CanvasLineMovable()
-{
-}
-
 Glib::RefPtr<CanvasLineMovable> CanvasLineMovable::create()
 {
   return Glib::RefPtr<CanvasLineMovable>(new CanvasLineMovable());

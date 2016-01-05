@@ -38,7 +38,6 @@ class CellRendererDbList
 {
 public:
   CellRendererDbList();
-  virtual ~CellRendererDbList();
 
   //This creates a simple ListStore, with a text cell renderer.
   void set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted = false) override;

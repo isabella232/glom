@@ -31,7 +31,6 @@ class DbAddDel_WithButtons : public DbAddDel
 {
 public: 
   DbAddDel_WithButtons();
-  virtual ~DbAddDel_WithButtons();
 
   void set_allow_add(bool val = true) override;
   void set_allow_delete(bool val = true) override;

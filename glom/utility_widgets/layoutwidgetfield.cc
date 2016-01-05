@@ -28,10 +28,6 @@ LayoutWidgetField::LayoutWidgetField()
 {
 }
 
-LayoutWidgetField::~LayoutWidgetField()
-{
-}
-
 LayoutWidgetField::type_signal_edited LayoutWidgetField::signal_edited()
 {
   return m_signal_edited;

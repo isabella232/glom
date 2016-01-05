@@ -42,7 +42,6 @@ public:
   static const bool glade_developer;
 	
   Dialog_FlowTable(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_FlowTable();
 
   void set_flowtable(FlowTableWithFields* flowtable);
   

@@ -30,7 +30,6 @@ class PrintOperationRelationshipsOverview : public Gtk::PrintOperation
 {
 public:
   static Glib::RefPtr<PrintOperationRelationshipsOverview> create();
-  virtual ~PrintOperationRelationshipsOverview();
 
   void set_canvas(Goocanvas::Canvas* canvas);
 

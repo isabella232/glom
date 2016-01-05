@@ -38,7 +38,6 @@ class CanvasGroupResizable
 {
 protected:
   CanvasGroupResizable();
-  virtual ~CanvasGroupResizable();
 
 public:
   static Glib::RefPtr<CanvasGroupResizable> create();

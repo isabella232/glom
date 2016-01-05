@@ -36,10 +36,6 @@ CustomTitle::CustomTitle(const CustomTitle& src)
 {
 }
 
-CustomTitle::~CustomTitle()
-{
-}
-
 bool CustomTitle::operator==(const CustomTitle& src) const
 {
   const auto result = TranslatableItem::operator==(src) &&

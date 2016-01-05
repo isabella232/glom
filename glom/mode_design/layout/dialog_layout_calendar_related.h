@@ -38,7 +38,6 @@ public:
   static const bool glade_developer;
   
   Dialog_Layout_Calendar_Related(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_Layout_Calendar_Related();
 
   /**
    * @param layout "list" or "details"

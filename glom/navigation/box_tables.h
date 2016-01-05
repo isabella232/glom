@@ -43,7 +43,6 @@ public:
   static const bool glade_developer;
 
   Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Box_Tables();
 
 private:
   bool fill_from_database() override;

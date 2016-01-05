@@ -35,7 +35,6 @@ class ComboEntry_Currency : public Gtk::ComboBox
 {
 public:
   ComboEntry_Currency(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~ComboEntry_Currency();
 
 private:
 

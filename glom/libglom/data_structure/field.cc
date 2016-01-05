@@ -57,10 +57,6 @@ Field::Field(const Field& src)
   operator=(src);
 }
 
-Field::~Field()
-{
-}
-
 Field& Field::operator=(const Field& src)
 {
   TranslatableItem::operator=(src);

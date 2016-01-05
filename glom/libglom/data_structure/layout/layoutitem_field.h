@@ -52,7 +52,6 @@ public:
   LayoutItem_Field(LayoutItem_Field&& src) = delete;
   LayoutItem_Field& operator=(const LayoutItem_Field& src);
   LayoutItem_Field& operator=(LayoutItem_Field&& src) = delete;
-  virtual ~LayoutItem_Field();
 
   LayoutItem* clone() const override;
 

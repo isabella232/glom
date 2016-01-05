@@ -33,7 +33,6 @@ public:
   static const bool glade_developer;
 
   Dialog_Layout_Export(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_Layout_Export();
 
   /**
    * @param mapGroups The initial layout. (Note: This is only non-const for performance, to avoid an extra copy. This update with full field information.

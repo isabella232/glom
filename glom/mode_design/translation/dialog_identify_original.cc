@@ -43,10 +43,6 @@ Dialog_IdentifyOriginal::Dialog_IdentifyOriginal(BaseObjectType* cobject, const 
     m_combo_locale->set_selected_locale(AppWindow::get_current_locale());
 }
 
-Dialog_IdentifyOriginal::~Dialog_IdentifyOriginal()
-{
-}
-
 void Dialog_IdentifyOriginal::load_from_document()
 {
   std::cout << "Dialog_IdentifyOriginal::load_from_document" << std::endl;

@@ -38,10 +38,6 @@ ChoiceValue::ChoiceValue(const ChoiceValue& src)
   operator=(src);
 }
 
-ChoiceValue::~ChoiceValue()
-{
-}
-
 ChoiceValue& ChoiceValue::operator=(const ChoiceValue& src)
 {
   TranslatableItem::operator=(src);

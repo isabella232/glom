@@ -253,10 +253,6 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
   //TODO: signal_style_changed().connect(sigc::mem_fun(*this, &DataWidget::on_self_style_changed));
 }
 
-DataWidget::~DataWidget()
-{
-}
-
 void DataWidget::on_widget_edited()
 {
   m_signal_edited.emit(get_value());

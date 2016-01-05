@@ -41,7 +41,6 @@ public:
   static const bool glade_developer;
   
   Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_TextObject();
 
   void set_textobject(const std::shared_ptr<const LayoutItem_Text>& textobject, const Glib::ustring& table_name, bool show_title = true);
   std::shared_ptr<LayoutItem_Text> get_textobject() const;

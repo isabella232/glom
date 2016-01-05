@@ -42,10 +42,6 @@ GroupInfo::GroupInfo(GroupInfo&& src)
 {
 }
 
-GroupInfo::~GroupInfo()
-{
-}
-
 GroupInfo& GroupInfo::operator=(const GroupInfo& src)
 {
   TranslatableItem::operator=(src);

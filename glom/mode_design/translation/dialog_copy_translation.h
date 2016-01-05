@@ -39,7 +39,6 @@ public:
   static const bool glade_developer;
 
   Dialog_CopyTranslation(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_CopyTranslation();
 
   Glib::ustring get_locale() const;
 

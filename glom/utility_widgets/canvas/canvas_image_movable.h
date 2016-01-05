@@ -34,7 +34,6 @@ class CanvasImageMovable
 private:
   explicit CanvasImageMovable(double x = 0.0, double y = 0.0);
   explicit CanvasImageMovable(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, double x = 0.0, double y = 0.0);
-  virtual ~CanvasImageMovable();
 
   void init();
 

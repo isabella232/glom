@@ -42,10 +42,6 @@ NotebookGlom::NotebookGlom()
   //set_size_request(400, -1); //It doesn't seem to demand the space used by its children.
 }
 
-NotebookGlom::~NotebookGlom()
-{
-}
-
 void NotebookGlom::init()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY

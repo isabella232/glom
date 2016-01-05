@@ -220,10 +220,6 @@ void CanvasGroupResizable::set_outline_visible(bool visible)
     (visible ? Goocanvas::ITEM_VISIBLE : Goocanvas::ITEM_INVISIBLE);
 }
 
-CanvasGroupResizable::~CanvasGroupResizable()
-{
-}
-
 Glib::RefPtr<CanvasGroupResizable> CanvasGroupResizable::create()
 {
   return Glib::RefPtr<CanvasGroupResizable>(new CanvasGroupResizable());

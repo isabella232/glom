@@ -34,7 +34,6 @@ class CanvasLineMovable
 {
 protected:
   CanvasLineMovable();
-  virtual ~CanvasLineMovable();
 
 public:
   static Glib::RefPtr<CanvasLineMovable> create();

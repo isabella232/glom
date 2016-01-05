@@ -53,10 +53,6 @@ Dialog_ImageObject::Dialog_ImageObject(BaseObjectType* cobject, const Glib::RefP
   show_all_children();
 }
 
-Dialog_ImageObject::~Dialog_ImageObject()
-{
-}
-
 void Dialog_ImageObject::on_button_choose()
 {
   m_image->do_choose_image();

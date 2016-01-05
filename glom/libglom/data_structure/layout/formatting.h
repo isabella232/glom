@@ -45,7 +45,6 @@ public:
   Formatting(Formatting&& src) = delete;
   Formatting& operator=(const Formatting& src);
   Formatting& operator=(Formatting&& src) = delete;
-  virtual ~Formatting();
 
   bool operator==(const Formatting& src) const;
 

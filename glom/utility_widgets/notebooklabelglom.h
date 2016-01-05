@@ -38,7 +38,6 @@ class NotebookLabel
 public:
   explicit NotebookLabel(NotebookGlom* notebook);
   explicit NotebookLabel(const Glib::ustring& label, NotebookGlom* notebook);
-  virtual ~NotebookLabel();
 
   void set_label(const Glib::ustring& title);  
     

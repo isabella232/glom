@@ -43,10 +43,6 @@ CanvasGroupGrid::CanvasGroupGrid()
   add_child(m_temp_rule);
 }
 
-CanvasGroupGrid::~CanvasGroupGrid()
-{
-}
-
 Glib::RefPtr<CanvasGroupGrid> CanvasGroupGrid::create()
 {
   return Glib::RefPtr<CanvasGroupGrid>(new CanvasGroupGrid());

@@ -49,10 +49,6 @@ Dialog_TextObject::Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr
   show_all_children();
 }
 
-Dialog_TextObject::~Dialog_TextObject()
-{
-}
-
 void Dialog_TextObject::set_textobject(const std::shared_ptr<const LayoutItem_Text>& textobject, const Glib::ustring& table_name, bool show_title)
 {
   //set_blocked();

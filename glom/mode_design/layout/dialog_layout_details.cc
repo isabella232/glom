@@ -205,10 +205,6 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   //show_all_children();
 }
 
-Dialog_Layout_Details::~Dialog_Layout_Details()
-{
-}
-
 void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, std::shared_ptr<LayoutGroup>& group)
 {
   std::shared_ptr<LayoutItem_Portal> portal = std::dynamic_pointer_cast<LayoutItem_Portal>(group);

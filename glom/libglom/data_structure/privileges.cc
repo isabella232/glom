@@ -44,10 +44,6 @@ Privileges::Privileges(Privileges&& src)
 {
 }
 
-Privileges::~Privileges()
-{
-}
-
 Privileges& Privileges::operator=(const Privileges& src)
 {
   m_view = src.m_view;

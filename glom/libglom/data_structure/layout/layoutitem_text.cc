@@ -38,10 +38,6 @@ LayoutItem_Text::LayoutItem_Text(const LayoutItem_Text& src)
   m_text = std::make_shared<StaticText>(src_item);
 }
 
-LayoutItem_Text::~LayoutItem_Text()
-{
-}
-
 LayoutItem* LayoutItem_Text::clone() const
 {
   return new LayoutItem_Text(*this);

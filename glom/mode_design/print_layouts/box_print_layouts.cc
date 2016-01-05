@@ -56,10 +56,6 @@ Box_Print_Layouts::Box_Print_Layouts(BaseObjectType* cobject, const Glib::RefPtr
   show_all_children();
 }
 
-Box_Print_Layouts::~Box_Print_Layouts()
-{
-}
-
 void Box_Print_Layouts::fill_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const PrintLayout>& item)
 {
   if(iter)

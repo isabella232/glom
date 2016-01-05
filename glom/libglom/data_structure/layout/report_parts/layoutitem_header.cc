@@ -33,10 +33,6 @@ LayoutItem_Header::LayoutItem_Header(const LayoutItem_Header& src)
 {
 }
 
-LayoutItem_Header::~LayoutItem_Header()
-{
-}
-
 LayoutItem* LayoutItem_Header::clone() const
 {
   return new LayoutItem_Header(*this);

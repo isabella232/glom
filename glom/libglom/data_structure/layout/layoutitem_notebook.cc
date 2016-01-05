@@ -33,15 +33,10 @@ LayoutItem_Notebook::LayoutItem_Notebook(const LayoutItem_Notebook& src)
 {
 }
 
-LayoutItem_Notebook::~LayoutItem_Notebook()
-{
-}
-
 LayoutItem* LayoutItem_Notebook::clone() const
 {
   return new LayoutItem_Notebook(*this);
 }
-
 
 LayoutItem_Notebook& LayoutItem_Notebook::operator=(const LayoutItem_Notebook& src)
 {

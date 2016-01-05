@@ -36,7 +36,6 @@ class ComboBox_Fields : public Gtk::ComboBox
 {
 public:
   ComboBox_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~ComboBox_Fields();
 
   typedef std::vector< std::shared_ptr<Field> > type_vec_fields;
     

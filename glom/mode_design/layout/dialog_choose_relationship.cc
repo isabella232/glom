@@ -59,10 +59,6 @@ Dialog_ChooseRelationship::Dialog_ChooseRelationship(BaseObjectType* cobject, co
   show_all_children();
 }
 
-Dialog_ChooseRelationship::~Dialog_ChooseRelationship()
-{
-}
-
 void Dialog_ChooseRelationship::set_document(Document* document, const Glib::ustring& table_name)
 {
   m_document = document;

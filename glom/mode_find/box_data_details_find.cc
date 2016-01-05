@@ -45,10 +45,6 @@ Box_Data_Details_Find::Box_Data_Details_Find()
   show_all_children();
 }
 
-Box_Data_Details_Find::~Box_Data_Details_Find()
-{
-}
-
 bool Box_Data_Details_Find::init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform)
 {
   FoundSet found_set;

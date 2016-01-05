@@ -43,10 +43,6 @@ CanvasRectMovable::CanvasRectMovable(double x, double y, double width, double he
   init();
 }
 
-CanvasRectMovable::~CanvasRectMovable()
-{
-}
-
 void CanvasRectMovable::init()
 {
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));

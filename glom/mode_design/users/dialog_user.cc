@@ -47,10 +47,6 @@ Dialog_User::Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   show_all_children();
 }
 
-Dialog_User::~Dialog_User()
-{
-}
-
 bool Dialog_User::check_password()
 {
   if(m_entry_password->get_text() != m_entry_password_confirm->get_text())

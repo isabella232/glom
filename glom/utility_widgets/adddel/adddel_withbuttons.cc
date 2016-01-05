@@ -68,10 +68,6 @@ void AddDel_WithButtons::init()
   m_Button_Extra.hide();
 }
 
-AddDel_WithButtons::~AddDel_WithButtons()
-{
-}
-
 void AddDel_WithButtons::on_button_add()
 {
   if(m_auto_add)

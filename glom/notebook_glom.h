@@ -36,7 +36,6 @@ class Notebook_Glom :
 {
 public: 
   Notebook_Glom();
-  virtual ~Notebook_Glom();
 
   //virtual void show_hint();
 

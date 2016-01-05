@@ -30,7 +30,6 @@ class PrintOperationPrintLayout : public Gtk::PrintOperation
 {
 public:
   static Glib::RefPtr<PrintOperationPrintLayout> create();
-  virtual ~PrintOperationPrintLayout();
 
   void set_canvas(Canvas_PrintLayout* canvas);
 

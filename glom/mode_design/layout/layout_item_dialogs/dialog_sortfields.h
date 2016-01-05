@@ -36,8 +36,6 @@ public:
   static const bool glade_developer;
 
   Dialog_SortFields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_SortFields();
-
 
   void set_fields(const Glib::ustring& table_name, const LayoutItem_GroupBy::type_list_sort_fields& table_fields);
   LayoutItem_GroupBy::type_list_sort_fields get_fields() const;

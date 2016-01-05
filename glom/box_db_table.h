@@ -39,7 +39,6 @@ class Box_DB_Table
 public: 
   Box_DB_Table();
   Box_DB_Table(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Box_DB_Table();
 
 protected:
   void handle_error(const Glib::Exception& ex);

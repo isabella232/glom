@@ -34,7 +34,6 @@ class CanvasEditable : public Goocanvas::Canvas
 {
 public:
   CanvasEditable();
-  virtual ~CanvasEditable();
 
   void add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool resizable = false);
   void add_item(const Glib::RefPtr<Goocanvas::Item>& item, const Glib::RefPtr<Goocanvas::Group>& group, bool resizable = false);

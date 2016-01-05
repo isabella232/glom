@@ -34,7 +34,6 @@ class Base_DB_Table_Data : public Base_DB_Table_Data_ReadOnly
 {
 public:
   Base_DB_Table_Data();
-  virtual ~Base_DB_Table_Data();
 
   /** Tell the parent widget that something has changed in one of the shown records,
    * or a record was added or deleted.

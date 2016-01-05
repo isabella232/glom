@@ -39,7 +39,6 @@ class NotebookGlom
 public:
   explicit NotebookGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   explicit NotebookGlom();
-  virtual ~NotebookGlom();
 
 protected:
   friend class NotebookLabel;

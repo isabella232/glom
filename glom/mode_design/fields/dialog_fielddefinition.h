@@ -48,7 +48,6 @@ public:
   static const bool glade_developer;
 
   Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_FieldDefinition();
 
   void set_field(const std::shared_ptr<const Field>& field, const Glib::ustring& table_name);
   std::shared_ptr<Field> get_field() const; //TODO_FieldShared

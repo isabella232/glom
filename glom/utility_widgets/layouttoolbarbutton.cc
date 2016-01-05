@@ -53,9 +53,4 @@ LayoutToolbarButton::LayoutToolbarButton(const std::string& icon_name, LayoutWid
   set_label(title);
 }
 
-LayoutToolbarButton::~LayoutToolbarButton()
-{
-
-}
-
 } // namespace Glom

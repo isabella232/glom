@@ -32,9 +32,6 @@ GlomCellRenderer_ButtonText::GlomCellRenderer_ButtonText():
   property_mode() = Gtk::CELL_RENDERER_MODE_ACTIVATABLE; //So that it calls activate_vfunc().
 }
 
-GlomCellRenderer_ButtonText::~GlomCellRenderer_ButtonText()
-{}
-
 GlomCellRenderer_ButtonText::type_signal_clicked GlomCellRenderer_ButtonText::signal_clicked()
 {
   return m_signal_clicked;

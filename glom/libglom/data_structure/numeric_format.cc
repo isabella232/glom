@@ -36,10 +36,6 @@ NumericFormat::NumericFormat(const NumericFormat& src)
   operator=(src);
 }
 
-NumericFormat::~NumericFormat()
-{
-}
-
 NumericFormat& NumericFormat::operator=(const NumericFormat& src)
 {
   m_currency_symbol = src.m_currency_symbol;

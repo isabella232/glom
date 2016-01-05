@@ -48,7 +48,6 @@ public:
   };
 
   PrintLayoutToolbarButton(const std::string& icon_name, enumItems type, const Glib::ustring& title, const Glib::ustring& tooltip);
-  virtual ~PrintLayoutToolbarButton();
 
   static enumItems get_item_type_from_selection_data(const Glib::RefPtr<Gdk::DragContext>& drag_context, const Gtk::SelectionData& selection_data);
 

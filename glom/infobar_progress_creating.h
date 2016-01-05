@@ -37,7 +37,6 @@ class Infobar_ProgressCreating
 {
 public:
   Infobar_ProgressCreating(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Infobar_ProgressCreating();
 
   void set_message(const Glib::ustring& title, const Glib::ustring& secondary_text);
 

@@ -32,7 +32,6 @@ class CanvasGroupDbTable : public CanvasGroupMovable
 {
 private:
   CanvasGroupDbTable(const Glib::ustring& table_name, const Glib::ustring& table_title, const Document::type_vec_fields& fields, double x = 0.0, double y = 0.0);
-  virtual ~CanvasGroupDbTable();
 
 public:
   static Glib::RefPtr<CanvasGroupDbTable> create(const Glib::ustring& table_name, const Glib::ustring& table_title, const Document::type_vec_fields& fields, double x = 0.0, double y = 0.0);

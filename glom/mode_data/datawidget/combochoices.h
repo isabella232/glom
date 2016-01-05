@@ -43,8 +43,6 @@ public:
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
   explicit ComboChoices(const std::shared_ptr<LayoutItem_Field>& field_second);
 
-  virtual ~ComboChoices();
-
   /** Set a list of choice values, for instance for a list of custom choices.
    * You should first call set_layout_item() to provide formatting details.
    */

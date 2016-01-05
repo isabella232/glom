@@ -47,10 +47,6 @@ Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Bu
   show_all_children();
 }
 
-Dialog_Layout::~Dialog_Layout()
-{
-}
-
 void Dialog_Layout::init(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* /* document */, const Glib::ustring& table_name, const type_vecConstLayoutFields& /* table_fields */)
 {
   m_modified = false;

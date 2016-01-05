@@ -53,10 +53,6 @@ Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr
   builder->get_widget("connection_note", m_label_note);
 }
 
-Dialog_Connection::~Dialog_Connection()
-{
-}
-
 std::shared_ptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection_settings() const
 {
   //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings()" << std::endl;

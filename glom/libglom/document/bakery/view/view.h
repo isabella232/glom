@@ -38,10 +38,6 @@ public:
   {
   }
 
-  virtual ~View()
-  {
-  }
-
   typedef View<T_Document> type_self;
 
   //typedef typename T_Document type_document;

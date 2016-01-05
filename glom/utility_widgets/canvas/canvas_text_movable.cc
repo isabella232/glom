@@ -35,10 +35,6 @@ CanvasTextMovable::CanvasTextMovable(const Glib::ustring& text, double x, double
   init();
 }
 
-CanvasTextMovable::~CanvasTextMovable()
-{
-}
-
 void CanvasTextMovable::init()
 {
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));

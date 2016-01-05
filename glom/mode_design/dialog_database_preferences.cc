@@ -102,10 +102,6 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
   }
 }
 
-Dialog_Database_Preferences::~Dialog_Database_Preferences()
-{
-}
-
 void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib::ustring& path_string, const Glib::ustring& new_text)
 {
   if(path_string.empty())

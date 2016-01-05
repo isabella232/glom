@@ -30,7 +30,6 @@ class LayoutWidgetField : public LayoutWidgetMenu
 {
 public: 
   LayoutWidgetField();
-  virtual ~LayoutWidgetField();
 
   virtual void set_value(const Gnome::Gda::Value& value) = 0;
 

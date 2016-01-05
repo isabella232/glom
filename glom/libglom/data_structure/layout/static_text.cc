@@ -34,10 +34,6 @@ StaticText::StaticText(const StaticText& src)
 {
 }
 
-StaticText::~StaticText()
-{
-}
-
 bool StaticText::operator==(const StaticText& src) const
 {
   const auto result = TranslatableItem::operator==(src);

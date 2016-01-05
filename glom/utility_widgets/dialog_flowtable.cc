@@ -49,10 +49,6 @@ Dialog_FlowTable::Dialog_FlowTable(BaseObjectType* cobject, const Glib::RefPtr<G
   show_all_children();
 }
 
-Dialog_FlowTable::~Dialog_FlowTable()
-{
-}
-
 void Dialog_FlowTable::set_flowtable(FlowTableWithFields* flowtable)
 {
   m_flowtable = flowtable;

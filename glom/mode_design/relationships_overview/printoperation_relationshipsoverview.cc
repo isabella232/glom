@@ -25,10 +25,6 @@ PrintOperationRelationshipsOverview::PrintOperationRelationshipsOverview()
 {
 }
 
-PrintOperationRelationshipsOverview::~PrintOperationRelationshipsOverview()
-{
-}
-
 Glib::RefPtr<PrintOperationRelationshipsOverview> PrintOperationRelationshipsOverview::create()
 {
   return Glib::RefPtr<PrintOperationRelationshipsOverview>(new PrintOperationRelationshipsOverview());

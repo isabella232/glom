@@ -32,7 +32,6 @@ class CanvasItemMovable : virtual public Glib::ObjectBase
 {
 protected:
   CanvasItemMovable();
-  virtual ~CanvasItemMovable();
 
 public:
 

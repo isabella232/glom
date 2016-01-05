@@ -33,7 +33,6 @@ class Box_Data_ManyRecords : public Box_Data
 {
 public: 
   Box_Data_ManyRecords();
-  virtual ~Box_Data_ManyRecords();
 
   void refresh_data_from_database_blank();
 

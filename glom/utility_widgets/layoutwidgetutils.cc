@@ -36,11 +36,6 @@ LayoutWidgetUtils::LayoutWidgetUtils() :
   //setup_util_menu(this);
 }
 
-LayoutWidgetUtils::~LayoutWidgetUtils()
-{
-	
-}
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void LayoutWidgetUtils::setup_util_menu(Gtk::Widget* widget)
 {

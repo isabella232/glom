@@ -66,9 +66,5 @@ PrintLayoutToolbar::PrintLayoutToolbar()
   show_all_children();
 }
 
-PrintLayoutToolbar::~PrintLayoutToolbar()
-{
-
-}
 
 } // namespace Glom

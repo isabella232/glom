@@ -38,7 +38,6 @@ public:
   static const bool glade_developer;
 
   DialogImageSaveProgress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~DialogImageSaveProgress();
 
   void save(const Glib::ustring& uri);
 

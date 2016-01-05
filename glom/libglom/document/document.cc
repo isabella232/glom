@@ -313,10 +313,6 @@ Document::Document()
   set_allow_autosave(true);
 }
 
-Document::~Document()
-{
-}
-
 Document::HostingMode Document::get_hosting_mode() const
 {
   return m_hosting_mode;

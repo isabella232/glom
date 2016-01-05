@@ -35,7 +35,6 @@ public:
   static const bool glade_developer;
 
   Box_Print_Layouts(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Box_Print_Layouts();
 
 private:
   bool fill_from_database() override;

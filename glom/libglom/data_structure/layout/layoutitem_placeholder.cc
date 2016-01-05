@@ -30,12 +30,7 @@ namespace Glom
   
 LayoutItem_Placeholder::LayoutItem_Placeholder()
 {
-  
-}
 
-LayoutItem_Placeholder::~LayoutItem_Placeholder()
-{
-  
 }
   
 LayoutItem_Placeholder::LayoutItem_Placeholder(const LayoutItem_Placeholder& src) :

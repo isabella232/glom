@@ -34,7 +34,6 @@ class Dialog_Properties : public Gtk::Window
 {
 public:
   Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_Properties();
 
   //Add a widget (probably a container) to the top half of the dialog:
   void add(Gtk::Widget& widget) override;

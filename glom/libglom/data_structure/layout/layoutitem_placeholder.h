@@ -34,7 +34,6 @@ class LayoutItem_Placeholder: public LayoutItem
 {
 public:
   LayoutItem_Placeholder();
-  ~LayoutItem_Placeholder();
   
   LayoutItem_Placeholder(const LayoutItem_Placeholder& src);
   LayoutItem_Placeholder(LayoutItem_Placeholder&& src) = delete;

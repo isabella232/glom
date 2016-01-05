@@ -34,7 +34,6 @@ class Combo_FieldType : public Gtk::ComboBox
 public: 
   Combo_FieldType();
   Combo_FieldType(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Combo_FieldType();
 
   //set/get the text in terms of enumerated type:
   void set_field_type(Field::glom_field_type fieldType);

@@ -40,7 +40,6 @@ public:
   static const bool glade_developer;
 
   Dialog_InitialPassword(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_InitialPassword();
 
   bool check_password();
 

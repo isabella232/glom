@@ -34,7 +34,6 @@ class FieldTypes
 {
 public:
   FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connection);
-  virtual ~FieldTypes();
 
   Glib::ustring get_string_name_for_gdavaluetype(GType field_type) const;
 

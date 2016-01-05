@@ -73,10 +73,6 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
   show_all_children();
 }
 
-Dialog_ChooseField::~Dialog_ChooseField()
-{
-}
-
 void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& field)
 {
   set_document(document, table_name);

@@ -37,7 +37,6 @@ public:
 	
   Dialog_ChooseRelationship();
   Dialog_ChooseRelationship(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_ChooseRelationship();
 
   /**
    * @param document The document, so that the dialog can load the previous layout, and save changes.

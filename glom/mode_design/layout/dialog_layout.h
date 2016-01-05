@@ -36,7 +36,6 @@ class Dialog_Layout :
 {
 public:
   Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, bool with_table_title = true);
-  virtual ~Dialog_Layout();
 
   virtual bool get_modified() const;
 

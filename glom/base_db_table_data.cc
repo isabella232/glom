@@ -36,10 +36,6 @@ Base_DB_Table_Data::Base_DB_Table_Data()
 {
 }
 
-Base_DB_Table_Data::~Base_DB_Table_Data()
-{
-}
-
 Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& /* field */) const
 {
   //Override this to use Field::set_data() too.

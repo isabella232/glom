@@ -40,10 +40,6 @@ Dialog_InitialPassword::Dialog_InitialPassword(BaseObjectType* cobject, const Gl
   builder->get_widget("entry_password_confirm", m_entry_password_confirm);
 }
 
-Dialog_InitialPassword::~Dialog_InitialPassword()
-{
-}
-
 Glib::ustring Dialog_InitialPassword::get_user() const
 {
   return m_entry_user->get_text();

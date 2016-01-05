@@ -35,10 +35,6 @@ Notebook_Glom::Notebook_Glom()
   m_destructor_in_progress = false;
 }
 
-Notebook_Glom::~Notebook_Glom()
-{
-}
-
 void Notebook_Glom::on_show()
 {
   NotebookNoFrame::on_show();

@@ -34,7 +34,6 @@ class CellRendererList : public Gtk::CellRendererCombo
 {
 public:
   CellRendererList();
-  virtual ~CellRendererList();
 
   void remove_all_list_items();
   void append_list_item(const Glib::ustring& text);

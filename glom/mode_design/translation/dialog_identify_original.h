@@ -40,7 +40,6 @@ public:
   static const bool glade_developer;
 
   Dialog_IdentifyOriginal(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_IdentifyOriginal();
 
   Glib::ustring get_locale() const;
 

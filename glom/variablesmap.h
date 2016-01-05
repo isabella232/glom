@@ -48,7 +48,6 @@ class VariablesMap
 {
 public:
   explicit VariablesMap(const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~VariablesMap();
 
   ///For ToggleButton (CheckBox and RadioButton)
   void connect_widget(const Glib::ustring& widget_name, bool& variable);

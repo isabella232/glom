@@ -35,11 +35,6 @@ AppWindow::AppWindow(const Glib::ustring& appname)
   init_app_name(appname);
 }
 
-AppWindow::~AppWindow()
-{
-
-}
-
 void AppWindow::init_app_name(const Glib::ustring& appname) //static
 {
   m_strAppName = appname;

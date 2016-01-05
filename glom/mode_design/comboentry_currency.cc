@@ -46,10 +46,4 @@ ComboEntry_Currency::ComboEntry_Currency(BaseObjectType* cobject, const Glib::Re
   pack_start(m_model_columns.m_name);
 }
 
-
-ComboEntry_Currency::~ComboEntry_Currency()
-{
-
-}
-
 } //namespace Glom

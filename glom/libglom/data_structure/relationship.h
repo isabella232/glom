@@ -36,7 +36,6 @@ public:
   Relationship();
   Relationship(const Relationship& src);
   Relationship(Relationship&& src) = delete;
-  ~Relationship();
 
   Relationship& operator=(const Relationship& src);
   Relationship& operator=(Relationship&& src) = delete;

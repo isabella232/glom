@@ -36,7 +36,6 @@ public:
   static const bool glade_developer;
 
   Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_User();
 
   bool check_password();
 

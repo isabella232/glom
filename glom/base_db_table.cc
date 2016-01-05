@@ -31,10 +31,6 @@ Base_DB_Table::Base_DB_Table()
 {
 }
 
-Base_DB_Table::~Base_DB_Table()
-{
-}
-
 Glib::ustring Base_DB_Table::get_table_name() const
 {
   return m_table_name;

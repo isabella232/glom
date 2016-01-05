@@ -42,7 +42,6 @@ public:
   static const bool glade_developer;
 
   Dialog_ImageObject(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_ImageObject();
 
   void set_imageobject(const std::shared_ptr<const LayoutItem_Image>& imageobject, const Glib::ustring& table_name, bool show_title = true);
   std::shared_ptr<LayoutItem_Image> get_imageobject() const;

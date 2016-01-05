@@ -36,7 +36,6 @@ public:
   static const bool glade_developer;
 
   Dialog_Layout_Details(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_Layout_Details();
 
   /**
    * @param layout_name "list" or "details"

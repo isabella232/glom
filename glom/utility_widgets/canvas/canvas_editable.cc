@@ -35,10 +35,6 @@ CanvasEditable::CanvasEditable()
   add_item(m_grid);
 }
 
-CanvasEditable::~CanvasEditable()
-{
-}
-
 void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool resizable)
 {
   Glib::RefPtr<Goocanvas::Item> root = get_root_item();

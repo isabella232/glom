@@ -46,10 +46,6 @@ void ComboChoices::init()
 {
 }
 
-ComboChoices::~ComboChoices()
-{
-}
-
 bool ComboChoices::refresh_data_from_database_with_foreign_key(const Document* /* document */, const Gnome::Gda::Value& /* foreign_key_value */)
 {
   /** TODO:

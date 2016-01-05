@@ -35,10 +35,6 @@ Box_DB_Table::Box_DB_Table(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 {
 }
 
-Box_DB_Table::~Box_DB_Table()
-{
-}
-
 const Gtk::Window* Box_DB_Table::get_app_window() const
 {
   auto nonconst = const_cast<Box_DB_Table*>(this);

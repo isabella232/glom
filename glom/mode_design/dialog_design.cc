@@ -42,10 +42,6 @@ Dialog_Design::Dialog_Design(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Bu
   show_all_children();
 }
 
-Dialog_Design::~Dialog_Design()
-{
-}
-
 bool Dialog_Design::init_db_details(const Glib::ustring& table_name)
 {
   if(get_document())
