@@ -44,7 +44,6 @@ public:
 
 private:
 
-  void init();
   void force_gui_update();
 
   Glib::RefPtr<Gdk::Cursor> m_Cursor;
