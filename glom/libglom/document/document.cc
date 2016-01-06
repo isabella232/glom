@@ -4981,7 +4981,7 @@ void read_archive_entry_file_contents(archive* a, archive_entry* entry, std::str
   file_contents.clear();
 
   const auto size = archive_entry_size(entry);
-  const Glib::ScopedPtr<char> buf ((char*) g_malloc(size + 1));
+  const std::unique_ptr<char[]> buf(new char[size + 1]);
 
   const auto r = archive_read_data(a, buf.get(), size);
     
