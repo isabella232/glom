@@ -62,8 +62,8 @@ bool contains_item_type(const Glom::Document::type_list_translatables& container
   return Glom::Utils::find_if_exists(container,
     [] (const Glom::Document::type_list_translatables::value_type& element)
     {
-      auto item element.first;
-      auto derived std::dynamic_pointer_cast<T_TypeToFind>(item);
+      auto item = element.first;
+      auto derived = std::dynamic_pointer_cast<T_TypeToFind>(item);
       if(derived)
         return true;
       else
