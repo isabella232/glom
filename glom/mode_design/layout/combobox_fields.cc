@@ -62,7 +62,7 @@ std::shared_ptr<Field> ComboBox_Fields::get_selected_field() const
 
 Glib::ustring ComboBox_Fields::get_selected_field_name() const
 {
-  std::shared_ptr<Field> field = get_selected_field();
+  auto field = get_selected_field();
   return glom_get_sharedptr_name(field);
 }
 
@@ -118,7 +118,7 @@ void ComboBox_Fields::set_fields(Document* document, const Glib::ustring parent_
     auto tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
 
-    std::shared_ptr<Field> rel = field;
+    auto rel = field;
     row[m_model_columns.m_field] = rel;
     row[m_model_columns.m_separator] = false;
   }

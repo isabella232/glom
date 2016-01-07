@@ -388,7 +388,7 @@ void Box_Data_List::create_layout()
   m_AddDel.set_table_name(m_table_name);
 
 
-  std::shared_ptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
+  auto field_primary_key = get_field_primary_key_for_table(m_table_name);
   if(!field_primary_key)
   {
     std::cerr << G_STRFUNC << ": primary key not found for table: " << m_table_name << std::endl;
@@ -415,7 +415,7 @@ void Box_Data_List::create_layout()
       if(m_read_only)
         child_item->set_editable(false);
 
-      std::shared_ptr<const LayoutItem_Field> child_field = std::dynamic_pointer_cast<const LayoutItem_Field>(child_item);
+      auto child_field = std::dynamic_pointer_cast<const LayoutItem_Field>(child_item);
 
       //This check has already happened in Frame_Glom::update_table_in_document_from_database().
       //It is inefficient and unnecessary to do it here too.
@@ -442,7 +442,7 @@ void Box_Data_List::create_layout()
   items_to_use = Utils::get_layout_items_plus_primary_key(items_to_use, pDoc, m_table_name);
   if(field_primary_key)
   {
-    std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
+    auto layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_hidden();
     layout_item->set_full_field_details(m_AddDel.get_key_field());
 

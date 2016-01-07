@@ -312,7 +312,7 @@ bool Formatting::change_field_item_name(const Glib::ustring& table_name, const G
   if(!m_choices_related_field)
     return false; //Nothing changed.
 
-  std::shared_ptr<const Relationship> relationship = get_relationship();
+  auto relationship = get_relationship();
   
   const Glib::ustring field_table = 
     m_choices_related_field->get_table_used( relationship->get_to_table() );

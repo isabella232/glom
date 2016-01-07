@@ -72,7 +72,7 @@ void NotebookLabel::on_menu_new_group_activate()
   group->set_title_original(_("New Group"));
   group->set_name(_("Group"));
   
-  std::shared_ptr<LayoutGroup> notebook_group = std::dynamic_pointer_cast<LayoutGroup>(m_notebook->get_layout_item());
+  auto notebook_group = std::dynamic_pointer_cast<LayoutGroup>(m_notebook->get_layout_item());
   notebook_group->add_item(group);
   
   m_notebook->signal_layout_changed().emit();

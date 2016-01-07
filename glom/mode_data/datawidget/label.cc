@@ -75,7 +75,7 @@ AppWindow* Label::get_appwindow() const
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Label::on_menu_properties_activate()
 {
-  std::shared_ptr<LayoutItem_Text> textobject = std::dynamic_pointer_cast<LayoutItem_Text>(m_pLayoutItem);
+  auto textobject = std::dynamic_pointer_cast<LayoutItem_Text>(m_pLayoutItem);
   if(!textobject)
     return;
 

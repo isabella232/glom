@@ -207,7 +207,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
 
 void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, std::shared_ptr<LayoutGroup>& group)
 {
-  std::shared_ptr<LayoutItem_Portal> portal = std::dynamic_pointer_cast<LayoutItem_Portal>(group);
+  auto portal = std::dynamic_pointer_cast<LayoutItem_Portal>(group);
   if(portal)
     return; //This method is not for portals.
 
@@ -215,11 +215,11 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, std
   {
     Gtk::TreeModel::Row row = *iter;
     std::shared_ptr<LayoutItem> layout_item_top = row[m_model_items->m_columns.m_col_layout_item];
-    std::shared_ptr<LayoutGroup> group_row = std::dynamic_pointer_cast<LayoutGroup>(layout_item_top);
+    auto group_row = std::dynamic_pointer_cast<LayoutGroup>(layout_item_top);
     if(!group_row)
       return;
 
-    std::shared_ptr<LayoutItem_Portal> portal_row = std::dynamic_pointer_cast<LayoutItem_Portal>(group_row);
+    auto portal_row = std::dynamic_pointer_cast<LayoutItem_Portal>(group_row);
     if(portal_row) //This is only for groups.
       return;
 
@@ -231,7 +231,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, std
     {
       std::shared_ptr<LayoutItem> layout_item = rowChild[m_model_items->m_columns.m_col_layout_item];
 
-      std::shared_ptr<LayoutItem_Portal> layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+      auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
       if(layout_portal)
       {
         //std::cout << "debug: " << G_STRFUNC << ": adding portal." << std::endl;
@@ -240,11 +240,11 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, std
       else
       {
         //std::cout << "debug: " << G_STRFUNC << ": adding group." << std::endl;
-        std::shared_ptr<LayoutGroup> layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+        auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
         if(layout_group && !layout_portal)
         {
           //Recurse:
-          std::shared_ptr<LayoutGroup> group_child = glom_sharedptr_clone(layout_group);
+          auto group_child = glom_sharedptr_clone(layout_group);
           fill_group(rowChild, group_child);
           group->add_item(group_child);
         }
@@ -253,7 +253,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, std
           //std::cout << "debug: " << G_STRFUNC << ": adding item." << std::endl;
 
           //Add field or button:
-          std::shared_ptr<LayoutItem> item = glom_sharedptr_clone(layout_item);
+          auto item = glom_sharedptr_clone(layout_item);
           group->add_item(item);
         }
       }
@@ -267,7 +267,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
   if(!group)
    return;
 
-  std::shared_ptr<const LayoutItem_Portal> parent_portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(group);
+  auto parent_portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(group);
   if(parent_portal)
     return; //This method is not for portals.
 
@@ -286,7 +286,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
   {
     Gtk::TreeModel::Row rowGroup = *iterNewGroup;
 
-    std::shared_ptr<LayoutGroup> group_inserted = glom_sharedptr_clone(group);
+    auto group_inserted = glom_sharedptr_clone(group);
     group_inserted->remove_all_items();
     rowGroup[m_model_items->m_columns.m_col_layout_item] = group_inserted;
 
@@ -294,7 +294,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
     LayoutGroup::type_list_const_items items = group->get_items();
     for(const auto& item : items)
     {
-      std::shared_ptr<const LayoutItem_Portal> portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(item);
+      auto portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(item);
       if(portal) //If it is a portal
       {
         //Handle this differently to regular groups, so we do not also add its children:
@@ -304,7 +304,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
       }
       else
       {
-        std::shared_ptr<const LayoutGroup> child_group = std::dynamic_pointer_cast<const LayoutGroup>(item);
+        auto child_group = std::dynamic_pointer_cast<const LayoutGroup>(item);
         if(child_group) //If it is a group:
           add_group(iterNewGroup, child_group); //recursive
         else
@@ -341,7 +341,7 @@ void Dialog_Layout_Details::init(const Glib::ustring& layout_name, const Glib::u
 
     if(list_groups.empty())
     {
-      std::shared_ptr<LayoutGroup> group = std::make_shared<LayoutGroup>();
+      auto group = std::make_shared<LayoutGroup>();
       group->set_name("main");
       group->set_columns_count(1);
 
@@ -355,7 +355,7 @@ void Dialog_Layout_Details::init(const Glib::ustring& layout_name, const Glib::u
 
     for(const auto& group : list_groups)
     {
-      std::shared_ptr<const LayoutGroup> portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(group);
+      auto portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(group);
       if(group && !portal)
         add_group(Gtk::TreeModel::iterator() /* null == top-level */, group);
     }
@@ -421,7 +421,7 @@ void Dialog_Layout_Details::enable_buttons()
 
       //Only some items have formatting:
       std::shared_ptr<LayoutItem> layout_item = (*iter)[m_model_items->m_columns.m_col_layout_item];
-      std::shared_ptr<LayoutItem_WithFormatting> layoutitem_withformatting = std::dynamic_pointer_cast<LayoutItem_WithFormatting>(layout_item);
+      auto layoutitem_withformatting = std::dynamic_pointer_cast<LayoutItem_WithFormatting>(layout_item);
       const bool is_field = (bool)layoutitem_withformatting;
       m_button_formatting->set_sensitive(is_field);
     }
@@ -578,7 +578,7 @@ std::shared_ptr<Relationship> Dialog_Layout_Details::offer_relationship_list()
 
 std::shared_ptr<Relationship> Dialog_Layout_Details::offer_relationship_list(const std::shared_ptr<const Relationship>& item)
 {
-  std::shared_ptr<Relationship> result = glom_sharedptr_clone(item);
+  auto result = glom_sharedptr_clone(item);
 
   Dialog_ChooseRelationship* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
@@ -621,8 +621,8 @@ Gtk::TreeModel::iterator Dialog_Layout_Details::append_appropriate_row()
       Gtk::TreeModel::Row row = *iter_first;
 
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-      std::shared_ptr<LayoutGroup> layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
-      std::shared_ptr<LayoutItem_Portal> layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+      auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+      auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
 
       if(layout_group && !layout_portal)
         result = m_model_items->append(iter_first->children());
@@ -646,7 +646,7 @@ void Dialog_Layout_Details::on_button_add_button()
     Gtk::TreeModel::Row row = *iter;
 
     //Add a new button:
-    std::shared_ptr<LayoutItem_Button> button = std::make_shared<LayoutItem_Button>();
+    auto button = std::make_shared<LayoutItem_Button>();
     button->set_title_original(_("New Button")); //Give the button a default title, so it is big enough, and so people see that they should change it.
     row[m_model_items->m_columns.m_col_layout_item] = button;
 
@@ -671,7 +671,7 @@ void Dialog_Layout_Details::on_button_add_text()
     Gtk::TreeModel::Row row = *iter;
 
     //Add a new button:
-    std::shared_ptr<LayoutItem_Text> textobject = std::make_shared<LayoutItem_Text>();
+    auto textobject = std::make_shared<LayoutItem_Text>();
     textobject->set_title_original(_("Text Title")); //Give the button a default title, so it is big enough, and so people see that they should change it.
     row[m_model_items->m_columns.m_col_layout_item] = textobject;
 
@@ -696,7 +696,7 @@ void Dialog_Layout_Details::on_button_add_image()
     Gtk::TreeModel::Row row = *iter;
 
     //Add a new button:
-    std::shared_ptr<LayoutItem_Image> imageobject = std::make_shared<LayoutItem_Image>();
+    auto imageobject = std::make_shared<LayoutItem_Image>();
     imageobject->set_title_original(_("Image Title")); //Give the item a default title, so it is big enough, and so people see that they should change it.
     row[m_model_items->m_columns.m_col_layout_item] = imageobject;
 
@@ -720,7 +720,7 @@ void Dialog_Layout_Details::on_button_add_notebook()
   {
     Gtk::TreeModel::Row row = *iter;
 
-    std::shared_ptr<LayoutItem_Notebook> notebook = std::make_shared<LayoutItem_Notebook>();
+    auto notebook = std::make_shared<LayoutItem_Notebook>();
     notebook->set_name(_("notebook"));
     row[m_model_items->m_columns.m_col_layout_item] = notebook;
 
@@ -740,7 +740,7 @@ void Dialog_Layout_Details::on_button_add_notebook()
 void Dialog_Layout_Details::on_button_add_related()
 {
   /* We don't need to ask this because the portal layout dialog can now handle an empty portal:
-  std::shared_ptr<Relationship> relationship = offer_relationship_list();
+  auto relationship = offer_relationship_list();
   if(relationship)
   {
   */
@@ -749,7 +749,7 @@ void Dialog_Layout_Details::on_button_add_related()
     {
       Gtk::TreeModel::Row row = *iter;
 
-      std::shared_ptr<LayoutItem_Portal> portal = std::make_shared<LayoutItem_Portal>();
+      auto portal = std::make_shared<LayoutItem_Portal>();
       //portal->set_relationship(relationship);
       row[m_model_items->m_columns.m_col_layout_item] = portal;
 
@@ -772,7 +772,7 @@ void Dialog_Layout_Details::on_button_add_related()
 void Dialog_Layout_Details::on_button_add_related_calendar()
 {
   /* We don't need to ask this because the portal layout dialog can now handle an empty portal:
-  std::shared_ptr<Relationship> relationship = offer_relationship_list();
+  auto relationship = offer_relationship_list();
   if(relationship)
   {
   */
@@ -781,7 +781,7 @@ void Dialog_Layout_Details::on_button_add_related_calendar()
     {
       Gtk::TreeModel::Row row = *iter;
 
-      std::shared_ptr<LayoutItem_Portal> portal = std::make_shared<LayoutItem_CalendarPortal>();
+      auto portal = std::make_shared<LayoutItem_CalendarPortal>();
       //portal->set_relationship(relationship);
       row[m_model_items->m_columns.m_col_layout_item] = portal;
 
@@ -814,8 +814,8 @@ Gtk::TreeModel::iterator Dialog_Layout_Details::get_selected_group_parent() cons
       Gtk::TreeModel::Row row = *iter;
 
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-      std::shared_ptr<LayoutGroup> layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
-      std::shared_ptr<LayoutItem_Portal> layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+      auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+      auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
 
       if(layout_group && !layout_portal)
       {
@@ -851,7 +851,7 @@ void Dialog_Layout_Details::on_button_add_group()
   if(iterNewGroup)
   {
     Gtk::TreeModel::Row row = *iterNewGroup;
-    std::shared_ptr<LayoutGroup> layout_item = std::make_shared<LayoutGroup>();
+    auto layout_item = std::make_shared<LayoutGroup>();
     layout_item->set_name(_("group"));
     row[m_model_items->m_columns.m_col_layout_item] = layout_item;
 
@@ -882,11 +882,11 @@ void Dialog_Layout_Details::on_button_formatting()
       Gtk::TreeModel::Row row = *iter;
 
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-      std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
+      auto field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
       if(field)
       {
         //Handle field formatting, which includes more than the generic formatting stuff:
-        std::shared_ptr<LayoutItem_Field> chosenitem = offer_field_formatting(field, get_fields_table(), this, m_editable_layout);
+        auto chosenitem = offer_field_formatting(field, get_fields_table(), this, m_editable_layout);
         if(chosenitem)
         {
           *field = *chosenitem; //TODO_Performance.
@@ -897,7 +897,7 @@ void Dialog_Layout_Details::on_button_formatting()
       else
       {
         //Handle any other items that can have formatting:
-        std::shared_ptr<LayoutItem_WithFormatting> withformatting = std::dynamic_pointer_cast<LayoutItem_WithFormatting>(layout_item);
+        auto withformatting = std::dynamic_pointer_cast<LayoutItem_WithFormatting>(layout_item);
         if(withformatting)
         {
           const auto changed = offer_non_field_item_formatting(withformatting, this);
@@ -925,10 +925,10 @@ void Dialog_Layout_Details::on_button_edit()
 
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
 
-      std::shared_ptr<LayoutItem_Portal> layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+      auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
       if(layout_portal)
       {
-        std::shared_ptr<Relationship> relationship = offer_relationship_list(layout_portal->get_relationship());
+        auto relationship = offer_relationship_list(layout_portal->get_relationship());
         if(relationship)
         {
           layout_portal->set_relationship(relationship);
@@ -941,14 +941,14 @@ void Dialog_Layout_Details::on_button_edit()
       }
       else
       {
-        std::shared_ptr<LayoutItem_Notebook> layout_notebook = std::dynamic_pointer_cast<LayoutItem_Notebook>(layout_item);
+        auto layout_notebook = std::dynamic_pointer_cast<LayoutItem_Notebook>(layout_item);
         if(layout_notebook)
         {
           Frame_Glom::show_ok_dialog(_("Notebook Tabs"), _("Add child groups to the notebook to add tabs."), *this);
         }
         else
         {
-          std::shared_ptr<LayoutGroup> layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+          auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
           if(layout_group)
           {
             Gtk::TreeModel::Path path = m_model_items->get_path(iter);
@@ -956,10 +956,10 @@ void Dialog_Layout_Details::on_button_edit()
           }
           else
           {
-            std::shared_ptr<LayoutItem_Field> layout_item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
+            auto layout_item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
             if(layout_item_field)
             {
-              std::shared_ptr<LayoutItem_Field> chosenitem = offer_field_list_select_one_field(layout_item_field, m_table_name, this);
+              auto chosenitem = offer_field_list_select_one_field(layout_item_field, m_table_name, this);
               if(chosenitem)
               {
                 *layout_item_field = *chosenitem;
@@ -969,10 +969,10 @@ void Dialog_Layout_Details::on_button_edit()
             }
             else
             {
-              std::shared_ptr<LayoutItem_Button> layout_item_button = std::dynamic_pointer_cast<LayoutItem_Button>(layout_item);
+              auto layout_item_button = std::dynamic_pointer_cast<LayoutItem_Button>(layout_item);
               if(layout_item_button)
               {
-                std::shared_ptr<LayoutItem_Button> chosen = offer_button_script_edit(layout_item_button);
+                auto chosen = offer_button_script_edit(layout_item_button);
                 if(chosen)
                 {
                   *layout_item_button = *chosen;
@@ -983,10 +983,10 @@ void Dialog_Layout_Details::on_button_edit()
               }
               else
               {
-                std::shared_ptr<LayoutItem_Text> layout_item_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
+                auto layout_item_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
                 if(layout_item_text)
                 {
-                  std::shared_ptr<LayoutItem_Text> chosen = offer_textobject(layout_item_text);
+                  auto chosen = offer_textobject(layout_item_text);
                   if(chosen)
                   {
                     *layout_item_text = *chosen;
@@ -997,10 +997,10 @@ void Dialog_Layout_Details::on_button_edit()
                 }
                 else
                 {
-                  std::shared_ptr<LayoutItem_Image> layout_item_image = std::dynamic_pointer_cast<LayoutItem_Image>(layout_item);
+                  auto layout_item_image = std::dynamic_pointer_cast<LayoutItem_Image>(layout_item);
                   if(layout_item_image)
                   {
-                    std::shared_ptr<LayoutItem_Image> chosen = offer_imageobject(layout_item_image);
+                    auto chosen = offer_imageobject(layout_item_image);
                     if(chosen)
                     {
                       *layout_item_image = *chosen;
@@ -1049,11 +1049,11 @@ void Dialog_Layout_Details::save_to_document()
     for(const auto& row : m_model_items->children())
     {
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-      std::shared_ptr<LayoutGroup> layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
-      std::shared_ptr<LayoutItem_Portal> layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+      auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+      auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
       if(layout_group && !layout_portal) //There may be top-level groups, but no top-level fields, because the fields must be in a group (so that they are in columns)
       {
-        std::shared_ptr<LayoutGroup> group = std::make_shared<LayoutGroup>();
+        auto group = std::make_shared<LayoutGroup>();
         fill_group(row, group);
 
         list_groups.push_back(group);
@@ -1092,10 +1092,10 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
 
       bool is_group = false;
 
-      std::shared_ptr<LayoutItem_Portal> layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+      auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
       if(layout_portal)
       {
-        std::shared_ptr<LayoutItem_CalendarPortal> layout_calendar = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(layout_portal);
+        auto layout_calendar = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(layout_portal);
         if(layout_calendar)
           markup = Glib::ustring::compose(_("Related Calendar: %1"), layout_portal->get_relationship_name());
         else
@@ -1103,7 +1103,7 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
       }
       else
       {
-        std::shared_ptr<LayoutGroup> layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+        auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
         if(layout_group)
         {
           is_group = true;
@@ -1113,7 +1113,7 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
         }
         else
         {
-          std::shared_ptr<LayoutItem_Field> layout_item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
+          auto layout_item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
           if(layout_item_field)
           {
             markup = Glib::ustring::compose(_("Field: %1"), layout_item_field->get_layout_display_name());
@@ -1124,21 +1124,21 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
           }
           else
           {
-            std::shared_ptr<LayoutItem_Button> layout_item_button = std::dynamic_pointer_cast<LayoutItem_Button>(layout_item);
+            auto layout_item_button = std::dynamic_pointer_cast<LayoutItem_Button>(layout_item);
             if(layout_item_button)
             {
               markup = _("Button"); //Buttons don't have names - just titles. TODO: Would they be useful?
             }
             else
             {
-              std::shared_ptr<LayoutItem_Text> layout_item_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
+              auto layout_item_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
               if(layout_item_text)
               {
                 markup = _("Text"); //Text objects don't have names - just titles. TODO: Would they be useful?
               }
               else
               {
-                std::shared_ptr<LayoutItem_Image> layout_item_image = std::dynamic_pointer_cast<LayoutItem_Image>(layout_item);
+                auto layout_item_image = std::dynamic_pointer_cast<LayoutItem_Image>(layout_item);
                 if(layout_item_image)
                 {
                   markup = _("Image"); //Image objects don't have names - just titles. TODO: Would they be useful?
@@ -1173,7 +1173,7 @@ void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, cons
     {
       Gtk::TreeModel::Row row = *iter;
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-      std::shared_ptr<LayoutItem_Notebook> layout_notebook = std::dynamic_pointer_cast<LayoutItem_Notebook>(layout_item);
+      auto layout_notebook = std::dynamic_pointer_cast<LayoutItem_Notebook>(layout_item);
       if(layout_notebook)
         renderer_text->property_text() = _("(Notebook)");
       else if(layout_item)
@@ -1181,10 +1181,10 @@ void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, cons
       else
         renderer_text->property_text() = Glib::ustring();
 
-      std::shared_ptr<LayoutGroup> layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
-      std::shared_ptr<LayoutItem_Portal> layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
-      std::shared_ptr<LayoutItem_Button> layout_button = std::dynamic_pointer_cast<LayoutItem_Button>(layout_item);
-      std::shared_ptr<LayoutItem_Text> layout_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
+      auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+      auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+      auto layout_button = std::dynamic_pointer_cast<LayoutItem_Button>(layout_item);
+      auto layout_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
       const bool editable = (layout_group && !layout_portal) || layout_button || layout_text; //Only groups, buttons, and text objects have titles that can be edited.
       renderer_text->property_editable() = editable;
     }
@@ -1205,9 +1205,9 @@ void Dialog_Layout_Details::on_cell_data_column_width(Gtk::CellRenderer* rendere
       guint column_width = 0;
       if(layout_item)
       {
-        std::shared_ptr<LayoutItem_Button> layout_button = std::dynamic_pointer_cast<LayoutItem_Button>(layout_item);
-        std::shared_ptr<LayoutItem_Text> layout_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
-        std::shared_ptr<LayoutItem_Field> layout_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
+        auto layout_button = std::dynamic_pointer_cast<LayoutItem_Button>(layout_item);
+        auto layout_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
+        auto layout_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
         const bool editable = (layout_field || layout_button || layout_text); //Only these have column widths that can be edited.
         renderer_text->property_editable() = editable;
 
@@ -1234,8 +1234,8 @@ void Dialog_Layout_Details::on_cell_data_group_columns(Gtk::CellRenderer* render
       Gtk::TreeModel::Row row = *iter;
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
 
-      std::shared_ptr<LayoutGroup> layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
-      std::shared_ptr<LayoutItem_Portal> layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+      auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+      auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
 
       const bool is_group = layout_group && !layout_portal; //Only groups have column_counts.
 
@@ -1343,8 +1343,8 @@ void Dialog_Layout_Details::on_treeview_cell_edited_group_columns(const Glib::us
   {
     Gtk::TreeModel::Row row = *iter;
     std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-    std::shared_ptr<LayoutGroup> layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
-    std::shared_ptr<LayoutItem_Portal> layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+    auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+    auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
     if(layout_group && !layout_portal)
     {
       //std::istringstream astream(new_text); //Put it in a stream.

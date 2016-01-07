@@ -235,7 +235,7 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
   //Relationship:
   //Note that a null relationship means that the parent table was selected instead.
   std::shared_ptr<Relationship> related_relationship;
-  std::shared_ptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(related_relationship);
+  auto relationship = m_combo_relationship->get_selected_relationship(related_relationship);
 
   for(const auto& path : refTreeSelection->get_selected_rows())
   {
@@ -246,7 +246,7 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
 
     // Setup a LayoutItem_Field for the Field, 
     // so is_same_field() can work:
-    std::shared_ptr<LayoutItem_Field> field = std::make_shared<LayoutItem_Field>();
+    auto field = std::make_shared<LayoutItem_Field>();
     field->set_relationship(relationship);
     field->set_related_relationship(related_relationship);
       
@@ -289,7 +289,7 @@ void Dialog_ChooseField::on_checkbutton_related_relationships_toggled()
 
   //Preserve the selection:
   std::shared_ptr<Relationship> related_relationship;
-  std::shared_ptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(related_relationship);
+  auto relationship = m_combo_relationship->get_selected_relationship(related_relationship);
 
   //Refresh the list, hiding or showing the child relationships:
   m_combo_relationship->set_relationships(m_document, m_table_name, show_related_relationships);
@@ -299,7 +299,7 @@ void Dialog_ChooseField::on_checkbutton_related_relationships_toggled()
 
 void Dialog_ChooseField::on_combo_relationship_changed()
 {
-  std::shared_ptr<Relationship> relationship = m_combo_relationship->get_selected_relationship();
+  auto relationship = m_combo_relationship->get_selected_relationship();
 
   auto pDocument = m_document;
   if(pDocument)

@@ -105,7 +105,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
   //Performance optimisation:
   //Keep the connection open during all these operations:
   {
-    std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
+    auto sharedconnection = connect_to_server(get_app_window());
 
     result = m_Box_List.init_db_details(found_set, get_active_layout_platform(get_document())); //TODO: Select the last selected record.
 
@@ -257,7 +257,7 @@ FoundSet Notebook_Data::get_found_set_selected() const
       return found_set;
     }
     
-    std::shared_ptr<Field> primary_key_field =
+    auto primary_key_field =
       document->get_field_primary_key(m_table_name);
     found_set.m_where_clause = Utils::build_simple_where_expression(
       m_table_name, primary_key_field,

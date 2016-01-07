@@ -52,7 +52,7 @@ Box_Data_Portal::Box_Data_Portal()
 
 void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_record_primary_key_value)
 {
-  std::shared_ptr<Field> field_primary_key = get_field_primary_key();
+  auto field_primary_key = get_field_primary_key();
 
   //Create the link by setting the foreign key
   if(!m_key_field)
@@ -187,7 +187,7 @@ Box_Data_Portal::type_vecConstLayoutFields Box_Data_Portal::get_fields_to_show()
     Document::type_list_layout_groups mapGroups;
     mapGroups.push_back(m_portal);
 
-    std::shared_ptr<const Relationship> relationship = m_portal->get_relationship();
+    auto relationship = m_portal->get_relationship();
     if(relationship)
     {
       type_vecConstLayoutFields result = get_table_fields_to_show_for_sequence(m_portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);
@@ -199,7 +199,7 @@ Box_Data_Portal::type_vecConstLayoutFields Box_Data_Portal::get_fields_to_show()
       {
         for(const auto& item : result)
         {
-          std::shared_ptr<const LayoutItem_Field> item = *iter;
+          auto item = *iter;
           if(item)
             item->set_editable(false);
         }
@@ -264,10 +264,10 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
     return;
 
   //Get the primary key of that table:
-  std::shared_ptr<Field> navigation_table_primary_key = get_field_primary_key_for_table(navigation_table_name);
+  auto navigation_table_primary_key = get_field_primary_key_for_table(navigation_table_name);
 
   //Build a layout item to get the field's value:
-  std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
+  auto layout_item = std::make_shared<LayoutItem_Field>();
   layout_item->set_full_field_details(navigation_table_primary_key);
 
   if(navigation_relationship)
@@ -283,7 +283,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
 
   //For instance "invoice_line_id" if this is a portal to an "invoice_lines" table:
   const auto related_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
-  std::shared_ptr<const Field> key_field = get_field_primary_key_for_table(related_table);
+  auto key_field = get_field_primary_key_for_table(related_table);
   //std::cout << "DEBUG: related table=" << related_table << ", whose primary_key=" << key_field->get_name() << ", with value=" << primary_key_value.to_string() << "getting value for: " << layout_item->get_layout_display_name() << std::endl;
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_key(related_table, fieldsToGet, key_field, primary_key_value);

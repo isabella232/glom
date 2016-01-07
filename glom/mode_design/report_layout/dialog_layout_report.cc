@@ -242,7 +242,7 @@ std::shared_ptr<LayoutGroup> Dialog_Layout_Report::fill_group(const Gtk::TreeMod
     Gtk::TreeModel::Row row = *iter;
 
     std::shared_ptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
-    std::shared_ptr<LayoutGroup> pGroup = std::dynamic_pointer_cast<LayoutGroup>(pItem);
+    auto pGroup = std::dynamic_pointer_cast<LayoutGroup>(pItem);
     if(pGroup)
     {
       //Make sure that it contains the child items:
@@ -267,7 +267,7 @@ void Dialog_Layout_Report::fill_group_children(const std::shared_ptr<LayoutGroup
       std::shared_ptr<LayoutItem> item = child_row[model->m_columns.m_col_item];
 
       //Recurse:
-      std::shared_ptr<LayoutGroup> child_group = std::dynamic_pointer_cast<LayoutGroup>(item);
+      auto child_group = std::dynamic_pointer_cast<LayoutGroup>(item);
       if(child_group)
         fill_group_children(child_group, child_row, model);
 
@@ -282,11 +282,11 @@ void Dialog_Layout_Report::add_group_children(const Glib::RefPtr<type_model>& mo
 {
   for(const auto& item : group->m_list_items)
   {
-    std::shared_ptr<const LayoutGroup> child_group = std::dynamic_pointer_cast<const LayoutGroup>(item);
+    auto child_group = std::dynamic_pointer_cast<const LayoutGroup>(item);
     if(child_group)
     {
-      std::shared_ptr<const LayoutItem_Header> header = std::dynamic_pointer_cast<const LayoutItem_Header>(item);
-      std::shared_ptr<const LayoutItem_Footer> footer = std::dynamic_pointer_cast<const LayoutItem_Footer>(item);
+      auto header = std::dynamic_pointer_cast<const LayoutItem_Header>(item);
+      auto footer = std::dynamic_pointer_cast<const LayoutItem_Footer>(item);
 
       //Special-case the header and footer so that their items go into the separate treeviews:
       if(header)
@@ -446,7 +446,7 @@ void Dialog_Layout_Report::enable_buttons()
 
       //The [Formatting] button:
       bool enable_formatting = false;
-      std::shared_ptr<LayoutItem_Field> item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item_parent);
+      auto item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item_parent);
       if(item_field)
         enable_formatting = true;
 
@@ -786,10 +786,10 @@ void Dialog_Layout_Report::on_button_formatting()
       Gtk::TreeModel::Row row = *iter;
       std::shared_ptr<LayoutItem> item = row[model->m_columns.m_col_item];
 
-      std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
+      auto field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
       if(field)
       {
-        std::shared_ptr<LayoutItem_Field> field_chosen = offer_field_formatting(field, m_table_name, this, false /* no editing options */);
+        auto field_chosen = offer_field_formatting(field, m_table_name, this, false /* no editing options */);
         if(field_chosen)
         {
           *field = *field_chosen;
@@ -819,7 +819,7 @@ void Dialog_Layout_Report::on_button_edit()
       Gtk::TreeModel::Row row = *iter;
       std::shared_ptr<LayoutItem> item = row[model->m_columns.m_col_item];
 
-      std::shared_ptr<LayoutItem_FieldSummary> fieldsummary = std::dynamic_pointer_cast<LayoutItem_FieldSummary>(item);
+      auto fieldsummary = std::dynamic_pointer_cast<LayoutItem_FieldSummary>(item);
       if(fieldsummary)
       {
         Dialog_FieldSummary* dialog = nullptr;
@@ -834,7 +834,7 @@ void Dialog_Layout_Report::on_button_edit()
         if(dialog_response == Gtk::RESPONSE_OK)
         {
           //Get the chosen relationship:
-          std::shared_ptr<LayoutItem_FieldSummary> chosenitem = dialog->get_item();
+          auto chosenitem = dialog->get_item();
           if(chosenitem)
           {
             *fieldsummary = *chosenitem; //TODO_Performance.
@@ -849,10 +849,10 @@ void Dialog_Layout_Report::on_button_edit()
       }
       else
       {
-        std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
+        auto field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
         if(field)
         {
-          std::shared_ptr<LayoutItem_Field> chosenitem = offer_field_list_select_one_field(field, m_table_name, this);
+          auto chosenitem = offer_field_list_select_one_field(field, m_table_name, this);
           if(chosenitem)
           {
             *field = *chosenitem; //TODO_Performance.
@@ -862,10 +862,10 @@ void Dialog_Layout_Report::on_button_edit()
         }
         else
         {
-          std::shared_ptr<LayoutItem_Text> layout_item_text = std::dynamic_pointer_cast<LayoutItem_Text>(item);
+          auto layout_item_text = std::dynamic_pointer_cast<LayoutItem_Text>(item);
           if(layout_item_text)
           {
-            std::shared_ptr<LayoutItem_Text> chosen = offer_textobject(layout_item_text);
+            auto chosen = offer_textobject(layout_item_text);
             if(chosen)
             {
               *layout_item_text = *chosen;
@@ -875,10 +875,10 @@ void Dialog_Layout_Report::on_button_edit()
           }
           else
           {
-            std::shared_ptr<LayoutItem_Image> layout_item_image = std::dynamic_pointer_cast<LayoutItem_Image>(item);
+            auto layout_item_image = std::dynamic_pointer_cast<LayoutItem_Image>(item);
             if(layout_item_image)
             {
-              std::shared_ptr<LayoutItem_Image> chosen = offer_imageobject(layout_item_image);
+              auto chosen = offer_imageobject(layout_item_image);
               if(chosen)
               {
                 *layout_item_image = *chosen;
@@ -888,7 +888,7 @@ void Dialog_Layout_Report::on_button_edit()
             }
             else
             {
-              std::shared_ptr<LayoutItem_GroupBy> group_by = std::dynamic_pointer_cast<LayoutItem_GroupBy>(item);
+              auto group_by = std::dynamic_pointer_cast<LayoutItem_GroupBy>(item);
               if(group_by)
               {
                 Dialog_GroupBy* dialog = nullptr;
@@ -906,7 +906,7 @@ void Dialog_Layout_Report::on_button_edit()
                 if(dialog_response == Gtk::RESPONSE_OK)
                 {
                   //Get the chosen relationship:
-                  std::shared_ptr<LayoutItem_GroupBy> chosenitem = dialog->get_item();
+                  auto chosenitem = dialog->get_item();
                   if(chosenitem)
                   {
                     *group_by = *chosenitem;
@@ -1013,11 +1013,11 @@ std::shared_ptr<Report> Dialog_Layout_Report::get_report()
   m_report->set_title( m_entry_title->get_text() , AppWindow::get_current_locale());
   m_report->set_show_table_title( m_checkbutton_table_title->get_active() );
 
-  std::shared_ptr<LayoutGroup> group = m_report->get_layout_group();
+  auto group = m_report->get_layout_group();
   group->remove_all_items();
 
   //The Header and Footer parts are implicit (they are the whole header or footer treeview)
-  std::shared_ptr<LayoutItem_Header> header = std::make_shared<LayoutItem_Header>();
+  auto header = std::make_shared<LayoutItem_Header>();
   std::shared_ptr<LayoutGroup> group_temp = header;
   fill_report_parts(group_temp, m_model_parts_header);
   if(header->get_items_count())
@@ -1039,7 +1039,7 @@ void Dialog_Layout_Report::fill_report_parts(std::shared_ptr<LayoutGroup>& group
   for(const auto& row : parts_model->children())
   {
     //Recurse into a group if necessary:
-    std::shared_ptr<LayoutGroup> group_child = fill_group(row, parts_model);
+    auto group_child = fill_group(row, parts_model);
     if(group_child)
     {
       //Add the group:

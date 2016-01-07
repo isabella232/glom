@@ -58,7 +58,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 
   auto document = get_document();
 
-  std::shared_ptr<const Field> fieldPrimaryKey = get_field_primary_key();
+  auto fieldPrimaryKey = get_field_primary_key();
 
   const Glib::ustring primary_key_name = fieldPrimaryKey->get_name();
 
@@ -74,7 +74,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
     const auto iterFind = find_if_same_name(fieldsToAdd, item->get_name());
     if(iterFind == fieldsToAdd.end())
     {
-      std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
+      auto layout_item = std::make_shared<LayoutItem_Field>();
       layout_item->set_full_field_details(item);
 
       fieldsToAdd.push_back(layout_item);
@@ -125,7 +125,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 
             //We need the connection when we run the script, so that the script may use it.
             // TODO: Is this function supposed to throw an exception?
-            std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(AppWindow::get_appwindow());
+            auto sharedconnection = connect_to_server(AppWindow::get_appwindow());
 
             Glib::ustring error_message; //TODO: Check this.
             value =
@@ -295,7 +295,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
       if(key_is_auto_increment)
       {
         //Set the key in the parent table
-        std::shared_ptr<LayoutItem_Field> item_from_key = std::make_shared<LayoutItem_Field>();
+        auto item_from_key = std::make_shared<LayoutItem_Field>();
         item_from_key->set_name(relationship->get_from_field());
 
         //Show the new from key in the parent table's layout:
@@ -303,7 +303,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
 
         //Set it in the database too:
         auto document = get_document();
-        std::shared_ptr<Field> field_from_key = DbUtils::get_fields_for_table_one_field(document,
+        auto field_from_key = DbUtils::get_fields_for_table_one_field(document,
           relationship->get_from_table(), relationship->get_from_field()); //TODO_Performance.
         if(!field_from_key)
         {
@@ -311,7 +311,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
           return false;
         }
 
-        std::shared_ptr<Field> parent_primary_key_field = get_field_primary_key();
+        auto parent_primary_key_field = get_field_primary_key();
         if(!parent_primary_key_field)
         {
           std::cerr << G_STRFUNC << ": get_field_primary_key() failed. table = " << get_table_name() << std::endl;
@@ -382,7 +382,7 @@ bool Base_DB_Table_Data::confirm_delete_record()
 
 bool Base_DB_Table_Data::record_delete(const Gnome::Gda::Value& primary_key_value)
 {
-  std::shared_ptr<Field> field_primary_key = get_field_primary_key();
+  auto field_primary_key = get_field_primary_key();
   if(field_primary_key && !Conversions::value_is_empty(primary_key_value))
   {
     Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
@@ -461,7 +461,7 @@ Base_DB_Table_Data::type_vecConstLayoutFields Base_DB_Table_Data::get_related_fi
       if(layout_field->get_has_relationship_name())
       {
         //Get the relationship information:
-        std::shared_ptr<const Relationship> relationship = document->get_relationship(m_table_name, layout_field->get_relationship_name());
+        auto relationship = document->get_relationship(m_table_name, layout_field->get_relationship_name());
         if(relationship)
         {
           //If the relationship uses the specified field:
@@ -517,7 +517,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
         for(guint uiCol = 0; uiCol < cols_count; ++uiCol)
         {
           const auto value = result->get_value_at(uiCol, 0 /* row */);
-          std::shared_ptr<const LayoutItem_Field> layout_item = *iterFields;
+          auto layout_item = *iterFields;
           if(!layout_item)
             std::cerr << G_STRFUNC << ": The layout_item was null." << std::endl;
           else

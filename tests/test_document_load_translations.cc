@@ -62,8 +62,8 @@ bool contains_item_type(const Glom::Document::type_list_translatables& container
   return Glom::Utils::find_if_exists(container,
     [] (const Glom::Document::type_list_translatables::value_type& element)
     {
-      std::shared_ptr<Glom::TranslatableItem> item = element.first;
-      std::shared_ptr<T_TypeToFind> derived = std::dynamic_pointer_cast<T_TypeToFind>(item);
+      auto item element.first;
+      auto derived std::dynamic_pointer_cast<T_TypeToFind>(item);
       if(derived)
         return true;
       else
@@ -81,7 +81,7 @@ static std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const G
     
     for(const auto& layout_item : group->get_items_recursive())
     {
-      const std::shared_ptr<const Glom::LayoutItem_Field> layout_item_field =
+      const auto layout_item_field =
         std::dynamic_pointer_cast<const Glom::LayoutItem_Field>(layout_item);
       if(!layout_item_field)
         continue;
@@ -107,7 +107,7 @@ void check_title(const T_Item& item, const char* title_en, const char* title_de)
   //The get_title_original() and get_title_translation() should not be called 
   //on items that delegate to a child item:
   bool has_own_title = true;
-  std::shared_ptr<const Glom::LayoutItem_Field> field = 
+  auto field = 
     std::dynamic_pointer_cast<const Glom::LayoutItem_Field>(item);
   if(field)
      has_own_title = false;
@@ -197,7 +197,7 @@ int main()
   g_assert( document.get_table_title_singular("scenes", locale_de) == "Szene" );
 
   //Check a field:
-  std::shared_ptr<const Glom::Field> field = document.get_field("contacts", "contact_id");
+  auto field = document.get_field("contacts", "contact_id");
   g_assert(field);
   check_title(field, "Contact ID", "Kontaktkennung");
 
@@ -210,7 +210,7 @@ int main()
   g_assert(formatting.get_has_custom_choices());
   Glom::Formatting::type_list_values values = formatting.get_choices_custom();
   //g_assert(contains(values, "Day"));
-  std::shared_ptr<Glom::ChoiceValue> value = get_titled(values, "Day");
+  auto value = get_titled(values, "Day");
   g_assert(value);
   check_title(value, "Day", "Tag");
   g_assert(value->get_value() == Gnome::Gda::Value("Day"));
@@ -223,12 +223,12 @@ int main()
   g_assert( value->get_title_original() == "Day" );
 
   //Check a relationship:
-  const std::shared_ptr<const Glom::Relationship> relationship = document.get_relationship("characters", "contacts_actor");
+  const auto relationship = document.get_relationship("characters", "contacts_actor");
   g_assert(relationship);
   check_title(relationship, "Actor", "Schauspieler");
 
   //Check a LayoutItemField's CustomTitle:
-  std::shared_ptr<const Glom::LayoutItem_Field> field_on_layout = 
+  auto field_on_layout = 
     get_field_on_layout(document, "characters", "contacts", "name_full");
   g_assert(field_on_layout);
   g_assert(field_on_layout->get_has_relationship_name());
@@ -248,7 +248,7 @@ int main()
   g_assert(field_on_layout->get_formatting_used_has_translatable_choices());
 
   //Check a print layout:
-  const std::shared_ptr<const Glom::PrintLayout> print_layout = document.get_print_layout("contacts", "contact_details");
+  const auto print_layout = document.get_print_layout("contacts", "contact_details");
   g_assert(print_layout);
   check_title(print_layout, "Contact Details", "Kontakt Details" );
 

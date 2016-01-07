@@ -65,7 +65,7 @@ void ButtonGlom::on_menu_properties_activate()
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
 
-  std::shared_ptr<LayoutItem_Button> layout_item = 
+  auto layout_item = 
     std::dynamic_pointer_cast<LayoutItem_Button>(get_layout_item());
   dialog->set_script(layout_item, m_table_name);
   const auto response = Glom::UiUtils::dialog_run_with_help(dialog);

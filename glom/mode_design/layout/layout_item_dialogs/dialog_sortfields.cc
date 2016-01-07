@@ -110,7 +110,7 @@ void Dialog_SortFields::set_fields(const Glib::ustring& table_name, const Layout
     guint field_sequence = 0;
     for(const auto& the_pair : fields)
     {
-      std::shared_ptr<const LayoutItem_Field> item = std::dynamic_pointer_cast<const LayoutItem_Field>(the_pair.first);
+      auto item = std::dynamic_pointer_cast<const LayoutItem_Field>(the_pair.first);
 
       auto iterTree = m_model_fields->append();
       Gtk::TreeModel::Row row = *iterTree;
@@ -190,7 +190,7 @@ LayoutItem_GroupBy::type_list_sort_fields Dialog_SortFields::get_fields() const
     const auto field_name = item->get_name();
     if(!field_name.empty())
     {
-      std::shared_ptr<LayoutItem_Field> field_copy = glom_sharedptr_clone(item);
+      auto field_copy = glom_sharedptr_clone(item);
 
       const bool ascending = row[m_ColumnsFields.m_col_ascending];
       result.push_back( LayoutItem_GroupBy::type_pair_sort_field(field_copy, ascending) );
@@ -285,7 +285,7 @@ void Dialog_SortFields::on_button_edit_field()
       std::shared_ptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
       //Get the chosen field:
-      std::shared_ptr<LayoutItem_Field> field_chosen = 
+      auto field_chosen = 
         offer_field_list_select_one_field(field, m_table_name, this);
       if(field_chosen)
 

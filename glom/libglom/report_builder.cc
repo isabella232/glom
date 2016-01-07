@@ -47,7 +47,7 @@ bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
   type_vecLayoutItems itemsToGet;
   for(const auto& item : group->m_list_items)
   {
-    std::shared_ptr<LayoutItem_Text> item_text = std::dynamic_pointer_cast<LayoutItem_Text>(item);
+    auto item_text = std::dynamic_pointer_cast<LayoutItem_Text>(item);
     if(item_text)
     {
       if(!report_build_records_text(found_set, *node, item_text))
@@ -58,7 +58,7 @@ bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
     }
     else
     {
-      std::shared_ptr<LayoutItem_Image> item_image = std::dynamic_pointer_cast<LayoutItem_Image>(item);
+      auto item_image = std::dynamic_pointer_cast<LayoutItem_Image>(item);
       if(item_image)
       {
         if(!report_build_records_image(found_set, *node, item_image))
@@ -69,7 +69,7 @@ bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
       }
       else
       {
-        std::shared_ptr<LayoutItem_Field> pField = std::dynamic_pointer_cast<LayoutItem_Field>(item);
+        auto pField = std::dynamic_pointer_cast<LayoutItem_Field>(item);
         if(pField)
         {
           guint col_index = 0; //ignored.
@@ -81,7 +81,7 @@ bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
         }
         else
         {
-          std::shared_ptr<LayoutItem_VerticalGroup> vertical_group = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(item);
+          auto vertical_group = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(item);
           if(vertical_group)
           {
             //Reuse (a bit hacky) this function for the header and footer:
@@ -109,7 +109,7 @@ bool ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Eleme
   type_vecLayoutItems itemsToGet;
   for(const auto& item : summary->m_list_items)
   {
-    std::shared_ptr<LayoutItem_GroupBy> pGroupBy = std::dynamic_pointer_cast<LayoutItem_GroupBy>(item);
+    auto pGroupBy = std::dynamic_pointer_cast<LayoutItem_GroupBy>(item);
     if(pGroupBy)
     {
       //Recurse, adding a sub-groupby block:
@@ -121,7 +121,7 @@ bool ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Eleme
     }
     else
     {
-      std::shared_ptr<LayoutItem_Summary> pSummary = std::dynamic_pointer_cast<LayoutItem_Summary>(item);
+      auto pSummary = std::dynamic_pointer_cast<LayoutItem_Summary>(item);
       if(pSummary)
       {
         //Recurse, adding a summary block:
@@ -165,7 +165,7 @@ bool ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xml
   type_vecLayoutItems itemsToGet;
   for(const auto& item : group_by->m_list_items)
   {
-    std::shared_ptr<LayoutItem_GroupBy> pGroupBy = std::dynamic_pointer_cast<LayoutItem_GroupBy>(item);
+    auto pGroupBy = std::dynamic_pointer_cast<LayoutItem_GroupBy>(item);
     if(pGroupBy)
     {
       //Recurse, adding a sub-groupby block:
@@ -177,7 +177,7 @@ bool ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xml
     }
     else
     {
-      std::shared_ptr<LayoutItem_Summary> pSummary = std::dynamic_pointer_cast<LayoutItem_Summary>(item);
+      auto pSummary = std::dynamic_pointer_cast<LayoutItem_Summary>(item);
       if(pSummary)
       {
         //Recurse, adding a summary block:
@@ -214,7 +214,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
   //Get the possible heading values.
   if(group_by->get_has_field_group_by())
   {
-    std::shared_ptr<LayoutItem_Field> field_group_by = group_by->get_field_group_by();
+    auto field_group_by = group_by->get_field_group_by();
     DbUtils::layout_item_fill_field_details(get_document(), found_set_parent.m_table_name, field_group_by);
 
     //Get the possible group values, ignoring repeats by using GROUP BY.
@@ -313,7 +313,7 @@ bool ReportBuilder::report_build_records_get_fields(const FoundSet& found_set, c
 {
   for(const auto& item : group->m_list_items)
   {
-    std::shared_ptr<LayoutItem_VerticalGroup> pVerticalGroup = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(item);
+    auto pVerticalGroup = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(item);
     if(pVerticalGroup)
     {
       if(!report_build_records_get_fields(found_set, pVerticalGroup, items))
@@ -324,7 +324,7 @@ bool ReportBuilder::report_build_records_get_fields(const FoundSet& found_set, c
     }
     else
     {
-      std::shared_ptr<LayoutItem_Field> pField = std::dynamic_pointer_cast<LayoutItem_Field>(item);
+      auto pField = std::dynamic_pointer_cast<LayoutItem_Field>(item);
       if(pField)
         items.push_back(pField);
     }
@@ -340,7 +340,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
     //Add Field headings:
     for(const auto& layout_item : items)
     {
-      std::shared_ptr<LayoutItem_Field> layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
+      auto layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
 
       //This adds a field heading (and therefore, column) for fields, or for a vertical group.
       auto nodeFieldHeading = parent_node.add_child_element("field_heading");
@@ -355,12 +355,12 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
     Utils::type_vecLayoutFields fieldsToGet;
     for(const auto& layout_item : items)
     {
-      std::shared_ptr<LayoutItem_Field> layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
+      auto layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
       if(layoutitem_field)
         fieldsToGet.push_back(layoutitem_field);
       else
       {
-        std::shared_ptr<LayoutItem_VerticalGroup> vertical_group = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(layout_item);
+        auto vertical_group = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(layout_item);
         if(vertical_group)
         {
           //Get all the fields in this group:
@@ -400,7 +400,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
         guint colField = 0;
         for(const auto& item : items)
         {
-          std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
+          auto field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
           if(field)
           {
             if(!report_build_records_field(found_set, *nodeRow, field, datamodel, row, colField))
@@ -411,7 +411,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
           }
           else
           {
-            std::shared_ptr<LayoutItem_Text> item_text = std::dynamic_pointer_cast<LayoutItem_Text>(item);
+            auto item_text = std::dynamic_pointer_cast<LayoutItem_Text>(item);
             if(item_text)
             {
               if(!report_build_records_text(found_set, *nodeRow, item_text))
@@ -422,7 +422,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
             }
             else
             {
-              std::shared_ptr<LayoutItem_VerticalGroup> item_verticalgroup = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(item);
+              auto item_verticalgroup = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(item);
               if(item_verticalgroup)
               {
                 if(!report_build_records_vertical_group(found_set, *nodeRow, item_verticalgroup, datamodel, row, colField))
@@ -537,7 +537,7 @@ bool ReportBuilder::report_build_records_vertical_group(const FoundSet& found_se
 
   for(const auto& item : group->m_list_items)
   {
-    std::shared_ptr<LayoutItem_VerticalGroup> pVerticalGroup = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(item);
+    auto pVerticalGroup = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(item);
     if(pVerticalGroup)
     {
       if(!report_build_records_vertical_group(found_set, *nodeGroupVertical, pVerticalGroup, datamodel, row, field_index))
@@ -548,7 +548,7 @@ bool ReportBuilder::report_build_records_vertical_group(const FoundSet& found_se
     }
     else
     {
-      std::shared_ptr<LayoutItem_Field> pField = std::dynamic_pointer_cast<LayoutItem_Field>(item);
+      auto pField = std::dynamic_pointer_cast<LayoutItem_Field>(item);
       if(pField)
       {
         if(!report_build_records_field(found_set, *nodeGroupVertical, pField, datamodel, row, field_index, true /* vertical, so we get a row for each field too. */))
@@ -559,7 +559,7 @@ bool ReportBuilder::report_build_records_vertical_group(const FoundSet& found_se
       }
       else
       {
-        std::shared_ptr<LayoutItem_Text> pText = std::dynamic_pointer_cast<LayoutItem_Text>(item);
+        auto pText = std::dynamic_pointer_cast<LayoutItem_Text>(item);
         if(pText)
         {
           if(!report_build_records_text(found_set, *nodeGroupVertical, pText, true))
@@ -657,11 +657,11 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::
 
   type_vecLayoutItems itemsToGet_TopLevel;
 
-  const std::shared_ptr<const LayoutGroup> group = report->get_layout_group();
+  const auto group = report->get_layout_group();
   for(const auto& pPart : group->m_list_items)
   {
     //The Group, and the details for each record in the group:
-    std::shared_ptr<LayoutItem_GroupBy> pGroupBy = std::dynamic_pointer_cast<LayoutItem_GroupBy>(pPart);
+    auto pGroupBy = std::dynamic_pointer_cast<LayoutItem_GroupBy>(pPart);
     if(pGroupBy)
     {
       if(!report_build_groupby(found_set, *nodeParent, pGroupBy))
@@ -672,7 +672,7 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::
     }
     else
     {
-      std::shared_ptr<LayoutItem_Summary> pSummary = std::dynamic_pointer_cast<LayoutItem_Summary>(pPart);
+      auto pSummary = std::dynamic_pointer_cast<LayoutItem_Summary>(pPart);
       if(pSummary)
       {
         //Recurse, adding a summary block:
@@ -684,11 +684,11 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::
       }
       else
       {
-        std::shared_ptr<LayoutGroup> pGroup = std::dynamic_pointer_cast<LayoutGroup>(pPart);
+        auto pGroup = std::dynamic_pointer_cast<LayoutGroup>(pPart);
         if(pGroup)
         {
-          std::shared_ptr<LayoutItem_Header> pHeader = std::dynamic_pointer_cast<LayoutItem_Header>(pPart);
-          std::shared_ptr<LayoutItem_Footer> pFooter = std::dynamic_pointer_cast<LayoutItem_Footer>(pPart);
+          auto pHeader = std::dynamic_pointer_cast<LayoutItem_Header>(pPart);
+          auto pFooter = std::dynamic_pointer_cast<LayoutItem_Footer>(pPart);
           if(pHeader || pFooter)
           {
             //Recurse, adding a summary block:

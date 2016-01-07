@@ -75,7 +75,7 @@ std::shared_ptr<LayoutItem_Line> Dialog_Line::get_line() const
     std::cerr << G_STRFUNC <<  ": m_line is null" << std::endl;
   }
   
-  std::shared_ptr<LayoutItem_Line> result = glom_sharedptr_clone(m_line); //Start with the old details, to preserve anything that is not in our UI.
+  auto result = glom_sharedptr_clone(m_line); //Start with the old details, to preserve anything that is not in our UI.
 
   if(!result)
   {

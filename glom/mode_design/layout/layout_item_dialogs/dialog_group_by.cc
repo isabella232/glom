@@ -108,7 +108,7 @@ std::shared_ptr<LayoutItem_GroupBy> Dialog_GroupBy::get_item() const
 
 void Dialog_GroupBy::on_button_field_group_by()
 {
-  std::shared_ptr<LayoutItem_Field> field = offer_field_list_select_one_field(m_layout_item->get_field_group_by(), m_table_name, this);
+  auto field = offer_field_list_select_one_field(m_layout_item->get_field_group_by(), m_table_name, this);
   if(field)
   {
     m_layout_item->set_field_group_by(field);
@@ -120,7 +120,7 @@ void Dialog_GroupBy::on_button_formatting_group_by()
 {
   if(m_layout_item)
   {
-    std::shared_ptr<LayoutItem_Field> field = offer_field_formatting(m_layout_item->get_field_group_by(), m_table_name, this, false /* no editing options. */);
+    auto field = offer_field_formatting(m_layout_item->get_field_group_by(), m_table_name, this, false /* no editing options. */);
     if(field)
     {
       m_layout_item->set_field_group_by(field);

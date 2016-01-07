@@ -230,7 +230,7 @@ bool recreate_database_from_document(Document* document, const std::function<voi
   try
   {
     connection_pool->set_ready_to_connect(); //This has succeeded already.
-    std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect();
+    auto sharedconnection = connection_pool->connect();
     std::cerr << G_STRFUNC << ": Failed because database exists already." << std::endl;
 
     return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
@@ -474,7 +474,7 @@ bool add_standard_tables(const Document* document)
   try
   {
     Document::type_vec_fields pref_fields;
-    std::shared_ptr<TableInfo> prefs_table_info = Document::create_table_system_preferences(pref_fields);
+    auto prefs_table_info = Document::create_table_system_preferences(pref_fields);
 
     //Name, address, etc:
     if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
@@ -940,7 +940,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
           field_info->set_allow_null(value_notnull.get_boolean());
 
 
-        std::shared_ptr<Field> field = std::make_shared<Field>(); //TODO: Get glom-specific information from the document?
+        auto field = std::make_shared<Field>(); //TODO: Get glom-specific information from the document?
         field->set_field_info(field_info);
 
 
@@ -1222,7 +1222,7 @@ bool create_table(Document::HostingMode hosting_mode, const std::shared_ptr<cons
   //(We don't actually use this yet)
   if(find_if_same_name_exists(fields, GLOM_STANDARD_FIELD_LOCK))
   {
-    std::shared_ptr<Field> field = std::make_shared<Field>();
+    auto field = std::make_shared<Field>();
     field->set_name(GLOM_STANDARD_FIELD_LOCK);
     field->set_glom_type(Field::glom_field_type::TEXT);
     fields.push_back(field);
@@ -1614,7 +1614,7 @@ bool insert_example_data(const Document* document, const Glib::ustring& table_na
     {
       //std::cout << "  DEBUG: i=" << i << ", row_data.size()=" << row_data.size() << std::endl;
 
-      std::shared_ptr<Field> field = vec_fields[i];
+      auto field = vec_fields[i];
       if(!field)
       {
         std::cerr << G_STRFUNC << ": field was null for field num=" << i << std::endl;
@@ -1885,14 +1885,14 @@ bool layout_field_should_have_navigation(const Glib::ustring& table_name, const 
 
   //Check whether the field controls a relationship,
   //meaning it identifies a record in another table.
-  std::shared_ptr<const Relationship> const_relationship =
+  auto const_relationship =
     document->get_field_used_in_relationship_to_one(table_name, layout_item);
   field_used_in_relationship_to_one = std::const_pointer_cast<Relationship>(const_relationship); //This is just because we can't seem to have a std::shared_ptr<const Relationship>& output parameter.
   // std::cout << "DEBUG: table_name=" << table_name << ", table_used=" << layout_item->get_table_used(table_name) << ", layout_item=" << layout_item->get_name() << ", field_used_in_relationship_to_one=" << field_used_in_relationship_to_one << std::endl;
 
   //Check whether the field identifies a record in another table
   //just because it is a primary key in that table:
-  const std::shared_ptr<const Field> field_info = layout_item->get_full_field_details();
+  const auto field_info = layout_item->get_full_field_details();
   const bool field_is_related_primary_key =
     layout_item->get_has_relationship_name() &&
     field_info && field_info->get_primary_key();
@@ -2252,7 +2252,7 @@ Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring
 {
   Gnome::Gda::Value result;
 
-  std::shared_ptr<Field> to_key_field = get_fields_for_table_one_field(document, relationship->get_to_table(), relationship->get_to_field());
+  auto to_key_field = get_fields_for_table_one_field(document, relationship->get_to_table(), relationship->get_to_field());
   if(to_key_field)
   {
     //Convert the value, in case the from and to fields have different types:

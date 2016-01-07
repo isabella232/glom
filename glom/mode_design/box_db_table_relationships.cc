@@ -82,7 +82,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
 
   m_AddDel.remove_all();
 
-  std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
+  auto sharedconnection = connect_to_server(get_app_window());
   if(sharedconnection)
   {
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
@@ -149,7 +149,7 @@ void Box_DB_Table_Relationships::save_to_document()
 
       if(find_if_same_name_exists(vecRelationships, name)) //Don't add 2 relationships with the same name.
       {
-        std::shared_ptr<Relationship> relationship = document->get_relationship(m_table_name, name); //Preserve other information, such as translations.
+        auto relationship = document->get_relationship(m_table_name, name); //Preserve other information, such as translations.
         if(!relationship)
           relationship = std::make_shared<Relationship>();
 
@@ -238,7 +238,7 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
       //Set list of 'To' fields depending on table:
       m_AddDel.set_value(row, m_colToField, Glib::ustring(""));
 
-      std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
+      auto sharedconnection = connect_to_server(get_app_window());
       if(sharedconnection)
       {
         Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
@@ -277,7 +277,7 @@ void Box_DB_Table_Relationships::on_adddel_user_requested_delete(const Gtk::Tree
     auto document = get_document();
     if(document)
     {
-      std::shared_ptr<const Relationship> relationship = document->get_relationship(m_table_name, relationship_name);
+      auto relationship = document->get_relationship(m_table_name, relationship_name);
       if(relationship)
       {
         document->remove_relationship(relationship);

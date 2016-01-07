@@ -70,7 +70,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
   Gtk::CellRenderer* cell = nullptr;
 
   //Create the appropriate cellrenderer type:
-  std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
+  auto item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
   if(item_field)
   {
     //Ignore hidden fields.
@@ -102,7 +102,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
         if(formatting.get_has_choices())
         {
           auto rendererList = Gtk::manage( new CellRendererDbList() );
-          std::shared_ptr<LayoutItem> unconst = std::const_pointer_cast<LayoutItem>(layout_item); //TODO: Avoid this.
+          auto unconst = std::const_pointer_cast<LayoutItem>(layout_item); //TODO: Avoid this.
           rendererList->set_layout_item(unconst, table_name);
           bool as_radio_buttons = false; //Can't really be done in a list, so we ignore it.
           const auto restricted = formatting.get_choices_restricted(as_radio_buttons);
@@ -128,7 +128,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
   {
     //Non-fields:
 
-    std::shared_ptr<const LayoutItem_Image> item_image = std::dynamic_pointer_cast<const LayoutItem_Image>(layout_item);
+    auto item_image = std::dynamic_pointer_cast<const LayoutItem_Image>(layout_item);
     if(item_image)
     {
       auto pixbuf_renderer = Gtk::manage( new Gtk::CellRendererPixbuf() );
@@ -143,7 +143,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
     }
     else
     {
-      std::shared_ptr<const LayoutItem_Text> item_text = std::dynamic_pointer_cast<const LayoutItem_Text>(layout_item);
+      auto item_text = std::dynamic_pointer_cast<const LayoutItem_Text>(layout_item);
       if(item_text)
       {
         auto pCellText = Gtk::manage( new Gtk::CellRendererText() );
@@ -153,7 +153,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
       }
       else
       {
-        std::shared_ptr<const LayoutItem_Button> item_button = std::dynamic_pointer_cast<const LayoutItem_Button>(layout_item);
+        auto item_button = std::dynamic_pointer_cast<const LayoutItem_Button>(layout_item);
         if(item_button)
         {
           auto pCellButton = Gtk::manage( new GlomCellRenderer_ButtonText() );
@@ -173,7 +173,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
   }
 
   //Use formatting:
-  std::shared_ptr<const LayoutItem_WithFormatting> item_withformatting =
+  auto item_withformatting =
     std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(layout_item);
   if(item_withformatting)
   {

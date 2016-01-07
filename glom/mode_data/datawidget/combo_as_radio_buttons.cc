@@ -54,7 +54,7 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
   }
   m_map_buttons.clear();
 
-  std::shared_ptr<LayoutItem_Field> layout_item =
+  auto layout_item =
     std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
   const auto format = layout_item->get_formatting_used();
   std::shared_ptr<const Relationship> choice_relationship;
@@ -84,7 +84,7 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
         for(const auto& item : extra_fields)
         {
           if(iterValues != extra_values.end()) {
-            const std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
+            const auto item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
             if(item_field)
             {
               const Gnome::Gda::Value value = *iterValues; //TODO: Use a vector instead?
@@ -126,7 +126,7 @@ void ComboAsRadioButtons::set_choices_fixed(const Formatting::type_list_values& 
   Gtk::RadioButton::Group group;
   for(const auto& choicevalue : list_values)
   {
-    std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
+    auto layout_item = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
     if(layout_item)
     {
       Gnome::Gda::Value value;
@@ -171,7 +171,7 @@ void ComboAsRadioButtons::check_for_change()
   //Validate the input:
   bool success = false;
 
-  std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
+  auto layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
   const auto value = Conversions::parse_value(layout_item->get_glom_type(), new_text, layout_item->get_formatting_used().m_numeric_format, success);
 
   if(success)
@@ -195,7 +195,7 @@ void ComboAsRadioButtons::check_for_change()
 
 void ComboAsRadioButtons::set_value(const Gnome::Gda::Value& value)
 {
-  std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
+  auto layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
   if(!layout_item)
     return;
 
@@ -228,7 +228,7 @@ void ComboAsRadioButtons::set_text(const Glib::ustring& text)
 
 Gnome::Gda::Value ComboAsRadioButtons::get_value() const
 {
-  std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
+  auto layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
   bool success = false;
 
   const auto text = get_text();

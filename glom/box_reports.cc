@@ -132,7 +132,7 @@ bool Box_Reports::fill_from_database()
 
 void Box_Reports::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 {
-  std::shared_ptr<Report> report = std::make_shared<Report>();
+  auto report = std::make_shared<Report>();
 
   const auto report_name = m_AddDel.get_value(row, m_colReportName);
   if(!report_name.empty())
@@ -216,7 +216,7 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
     const auto report_name = m_AddDel.get_value_key(row);
     auto document = get_document();
 
-    std::shared_ptr<Report> report = document->get_report(m_table_name, report_name);
+    auto report = document->get_report(m_table_name, report_name);
     if(report)
     {
       if(column == m_colTitle)

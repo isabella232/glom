@@ -105,7 +105,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   auto connection_pool = Glom::ConnectionPool::get_instance();
-  std::shared_ptr<Glom::SharedConnection> connection = connection_pool->connect();
+  auto connection = connection_pool->connect();
   g_assert(connection);
 
   const auto gda_connection = connection->get_gda_connection();
@@ -114,7 +114,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   //Some python code just to exercise our PyGlomRecord API:
   const Glib::ustring table_name = "products";
-  const std::shared_ptr<const Glom::Field> primary_key_field =
+  const auto primary_key_field =
     document.get_field_primary_key(table_name);
   if(!primary_key_field)
   {

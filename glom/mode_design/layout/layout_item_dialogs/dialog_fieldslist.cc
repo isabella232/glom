@@ -113,7 +113,7 @@ void Dialog_FieldsList::set_fields(const Glib::ustring& table_name, const Layout
     guint field_sequence = 0;
     for(const auto& base_item : fields)
     {
-      std::shared_ptr<const LayoutItem_Field> item = std::dynamic_pointer_cast<const LayoutItem_Field>(base_item);
+      auto item = std::dynamic_pointer_cast<const LayoutItem_Field>(base_item);
       if(!item)
         continue;
 
@@ -196,7 +196,7 @@ LayoutGroup::type_list_items Dialog_FieldsList::get_fields() const
     const auto field_name = item->get_name();
     if(!field_name.empty())
     {
-      std::shared_ptr<LayoutItem_Field> field_copy = glom_sharedptr_clone(item);
+      auto field_copy = glom_sharedptr_clone(item);
 
       //TODO: This seems to overwrite the sequence set when the user reorders an item.
       result[field_sequence] = field_copy;
@@ -320,7 +320,7 @@ void Dialog_FieldsList::on_button_edit_field()
       std::shared_ptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
       //Get the chosen field:
-      std::shared_ptr<LayoutItem_Field> field_chosen =
+      auto field_chosen =
         offer_field_list_select_one_field(field, m_table_name, this);
 
       //Set the field details in the layout treeview:

@@ -83,7 +83,7 @@ int main()
   g_assert(items.size() == 3);
   std::shared_ptr<const Glom::LayoutItem> item = items[2];
   g_assert(item);
-  std::shared_ptr<const Glom::LayoutItem_Image> image_item =
+  auto image_item =
     std::dynamic_pointer_cast<const Glom::LayoutItem_Image>(item);
   g_assert(image_item);
 

@@ -369,7 +369,7 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
   {
     const auto strFieldNameBeingEdited = m_AddDel.get_value_key(row);
 
-    std::shared_ptr<const Field> constfield = pDoc->get_field(m_table_name, strFieldNameBeingEdited);
+    auto constfield = pDoc->get_field(m_table_name, strFieldNameBeingEdited);
     m_Field_BeingEdited = constfield;
 
     //Get DB field info: (TODO: This might be unnecessary).
@@ -378,11 +378,11 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
       std::cerr << G_STRFUNC << ": field not found: " << strFieldNameBeingEdited << std::endl;
     else
     {
-      std::shared_ptr<const Field> const_field_found = *iterFind;
+      auto const_field_found = *iterFind;
       m_Field_BeingEdited = const_field_found;
 
       //Get new field definition:
-      std::shared_ptr<Field> fieldNew = get_field_definition(row);
+      auto fieldNew = get_field_definition(row);
 
       //Change it:
       if(*m_Field_BeingEdited != *fieldNew) //If it has really changed.
@@ -390,7 +390,7 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
         const auto bcontinue = check_field_change(m_Field_BeingEdited, fieldNew);
         if(bcontinue)
         {
-          std::shared_ptr<Field> fieldNewWithModifications = change_definition(m_Field_BeingEdited, fieldNew);
+          auto fieldNewWithModifications = change_definition(m_Field_BeingEdited, fieldNew);
 
           //Update the row to show any extra changes (such as unique being set/unset whenever the primary key is set/unset) 
 	  // TODO: When change_definition decides to unset another column from
@@ -410,7 +410,7 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
 
 void Box_DB_Table_Definition::on_adddel_edit(const Gtk::TreeModel::iterator& row)
 {
-  std::shared_ptr<const Field> constfield = get_field_definition(row);
+  auto constfield = get_field_definition(row);
   m_Field_BeingEdited = constfield;
 
   m_dialog_field_definition->set_field(m_Field_BeingEdited, m_table_name);
@@ -426,7 +426,7 @@ void Box_DB_Table_Definition::on_adddel_edit(const Gtk::TreeModel::iterator& row
 
 void Box_DB_Table_Definition::on_adddel_extra(const Gtk::TreeModel::iterator& row)
 {
-  std::shared_ptr<const Field> constfield = get_field_definition(row);
+  auto constfield = get_field_definition(row);
   m_Field_BeingEdited = constfield;
 
   m_dialog_default_formatting->set_field(m_Field_BeingEdited, m_table_name);
@@ -471,7 +471,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::
 
   //Start with original definitions, so that we preserve things like UNSIGNED.
   //TODO maybe use document's fieldinfo instead of m_vecFields.
-  std::shared_ptr<const Field> field_temp = 
+  auto field_temp = 
     DbUtils::get_fields_for_table_one_field(pDoc, m_table_name, strFieldNameBeforeEdit);
   if(field_temp)
   {
@@ -518,7 +518,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::
 
 void Box_DB_Table_Definition::on_field_definition_apply()
 {
-  std::shared_ptr<Field> field_New = m_dialog_field_definition->get_field();
+  auto field_New = m_dialog_field_definition->get_field();
 
   if(*m_Field_BeingEdited != *field_New)
   {
@@ -558,10 +558,10 @@ std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::sha
     {
       //Unset the current primary key:
       //(There should be one.)
-      std::shared_ptr<Field> existing_primary_key = get_field_primary_key_for_table(m_table_name);
+      auto existing_primary_key = get_field_primary_key_for_table(m_table_name);
       if(existing_primary_key)
       {
-        std::shared_ptr<Field> existing_primary_key_unset = glom_sharedptr_clone(existing_primary_key);
+        auto existing_primary_key_unset = glom_sharedptr_clone(existing_primary_key);
         existing_primary_key_unset->set_primary_key(false);
 	old_fields.push_back(existing_primary_key);
 	new_fields.push_back(existing_primary_key_unset);

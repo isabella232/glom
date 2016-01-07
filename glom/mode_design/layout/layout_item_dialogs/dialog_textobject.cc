@@ -71,7 +71,7 @@ void Dialog_TextObject::set_textobject(const std::shared_ptr<const LayoutItem_Te
 
 std::shared_ptr<LayoutItem_Text> Dialog_TextObject::get_textobject() const
 {
-  std::shared_ptr<LayoutItem_Text> result = glom_sharedptr_clone(m_textobject); //Start with the old details, to preserve anything that is not in our UI.
+  auto result = glom_sharedptr_clone(m_textobject); //Start with the old details, to preserve anything that is not in our UI.
 
   get_textobject(result);
 

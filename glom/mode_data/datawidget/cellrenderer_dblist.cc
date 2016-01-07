@@ -127,7 +127,7 @@ void CellRendererDbList::repack_cells_fixed(Gtk::CellLayout* combobox)
         cell = Gtk::manage(new Gtk::CellRendererText);
       else if(col < m_db_layout_items.size())
       {
-        std::shared_ptr<const LayoutItem_Field> layout_item = m_db_layout_items[col];
+        auto layout_item = m_db_layout_items[col];
         cell = create_cell(layout_item, m_table_name, m_document, get_fixed_cell_height(*widget));
       }
 
@@ -232,7 +232,7 @@ void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, co
 
 void CellRendererDbList::set_value(const Gnome::Gda::Value& value)
 {
-  std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
+  auto layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
   if(!layout_item)
     return;
 
@@ -265,7 +265,7 @@ void CellRendererDbList::set_value(const Gnome::Gda::Value& value)
 
 Gnome::Gda::Value CellRendererDbList::get_value() const
 {
-  std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
+  auto layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
   bool success = false;
 
   const auto text = get_text();

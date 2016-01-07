@@ -104,7 +104,7 @@ Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
 
     if(!Conversions::value_is_empty(data))
     {
-      const std::shared_ptr<const Field> field = item->get_full_field_details();
+      const auto field = item->get_full_field_details();
       if(field)
       {
         bool use_this_field = true;
@@ -294,10 +294,10 @@ void Box_Data::fill_layout_group_field_info(const std::shared_ptr<LayoutGroup>& 
       {
         //Get the full field information:
         const auto relationship_name = item_field->get_relationship_name();
-        std::shared_ptr<const Relationship> relationship = document->get_relationship(m_table_name, relationship_name);
+        auto relationship = document->get_relationship(m_table_name, relationship_name);
         if(relationship)
         {
-          std::shared_ptr<Field> field = DbUtils::get_fields_for_table_one_field(document, relationship->get_to_table(), item->get_name());
+          auto field = DbUtils::get_fields_for_table_one_field(document, relationship->get_to_table(), item->get_name());
           if(field)
           {
             item_field->set_full_field_details(field);
@@ -312,7 +312,7 @@ void Box_Data::fill_layout_group_field_info(const std::shared_ptr<LayoutGroup>& 
       else
       {
         //Get the field info:
-        std::shared_ptr<Field> field = DbUtils::get_fields_for_table_one_field(document, m_table_name, item_field->get_name());
+        auto field = DbUtils::get_fields_for_table_one_field(document, m_table_name, item_field->get_name());
         if(field)
         {
           item_field->set_full_field_details(field); //TODO_Performance: Just use this as the output arg?
@@ -323,7 +323,7 @@ void Box_Data::fill_layout_group_field_info(const std::shared_ptr<LayoutGroup>& 
     }
     else
     {
-      std::shared_ptr<LayoutGroup> item_group = std::dynamic_pointer_cast<LayoutGroup>(item);
+      auto item_group = std::dynamic_pointer_cast<LayoutGroup>(item);
       if(item_group) //If it is a group
       {
         //recurse, to fill the fields info in this group:
@@ -357,7 +357,7 @@ void Box_Data::execute_button_script(const std::shared_ptr<const LayoutItem_Butt
   const auto field_values = get_record_field_values_for_calculation(m_table_name, field_primary_key, primary_key_value);
 
   //We need the connection when we run the script, so that the script may use it.
-  std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */);
+  auto sharedconnection = connect_to_server(0 /* parent window */);
 
   //Allow this UI to respond to UI change requests from the Python code:
   AppPythonUICallbacks callbacks;

@@ -182,7 +182,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   guint col_index = 0;
   for(const auto& str : row)
   {
-    std::shared_ptr<const Field> field = m_data_source->get_field_for_column(col_index++);
+    auto field = m_data_source->get_field_for_column(col_index++);
     if(field)
     {
       // We always assume exported data is in standard CSV format, since

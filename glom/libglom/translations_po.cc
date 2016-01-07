@@ -212,7 +212,7 @@ bool write_translations_to_po_file(Document* document, const Glib::ustring& po_f
 
   for(const auto& the_pair : document->get_translatable_items())
   {
-    std::shared_ptr<TranslatableItem> item = the_pair.first;
+    auto item = the_pair.first;
     if(!item)
       continue;
 

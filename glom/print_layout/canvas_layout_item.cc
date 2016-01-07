@@ -157,7 +157,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
 {
   Glib::RefPtr<CanvasItemMovable> child;
   Glib::RefPtr<Goocanvas::Item> child_item;
-  std::shared_ptr<LayoutItem_Text> text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
+  auto text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
   if(text)
   {
     Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
@@ -171,7 +171,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
   }
   else
   {
-    std::shared_ptr<LayoutItem_Image> image = std::dynamic_pointer_cast<LayoutItem_Image>(layout_item);
+    auto image = std::dynamic_pointer_cast<LayoutItem_Image>(layout_item);
     if(image)
     {
       Glib::RefPtr<CanvasImageMovable> canvas_item = CanvasImageMovable::create();
@@ -189,7 +189,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
     }
     else
     {
-      std::shared_ptr<LayoutItem_Line> line = std::dynamic_pointer_cast<LayoutItem_Line>(layout_item);
+      auto line = std::dynamic_pointer_cast<LayoutItem_Line>(layout_item);
       if(line)
       {
         double start_x = 0;
@@ -211,7 +211,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
       }
       else
       {
-        std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
+        auto field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
         if(field)
         {
           //Create an appropriate canvas item for the field type:
@@ -241,7 +241,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
         }
         else
         {
-          std::shared_ptr<LayoutItem_Portal> portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+          auto portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
           if(portal)
           {
             Glib::RefPtr<CanvasTableMovable> canvas_item = CanvasTableMovable::create();
@@ -314,7 +314,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(guint rows_count)
   if(!canvas_table)
     return;
 
-  std::shared_ptr<LayoutItem_Portal> portal = 
+  auto portal = 
     std::dynamic_pointer_cast<LayoutItem_Portal>(get_layout_item());
   if(!portal)
   {
@@ -414,7 +414,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
 
 void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
 {
-  std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(m_layout_item);
+  auto field = std::dynamic_pointer_cast<LayoutItem_Field>(m_layout_item);
   if(!field)
     return;
 
@@ -491,7 +491,7 @@ void CanvasLayoutItem::remove_empty_indicators()
 
 void CanvasLayoutItem::update_layout_position_from_canvas()
 {
-  std::shared_ptr<LayoutItem> layout_item = get_layout_item();
+  auto layout_item = get_layout_item();
   if(!layout_item)
     return;
 

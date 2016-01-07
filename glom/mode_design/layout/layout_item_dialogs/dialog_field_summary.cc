@@ -56,7 +56,7 @@ void Dialog_FieldSummary::set_item(const std::shared_ptr<const LayoutItem_FieldS
 
 std::shared_ptr<LayoutItem_FieldSummary> Dialog_FieldSummary::get_item() const
 {
-  std::shared_ptr<LayoutItem_FieldSummary> result = glom_sharedptr_clone(m_layout_item);
+  auto result = glom_sharedptr_clone(m_layout_item);
   result->set_summary_type( m_combo_summarytype->get_summary_type() );
 
   return result;
@@ -64,7 +64,7 @@ std::shared_ptr<LayoutItem_FieldSummary> Dialog_FieldSummary::get_item() const
 
 void Dialog_FieldSummary::on_button_field()
 {
-  std::shared_ptr<LayoutItem_Field> field = offer_field_list_select_one_field(m_layout_item, m_table_name, this);
+  auto field = offer_field_list_select_one_field(m_layout_item, m_table_name, this);
   if(field)
   {
     m_layout_item->set_field(field);

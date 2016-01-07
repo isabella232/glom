@@ -42,7 +42,7 @@ DbTreeModelWithExtraText::DbTreeModelWithExtraText(const FoundSet& found_set, co
   int column_index = 0;
   for(const auto& item : layout_items)
   {
-    const std::shared_ptr<const LayoutItem_Field> item_field = 
+    const auto item_field = 
       std::dynamic_pointer_cast<const LayoutItem_Field>(item);
     if(item_field)
     {

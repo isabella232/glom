@@ -325,7 +325,7 @@ static int spawn_sync(const Glib::ustring& command_line, std::string* stdout_tex
 
   Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
 
-  std::shared_ptr<const SpawnInfo> info = spawn_async(command_line, redirect_flags); //This could throw
+  auto info = spawn_async(command_line, redirect_flags); //This could throw
   info->signal_finished().connect(
     sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
 

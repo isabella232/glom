@@ -568,7 +568,7 @@ void ConnectionPool::on_sharedconnection_finished()
 //static
 bool ConnectionPool::handle_error_cerr_only()
 {
-  std::shared_ptr<SharedConnection> sharedconnection = get_and_connect();
+  auto sharedconnection = get_and_connect();
 
   if(sharedconnection)
   {
@@ -787,8 +787,8 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
   auto iter_new = new_fields.begin();
   while( (iter_old != old_fields.end()) && (iter_new != new_fields.end()) )
   {
-    const std::shared_ptr<const Field> field_old = *iter_old;
-    const std::shared_ptr<const Field> field_new = *iter_new;
+    const auto field_old = *iter_old;
+    const auto field_new = *iter_new;
     if(field_old && field_new
       && field_old->get_auto_increment() != field_new->get_auto_increment())
     {

@@ -149,7 +149,7 @@ bool Box_Tables::fill_from_database()
     std::cerr << G_STRFUNC << ": document is null" << std::endl;
 
   //Get the list of tables in the database, from the server:
-  std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(AppWindow::get_appwindow());
+  auto sharedconnection = connect_to_server(AppWindow::get_appwindow());
 
   if(sharedconnection)
   {
@@ -251,7 +251,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     auto document = get_document();
     if(document)
     {
-      std::shared_ptr<TableInfo> table_info = document->get_table(table_name);
+      auto table_info = document->get_table(table_name);
       fill_table_row(row, table_info);
 
       //Save the field information directly into the database, because we cannot get all the correct information from the database.
@@ -461,7 +461,7 @@ void Box_Tables::save_to_document()
     for(const auto& row : m_AddDel.get_model()->children())
     {
       const auto table_name = m_AddDel.get_value(row, m_colTableName); //The name has already been changed in the document.
-      std::shared_ptr<TableInfo> table_info = document->get_table(table_name); //Start with the existing table_info, to preserve extra information, such as translations.
+      auto table_info = document->get_table(table_name); //Start with the existing table_info, to preserve extra information, such as translations.
       if(table_info)
       {
         table_info->set_name( m_AddDel.get_value(row, m_colTableName) );

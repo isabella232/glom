@@ -132,7 +132,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
   create_model(columns_count);
 
   //Fill the model with data:
-  std::shared_ptr<LayoutItem_Field> layout_item =
+  auto layout_item =
     std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
   const auto format = layout_item->get_formatting_used();
   std::shared_ptr<const Relationship> choice_relationship;
@@ -176,8 +176,8 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
           if(iterValues == extra_values.end())
             break;
 
-          const std::shared_ptr<const LayoutItem> item = extra_field;
-          const std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
+          const auto item = extra_field;
+          const auto item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
           if(item_field)
           {
             const Gnome::Gda::Value value = *iterValues;
@@ -212,7 +212,7 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const Formatting::type_list_va
     auto iterTree = list_store->append();
     Gtk::TreeModel::Row row = *iterTree;
 
-    std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
+    auto layout_item = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
     if(!layout_item)
       continue;
     
@@ -264,7 +264,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
     std::cerr << G_STRFUNC << ": layout_choice_first has invalid type. field name: " << layout_choice_first->get_name() << std::endl;
 
   //Set full field details, cloning the group to avoid the constness:
-  std::shared_ptr<LayoutGroup> layout_choice_extra_full = glom_sharedptr_clone(layout_choice_extra);
+  auto layout_choice_extra_full = glom_sharedptr_clone(layout_choice_extra);
   const auto table_name = choice_relationship->get_to_table();
   document->fill_layout_field_details(table_name,  layout_choice_extra_full);
 
@@ -288,7 +288,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
 
   if(!foreign_key_value.is_null())
   {
-    const std::shared_ptr<const Field> to_field = document->get_field(to_table, choice_relationship->get_to_field());
+    const auto to_field = document->get_field(to_table, choice_relationship->get_to_field());
 
     found_set.m_where_clause = Utils::build_simple_where_expression(
       to_table, to_field, foreign_key_value);
@@ -408,7 +408,7 @@ void ComboChoicesWithTreeModel::on_cell_data(const Gtk::TreeModel::iterator& ite
     return;
 
   const std::shared_ptr<const LayoutItem>& layout_item = m_db_layout_items[model_column_index];
-  std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
+  auto field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
   if(!field)
     return;
 
@@ -452,7 +452,7 @@ int ComboChoicesWithTreeModel::get_fixed_cell_height(Gtk::Widget& widget)
     {
       Glib::ustring font_name;
 
-      const std::shared_ptr<const LayoutItem_WithFormatting> item_withformatting = std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(item);
+      const auto item_withformatting = std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(item);
       if(item_withformatting)
       {
          const auto formatting = item_withformatting->get_formatting_used();

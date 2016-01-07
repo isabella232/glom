@@ -244,7 +244,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
   auto iterFind = find_if_uses_relationship_has_relationship(list_relationships, layout_item, true /* top_level_only */);
   if(iterFind == list_relationships.end()) //If the table is not yet in the list:
   {
-    std::shared_ptr<UsesRelationship> uses_rel = std::make_shared<UsesRelationship>();
+    auto uses_rel = std::make_shared<UsesRelationship>();
     uses_rel->set_relationship(layout_item->get_relationship());
     list_relationships.push_front(uses_rel); //These need to be at the front, so that related relationships can use them later in the SQL statement.
   }
@@ -253,7 +253,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
   iterFind = find_if_uses_relationship_has_relationship(list_relationships, layout_item);
   if(iterFind == list_relationships.end()) //If the table is not yet in the list:
   {
-    std::shared_ptr<UsesRelationship> uses_rel = std::make_shared<UsesRelationship>();
+    auto uses_rel = std::make_shared<UsesRelationship>();
     uses_rel->set_relationship(layout_item->get_relationship());
     uses_rel->set_related_relationship(layout_item->get_related_relationship());
     list_relationships.push_back(uses_rel);
@@ -263,7 +263,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
 
 static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder, const std::shared_ptr<const UsesRelationship>& uses_relationship)
 {
-  std::shared_ptr<const Relationship> relationship = uses_relationship->get_relationship();
+  auto relationship = uses_relationship->get_relationship();
   if(!relationship->get_has_fields()) //TODO: Handle related_record has_fields.
   {
     if(relationship->get_has_to_table())
@@ -298,7 +298,7 @@ static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder
   {
      UsesRelationship parent_relationship;
      parent_relationship.set_relationship(relationship);
-     std::shared_ptr<const Relationship> related_relationship = uses_relationship->get_related_relationship();
+     auto related_relationship = uses_relationship->get_related_relationship();
 
      const guint to_target_id = builder->select_add_target(related_relationship->get_to_table(), alias_name);
 
@@ -401,7 +401,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(c
 
     if(extra_join)
     {
-      std::shared_ptr<UsesRelationship> uses_relationship = std::make_shared<UsesRelationship>();
+      auto uses_relationship = std::make_shared<UsesRelationship>();
       uses_relationship->set_relationship(extra_join);
       builder_add_join(builder, uses_relationship);
     }
@@ -554,7 +554,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
   }
 
   const Glib::ustring to_table = choice_relationship->get_to_table();
-  const std::shared_ptr<const Field> to_field = document->get_field(to_table, choice_relationship->get_to_field());
+  const auto to_field = document->get_field(to_table, choice_relationship->get_to_field());
 
   if(!to_field)
   {
@@ -584,7 +584,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
   //TODO: builder->select_order_by(choice_field_id);
 
   //Connect to database and get the related values:
-  std::shared_ptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
+  auto connection = ConnectionPool::get_instance()->connect();
 
   if(!connection)
   {
@@ -1482,7 +1482,7 @@ LayoutGroup::type_list_const_items Utils::get_layout_items_plus_primary_key(cons
     return items;
   }
 
-  std::shared_ptr<LayoutItem_Field> pk_layout_item = std::make_shared<LayoutItem_Field>();
+  auto pk_layout_item = std::make_shared<LayoutItem_Field>();
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
   
@@ -1510,7 +1510,7 @@ LayoutGroup::type_list_items Utils::get_layout_items_plus_primary_key(const Layo
     return items;
   }
 
-  std::shared_ptr<LayoutItem_Field> pk_layout_item = std::make_shared<LayoutItem_Field>();
+  auto pk_layout_item = std::make_shared<LayoutItem_Field>();
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
   

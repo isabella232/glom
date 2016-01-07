@@ -419,14 +419,14 @@ bool test_table_exists(const Glib::ustring& table_name, const Glom::Document& do
 {
   //Try to get more rows than intended:
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  std::shared_ptr<const Glom::Field> field = document.get_field_primary_key(table_name); //To to get some field.
+  auto field = document.get_field_primary_key(table_name); //To to get some field.
   if(!field)
   {
     std::cerr << G_STRFUNC << "Failure: Could not get primary key for table=" << table_name << std::endl;
     return false;
   }
 
-  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::make_shared<Glom::LayoutItem_Field>();
+  auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 
@@ -455,11 +455,11 @@ static bool test_example_musiccollection_data_related(const Glom::Document* docu
   Glom::Utils::type_vecLayoutFields fieldsToGet;
 
   //Normal fields:
-  std::shared_ptr<const Glom::Field> field_album_id = document->get_field("albums", "album_id");
-  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::make_shared<Glom::LayoutItem_Field>();
+  auto field_album_id = document->get_field("albums", "album_id");
+  auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field_album_id);
   fieldsToGet.push_back(layoutitem);
-  std::shared_ptr<const Glom::Field> field = document->get_field("albums", "name");
+  auto field = document->get_field("albums", "name");
   if(!field)
   {
     std::cerr << G_STRFUNC << "Failure: Could not get field." << std::endl;
@@ -515,8 +515,8 @@ bool test_example_musiccollection_data(const Glom::Document* document)
     Glom::Utils::get_find_where_clause_quick(document, "albums", value);
   
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  std::shared_ptr<const Glom::Field> field = document->get_field("albums", "album_id");
-  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::make_shared<Glom::LayoutItem_Field>();
+  auto field = document->get_field("albums", "album_id");
+  auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 

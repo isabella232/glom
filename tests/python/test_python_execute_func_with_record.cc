@@ -79,7 +79,7 @@ int main()
   }
   g_assert(started == Glom::ConnectionPool::Backend::StartupErrors::NONE);
 
-  std::shared_ptr<Glom::SharedConnection> connection = connection_pool->connect();
+  auto connection = connection_pool->connect();
   g_assert(connection);
 
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = connection->get_gda_connection();

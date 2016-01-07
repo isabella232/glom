@@ -76,7 +76,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
   }
 
   //Check whether the field exists in the table.
-  std::shared_ptr<const Field> field = m_document->get_field(m_relationship->get_to_table(), field_name);
+  auto field = m_document->get_field(m_relationship->get_to_table(), field_name);
   if(!field)
   {
     std::cerr << G_STRFUNC << ": field " << field_name << " not found in table " << m_relationship->get_to_table() << std::endl;
@@ -87,7 +87,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
   {
     //Try to get the value from the database:
     //const Glib::ustring parent_key_name;
-    std::shared_ptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect();
+    auto sharedconnection = ConnectionPool::get_instance()->connect();
 
     if(!sharedconnection)
     {
@@ -169,7 +169,7 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
   }
 
   //Check whether the field exists in the table.
-  std::shared_ptr<Field> field = m_document->get_field(m_relationship->get_to_table(), field_name);
+  auto field = m_document->get_field(m_relationship->get_to_table(), field_name);
   if(!field)
   {
     g_warning("RelatedRecord_sum: field %s not found in table %s", field_name.c_str(), m_relationship->get_to_table().c_str());
@@ -178,7 +178,7 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
 
   //Try to get the value from the database:
   //const Glib::ustring parent_key_name;
-  std::shared_ptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect();
+  auto sharedconnection = ConnectionPool::get_instance()->connect();
   if(!sharedconnection)
   {
     g_warning("RelatedRecord_sum: no connection.");

@@ -37,7 +37,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  const std::shared_ptr<const Glom::Report> report_temp = 
+  const auto report_temp = 
     Glom::ReportBuilder::create_standard_list_report(&document, "albums");
 
   Glom::FoundSet found_set; //TODO: Test a where clause.

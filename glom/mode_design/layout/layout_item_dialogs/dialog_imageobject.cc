@@ -81,7 +81,7 @@ void Dialog_ImageObject::set_imageobject(const std::shared_ptr<const LayoutItem_
 
 std::shared_ptr<LayoutItem_Image> Dialog_ImageObject::get_imageobject() const
 {
-  std::shared_ptr<LayoutItem_Image> result = glom_sharedptr_clone(m_imageobject); //Start with the old details, to preserve anything that is not in our UI.
+  auto result = glom_sharedptr_clone(m_imageobject); //Start with the old details, to preserve anything that is not in our UI.
 
   result->set_title(m_entry_title->get_text(), AppWindow::get_current_locale());
   result->set_image( m_image->get_value() );

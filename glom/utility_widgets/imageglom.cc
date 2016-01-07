@@ -784,7 +784,7 @@ void ImageGlom::on_menupopup_activate_select_file()
         if(dialog_progress->run() == Gtk::RESPONSE_ACCEPT)
         {
           GdaBinary* bin = g_new(GdaBinary, 1);
-          std::shared_ptr<GdaBinary> image_data = dialog_progress->get_image_data();
+          auto image_data = dialog_progress->get_image_data();
           bin->data = image_data->data;
           bin->binary_length = image_data->binary_length;
 

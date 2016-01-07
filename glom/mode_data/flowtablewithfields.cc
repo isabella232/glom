@@ -95,13 +95,13 @@ void FlowTableWithFields::set_table(const Glib::ustring& table_name)
 void FlowTableWithFields::add_layout_item(const std::shared_ptr<LayoutItem>& item)
 {
   //Get derived type and do the appropriate thing:
-  std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
+  auto field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
   if(field)
   {
     add_field(field, m_table_name);
 
     //Do not allow editing of auto-increment fields:
-    std::shared_ptr<const Field> field_details = field->get_full_field_details();
+    auto field_details = field->get_full_field_details();
     if(field_details)
     {
       if(field_details->get_auto_increment())
@@ -112,36 +112,36 @@ void FlowTableWithFields::add_layout_item(const std::shared_ptr<LayoutItem>& ite
   }
   else
   {
-    std::shared_ptr<LayoutItem_Portal> portal = std::dynamic_pointer_cast<LayoutItem_Portal>(item);
+    auto portal = std::dynamic_pointer_cast<LayoutItem_Portal>(item);
     if(portal)
     {
       add_layout_portal(portal);
     }
     else
     {
-      std::shared_ptr<LayoutItem_Notebook> notebook = std::dynamic_pointer_cast<LayoutItem_Notebook>(item);
+      auto notebook = std::dynamic_pointer_cast<LayoutItem_Notebook>(item);
       if(notebook)
       {
         add_layout_notebook(notebook);
       }
       else
       {
-        std::shared_ptr<LayoutGroup> group = std::dynamic_pointer_cast<LayoutGroup>(item);
+        auto group = std::dynamic_pointer_cast<LayoutGroup>(item);
         if(group)
           add_layout_group(group);
         else
         {
-          std::shared_ptr<LayoutItem_Button> layout_button = std::dynamic_pointer_cast<LayoutItem_Button>(item);
+          auto layout_button = std::dynamic_pointer_cast<LayoutItem_Button>(item);
           if(layout_button)
             add_button(layout_button, m_table_name);
           else
           {
-            std::shared_ptr<LayoutItem_Text> layout_textobject = std::dynamic_pointer_cast<LayoutItem_Text>(item);
+            auto layout_textobject = std::dynamic_pointer_cast<LayoutItem_Text>(item);
             if(layout_textobject)
               add_textobject(layout_textobject, m_table_name);
             else
             {
-              std::shared_ptr<LayoutItem_Image> layout_imageobject = std::dynamic_pointer_cast<LayoutItem_Image>(item);
+              auto layout_imageobject = std::dynamic_pointer_cast<LayoutItem_Image>(item);
               if(layout_imageobject)
                 add_imageobject(layout_imageobject, m_table_name);
             }
@@ -263,7 +263,7 @@ Box_Data_List_Related* FlowTableWithFields::create_related(const std::shared_ptr
       portal_box->init_db_details(m_table_name, show_title);
 
     Glib::ustring to_table;
-    std::shared_ptr<Relationship> relationship = pDocument->get_relationship(m_table_name, portal->get_relationship_name());
+    auto relationship = pDocument->get_relationship(m_table_name, portal->get_relationship_name());
     if(relationship)
       to_table = relationship->get_to_table();
 
@@ -303,7 +303,7 @@ Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const st
       portal_box->init_db_details(m_table_name, show_title);
 
     Glib::ustring to_table;
-    std::shared_ptr<Relationship> relationship = pDocument->get_relationship(m_table_name, portal->get_relationship_name());
+    auto relationship = pDocument->get_relationship(m_table_name, portal->get_relationship_name());
     if(relationship)
       to_table = relationship->get_to_table();
 
@@ -327,7 +327,7 @@ Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const st
 void FlowTableWithFields::add_layout_portal(const std::shared_ptr<LayoutItem_Portal>& portal)
 {
   Box_Data_Portal* portal_box = nullptr;
-  std::shared_ptr<LayoutItem_CalendarPortal> calendar_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(portal);
+  auto calendar_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(portal);
   if(calendar_portal)
     portal_box = create_related_calendar(calendar_portal);
   else
@@ -368,7 +368,7 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
 
       tab_label->set_label(item_get_title_or_name(group));
 
-      std::shared_ptr<LayoutItem_Portal> portal = std::dynamic_pointer_cast<LayoutItem_Portal>(group);
+      auto portal = std::dynamic_pointer_cast<LayoutItem_Portal>(group);
       if(portal)
       {
         //Add a Related Records list for this portal:
@@ -751,8 +751,8 @@ void FlowTableWithFields::update_choices(const std::shared_ptr<const LayoutItem_
     if(!combo)
       continue;
 
-    const std::shared_ptr<const LayoutItem> layout_item = combo->get_layout_item();
-    const std::shared_ptr<const LayoutItem_Field> layout_item_field = 
+    const auto layout_item = combo->get_layout_item();
+    const auto layout_item_field = 
       std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
     if(!layout_item_field || !layout_item_field->get_formatting_used().get_has_related_choices())
       continue;
@@ -777,10 +777,10 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const std::sh
     //*iter is a FlowTableItem.
     if(pPortalUI)
     {
-      std::shared_ptr<LayoutItem_Portal> portal = pPortalUI->get_portal();
+      auto portal = pPortalUI->get_portal();
       if(portal)
       {
-        std::shared_ptr<const Relationship> relationship = portal->get_relationship(); //In this case, we only care about the first relationship (not any child relationships), because that's what would trigger a change.
+        auto relationship = portal->get_relationship(); //In this case, we only care about the first relationship (not any child relationships), because that's what would trigger a change.
         if(relationship && (relationship->get_from_field() == from_key_name))
           result.push_back(pPortalUI);
       }
@@ -828,9 +828,9 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
     if(!combochoices)
       continue;
 
-    const std::shared_ptr<const LayoutItem> layout_item =
+    const auto layout_item =
       combochoices->get_layout_item();
-    const std::shared_ptr<const LayoutItem_Field> field =
+    const auto field =
        std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
     if(!field)
       continue;
@@ -838,7 +838,7 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
     const auto format = field->get_formatting_used();
 
     bool choice_show_all = false;
-    const std::shared_ptr<const Relationship> choice_relationship =
+    const auto choice_relationship =
       format.get_choices_related_relationship(choice_show_all);
     if(choice_show_all)
       continue; //"Show All" choices don't use the ID field values.
@@ -1058,7 +1058,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   //so the new item will be after that item, next to it.
 
   //Get the widget's layout item:
-  std::shared_ptr<const LayoutItem> layout_item_parent = pDataWidget->get_layout_item();
+  auto layout_item_parent = pDataWidget->get_layout_item();
   if(!layout_item_parent)
   {
     std::cerr << G_STRFUNC << ": layout_item_parent is null." << std::endl;
@@ -1068,7 +1068,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   //std::cout << "debug: layout_item_parent name=" << layout_item_parent->get_name() << std::endl;
 
   //Get the group that the widget's layout item is in:
-  std::shared_ptr<LayoutGroup> layout_group = std::dynamic_pointer_cast<LayoutGroup>(get_layout_item());
+  auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(get_layout_item());
   if(!layout_group)
   {
     std::cerr << G_STRFUNC << ": layout_group is null." << std::endl;
@@ -1080,7 +1080,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   std::shared_ptr<LayoutItem> layout_item_new;
   if(item_type == LayoutWidgetBase::enumType::FIELD)
   {
-    std::shared_ptr<LayoutItem_Field> layout_item_field = pDataWidget->offer_field_list(m_table_name);
+    auto layout_item_field = pDataWidget->offer_field_list(m_table_name);
     if(layout_item_field)
     {
       //TODO: privileges.
@@ -1089,17 +1089,17 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   }
   else if(item_type == LayoutWidgetBase::enumType::GROUP)
   {
-    std::shared_ptr<LayoutGroup> layout_item = std::make_shared<LayoutGroup>();
+    auto layout_item = std::make_shared<LayoutGroup>();
     layout_item->set_title_original(_("New Group"));
     layout_item_new = layout_item;
   }
   else if(item_type == LayoutWidgetBase::enumType::NOTEBOOK)
   {
-    std::shared_ptr<LayoutItem_Notebook> layout_item = std::make_shared<LayoutItem_Notebook>();
+    auto layout_item = std::make_shared<LayoutItem_Notebook>();
     layout_item->set_name(_("notebook"));
 
     //Add an example tab, so that it shows up.
-    std::shared_ptr<LayoutGroup> group_tab = std::make_shared<LayoutGroup>();
+    auto group_tab = std::make_shared<LayoutGroup>();
 
     //Note to translators: This is the default name (not seen by most users) for a notebook tab.
     group_tab->set_name(_("tab1"));
@@ -1117,14 +1117,14 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   }
   else if(item_type == LayoutWidgetBase::enumType::BUTTON)
   {
-    std::shared_ptr<LayoutItem_Button> layout_item = std::make_shared<LayoutItem_Button>();
+    auto layout_item = std::make_shared<LayoutItem_Button>();
     layout_item->set_name(_("button"));
     layout_item->set_title_original(_("New Button"));
     layout_item_new = layout_item;
   }
   else if(item_type == LayoutWidgetBase::enumType::TEXT)
   {
-    std::shared_ptr<LayoutItem_Text> layout_item = std::make_shared<LayoutItem_Text>();
+    auto layout_item = std::make_shared<LayoutItem_Text>();
     layout_item->set_name(_("text"));
     layout_item->set_text_original(_("New Text"));
     layout_item_new = layout_item;
@@ -1145,7 +1145,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
 //TODO: Use Value by const &
 void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_Portal* portal_box)
 {
-  std::shared_ptr<const LayoutItem_Portal> portal = portal_box->get_portal();
+  auto portal = portal_box->get_portal();
   if(!portal)
     return;
 
@@ -1259,7 +1259,7 @@ void FlowTableWithFields::on_menu_properties_activate()
   const auto response = dialog->run();
   if(response == Gtk::RESPONSE_OK)
   {
-    std::shared_ptr<LayoutGroup> group = get_layout_group();
+    auto group = get_layout_group();
     group->set_columns_count( dialog->get_columns_count() );
     group->set_title(dialog->get_title(), AppWindow::get_current_locale());
     signal_layout_changed().emit();
@@ -1329,10 +1329,10 @@ std::shared_ptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship(
   if(response == Gtk::RESPONSE_OK)
   {
     //Get the chosen relationship:
-    std::shared_ptr<Relationship> relationship  = dialog->get_relationship_chosen();
+    auto relationship  = dialog->get_relationship_chosen();
     if(relationship)
     {
-      std::shared_ptr<LayoutItem_Portal> layout_item = std::make_shared<LayoutItem_Portal>();
+      auto layout_item = std::make_shared<LayoutItem_Portal>();
       layout_item->set_relationship(relationship);
       delete dialog;
       return layout_item;

@@ -209,7 +209,7 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
   {
     for(const auto& item : layout_items)
     {
-      std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
+      auto item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
       if(item_field)
       {
         if(item_field->get_glom_type() == Field::glom_field_type::INVALID)
@@ -233,7 +233,7 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
 
       if( !(layout_item->get_has_relationship_name()) )
       {
-        const std::shared_ptr<const Field> field_full = layout_item->get_full_field_details();
+        const auto field_full = layout_item->get_full_field_details();
         if(!field_full)
           std::cerr << G_STRFUNC << ": The layout item (" << layout_item->get_name() << ") has no field details." << std::endl;
         else if(field_full->get_primary_key() )

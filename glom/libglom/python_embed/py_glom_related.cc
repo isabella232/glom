@@ -67,7 +67,7 @@ boost::python::object PyGlomRelated::getitem(const boost::python::object& cppite
         if(iterFind != m_map_relationships.end())
         {
           //Get the value of the from_key in the parent record.
-          std::shared_ptr<Relationship> relationship = iterFind->second;
+          auto relationship = iterFind->second;
           const auto from_key = relationship->get_from_field();
 
           boost::python::extract<PyGlomRecord*> extractor_record(m_record);
@@ -81,7 +81,7 @@ boost::python::object PyGlomRelated::getitem(const boost::python::object& cppite
 
               //TODO_Performance:
               //Get the full field details so we can sqlize its value:
-              std::shared_ptr<const Field> from_key_field = record->m_document->get_field(record->m_table_name, from_key);
+              auto from_key_field = record->m_document->get_field(record->m_table_name, from_key);
               if(from_key_field)
               {
                 //Return a new RelatedRecord:

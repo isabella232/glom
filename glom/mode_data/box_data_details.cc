@@ -298,7 +298,7 @@ bool Box_Data_Details::fill_from_database()
       if(table_privs.m_view)
       {
         //Add extra possibly-non-visible columns that we need:
-        std::shared_ptr<LayoutItem_Field> layout_item_pk = std::make_shared<LayoutItem_Field>();
+        auto layout_item_pk = std::make_shared<LayoutItem_Field>();
         layout_item_pk->set_full_field_details(m_field_primary_key);
 
         //Get the primary key index, adding the primary key if necessary:
@@ -317,7 +317,7 @@ bool Box_Data_Details::fill_from_database()
           const auto count = fieldsToGet.size();
           for(type_vecLayoutFields::size_type i = 0; i < count; ++i)
           {
-            std::shared_ptr<const LayoutItem_Field> element = fieldsToGet[i];
+            auto element = fieldsToGet[i];
             if(!element)
               continue;
 
@@ -325,8 +325,8 @@ bool Box_Data_Details::fill_from_database()
               continue;
 
             //Compare the relationship and related relationship:
-            std::shared_ptr<const UsesRelationship> uses_a = layout_item_pk;
-            std::shared_ptr<const UsesRelationship> uses_b = element;
+            auto uses_a = layout_item_pk;
+            auto uses_b = element;
             if(*uses_a == *uses_b)
             {
               index_primary_key = i;
@@ -369,7 +369,7 @@ bool Box_Data_Details::fill_from_database()
             //Get field values to show:
             for(int i = 0; i < cols_count; ++i)
             {
-              std::shared_ptr<const LayoutItem_Field> layout_item = fieldsToGet[i];
+              auto layout_item = fieldsToGet[i];
 
               //Field value:
               Gnome::Gda::Value value;
@@ -519,13 +519,13 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
     {
       if(field)
       {
-        std::shared_ptr<LayoutItem_Field> layoutitem_field = std::make_shared<LayoutItem_Field>();
+        auto layoutitem_field = std::make_shared<LayoutItem_Field>();
         layoutitem_field->set_full_field_details(field);
         LayoutFieldInRecord field_in_record(layoutitem_field, m_table_name, m_field_primary_key, primary_key_value);
         calculate_field(field_in_record); //And any dependencies.
 
         //Calculate anything that depends on this.
-        //std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
+        //auto layout_item = std::make_shared<LayoutItem_Field>();
         //layout_item->set_full_field_details(field);
 
         do_calculations(field_in_record, false /* recurse, reusing m_FieldsCalculationInProgress */);
@@ -643,7 +643,7 @@ void Box_Data_Details::on_flowtable_field_open_details_requested(const std::shar
 
   //Updating doesn't seem necessary. The field details seem to be full already.
   //Update the field details from the document:
-  ////std::shared_ptr<LayoutItem_Field> unconst_field = std::const_pointer_cast<LayoutItem_Field>(layout_field); //A hack, because layout_field_should_have_navigation() needs to get full field details.
+  ////auto unconst_field = std::const_pointer_cast<LayoutItem_Field>(layout_field); //A hack, because layout_field_should_have_navigation() needs to get full field details.
   //unconst_field->set_full_field_details(
   //  document->get_field(field->get_table_used(table_name), field->get_name()) ); //Otherwise get_primary_key() returns false always.
       
@@ -726,7 +726,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
       //plus how to identify the record in that table.
       const auto relationship_name = layout_field->get_relationship_name();
 
-      std::shared_ptr<Relationship> relationship = document->get_relationship(get_table_name(), relationship_name);
+      auto relationship = document->get_relationship(get_table_name(), relationship_name);
       if(relationship)
       {
         table_name = relationship->get_to_table();
@@ -736,7 +736,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
         if(primary_key_field)
         {
           //Get the value of the corresponding key in the current table (that identifies the record in the table that we will change)
-          std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
+          auto layout_item = std::make_shared<LayoutItem_Field>();
           layout_item->set_full_field_details( document->get_field(relationship->get_from_table(), relationship->get_from_field()) );
 
           primary_key_value = get_entered_field_data(layout_item);
@@ -937,7 +937,7 @@ void Box_Data_Details::print_layout()
   //breaks because those spaces would be empty space on the page after
   //we have moved items down when expanding:
   //TODO: Squash that space when expanding custom layouts.
-  std::shared_ptr<PrintLayout> layout = 
+  auto layout = 
     PrintLayoutUtils::create_standard(page_setup, m_table_name, document,
       false /* do not avoid page margins */);
   

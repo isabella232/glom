@@ -143,7 +143,7 @@ void Dialog_Layout_Export::set_layout_groups(Document::type_list_layout_groups& 
       //Add the group's fields:
       for(const auto& base_item : group->get_items())
       {
-        std::shared_ptr<const LayoutItem_Field> item = std::dynamic_pointer_cast<const LayoutItem_Field>(base_item); 
+        auto item = std::dynamic_pointer_cast<const LayoutItem_Field>(base_item); 
         if(item)
         {
           auto iterTree = m_model_fields->append();
@@ -222,7 +222,7 @@ void Dialog_Layout_Export::get_layout_groups(Document::type_list_layout_groups& 
   Document::type_list_layout_groups groups;
 
   //Add the fields to the one group:
-  std::shared_ptr<LayoutGroup> others = std::make_shared<LayoutGroup>();
+  auto others = std::make_shared<LayoutGroup>();
   others->set_name("main");
 
   guint field_sequence = 1; //0 means no sequence
@@ -330,7 +330,7 @@ void Dialog_Layout_Export::on_button_edit_field()
       std::shared_ptr<LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
       //Get the chosen field:
-      std::shared_ptr<LayoutItem_Field> field_chosen = offer_field_list_select_one_field(field, m_table_name, this);
+      auto field_chosen = offer_field_list_select_one_field(field, m_table_name, this);
       if(field_chosen)
       {
         //Set the field details in the layout treeview:

@@ -522,10 +522,10 @@ void DataWidget::on_menupopup_activate_layout()
 {
   //finish_editing();
 
-  std::shared_ptr<LayoutItem_Field> layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
+  auto layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
   if(layoutField)
   {
-    std::shared_ptr<LayoutItem_Field> itemchosen = offer_field_list(m_table_name, layoutField);
+    auto itemchosen = offer_field_list(m_table_name, layoutField);
     if(itemchosen)
     {
       *layoutField = *itemchosen;
@@ -538,10 +538,10 @@ void DataWidget::on_menupopup_activate_layout_properties()
 {
   //finish_editing();
 
-  std::shared_ptr<LayoutItem_Field> layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
+  auto layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
   if(layoutField)
   {
-    std::shared_ptr<LayoutItem_Field> itemchosen = offer_field_layout(layoutField);
+    auto itemchosen = offer_field_layout(layoutField);
     if(itemchosen)
     {
       *layoutField = *itemchosen;
@@ -653,7 +653,7 @@ void DataWidget::on_button_choose_date()
 
 void DataWidget::on_self_style_changed(const Glib::RefPtr<Gtk::Style>& /* style */)
 {
-  std::shared_ptr<LayoutItem_Field> layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
+  auto layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
   set_child_size_by_field(layoutField);
 }
 
@@ -677,10 +677,10 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
 
     //Discover the related table, in the relationship that uses this ID field:
     Glib::ustring related_table_name;
-    std::shared_ptr<const LayoutItem_Field> layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
+    auto layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
     if(layoutField)
     {
-      std::shared_ptr<const Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField);
+      auto relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField);
       if(relationship)
         related_table_name = relationship->get_to_table();
     }
@@ -726,10 +726,10 @@ bool DataWidget::offer_related_record_id_new(Gnome::Gda::Value& chosen_id)
 
     //Discover the related table, in the relationship that uses this ID field:
     Glib::ustring related_table_name;
-    std::shared_ptr<const LayoutItem_Field> layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
+    auto layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
     if(layoutField)
     {
-      std::shared_ptr<const Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField);
+      auto relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField);
       if(relationship)
         related_table_name = relationship->get_to_table();
     }

@@ -32,7 +32,7 @@ std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Do
     
     for(const auto& layout_item : group->get_items_recursive())
     {
-      const std::shared_ptr<const Glom::LayoutItem_Field> layout_item_field =
+      const auto layout_item_field =
         std::dynamic_pointer_cast<const Glom::LayoutItem_Field>(layout_item);
       if(!layout_item_field)
         continue;

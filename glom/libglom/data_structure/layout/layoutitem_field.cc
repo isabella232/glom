@@ -175,7 +175,7 @@ bool LayoutItem_Field::get_editable_and_allowed() const
   //The relationship might forbid editing of any fields through itself:
   if(get_has_relationship_name())
   {
-    std::shared_ptr<const Relationship> rel = get_relationship();
+    auto rel = get_relationship();
     if(rel)
     {
       if(!(rel->get_allow_edit()))

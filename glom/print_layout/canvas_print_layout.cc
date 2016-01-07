@@ -117,7 +117,7 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
 
 std::shared_ptr<PrintLayout> Canvas_PrintLayout::get_print_layout()
 {
-  std::shared_ptr<PrintLayout> result = std::make_shared<PrintLayout>();
+  auto result = std::make_shared<PrintLayout>();
   fill_layout_group(result->get_layout_group());
 
   //Page Setup:
@@ -155,8 +155,8 @@ void Canvas_PrintLayout::add_layout_group_children(const std::shared_ptr<LayoutG
   //TODO: Add them inside the group item (when we actually use this code):
   for(const auto& child_item : group->m_list_items)
   {
-    std::shared_ptr<LayoutItem_Portal> child_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(child_item);
-    std::shared_ptr<LayoutGroup> child_group = std::dynamic_pointer_cast<LayoutGroup>(child_item);
+    auto child_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(child_item);
+    auto child_group = std::dynamic_pointer_cast<LayoutGroup>(child_item);
     if(child_group && !child_portal)
     {
       add_layout_group(child_group);
@@ -299,7 +299,7 @@ void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activat
   m_context_item = item;
   
   //Do not enable the Formatting menu item for all types of items:
-  std::shared_ptr<LayoutItem> layout_item = m_context_item->get_layout_item();
+  auto layout_item = m_context_item->get_layout_item();
   bool enable_formatting = false;
   if(std::dynamic_pointer_cast<LayoutItem_WithFormatting>(layout_item))
   {
@@ -320,7 +320,7 @@ bool Canvas_PrintLayout::on_background_button_press_event(const Glib::RefPtr<Goo
 
 std::shared_ptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(const std::shared_ptr<LayoutItem_Portal>& portal, Gtk::Window* parent)
 {
-  std::shared_ptr<LayoutItem_Portal> result = portal;
+  auto result = portal;
 
   Dialog_Layout_List_Related* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
@@ -348,7 +348,7 @@ std::shared_ptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(con
 
 std::shared_ptr<LayoutItem_Line> Canvas_PrintLayout::offer_line(const std::shared_ptr<LayoutItem_Line>& line, Gtk::Window* parent)
 {
-  std::shared_ptr<LayoutItem_Line> result = line;
+  auto result = line;
 
   Dialog_Line* dialog = nullptr;
   Utils::get_glade_widget_derived_with_warning(dialog);
@@ -379,12 +379,12 @@ void Canvas_PrintLayout::on_context_menu_edit()
 
   m_context_item->update_layout_position_from_canvas();
 
-  std::shared_ptr<LayoutItem> layout_item = m_context_item->get_layout_item();
-  std::shared_ptr<LayoutItem_Field> field = 
+  auto layout_item = m_context_item->get_layout_item();
+  auto field = 
     std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
   if(field)
   {
-    std::shared_ptr<LayoutItem_Field> field_chosen = offer_field_list_select_one_field(field, m_table_name, parent);
+    auto field_chosen = offer_field_list_select_one_field(field, m_table_name, parent);
     if(field_chosen)
     {
       //Never use the default formatting for print layouts:
@@ -396,7 +396,7 @@ void Canvas_PrintLayout::on_context_menu_edit()
   }
   else
   {
-    std::shared_ptr<LayoutItem_Text> text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
+    auto text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
     if(text)
     {
       text = Base_DB::offer_textobject(text, parent, false /* don't show title */);
@@ -404,7 +404,7 @@ void Canvas_PrintLayout::on_context_menu_edit()
     }
     else
     {
-      std::shared_ptr<LayoutItem_Image> image = std::dynamic_pointer_cast<LayoutItem_Image>(layout_item);
+      auto image = std::dynamic_pointer_cast<LayoutItem_Image>(layout_item);
       if(image)
       {
         image = Base_DB::offer_imageobject(image, parent, false /* don't show title */);
@@ -412,7 +412,7 @@ void Canvas_PrintLayout::on_context_menu_edit()
       }
       else
       {
-        std::shared_ptr<LayoutItem_Portal> portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+        auto portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
         if(portal)
         {
           portal = offer_related_records(portal, parent);
@@ -420,7 +420,7 @@ void Canvas_PrintLayout::on_context_menu_edit()
         }
         else
         {
-         std::shared_ptr<LayoutItem_Line> line = std::dynamic_pointer_cast<LayoutItem_Line>(layout_item);
+         auto line = std::dynamic_pointer_cast<LayoutItem_Line>(layout_item);
          if(line)
          {
            line = offer_line(line, parent);
@@ -443,9 +443,9 @@ void Canvas_PrintLayout::on_context_menu_formatting()
 
   m_context_item->update_layout_position_from_canvas();
 
-  std::shared_ptr<LayoutItem> layout_item = m_context_item->get_layout_item();
-  std::shared_ptr<LayoutItem_Field> layout_item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
-  std::shared_ptr<LayoutItem_Text> layout_item_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
+  auto layout_item = m_context_item->get_layout_item();
+  auto layout_item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
+  auto layout_item_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
   if(!layout_item_field && !layout_item_text)
     return;
 
@@ -516,9 +516,9 @@ void Canvas_PrintLayout::on_dialog_format_hide()
   if(!m_dialog_format || !m_context_item)
     return;
 
-  std::shared_ptr<LayoutItem> layout_item = m_context_item->get_layout_item();
-  std::shared_ptr<LayoutItem_Field> layout_item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
-  std::shared_ptr<LayoutItem_Text> layout_item_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
+  auto layout_item = m_context_item->get_layout_item();
+  auto layout_item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
+  auto layout_item_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
   if(!layout_item_field && !layout_item_text)
     return;
 
@@ -700,7 +700,7 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set, bool avoid_pa
 
 void Canvas_PrintLayout::fill_with_data_system_preferences(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, Document* document)
 {
-  std::shared_ptr<LayoutItem_Field> layoutitem_field = 
+  auto layoutitem_field = 
     std::dynamic_pointer_cast<LayoutItem_Field>(canvas_item->get_layout_item());
   if(!layoutitem_field)
     return;
@@ -708,7 +708,7 @@ void Canvas_PrintLayout::fill_with_data_system_preferences(const Glib::RefPtr<Ca
   bool empty = true;
   if(!layoutitem_field->get_name().empty())
   {
-    const std::shared_ptr<const Relationship> relationship = 
+    const auto relationship = 
       layoutitem_field->get_relationship();
 
     if(!document)
@@ -754,11 +754,11 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
     if(!canvas_item)
       continue;
 
-    std::shared_ptr<LayoutItem> layout_item = canvas_item->get_layout_item();
+    auto layout_item = canvas_item->get_layout_item();
     if(!layout_item)
       continue;
 
-    std::shared_ptr<LayoutItem_Field> layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
+    auto layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
     if(layoutitem_field && !(layoutitem_field->get_name().empty()))
     {
       fieldsToGet.push_back(layoutitem_field);
@@ -770,11 +770,11 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
     }
     else
     {
-      std::shared_ptr<LayoutItem_Portal> layoutitem_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+      auto layoutitem_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
       if(layoutitem_portal)
       {
         //Fill the related records table:
-        std::shared_ptr<const Relationship> relationship = layoutitem_portal->get_relationship();
+        auto relationship = layoutitem_portal->get_relationship();
         if(relationship)
         {
           const auto document = get_document();
@@ -829,11 +829,11 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
     if(!canvas_item)
       continue;
 
-    std::shared_ptr<LayoutItem> layout_item = canvas_item->get_layout_item();
+    auto layout_item = canvas_item->get_layout_item();
     if(!layout_item)
       continue;
 
-    std::shared_ptr<LayoutItem_Field> layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
+    auto layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
     if(layoutitem_field)
     {
       const auto iterFind = map_fields_index.find( layoutitem_field->get_layout_display_name() );
@@ -880,8 +880,8 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   if(!canvas_item)
     return;
 
-  std::shared_ptr<LayoutItem> layout_item = canvas_item->get_layout_item();
-  std::shared_ptr<LayoutItem_Portal> portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+  auto layout_item = canvas_item->get_layout_item();
+  auto portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
   if(!portal)
     return;
 
@@ -961,8 +961,8 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
       if(iter_child_layout_items == child_layout_items.end())
         continue;
 
-      std::shared_ptr<LayoutItem> child_layout_item = *iter_child_layout_items;
-      std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(child_layout_item);
+      auto child_layout_item = *iter_child_layout_items;
+      auto field = std::dynamic_pointer_cast<LayoutItem_Field>(child_layout_item);
       if(field)
       {
         Gnome::Gda::Value db_value; //This default also wipes the placeholder field name text of empty rows.
@@ -1007,7 +1007,7 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
 
     Glib::ustring text;
 
-    std::shared_ptr<const LayoutItem_WithFormatting> with_formatting = 
+    auto with_formatting = 
       std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(field);
     if(with_formatting)
     {
@@ -1066,7 +1066,7 @@ Base_DB::type_vecConstLayoutFields Canvas_PrintLayout::get_portal_fields_to_show
     Document::type_list_layout_groups mapGroups;
     mapGroups.push_back(portal);
 
-    std::shared_ptr<const Relationship> relationship = portal->get_relationship();
+    auto relationship = portal->get_relationship();
     if(relationship)
     {
       type_vecConstLayoutFields result = get_table_fields_to_show_for_sequence(portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);

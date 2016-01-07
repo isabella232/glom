@@ -46,7 +46,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  std::shared_ptr<const Glom::Field> field = document.get_field(table_name, "count");
+  auto field = document.get_field(table_name, "count");
   if(!field)
   {
     std::cerr << G_STRFUNC << ": Failure: Could not get field." << std::endl;

@@ -66,13 +66,13 @@ int main()
 
   //Build a SQL query and get the string for it:
   const Gnome::Gda::Value value("Born To Run");
-  std::shared_ptr<const Glom::Field> where_field = document.get_field("albums", "name");
+  auto where_field = document.get_field("albums", "name");
   const Gnome::Gda::SqlExpr where_clause = 
     Glom::Utils::build_simple_where_expression("albums", where_field, value);
   
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  std::shared_ptr<const Glom::Field> field = document.get_field("albums", "album_id");
-  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::make_shared<Glom::LayoutItem_Field>();
+  auto field = document.get_field("albums", "album_id");
+  auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
   field = document.get_field("albums", "name");

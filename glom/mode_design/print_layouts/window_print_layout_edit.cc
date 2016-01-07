@@ -369,7 +369,7 @@ std::shared_ptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayo
 
   if(item_type == PrintLayoutToolbarButton::enumItems::FIELD)
   {
-    std::shared_ptr<LayoutItem_Field> layout_item_derived  = std::make_shared<LayoutItem_Field>();
+    auto layout_item_derived  = std::make_shared<LayoutItem_Field>();
     layout_item = layout_item_derived;
     layout_item->set_print_layout_position(0, 0,
       PrintLayoutUtils::ITEM_WIDTH_WIDE, PrintLayoutUtils::ITEM_HEIGHT);
@@ -379,7 +379,7 @@ std::shared_ptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayo
   }
   else if(item_type == PrintLayoutToolbarButton::enumItems::TEXT)
   {
-    std::shared_ptr<LayoutItem_Text> layout_item_derived = std::make_shared<LayoutItem_Text>();
+    auto layout_item_derived = std::make_shared<LayoutItem_Text>();
 
     // Note to translators: This is the default contents of a text item on a print layout: 
     layout_item_derived->set_text_original(_("text")); //TODO: Choose some other longer default because this is hidden under the drag icon?
@@ -395,20 +395,20 @@ std::shared_ptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayo
   }
   else if(item_type == PrintLayoutToolbarButton::enumItems::LINE_HORIZONTAL)
   {
-    std::shared_ptr<LayoutItem_Line> layout_item_derived = std::make_shared<LayoutItem_Line>();
+    auto layout_item_derived = std::make_shared<LayoutItem_Line>();
     layout_item_derived->set_coordinates(0, 0,
       PrintLayoutUtils::ITEM_WIDTH_WIDE * 2, 0);
     layout_item = layout_item_derived;
   }
   else if(item_type == PrintLayoutToolbarButton::enumItems::LINE_VERTICAL)
   {
-    std::shared_ptr<LayoutItem_Line> layout_item_derived = std::make_shared<LayoutItem_Line>();
+    auto layout_item_derived = std::make_shared<LayoutItem_Line>();
     layout_item_derived->set_coordinates(0, 0, 0, PrintLayoutUtils::ITEM_WIDTH_WIDE * 2);
     layout_item = layout_item_derived;
   }
   else if(item_type == PrintLayoutToolbarButton::enumItems::PORTAL)
   {
-    std::shared_ptr<LayoutItem_Portal> portal = std::make_shared<LayoutItem_Portal>();
+    auto portal = std::make_shared<LayoutItem_Portal>();
     portal->set_print_layout_row_height(10); //Otherwise it will be 0, which is useless.
     layout_item = portal;
     layout_item->set_print_layout_position(0, 0,
@@ -422,7 +422,7 @@ std::shared_ptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayo
   //Set a default text style and size:
   //12pt text seems sane. It is what OpenOffice/LibreOffice and Abiword use:
   //Serif (rather than sans-serif) is sane for body text:
-  std::shared_ptr<LayoutItem_WithFormatting> with_formatting = 
+  auto with_formatting = 
     std::dynamic_pointer_cast<LayoutItem_WithFormatting>(layout_item);
   if(with_formatting)
     with_formatting->m_formatting.set_text_format_font("Serif 12");
@@ -493,7 +493,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
     //Create the temporary drag item if necessary:
     if(!m_layout_item_dropping)
     {
-      std::shared_ptr<LayoutItem> layout_item = create_empty_item(item_type);
+      auto layout_item = create_empty_item(item_type);
 
       //Show it on the canvas, at the position:
       if(layout_item)
@@ -516,7 +516,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
     m_canvas.drag_unhighlight();
 
     //Add the item to the canvas:
-    std::shared_ptr<LayoutItem> layout_item = create_empty_item(item_type);
+    auto layout_item = create_empty_item(item_type);
     if(!layout_item)
     {
       std::cerr << G_STRFUNC << ": layout_item is null." << std::endl;
@@ -652,15 +652,15 @@ std::shared_ptr<PrintLayout> Window_PrintLayout_Edit::get_print_layout()
   m_print_layout->get_layout_group()->remove_all_items();
 
   //The Header and Footer parts are implicit (they are the whole header or footer treeview)
-  std::shared_ptr<LayoutItem_Header> header = std::make_shared<LayoutItem_Header>();
-  std::shared_ptr<LayoutGroup> group_temp = header;
+  auto header = std::make_shared<LayoutItem_Header>();
+  auto group_temp = header;
   fill_print_layout_parts(group_temp, m_model_parts_header);
   if(header->get_items_count())
     m_print_layout->get_layout_group()->add_item(header);
 
   fill_print_layout_parts(m_print_layout->get_layout_group(), m_model_parts_main);
 
-  std::shared_ptr<LayoutItem_Footer> footer = std::make_shared<LayoutItem_Footer>();
+  auto footer = std::make_shared<LayoutItem_Footer>();
   group_temp = footer;
   fill_print_layout_parts(group_temp, m_model_parts_footer);
   if(footer->get_items_count())
@@ -771,7 +771,7 @@ void Window_PrintLayout_Edit::set_default_position(const std::shared_ptr<LayoutI
 
 void Window_PrintLayout_Edit::on_menu_insert_field()
 {
-  std::shared_ptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::enumItems::FIELD);
+  auto layout_item = create_empty_item(PrintLayoutToolbarButton::enumItems::FIELD);
 
   // Note to translators: This is the default contents of a text item on a print layout: 
   set_default_position(layout_item);
@@ -781,7 +781,7 @@ void Window_PrintLayout_Edit::on_menu_insert_field()
 
 void Window_PrintLayout_Edit::on_menu_insert_text()
 {
-  std::shared_ptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::enumItems::TEXT);
+  auto layout_item = create_empty_item(PrintLayoutToolbarButton::enumItems::TEXT);
   set_default_position(layout_item);
 
   create_canvas_layout_item_and_add(layout_item);
@@ -789,7 +789,7 @@ void Window_PrintLayout_Edit::on_menu_insert_text()
 
 void Window_PrintLayout_Edit::on_menu_insert_image()
 {
-  std::shared_ptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::enumItems::IMAGE);
+  auto layout_item = create_empty_item(PrintLayoutToolbarButton::enumItems::IMAGE);
   // Note to translators: This is the default contents of a text item on a print layout: 
   //layout_item->set_text_original(_("text"));
   set_default_position(layout_item);
@@ -799,7 +799,7 @@ void Window_PrintLayout_Edit::on_menu_insert_image()
 
 void Window_PrintLayout_Edit::on_menu_insert_relatedrecords()
 {
-  std::shared_ptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::enumItems::PORTAL);
+  auto layout_item = create_empty_item(PrintLayoutToolbarButton::enumItems::PORTAL);
   set_default_position(layout_item);
 
   create_canvas_layout_item_and_add(layout_item);
@@ -807,7 +807,7 @@ void Window_PrintLayout_Edit::on_menu_insert_relatedrecords()
 
 void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
 {
-  std::shared_ptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::enumItems::LINE_HORIZONTAL);
+  auto layout_item = create_empty_item(PrintLayoutToolbarButton::enumItems::LINE_HORIZONTAL);
 
   /*
   double item_x = m_drop_x;
@@ -824,7 +824,7 @@ void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
 
 void Window_PrintLayout_Edit::on_menu_insert_line_vertical()
 {
-  std::shared_ptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::enumItems::LINE_VERTICAL);
+  auto layout_item = create_empty_item(PrintLayoutToolbarButton::enumItems::LINE_VERTICAL);
 
   create_canvas_layout_item_and_add(layout_item);
 }
@@ -1025,7 +1025,7 @@ void Window_PrintLayout_Edit::on_menu_file_print_preview()
     return;
 
   const auto original_name = get_original_name();
-  std::shared_ptr<PrintLayout> print_layout = get_print_layout();
+  auto print_layout = get_print_layout();
   if(print_layout && (original_name != get_name()))
     document->remove_print_layout(m_table_name, original_name);
 
@@ -1055,7 +1055,7 @@ void Window_PrintLayout_Edit::on_menu_edit_copy()
     if(item)
       item->update_layout_position_from_canvas();
 
-    std::shared_ptr<LayoutItem> cloned = 
+    auto cloned = 
       glom_sharedptr_clone(item->get_layout_item());
 
     m_layout_items_to_paste.push_back(cloned);

@@ -81,7 +81,7 @@ void LayoutWidgetUtils::on_menu_delete_activate()
 
   if(base)
   {
-    std::shared_ptr<LayoutGroup> group = 
+    auto group = 
       std::dynamic_pointer_cast<LayoutGroup>(base->get_layout_item());
     if(!group)
       return;

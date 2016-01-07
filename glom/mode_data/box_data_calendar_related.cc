@@ -169,23 +169,23 @@ bool Box_Data_Calendar_Related::fill_from_database()
     Gnome::Gda::Value date_end_value(date_end);
 
     //Add a WHERE clause for this date range:
-    std::shared_ptr<const Relationship> relationship = m_portal->get_relationship();
+    auto relationship = m_portal->get_relationship();
     Glib::ustring where_clause_to_table_name = relationship->get_to_table();
 
-    std::shared_ptr<LayoutItem_CalendarPortal> derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
+    auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
     const auto date_field_name = derived_portal->get_date_field()->get_name();
 
-    std::shared_ptr<const Relationship> relationship_related = m_portal->get_related_relationship();
+    auto relationship_related = m_portal->get_related_relationship();
     if(relationship_related)
     {
       //Adjust the WHERE clause appropriately for the extra JOIN:
-      std::shared_ptr<UsesRelationship> uses_rel_temp = std::make_shared<UsesRelationship>();
+      auto uses_rel_temp = std::make_shared<UsesRelationship>();
       uses_rel_temp->set_relationship(relationship);
       where_clause_to_table_name = uses_rel_temp->get_sql_join_alias_name();
     }
 
     //Add an AND to the existing where clause, to get only records within these dates, if any:
-    std::shared_ptr<const Field> date_field = derived_portal->get_date_field();
+    auto date_field = derived_portal->get_date_field();
 
     Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
@@ -275,7 +275,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
   if(m_key_field)
   {
     //m_key_field is the field in this table that must match another field in the parent table.
-    std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
+    auto layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_full_field_details(m_key_field);
     //TODO: key_value = m_calendar.get_value(row, layout_item);
   }
@@ -312,7 +312,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
       if(test)
       {
         //Show it on the view, if it's visible:
-        std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
+        auto layout_item = std::make_shared<LayoutItem_Field>();
         layout_item->set_full_field_details(field_primary_key);
 
         //TODO: m_calendar.set_value(row, layout_item, m_key_value);
@@ -327,14 +327,14 @@ Box_Data_Calendar_Related::type_vecConstLayoutFields Box_Data_Calendar_Related::
 {
   type_vecConstLayoutFields layout_fields = Box_Data_Portal::get_fields_to_show();
 
-  std::shared_ptr<LayoutItem_CalendarPortal> derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
+  auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
   if(!derived_portal)
   {
     std::cerr << G_STRFUNC << ": The portal is not a LayoutItem_CalendarPortal." << std::endl;
     return layout_fields;
   }
 
-  std::shared_ptr<const Field> date_field = derived_portal->get_date_field();
+  auto date_field = derived_portal->get_date_field();
   if(!date_field)
   {
     std::cerr << G_STRFUNC << ": get_date_field() returned no field." << std::endl;
@@ -342,7 +342,7 @@ Box_Data_Calendar_Related::type_vecConstLayoutFields Box_Data_Calendar_Related::
   }
 
   //Add it to the list to ensure that we request the date (though it will not really be shown in the calendar):
-  std::shared_ptr<LayoutItem_Field> layout_item_date_field = std::make_shared<LayoutItem_Field>();
+  auto layout_item_date_field = std::make_shared<LayoutItem_Field>();
   layout_item_date_field->set_full_field_details(date_field);
   layout_fields.push_back(layout_item_date_field);
   m_query_column_date_field = layout_fields.size() - 1;
@@ -358,12 +358,12 @@ void Box_Data_Calendar_Related::on_dialog_layout_hide()
 
 
   //Update the UI:
-  std::shared_ptr<LayoutItem_CalendarPortal> derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
+  auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
   init_db_details(derived_portal);
 
   Box_Data::on_dialog_layout_hide();
 
-  std::shared_ptr<LayoutItem_CalendarPortal> pLayoutItem = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(get_layout_item());
+  auto pLayoutItem = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(get_layout_item());
   if(pLayoutItem)
   {
     if(derived_portal)
@@ -387,7 +387,7 @@ void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)
   auto related_dialog = dynamic_cast<Dialog_Layout_Calendar_Related*>(dialog);
   g_assert(related_dialog);
 
-  std::shared_ptr<LayoutItem_CalendarPortal> derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
+  auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
   if(derived_portal && derived_portal->get_has_relationship_name())
   {
     related_dialog->init_with_portal(m_layout_name, m_layout_platform, get_document(), derived_portal);
@@ -407,14 +407,14 @@ void Box_Data_Calendar_Related::on_calendar_month_changed()
 
 Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint month, guint day)
 {
-  std::shared_ptr<LayoutItem_CalendarPortal> derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
+  auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
   if(!derived_portal)
   {
     //std::cout << "debug: " << G_STRFUNC << ": date_field is NULL" << std::endl;
     return Glib::ustring();
   }
 
-  std::shared_ptr<const Field> date_field = derived_portal->get_date_field();
+  auto date_field = derived_portal->get_date_field();
   if(!date_field)
   {
     std::cerr << G_STRFUNC << ":  get_date_field() returned no field." << std::endl;
@@ -461,13 +461,13 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
       Glib::ustring text;
 
       //Text for a text item:
-      std::shared_ptr<const LayoutItem_Text> layout_item_text = std::dynamic_pointer_cast<const LayoutItem_Text>(layout_item);
+      auto layout_item_text = std::dynamic_pointer_cast<const LayoutItem_Text>(layout_item);
       if(layout_item_text)
         text = layout_item_text->get_text(AppWindow::get_current_locale());
       else
       {
         //Text for a field:
-        std::shared_ptr<const LayoutItem_Field> layout_item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
+        auto layout_item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
 
         const Gnome::Gda::Value value = (*pRow)[column_index];
         text = Conversions::get_text_for_gda_value(layout_item_field->get_glom_type(), value, layout_item_field->get_formatting_used().m_numeric_format);

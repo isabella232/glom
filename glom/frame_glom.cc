@@ -372,10 +372,10 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
       //then sort by the ID, just so we sort by something, so that the order is predictable:
       if(found_set.m_sort_clause.empty())
       {
-        std::shared_ptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
+        auto field_primary_key = get_field_primary_key_for_table(m_table_name);
         if(field_primary_key)
         {
-          std::shared_ptr<LayoutItem_Field> layout_item_sort = std::make_shared<LayoutItem_Field>();
+          auto layout_item_sort = std::make_shared<LayoutItem_Field>();
           layout_item_sort->set_full_field_details(field_primary_key);
 
           found_set.m_sort_clause.clear();
@@ -384,7 +384,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
           //because that would be too slow.
           //The user can explicitly request a sort later, by clicking on a column header.
           //TODO_Performance: This causes an almost-duplicate COUNT query (we do it in the treemodel too), but it's not that slow.
-          std::shared_ptr<LayoutItem_Field> layout_item_temp = std::make_shared<LayoutItem_Field>();
+          auto layout_item_temp = std::make_shared<LayoutItem_Field>();
           layout_item_temp->set_full_field_details(field_primary_key);
           type_vecLayoutFields layout_fields;
           layout_fields.push_back(layout_item_temp);
@@ -461,7 +461,7 @@ bool Frame_Glom::attempt_change_usermode_to_developer()
 
   //Check whether the current user has developer privileges:
   auto connection_pool = ConnectionPool::get_instance();
-      std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect();
+      auto sharedconnection = connection_pool->connect();
 
   // Default to true; if we don't support users, we always have
   // priviliges to change things in developer mode.
@@ -617,7 +617,7 @@ void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, 
         {
           const auto value = result->get_value_at(col_index, row_index);
 
-          std::shared_ptr<const LayoutItem_Field> layout_item = fieldsSequence[col_index];
+          auto layout_item = fieldsSequence[col_index];
           //if(layout_item->m_field.get_glom_type() != Field::glom_field_type::IMAGE) //This is too much data.
           //{
 
@@ -667,14 +667,14 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
         {
           const auto value = result->get_value_at(col_index, row_index);
 
-          std::shared_ptr<const LayoutItem_Field> layout_item = fieldsSequence[col_index];
+          auto layout_item = fieldsSequence[col_index];
           //if(layout_item->m_field.get_glom_type() != Field::glom_field_type::IMAGE) //This is too much data.
           //{
             if(!row_string.empty())
               row_string += ",";
 
             //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
-            std::shared_ptr<const Field> field = layout_item->get_full_field_details();
+            auto field = layout_item->get_full_field_details();
             if(!field)
             {
               std::cerr << G_STRFUNC << ": A field was null." << std::endl;
@@ -970,7 +970,7 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
   if(change)
   {
     auto connectionpool = ConnectionPool::get_instance();
-    std::shared_ptr<SharedConnection> sharedconnection = connectionpool->connect();
+    auto sharedconnection = connectionpool->connect();
     if(sharedconnection)
     {
       sharedconnection->close();
@@ -1175,7 +1175,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
       }
 
       //Create the new relationship:
-      std::shared_ptr<Relationship> relationship = std::make_shared<Relationship>();
+      auto relationship = std::make_shared<Relationship>();
 
       relationship->set_name(relationship_name);
       relationship->set_title(Utils::title_from_string(relationship_name), AppWindow::get_current_locale());
@@ -1183,7 +1183,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
       relationship->set_from_field(from_key_name);
       relationship->set_to_table(table_name);
 
-      std::shared_ptr<Field> related_primary_key = get_field_primary_key_for_table(table_name); //This field was created by create_table_with_default_fields().
+      auto related_primary_key = get_field_primary_key_for_table(table_name); //This field was created by create_table_with_default_fields().
       if(!related_primary_key)
       {
         std::cerr << G_STRFUNC << ": get_field_primary_key_for_table() failed." << std::endl;
@@ -1458,7 +1458,7 @@ void Frame_Glom::update_table_in_document_from_database()
         {
           //Compare the information:
           Glib::RefPtr<Gnome::Gda::Column> field_info_db = field_database->get_field_info();
-          std::shared_ptr<Field> field_document =  *iterFindDoc;
+          auto field_document =  *iterFindDoc;
           if(field_document)
           {
             if(!field_document->field_info_from_database_is_equal( field_info_db )) //ignores auto_increment because libgda does not report it from the database properly.
@@ -1781,7 +1781,7 @@ void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
 {
   m_pDialog_Reports->hide();
 
-  std::shared_ptr<Report> report = get_document()->get_report(m_table_name, report_name);
+  auto report = get_document()->get_report(m_table_name, report_name);
   if(report)
   {
     m_pDialogLayoutReport->set_transient_for(*get_app_window());
@@ -1842,7 +1842,7 @@ void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout
 
   m_pDialog_PrintLayouts->hide();
 
-  std::shared_ptr<PrintLayout> print_layout = get_document()->get_print_layout(m_table_name, print_layout_name);
+  auto print_layout = get_document()->get_print_layout(m_table_name, print_layout_name);
   if(print_layout)
   {
     m_pDialogLayoutPrint->set_transient_for(*app_window);
@@ -2384,7 +2384,7 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
   }
 
   auto document = get_document();
-  std::shared_ptr<Report> report = document->get_report(m_table_name, report_name);
+  auto report = document->get_report(m_table_name, report_name);
   if(!report)
     return;
 
@@ -2408,7 +2408,7 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
 void Frame_Glom::do_print_layout(const Glib::ustring& print_layout_name, bool preview, Gtk::Window* transient_for)
 {
   const auto document = get_document();
-  std::shared_ptr<const PrintLayout> print_layout = document->get_print_layout(m_table_name, print_layout_name);
+  auto print_layout = document->get_print_layout(m_table_name, print_layout_name);
     
   const auto table_privs = Privs::get_current_privs(m_table_name);
 
@@ -2439,7 +2439,7 @@ void Frame_Glom::on_dialog_layout_report_hide()
   if(document && true) //m_pDialogLayoutReport->get_modified())
   {
     const auto original_name = m_pDialogLayoutReport->get_original_report_name();
-    std::shared_ptr<Report> report = m_pDialogLayoutReport->get_report();
+    auto report = m_pDialogLayoutReport->get_report();
     if(report && (original_name != report->get_name()))
       document->remove_report(m_table_name, original_name);
 
@@ -2459,7 +2459,7 @@ void Frame_Glom::on_dialog_layout_print_hide()
   if(document && true) //m_pDialogLayoutReport->get_modified())
   {
     const auto original_name = m_pDialogLayoutPrint->get_original_name();
-    std::shared_ptr<PrintLayout> print_layout = m_pDialogLayoutPrint->get_print_layout();
+    auto print_layout = m_pDialogLayoutPrint->get_print_layout();
     if(print_layout && (original_name != print_layout->get_name()))
       document->remove_report(m_table_name, original_name);
 

@@ -85,7 +85,7 @@ void Dialog_FieldCalculation::set_field(const std::shared_ptr<const Field>& fiel
 
 std::shared_ptr<Field> Dialog_FieldCalculation::get_field() const
 {
-  std::shared_ptr<Field> field = glom_sharedptr_clone(m_field); //Start with the old details, to preserve anything that is not in our UI.
+  auto field = glom_sharedptr_clone(m_field); //Start with the old details, to preserve anything that is not in our UI.
 
   field->set_calculation( m_text_view->get_buffer()->get_text() );
 
@@ -125,7 +125,7 @@ void Dialog_FieldCalculation::on_button_test()
   }
 
   //We need the connection when we run the script, so that the script may use it.
-  std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(this /* parent window */);
+  auto sharedconnection = connect_to_server(this /* parent window */);
 
   Glib::ustring error_message;
   const auto value = glom_evaluate_python_function_implementation(
@@ -144,9 +144,9 @@ void Dialog_FieldCalculation::on_button_test()
     UiUtils::show_ok_dialog( _("Calculation failed"), Glib::ustring::compose(_("The calculation failed with this error:\n%s"), error_message), *this, Gtk::MESSAGE_ERROR);
 
   //Show what fields would trigger the recalculation:
-  std::shared_ptr<Field> temp = std::make_shared<Field>();
+  auto temp = std::make_shared<Field>();
   temp->set_calculation(calculation);
-  std::shared_ptr<LayoutItem_Field> layoutitem_temp = std::make_shared<LayoutItem_Field>();
+  auto layoutitem_temp = std::make_shared<LayoutItem_Field>();
   layoutitem_temp->set_full_field_details(temp);
   const auto triggered_fields = get_calculation_fields(m_table_name, layoutitem_temp);
 

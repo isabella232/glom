@@ -142,7 +142,7 @@ bool TreeStore_ReportLayout::may_be_child_of(const std::shared_ptr<const LayoutI
 
   const bool child_fieldsummary = (bool)std::dynamic_pointer_cast<const LayoutItem_FieldSummary>(suggested_child);
 
-  std::shared_ptr<const LayoutItem_Summary> summary = std::dynamic_pointer_cast<const LayoutItem_Summary>(parent);
+  auto summary = std::dynamic_pointer_cast<const LayoutItem_Summary>(parent);
 
   //A Summary may only have FieldSummary children:
   if(summary && !(bool)child_fieldsummary)

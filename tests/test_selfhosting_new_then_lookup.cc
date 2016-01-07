@@ -37,11 +37,11 @@ static std::shared_ptr<const Glom::LayoutItem_Field> get_lookup_field(const Glom
 
   for(const auto& the_pair : container)
   {
-    const std::shared_ptr<const Glom::LayoutItem_Field> layout_item = the_pair.first;
+    const auto layout_item = the_pair.first;
     if(!layout_item)
       return result;
 
-    const std::shared_ptr<const Glom::Relationship> this_relationship = the_pair.second;
+    const auto this_relationship = the_pair.second;
     if(!this_relationship)
       return result;
 
@@ -76,7 +76,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
   
   const Glib::ustring table_name = "invoice_lines";
-  std::shared_ptr<const Glom::Field> primary_key_field = document.get_field_primary_key(table_name);
+  auto primary_key_field = document.get_field_primary_key(table_name);
   if(!primary_key_field)
   {
     std::cerr << G_STRFUNC << ": Failure: primary_key_field is empty." << std::endl;
@@ -112,7 +112,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   const Glib::ustring field_name = "product_price";
   std::shared_ptr<const Glom::Relationship> relationship;
-  const std::shared_ptr<const Glom::LayoutItem_Field> layout_field = 
+  const auto layout_field = 
     get_lookup_field(lookups, table_name, field_name, relationship);
   if(!layout_field)
   {
@@ -144,7 +144,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  const std::shared_ptr<const Glom::Field> field = layout_field->get_full_field_details();
+  const auto field = layout_field->get_full_field_details();
   if(!field)
   {
     std::cerr << G_STRFUNC << ": Failure: The lookup item's field is empty." << std::endl;

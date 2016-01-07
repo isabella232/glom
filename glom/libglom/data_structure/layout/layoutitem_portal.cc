@@ -95,7 +95,7 @@ void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, 
       }
       else
       {
-        std::shared_ptr<const Relationship> relationship = get_relationship();
+        auto relationship = get_relationship();
         if(relationship && (relationship->get_to_table() == table_name) && (field_item->get_name() == field_name))
           field_item->set_name(field_name_new); //Change it.
       }
@@ -141,7 +141,7 @@ Glib::ustring LayoutItem_Portal::get_from_table() const
 {
   Glib::ustring from_table;
 
-  std::shared_ptr<const Relationship> relationship = get_relationship();
+  auto relationship = get_relationship();
   if(relationship)
     from_table = relationship->get_from_table();
 
@@ -297,11 +297,11 @@ std::shared_ptr<const UsesRelationship> LayoutItem_Portal::get_portal_navigation
   {
     //If the related table is hidden,
     //then find a suitable related non-hidden table by finding the first layout field that mentions one:
-    std::shared_ptr<const LayoutItem_Field> field = get_field_is_from_non_hidden_related_record(document);
+    auto field = get_field_is_from_non_hidden_related_record(document);
     if(field)
     {
       return field; //Returns the UsesRelationship base part. (A relationship belonging to the portal's related table.)
-      //std::shared_ptr<UsesRelationship> result = std::make_shared<UsesRelationship>();
+      //auto result = std::make_shared<UsesRelationship>();
       //result->set_relationship( get_relationship() );
       //result->set_related_relationship( field->get_relationship() );
 
@@ -312,7 +312,7 @@ std::shared_ptr<const UsesRelationship> LayoutItem_Portal::get_portal_navigation
       //Instead, find a key field that's used in a relationship,
       //and pretend that we are showing the to field as a related field:
       std::shared_ptr<const Relationship> used_in_relationship;
-      std::shared_ptr<const LayoutItem_Field> field_identifies = get_field_identifies_non_hidden_related_record(used_in_relationship, document);
+      auto field_identifies = get_field_identifies_non_hidden_related_record(used_in_relationship, document);
       if(field_identifies)
       {
         auto result = std::make_shared<UsesRelationship>();
@@ -380,7 +380,7 @@ std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_identifies_
     auto field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
     if(field && !(field->get_has_relationship_name()))
     {
-      std::shared_ptr<const Relationship> relationship = document->get_field_used_in_relationship_to_one(parent_table_name, field);
+      auto relationship = document->get_field_used_in_relationship_to_one(parent_table_name, field);
       if(relationship)
       {
         const auto table_name = relationship->get_to_table();

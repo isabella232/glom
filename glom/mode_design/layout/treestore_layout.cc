@@ -81,7 +81,7 @@ bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
       Gtk::TreeModel::Row row = *iter_dragged;
 
       std::shared_ptr<LayoutItem> layout_item = row[m_columns.m_col_layout_item];
-      std::shared_ptr<LayoutGroup> layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+      auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
       const bool is_group = (bool)layout_group;
 
       return is_group; //Only groups can be dragged to the top-level.
@@ -102,7 +102,7 @@ bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
       Gtk::TreeModel::Row row_parent = *iter_dest_parent;
 
       std::shared_ptr<LayoutItem> layout_item = row_parent[m_columns.m_col_layout_item];
-      std::shared_ptr<LayoutGroup> layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+      auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
       const bool is_group = (bool)layout_group;
 
       return is_group; //Only groups can contain other items.

@@ -115,7 +115,7 @@ int main()
   }
 
   //Check that the original field name is no longer used in the relationship:
-  std::shared_ptr<const Glom::Relationship> relationship = document.get_relationship("invoice_lines", "products");
+  auto relationship = document.get_relationship("invoice_lines", "products");
   if(!relationship)
   {
     std::cerr << G_STRFUNC << ": Failure: The relationship could not be found in the document." << std::endl;
@@ -155,7 +155,7 @@ int main()
     }
 
     //Check that the old relationship name is not used.
-    std::shared_ptr<const Glom::LayoutItem_Field> field_on_layout = 
+    auto field_on_layout = 
       get_field_on_layout(document, table_name, "contacts", "name_full");
     g_assert(field_on_layout);
     if(field_on_layout->get_relationship_name() != relationship_name_new)
@@ -213,7 +213,7 @@ int main()
 
  
   //Remove a print layout:
-  std::shared_ptr<const Glom::PrintLayout> print_layout = 
+  auto print_layout = 
     document.get_print_layout("contacts", "contact_details");
   if(!print_layout)
   {

@@ -219,7 +219,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     }
 
     //Set the table name and title:
-    //std::shared_ptr<LayoutItem_Portal> portal_temp = m_portal;
+    //auto portal_temp = m_portal;
     Document::type_list_layout_groups mapGroups;
     if(m_portal)
     {
@@ -236,12 +236,12 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
 
     for(const auto& group : mapGroups)
     {
-      std::shared_ptr<const LayoutGroup> portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(group);
+      auto portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(group);
       if(portal)
       {
         for(const auto& item : group->m_list_items)
         {
-          std::shared_ptr<const LayoutGroup> groupInner = std::dynamic_pointer_cast<const LayoutGroup>(item);
+          auto groupInner = std::dynamic_pointer_cast<const LayoutGroup>(item);
 
           if(groupInner)
             add_group(Gtk::TreeModel::iterator() /* null == top-level */, groupInner);
@@ -264,7 +264,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
 
   if(m_portal->get_navigation_type() == LayoutItem_Portal::navigation_type::SPECIFIC)
   {
-    std::shared_ptr<UsesRelationship> navrel = m_portal->get_navigation_relationship_specific();
+    auto navrel = m_portal->get_navigation_relationship_specific();
     //std::cout << "debug navrel=" << navrel->get_relationship()->get_name() << std::endl;
     m_combo_navigation_specify->set_selected_relationship(navrel->get_relationship(), navrel->get_related_relationship());
   }
@@ -292,7 +292,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
   }
 
   //Describe the automatic navigation:
-  std::shared_ptr<const UsesRelationship> relationship_navigation_automatic = 
+  auto relationship_navigation_automatic = 
     m_portal->get_portal_navigation_relationship_automatic(document);
   Glib::ustring automatic_navigation_description = 
     m_portal->get_relationship_name_used(); //TODO: Use get_relationship_display_name() instead?
@@ -345,7 +345,7 @@ void Dialog_Layout_List_Related::save_to_document()
       std::shared_ptr<Relationship> rel, rel_related;
       rel = m_combo_navigation_specify->get_selected_relationship(rel_related);
 
-      std::shared_ptr<UsesRelationship> uses_rel = std::make_shared<UsesRelationship>();
+      auto uses_rel = std::make_shared<UsesRelationship>();
       uses_rel->set_relationship(rel);
       uses_rel->set_related_relationship(rel_related);
 
@@ -368,7 +368,7 @@ void Dialog_Layout_List_Related::save_to_document()
 
     if(m_radio_navigation_none->get_active())
     {
-      std::shared_ptr<UsesRelationship> uses_rel = std::make_shared<UsesRelationship>();
+      auto uses_rel = std::make_shared<UsesRelationship>();
       uses_rel->set_related_relationship(std::shared_ptr<Relationship>());
       m_portal->set_navigation_type(LayoutItem_Portal::navigation_type::NONE);
     }
@@ -400,14 +400,14 @@ void Dialog_Layout_List_Related::on_combo_relationship_changed()
     return;
 
   std::shared_ptr<Relationship> relationship_related;
-  std::shared_ptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(relationship_related);
+  auto relationship = m_combo_relationship->get_selected_relationship(relationship_related);
   if(!relationship)
     return;
 
   //Check that the relationship is appropriate for use in a related records portal.
   //The relationship's to field may not be a unique field, because that would
   //prevent the portal from having multiple records.
-  std::shared_ptr<Field> to_key_field =
+  auto to_key_field =
     DbUtils::get_fields_for_table_one_field(get_document(), 
       relationship->get_to_table(), relationship->get_to_field());
   bool relationship_invalid = false;
@@ -527,10 +527,10 @@ void Dialog_Layout_List_Related::on_button_edit()
     {
       Gtk::TreeModel::Row row = *iter;
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-      std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
+      auto field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
 
       //Get the chosen field:
-      std::shared_ptr<LayoutItem_Field> field_chosen = offer_field_list_select_one_field(field, m_portal->get_table_used(m_table_name), this);
+      auto field_chosen = offer_field_list_select_one_field(field, m_portal->get_table_used(m_table_name), this);
       if(field_chosen)
       {
         //Set the field details in the layout treeview:

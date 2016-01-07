@@ -140,8 +140,8 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
 
   //We use a regular DataWidget for the default value, so we can reuse its functionality,
   //but it's not a real field - hence the special title.
-  std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
-  std::shared_ptr<Field> field_default_value = glom_sharedptr_clone(m_Field);
+  auto layout_item = std::make_shared<LayoutItem_Field>();
+  auto field_default_value = glom_sharedptr_clone(m_Field);
   field_default_value->set_name("glom_temp_default_value");
   field_default_value->set_title_original(_("Default Value"));
   layout_item->set_full_field_details(field_default_value);
@@ -213,9 +213,9 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
 
 std::shared_ptr<Field> Dialog_FieldDefinition::get_field() const
 {
-  std::shared_ptr<Field> field = glom_sharedptr_clone(m_Field); //Start with the old details, to preserve anything that is not in our UI.
+  auto field = glom_sharedptr_clone(m_Field); //Start with the old details, to preserve anything that is not in our UI.
   // const_cast is necessary and save here for the window (jhs)
-  std::shared_ptr<SharedConnection> sharedcnc = connect_to_server(const_cast<Dialog_FieldDefinition*>(this));
+  auto sharedcnc = connect_to_server(const_cast<Dialog_FieldDefinition*>(this));
   Glib::RefPtr<Gnome::Gda::Connection> cnc = sharedcnc->get_gda_connection();
 
   //Get the field info from the widgets:
@@ -339,7 +339,7 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
   m_pCombo_LookupField->remove_all();
 
   //Get the relationship name:
-  std::shared_ptr<const Relationship> relationship = m_pCombo_LookupRelationship->get_selected_relationship();
+  auto relationship = m_pCombo_LookupRelationship->get_selected_relationship();
   if(relationship)
   {
     //Get the relationship details:

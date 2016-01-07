@@ -79,7 +79,7 @@ void Dialog_FieldLayout::set_field(const std::shared_ptr<const LayoutItem_Field>
   m_checkbutton_editable->set_active( field->get_editable() );
 
   //Calculated fields can never be edited:
-  std::shared_ptr<const Field> field_details = field->get_full_field_details();
+  auto field_details = field->get_full_field_details();
   const bool editable_allowed = field_details && !field_details->get_has_calculation();
   m_checkbutton_editable->set_sensitive(editable_allowed);
 
@@ -111,7 +111,7 @@ std::shared_ptr<LayoutItem_Field> Dialog_FieldLayout::get_field_chosen() const
   m_layout_item->set_formatting_use_default( !m_radiobutton_custom_formatting->get_active() );
   m_box_formatting->get_formatting(m_layout_item->m_formatting);
 
-  std::shared_ptr<CustomTitle> title_custom = std::make_shared<CustomTitle>();
+  auto title_custom = std::make_shared<CustomTitle>();
   title_custom->set_use_custom_title(m_radiobutton_title_custom->get_active()); //For instance, tell it to really use a blank title.
   title_custom->set_title(m_entry_title_custom->get_text(), AppWindow::get_current_locale());
 

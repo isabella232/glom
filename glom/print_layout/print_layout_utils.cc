@@ -187,7 +187,7 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
   const auto title = item_get_title(layout_group);
   if(!title.empty())
   {
-    std::shared_ptr<LayoutItem_Text> text = std::make_shared<LayoutItem_Text>();
+    auto text = std::make_shared<LayoutItem_Text>();
     text->set_text(title, AppWindow::get_current_locale());
     text->m_formatting.set_text_format_font("Sans Bold 10");
 
@@ -201,10 +201,10 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
   }
 
   //Deal with a portal group: 
-  const std::shared_ptr<const LayoutItem_Portal> portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(layout_group); 
+  const auto portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(layout_group); 
   if(portal)
   {
-    std::shared_ptr<LayoutItem_Portal> portal_clone = glom_sharedptr_clone(portal);
+    auto portal_clone = glom_sharedptr_clone(portal);
     portal_clone->set_print_layout_row_height(field_height); //Otherwise it will be 0, which is useless.
 
     //We ignore the rows count for the details layout's portal,
@@ -232,7 +232,7 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
     if(!item)
       continue;
 
-    const std::shared_ptr<const LayoutGroup> group = std::dynamic_pointer_cast<const LayoutGroup>(item);
+    const auto group = std::dynamic_pointer_cast<const LayoutGroup>(item);
     if(group && !portal)
     {
       //Recurse:
@@ -243,7 +243,7 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
       //Add field titles, if necessary:
       std::shared_ptr<LayoutItem_Text> text_title;
       const double title_width = ITEM_WIDTH_WIDE; //TODO: Calculate it based on the widest in the column. Or just halve the column to start.
-      const std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
+      const auto field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
       if(field)
       {
         text_title = std::make_shared<LayoutItem_Text>();
@@ -260,7 +260,7 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
       }
 
       //Add the item, such as a field:
-      std::shared_ptr<LayoutItem> clone = glom_sharedptr_clone(item);
+      auto clone = glom_sharedptr_clone(item);
 
       double item_x = x;
       if(field)
@@ -313,7 +313,7 @@ guint get_page_for_y(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::
 std::shared_ptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, const Glib::ustring& table_name, const Document* document, bool avoid_page_margins)
 {
   const Gtk::Unit units = Gtk::UNIT_MM;
-  std::shared_ptr<PrintLayout> print_layout = std::make_shared<PrintLayout>();  
+  auto print_layout = std::make_shared<PrintLayout>();  
   
   //Start inside the border, on the next grid line:
   double y = 0;
@@ -331,7 +331,7 @@ std::shared_ptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageS
   const auto title = document->get_table_title_singular(table_name, AppWindow::get_current_locale());
   if(!title.empty())
   {
-    std::shared_ptr<LayoutItem_Text> text = std::make_shared<LayoutItem_Text>();
+    auto text = std::make_shared<LayoutItem_Text>();
     text->set_text(title, AppWindow::get_current_locale());
     text->m_formatting.set_text_format_font("Sans Bold 12");
 
@@ -390,7 +390,7 @@ void do_print_layout(const std::shared_ptr<const PrintLayout>& print_layout, con
   canvas.set_document(const_cast<Document*>(document)); //We const_cast because, for this use, it will not be changed.
 
   //We cast to unconst because we know that the layout will not be changed by this use: 
-  std::shared_ptr<PrintLayout> unconst = std::const_pointer_cast<PrintLayout>(print_layout);
+  auto unconst = std::const_pointer_cast<PrintLayout>(print_layout);
   canvas.set_print_layout(found_set.m_table_name, unconst);
 
   //Do not show things that are only for editing the print layout:

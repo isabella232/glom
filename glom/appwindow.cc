@@ -1118,7 +1118,7 @@ bool AppWindow::on_document_load()
   {
     Glib::ustring error_message; //TODO: Check this and tell the user.
     auto connection_pool = ConnectionPool::get_instance();
-    std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect();
+    auto sharedconnection = connection_pool->connect();
     AppPythonUICallbacks callbacks;
     glom_execute_python_function_implementation(script,
       type_map_fields(), //only used when there is a current table and record.
@@ -1262,7 +1262,7 @@ void AppWindow::update_userlevel_ui()
   {
     if(ConnectionPool::get_instance_is_ready())
     {
-      std::shared_ptr<SharedConnection> connection = ConnectionPool::get_and_connect();
+      auto connection = ConnectionPool::get_and_connect();
       if(connection && !connection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
         m_action_developer_users->set_enabled(false);
     }
@@ -1514,7 +1514,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
   try
   {
     connection_pool->set_ready_to_connect(); //This has succeeded already.
-    std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect();
+    auto sharedconnection = connection_pool->connect();
     std::cerr << G_STRFUNC << ": Failed because database exists already." << std::endl;
 
     return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
@@ -1658,7 +1658,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
   try
   {
     connection_pool->set_ready_to_connect(); //This has succeeded already.
-    std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect();
+    auto sharedconnection = connection_pool->connect();
     std::cerr << G_STRFUNC << ": Failed because database exists already." << std::endl;
 
     return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.

@@ -263,7 +263,7 @@ void Dialog_Database_Preferences::on_button_test_script()
     return;
 
   //We need the connection when we run the script, so that the script may use it.
-  std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(this /* parent window */);
+  auto sharedconnection = connect_to_server(this /* parent window */);
 
   Glib::ustring error_message; //TODO: Check this and tell the user.
   PythonUICallbacks callbacks;

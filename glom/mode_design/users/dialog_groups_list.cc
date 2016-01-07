@@ -155,7 +155,7 @@ void Dialog_GroupsList::set_document(const Glib::ustring& layout, Document* docu
 
     for(const auto& the_pair : mapGroups)
     {
-      std::shared_ptr<const LayoutGroup> group = the_pairsecond;
+      auto group = the_pairsecond;
 
       add_group(Gtk::TreeModel::iterator(), group);
     }

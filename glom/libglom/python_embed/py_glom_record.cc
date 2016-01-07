@@ -139,7 +139,7 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
   if(extractor.check())
     field_name = extractor;
 
-  std::shared_ptr<const Field> field = m_document->get_field(m_table_name, field_name);
+  auto field = m_document->get_field(m_table_name, field_name);
   if(!field)
   {
      std::cerr << G_STRFUNC << ": field=" << field_name << " not found in table=" << m_table_name << std::endl;

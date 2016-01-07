@@ -189,7 +189,7 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive() const
 
   for(const auto& item : m_list_items)
   {    
-    std::shared_ptr<const LayoutGroup> group = std::dynamic_pointer_cast<const LayoutGroup>(item);
+    auto group = std::dynamic_pointer_cast<const LayoutGroup>(item);
     if(group)
     {
       const auto sub_result = group->get_items_recursive();
@@ -230,7 +230,7 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive_with_groups(
     //Add the item itself:
     result.push_back(item);
     
-    std::shared_ptr<const LayoutGroup> group = std::dynamic_pointer_cast<const LayoutGroup>(item);
+    auto group = std::dynamic_pointer_cast<const LayoutGroup>(item);
     if(group)
     {
       const auto sub_result = group->get_items_recursive_with_groups();
@@ -310,7 +310,7 @@ void LayoutGroup::change_related_field_item_name(const Glib::ustring& table_name
     {
       if(field_item->get_has_relationship_name()) //If it's related table.
       {
-        std::shared_ptr<const Relationship> relationship = field_item->get_relationship();
+        auto relationship = field_item->get_relationship();
         if(relationship)
         {
           if(relationship->get_to_table() == table_name)
@@ -335,7 +335,7 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
   //Look at each item:
   for(const auto& item : m_list_items)
   {
-    std::shared_ptr<LayoutItem_Field> field_item = 
+    auto field_item = 
       std::dynamic_pointer_cast<LayoutItem_Field>(item);
     
     //Field layout items:
@@ -343,7 +343,7 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
     {
       if(field_item->get_has_relationship_name()) //If it's a related table (this would be a self-relationship)
       {
-        std::shared_ptr<const Relationship> rel = field_item->get_relationship();
+        auto rel = field_item->get_relationship();
         if(rel)
         {
           if(rel->get_to_table() == table_name)
@@ -362,7 +362,7 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
     else
     {
       //Formatting:
-      std::shared_ptr<LayoutItem_WithFormatting> with_formatting = 
+      auto with_formatting = 
         std::dynamic_pointer_cast<LayoutItem_WithFormatting>(item);
       if(with_formatting)
       {

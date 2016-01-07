@@ -100,7 +100,7 @@ bool Box_Print_Layouts::fill_from_database()
   {
     for(const auto& print_layout_name : document->get_print_layout_names(m_table_name))
     {
-      std::shared_ptr<PrintLayout> item = document->get_print_layout(m_table_name, print_layout_name);
+      auto item = document->get_print_layout(m_table_name, print_layout_name);
       if(item)
       {
         auto row = m_AddDel.add_item(item->get_name());
@@ -121,7 +121,7 @@ bool Box_Print_Layouts::fill_from_database()
 
 void Box_Print_Layouts::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
 {
-  std::shared_ptr<PrintLayout> item = std::make_shared<PrintLayout>();
+  auto item = std::make_shared<PrintLayout>();
 
   const auto name = m_AddDel.get_value(row, m_colName);
   if(!name.empty())
@@ -203,7 +203,7 @@ void Box_Print_Layouts::on_adddel_user_changed(const Gtk::TreeModel::iterator& r
     const auto name = m_AddDel.get_value_key(row);
     auto document = get_document();
 
-    std::shared_ptr<PrintLayout> item = document->get_print_layout(m_table_name, name);
+    auto item = document->get_print_layout(m_table_name, name);
     if(item)
     {
       if(column == m_colTitle)

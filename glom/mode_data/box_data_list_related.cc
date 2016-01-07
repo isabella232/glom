@@ -279,7 +279,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
   if(m_key_field)
   {
     //m_key_field is the field in this table that must match another field in the parent table.
-    std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
+    auto layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_full_field_details(m_key_field);
     key_value = m_AddDel.get_value(row, layout_item);
   }
@@ -299,7 +299,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
   }
   else
   {
-    std::shared_ptr<Field> field_primary_key = m_AddDel.get_key_field();
+    auto field_primary_key = m_AddDel.get_key_field();
 
     //Create the link by setting the foreign key
     if(m_key_field && m_portal)
@@ -307,7 +307,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
       make_record_related(primary_key_value);
 
       //Show it on the view, if it's visible:
-      std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
+      auto layout_item = std::make_shared<LayoutItem_Field>();
       layout_item->set_full_field_details(m_key_field);
 
       //TODO: Although the to-field value is visible on the new related record, get_value() returns NULL so you can't immediately navigate to the new record:
@@ -337,7 +337,7 @@ void Box_Data_List_Related::on_dialog_layout_hide()
 
   Box_Data::on_dialog_layout_hide();
 
-  std::shared_ptr<LayoutItem_Portal> pLayoutItem = std::dynamic_pointer_cast<LayoutItem_Portal>(get_layout_item());
+  auto pLayoutItem = std::dynamic_pointer_cast<LayoutItem_Portal>(get_layout_item());
   if(pLayoutItem)
   {
     *pLayoutItem = *m_portal;
@@ -418,7 +418,7 @@ void Box_Data_List_Related::create_layout()
       m_AddDel.set_height_rows(rows_count_min, rows_count_max);
   }
 
-  std::shared_ptr<Field> field_primary_key = get_field_primary_key_for_table(Base_DB_Table::m_table_name);
+  auto field_primary_key = get_field_primary_key_for_table(Base_DB_Table::m_table_name);
   if(!field_primary_key)
   {
     std::cerr << G_STRFUNC << ": primary key not found." << std::endl;
@@ -445,7 +445,7 @@ void Box_Data_List_Related::create_layout()
       if(m_read_only)
         child_item->set_editable(false);
 
-      std::shared_ptr<const LayoutItem_Field> child_field = std::dynamic_pointer_cast<const LayoutItem_Field>(child_item);
+      auto child_field = std::dynamic_pointer_cast<const LayoutItem_Field>(child_item);
       
       //This check has already happened in Frame_Glom::update_table_in_document_from_database().
       //It is inefficient and unnecessary to do it here too.
@@ -471,7 +471,7 @@ void Box_Data_List_Related::create_layout()
   //TODO: Only add it if it is not already there.
   if(field_primary_key)
   {
-    std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
+    auto layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_hidden();
     layout_item->set_full_field_details(m_AddDel.get_key_field());
     m_FieldsShown.push_back(layout_item);

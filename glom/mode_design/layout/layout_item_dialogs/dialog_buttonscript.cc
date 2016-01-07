@@ -86,7 +86,7 @@ void Dialog_ButtonScript::set_script(const std::shared_ptr<const LayoutItem_Butt
 
 std::shared_ptr<LayoutItem_Button> Dialog_ButtonScript::get_script() const
 {
-  std::shared_ptr<LayoutItem_Button> result = glom_sharedptr_clone(m_script); //Start with the old details, to preserve anything that is not in our UI.
+  auto result = glom_sharedptr_clone(m_script); //Start with the old details, to preserve anything that is not in our UI.
 
   get_script(result);
 
@@ -118,7 +118,7 @@ void Dialog_ButtonScript::on_button_test_script()
   }
 
   //We need the connection when we run the script, so that the script may use it.
-  std::shared_ptr<SharedConnection> sharedconnection = ConnectionPool::get_and_connect();
+  auto sharedconnection = ConnectionPool::get_and_connect();
 
   Glib::ustring error_message;
   PythonUICallbacks callbacks;

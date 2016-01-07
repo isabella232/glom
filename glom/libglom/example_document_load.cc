@@ -48,7 +48,7 @@ void print_layout_group(const std::shared_ptr<Glom::LayoutGroup>& layout_group, 
     std::cout << std::endl;
 
     //Recurse into child groups:
-    std::shared_ptr<Glom::LayoutGroup> group = std::dynamic_pointer_cast<Glom::LayoutGroup>(layout_item);
+    auto group = std::dynamic_pointer_cast<Glom::LayoutGroup>(layout_item);
     if(group)
     {
       print_layout_group(group, indent + "  ");

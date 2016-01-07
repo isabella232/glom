@@ -47,10 +47,10 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //Where clause:
 
   const Glib::ustring table_name = "contacts";
-  const std::shared_ptr<const Glom::Field> field = document.get_field(table_name, "picture");
+  const auto field = document.get_field(table_name, "picture");
 
   //Where clause:
-  const std::shared_ptr<const Glom::Field> key_field = document.get_field(table_name, "contact_id");
+  const auto key_field = document.get_field(table_name, "contact_id");
   if(!key_field)
   {
     std::cerr << G_STRFUNC << ": Failure: Could not get key field." << std::endl;
@@ -76,7 +76,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   //Get the value:
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::make_shared<Glom::LayoutItem_Field>();
+  auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 

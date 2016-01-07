@@ -69,7 +69,7 @@ void Entry::set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, cons
   //Horizontal Alignment:
   Formatting::HorizontalAlignment alignment = 
     Formatting::HorizontalAlignment::LEFT;
-  std::shared_ptr<LayoutItem_Field> layout_field =
+  auto layout_field =
     std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
   if(layout_field)
     alignment = layout_field->get_formatting_used_horizontal_alignment(true /* for details view */);
@@ -91,7 +91,7 @@ void Entry::check_for_change()
     //Validate the input:
     bool success = false;
 
-    std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
+    auto layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
     Gnome::Gda::Value value = Conversions::parse_value(m_glom_type, get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 
     if(success)
@@ -144,7 +144,7 @@ void Entry::on_changed()
 
 void Entry::set_value(const Gnome::Gda::Value& value)
 {
-  std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
+  auto layout_item = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
   if(!layout_item)
     return;
 
@@ -179,7 +179,7 @@ Gnome::Gda::Value Entry::get_value() const
 {
   bool success = false;
 
-  std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
+  auto layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
   return Conversions::parse_value(m_glom_type, get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 }
 
