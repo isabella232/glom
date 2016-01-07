@@ -126,7 +126,7 @@ bool Sqlite::create_database(const SlotProgress& slot_progress, const Glib::ustr
   if(slot_progress)  
     slot_progress();
 
-  Glib::RefPtr<Gnome::Gda::Connection> cnc =
+  auto cnc =
     Gnome::Gda::Connection::open_from_string("SQLite",
       cnc_string, "",
       Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);

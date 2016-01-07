@@ -194,7 +194,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
 
 void Window_PrintLayout_Edit::init_menu()
 {
-  Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
+  auto action_group = Gio::SimpleActionGroup::create();
 
   add_action("pagesetup",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_page_setup));
@@ -271,9 +271,9 @@ void Window_PrintLayout_Edit::init_menu()
   insert_action_group("printlayout", action_group);
 
   //Get the menu:
-  Glib::RefPtr<Glib::Object> object =
+  auto object =
     m_builder->get_object("Menubar");
-  Glib::RefPtr<Gio::Menu> gmenu =
+  auto gmenu =
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!gmenu)
     g_warning("GMenu not found");
@@ -523,7 +523,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
       return;
     }
 
-    Glib::RefPtr<CanvasLayoutItem> item =
+    auto item =
       create_canvas_layout_item_and_add(layout_item);
     item->snap_position(item_x, item_y);
     item->set_xy(item_x, item_y);
@@ -682,7 +682,7 @@ void Window_PrintLayout_Edit::on_context_menu_insert_text()
 
 void Window_PrintLayout_Edit::setup_context_menu()
 {
-  Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
+  auto action_group = Gio::SimpleActionGroup::create();
 
   action_group->add_action("insert-field",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_context_menu_insert_field) );
@@ -699,9 +699,9 @@ void Window_PrintLayout_Edit::setup_context_menu()
   insert_action_group("context", action_group);
 
   //Get the menu:
-  Glib::RefPtr<Glib::Object> object =
+  auto object =
     m_builder->get_object("ContextMenu");
-  Glib::RefPtr<Gio::Menu> gmenu =
+  auto gmenu =
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!gmenu)
     g_warning("GMenu not found");
@@ -735,11 +735,11 @@ void Window_PrintLayout_Edit::on_canvas_show_context_menu(guint button, guint32 
 
 bool Window_PrintLayout_Edit::get_is_item_at(double x, double y)
 {
-  Glib::RefPtr<Goocanvas::Item> item_hit = m_canvas.get_item_at(x, y, false);
+  auto item_hit = m_canvas.get_item_at(x, y, false);
   if(!item_hit)
    return false;
 
-  Glib::RefPtr<CanvasLayoutItem> layout_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(item_hit);
+  auto layout_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(item_hit);
   return layout_item;
 }
 
@@ -849,7 +849,7 @@ void Window_PrintLayout_Edit::on_menu_insert_create_standard()
     return;
   }
 
-  Glib::RefPtr<Gtk::PageSetup> page_setup = m_canvas.get_page_setup();
+  auto page_setup = m_canvas.get_page_setup();
   if(!page_setup)
   {
     std::cerr << G_STRFUNC << ": page_setup was null" << std::endl;
@@ -1003,10 +1003,10 @@ void Window_PrintLayout_Edit::on_menu_view_zoom(int parameter)
 
 void Window_PrintLayout_Edit::on_menu_file_page_setup()
 {
-  Glib::RefPtr<Gtk::PageSetup> page_setup = m_canvas.get_page_setup();
+  auto page_setup = m_canvas.get_page_setup();
 
   //Show the page setup dialog, asking it to start with the existing settings:
-  Glib::RefPtr<Gtk::PrintSettings> print_settings = Gtk::PrintSettings::create(); //TODO: Do we really need to get this from the user and store it?
+  auto print_settings = Gtk::PrintSettings::create(); //TODO: Do we really need to get this from the user and store it?
   page_setup = Gtk::run_page_setup_dialog(*this, page_setup, print_settings);
 
   //Save the chosen page setup dialog for use when printing, previewing, or
@@ -1094,7 +1094,7 @@ void Window_PrintLayout_Edit::on_menu_edit_paste()
 
 Glib::RefPtr<CanvasLayoutItem> Window_PrintLayout_Edit::create_canvas_layout_item_and_add(const std::shared_ptr<LayoutItem>& layout_item)
 {
-  Glib::RefPtr<CanvasLayoutItem> canvas_item = CanvasLayoutItem::create();
+  auto canvas_item = CanvasLayoutItem::create();
   m_canvas.add_canvas_layout_item(canvas_item);
   canvas_item->set_layout_item(layout_item);
   
@@ -1107,7 +1107,7 @@ void Window_PrintLayout_Edit::on_menu_edit_delete()
 {
   while(!m_layout_items_selected.empty())
   {
-    Glib::RefPtr<CanvasLayoutItem> item = m_layout_items_selected[0];
+    auto item = m_layout_items_selected[0];
     if(item)
       m_canvas.remove_canvas_layout_item(item);
   }
@@ -1132,7 +1132,7 @@ void Window_PrintLayout_Edit::on_menu_align_top()
   for(auto iter = m_layout_items_selected.begin();
     iter != m_layout_items_selected.end(); ++iter)
   {
-    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
+    auto selected_item = *iter;
     if(!selected_item)
       continue;
 
@@ -1166,7 +1166,7 @@ void Window_PrintLayout_Edit::on_menu_align_bottom()
   for(auto iter = m_layout_items_selected.begin();
     iter != m_layout_items_selected.end(); ++iter)
   {
-    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
+    auto selected_item = *iter;
     if(!selected_item)
       continue;
 
@@ -1212,7 +1212,7 @@ void Window_PrintLayout_Edit::on_menu_align_left()
   for(auto iter = m_layout_items_selected.begin();
     iter != m_layout_items_selected.end(); ++iter)
   {
-    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
+    auto selected_item = *iter;
     if(!selected_item)
       continue;
 
@@ -1246,7 +1246,7 @@ void Window_PrintLayout_Edit::on_menu_align_right()
   for(auto iter = m_layout_items_selected.begin();
     iter != m_layout_items_selected.end(); ++iter)
   {
-    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
+    auto selected_item = *iter;
 
     if(!selected_item)
       continue;
@@ -1406,7 +1406,7 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
   for(auto iter = items.begin();
     iter != items.end(); ++iter)
   {
-    Glib::RefPtr<CanvasLayoutItem> item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(*iter);
+    auto item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(*iter);
     if(!item)
       continue;
 
@@ -1562,7 +1562,7 @@ void Window_PrintLayout_Edit::on_spinbutton_width()
   if(m_layout_items_selected.empty())
     return;
 
-  Glib::RefPtr<CanvasLayoutItem> item = m_layout_items_selected[0];
+  auto item = m_layout_items_selected[0];
 
   double width = 0;
   double height = 0;
@@ -1581,7 +1581,7 @@ void Window_PrintLayout_Edit::on_spinbutton_height()
   if(m_layout_items_selected.empty())
     return;
 
-  Glib::RefPtr<CanvasLayoutItem> item = m_layout_items_selected[0];
+  auto item = m_layout_items_selected[0];
 
   double width = 0;
   double height = 0;

@@ -63,7 +63,7 @@ Dialog_FieldsList::Dialog_FieldsList(BaseObjectType* cobject, const Glib::RefPtr
 
 
     //Respond to changes of selection:
-    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
+    auto refSelection = m_treeview_fields->get_selection();
     if(refSelection)
     {
       refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_FieldsList::on_treeview_fields_selection_changed) );
@@ -134,7 +134,7 @@ void Dialog_FieldsList::set_fields(const Glib::ustring& table_name, const Layout
 void Dialog_FieldsList::enable_buttons()
 {
   //Fields:
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
+  auto refSelection = m_treeview_fields->get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -217,7 +217,7 @@ Gtk::TreeModel::iterator Dialog_FieldsList::append_appropriate_row()
 {
   Gtk::TreeModel::iterator result;
 
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+  auto refTreeSelection = m_treeview_fields->get_selection();
   auto selected = refTreeSelection->get_selected();
 
   //Add the field details to the layout treeview:
@@ -252,7 +252,7 @@ void Dialog_FieldsList::on_button_add_field()
       row[m_ColumnsFields.m_col_layout_item] = field;
 
       //Scroll to, and select, the new row:
-      Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+      auto refTreeSelection = m_treeview_fields->get_selection();
       if(refTreeSelection)
         refTreeSelection->select(iter);
 
@@ -265,7 +265,7 @@ void Dialog_FieldsList::on_button_add_field()
 
 void Dialog_FieldsList::on_button_delete()
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+  auto refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
     //TODO: Handle multiple-selection:
@@ -309,7 +309,7 @@ void Dialog_FieldsList::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk
 
 void Dialog_FieldsList::on_button_edit_field()
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+  auto refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
     //TODO: Handle multiple-selection:
@@ -329,7 +329,7 @@ void Dialog_FieldsList::on_button_edit_field()
 
       //Scroll to, and select, the new row:
       /*
-      Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+      auto refTreeSelection = m_treeview_fields->get_selection();
       if(refTreeSelection)
         refTreeSelection->select(iter);
 
@@ -343,7 +343,7 @@ void Dialog_FieldsList::on_button_edit_field()
 
 void Dialog_FieldsList::on_button_formatting()
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+  auto refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
     //TODO: Handle multiple-selection:

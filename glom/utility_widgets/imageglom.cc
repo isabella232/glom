@@ -416,7 +416,7 @@ void ImageGlom::show_image_data()
     
     if(m_pixbuf_original)
     {
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = get_scaled_image();
+      auto pixbuf_scaled = get_scaled_image();
       m_image.set(pixbuf_scaled);
     }
     else if(icon)
@@ -432,7 +432,7 @@ void ImageGlom::show_image_data()
 
 Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
 {
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = m_pixbuf_original;
+  auto pixbuf = m_pixbuf_original;
 
   if(!pixbuf)
     return pixbuf;
@@ -452,7 +452,7 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
   {
     if(true) //allocation_height > 10 || allocation_width > 10)
     {
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = UiUtils::image_scale_keeping_ratio(pixbuf, allocation_height, allocation_width);
+      auto pixbuf_scaled = UiUtils::image_scale_keeping_ratio(pixbuf, allocation_height, allocation_width);
       
       //Don't set a new pixbuf if the dimensions have not changed:
       Glib::RefPtr<Gdk::Pixbuf> pixbuf_in_image;
@@ -509,7 +509,7 @@ void ImageGlom::on_menupopup_activate_open_file_with()
   if(dialog.run() != Gtk::RESPONSE_OK)
     return;
   
-  Glib::RefPtr<Gio::AppInfo> app_info = dialog.get_app_info();
+  auto app_info = dialog.get_app_info();
   if(!app_info)
   {
     std::cerr << G_STRFUNC << ": app_info was null." << std::endl;
@@ -546,7 +546,7 @@ static void make_file_read_only(const Glib::ustring& uri)
   //Setting the attribute via gio gives us this exception:
   //"Setting attribute access::can-write not supported"
   /*
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  auto file = Gio::File::create_for_uri(uri);
 
   Glib::RefPtr<Gio::FileInfo> file_info;
 
@@ -644,7 +644,7 @@ void ImageGlom::open_with(const Glib::RefPtr<Gio::AppInfo>& app_info)
 static void set_file_filter_images(Gtk::FileChooser& file_chooser)
 {
   //Get image formats only:
-  Glib::RefPtr<Gtk::FileFilter> filter = Gtk::FileFilter::create();
+  auto filter = Gtk::FileFilter::create();
   filter->set_name(_("Images"));
   filter->add_pixbuf_formats();
   file_chooser.add_filter(filter);
@@ -853,7 +853,7 @@ void ImageGlom::on_menupopup_activate_copy()
   else
     m_pixbuf_clipboard.reset();
 
-  Glib::RefPtr<Gtk::Clipboard> refClipboard = Gtk::Clipboard::get();
+  auto refClipboard = Gtk::Clipboard::get();
 
   //Targets:
   const auto mime_type = get_mime_type();
@@ -892,7 +892,7 @@ void ImageGlom::on_menupopup_activate_paste()
     return;
 
   //Tell the clipboard to call our method when it is ready:
-  Glib::RefPtr<Gtk::Clipboard> refClipboard = Gtk::Clipboard::get();
+  auto refClipboard = Gtk::Clipboard::get();
 
   if(refClipboard)
     refClipboard->request_image( sigc::mem_fun(*this, &ImageGlom::on_clipboard_received_image) );
@@ -940,7 +940,7 @@ void ImageGlom::setup_menu_usermode()
   //Create the UI for the menu whose items will activate the actions,
   //when this UI (a GtkMenu) is added and shown:
 
-  Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+  auto menu = Gio::Menu::create();
   menu->append(_("_Open File"), "context.open-file");
   menu->append(_("Open File With"), "context.open-file-with");
   menu->append(_("Select File"), "context.select-file");

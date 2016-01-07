@@ -466,7 +466,7 @@ Gnome::Gda::SqlExpr Utils::build_simple_where_expression(const Glib::ustring& ta
     return Gnome::Gda::SqlExpr();
   }
   
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_target(table_name);  //This might not be necessary.
   const Gnome::Gda::SqlBuilder::Id id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
     builder->add_field_id(key_field->get_name(), table_name),
@@ -478,7 +478,7 @@ Gnome::Gda::SqlExpr Utils::build_simple_where_expression(const Glib::ustring& ta
 
 Gnome::Gda::SqlExpr Utils::build_combined_where_expression(const Gnome::Gda::SqlExpr& a, const Gnome::Gda::SqlExpr& b, Gnome::Gda::SqlOperatorType op)
 {
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+  auto builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
 
   const Gnome::Gda::SqlBuilder::Id id = builder->add_cond(op,
@@ -568,7 +568,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
   }
 
   //TODO: Support related relationships (in the UI too):
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Utils::build_sql_select_with_key(
+  auto builder = Utils::build_sql_select_with_key(
     to_table,
     fields,
     to_field,
@@ -595,7 +595,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
   const std::string sql_query =
     Utils::sqlbuilder_get_full_query(builder);
   //std::cout << "debug: sql_query=" << sql_query << std::endl;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->statement_execute_select(sql_query);
+  auto datamodel = connection->get_gda_connection()->statement_execute_select(sql_query);
 
   if(datamodel)
   {
@@ -980,7 +980,7 @@ bool Utils::file_exists(const Glib::ustring& uri)
 
   //Check whether file exists already:
   // Try to examine the input file.
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  auto file = Gio::File::create_for_uri(uri);
   return file_exists(file);
 }
 
@@ -1016,7 +1016,7 @@ static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
     return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+  auto gda_connection = sharedconnection->get_gda_connection();
 
   return gda_connection;
 }
@@ -1024,7 +1024,7 @@ static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
 std::string Utils::sqlbuilder_get_full_query(
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
 {
-  Glib::RefPtr<Gnome::Gda::Connection> connection = get_connection();
+  auto connection = get_connection();
   if(!connection)
   {
     //TODO: Just use the correct provider, without an actual connection?
@@ -1035,7 +1035,7 @@ std::string Utils::sqlbuilder_get_full_query(
 
   try
   {
-    Glib::RefPtr<Gnome::Gda::Statement> stmt = builder->get_statement();
+    auto stmt = builder->get_statement();
     if(!stmt)
     {
       std::cerr << G_STRFUNC << ": builder->get_statement() failed." << std::endl;
@@ -1090,7 +1090,7 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document,
   if(Conversions::value_is_empty(quick_search))
     return Gnome::Gda::SqlExpr();
   
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+  auto builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_target(table_name);
 
@@ -1105,7 +1105,7 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document,
   }
 
   //We need the connection to generate the correct SQL syntax:
-  Glib::RefPtr<Gnome::Gda::Connection> connection = get_connection();
+  auto connection = get_connection();
   if(!connection)
   {
     std::cerr << G_STRFUNC << ": connection was null." << std::endl;
@@ -1208,12 +1208,12 @@ bool Utils::delete_directory(const Glib::RefPtr<Gio::File>& directory)
 
     //(Recursively) Delete any child files and directories,
     //so we can delete this directory.
-    Glib::RefPtr<Gio::FileEnumerator> enumerator = directory->enumerate_children();
+    auto enumerator = directory->enumerate_children();
 
-    Glib::RefPtr<Gio::FileInfo> info = enumerator->next_file();
+    auto info = enumerator->next_file();
     while(info)
     {
-      Glib::RefPtr<Gio::File> child = directory->get_child(info->get_name());
+      auto child = directory->get_child(info->get_name());
       bool removed_child = false;
       if(child->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
         removed_child = delete_directory(child);
@@ -1241,13 +1241,13 @@ bool Utils::delete_directory(const Glib::RefPtr<Gio::File>& directory)
 
 bool Utils::delete_directory(const std::string& uri)
 {
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  auto file = Gio::File::create_for_uri(uri);
   return delete_directory(file);
 }
 
 bool Utils::delete_file(const std::string& uri)
 {
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  auto file = Gio::File::create_for_uri(uri);
   if(file->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
   {
     std::cerr << G_STRFUNC << ": The file is a directory." << std::endl;
@@ -1272,10 +1272,10 @@ bool Utils::delete_file(const std::string& uri)
  */
 Glib::ustring Utils::get_directory_child_with_suffix(const Glib::ustring& uri_directory, const std::string& suffix, bool recursive)
 {
-  Glib::RefPtr<Gio::File> directory = Gio::File::create_for_uri(uri_directory);
-  Glib::RefPtr<Gio::FileEnumerator> enumerator = directory->enumerate_children();
+  auto directory = Gio::File::create_for_uri(uri_directory);
+  auto enumerator = directory->enumerate_children();
 
-  Glib::RefPtr<Gio::FileInfo> info = enumerator->next_file();
+  auto info = enumerator->next_file();
   while(info)
   {
     Glib::RefPtr<const Gio::File> child = directory->get_child(info->get_name());
@@ -1307,7 +1307,7 @@ Glib::ustring Utils::get_file_uri_without_extension(const Glib::ustring& uri)
   if(uri.empty())
     return uri;
 
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  auto file = Gio::File::create_for_uri(uri);
   if(!file)
     return uri; //Actually an error.
 
@@ -1321,8 +1321,8 @@ Glib::ustring Utils::get_file_uri_without_extension(const Glib::ustring& uri)
     const Glib::ustring filename_part_without_ext = filename_part.substr(0, pos_dot);
 
     //Use the Gio::File API to manipulate the URI:
-    Glib::RefPtr<Gio::File> parent = file->get_parent();
-    Glib::RefPtr<Gio::File> file_without_extension = parent->get_child(filename_part_without_ext);
+    auto parent = file->get_parent();
+    auto file_without_extension = parent->get_child(filename_part_without_ext);
 
     return file_without_extension->get_uri();
   }
@@ -1333,7 +1333,7 @@ std::string Utils::get_file_path_without_extension(const std::string& filepath)
   if(filepath.empty())
     return filepath;
 
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(filepath);
+  auto file = Gio::File::create_for_path(filepath);
   if(!file)
     return filepath; //Actually an error.
 
@@ -1347,8 +1347,8 @@ std::string Utils::get_file_path_without_extension(const std::string& filepath)
     const Glib::ustring filename_part_without_ext = filename_part.substr(0, pos_dot);
 
     //Use the Gio::File API to manipulate the URI:
-    Glib::RefPtr<Gio::File> parent = file->get_parent();
-    Glib::RefPtr<Gio::File> file_without_extension = parent->get_child(filename_part_without_ext);
+    auto parent = file->get_parent();
+    auto file_without_extension = parent->get_child(filename_part_without_ext);
 
     return file_without_extension->get_path();
   }

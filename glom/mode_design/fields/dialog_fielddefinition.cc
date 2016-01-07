@@ -216,11 +216,11 @@ std::shared_ptr<Field> Dialog_FieldDefinition::get_field() const
   auto field = glom_sharedptr_clone(m_Field); //Start with the old details, to preserve anything that is not in our UI.
   // const_cast is necessary and save here for the window (jhs)
   auto sharedcnc = connect_to_server(const_cast<Dialog_FieldDefinition*>(this));
-  Glib::RefPtr<Gnome::Gda::Connection> cnc = sharedcnc->get_gda_connection();
+  auto cnc = sharedcnc->get_gda_connection();
 
   //Get the field info from the widgets:
 
-  Glib::RefPtr<Gnome::Gda::Column> fieldInfo = field->get_field_info(); //Preserve previous information.
+  auto fieldInfo = field->get_field_info(); //Preserve previous information.
 
   fieldInfo->set_name(m_pEntry_Name->get_text());
 
@@ -251,7 +251,7 @@ std::shared_ptr<Field> Dialog_FieldDefinition::get_field() const
   if(m_pRadio_Calculate)
     field->set_calculation(m_pTextView_Calculation->get_buffer()->get_text());
 
-  Glib::RefPtr<Gnome::Gda::Column> field_info_copy = fieldInfo;
+  auto field_info_copy = fieldInfo;
 
   field->set_field_info(fieldInfo);
 

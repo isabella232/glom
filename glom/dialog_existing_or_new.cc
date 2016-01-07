@@ -203,7 +203,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_notebook->signal_switch_page().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_switch_page));
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */
 
-  Glib::RefPtr<Gtk::TreeView::Selection> existing_view_selection = m_existing_view->get_selection();
+  auto existing_view_selection = m_existing_view->get_selection();
   existing_view_selection->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_existing_selection_changed));
   existing_view_selection->set_select_function( sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_existing_select_func) );
 
@@ -231,7 +231,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 
   m_iter_new_template_dummy = create_dummy_item_new(m_iter_new_template, "No templates available.");
 
-  Glib::RefPtr<Gtk::TreeView::Selection> new_view_selection = m_new_view->get_selection();
+  auto new_view_selection = m_new_view->get_selection();
   new_view_selection->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_selection_changed));
   new_view_selection->set_select_function( sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_select_func) );
 #else /* GLOM_ENABLE_CLIENT_ONLY */
@@ -639,7 +639,7 @@ Glib::ustring Dialog_ExistingOrNew::get_title_from_example(const std::string& re
 {
   try
   {
-    Glib::RefPtr<Gio::InputStream> stream =
+    auto stream =
       Gio::Resource::open_stream_global(resource_name);
     
     //TODO: Really do this asynchronously?
@@ -786,7 +786,7 @@ void Dialog_ExistingOrNew::on_select_clicked()
     dialog.add_button(_("_Open"), Gtk::RESPONSE_OK);
     dialog.set_default_response(Gtk::RESPONSE_OK);
 
-    Glib::RefPtr<Gtk::FileFilter> filter = Gtk::FileFilter::create();
+    auto filter = Gtk::FileFilter::create();
     filter->add_mime_type("application/x-glom");
     filter->set_name("Glom files");
     dialog.add_filter(filter);

@@ -49,7 +49,7 @@ void LayoutWidgetUtils::setup_util_menu(Gtk::Widget* widget)
   
   widget->insert_action_group("utility", m_refActionGroup);
 
-  Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+  auto menu = Gio::Menu::create();
   menu->append(_("Properties"), "context.properties");
   menu->append(_("_Delete"), "context.delete");
 

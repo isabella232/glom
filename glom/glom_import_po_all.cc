@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
   }
 
   //Get a URI (file://something) from the filepath:
-  Glib::RefPtr<Gio::File> file_input = Gio::File::create_for_commandline_arg(input_uri);
+  auto file_input = Gio::File::create_for_commandline_arg(input_uri);
 
   //Make sure it is really a URI:
   input_uri = file_input->get_uri();
@@ -165,7 +165,7 @@ int main(int argc, char* argv[])
   }
 
   //Get a URI (file://something) from the filepath:
-  Glib::RefPtr<Gio::File> file_output = Gio::File::create_for_commandline_arg(group.m_arg_filepath_po_input);
+  auto file_output = Gio::File::create_for_commandline_arg(group.m_arg_filepath_po_input);
 
   file_type = file_output->query_file_type();
   if(file_type != Gio::FILE_TYPE_DIRECTORY)
@@ -190,11 +190,11 @@ int main(int argc, char* argv[])
   }
 
   //Import all .po files from the directory:
-  Glib::RefPtr<Gio::FileEnumerator> enumerator = file_output->enumerate_children();
+  auto enumerator = file_output->enumerate_children();
   Glib::RefPtr<Gio::FileInfo> info;
   while( (info = enumerator->next_file()) )
   {
-    Glib::RefPtr<Gio::File> child = file_output->get_child(info->get_name());
+    auto child = file_output->get_child(info->get_name());
     if(child->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
       continue;
 

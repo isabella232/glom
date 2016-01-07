@@ -59,7 +59,7 @@ static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
     return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+  auto gda_connection = sharedconnection->get_gda_connection();
 
   return gda_connection;
 }
@@ -71,7 +71,7 @@ static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
   */
 static bool update_gda_metastore_for_table(const Glib::ustring& table_name)
 {
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  auto gda_connection = get_connection();
   if(!gda_connection)
   {
     std::cerr << G_STRFUNC << ": No gda_connection." << std::endl;
@@ -363,7 +363,7 @@ SystemPrefs get_database_preferences(const Document* document)
 
   const auto optional_org_logo = get_field_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME, GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO);
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+  auto builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_target(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
 
@@ -388,7 +388,7 @@ SystemPrefs get_database_preferences(const Document* document)
     try
     {
       //const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
+      auto datamodel = query_execute_select(builder);
       if(datamodel && (datamodel->get_n_rows() != 0))
       {
         const std::locale locale(std::locale::classic()); //Ignored for text types, but it's best to avoid ever using the current arbitrary locale here.
@@ -442,7 +442,7 @@ void set_database_preferences(Document* document, const SystemPrefs& prefs)
    //The logo field was introduced in a later version of Glom.
   //If the user is not in developer mode then the new field has not yet been added:
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
   builder->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME, prefs.m_name);
   builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME, prefs.m_org_name);
@@ -484,7 +484,7 @@ bool add_standard_tables(const Document* document)
       if(test)
       {
         //Add the single record:
-        Glib::RefPtr<Gnome::Gda::SqlBuilder> builderAdd = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
+        auto builderAdd = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
         builderAdd->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
         builderAdd->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, 1);
         if(!query_execute(builderAdd))
@@ -494,7 +494,7 @@ bool add_standard_tables(const Document* document)
         const auto system_name = document->get_database_title_original();
         if(!system_name.empty())
         {
-          Glib::RefPtr<Gnome::Gda::SqlBuilder> builderUpdate = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+          auto builderUpdate = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
           builderUpdate->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
           builderUpdate->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME, system_name);
           builderUpdate->set_where(builderUpdate->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
@@ -578,7 +578,7 @@ bool add_standard_groups(Document* document)
   //Add the glom_developer group if it does not exist:
   const Glib::ustring devgroup = GLOM_STANDARD_GROUP_NAME_DEVELOPER;
 
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  auto gda_connection = get_connection();
   if(!gda_connection)
   {
     std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
@@ -649,7 +649,7 @@ bool add_standard_groups(Document* document)
 
 bool add_groups_from_document(const Document* document)
 {
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  auto gda_connection = get_connection();
   if(!gda_connection)
   {
     std::cerr << G_STRFUNC << ": add_standard_groups(): No connection yet." << std::endl;
@@ -685,7 +685,7 @@ bool add_groups_from_document(const Document* document)
 
 bool set_table_privileges_groups_from_document(const Document* document)
 {
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  auto gda_connection = get_connection();
   if(!gda_connection)
   {
     std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
@@ -828,14 +828,14 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
   //TODO: BusyCursor busy_cursor(get_appwindow());
 
   {
-    Glib::RefPtr<Gnome::Gda::Connection> connection = get_connection();
+    auto connection = get_connection();
     if(!connection)
     {
       std::cerr << G_STRFUNC << ": connection is null" << std::endl;
       return result;
     }
 
-    Glib::RefPtr<Gnome::Gda::Holder> holder_table_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "name");
+    auto holder_table_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "name");
     gchar* quoted_table_name_c = gda_meta_store_sql_identifier_quote(table_name.c_str(), connection->gobj());
     g_assert(quoted_table_name_c);
     Glib::ustring quoted_table_name(quoted_table_name_c);
@@ -880,8 +880,8 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
     {
       //We also use the GdaMetaTable to discover primary keys.
       //Both these libgda APIs are awful, and it's awful that we must use two APIs. murrayc.
-      Glib::RefPtr<Gnome::Gda::MetaStore> store = connection->get_meta_store();
-      Glib::RefPtr<Gnome::Gda::MetaStruct> metastruct =
+      auto store = connection->get_meta_store();
+      auto metastruct =
         Gnome::Gda::MetaStruct::create(store, Gnome::Gda::META_STRUCT_FEATURE_NONE);
       GdaMetaDbObject* meta_dbobject = nullptr;
       try
@@ -903,7 +903,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
       const auto rows_count = data_model_fields->get_n_rows();
       while(row < rows_count)
       {
-        Glib::RefPtr<Gnome::Gda::Column> field_info = Gnome::Gda::Column::create();
+        auto field_info = Gnome::Gda::Column::create();
 
         //Get the field name:
         const auto value_name = data_model_fields->get_value_at(Utils::to_utype(GlomGdaDataModelFieldColumns::NAME), row);
@@ -998,10 +998,10 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
 
     if(iterFindDatabase != fieldsDatabase.end() ) //Ignore fields that don't exist in the database anymore.
     {
-      Glib::RefPtr<Gnome::Gda::Column> field_info_document = field->get_field_info();
+      auto field_info_document = field->get_field_info();
 
       //Update the Field information that _might_ have changed in the database.
-      Glib::RefPtr<Gnome::Gda::Column> field_info = (*iterFindDatabase)->get_field_info();
+      auto field_info = (*iterFindDatabase)->get_field_info();
 
       //libgda does not tell us whether the field is auto_incremented, so we need to get that from the document.
       field_info->set_auto_increment( field_info_document->get_auto_increment() );
@@ -1058,7 +1058,7 @@ type_vec_strings get_table_names_from_database(bool ignore_system_tables)
   type_vec_strings result;
 
   {
-    Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+    auto gda_connection = get_connection();
 
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables;
     try
@@ -1148,7 +1148,7 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
   if(table_name.empty())
     return false;
 
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  auto gda_connection = get_connection();
   if(!gda_connection)
   {
     std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
@@ -1164,7 +1164,7 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
   field_primary_key->set_primary_key();
   field_primary_key->set_auto_increment();
 
-  Glib::RefPtr<Gnome::Gda::Column> field_info = field_primary_key->get_field_info();
+  auto field_info = field_primary_key->get_field_info();
   field_info->set_allow_null(false);
   field_primary_key->set_field_info(field_info);
 
@@ -1236,7 +1236,7 @@ bool create_table(Document::HostingMode hosting_mode, const std::shared_ptr<cons
 
     //The field has no gda type, so we set that:
     //This usually comes from the database, but that's a bit strange.
-    Glib::RefPtr<Gnome::Gda::Column> info = field->get_field_info();
+    auto info = field->get_field_info();
     info->set_g_type( Field::get_gda_type_for_glom_type(field->get_glom_type()) );
     field->set_field_info(info); //TODO_Performance
 
@@ -1404,7 +1404,7 @@ Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name,
   ++num_result;
   const auto next_value = Conversions::parse_value(num_result);
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
   builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   builder->add_field_value_as_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE, next_value);
   builder_set_where_autoincrement(builder, table_name, field_name);
@@ -1440,7 +1440,7 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
     std::cerr << G_STRFUNC << ": The current user may not edit the autoincrements table. Any user who has create rights for a table should have edit rights to the autoincrements table." << std::endl;
   }
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+  auto builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_field("next_value", GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   builder->select_add_target(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
@@ -1503,13 +1503,13 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
   auto_increment_insert_first_if_necessary(table_name, field_name);
 
   //Get the max key value in the database:
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   std::vector<guint> args;
   args.push_back(builder->add_field_id(field_name, table_name));
   builder->add_field_value_id(builder->add_function("MAX", args));
   builder->select_add_target(table_name);
 
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
+  auto datamodel = query_execute_select(builder);
   if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
   {
     //Increment it:
@@ -1556,7 +1556,7 @@ void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring&
     return;
   }
   
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+  auto builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_DELETE);
   builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   builder_set_where_autoincrement(builder, table_name, field_name);
@@ -1576,7 +1576,7 @@ bool insert_example_data(const Document* document, const Glib::ustring& table_na
     return true;
   }
 
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  auto gda_connection = get_connection();
   if(!gda_connection)
   {
     std::cerr << G_STRFUNC << ": connection is null" << std::endl;
@@ -1608,7 +1608,7 @@ bool insert_example_data(const Document* document, const Glib::ustring& table_na
 
     const auto hosting_mode = document->get_hosting_mode();
 
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
+    auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
     builder->set_table(table_name);
     for(unsigned int i = 0; i < row_data.size(); ++i) //TODO_Performance: Avoid calling size() so much.
     {
@@ -1667,7 +1667,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
 
   //TODO: BusyCursor busy_cursor(get_app_window());
 
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  auto gda_connection = get_connection();
   if(!gda_connection)
   {
     std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
@@ -1730,14 +1730,14 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
 
 bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnome::Gda::Set>& params)
 {
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  auto gda_connection = get_connection();
   if(!gda_connection)
   {
     std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
     return false;
   }
 
-  Glib::RefPtr<Gnome::Gda::SqlParser> parser = gda_connection->create_parser();
+  auto parser = gda_connection->create_parser();
   Glib::RefPtr<Gnome::Gda::Statement> stmt;
   try
   {
@@ -1794,7 +1794,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
 
 bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
 {
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  auto gda_connection = get_connection();
   if(!gda_connection)
   {
     std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
@@ -1973,7 +1973,7 @@ int count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql
 
   int result = 0;
 
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
+  auto datamodel = DbUtils::query_execute_select(builder);
   if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
   {
     const auto value = datamodel->get_value_at(0, 0);
@@ -2020,7 +2020,7 @@ Glib::ustring escape_sql_id(const Glib::ustring& id)
     return id;
   }
 
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  auto gda_connection = get_connection();
   if(!gda_connection)
   {
     std::cerr << G_STRFUNC << ": No gda_connection." << std::endl;
@@ -2259,7 +2259,7 @@ Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring
     const auto value_to_key_field = Conversions::convert_value(key_value, to_key_field->get_glom_type());
 
     const auto target_table = relationship->get_to_table();
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    auto builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
     builder->select_add_field(source_field->get_name(), target_table );
     builder->select_add_target(target_table );
@@ -2268,7 +2268,7 @@ Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring
         builder->add_field_id(to_key_field->get_name(), target_table),
         builder->add_expr(value_to_key_field)));
 
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
+    auto data_model = query_execute_select(builder);
     if(data_model && data_model->get_n_rows())
     {
       //There should be only 1 row. Well, there could be more but we will ignore them.
@@ -2311,7 +2311,7 @@ type_map_fields get_record_field_values(const Document* document, const Glib::us
   {
     //sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_key(table_name, fieldsToGet, primary_key, primary_key_value);
+    auto query = Utils::build_sql_select_with_key(table_name, fieldsToGet, primary_key, primary_key_value);
 
     Glib::RefPtr<const Gnome::Gda::DataModel> data_model;
     try

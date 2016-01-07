@@ -354,7 +354,7 @@ create_window()
 int
 main(int argc, char *argv[])
 {
-  Glib::RefPtr<Gtk::Application> app = 
+  auto app = 
     Gtk::Application::create(argc, argv, "org.glom.test_spreadtablednd");
 
   auto window = create_window();

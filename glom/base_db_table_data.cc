@@ -82,13 +82,13 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   }
 
   //Get all entered field name/value pairs:
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
+  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
   builder->set_table(m_table_name);
 
   //Avoid specifying the same field twice:
   typedef std::map<Glib::ustring, bool> type_map_added;
   type_map_added map_added;
-  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+  auto params = Gnome::Gda::Set::create();
 
   for(const auto& layout_item : fieldsToAdd)
   {
@@ -283,7 +283,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
         //Generate the new key value;
       }
 
-      Glib::RefPtr<Gnome::Gda::SqlBuilder> builder_insert = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
+      auto builder_insert = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
       builder_insert->set_table(relationship->get_to_table());
       builder_insert->add_field_value(primary_key_field->get_name(), primary_key_value);
       if(!DbUtils::query_execute(builder_insert))
@@ -328,7 +328,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
           else
           {
             const auto target_table = relationship->get_from_table();
-            Glib::RefPtr<Gnome::Gda::SqlBuilder> builder_update =
+            auto builder_update =
               Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
             builder_update->set_table(target_table);
             builder_update->add_field_value_as_value(relationship->get_from_field(), primary_key_value);
@@ -385,7 +385,7 @@ bool Base_DB_Table_Data::record_delete(const Gnome::Gda::Value& primary_key_valu
   auto field_primary_key = get_field_primary_key();
   if(field_primary_key && !Conversions::value_is_empty(primary_key_value))
   {
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    auto builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_DELETE);
     builder->set_table(m_table_name);
     builder->set_where(
@@ -422,7 +422,7 @@ bool Base_DB_Table_Data::get_related_record_exists(const std::shared_ptr<const R
   const auto related_table = relationship->get_to_table();
 
   //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria?
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+  auto builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_field(to_field, related_table);
   builder->select_add_target(related_table);
@@ -431,7 +431,7 @@ bool Base_DB_Table_Data::get_related_record_exists(const std::shared_ptr<const R
       builder->add_field_id(to_field, related_table),
       builder->add_expr(key_value)));
 
-  Glib::RefPtr<Gnome::Gda::DataModel> records = DbUtils::query_execute_select(builder);
+  auto records = DbUtils::query_execute_select(builder);
   if(!records)
     handle_error();
   else
@@ -492,7 +492,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
 
   if(!fieldsToGet.empty())
   {
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
+    auto query = Utils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
     //std::cout << "debug: " << G_STRFUNC << ": query=" << query << std::endl;
 
     Glib::RefPtr<const Gnome::Gda::DataModel> result = DbUtils::query_execute_select(query);

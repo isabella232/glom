@@ -36,8 +36,8 @@ namespace {
 
 static Glib::RefPtr<Gdk::Cursor> create_drag_cursor(GdkEventAny* event, Gdk::CursorType cursor_type)
 {
-  Glib::RefPtr<Gdk::Window> window = Glib::wrap(event->window, true);
-  Glib::RefPtr<Gdk::Display> display = window->get_display();
+  auto window = Glib::wrap(event->window, true);
+  auto display = window->get_display();
   return Gdk::Cursor::create(display, cursor_type);
 }
 
@@ -82,7 +82,7 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
       if(!m_allow_vertical_movement && !m_allow_horizontal_movement)
         return false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
 
-      Glib::RefPtr<Goocanvas::Item> item = target;
+      auto item = target;
     
       m_drag_start_cursor_x = event->x;
       m_drag_start_cursor_y = event->y;
@@ -127,7 +127,7 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
   if(!m_allow_vertical_movement && !m_allow_horizontal_movement)
     return false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
 
-  Glib::RefPtr<Goocanvas::Item> item = target;
+  auto item = target;
   
   if(item && m_dragging && (event->state & Gdk::BUTTON1_MASK))
   {
@@ -283,7 +283,7 @@ void CanvasItemMovable::set_cursor(const Glib::RefPtr<Gdk::Cursor>& cursor)
    if(!canvas)
      return;
      
-   Glib::RefPtr<Gdk::Window> window = canvas->get_window();
+   auto window = canvas->get_window();
    if(window)
      window->set_cursor(cursor);
 }
@@ -293,7 +293,7 @@ void CanvasItemMovable::unset_cursor()
    auto canvas = get_parent_canvas_widget();
    if(canvas)
    {
-     Glib::RefPtr<Gdk::Window> window = canvas->get_window();
+     auto window = canvas->get_window();
      if(window)
        window->set_cursor();
    }
@@ -332,37 +332,37 @@ Glib::RefPtr<CanvasItemMovable> CanvasItemMovable::cast_to_movable(const Glib::R
 
   //We can't cast directly to CanvasItemMovable because each class derives from it separately,
   //instead of it being a base class of Goocanvas::Item (the common base class):
-  Glib::RefPtr<CanvasRectMovable> rect = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(item);
+  auto rect = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(item);
   if(rect)
     movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(rect);
   else
   {
-    Glib::RefPtr<CanvasLineMovable> line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(item);
+    auto line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(item);
     if(line)
       movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(line);
     else
     {
-      Glib::RefPtr<CanvasTextMovable> text = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(item);
+      auto text = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(item);
       if(text)
         movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(text);
       else
       {
-        Glib::RefPtr<CanvasImageMovable> image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(item);
+        auto image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(item);
         if(image)
           movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(image);
         else
         {
-          Glib::RefPtr<CanvasGroupMovable> group = Glib::RefPtr<CanvasGroupMovable>::cast_dynamic(item);
+          auto group = Glib::RefPtr<CanvasGroupMovable>::cast_dynamic(item);
           if(group)
             movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(group);
           else
           {
-            Glib::RefPtr<CanvasTableMovable> table = Glib::RefPtr<CanvasTableMovable>::cast_dynamic(item);
+            auto table = Glib::RefPtr<CanvasTableMovable>::cast_dynamic(item);
             if(table)
               movable = Glib::RefPtr<CanvasTableMovable>::cast_dynamic(table);
             else
             {
-              Glib::RefPtr<CanvasGroupResizable> group_resizable = Glib::RefPtr<CanvasGroupResizable>::cast_dynamic(item);
+              auto group_resizable = Glib::RefPtr<CanvasGroupResizable>::cast_dynamic(item);
               if(group_resizable)
                 movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(group_resizable);
             }
@@ -381,7 +381,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasItemMovable::cast_to_movable(const Glib::R
 //static:
 Glib::RefPtr<const CanvasItemMovable> CanvasItemMovable::cast_const_to_movable(const Glib::RefPtr<const Goocanvas::Item>& item)
 {
-  Glib::RefPtr<Goocanvas::Item> unconst = Glib::RefPtr<Goocanvas::Item>::cast_const(item);
+  auto unconst = Glib::RefPtr<Goocanvas::Item>::cast_const(item);
   return cast_to_movable(unconst);
 }
 
@@ -394,37 +394,37 @@ Glib::RefPtr<Goocanvas::Item> CanvasItemMovable::cast_to_item(const Glib::RefPtr
     return result;
 
   //We can't cast directly to Item because each class derives from it separately.
-  Glib::RefPtr<CanvasRectMovable> rect = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(item);
+  auto rect = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(item);
   if(rect)
     result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(rect);
   else
   {
-    Glib::RefPtr<CanvasLineMovable> line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(item);
+    auto line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(item);
     if(line)
       result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(line);
     else
     {
-      Glib::RefPtr<CanvasTextMovable> text = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(item);
+      auto text = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(item);
       if(text)
         result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(text);
       else
       {
-        Glib::RefPtr<CanvasImageMovable> image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(item);
+        auto image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(item);
         if(image)
           result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(image);
         else
         {
-          Glib::RefPtr<CanvasGroupMovable> group = Glib::RefPtr<CanvasGroupMovable>::cast_dynamic(item);
+          auto group = Glib::RefPtr<CanvasGroupMovable>::cast_dynamic(item);
           if(group)
             result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(group);
           else
           {
-            Glib::RefPtr<CanvasTableMovable> table = Glib::RefPtr<CanvasTableMovable>::cast_dynamic(item);
+            auto table = Glib::RefPtr<CanvasTableMovable>::cast_dynamic(item);
             if(table)
               result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(table);
             else
             {
-              Glib::RefPtr<CanvasGroupResizable> group_resizable = Glib::RefPtr<CanvasGroupResizable>::cast_dynamic(item);
+              auto group_resizable = Glib::RefPtr<CanvasGroupResizable>::cast_dynamic(item);
               if(group_resizable)
                 result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(group_resizable);
             }

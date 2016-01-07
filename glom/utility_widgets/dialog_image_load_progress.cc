@@ -99,7 +99,7 @@ void DialogImageLoadProgress::on_query_info(const Glib::RefPtr<Gio::AsyncResult>
 {
   try
   {
-    Glib::RefPtr<Gio::FileInfo> info = m_stream->query_info_finish(result);
+    auto info = m_stream->query_info_finish(result);
     m_data->binary_length = info->get_size();
 
     // We need to use the glib allocator here:

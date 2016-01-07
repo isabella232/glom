@@ -58,13 +58,13 @@ Dialog_ScriptLibrary::Dialog_ScriptLibrary(BaseObjectType* cobject, const Glib::
   //Dialog_Properties::set_modified(false);
 
   //Set the SourceView to do syntax highlighting for Python:
-  Glib::RefPtr<Gsv::LanguageManager> languages_manager = Gsv::LanguageManager::get_default();
+  auto languages_manager = Gsv::LanguageManager::get_default();
 
-  Glib::RefPtr<Gsv::Language> language = languages_manager->get_language("python"); //This is the GtkSourceView language ID.
+  auto language = languages_manager->get_language("python"); //This is the GtkSourceView language ID.
   if(language)
   {
      //Create a new buffer and set it, instead of getting the default buffer, in case libglade has tried to set it, using the wrong buffer type:
-     Glib::RefPtr<Gsv::Buffer> buffer = Gsv::Buffer::create(language);
+     auto buffer = Gsv::Buffer::create(language);
      buffer->set_highlight_syntax();
      m_text_view->set_buffer(buffer);
   }

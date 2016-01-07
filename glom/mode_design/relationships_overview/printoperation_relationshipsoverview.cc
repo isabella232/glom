@@ -56,7 +56,7 @@ void PrintOperationRelationshipsOverview::on_draw_page(
   double canvas_right = 0;
   double canvas_bottom = 0;
 
-  Glib::RefPtr<Goocanvas::Item> root_item = m_canvas->get_root_item();
+  auto root_item = m_canvas->get_root_item();
   if(!root_item)
     return;
 

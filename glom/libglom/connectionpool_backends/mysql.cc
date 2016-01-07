@@ -408,7 +408,7 @@ bool MySQL::attempt_create_database(const SlotProgress& slot_progress, const Gli
   if(slot_progress)
     slot_progress();
 
-  Glib::RefPtr<Gnome::Gda::ServerOperation> op = 
+  auto op = 
     Gnome::Gda::ServerOperation::prepare_create_database("MySQL", database_name);
 
   if(slot_progress)

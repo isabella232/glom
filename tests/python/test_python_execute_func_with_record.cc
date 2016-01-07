@@ -82,7 +82,7 @@ int main()
   auto connection = connection_pool->connect();
   g_assert(connection);
 
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = connection->get_gda_connection();
+  auto gda_connection = connection->get_gda_connection();
   g_assert(connection->get_gda_connection());
 
 

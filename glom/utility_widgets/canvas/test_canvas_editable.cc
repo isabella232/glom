@@ -48,29 +48,29 @@ public:
 /*
     //Doesn't work until we fix the goocanvas _new() methods: Glib::RefPtr<Goocanvas::Rect> rect = Glib::wrap( goo_canvas_rect_new()
     //Glib::RefPtr<Goocanvas::Rect> rect    = Goocanvas::Rect::create(10, 10, 110, 110);
-    Glib::RefPtr<Glom::CanvasRectMovable> rect = Glom::CanvasRectMovable::create(10, 10, 110, 110);
+    auto rect = Glom::CanvasRectMovable::create(10, 10, 110, 110);
     rect->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke:
     rect->property_line_width() = 2.0f;
     rect->property_stroke_color() = "blue";
     add_item(rect, true);
 
-    Glib::RefPtr<Glom::CanvasTextMovable> text = Glom::CanvasTextMovable::create("yadda2 yadda2");
+    auto text = Glom::CanvasTextMovable::create("yadda2 yadda2");
     text->set_xy(10, 10);
     text->set_width_height(40, 40);
     add_item(text, true);
 
-    Glib::RefPtr<Glom::CanvasGroupResizable> resizable = Glom::CanvasGroupResizable::create();
-    Glib::RefPtr<Glom::CanvasTextMovable> resizable_inner = Glom::CanvasTextMovable::create("yadda3 yadda3");
+    auto resizable = Glom::CanvasGroupResizable::create();
+    auto resizable_inner = Glom::CanvasTextMovable::create("yadda3 yadda3");
     resizable->set_child(resizable_inner);
     resizable->set_xy(50, 50);
     resizable->set_width_height(40, 40);
     add_item(resizable, false); //This doesn't seem to work if we use true (a resizable inside a resizable)
 
     // Test replacement of the child (should remove the old child):
-    Glib::RefPtr<Glom::CanvasTextMovable> resizable_inner2 = Glom::CanvasTextMovable::create("yadda3.1 yadda3.1");
+    auto resizable_inner2 = Glom::CanvasTextMovable::create("yadda3.1 yadda3.1");
     resizable->set_child(resizable_inner2);
 
-    Glib::RefPtr<Glom::CanvasLineMovable> line = Glom::CanvasLineMovable::create();
+    auto line = Glom::CanvasLineMovable::create();
     double points_coordinates[] = {20.0, 20.0, 100.0, 40.0};
     Goocanvas::Points points(2, points_coordinates);
     line->property_points() = points;
@@ -81,7 +81,7 @@ public:
 
     line->signal_show_context().connect( sigc::mem_fun(*this, &MyCanvas::on_show_context_menu) );
 
-    Glib::RefPtr<Glom::CanvasLineMovable> line2 = Glom::CanvasLineMovable::create();
+    auto line2 = Glom::CanvasLineMovable::create();
     double points_coordinatess[] = {120.0, 120.0, 150.0, 150.0};
     Goocanvas::Points points2(2, points_coordinatess);
     line2->property_points() = points2;
@@ -90,8 +90,8 @@ public:
     add_item(line2, true);
 
 
-    Glib::RefPtr<Glom::CanvasGroupMovable> group = Glom::CanvasGroupMovable::create();
-    Glib::RefPtr<Glom::CanvasRectMovable> rect_inner = Glom::CanvasRectMovable::create(70, 70, 90, 90);
+    auto group = Glom::CanvasGroupMovable::create();
+    auto rect_inner = Glom::CanvasRectMovable::create(70, 70, 90, 90);
     rect_inner->property_fill_color() = "blue"; //This makes the whole area clickable, not just the outline stroke:
     rect_inner->property_line_width() = 1.0f;
     rect_inner->property_stroke_color() = "red";
@@ -100,10 +100,10 @@ public:
     add_item(group, true);
 */
 
-    Glib::RefPtr<Glom::CanvasTableMovable> table = Glom::CanvasTableMovable::create();
+    auto table = Glom::CanvasTableMovable::create();
     table->set_xy(100, 100);
     table->set_width_height(200, 200);
-    Glib::RefPtr<Glom::CanvasRectMovable> innerrect1 = Glom::CanvasRectMovable::create();
+    auto innerrect1 = Glom::CanvasRectMovable::create();
     innerrect1->property_fill_color() = "blue"; //This makes the whole area clickable, not just the outline stroke.
     innerrect1->property_line_width() = 1;
     innerrect1->property_stroke_color() = "black";
@@ -115,7 +115,7 @@ public:
                                        "x-fill", TRUE, 
                                        "x-expand", TRUE, 
                                        (void*)0);
-    Glib::RefPtr<Glom::CanvasRectMovable> innerrect2 = Glom::CanvasRectMovable::create();
+    auto innerrect2 = Glom::CanvasRectMovable::create();
     innerrect2->property_fill_color() = "green"; //This makes the whole area clickable, not just the outline stroke.
     innerrect2->property_line_width() = 1;
     innerrect2->property_stroke_color() = "black";
@@ -127,7 +127,7 @@ public:
                                        "x-fill", TRUE, 
                                        "x-expand", TRUE, 
                                        (void*)0);
-    Glib::RefPtr<Goocanvas::Text> innerrect3 = Goocanvas::Text::create();
+    auto innerrect3 = Goocanvas::Text::create();
     innerrect3->property_fill_color() = "yellow"; //This makes the whole area clickable, not just the outline stroke.
     innerrect3->property_line_width() = 1;
     innerrect3->property_stroke_color() = "black";
@@ -171,7 +171,7 @@ private:
 
     m_context_menu_action_group->add(Gtk::Action::create("ContextMenu", "Context Menu") );
 
-    Glib::RefPtr<Gtk::Action> action =  Gtk::Action::create("ContextEdit", _("_Edit"));
+    auto action =  Gtk::Action::create("ContextEdit", _("_Edit"));
     m_context_menu_action_group->add(action,
       sigc::mem_fun(*this, &MyCanvas::on_context_menu_edit) );
 
@@ -179,7 +179,7 @@ private:
     m_context_menu_action_group->add(action,
       sigc::mem_fun(*this, &MyCanvas::on_context_menu_delete) );
 
-    Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+    auto menu = Gio::Menu::create();
     menu->append(_("_Edit"), "context.edit");
     menu->append(_("_Delete"), "context.delete");
     

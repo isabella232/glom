@@ -37,7 +37,7 @@ Combo_TextGlade::Combo_TextGlade(BaseObjectType* cobject, const Glib::RefPtr<Gtk
 
 void Combo_TextGlade::set_first_active()
 {
-  Glib::RefPtr<Gtk::TreeModel> model = get_model();
+  auto model = get_model();
   if(!model)
     return;
 

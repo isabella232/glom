@@ -388,7 +388,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
           layout_item_temp->set_full_field_details(field_primary_key);
           type_vecLayoutFields layout_fields;
           layout_fields.push_back(layout_item_temp);
-          Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query_without_sort = Utils::build_sql_select_with_where_clause(found_set.m_table_name, layout_fields, found_set.m_where_clause, found_set.m_extra_join, type_sort_clause());
+          auto sql_query_without_sort = Utils::build_sql_select_with_where_clause(found_set.m_table_name, layout_fields, found_set.m_where_clause, found_set.m_extra_join, type_sort_clause());
 
           const Privileges table_privs = Privs::get_current_privs(found_set.m_table_name);
           int count = 0;
@@ -596,10 +596,10 @@ void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, 
     return;
   }
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
+  auto query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
 
   //TODO: Lock the database (prevent changes) during export.
-  Glib::RefPtr<Gnome::Gda::DataModel> result = DbUtils::query_execute_select(query);
+  auto result = DbUtils::query_execute_select(query);
 
   guint rows_count = 0;
   if(result)
@@ -646,7 +646,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
     return;
   }
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
+  auto query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
 
   //TODO: Lock the database (prevent changes) during export.
   Glib::RefPtr<const Gnome::Gda::DataModel> result = DbUtils::query_execute_select(query);
@@ -736,11 +736,11 @@ void Frame_Glom::on_menu_file_import()
     Gtk::FileChooserDialog file_chooser(*get_app_window(), _("Open CSV Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
     file_chooser.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
     file_chooser.add_button(_("_Open"), Gtk::RESPONSE_ACCEPT);
-    Glib::RefPtr<Gtk::FileFilter> filter_csv = Gtk::FileFilter::create();
+    auto filter_csv = Gtk::FileFilter::create();
     filter_csv->set_name(_("CSV files"));
     filter_csv->add_mime_type("text/csv");
     file_chooser.add_filter(filter_csv);
-    Glib::RefPtr<Gtk::FileFilter> filter_any = Gtk::FileFilter::create();
+    auto filter_any = Gtk::FileFilter::create();
     filter_any->set_name(_("All files"));
     filter_any->add_pattern("*");
     file_chooser.add_filter(filter_any);
@@ -1457,7 +1457,7 @@ void Frame_Glom::update_table_in_document_from_database()
         else //if it was found.
         {
           //Compare the information:
-          Glib::RefPtr<Gnome::Gda::Column> field_info_db = field_database->get_field_info();
+          auto field_info_db = field_database->get_field_info();
           auto field_document =  *iterFindDoc;
           if(field_document)
           {
@@ -1806,7 +1806,7 @@ void Frame_Glom::add_window_to_app(Gtk::ApplicationWindow* window)
   }
 
   //This probably lets the GtkApplication know about the window's actions, which might be useful.
-  Glib::RefPtr<Gtk::Application> app = app_window->get_application();
+  auto app = app_window->get_application();
   if(app)
     app->add_window(*window);
   else

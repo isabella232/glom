@@ -196,7 +196,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
     field->set_title( Utils::title_from_string(name) , AppWindow::get_current_locale()); //Start with a title that might be useful.
     field->set_glom_type(Field::glom_field_type::NUMERIC);
 
-    Glib::RefPtr<Gnome::Gda::Column> field_info = field->get_field_info();
+    auto field_info = field->get_field_info();
     field_info->set_g_type( Field::get_gda_type_for_glom_type(Field::glom_field_type::NUMERIC) );
     field->set_field_info(field_info);
 
@@ -475,7 +475,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::
     DbUtils::get_fields_for_table_one_field(pDoc, m_table_name, strFieldNameBeforeEdit);
   if(field_temp)
   {
-    Glib::RefPtr<Gnome::Gda::Column> fieldInfo = field_temp->get_field_info()->copy();
+    auto fieldInfo = field_temp->get_field_info()->copy();
 
     //Name:
     const auto name = m_AddDel.get_value(row, m_colName);
@@ -665,7 +665,7 @@ bool Box_DB_Table_Definition::field_has_null_values(const std::shared_ptr<const 
 {
   //Note that "= Null" doesn't work, though it doesn't error either.
   //Note also that SELECT COUNT always returns 0 if all the values are NULL, so we can't use that to be more efficient.
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+  auto builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_field(field->get_name(), m_table_name);
   builder->select_add_target(m_table_name);
@@ -674,7 +674,7 @@ bool Box_DB_Table_Definition::field_has_null_values(const std::shared_ptr<const 
       builder->add_field_id(field->get_name(), m_table_name)));
 
   long null_count = 0;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
+  auto datamodel = DbUtils::query_execute_select(builder);
   if(datamodel)
   {
     if(datamodel->get_n_rows() && datamodel->get_n_columns())
@@ -697,12 +697,12 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const std::shared_ptr<
   long count_all = 0;
 
   //Count the distinct rows:  
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder_query_distinct = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+  auto builder_query_distinct = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
   builder_query_distinct->select_set_distinct();
   builder_query_distinct->set_table(m_table_name);
   builder_query_distinct->select_add_field(field->get_name(), m_table_name);
 
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder_query_distinct);
+  auto datamodel = DbUtils::query_execute_select(builder_query_distinct);
   if(datamodel)
   {
     count_distinct = datamodel->get_n_rows();
@@ -714,7 +714,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const std::shared_ptr<
   }
 
   //Count all rows, to compare. TODO_performance: Is there a more efficient way to do this? Maybe count(*), which apparently doesn't ignore NULL rows like count(somefield) would.
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder_query_all =
+  auto builder_query_all =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder_query_all->select_add_field(field->get_name(), m_table_name);
   builder_query_all->select_add_target(m_table_name);

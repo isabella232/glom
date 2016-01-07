@@ -162,7 +162,7 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
     m_treeview_available_parts->set_headers_visible(false); //There's only one column, so this is not useful.
 
     //Respond to changes of selection:
-    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_available_parts->get_selection();
+    auto refSelection = m_treeview_available_parts->get_selection();
     if(refSelection)
     {
       refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_treeview_available_parts_selection_changed) );
@@ -226,7 +226,7 @@ void Dialog_Layout_Report::setup_model(Gtk::TreeView& treeview, Glib::RefPtr<typ
   //  sigc::bind( sigc::mem_fun(*this, &Dialog_Layout_Report::on_treeview_cell_edited_numeric), m_model_parts_main->m_columns.m_col_columns_count) );
 
   //Respond to changes of selection:
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = treeview.get_selection();
+  auto refSelection = treeview.get_selection();
   if(refSelection)
   {
     refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_treeview_parts_selection_changed) );
@@ -391,7 +391,7 @@ void Dialog_Layout_Report::enable_buttons()
   bool enable_add = false;
 
   //Available Parts:
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelectionAvailable = m_treeview_available_parts->get_selection();
+  auto refSelectionAvailable = m_treeview_available_parts->get_selection();
   if(refSelectionAvailable)
   {
     auto iter = refSelectionAvailable->get_selected();
@@ -413,10 +413,10 @@ void Dialog_Layout_Report::enable_buttons()
   if(!treeview)
     return;
 
-  Glib::RefPtr<type_model> model = get_selected_model();
+  auto model = get_selected_model();
 
   //Parts:
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = treeview->get_selection();
+  auto refSelection = treeview->get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -537,9 +537,9 @@ void Dialog_Layout_Report::on_button_delete()
   if(!treeview)
     return;
 
-  Glib::RefPtr<type_model> model = get_selected_model();
+  auto model = get_selected_model();
 
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = treeview->get_selection();
+  auto refTreeSelection = treeview->get_selection();
   if(refTreeSelection)
   {
     auto iter = refTreeSelection->get_selected();
@@ -558,9 +558,9 @@ void Dialog_Layout_Report::on_button_up()
   if(!treeview)
     return;
 
-  Glib::RefPtr<type_model> model = get_selected_model();
+  auto model = get_selected_model();
 
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = treeview->get_selection();
+  auto refSelection = treeview->get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -595,9 +595,9 @@ void Dialog_Layout_Report::on_button_down()
   if(!treeview)
     return;
 
-  Glib::RefPtr<type_model> model = get_selected_model();
+  auto model = get_selected_model();
 
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = treeview->get_selection();
+  auto refSelection = treeview->get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -633,8 +633,8 @@ void Dialog_Layout_Report::on_button_add()
   if(!treeview)
     return;
 
-  Glib::RefPtr<type_model> model = get_selected_model();
-  Glib::RefPtr<type_model> model_available = Glib::RefPtr<type_model>::cast_dynamic(m_treeview_available_parts->get_model());
+  auto model = get_selected_model();
+  auto model_available = Glib::RefPtr<type_model>::cast_dynamic(m_treeview_available_parts->get_model());
 
   auto parent = get_selected_group_parent();
   std::shared_ptr<const LayoutItem> pParentPart;
@@ -728,7 +728,7 @@ Gtk::TreeModel::iterator Dialog_Layout_Report::get_selected_group_parent() const
   Glib::RefPtr<const type_model> model = get_selected_model();
 
 
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = treeview->get_selection();
+  auto refTreeSelection = treeview->get_selection();
   if(refTreeSelection)
   {
     auto iter = refTreeSelection->get_selected();
@@ -758,7 +758,7 @@ Gtk::TreeModel::iterator Dialog_Layout_Report::get_selected_available() const
 
   Gtk::TreeModel::iterator iter;
 
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_available_parts->get_selection();
+  auto refTreeSelection = m_treeview_available_parts->get_selection();
   if(refTreeSelection)
   {
     iter = refTreeSelection->get_selected();
@@ -774,10 +774,10 @@ void Dialog_Layout_Report::on_button_formatting()
   if(!treeview)
     return;
 
-  Glib::RefPtr<type_model> model = get_selected_model();
+  auto model = get_selected_model();
 
   //Get the selected item:
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = treeview->get_selection();
+  auto refTreeSelection = treeview->get_selection();
   if(refTreeSelection)
   {
     auto iter = refTreeSelection->get_selected();
@@ -806,10 +806,10 @@ void Dialog_Layout_Report::on_button_edit()
   if(!treeview)
     return;
 
-  Glib::RefPtr<type_model> model = get_selected_model();
+  auto model = get_selected_model();
 
   //Get the selected item:
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = treeview->get_selection();
+  auto refTreeSelection = treeview->get_selection();
   if(refTreeSelection)
   {
     auto iter = refTreeSelection->get_selected();
@@ -992,7 +992,7 @@ void Dialog_Layout_Report::on_cell_data_available_part(Gtk::CellRenderer* render
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      Glib::RefPtr<type_model> model = Glib::RefPtr<type_model>::cast_dynamic(m_treeview_available_parts->get_model());
+      auto model = Glib::RefPtr<type_model>::cast_dynamic(m_treeview_available_parts->get_model());
       std::shared_ptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
       Glib::ustring part = pItem->get_part_type_name();
 

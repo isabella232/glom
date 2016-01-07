@@ -85,7 +85,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
   auto sharedconnection = connect_to_server(get_app_window());
   if(sharedconnection)
   {
-    Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
+    auto connection = sharedconnection->get_gda_connection();
 
     //Set combo choices:
     m_AddDel.set_column_choices(m_colFromField, util_vecStrings_from_Fields(
@@ -241,7 +241,7 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
       auto sharedconnection = connect_to_server(get_app_window());
       if(sharedconnection)
       {
-        Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
+        auto connection = sharedconnection->get_gda_connection();
 
         auto document = get_document();
         type_vec_strings vecFields = util_vecStrings_from_Fields(DbUtils::get_fields_for_table(document, table_name));

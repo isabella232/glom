@@ -32,7 +32,7 @@ void cleanup()
 {
   try
   {
-    Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
+    auto file = Gio::File::create_for_uri(file_uri);
 
     //Ignore the return value because it will throw an exception instead.
     file->remove(); //This should be OK because it is a file, not a directory.

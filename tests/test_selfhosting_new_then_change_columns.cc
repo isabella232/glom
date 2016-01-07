@@ -159,7 +159,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     auto field_numeric = std::make_shared<Glom::Field>();
     field_numeric->set_name("newfield");
     field_numeric->set_glom_type(Glom::Field::glom_field_type::NUMERIC);
-    Glib::RefPtr<Gnome::Gda::Column> field_info = field_numeric->get_field_info();
+    auto field_info = field_numeric->get_field_info();
     field_info->set_g_type( Glom::Field::get_gda_type_for_glom_type(field_numeric->get_glom_type()) );
     field_numeric->set_field_info(field_info);
     

@@ -63,7 +63,7 @@ Dialog_SortFields::Dialog_SortFields(BaseObjectType* cobject, const Glib::RefPtr
 
 
     //Respond to changes of selection:
-    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
+    auto refSelection = m_treeview_fields->get_selection();
     if(refSelection)
     {
       refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_SortFields::on_treeview_fields_selection_changed) );
@@ -130,7 +130,7 @@ void Dialog_SortFields::set_fields(const Glib::ustring& table_name, const Layout
 void Dialog_SortFields::enable_buttons()
 {
   //Fields:
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
+  auto refSelection = m_treeview_fields->get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -226,7 +226,7 @@ void Dialog_SortFields::on_button_add_field()
       row[m_ColumnsFields.m_col_ascending] = true; //Default to this so that alphabetical searches go from A to Z by default.
 
       //Scroll to, and select, the new row:
-      Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+      auto refTreeSelection = m_treeview_fields->get_selection();
       if(refTreeSelection)
         refTreeSelection->select(iter);
 
@@ -239,7 +239,7 @@ void Dialog_SortFields::on_button_add_field()
 
 void Dialog_SortFields::on_button_delete()
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+  auto refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
     //TODO: Handle multiple-selection:
@@ -274,7 +274,7 @@ void Dialog_SortFields::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk
 
 void Dialog_SortFields::on_button_edit_field()
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+  auto refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
     //TODO: Handle multiple-selection:
@@ -295,7 +295,7 @@ void Dialog_SortFields::on_button_edit_field()
 
       //Scroll to, and select, the new row:
       /*
-      Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+      auto refTreeSelection = m_treeview_fields->get_selection();
       if(refTreeSelection)
         refTreeSelection->select(iter);
 

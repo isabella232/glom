@@ -111,7 +111,7 @@ void LayoutWidgetMenu::setup_menu(Gtk::Widget* widget)
     pApp->update_userlevel_ui(); //Update our action's sensitivity. 
   }
 
-  Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+  auto menu = Gio::Menu::create();
   menu->append(_("Choose Field"), "context.choose-field");
   menu->append(_("Field Layout Properties"), "context.field-layout-properties");
   menu->append(_("Add Related Records"), "context.add-related-records");

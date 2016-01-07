@@ -335,7 +335,7 @@ bool Box_Data_Details::fill_from_database()
           }
         }
 
-        Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_key(m_table_name, fieldsToGet, m_field_primary_key, m_primary_key_value);
+        auto query = Utils::build_sql_select_with_key(m_table_name, fieldsToGet, m_field_primary_key, m_primary_key_value);
         Glib::RefPtr<Gnome::Gda::DataModel> result;
 
         if(!primary_key_is_empty)
@@ -926,7 +926,7 @@ void Box_Data_Details::print_layout()
     return;
   }
 
-  Glib::RefPtr<Gtk::PageSetup> page_setup = Gtk::PageSetup::create(); //TODO: m_canvas.get_page_setup();
+  auto page_setup = Gtk::PageSetup::create(); //TODO: m_canvas.get_page_setup();
   if(!page_setup)
   {
     std::cerr << G_STRFUNC << ": page_setup was null" << std::endl;

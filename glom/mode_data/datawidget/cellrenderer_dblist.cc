@@ -39,7 +39,7 @@ void CellRendererDbList::set_choices_fixed(const Formatting::type_list_values& l
 {
   ComboChoicesWithTreeModel::set_choices_fixed(list_values, restricted);
 
-  Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
+  auto model = get_choices_model();
 
   //Show model in the view:
   property_model() = model;
@@ -53,7 +53,7 @@ void CellRendererDbList::set_choices_related(const Document* document, const std
 {
   ComboChoicesWithTreeModel::set_choices_related(document, layout_field, foreign_key_value);
 
-  Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
+  auto model = get_choices_model();
   if(!model)
   {
     std::cerr << G_STRFUNC << ": model is null" << std::endl;
@@ -62,7 +62,7 @@ void CellRendererDbList::set_choices_related(const Document* document, const std
   //Show model in the view:
   property_model() = model;
 
-  Glib::RefPtr<DbTreeModelWithExtraText> model_db =
+  auto model_db =
     Glib::RefPtr<DbTreeModelWithExtraText>::cast_dynamic(model);
   if(model_db)
     property_text_column() = model_db->get_text_column();
@@ -220,7 +220,7 @@ void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, co
 
   //The DB model has a special virtual text column,
   //and the simple model just has text in all columns:
-  Glib::RefPtr<DbTreeModelWithExtraText> model_db =
+  auto model_db =
     Glib::RefPtr<DbTreeModelWithExtraText>::cast_dynamic(get_choices_model());
   if(model_db)
     repack_cells_related(combobox);

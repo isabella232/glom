@@ -174,7 +174,7 @@ void CanvasGroupResizable::create_line_manipulators()
 
 Glib::RefPtr<CanvasLineMovable> CanvasGroupResizable::create_outline_line(double x1, double y1, double x2, double y2)
 {
-  Glib::RefPtr<CanvasLineMovable> line = Glom::CanvasLineMovable::create();
+  auto line = Glom::CanvasLineMovable::create();
   line->property_line_width() = OUTLINE_STROKE_WIDTH;
   line->property_stroke_color() = OUTLINE_STROKE_COLOR;
   line->set_movement_allowed(false, false);
@@ -273,7 +273,7 @@ void CanvasGroupResizable::position_rect_manipulators()
   const double x2 = child_x + child_width;
   const double y2 = child_y + child_height;
 
-  Glib::RefPtr<Goocanvas::Item> item = CanvasItemMovable::cast_to_item(m_child);
+  auto item = CanvasItemMovable::cast_to_item(m_child);
 
   m_manipulator_corner_top_left->set_xy(x1, y1);
   m_manipulator_corner_top_right->set_xy(x2 - MANIPULATOR_CORNER_SIZE, y1);
@@ -301,7 +301,7 @@ void CanvasGroupResizable::position_rect_manipulators()
 
 void CanvasGroupResizable::position_line_manipulators()
 {
-  Glib::RefPtr<CanvasLineMovable> line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(m_child);
+  auto line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(m_child);
   if(!line)
     return;
 
@@ -347,7 +347,7 @@ void CanvasGroupResizable::position_outline()
   const double x2 = x1 + child_width;
   const double y2 = y1 + child_height;
 
-  Glib::RefPtr<Goocanvas::Item> item = CanvasItemMovable::cast_to_item(m_child);
+  auto item = CanvasItemMovable::cast_to_item(m_child);
 
   set_edge_points(m_outline_top, x1, y1, x2, y1);
   set_edge_points(m_outline_bottom, x1, y2, x2, y2);
@@ -376,7 +376,7 @@ void CanvasGroupResizable::set_child(const Glib::RefPtr<CanvasItemMovable>& chil
   //Remove the previous child, if any:
   if(m_child)
   {
-    Glib::RefPtr<Goocanvas::Item> item = CanvasItemMovable::cast_to_item(m_child);
+    auto item = CanvasItemMovable::cast_to_item(m_child);
     item->remove();
   }
 
@@ -384,7 +384,7 @@ void CanvasGroupResizable::set_child(const Glib::RefPtr<CanvasItemMovable>& chil
   if(!child)
     return;
 
-  Glib::RefPtr<Goocanvas::Item> item = CanvasItemMovable::cast_to_item(child);
+  auto item = CanvasItemMovable::cast_to_item(child);
   if(!item)
     return;
 
@@ -443,7 +443,7 @@ void CanvasGroupResizable::manipulator_connect_signals(const Glib::RefPtr<Goocan
 
   //TODO: Use x and y property notification.
 
-  Glib::RefPtr<CanvasRectMovable> rect = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(manipulator);
+  auto rect = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(manipulator);
   if(rect)
   {
     if(get_is_line())
@@ -459,7 +459,7 @@ void CanvasGroupResizable::manipulator_connect_signals(const Glib::RefPtr<Goocan
   }
   else
   {
-    Glib::RefPtr<CanvasLineMovable> line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(manipulator);
+    auto line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(manipulator);
     if(line)
     {
       line->signal_moved().connect(
@@ -528,8 +528,8 @@ void CanvasGroupResizable::on_manipulator_corner_moved(const Glib::RefPtr<Canvas
   //(if the user moves too fast then we get a leave-notify-event on the manipulator, rect, or item):
   set_manipulators_visibility(Goocanvas::ITEM_VISIBLE);
 
-  Glib::RefPtr<CanvasItemMovable> manipulator_base = get_manipulator(manipulator_id);
-  Glib::RefPtr<CanvasRectMovable> manipulator = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(manipulator_base);
+  auto manipulator_base = get_manipulator(manipulator_id);
+  auto manipulator = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(manipulator_base);
 
   if(!manipulator)
     return;
@@ -601,14 +601,14 @@ void CanvasGroupResizable::on_manipulator_line_end_moved(const Glib::RefPtr<Canv
   //(if the user moves too fast then we get a leave-notify-event on the manipulator, rect, or item):
   set_manipulators_visibility(Goocanvas::ITEM_VISIBLE);
 
-  Glib::RefPtr<CanvasItemMovable> manipulator_base = get_manipulator(manipulator_id);
-  Glib::RefPtr<CanvasRectMovable> manipulator = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(manipulator_base);
+  auto manipulator_base = get_manipulator(manipulator_id);
+  auto manipulator = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(manipulator_base);
 
   if(!manipulator)
     return;
 
 
-  Glib::RefPtr<CanvasLineMovable> line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(m_child);
+  auto line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(m_child);
   if(!line)
     return;
 
@@ -651,8 +651,8 @@ void CanvasGroupResizable::on_manipulator_edge_moved(const Glib::RefPtr<CanvasIt
   //(if the user moves too fast then we get a leave-notify-event on the manipulator, rect, or item):
   set_manipulators_visibility(Goocanvas::ITEM_VISIBLE);
 
-  Glib::RefPtr<CanvasItemMovable> manipulator_base = get_manipulator(manipulator_id);
-  Glib::RefPtr<CanvasLineMovable> manipulator = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(manipulator_base);
+  auto manipulator_base = get_manipulator(manipulator_id);
+  auto manipulator = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(manipulator_base);
   
   //std::cout << "debug: " << G_STRFUNC << ": manipulator=" << manipulator_id << std::endl;
 
@@ -777,7 +777,7 @@ void CanvasGroupResizable::set_manipulators_visibility(Goocanvas::ItemVisibility
 
   //Also show grid lines in the portal table,
   //though these are not actually manipulatable.
-  Glib::RefPtr<CanvasTableMovable> table = 
+  auto table = 
     Glib::RefPtr<CanvasTableMovable>::cast_dynamic(get_child());
   if(table)
   {
@@ -835,7 +835,7 @@ bool CanvasGroupResizable::on_resizer_leave_notify_event(const Glib::RefPtr<Gooc
 
 Glib::RefPtr<CanvasRectMovable> CanvasGroupResizable::create_corner_manipulator()
 {
-  Glib::RefPtr<CanvasRectMovable> result = CanvasRectMovable::create();
+  auto result = CanvasRectMovable::create();
   result->property_fill_color() = MANIPULATOR_CORNER_FILL_COLOR; //This makes the whole area clickable, not just the outline stroke:
   result->property_line_width() = MANIPULATOR_STROKE_WIDTH;
   result->property_stroke_color() = MANIPULATOR_STROKE_COLOR;
@@ -847,7 +847,7 @@ Glib::RefPtr<CanvasRectMovable> CanvasGroupResizable::create_corner_manipulator(
 
 Glib::RefPtr<CanvasLineMovable> CanvasGroupResizable::create_edge_manipulator()
 {
-  Glib::RefPtr<Glom::CanvasLineMovable> line = Glom::CanvasLineMovable::create();
+  auto line = Glom::CanvasLineMovable::create();
   line->property_line_width() = MANIPULATOR_STROKE_WIDTH;
   line->property_stroke_color() = MANIPULATOR_STROKE_COLOR;
   return line;
@@ -998,7 +998,7 @@ Goocanvas::Canvas* CanvasGroupResizable::get_parent_canvas_widget()
 
 bool CanvasGroupResizable::get_is_line() const
 {
-  Glib::RefPtr<CanvasLineMovable> line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(m_child);
+  auto line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(m_child);
   return line;
 }
 
@@ -1019,8 +1019,8 @@ void CanvasGroupResizable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& g
   int count = m_group_edge_manipulators->get_n_children();
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> child = m_group_edge_manipulators->get_child(i);
-    Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(child);
+    auto child = m_group_edge_manipulators->get_child(i);
+    auto movable = CanvasItemMovable::cast_to_movable(child);
     if(movable)
     {
       movable->set_grid(grid);
@@ -1030,8 +1030,8 @@ void CanvasGroupResizable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& g
   count = m_group_corner_manipulators->get_n_children();
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> child = m_group_corner_manipulators->get_child(i);
-    Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(child);
+    auto child = m_group_corner_manipulators->get_child(i);
+    auto movable = CanvasItemMovable::cast_to_movable(child);
     if(movable)
     {
       movable->set_grid(grid);

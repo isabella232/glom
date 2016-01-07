@@ -220,7 +220,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
     //Get the possible group values, ignoring repeats by using GROUP BY.
     const auto group_field_table_name = field_group_by->get_table_used(found_set_parent.m_table_name);
 
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    auto builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
     builder->select_add_field(field_group_by->get_name(), group_field_table_name);
     builder->select_add_target(group_field_table_name);
@@ -232,7 +232,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
 
     builder->select_group_by( builder->add_field_id(field_group_by->get_name(), group_field_table_name) ); //TODO: And restrict to the current found set.
 
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
+    auto datamodel = DbUtils::query_execute_select(builder);
     if(!datamodel)
     {
       std::cerr << G_STRFUNC << ": The SQL query failed." << std::endl;
@@ -378,12 +378,12 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
     if(one_record_only)
       limit = 1;
 
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
+    auto sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
       fieldsToGet,
       found_set.m_where_clause, std::shared_ptr<const Relationship>() /* extra_join */, found_set.m_sort_clause,
       limit);
 
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(sql_query);
+    auto datamodel = DbUtils::query_execute_select(sql_query);
     if(!datamodel)
     {
       std::cerr << G_STRFUNC << ": The SLQ query failed." << std::endl;
@@ -462,11 +462,11 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
   {
     //In this case it can only be a system preferences field.
     //So let's get that data here:
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
     builder->set_table(field->get_table_used(found_set.m_table_name));
     builder->select_add_field(field->get_name(), found_set.m_table_name);
     builder->select_set_limit(1);
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel_syspref = DbUtils::query_execute_select(builder);
+    auto datamodel_syspref = DbUtils::query_execute_select(builder);
 
     if(!datamodel_syspref)
     {
@@ -584,7 +584,7 @@ std::string ReportBuilder::report_build_and_save(const FoundSet& found_set, cons
   const auto temp_uri = Utils::get_temp_file_uri("glom_printout", "html");
   std::cout << G_STRFUNC << ": temp_uri=" << temp_uri << std::endl;
 
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(temp_uri);
+  auto file = Gio::File::create_for_uri(temp_uri);
   Glib::RefPtr<Gio::FileOutputStream> stream;
 
   //Create the file if it does not already exist:

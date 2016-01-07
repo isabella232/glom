@@ -86,7 +86,7 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
     sigc::mem_fun( *this, &Dialog_GroupsList::on_treeview_tables_toggled_delete) );
 
 
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_groups->get_selection();
+  auto refSelection = m_treeview_groups->get_selection();
   if(refSelection)
   {
     refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_GroupsList::on_treeview_groups_selection_changed) );
@@ -176,7 +176,7 @@ void Dialog_GroupsList::enable_buttons()
   if(!m_button_group_users)
     return;
 
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_groups->get_selection();
+  auto refSelection = m_treeview_groups->get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -197,7 +197,7 @@ void Dialog_GroupsList::enable_buttons()
 
 void Dialog_GroupsList::on_button_group_delete()
 {
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_groups->get_selection();
+  auto refTreeSelection = m_treeview_groups->get_selection();
   if(refTreeSelection)
   {
     auto iter = refTreeSelection->get_selected();
@@ -267,7 +267,7 @@ void Dialog_GroupsList::on_button_group_users()
 {
 
   //Get the selected item:
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_groups->get_selection();
+  auto refTreeSelection = m_treeview_groups->get_selection();
   if(refTreeSelection)
   {
     auto iter = refTreeSelection->get_selected();
@@ -314,7 +314,7 @@ void Dialog_GroupsList::on_treeview_tables_selection_changed()
 
 Glib::ustring Dialog_GroupsList::get_selected_group() const
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_groups->get_selection();
+  auto refSelection = m_treeview_groups->get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -357,7 +357,7 @@ void Dialog_GroupsList::fill_group_list()
   if(m_treeview_groups && m_treeview_groups->get_model()) //Avoid a warning.
   {
     //Select the first item, so that there is always something in the tables TreeView:
-    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_groups->get_selection();
+    auto refSelection = m_treeview_groups->get_selection();
     if(refSelection)
     {
       auto iterFirst = m_model_groups->children().begin();

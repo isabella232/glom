@@ -59,11 +59,11 @@ Canvas_PrintLayout::Canvas_PrintLayout()
   m_items_group = Goocanvas::Group::create();
   //m_items_group->signal_button_press_event().connect( sigc::ptr_fun(&on_group_button_press_event), false );
   //TODO: How does this have any effect?: m_items_group->property_pointer_events() = Goocanvas::EVENTS_NONE;
-  Glib::RefPtr<Goocanvas::Item> root = get_root_item();
+  auto root = get_root_item();
   if(root)
     root->add_child(m_items_group);
 
-  Glib::RefPtr<Gtk::PageSetup> page_setup = Gtk::PageSetup::create(); //start with something sensible.
+  auto page_setup = Gtk::PageSetup::create(); //start with something sensible.
   set_page_setup(page_setup);
 }
 
@@ -84,7 +84,7 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
     //TODO: Catch an exception
     key_file.load_from_data(key_file_text);
 
-    Glib::RefPtr<Gtk::PageSetup> page_setup = 
+    auto page_setup = 
       Gtk::PageSetup::create_from_key_file(key_file);
     set_page_setup(page_setup);
   }
@@ -141,7 +141,7 @@ std::shared_ptr<PrintLayout> Canvas_PrintLayout::get_print_layout()
 /*
 Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::create_canvas_item(const std::shared_ptr<LayoutItem>& item)
 {
-  Glib::RefPtr<CanvasLayoutItem> result = CanvasLayoutItem::create();
+  auto result = CanvasLayoutItem::create();
   //TODO: Add to the canvas.
   result->set_layout_item(item);
 
@@ -173,7 +173,7 @@ void Canvas_PrintLayout::add_layout_group_children(const std::shared_ptr<LayoutG
 
 void Canvas_PrintLayout::create_canvas_layout_item_and_add(const std::shared_ptr<LayoutItem>& layout_item)
 {
-  Glib::RefPtr<CanvasLayoutItem> canvas_item = CanvasLayoutItem::create();
+  auto canvas_item = CanvasLayoutItem::create();
   add_canvas_layout_item(canvas_item);
   canvas_item->set_layout_item(layout_item);
   
@@ -233,8 +233,8 @@ void Canvas_PrintLayout::fill_layout_group(const std::shared_ptr<LayoutGroup>& g
   const int count = m_items_group->get_n_children();
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> base_canvas_item = m_items_group->get_child(i);
-    Glib::RefPtr<CanvasLayoutItem> canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
+    auto base_canvas_item = m_items_group->get_child(i);
+    auto canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
     if(canvas_item)
     {
       //Get the actual position:
@@ -264,7 +264,7 @@ void Canvas_PrintLayout::setup_context_menu()
   m_context_menu_action_group = Gio::SimpleActionGroup::create();
 
 /*
-  Glib::RefPtr<Gtk::Action> action =  Gtk::Action::create("ContextInsertField", _("Field"));
+  auto action =  Gtk::Action::create("ContextInsertField", _("Field"));
   m_context_menu_action_group->add(action,
     sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_insert_field) );
 
@@ -282,7 +282,7 @@ void Canvas_PrintLayout::setup_context_menu()
 
   insert_action_group("context", m_context_menu_action_group);
 
-  Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+  auto menu = Gio::Menu::create();
   menu->append(_("_Edit"), "context.edit");
   menu->append(_("_Formatting"), "context.formatting");
   menu->append(_("_Delete"), "context.delete");
@@ -543,7 +543,7 @@ void Canvas_PrintLayout::on_dialog_format_hide()
 
 Glib::RefPtr<Goocanvas::Polyline> Canvas_PrintLayout::create_margin_line(double x1, double y1, double x2, double y2)
 {
-  Glib::RefPtr<Goocanvas::Polyline> line =
+  auto line =
     Goocanvas::Polyline::create(x1, y1, x2, y2);
   line->property_line_width() = 0.5;
   line->property_stroke_color() = "light gray";
@@ -594,7 +594,7 @@ void Canvas_PrintLayout::update_page_bounds()
     m_bounds_group.reset();
   }
 
-  Glib::RefPtr<Goocanvas::Item> root = get_root_item();
+  auto root = get_root_item();
   m_bounds_group = Goocanvas::Group::create();
   root->add_child(m_bounds_group);
 
@@ -619,13 +619,13 @@ void Canvas_PrintLayout::update_page_bounds()
   for(guint page = 0; page < m_page_count; ++page)
   {
     const double top_y = paper_size.get_height(units) * page + m_page_setup->get_top_margin(units);
-    Glib::RefPtr<Goocanvas::Polyline> margin_top = 
+    auto margin_top = 
       create_margin_line(
         bounds.get_x1(), top_y, bounds.get_x2(), top_y);
     m_vec_margin_tops.push_back(margin_top);
       
     const double bottom_y = paper_size.get_height(units) * (page + 1) - m_page_setup->get_bottom_margin(units);
-    Glib::RefPtr<Goocanvas::Polyline> margin_bottom = 
+    auto margin_bottom = 
       create_margin_line(
         bounds.get_x1(), bottom_y, bounds.get_x2(), bottom_y);
     m_vec_margin_bottoms.push_back(margin_bottom);
@@ -749,8 +749,8 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
   guint field_i = 0;
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> base_canvas_item = canvas_group->get_child(i);
-    Glib::RefPtr<CanvasLayoutItem> canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
+    auto base_canvas_item = canvas_group->get_child(i);
+    auto canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
     if(!canvas_item)
       continue;
 
@@ -824,8 +824,8 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
   //(and clear the no-image pixbuf from images):
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> base_canvas_item = canvas_group->get_child(i);
-    Glib::RefPtr<CanvasLayoutItem> canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
+    auto base_canvas_item = canvas_group->get_child(i);
+    auto canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
     if(!canvas_item)
       continue;
 
@@ -885,7 +885,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   if(!portal)
     return;
 
-  Glib::RefPtr<CanvasTableMovable> canvas_table = Glib::RefPtr<CanvasTableMovable>::cast_dynamic(canvas_item->get_child());
+  auto canvas_table = Glib::RefPtr<CanvasTableMovable>::cast_dynamic(canvas_item->get_child());
   if(!canvas_table)
     return;
 
@@ -950,7 +950,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
     for(int col = 0; col < cols_count; ++col)
     {
       //Glib::RefPtr<Goocanvas::Item> canvas_child = base_item->get_cell_child(row, col); //TODO: Add this to Goocanvas::Table.
-      Glib::RefPtr<Goocanvas::Item> canvas_child = 
+      auto canvas_child = 
         CanvasLayoutItem::get_canvas_table_cell_child(canvas_table, row, col); //TODO: Add this to Goocanvas::Table.
       if(!canvas_child)
       {
@@ -989,16 +989,16 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
   //Expect the appropriate canvas item, depending on the field type:
   if(field->get_glom_type() == Field::glom_field_type::IMAGE)
   {
-    Glib::RefPtr<CanvasImageMovable> canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(canvas_item);
+    auto canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(canvas_item);
     if(!canvas_image)
       return;
 
-    Glib::RefPtr<Gdk::Pixbuf> pixbuf = UiUtils::get_pixbuf_for_gda_value(value);
+    auto pixbuf = UiUtils::get_pixbuf_for_gda_value(value);
     canvas_image->property_pixbuf() = pixbuf;
   }
   else //text, numbers, date, time, boolean:
   {
-    Glib::RefPtr<CanvasTextMovable> canvas_text = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(canvas_item);
+    auto canvas_text = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(canvas_item);
     if(!canvas_text)
     {
       std::cerr << G_STRFUNC << ": The canvas item is not of the expected type. Instead it is of type." << std::endl;
@@ -1096,15 +1096,15 @@ Canvas_PrintLayout::type_vec_items Canvas_PrintLayout::get_selected_items()
   type_vec_items result;
 
   //TODO: Do this recursively.
-  Glib::RefPtr<Goocanvas::Item> root = m_items_group;
+  auto root = m_items_group;
   if(!root)
     return result;
 
   const int count = root->get_n_children();
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> child = root->get_child(i);
-    Glib::RefPtr<CanvasLayoutItem> derived =
+    auto child = root->get_child(i);
+    auto derived =
       Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(child);
     if(!derived)
       continue;
@@ -1122,15 +1122,15 @@ void Canvas_PrintLayout::set_outlines_visibility(bool visible)
   m_outline_visibility = visible;
 
   //TODO: Do this recursively.
-  Glib::RefPtr<Goocanvas::Item> root = m_items_group;
+  auto root = m_items_group;
   if(!root)
     return;
 
   const int count = root->get_n_children();
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> child = root->get_child(i);
-    Glib::RefPtr<CanvasLayoutItem> derived =
+    auto child = root->get_child(i);
+    auto derived =
       Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(child);
     if(!derived)
       continue;
@@ -1141,15 +1141,15 @@ void Canvas_PrintLayout::set_outlines_visibility(bool visible)
 
 void Canvas_PrintLayout::select_all(bool selected)
 {
-  Glib::RefPtr<Goocanvas::Item> root = m_items_group;
+  auto root = m_items_group;
   if(!root)
     return;
 
   const int count = root->get_n_children();
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> child = root->get_child(i);
-    Glib::RefPtr<CanvasLayoutItem> derived =
+    auto child = root->get_child(i);
+    auto derived =
       Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(child);
     if(!derived)
       continue;
@@ -1198,7 +1198,7 @@ Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::move_items_down(double y_star
   double y_needs_moving_top = 0;
   double needs_moving_top_height = 0;
 
-  Glib::RefPtr<Goocanvas::Item> root = m_items_group;
+  auto root = m_items_group;
   if(!root)
     return needs_moving_top;
 
@@ -1209,8 +1209,8 @@ Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::move_items_down(double y_star
   const int count = root->get_n_children();
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> child = root->get_child(i);
-    Glib::RefPtr<CanvasLayoutItem> derived = 
+    auto child = root->get_child(i);
+    auto derived = 
       Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(child);
     if(!derived)
     {

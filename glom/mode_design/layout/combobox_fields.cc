@@ -77,7 +77,7 @@ void ComboBox_Fields::set_selected_field(const std::shared_ptr<const Field>& fie
 void ComboBox_Fields::set_selected_field(const Glib::ustring& field_name)
 {
   //Look for the row with this text, and activate it:
-  Glib::RefPtr<Gtk::TreeModel> model = get_model();
+  auto model = get_model();
   if(model)
   {
     for(const auto& row : model->children())

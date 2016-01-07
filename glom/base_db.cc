@@ -324,7 +324,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection()
     return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+  auto gda_connection = sharedconnection->get_gda_connection();
 
   return gda_connection;
 }
@@ -742,11 +742,11 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
 {
 
   //Get primary key values for every record:
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_field(primary_key->get_name(), table_name);
   builder->select_add_target(table_name);
 
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
+  auto data_model = DbUtils::query_execute_select(builder);
   if(!data_model || !data_model->get_n_rows() || !data_model->get_n_columns())
   {
     //HandleError();
@@ -1030,7 +1030,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
   type_vecConstLayoutFields list_fields;
   auto layout_item = field_in_record.m_field;
   list_fields.push_back(layout_item);
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_key(field_in_record.m_table_name,
+  auto sql_query = Utils::build_sql_select_with_key(field_in_record.m_table_name,
     list_fields, field_in_record.m_key, field_in_record.m_key_value, type_sort_clause(), 1);
 
   Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(sql_query);
@@ -1070,7 +1070,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const std::shared_ptr<Fie
   auto layout_item = std::make_shared<LayoutItem_Field>();
   layout_item->set_full_field_details(field);
   list_fields.push_back(layout_item);
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
+  auto sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
     list_fields,
     found_set.m_where_clause,
     std::shared_ptr<const Relationship>() /* extra_join */, type_sort_clause(),
@@ -1290,7 +1290,7 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
 
   const auto table_name_used = field->get_table_used(table_name);
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+  auto builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_field(field->get_name(), table_name_used);
   builder->select_add_target(table_name_used);
@@ -1372,7 +1372,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
   layout_item->set_full_field_details(primary_key);
   fieldsToGet.push_back(layout_item);
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_target(found_set.m_table_name);
 
   const auto eq_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
@@ -1393,7 +1393,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
   builder->set_where(cond_id); //This might be unnecessary.
     cond_id = eq_id;
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> query =
+  auto query =
     Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsToGet,
       builder->export_expression(cond_id));
   Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(query);

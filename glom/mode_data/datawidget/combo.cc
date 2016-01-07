@@ -85,7 +85,7 @@ void ComboGlom::set_choices_fixed(const Formatting::type_list_values& list_value
 {
   ComboChoicesWithTreeModel::set_choices_fixed(list_values, restricted);
 
-  Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
+  auto model = get_choices_model();
   if(!model)
   {
     std::cerr << G_STRFUNC << ": model is null." << std::endl;
@@ -104,7 +104,7 @@ void ComboGlom::set_choices_fixed(const Formatting::type_list_values& list_value
     clear(); //This breaks GtkCombo with has-entry.
   }
 
-  Glib::RefPtr<Gtk::CellAreaBox> cell_area = 
+  auto cell_area = 
     Glib::RefPtr<Gtk::CellAreaBox>::cast_dynamic(get_area());
   if(!cell_area)
   {
@@ -154,7 +154,7 @@ void ComboGlom::set_choices_related(const Document* document, const std::shared_
 {
   ComboChoicesWithTreeModel::set_choices_related(document, layout_field, foreign_key_value);
 
-  Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
+  auto model = get_choices_model();
   if(!model)
   {
     std::cerr << G_STRFUNC << ": model is null." << std::endl;
@@ -166,7 +166,7 @@ void ComboGlom::set_choices_related(const Document* document, const std::shared_
 
   if(get_has_entry())
   {
-    Glib::RefPtr<DbTreeModelWithExtraText> model_db =
+    auto model_db =
       Glib::RefPtr<DbTreeModelWithExtraText>::cast_dynamic(model);
     if(model_db)
     {

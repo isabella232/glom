@@ -187,7 +187,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
     //Add an AND to the existing where clause, to get only records within these dates, if any:
     auto date_field = derived_portal->get_date_field();
 
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    auto builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
     const auto cond = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_BETWEEN,
        builder->add_field_id(date_field->get_name(), m_found_set.m_table_name),
@@ -211,7 +211,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
     //Do one SQL query for the whole month and store the cached values here:
     clear_cached_database_values();
 
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_FieldsShown, where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause);
+    auto sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_FieldsShown, where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause);
     //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
     Glib::RefPtr<const Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(sql_query);
     if(!(datamodel))
@@ -299,7 +299,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
     //Create the link by setting the foreign key
     if(m_key_field && m_portal)
     {
-      Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+      auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
       const auto target_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
       builder->set_table(target_table);
       builder->add_field_value_as_value(m_key_field->get_name(), m_key_value);
@@ -524,7 +524,7 @@ void Box_Data_Calendar_Related::setup_menu(Gtk::Widget* /* this */)
 
   //TODO: add_accel_group(m_refUIManager->get_accel_group());
 
-  Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+  auto menu = Gio::Menu::create();
   menu->append(_("_Edit"), "context.edit");
   menu->append(_("_Layout"), "context.layout");
 

@@ -84,7 +84,7 @@ std::shared_ptr<Field> Dialog_DefaultFormatting::get_field() const
   auto field = glom_sharedptr_clone(m_Field); //Start with the old details, to preserve anything that is not in our UI.
   // const_cast is necessary and save here for the window (jhs)
   auto sharedcnc = connect_to_server(const_cast<Dialog_DefaultFormatting*>(this));
-  Glib::RefPtr<Gnome::Gda::Connection> cnc = sharedcnc->get_gda_connection();
+  auto cnc = sharedcnc->get_gda_connection();
 
   //Get the field info from the widgets:
 

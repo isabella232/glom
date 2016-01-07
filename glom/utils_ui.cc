@@ -78,9 +78,9 @@ static Glib::RefPtr<Gtk::CssProvider> create_css_provider(Gtk::Widget& widget)
 {
   // Add a StyleProvider so we can change the color, background color, and font.
   // This was easier before Gtk::Widget::override_color() was deprecated.
-  Glib::RefPtr<Gtk::CssProvider> css_provider = Gtk::CssProvider::create();
+  auto css_provider = Gtk::CssProvider::create();
 
-  Glib::RefPtr<Gtk::StyleContext> refStyleContext = widget.get_style_context();
+  auto refStyleContext = widget.get_style_context();
   if(refStyleContext)
     refStyleContext->add_provider(css_provider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
@@ -225,7 +225,7 @@ void UiUtils::show_window_until_hide(Gtk::Window* window)
   if(!window)
     return;
 
-  Glib::RefPtr<Glib::MainLoop> main_loop = Glib::MainLoop::create(false /* not running */);
+  auto main_loop = Glib::MainLoop::create(false /* not running */);
 
   //Stop the main_loop when the window is hidden:
   sigc::connection handler_connection; //TODO: There seems to be a crash if this is on the same line.
@@ -326,7 +326,7 @@ namespace {
 static int get_width_for_text(Gtk::Widget& widget, const Glib::ustring& text)
 {
   //Get the width required for this string in the current font:
-  Glib::RefPtr<Pango::Layout> refLayout = widget.create_pango_layout(text);
+  auto refLayout = widget.create_pango_layout(text);
   int width = 0;
   int height = 0;
   refLayout->get_pixel_size(width, height);
@@ -625,7 +625,7 @@ void UiUtils::container_remove_all(Gtk::Container& container)
 
 void UiUtils::load_font_into_css_provider(Gtk::Widget& widget, const Glib::ustring& font)
 {
-  Glib::RefPtr<Gtk::CssProvider> css_provider = create_css_provider(widget);
+  auto css_provider = create_css_provider(widget);
 
   try
   {
@@ -645,7 +645,7 @@ void UiUtils::load_font_into_css_provider(Gtk::Widget& widget, const Glib::ustri
 
 void UiUtils::load_color_into_css_provider(Gtk::Widget& widget, const Glib::ustring& color)
 {
-  Glib::RefPtr<Gtk::CssProvider> css_provider = create_css_provider(widget);
+  auto css_provider = create_css_provider(widget);
 
   try
   {
@@ -665,7 +665,7 @@ void UiUtils::load_color_into_css_provider(Gtk::Widget& widget, const Glib::ustr
 
 void UiUtils::load_background_color_into_css_provider(Gtk::Widget& widget, const Glib::ustring& color)
 {
-  Glib::RefPtr<Gtk::CssProvider> css_provider = create_css_provider(widget);
+  auto css_provider = create_css_provider(widget);
 
   try
   {

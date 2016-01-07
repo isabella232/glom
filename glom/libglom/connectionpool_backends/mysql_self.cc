@@ -438,7 +438,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
 void MySQLSelfHosted::show_active_connections()
 {
 /* TODO_MySQL
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+  auto builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_field("*", "pg_stat_activity");
   builder->select_add_target("pg_stat_activity");

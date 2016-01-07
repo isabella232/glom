@@ -111,9 +111,9 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
   builder->get_widget_derived("infobar_progress", m_infobar_progress);
 
   //Add menu bar at the top:
-  Glib::RefPtr<Glib::Object> object =
+  auto object =
     builder->get_object("mainmenu");
-  Glib::RefPtr<Gio::Menu> gmenu =
+  auto gmenu =
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!gmenu)
     g_warning("GMenu not found");
@@ -291,7 +291,7 @@ void AppWindow::init_menus_file()
 
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Glib::RefPtr<Gio::SimpleAction> action_print_edit =
+  auto action_print_edit =
     m_refActionGroup_File->add_action("edit-print-layouts",
       sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print_edit_layouts));
   m_listDeveloperActions.push_back(action_print_edit);
@@ -449,7 +449,7 @@ void AppWindow::on_menu_help_about()
   {
     m_pAbout->set_transient_for(*this);
 
-    Glib::RefPtr<Gdk::Window> about_win = m_pAbout->get_window();
+    auto about_win = m_pAbout->get_window();
     about_win->show();
     about_win->raise();
   }
@@ -477,7 +477,7 @@ void AppWindow::on_menu_help_about()
     //TODO: Use this, instead of the C API, when we can depend on gtkmm 3.12, with a try/catch:
     //Glib::RefPtr<Gdk::Pixbuf> logo = Gdk::Pixbuf::create_from_resource(glom_icon_path);
     GError* gerror = nullptr;
-    Glib::RefPtr<Gdk::Pixbuf> logo =
+    auto logo =
       Glib::wrap(gdk_pixbuf_new_from_resource(glom_icon_path.c_str(), &gerror));
     if(gerror)
     {
@@ -1791,9 +1791,9 @@ void AppWindow::fill_menu_tables()
 
   m_refNavTablesActionGroup = Gio::SimpleActionGroup::create();
 
-  Glib::RefPtr<Glib::Object> object =
+  auto object =
     m_builder->get_object("tables-list");
-  Glib::RefPtr<Gio::Menu> menu =
+  auto menu =
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!menu)
   {
@@ -1823,7 +1823,7 @@ void AppWindow::fill_menu_tables()
   
       menu->append(title, ACTION_GROUP_NAME_TABLES + "." + action_name);
 
-      Glib::RefPtr<Gio::SimpleAction> action = m_refNavTablesActionGroup->add_action(action_name,
+      auto action = m_refNavTablesActionGroup->add_action(action_name,
         sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_box_tables_selected), table_info->get_name()) );
       m_listNavTableActions.push_back(action);
     }
@@ -1837,9 +1837,9 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
   m_listNavReportActions.clear();
 
   //Remove existing items.
-  Glib::RefPtr<Glib::Object> object =
+  auto object =
     m_builder->get_object("reports-list");
-  Glib::RefPtr<Gio::Menu> menu =
+  auto menu =
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!menu)
   {
@@ -1881,7 +1881,7 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
   
         menu->append(title, ACTION_GROUP_NAME_REPORTS + "." + report_name);
 
-        Glib::RefPtr<Gio::SimpleAction> action = m_refNavReportsActionGroup->add_action(action_name,
+        auto action = m_refNavReportsActionGroup->add_action(action_name,
           sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_report_selected), report->get_name()) );
         m_listNavReportActions.push_back(action);
      }
@@ -1917,9 +1917,9 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
   m_listNavPrintLayoutActions.clear();
 
   //Remove existing items.
-  Glib::RefPtr<Glib::Object> object =
+  auto object =
     m_builder->get_object("print-layouts-list");
-  Glib::RefPtr<Gio::Menu> menu =
+  auto menu =
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!menu)
   {
@@ -1964,7 +1964,7 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
 
         menu->append(title, ACTION_GROUP_NAME_PRINT_LAYOUTS + "." + action_name);
 
-        Glib::RefPtr<Gio::SimpleAction> action = m_refNavPrintLayoutsActionGroup->add_action(action_name,
+        auto action = m_refNavPrintLayoutsActionGroup->add_action(action_name,
           sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_print_layout_selected), name) );
 
         m_listNavPrintLayoutActions.push_back(action);
@@ -2121,10 +2121,10 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
   {
     //Just start with the parent folder,
     //instead of the whole name, to avoid overwriting:
-    Glib::RefPtr<Gio::File> gio_file = Gio::File::create_for_uri(old_file_uri);
+    auto gio_file = Gio::File::create_for_uri(old_file_uri);
     if(gio_file)
     {
-      Glib::RefPtr<Gio::File> parent = gio_file->get_parent();
+      auto parent = gio_file->get_parent();
       if(parent)
       {
         const auto uri_parent = parent->get_uri();
@@ -2151,7 +2151,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
       const auto uri = Utils::get_file_uri_without_extension(uri_chosen);
 
       //Check whether the file exists, and that we have rights to it:
-      Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+      auto file = Gio::File::create_for_uri(uri);
       if(!file)
         return Glib::ustring(); //Failure.
 
@@ -2226,7 +2226,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
         //Check that the directory does not exist already.
         //The GtkFileChooser could not check for that because it could not know that we would create a directory based on the filename:
         //Note that uri has no extension at this point:
-        Glib::RefPtr<Gio::File> dir = Gio::File::create_for_uri(uri);
+        auto dir = Gio::File::create_for_uri(uri);
         if(dir->query_exists())
         {
           ui_warning(_("Directory Already Exists"), _("There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead."));
@@ -2248,11 +2248,11 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
         }
 
         //Add the filename (Note that the caller will add the extension if necessary, so we don't do it here.)
-        Glib::RefPtr<Gio::File> file_with_ext = Gio::File::create_for_uri(uri_chosen);
+        auto file_with_ext = Gio::File::create_for_uri(uri_chosen);
         const auto filename_part = file_with_ext->get_basename();
 
         //Add the filename part to the newly-created directory:
-        Glib::RefPtr<Gio::File> file_whole = dir->get_child(filename_part);
+        auto file_whole = dir->get_child(filename_part);
         return file_whole->get_uri();
       }
 
@@ -2396,7 +2396,7 @@ void AppWindow::on_menu_developer_restore_backup()
   file_dlg.set_transient_for(*this);
   file_dlg.set_local_only(); //Because we can't untar remote files.
 
-  Glib::RefPtr<Gtk::FileFilter> filter = Gtk::FileFilter::create();
+  auto filter = Gtk::FileFilter::create();
   filter->set_name(_(".tar.gz Backup files"));
   filter->add_pattern("*.tar.gz");
   filter->add_pattern("*.tgz");
@@ -2865,10 +2865,10 @@ void AppWindow::on_menu_edit_copy_activate()
   auto textview = dynamic_cast<Gtk::TextView*>(widget);
   if(textview)
   {
-    Glib::RefPtr<Gtk::TextBuffer> buffer = textview->get_buffer();
+    auto buffer = textview->get_buffer();
     if(buffer)
     {
-      Glib::RefPtr<Gtk::Clipboard> clipboard = 
+      auto clipboard = 
         Gtk::Clipboard::get_for_display(get_display());
       buffer->copy_clipboard(clipboard);
     }
@@ -2891,10 +2891,10 @@ void AppWindow::on_menu_edit_cut_activate()
   auto textview = dynamic_cast<Gtk::TextView*>(widget);
   if(textview)
   {
-    Glib::RefPtr<Gtk::TextBuffer> buffer = textview->get_buffer();
+    auto buffer = textview->get_buffer();
     if(buffer)
     {
-      Glib::RefPtr<Gtk::Clipboard> clipboard = 
+      auto clipboard = 
         Gtk::Clipboard::get_for_display(get_display());
       buffer->cut_clipboard(clipboard, textview->get_editable());
     }
@@ -2917,10 +2917,10 @@ void AppWindow::on_menu_edit_paste_activate()
   auto textview = dynamic_cast<Gtk::TextView*>(widget);
   if(textview)
   {
-    Glib::RefPtr<Gtk::TextBuffer> buffer = textview->get_buffer();
+    auto buffer = textview->get_buffer();
     if(buffer)
     {
-      Glib::RefPtr<Gtk::Clipboard> clipboard = 
+      auto clipboard = 
         Gtk::Clipboard::get_for_display(get_display());
       buffer->paste_clipboard(clipboard);
     }

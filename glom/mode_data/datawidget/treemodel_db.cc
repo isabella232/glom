@@ -61,7 +61,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
 
     if((row < (int)model.m_data_model_rows_count) && model.m_gda_datamodel)
     {
-      Glib::RefPtr<Gnome::Gda::DataModelIter> iter = model.m_gda_datamodel->create_iter();
+      auto iter = model.m_gda_datamodel->create_iter();
       if(iter)
       {
         iter->move_to_row(row);
@@ -304,7 +304,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     //Use a dummy DataModel that has the same columns and types,
     //but which does not use a real database table,
     //so we can use it to add find criteria.
-    Glib::RefPtr<Gnome::Gda::DataModelArray> model_array = Gnome::Gda::DataModelArray::create(m_column_fields.size());
+    auto model_array = Gnome::Gda::DataModelArray::create(m_column_fields.size());
     m_gda_datamodel = model_array;
 
     int col = 0;
@@ -337,7 +337,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 
   if(m_connection && !m_found_set.m_table_name.empty() && m_get_records)
   {
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause);
+    auto sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause);
     //std::cout << "debug: " << G_STRFUNC << ":  " << sql_query << std::endl;
 
     m_gda_datamodel = DbUtils::query_execute_select(sql_query, true /* use_cursor */);
@@ -369,7 +369,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 
       //This doesn't work with cursor-based models: const int count = m_gda_datamodel->get_n_rows();
       //because rows count is -1 until we have iterated to the last row.
-      Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query_without_sort = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, type_sort_clause());
+      auto sql_query_without_sort = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, type_sort_clause());
       const int count = DbUtils::count_rows_returned_by(sql_query_without_sort);
       if(count < 0)
       {
@@ -472,7 +472,7 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
             //Examine the columns in the returned DataModel:
             for(int col = 0; col < m_gda_datamodel->get_n_columns(); ++col)
             {
-              Glib::RefPtr<Gnome::Gda::Column> column = m_gda_datamodel->describe_column(col);
+              auto column = m_gda_datamodel->describe_column(col);
               std::cout << "    debug: column index=" << col << ", name=" << column->get_name() << ", type=" << g_type_name(column->get_g_type()) << std::endl;
             }
             */
@@ -973,7 +973,7 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       //Ask the database how many records there are in the whole table:
       //TODO: Apparently, this is very slow:
 
-      Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+      auto builder =
         Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
 
       const auto id_function = builder->add_function("count", builder->add_id("*")); //TODO: Is * allowed here?
@@ -981,7 +981,7 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
 
       builder->select_add_target(m_found_set.m_table_name);
 
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
+      auto datamodel = DbUtils::query_execute_select(builder);
 
       if(datamodel)
       {

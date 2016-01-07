@@ -88,7 +88,7 @@ void Dialog_ChooseRelationship::set_document(Document* document, const Glib::ust
 
 void Dialog_ChooseRelationship::select_item(const std::shared_ptr<const Relationship>& relationship)
 {
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
+  auto refTreeSelection = m_treeview->get_selection();
   if(!refTreeSelection)
     return; //Should never happen.
 
@@ -115,7 +115,7 @@ std::shared_ptr<Relationship> Dialog_ChooseRelationship::get_relationship_chosen
 {
   std::shared_ptr<Relationship> result;
 
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
+  auto refTreeSelection = m_treeview->get_selection();
   if(refTreeSelection)
   {
     auto iter = refTreeSelection->get_selected();

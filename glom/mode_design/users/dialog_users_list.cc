@@ -51,7 +51,7 @@ Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<G
   builder->get_widget("treeview_users", m_treeview_users);
   if(m_treeview_users)
   {
-    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_users->get_selection();
+    auto refSelection = m_treeview_users->get_selection();
     if(refSelection)
     {
       refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_treeview_users_selection_changed) );
@@ -93,7 +93,7 @@ void Dialog_UsersList::enable_buttons()
    return;
 
   //Fields:
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_users->get_selection();
+  auto refSelection = m_treeview_users->get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -114,7 +114,7 @@ void Dialog_UsersList::enable_buttons()
 
 void Dialog_UsersList::on_button_user_remove()
 {
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_users->get_selection();
+  auto refTreeSelection = m_treeview_users->get_selection();
   if(refTreeSelection)
   {
     auto iter = refTreeSelection->get_selected();
@@ -141,7 +141,7 @@ void Dialog_UsersList::on_button_user_remove()
 
 void Dialog_UsersList::on_button_user_delete()
 {
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_users->get_selection();
+  auto refTreeSelection = m_treeview_users->get_selection();
   if(refTreeSelection)
   {
     auto iter = refTreeSelection->get_selected();
@@ -270,7 +270,7 @@ void Dialog_UsersList::on_button_user_new()
 void Dialog_UsersList::on_button_user_edit()
 {
   //Get the selected item:
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_users->get_selection();
+  auto refTreeSelection = m_treeview_users->get_selection();
   if(refTreeSelection)
   {
     auto iter = refTreeSelection->get_selected();

@@ -345,7 +345,7 @@ void Window_Translations::on_button_export()
   file_dlg.set_do_overwrite_confirmation();
   
   // Only po files
-  Glib::RefPtr<Gtk::FileFilter> filter = Gtk::FileFilter::create();
+  auto filter = Gtk::FileFilter::create();
   filter->set_name(_("Po files"));
   filter->add_pattern("*.po");
   file_dlg.add_filter(filter);
@@ -384,7 +384,7 @@ void Window_Translations::on_button_import()
   file_dlg.set_transient_for(*this);
 
   // Only po files
-  Glib::RefPtr<Gtk::FileFilter> filter = Gtk::FileFilter::create();
+  auto filter = Gtk::FileFilter::create();
   filter->set_name(_("Po files"));
   filter->add_pattern("*.po");
   file_dlg.add_filter(filter);

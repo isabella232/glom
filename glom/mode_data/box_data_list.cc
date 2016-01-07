@@ -147,7 +147,7 @@ bool Box_Data_List::fill_from_database()
     if(table_privs.m_view)
     {
       //Select first record:
-      Glib::RefPtr<Gtk::TreeModel> refModel = m_AddDel.get_model();
+      auto refModel = m_AddDel.get_model();
       if(refModel)
         m_AddDel.select_item(refModel->children().begin());
 
@@ -206,8 +206,8 @@ bool Box_Data_List::on_script_button_idle(const std::shared_ptr<const LayoutItem
 #if 0
   // TODO: This is perhaps a better approach, but
   // DbTreeModel::refresh_from_database is protected
-  Glib::RefPtr<Gtk::TreeModel> model = m_AddDel.get_model();
-  Glib::RefPtr<DbTreeModel> db_model = Glib::RefPtr<DbTreeModel>::cast_dynamic(model);
+  auto model = m_AddDel.get_model();
+  auto db_model = Glib::RefPtr<DbTreeModel>::cast_dynamic(model);
   if(db_model)
     db_model->refresh_from_database(m_found_set);
 #endif
@@ -321,7 +321,7 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_first() const
 {
   //std::cout << "debug: " << G_STRFUNC << ": get_primary_key_value_first() records_count = " << m_AddDel.get_count() << std::endl;
 
-  Glib::RefPtr<Gtk::TreeModel> model = m_AddDel.get_model();
+  auto model = m_AddDel.get_model();
   if(model)
   {
     auto iter = model->children().begin();
@@ -492,8 +492,8 @@ void Box_Data_List::get_record_counts(gulong& total, gulong& found) const
   total = 0;
   found = 0;
 
-  Glib::RefPtr<Gtk::TreeModel> refModel = m_AddDel.get_model();
-  Glib::RefPtr<DbTreeModel> refModelDerived = Glib::RefPtr<DbTreeModel>::cast_dynamic(refModel);
+  auto refModel = m_AddDel.get_model();
+  auto refModelDerived = Glib::RefPtr<DbTreeModel>::cast_dynamic(refModel);
 
   if(refModelDerived)
     refModelDerived->get_record_counts(total, found);

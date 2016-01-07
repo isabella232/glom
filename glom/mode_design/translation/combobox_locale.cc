@@ -70,7 +70,7 @@ Glib::ustring ComboBox_Locale::get_selected_locale() const
 void ComboBox_Locale::set_selected_locale(const Glib::ustring& locale)
 {
   //Look for the row with this text, and activate it:
-  Glib::RefPtr<Gtk::TreeModel> model = get_model();
+  auto model = get_model();
   if(model)
   {
     for(const auto& row : model->children())

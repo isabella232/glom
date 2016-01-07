@@ -39,12 +39,12 @@ Privs::type_vec_strings Privs::get_database_groups()
 {
   type_vec_strings result;
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+  auto builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_field("groname", "pg_group");
   builder->select_add_target("pg_group");
 
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
+  auto data_model = DbUtils::query_execute_select(builder);
   if(data_model)
   {
     const auto rows_count = data_model->get_n_rows();
@@ -115,12 +115,12 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
   if(group_name.empty())
   {
     //pg_shadow contains the users. pg_users is a view of pg_shadow without the password.
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    auto builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
     builder->select_add_field("usename", "pg_shadow");
     builder->select_add_target("pg_shadow");
 
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
+    auto data_model = DbUtils::query_execute_select(builder);
     if(data_model)
     {
       const auto rows_count = data_model->get_n_rows();
@@ -134,7 +134,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
   }
   else
   {
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builderGroup =
+    auto builderGroup =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
     builderGroup->select_add_field("groname", "pg_group");
     builderGroup->select_add_field("grolist", "pg_group");
@@ -144,7 +144,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
         builderGroup->add_field_id("groname", "pg_group"),
         builderGroup->add_expr(group_name)));
     //TODO: Show SQL.
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model_group = DbUtils::query_execute_select(builderGroup);
+    auto data_model_group = DbUtils::query_execute_select(builderGroup);
     if(data_model_group && data_model_group->get_n_rows())
     {
       const auto rows_count = data_model_group->get_n_rows();
@@ -161,7 +161,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
         for(const auto& userId: vecUserIds)
         {
           //TODO_Performance: Can we do this in one SQL SELECT?
-          Glib::RefPtr<Gnome::Gda::SqlBuilder> builderUser =
+          auto builderUser =
             Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
           builderUser->select_add_field("usename", "pg_user");
           builderUser->select_add_target("pg_user");
@@ -169,7 +169,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
             builderUser->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
               builderUser->add_field_id("usesysid", "pg_user"),
               builderUser->add_expr(userId)));
-          Glib::RefPtr<Gnome::Gda::DataModel> data_model_user = DbUtils::query_execute_select(builderUser);
+          auto data_model_user = DbUtils::query_execute_select(builderUser);
           if(data_model_user && data_model_user->get_n_rows() && data_model_user->get_n_columns())
           {
             const auto value_user = data_model_user->get_value_at(0, 0);
@@ -289,7 +289,7 @@ static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
     return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+  auto gda_connection = sharedconnection->get_gda_connection();
 
   return gda_connection;
 }
@@ -309,13 +309,13 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
   }
 
   //Get the permissions:
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+  auto builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
 
   const Glib::ustring function_name = "has_table_privilege";
   std::vector<Gnome::Gda::SqlBuilder::Id> args_base;
 
-  Glib::RefPtr<Gnome::Gda::Connection> connection = get_connection();
+  auto connection = get_connection();
   if(!connection)
   {
     std::cerr << G_STRFUNC << ": : Could not get a connection." << std::endl;
@@ -352,7 +352,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
   //const Glib::ustring sql_debug = Utils::sqlbuilder_get_full_query(builder);
   //std::cout << "DEBUG: " << sql_debug << std::endl;
 
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
+  auto data_model = DbUtils::query_execute_select(builder);
   if(!data_model || (data_model->get_n_rows() <= 0))
   {
     std::cerr << G_STRFUNC << ": The query returned no data." << std::endl;

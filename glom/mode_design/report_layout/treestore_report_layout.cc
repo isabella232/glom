@@ -58,7 +58,7 @@ bool TreeStore_ReportLayout::row_drop_possible_vfunc(const Gtk::TreeModel::Path&
 {
   //Get the Row that is being dragged:
   //TODO: Add const version of get_from_selection_data(): Glib::RefPtr<const Gtk::TreeModel> refThis = Glib::RefPtr<const Gtk::TreeModel>(this);
-  Glib::RefPtr<Gtk::TreeModel> refThis = Glib::RefPtr<Gtk::TreeModel>(const_cast<TreeStore_ReportLayout*>(this));
+  auto refThis = Glib::RefPtr<Gtk::TreeModel>(const_cast<TreeStore_ReportLayout*>(this));
   refThis->reference(); //, true /* take_copy */)
   Gtk::TreeModel::Path path_dragged_row;
   Gtk::TreeModel::Path::get_from_selection_data(selection_data, refThis, path_dragged_row);

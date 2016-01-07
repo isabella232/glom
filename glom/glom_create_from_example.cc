@@ -153,12 +153,12 @@ static bool delete_directory(const Glib::RefPtr<Gio::File>& directory)
 
   //(Recursively) Delete any child files and directories,
   //so we can delete this directory.
-  Glib::RefPtr<Gio::FileEnumerator> enumerator = directory->enumerate_children();
+  auto enumerator = directory->enumerate_children();
 
-  Glib::RefPtr<Gio::FileInfo> info = enumerator->next_file();
+  auto info = enumerator->next_file();
   while(info)
   {
-    Glib::RefPtr<Gio::File> child = directory->get_child(info->get_name());
+    auto child = directory->get_child(info->get_name());
     bool removed_child = false;
     if(child->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
       removed_child = delete_directory(child);
@@ -186,7 +186,7 @@ static bool delete_directory(const std::string& uri)
   if(uri.empty())
     return true;
 
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  auto file = Gio::File::create_for_uri(uri);
   return delete_directory(file);
 }
 
@@ -287,7 +287,7 @@ int main(int argc, char* argv[])
   if(!input_uri.empty())
   {
     //Get a URI (file://something) from the filepath:
-    Glib::RefPtr<Gio::File> file = Gio::File::create_for_commandline_arg(input_uri);
+    auto file = Gio::File::create_for_commandline_arg(input_uri);
 
     if(!file->query_exists())
     {
@@ -328,7 +328,7 @@ int main(int argc, char* argv[])
   else
   {
     //Get a URI (file://something) from the filepath:
-    Glib::RefPtr<Gio::File> file = Gio::File::create_for_commandline_arg(group.m_arg_filepath_dir_output);
+    auto file = Gio::File::create_for_commandline_arg(group.m_arg_filepath_dir_output);
 
     if(!file->query_exists())
     {
@@ -389,7 +389,7 @@ int main(int argc, char* argv[])
     if(uri.empty())
       return EXIT_FAILURE;
         
-    Glib::RefPtr<Gio::File> file = Gio::File::create_for_commandline_arg(uri);
+    auto file = Gio::File::create_for_commandline_arg(uri);
     if(file->query_exists())
     {
       std::cerr << G_STRFUNC << ": The output path already exists: " << filepath_dir << std::endl;

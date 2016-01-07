@@ -83,7 +83,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder_get = 
     Glom::Utils::build_sql_select_with_where_clause(table_name,
       fieldsToGet, where_clause);
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = 
+  auto data_model = 
     Glom::DbUtils::query_execute_select(builder_get);
   if(!test_model_expected_size(data_model, 1, 1))
   {

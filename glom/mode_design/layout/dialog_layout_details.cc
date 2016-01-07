@@ -154,7 +154,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
 
 
     //Respond to changes of selection:
-    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
+    auto refSelection = m_treeview_fields->get_selection();
     if(refSelection)
     {
       refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_treeview_fields_selection_changed) );
@@ -372,7 +372,7 @@ void Dialog_Layout_Details::init(const Glib::ustring& layout_name, const Glib::u
 void Dialog_Layout_Details::enable_buttons()
 {
   //Fields:
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
+  auto refSelection = m_treeview_fields->get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -441,7 +441,7 @@ void Dialog_Layout_Details::enable_buttons()
 
 void Dialog_Layout_Details::on_button_field_delete()
 {
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+  auto refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
     auto iter = refTreeSelection->get_selected();
@@ -456,7 +456,7 @@ void Dialog_Layout_Details::on_button_field_delete()
 
 void Dialog_Layout_Details::on_button_up()
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
+  auto refSelection = m_treeview_fields->get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -487,7 +487,7 @@ void Dialog_Layout_Details::on_button_up()
 
 void Dialog_Layout_Details::on_button_down()
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
+  auto refSelection = m_treeview_fields->get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -533,7 +533,7 @@ void Dialog_Layout_Details::on_button_add_field()
       row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(layout_item);
 
       //Scroll to, and select, the new row:
-      Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+      auto refTreeSelection = m_treeview_fields->get_selection();
       if(refTreeSelection)
         refTreeSelection->select(iter);
 
@@ -651,7 +651,7 @@ void Dialog_Layout_Details::on_button_add_button()
     row[m_model_items->m_columns.m_col_layout_item] = button;
 
     //Scroll to, and select, the new row:
-    Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+    auto refTreeSelection = m_treeview_fields->get_selection();
     if(refTreeSelection)
       refTreeSelection->select(iter);
 
@@ -676,7 +676,7 @@ void Dialog_Layout_Details::on_button_add_text()
     row[m_model_items->m_columns.m_col_layout_item] = textobject;
 
     //Scroll to, and select, the new row:
-    Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+    auto refTreeSelection = m_treeview_fields->get_selection();
     if(refTreeSelection)
       refTreeSelection->select(iter);
 
@@ -701,7 +701,7 @@ void Dialog_Layout_Details::on_button_add_image()
     row[m_model_items->m_columns.m_col_layout_item] = imageobject;
 
     //Scroll to, and select, the new row:
-    Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+    auto refTreeSelection = m_treeview_fields->get_selection();
     if(refTreeSelection)
       refTreeSelection->select(iter);
 
@@ -725,7 +725,7 @@ void Dialog_Layout_Details::on_button_add_notebook()
     row[m_model_items->m_columns.m_col_layout_item] = notebook;
 
     //Scroll to, and select, the new row:
-    Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+    auto refTreeSelection = m_treeview_fields->get_selection();
     if(refTreeSelection)
       refTreeSelection->select(iter);
 
@@ -754,7 +754,7 @@ void Dialog_Layout_Details::on_button_add_related()
       row[m_model_items->m_columns.m_col_layout_item] = portal;
 
       //Scroll to, and select, the new row:
-      Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+      auto refTreeSelection = m_treeview_fields->get_selection();
       if(refTreeSelection)
         refTreeSelection->select(iter);
 
@@ -786,7 +786,7 @@ void Dialog_Layout_Details::on_button_add_related_calendar()
       row[m_model_items->m_columns.m_col_layout_item] = portal;
 
       //Scroll to, and select, the new row:
-      Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+      auto refTreeSelection = m_treeview_fields->get_selection();
       if(refTreeSelection)
         refTreeSelection->select(iter);
 
@@ -805,7 +805,7 @@ Gtk::TreeModel::iterator Dialog_Layout_Details::get_selected_group_parent() cons
 
   Gtk::TreeModel::iterator parent;
 
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+  auto refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
     auto iter = refTreeSelection->get_selected();
@@ -856,7 +856,7 @@ void Dialog_Layout_Details::on_button_add_group()
     row[m_model_items->m_columns.m_col_layout_item] = layout_item;
 
     //Scroll to, and select, the new row:
-    Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+    auto refTreeSelection = m_treeview_fields->get_selection();
     if(refTreeSelection)
       refTreeSelection->select(iterNewGroup);
 
@@ -873,7 +873,7 @@ void Dialog_Layout_Details::on_button_formatting()
   //TODO: Abstract this into the base class:
 
   //Get the selected item:
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+  auto refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
     auto iter = refTreeSelection->get_selected();
@@ -912,7 +912,7 @@ void Dialog_Layout_Details::on_button_formatting()
 void Dialog_Layout_Details::on_button_edit()
 {
   //Get the selected item:
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+  auto refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
     auto iter = refTreeSelection->get_selected();

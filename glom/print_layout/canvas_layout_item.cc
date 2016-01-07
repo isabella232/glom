@@ -104,7 +104,7 @@ void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& c
 
 void CanvasLayoutItem::on_resized()
 {
-  Glib::RefPtr<CanvasImageMovable> canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(get_child());
+  auto canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(get_child());
   if(canvas_image)
     canvas_image->scale_to_size();
 }
@@ -123,7 +123,7 @@ void CanvasLayoutItem::set_layout_item(const std::shared_ptr<LayoutItem>& layout
   if(!m_layout_item)
     std::cerr << G_STRFUNC << ": item was NULL." << std::endl;
 
-  Glib::RefPtr<CanvasItemMovable> child_item = create_canvas_item_for_layout_item(m_layout_item);
+  auto child_item = create_canvas_item_for_layout_item(m_layout_item);
 
   if(child_item)
   {
@@ -146,7 +146,7 @@ void CanvasLayoutItem::set_layout_item(const std::shared_ptr<LayoutItem>& layout
 
   //Scale images.
   //This can only be done after setting the size:
-  Glib::RefPtr<CanvasImageMovable> canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child_item);
+  auto canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child_item);
   if(canvas_image)
   {
     canvas_image->scale_to_size();
@@ -160,7 +160,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
   auto text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
   if(text)
   {
-    Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
+    auto canvas_item = CanvasTextMovable::create();
     canvas_item->property_line_width() = 0;
 
     apply_formatting(canvas_item, text);
@@ -174,8 +174,8 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
     auto image = std::dynamic_pointer_cast<LayoutItem_Image>(layout_item);
     if(image)
     {
-      Glib::RefPtr<CanvasImageMovable> canvas_item = CanvasImageMovable::create();
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = UiUtils::get_pixbuf_for_gda_value(image->m_image);
+      auto canvas_item = CanvasImageMovable::create();
+      auto pixbuf = UiUtils::get_pixbuf_for_gda_value(image->m_image);
       if(pixbuf)
         canvas_item->set_image(pixbuf);
       else
@@ -198,7 +198,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
         double end_y = 0;
         line->get_coordinates(start_x, start_y, end_x, end_y);
 
-        Glib::RefPtr<CanvasLineMovable> canvas_item = CanvasLineMovable::create();
+        auto canvas_item = CanvasLineMovable::create();
         canvas_item->property_line_width() = line->get_line_width();
         canvas_item->property_stroke_color() = line->get_line_color();
 
@@ -217,7 +217,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
           //Create an appropriate canvas item for the field type:
           if(field->get_glom_type() == Field::glom_field_type::IMAGE)
           {
-            Glib::RefPtr<CanvasImageMovable> canvas_item = CanvasImageMovable::create();
+            auto canvas_item = CanvasImageMovable::create();
             canvas_item->set_image_empty();
 
             child = canvas_item;
@@ -225,7 +225,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
           }
           else //text, numbers, date, time, boolean:
           {
-            Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
+            auto canvas_item = CanvasTextMovable::create();
             canvas_item->property_line_width() = 0;
             apply_formatting(canvas_item, field);
 
@@ -244,7 +244,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
           auto portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
           if(portal)
           {
-            Glib::RefPtr<CanvasTableMovable> canvas_item = CanvasTableMovable::create();
+            auto canvas_item = CanvasTableMovable::create();
 
             canvas_item->set_lines_details(
               portal->get_print_layout_row_line_width(),
@@ -286,7 +286,7 @@ Glib::RefPtr<Goocanvas::Item> CanvasLayoutItem::get_canvas_table_cell_child(cons
   const auto count = table->get_n_children();
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> child = table->get_child(i);
+    auto child = table->get_child(i);
     if(!child)
       continue;
 
@@ -308,8 +308,8 @@ Glib::RefPtr<Goocanvas::Item> CanvasLayoutItem::get_canvas_table_cell_child(cons
 
 void CanvasLayoutItem::add_portal_rows_if_necessary(guint rows_count)
 {
-  Glib::RefPtr<CanvasItemMovable> child = get_child();
-  Glib::RefPtr<CanvasTableMovable> canvas_table = 
+  auto child = get_child();
+  auto canvas_table = 
     Glib::RefPtr<CanvasTableMovable>::cast_dynamic(child);
   if(!canvas_table)
     return;
@@ -340,7 +340,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
       //std::cout << "  row=" << row << ", col=" << col << std::endl;
 
       //Check if a child already exists:
-      Glib::RefPtr<Goocanvas::Item> existing_child = 
+      auto existing_child = 
         get_canvas_table_cell_child(canvas_table, row, col);
       if(existing_child)
       {
@@ -353,8 +353,8 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
       //creating another CanvasLayoutItem, because that would be a group,
       //but goocanvas cannot yet support Groups inside Tables. murrayc.
       //TODO: Bug number.
-      Glib::RefPtr<CanvasItemMovable> cell = create_canvas_item_for_layout_item(layout_item);
-      Glib::RefPtr<Goocanvas::Item> cell_as_item = CanvasItemMovable::cast_to_item(cell);
+      auto cell = create_canvas_item_for_layout_item(layout_item);
+      auto cell_as_item = CanvasItemMovable::cast_to_item(cell);
 
       if(cell && cell_as_item)
       {
@@ -395,7 +395,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
               (Gtk::FILL), (Gtk::AttachOptions)(Gtk::FILL | Gtk::EXPAND));
   
             //Add a second item (an invisible rect) to make sure that the size is really used:
-            Glib::RefPtr<Goocanvas::Rect> rect = 
+            auto rect = 
               Goocanvas::Rect::create(0, 0, width, row_height);
             //TODO: Find out why this doesn't work: rect->property_stroke_pattern() = Cairo::RefPtr<Cairo::Pattern>();
             g_object_set(rect->gobj(), "stroke-pattern", (void*)0, (void*)0);
@@ -418,7 +418,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
   if(!field)
     return;
 
-  Glib::RefPtr<CanvasItemMovable> child = get_child();
+  auto child = get_child();
   if(!child)
     return;
 
@@ -431,7 +431,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
     case(Field::glom_field_type::TIME):
     case(Field::glom_field_type::DATE):
     {
-      Glib::RefPtr<CanvasTextMovable> canvas_item = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(child);
+      auto canvas_item = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(child);
       if(!canvas_item)
         return;
 
@@ -450,7 +450,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
     }
     case(Field::glom_field_type::IMAGE):
     {
-      Glib::RefPtr<CanvasImageMovable> canvas_item = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child);
+      auto canvas_item = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child);
       if(!canvas_item)
         return;
 
@@ -460,7 +460,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       double height = 0;
       canvas_item->get_width_height(width, height);
 
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = UiUtils::get_pixbuf_for_gda_value(value);
+      auto pixbuf = UiUtils::get_pixbuf_for_gda_value(value);
       if(pixbuf)
         canvas_item->set_image(pixbuf);
       else
@@ -476,8 +476,8 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
 
 void CanvasLayoutItem::remove_empty_indicators()
 {
-  Glib::RefPtr<CanvasItemMovable> child = get_child();
-  Glib::RefPtr<CanvasImageMovable> canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child);
+  auto child = get_child();
+  auto canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child);
   if(canvas_image)
   {
     //Clear the no-image pixbuf from images:

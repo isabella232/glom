@@ -81,8 +81,8 @@ void CanvasGroupMovable::set_xy(double x, double y)
   const auto count = get_n_children();
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> child = get_child(i);
-    Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(child);
+    auto child = get_child(i);
+    auto movable = CanvasItemMovable::cast_to_movable(child);
     if(movable)
     {
       double this_x = 0;
@@ -125,11 +125,11 @@ void CanvasGroupMovable::set_width_height(double width, double height)
   m_width = width;
   m_height = height;
 
-  Glib::RefPtr<Goocanvas::Item> first_child = get_child(0);
+  auto first_child = get_child(0);
   if(!first_child)
     return;
 
-  Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(first_child);
+  auto movable = CanvasItemMovable::cast_to_movable(first_child);
   if(movable)
      movable->set_width_height(width, height);
 }
@@ -145,8 +145,8 @@ void CanvasGroupMovable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& gri
   const auto count = get_n_children();
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> child = get_child(i);
-    Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(child);
+    auto child = get_child(i);
+    auto movable = CanvasItemMovable::cast_to_movable(child);
     if(movable)
     {
       movable->set_grid(grid);

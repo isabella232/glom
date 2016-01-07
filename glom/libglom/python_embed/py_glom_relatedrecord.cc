@@ -95,7 +95,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
       return boost::python::object();
     }
 
-    Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+    auto gda_connection = sharedconnection->get_gda_connection();
 
     const Glib::ustring related_key_name = m_relationship->get_to_field();
 
@@ -107,7 +107,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
     }
 
     //Get the single value from the related records:
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    auto builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
     builder->select_add_field(field_name, related_table);
     builder->select_add_target(related_table);
@@ -131,7 +131,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
     }*/
 
     // TODO: Does this behave well if this throws an exception?
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select_builder(builder);
+    auto datamodel = gda_connection->statement_execute_select_builder(builder);
     if(datamodel && datamodel->get_n_rows())
     {
       const Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
@@ -185,7 +185,7 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
     return boost::python::object();
   }
 
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+  auto gda_connection = sharedconnection->get_gda_connection();
 
   const Glib::ustring related_key_name = m_relationship->get_to_field();
 
@@ -196,7 +196,7 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
   }
 
   //Get the aggregate value from the related records:
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+  auto builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
 
   const Gnome::Gda::SqlBuilder::Id id_function = builder->add_function(aggregate, builder->add_id(field_name)); //TODO: It would be nice to specify the table here too.
@@ -210,7 +210,7 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
 
 
   //std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select_builder(builder);
+  auto datamodel = gda_connection->statement_execute_select_builder(builder);
 
   // Ignore the error: The case that the command execution didn't return
   // a datamodel is handled below.

@@ -104,7 +104,7 @@ void ComboBox_Relationship::set_selected_relationship(const std::shared_ptr<cons
 void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relationship_name, const Glib::ustring& related_relationship_name)
 {
   //Look for the row with this text, and activate it:
-  Glib::RefPtr<Gtk::TreeModel> model = get_model();
+  auto model = get_model();
   if(model)
   {
     for(const auto& row : model->children())

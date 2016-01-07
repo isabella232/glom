@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
   }
 
   //Get a URI (file://something) from the filepath:
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_commandline_arg(argv[1]);
+  auto file = Gio::File::create_for_commandline_arg(argv[1]);
   const auto uri = file->get_uri();
 
   const std::string dtd_filepath = argv[2];

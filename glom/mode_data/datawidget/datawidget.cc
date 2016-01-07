@@ -350,7 +350,7 @@ void DataWidget::set_child_size_by_field(const std::shared_ptr<const LayoutItem_
     {
       int example_width = 0;
       int example_height = 0;
-      Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout("example"); //TODO: Use different text, according to the current locale, or allow the user to choose an example?
+      auto refLayout = create_pango_layout("example"); //TODO: Use different text, according to the current locale, or allow the user to choose an example?
       refLayout->get_pixel_size(example_width, example_height);
 
       if(example_height > 0)

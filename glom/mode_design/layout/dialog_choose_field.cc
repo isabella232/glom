@@ -63,7 +63,7 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
 
     m_treeview->signal_row_activated().connect( sigc::mem_fun(*this, &Dialog_ChooseField::on_row_activated) );
 
-    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview->get_selection();
+    auto refSelection = m_treeview->get_selection();
     if(refSelection)
     {
       refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_ChooseField::on_treeview_selection_changed) );
@@ -93,7 +93,7 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
   //If one start field was specified, then multiple selection would not make 
   //much sense. The caller probably wants single selection.
   //Make this explicit in the API if that is not always suitable.
-  Glib::RefPtr<Gtk::TreeView::Selection> selection = m_treeview->get_selection();
+  auto selection = m_treeview->get_selection();
   selection->set_mode((field && !(field->get_name().empty()))
     ? Gtk::SELECTION_SINGLE : Gtk::SELECTION_MULTIPLE); 
    
@@ -140,7 +140,7 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
     std::cerr << G_STRFUNC << ": table_name is empty" << std::endl;
   }
   
-  Glib::RefPtr<Gtk::TreeView::Selection> selection = m_treeview->get_selection();
+  auto selection = m_treeview->get_selection();
   selection->set_mode(Gtk::SELECTION_MULTIPLE); 
    
 
@@ -186,7 +186,7 @@ void Dialog_ChooseField::select_item(const Field& field)
     if(field_item.get_name() == field.get_name())
     {
       //Select the item:
-      Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
+      auto refTreeSelection = m_treeview->get_selection();
       if(refTreeSelection)
         refTreeSelection->select(iter);
     }
@@ -228,7 +228,7 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
   type_list_field_items list_fields;
 
   //Field:
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
+  auto refTreeSelection = m_treeview->get_selection();
   if(!refTreeSelection)
     return list_fields;
     
@@ -331,7 +331,7 @@ void Dialog_ChooseField::on_combo_relationship_changed()
 void Dialog_ChooseField::on_treeview_selection_changed()
 {
 #if 0
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview->get_selection();
+  auto refSelection = m_treeview->get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();

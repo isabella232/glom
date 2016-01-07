@@ -4803,7 +4803,7 @@ private:
 bool add_file_to_archive(archive* a, const std::string& parent_dir_path, const std::string& filepath)
 {
 //TODO: Use read_async() when this calling method is async.
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(filepath);
+  auto file = Gio::File::create_for_path(filepath);
   Glib::RefPtr<Gio::FileInputStream> stream;
   try
   {
@@ -4832,7 +4832,7 @@ bool add_file_to_archive(archive* a, const std::string& parent_dir_path, const s
 
   archive_entry_copy_stat(entry, &st); //This has no return value.
 
-  Glib::RefPtr<Gio::File> file_parent = Gio::File::create_for_path(parent_dir_path);
+  auto file_parent = Gio::File::create_for_path(parent_dir_path);
   const auto path = file_parent->get_relative_path(file);
   archive_entry_set_pathname(entry, path.c_str()); //This has no return value.
 

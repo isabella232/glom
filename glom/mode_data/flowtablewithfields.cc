@@ -1165,7 +1165,7 @@ void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups&
   for(auto info : m_listFields)
   {
     auto widget = info.m_first;
-    Glib::RefPtr<Gtk::SizeGroup> previous_size_group = info.m_first_in_sizegroup;
+    auto previous_size_group = info.m_first_in_sizegroup;
     if(!widget || !previous_size_group)
       continue;
 
@@ -1199,7 +1199,7 @@ void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups&
     if(column >= m_vec_size_groups.size())
       continue;
 
-    Glib::RefPtr<Gtk::SizeGroup> size_group = m_vec_size_groups[column];
+    auto size_group = m_vec_size_groups[column];
     if(size_group && (info.m_first_in_sizegroup != size_group))
     {
       size_group->add_widget(*label);

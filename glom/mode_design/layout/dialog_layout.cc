@@ -60,13 +60,13 @@ void Dialog_Layout::init(const Glib::ustring& layout_name, const Glib::ustring& 
 
 void Dialog_Layout::move_treeview_selection_up(Gtk::TreeView* treeview, const Gtk::TreeModelColumn<guint>& sequence_column)
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = treeview->get_selection();
+  auto refSelection = treeview->get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
     if(iter)
     {
-      Glib::RefPtr<Gtk::TreeModel> model = treeview->get_model();
+      auto model = treeview->get_model();
       if(iter != model->children().begin()) //If it is not the first one.
       {
         auto iterBefore = iter;
@@ -94,7 +94,7 @@ void Dialog_Layout::move_treeview_selection_up(Gtk::TreeView* treeview, const Gt
 
 void Dialog_Layout::move_treeview_selection_down(Gtk::TreeView* treeview, const Gtk::TreeModelColumn<guint>& sequence_column)
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = treeview->get_selection();
+  auto refSelection = treeview->get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -103,7 +103,7 @@ void Dialog_Layout::move_treeview_selection_down(Gtk::TreeView* treeview, const 
       auto iterNext = iter;
       iterNext++;
 
-      Glib::RefPtr<Gtk::TreeModel> model = treeview->get_model();
+      auto model = treeview->get_model();
       if(iterNext != model->children().end()) //If it is not the last one.
       {
         Gtk::TreeModel::Row row = *iter;

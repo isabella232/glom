@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
   }
 
   //Get a URI (file://something) from the filepath:
-  Glib::RefPtr<Gio::File> file_input = Gio::File::create_for_commandline_arg(input_uri);
+  auto file_input = Gio::File::create_for_commandline_arg(input_uri);
 
   //Make sure it is really a URI:
   input_uri = file_input->get_uri();
@@ -164,7 +164,7 @@ int main(int argc, char* argv[])
   }
 
   //Get a URI (file://something) from the filepath:
-  Glib::RefPtr<Gio::File> file_output = Gio::File::create_for_commandline_arg(group.m_arg_filepath_output);
+  auto file_output = Gio::File::create_for_commandline_arg(group.m_arg_filepath_output);
   
   //Create the directory, if necessary:
   if(!(file_output->query_exists()))

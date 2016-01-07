@@ -249,8 +249,8 @@ bool Box_Data_List_Related::on_script_button_idle(const std::shared_ptr<const La
 #if 0
   // TODO: This is perhaps a better approach, but
   // DbTreeModel::refresh_from_database is protected
-  Glib::RefPtr<Gtk::TreeModel> model = m_AddDel.get_model();
-  Glib::RefPtr<DbTreeModel> db_model = Glib::RefPtr<DbTreeModel>::cast_dynamic(model);
+  auto model = m_AddDel.get_model();
+  auto db_model = Glib::RefPtr<DbTreeModel>::cast_dynamic(model);
   if(db_model)
     db_model->refresh_from_database(m_found_set);
 #endif

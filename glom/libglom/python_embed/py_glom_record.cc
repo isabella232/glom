@@ -180,7 +180,7 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
     return;
   }
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+  auto builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
   builder->set_table(m_table_name);
   builder->add_field_value_as_value(field->get_name(), field_value);

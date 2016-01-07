@@ -88,15 +88,15 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
   //Dialog_Properties::set_modified(false);
 
   //Tell the SourceView to do syntax highlighting for Python:
-  Glib::RefPtr<Gsv::LanguageManager> languages_manager = 
+  auto languages_manager = 
     Gsv::LanguageManager::get_default();
 
-  Glib::RefPtr<Gsv::Language> language = 
+  auto language = 
     languages_manager->get_language("python"); //This is the GtkSourceView language ID.
   if(language)
   {
      //Create a new buffer and set it, instead of getting the default buffer, in case libglade has tried to set it, using the wrong buffer type:
-     Glib::RefPtr<Gsv::Buffer> buffer = Gsv::Buffer::create(language);
+     auto buffer = Gsv::Buffer::create(language);
      buffer->set_highlight_syntax();
      m_text_view_script->set_buffer(buffer);
   }
@@ -126,7 +126,7 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
 
     const Gnome::Gda::Value next_value = Conversions::parse_value(new_value);
                
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+    auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
     builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
     builder->add_field_value_as_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE, next_value);
     builder->set_where(
@@ -169,7 +169,7 @@ void Dialog_Database_Preferences::load_from_document()
   //Show the auto-increment values:
   m_model_autoincrements->clear();
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+  auto builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_field(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME,
     GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
@@ -181,7 +181,7 @@ void Dialog_Database_Preferences::load_from_document()
   
   NumericFormat numeric_format; //ignored
 
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
+  auto datamodel = DbUtils::query_execute_select(builder);
   if(!datamodel)
   {
     std::cerr << G_STRFUNC << ": Gda::DataModel is NULL." << std::endl;

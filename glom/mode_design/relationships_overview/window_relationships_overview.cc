@@ -60,7 +60,7 @@ Window_RelationshipsOverview::Window_RelationshipsOverview(BaseObjectType* cobje
   Gtk::Box* vbox = nullptr;
   builder->get_widget("vbox_placeholder_menubar", vbox);
 
-  Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
+  auto action_group = Gio::SimpleActionGroup::create();
 
   add_action("pagesetup",
     sigc::mem_fun(*this, &Window_RelationshipsOverview::on_menu_file_page_setup) );
@@ -76,9 +76,9 @@ Window_RelationshipsOverview::Window_RelationshipsOverview(BaseObjectType* cobje
   insert_action_group("relationshipsoverview", action_group);
 
   //Get the menu:
-  Glib::RefPtr<Glib::Object> object =
+  auto object =
     builder->get_object("Overview_MainMenu");
-  Glib::RefPtr<Gio::Menu> gmenu =
+  auto gmenu =
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!gmenu)
     g_warning("GMenu not found");
@@ -180,7 +180,7 @@ void Window_RelationshipsOverview::draw_tables()
 
       Document::type_vec_fields fields = document->get_table_fields(table_name);
 
-      Glib::RefPtr<CanvasGroupDbTable> table_group =
+      auto table_group =
         CanvasGroupDbTable::create(info->get_name(), item_get_title_or_name(info), fields, table_x, table_y);
       m_group_tables->add_child(table_group);
       m_canvas.associate_with_grid(table_group); //Make snapping work.
@@ -227,7 +227,7 @@ void Window_RelationshipsOverview::draw_lines()
         if(!relationship)
           continue;
 
-        Glib::RefPtr<CanvasGroupDbTable> group_from = get_table_group(relationship->get_from_table());
+        auto group_from = get_table_group(relationship->get_from_table());
 
         double from_field_x = 0.0;
         double from_field_y = 0.0;
@@ -245,7 +245,7 @@ void Window_RelationshipsOverview::draw_lines()
         //Only primary keys can be to fields:
         if(true) //document->get_field(relationship->get_to_table(), relationship->get_to_field())->get_primary_key())
         {
-          Glib::RefPtr<CanvasGroupDbTable> group_to = get_table_group(relationship->get_to_table());
+          auto group_to = get_table_group(relationship->get_to_table());
 
           double to_field_x = 0.0;
           double to_field_y = 0.0;
@@ -273,7 +273,7 @@ void Window_RelationshipsOverview::draw_lines()
           }
 
           //Create the line:
-          Glib::RefPtr<CanvasLineMovable> line = CanvasLineMovable::create();
+          auto line = CanvasLineMovable::create();
           double points_coordinates[] = {from_field_x, from_field_y,
             from_field_x + extra_line, from_field_y,
             to_field_x - extra_line, to_field_y,
@@ -300,7 +300,7 @@ void Window_RelationshipsOverview::draw_lines()
 
           const double text_x = (from_field_x + to_field_x) / 2;
           const auto text_y = ((from_field_y + to_field_y) / 2) + y_offset;
-          Glib::RefPtr<CanvasTextMovable> text = CanvasTextMovable::create(item_get_title_or_name(relationship),
+          auto text = CanvasTextMovable::create(item_get_title_or_name(relationship),
             text_x, text_y, -1, //TODO: Calc a suitable width.
             Goocanvas::ANCHOR_CENTER);
           text->property_font() = "Sans 10";
@@ -331,7 +331,7 @@ void Window_RelationshipsOverview::on_menu_file_print()
 void Window_RelationshipsOverview::on_menu_file_page_setup()
 {
   //Show the page setup dialog, asking it to start with the existing settings:
-  Glib::RefPtr<Gtk::PageSetup> new_page_setup =
+  auto new_page_setup =
       Gtk::run_page_setup_dialog(*this, m_refPageSetup, m_refSettings);
 
   //Save the chosen page setup dialog for use when printing, previewing, or
@@ -367,7 +367,7 @@ void Window_RelationshipsOverview::print_or_preview(Gtk::PrintOperationAction pr
 {
   //Create a new PrintOperation with our PageSetup and PrintSettings:
   //(We use our derived PrintOperation class)
-  Glib::RefPtr<PrintOperationRelationshipsOverview> print = PrintOperationRelationshipsOverview::create();
+  auto print = PrintOperationRelationshipsOverview::create();
   print->set_canvas(&m_canvas);
 
   print->set_track_print_status();
@@ -394,8 +394,8 @@ Glib::RefPtr<CanvasGroupDbTable> Window_RelationshipsOverview::get_table_group(c
   const auto count = m_group_tables->get_n_children();
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> item = m_group_tables->get_child(i);
-    Glib::RefPtr<CanvasGroupDbTable> table_item = Glib::RefPtr<CanvasGroupDbTable>::cast_dynamic(item);
+    auto item = m_group_tables->get_child(i);
+    auto table_item = Glib::RefPtr<CanvasGroupDbTable>::cast_dynamic(item);
     if(table_item && (table_item->get_table_name() == table_name))
     {
       return table_item;
@@ -408,7 +408,7 @@ Glib::RefPtr<CanvasGroupDbTable> Window_RelationshipsOverview::get_table_group(c
 
 void Window_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasItemMovable>& item, double /* x_offset */, double /* y_offset */)
 {
-  Glib::RefPtr<CanvasGroupDbTable> table = 
+  auto table = 
     Glib::RefPtr<CanvasGroupDbTable>::cast_dynamic(item);
   if(!table)
     return;
@@ -450,7 +450,7 @@ void Window_RelationshipsOverview::on_table_show_context(guint button, guint32 a
 
 void Window_RelationshipsOverview::setup_context_menu()
 {
-  Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
+  auto action_group = Gio::SimpleActionGroup::create();
 
   m_action_edit_fields = action_group->add_action("edit-fields");
   m_action_edit_relationships = action_group->add_action("edit-relationships");
@@ -458,9 +458,9 @@ void Window_RelationshipsOverview::setup_context_menu()
   insert_action_group("context", action_group);
 
   //Get the menu:
-  Glib::RefPtr<Glib::Object> object =
+  auto object =
     m_builder->get_object("ContextMenu");
-  Glib::RefPtr<Gio::Menu> gmenu =
+  auto gmenu =
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!gmenu)
     g_warning("GMenu not found");

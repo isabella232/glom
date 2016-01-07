@@ -111,7 +111,7 @@ DbAddDel::DbAddDel()
   signal_style_changed().connect(sigc::mem_fun(*this, &DbAddDel::on_self_style_changed));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_TreeView.get_selection();
+  auto refSelection = m_TreeView.get_selection();
   if(refSelection)
   {
     refSelection->signal_changed().connect(
@@ -198,7 +198,7 @@ void DbAddDel::on_MenuPopup_activate_Delete()
 {
   finish_editing();
 
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_TreeView.get_selection();
+  auto refSelection = m_TreeView.get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -252,7 +252,7 @@ void DbAddDel::setup_menu(Gtk::Widget* /* widget */)
 
   //TODO: add_accel_group(builder->get_accel_group());
 
-  Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+  auto menu = Gio::Menu::create();
   menu->append(_("_Edit"), "context.edit");
   menu->append(_("_Add"), "context.add");
   menu->append(_("_Delete"), "context.delete");
@@ -368,7 +368,7 @@ Gnome::Gda::Value DbAddDel::get_value_selected(const std::shared_ptr<const Layou
 
 Gtk::TreeModel::iterator DbAddDel::get_item_selected()
 {
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
+  auto refTreeSelection = m_TreeView.get_selection();
   if(refTreeSelection)
   {
      return refTreeSelection->get_selected();
@@ -385,7 +385,7 @@ Gtk::TreeModel::iterator DbAddDel::get_item_selected() const
   Glib::RefPtr<const Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
   if(refTreeSelection)
   {
-     Glib::RefPtr<Gtk::TreeSelection> unconst = Glib::RefPtr<Gtk::TreeSelection>::cast_const(refTreeSelection);
+     auto unconst = Glib::RefPtr<Gtk::TreeSelection>::cast_const(refTreeSelection);
      return unconst->get_selected();
   }
 
@@ -449,7 +449,7 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const std::shar
 
     treemodel_col += get_count_hidden_system_columns();
 
-    Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
+    auto refTreeSelection = m_TreeView.get_selection();
     g_assert(refTreeSelection);
     refTreeSelection->select(iter);
 
@@ -510,7 +510,7 @@ guint DbAddDel::get_fixed_cell_height()
     // when all columns are known.
 
     //Get a default:
-    Glib::RefPtr<Pango::Layout> refLayoutDefault = m_TreeView.create_pango_layout("ExampleEg");
+    auto refLayoutDefault = m_TreeView.create_pango_layout("ExampleEg");
     int width_default = 0;
     int height_default = 0;
     refLayoutDefault->get_pixel_size(width_default, height_default);
@@ -532,7 +532,7 @@ guint DbAddDel::get_fixed_cell_height()
         continue;
 
       // Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-      Glib::RefPtr<Pango::Layout> refLayout = m_TreeView.create_pango_layout(_("ExampleEg"));
+      auto refLayout = m_TreeView.create_pango_layout(_("ExampleEg"));
       const Pango::FontDescription font(font_name);
       refLayout->set_font_description(font);
       int width = 0;
@@ -760,7 +760,7 @@ void DbAddDel::construct_specified_columns()
   //Show as many rows as needed, but not more than the maximum:
   gulong total = 0; //ignored
   gulong db_rows_count_found = 0;
-  Glib::RefPtr<DbTreeModel> refModelDerived = Glib::RefPtr<DbTreeModel>::cast_dynamic(m_refListStore);
+  auto refModelDerived = Glib::RefPtr<DbTreeModel>::cast_dynamic(m_refListStore);
   if(refModelDerived)
     refModelDerived->get_record_counts(total, db_rows_count_found);
   
@@ -1356,7 +1356,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
 
 void DbAddDel::on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& row, guint model_column_index)
 {
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
+  auto refTreeSelection = m_TreeView.get_selection();
   if(!refTreeSelection)
     return;
     
@@ -1905,7 +1905,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
           auto pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
           if(pDerived)
           {
-            Glib::RefPtr<Gdk::Pixbuf> pixbuf = UiUtils::get_pixbuf_for_gda_value(value);
+            auto pixbuf = UiUtils::get_pixbuf_for_gda_value(value);
 
             //Scale it down to a sensible size.
             if(pixbuf)
@@ -2398,7 +2398,7 @@ Gtk::TreeModel::iterator DbAddDel::get_row_selected()
 
 void DbAddDel::on_treeview_selection_changed()
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_TreeView.get_selection();
+  auto refSelection = m_TreeView.get_selection();
   if(!refSelection)
     return;
 

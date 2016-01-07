@@ -572,7 +572,7 @@ bool ConnectionPool::handle_error_cerr_only()
 
   if(sharedconnection)
   {
-    Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+    auto gda_connection = sharedconnection->get_gda_connection();
 
     const auto list_errors = gda_connection->get_events();
 
@@ -864,7 +864,7 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
 
   //Attempt a connection with this username/password:
   std::shared_ptr<ExceptionConnection> error;
-  Glib::RefPtr<Gnome::Gda::Connection> connection = connection_pool->m_backend->connect(connection_pool->get_database(), user_name, password);
+  auto connection = connection_pool->m_backend->connect(connection_pool->get_database(), user_name, password);
 
   if(connection)
   {

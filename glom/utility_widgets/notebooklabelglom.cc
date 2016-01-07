@@ -115,7 +115,7 @@ void NotebookLabel::setup_menu(Gtk::Widget* /* widget */)
  
   insert_action_group("context", m_refActionGroup);
 
-  Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+  auto menu = Gio::Menu::create();
   menu->append(_("New Group"), "context.new-group");
   menu->append(_("_Delete"), "context.delete");
 

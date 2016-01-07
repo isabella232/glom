@@ -400,7 +400,7 @@ void do_print_layout(const std::shared_ptr<const PrintLayout>& print_layout, con
 
   //Create a new PrintOperation with our PageSetup and PrintSettings:
   //(We use our derived PrintOperation class)
-  Glib::RefPtr<PrintOperationPrintLayout> print = PrintOperationPrintLayout::create();
+  auto print = PrintOperationPrintLayout::create();
   print->set_canvas(&canvas);
 
   print->set_track_print_status();

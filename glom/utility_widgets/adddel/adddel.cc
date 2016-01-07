@@ -161,7 +161,7 @@ void AddDel::warn_about_duplicate()
 void
 AddDel::on_MenuPopup_activate_Edit()
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_TreeView.get_selection();
+  auto refSelection = m_TreeView.get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -207,7 +207,7 @@ void AddDel::on_MenuPopup_activate_Delete()
 {
   finish_editing();
 
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_TreeView.get_selection();
+  auto refSelection = m_TreeView.get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -237,7 +237,7 @@ void AddDel::setup_menu(Gtk::Widget* /* widget */)
 
   //TODO: add_accel_group(builder->get_accel_group());
 
-  Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+  auto menu = Gio::Menu::create();
   menu->append(_("_Edit"), "context.edit");
   menu->append(_("_Delete"), "context.delete");
 
@@ -378,7 +378,7 @@ Glib::ustring AddDel::get_value_selected(guint col)
 
 Gtk::TreeModel::iterator AddDel::get_item_selected()
 {
-  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
+  auto refTreeSelection = m_TreeView.get_selection();
   if(refTreeSelection)
   {
      return refTreeSelection->get_selected();
@@ -419,7 +419,7 @@ bool AddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, boo
 
   if(iter)
   {
-    Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
+    auto refTreeSelection = m_TreeView.get_selection();
     if(refTreeSelection)
     {
       refTreeSelection->select(iter);
@@ -1219,7 +1219,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
              {
                //Reactivate the cell so that the data can be corrected.
 
-                Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
+                auto refTreeSelection = m_TreeView.get_selection();
                 if(refTreeSelection)
                 {
                   refTreeSelection->select(row); //TODO: This does not seem to work.

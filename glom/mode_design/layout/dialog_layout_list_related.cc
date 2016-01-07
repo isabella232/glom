@@ -507,7 +507,7 @@ void Dialog_Layout_List_Related::on_button_add_field()
       row[m_model_items->m_columns.m_col_layout_item] = field;
 
       //Scroll to, and select, the new row:
-      Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+      auto refTreeSelection = m_treeview_fields->get_selection();
       if(refTreeSelection)
         refTreeSelection->select(iter);
 
@@ -518,7 +518,7 @@ void Dialog_Layout_List_Related::on_button_add_field()
 
 void Dialog_Layout_List_Related::on_button_edit()
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+  auto refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
     //TODO: Handle multiple-selection:
@@ -539,7 +539,7 @@ void Dialog_Layout_List_Related::on_button_edit()
 
         //Scroll to, and select, the new row:
         /*
-        Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+        auto refTreeSelection = m_treeview_fields->get_selection();
         if(refTreeSelection)
           refTreeSelection->select(iter);
 

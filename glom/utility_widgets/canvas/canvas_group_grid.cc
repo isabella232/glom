@@ -180,7 +180,7 @@ Glib::RefPtr<CanvasLineMovable> CanvasGroupGrid::create_rule_line(double pos, bo
   if(canvas)
     canvas->get_bounds(left, top, right, bottom);
 
-  Glib::RefPtr<CanvasLineMovable> line = CanvasLineMovable::create();
+  auto line = CanvasLineMovable::create();
 
   if(horizontal)
   {
@@ -209,14 +209,14 @@ Glib::RefPtr<CanvasLineMovable> CanvasGroupGrid::create_rule_line(double pos, bo
 
 void CanvasGroupGrid::add_vertical_rule(double x)
 {
-  Glib::RefPtr<CanvasLineMovable> line = create_rule_line(x, false);
+  auto line = create_rule_line(x, false);
   m_rules_x.push_back(line);
   m_grid_rules_group->add_child(line);
 }
 
 void CanvasGroupGrid::add_horizontal_rule(double y)
 {
-  Glib::RefPtr<CanvasLineMovable> line = create_rule_line(y, true);
+  auto line = create_rule_line(y, true);
   m_rules_y.push_back(line);
   m_grid_rules_group->add_child(line);
 }

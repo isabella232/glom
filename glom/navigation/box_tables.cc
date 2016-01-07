@@ -154,7 +154,7 @@ bool Box_Tables::fill_from_database()
   if(sharedconnection)
   {
     m_AddDel.remove_all();
-    Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
+    auto connection = sharedconnection->get_gda_connection();
 
     const auto vecTables = DbUtils::get_table_names_from_database();
 
@@ -373,7 +373,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
       if(is_default)
       {
         //Set all the other rows to false:
-        Glib::RefPtr<Gtk::TreeModel> model = m_AddDel.get_model();
+        auto model = m_AddDel.get_model();
         for(const auto& child_row : model->children())
         {
           m_AddDel.set_value(child_row, m_colDefault, false);

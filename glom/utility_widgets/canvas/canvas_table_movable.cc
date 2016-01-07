@@ -90,8 +90,8 @@ void CanvasTableMovable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& gri
   const auto count = get_n_children();
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> child = get_child(i);
-    Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(child);
+    auto child = get_child(i);
+    auto movable = CanvasItemMovable::cast_to_movable(child);
     if(movable)
     {
       movable->set_grid(grid);

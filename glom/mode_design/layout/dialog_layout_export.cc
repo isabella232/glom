@@ -65,7 +65,7 @@ Dialog_Layout_Export::Dialog_Layout_Export(BaseObjectType* cobject, const Glib::
 
 
     //Respond to changes of selection:
-    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
+    auto refSelection = m_treeview_fields->get_selection();
     if(refSelection)
     {
       refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_Layout_Export::on_treeview_fields_selection_changed) );
@@ -165,7 +165,7 @@ void Dialog_Layout_Export::set_layout_groups(Document::type_list_layout_groups& 
 void Dialog_Layout_Export::enable_buttons()
 {
   //Fields:
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
+  auto refSelection = m_treeview_fields->get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -265,7 +265,7 @@ void Dialog_Layout_Export::on_button_add_field()
       row[m_ColumnsFields.m_col_layout_item] = field;
 
       //Scroll to, and select, the new row:
-      Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+      auto refTreeSelection = m_treeview_fields->get_selection();
       if(refTreeSelection)
         refTreeSelection->select(iter);
 
@@ -280,7 +280,7 @@ void Dialog_Layout_Export::on_button_add_field()
 
 void Dialog_Layout_Export::on_button_delete()
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+  auto refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
     //TODO: Handle multiple-selection:
@@ -319,7 +319,7 @@ void Dialog_Layout_Export::on_cell_data_name(Gtk::CellRenderer* renderer, const 
 
 void Dialog_Layout_Export::on_button_edit_field()
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+  auto refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
   {
     //TODO: Handle multiple-selection:
@@ -339,7 +339,7 @@ void Dialog_Layout_Export::on_button_edit_field()
 
         //Scroll to, and select, the new row:
         /*
-        Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+        auto refTreeSelection = m_treeview_fields->get_selection();
         if(refTreeSelection)
           refTreeSelection->select(iter);
 

@@ -37,8 +37,8 @@ CanvasEditable::CanvasEditable()
 
 void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool resizable)
 {
-  Glib::RefPtr<Goocanvas::Item> root = get_root_item();
-  Glib::RefPtr<Goocanvas::Group> root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
+  auto root = get_root_item();
+  auto root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
   if(!root_group)
     return;
 
@@ -55,10 +55,10 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, const G
   //Add it inside a manipulatable group, if requested:
   if(resizable)
   {
-    Glib::RefPtr<CanvasItemMovable> movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(item);
+    auto movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(item);
     if(movable)
     {
-      Glib::RefPtr<CanvasGroupResizable> resizable_item = CanvasGroupResizable::create();
+      auto resizable_item = CanvasGroupResizable::create();
       resizable_item->set_grid(m_grid);
 
       //Specify the resizable's position, using the child's position:
@@ -83,7 +83,7 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, const G
     group->add_child(item);
 
 
-  Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(item);
+  auto movable = CanvasItemMovable::cast_to_movable(item);
   if(movable)
   {
     movable->set_grid(m_grid);
@@ -102,7 +102,7 @@ void CanvasEditable::remove_item(const Glib::RefPtr<Goocanvas::Item>& item , con
   //TODO: Remove resizable=true items via their parent item.
   item->remove();
 
-  Glib::RefPtr<CanvasItemMovable> movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(item);
+  auto movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(item);
   if(movable && movable->get_selected())
     m_signal_selection_changed.emit();
 }
@@ -111,8 +111,8 @@ void CanvasEditable::remove_all_items()
 {
   const auto some_selected = !(get_selected_items().empty());
 
-  Glib::RefPtr<Goocanvas::Item> root = get_root_item();
-  Glib::RefPtr<Goocanvas::Group> root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
+  auto root = get_root_item();
+  auto root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
 
   while(root_group && root_group->get_n_children())
       root_group->remove_child(0);
@@ -177,7 +177,7 @@ void CanvasEditable::remove_grid()
 
 void CanvasEditable::associate_with_grid(const Glib::RefPtr<Goocanvas::Item>& item)
 {
-  Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(item);
+  auto movable = CanvasItemMovable::cast_to_movable(item);
   if(movable)
     movable->set_grid(m_grid);
 }

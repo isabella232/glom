@@ -85,12 +85,12 @@ FoundSet Box_Data::get_found_set() const
 
 Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
 {
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+  auto builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_target(m_table_name);  //This might not be necessary.
   guint where_cond_id = 0;
 
-  Glib::RefPtr<Gnome::Gda::Connection> connection = get_connection();
+  auto connection = get_connection();
   if(!connection)
   {
     std::cerr << G_STRFUNC << ": connection was null." << std::endl;

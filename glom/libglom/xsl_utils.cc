@@ -70,7 +70,7 @@ static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std
   //nonconst.write_to_stream_formatted(std::cout);
   //std::cout << std::endl;
 
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(resource_path_xslt); //This must use a resource:// URI.
+  auto file = Gio::File::create_for_uri(resource_path_xslt); //This must use a resource:// URI.
   char* xslt_data = nullptr;
   gsize xslt_length = 0;
   try

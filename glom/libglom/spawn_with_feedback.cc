@@ -138,7 +138,7 @@ private:
 
   void redirect_to_string(int fd, std::string& string)
   {
-    Glib::RefPtr<Glib::IOChannel> channel = Glib::IOChannel::create_from_fd(fd);
+    auto channel = Glib::IOChannel::create_from_fd(fd);
     channel->set_flags(Glib::IO_FLAG_NONBLOCK);
 
     channel->set_encoding("");
@@ -323,7 +323,7 @@ static int spawn_sync(const Glib::ustring& command_line, std::string* stdout_tex
   if(stderr_text)
     redirect_flags |= REDIRECT_STDERR;
 
-  Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
+  auto mainloop = Glib::MainLoop::create(false);
 
   auto info = spawn_async(command_line, redirect_flags); //This could throw
   info->signal_finished().connect(
@@ -356,7 +356,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
     return false;
   }
 
-  Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
+  auto mainloop = Glib::MainLoop::create(false);
   info->signal_finished().connect(
     sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
 
@@ -401,7 +401,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
   }
   
 
-  Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
+  auto mainloop = Glib::MainLoop::create(false);
   info->signal_finished().connect(
     sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
 
@@ -571,7 +571,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   // b) Get stderr data, to display an error message in case the command
   // fails:
 
-  Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
+  auto mainloop = Glib::MainLoop::create(false);
   sigc::connection watch_conn = info->signal_finished().connect(
     sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
 
@@ -597,7 +597,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
      *
      *
     //Sleep for a bit more, because I think that pg_ctl sometimes reports success too early.
-    Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
+    auto mainloop = Glib::MainLoop::create(false);
     sigc::connection connection_timeout = Glib::signal_timeout().connect(
      sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)),
      8000);

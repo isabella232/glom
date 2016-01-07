@@ -99,7 +99,7 @@ static void clear_flowtable(Glom::FlowTable& flowtable)
 int
 main(int argc, char* argv[])
 {
-  Glib::RefPtr<Gtk::Application> app = 
+  auto app = 
     Gtk::Application::create(argc, argv, "org.glom.test_flowtable");
 
   Gtk::Window window;

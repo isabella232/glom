@@ -145,7 +145,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
   if(layout_choice_extra)
     extra_fields = layout_choice_extra->get_items_recursive();
 
-  Glib::RefPtr<Gtk::ListStore> list_store = Glib::RefPtr<Gtk::ListStore>::cast_dynamic(m_refModel);
+  auto list_store = Glib::RefPtr<Gtk::ListStore>::cast_dynamic(m_refModel);
   if(!list_store)
   {
     std::cerr << G_STRFUNC << ": list_store is null." << std::endl;
@@ -200,7 +200,7 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const Formatting::type_list_va
 {
   create_model_non_db(1); //Use a regular ListStore without a dynamic column?
 
-  Glib::RefPtr<Gtk::ListStore> list_store = Glib::RefPtr<Gtk::ListStore>::cast_dynamic(m_refModel);
+  auto list_store = Glib::RefPtr<Gtk::ListStore>::cast_dynamic(m_refModel);
   if(!list_store)
   {
     std::cerr << G_STRFUNC << ": list_store is null." << std::endl;
@@ -463,7 +463,7 @@ int ComboChoicesWithTreeModel::get_fixed_cell_height(Gtk::Widget& widget)
         continue;
 
       // Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-      Glib::RefPtr<Pango::Layout> refLayout = widget.create_pango_layout(_("Example"));
+      auto refLayout = widget.create_pango_layout(_("Example"));
       const Pango::FontDescription font(font_name);
       refLayout->set_font_description(font);
       int width = 0;

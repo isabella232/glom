@@ -28,7 +28,7 @@ static Glib::ustring create_file_from_buffer(const char* input, guint input_size
     return std::string();
   }
 
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
+  auto file = Gio::File::create_for_uri(file_uri);
 
   gssize result = 0;
  
@@ -85,7 +85,7 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
 
   //Start a mainloop because the parser uses an idle handler.
   //TODO: Stop the parser from doing that.
-  Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create();
+  auto mainloop = Glib::MainLoop::create();
   Glom::CsvParser parser("UTF-8");
 
   parser.signal_encoding_error().connect(sigc::bind(&on_parser_encoding_error, mainloop));
@@ -105,7 +105,7 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
 
   mainloop->run();
 
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
+  auto file = Gio::File::create_for_uri(file_uri);
 
   try
   {
@@ -127,7 +127,7 @@ bool run_parser_on_file(const FuncConnectParserSignals& connect_parser_signals, 
 
   //Start a mainloop because the parser uses an idle handler.
   //TODO: Stop the parser from doing that.
-  Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create();
+  auto mainloop = Glib::MainLoop::create();
   Glom::CsvParser parser("UTF-8");
 
   parser.signal_encoding_error().connect(sigc::bind(&on_parser_encoding_error, mainloop));

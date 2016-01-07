@@ -182,7 +182,7 @@ void CanvasImageMovable::scale_to_size()
 
   if(width_pixels && height_pixels)
   {
-    Glib::RefPtr<Gdk::Pixbuf> pixbuf = UiUtils::image_scale_keeping_ratio(m_pixbuf, (int)height_pixels, (int)width_pixels);
+    auto pixbuf = UiUtils::image_scale_keeping_ratio(m_pixbuf, (int)height_pixels, (int)width_pixels);
     property_pixbuf() = pixbuf;
   }
 
@@ -208,7 +208,7 @@ void CanvasImageMovable::set_image_empty()
   Glib::RefPtr<Gdk::Pixbuf> pixbuf;
   if(widget)
   {
-    Glib::RefPtr<Gtk::IconTheme> theme = Gtk::IconTheme::get_default();
+    auto theme = Gtk::IconTheme::get_default();
 
     try
     {
