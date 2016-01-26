@@ -1,6 +1,6 @@
 [Desktop Entry]
 _Name=Glom
-_Comment=A user-friendly database environment.
+_Comment=A user-friendly database environment
 Exec=glom
 Terminal=false
 Type=Application
