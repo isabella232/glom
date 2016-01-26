@@ -8,7 +8,8 @@ Icon=glom
 Categories=GNOME;Office;GTK;Database;
 StartupNotify=true
 MimeType=application/x-glom;
-Keywords=database;ui;tables;postgresql;forms;
+# Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+_Keywords=database;ui;tables;postgresql;forms;
 X-GNOME-DocPath=glom/index.html
 X-GNOME-Bugzilla-Bugzilla=GNOME
 X-GNOME-Bugzilla-Product=glom
