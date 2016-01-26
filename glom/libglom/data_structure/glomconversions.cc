@@ -304,7 +304,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
 
   do
   {
-    const Glib::ScopedPtr<char> buf (static_cast<char*>(g_malloc(bufsize)));
+    const auto buf = Glib::make_unique_ptr_gfree(static_cast<char*>(g_malloc(bufsize)));
 
     // Set the first byte to something other than '\0', to be able to
     // recognize whether strftime actually failed or just returned "".

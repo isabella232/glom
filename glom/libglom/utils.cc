@@ -1064,7 +1064,7 @@ std::string Utils::sqlbuilder_get_full_query(
   }
 
   //Convert to something that std::cout should be able to handle.
-  const Glib::ScopedPtr<char> buf(g_convert_with_fallback(
+  const auto buf = Glib::make_unique_ptr_gfree(g_convert_with_fallback(
     result.raw().data(), result.raw().size(),
     "ISO-8859-1", "UTF-8",
     (char*)"?",
