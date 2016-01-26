@@ -8,6 +8,7 @@ Icon=glom
 Categories=GNOME;Office;GTK;Database;
 StartupNotify=true
 MimeType=application/x-glom;
+Keywords=database;ui;tables;postgresql;forms;
 X-GNOME-DocPath=glom/index.html
 X-GNOME-Bugzilla-Bugzilla=GNOME
 X-GNOME-Bugzilla-Product=glom
