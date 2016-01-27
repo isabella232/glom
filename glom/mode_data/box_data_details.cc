@@ -303,12 +303,14 @@ bool Box_Data_Details::fill_from_database()
 
         //Get the primary key index, adding the primary key if necessary:
         //TODO_Performance: Do this for create_layout() only, instead of repeating it for each refresh?:
-        int index_primary_key = -1; //Arbitrary default.
+        bool index_primary_key_found = false;
+        unsigned int index_primary_key = 0; //Arbitrary default.
         //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
         if(!find_if_layout_item_field_is_same_field_exists(fieldsToGet, layout_item_pk))
         {
           fieldsToGet.push_back(layout_item_pk);
           index_primary_key = fieldsToGet.size() - 1;
+          index_primary_key_found = true;
         }
         else
         {
@@ -330,9 +332,14 @@ bool Box_Data_Details::fill_from_database()
             if(*uses_a == *uses_b)
             {
               index_primary_key = i;
+              index_primary_key_found = true;
               break;
             }
           }
+        }
+
+        if (!index_primary_key_found) {
+          std::cerr << G_STRFUNC << ": index_primary_key not found and not added. Something went wrong. fieldsToGet.size()=" << fieldsToGet.size() << std::endl;
         }
 
         auto query = Utils::build_sql_select_with_key(m_table_name, fieldsToGet, m_field_primary_key, m_primary_key_value);
@@ -359,7 +366,7 @@ bool Box_Data_Details::fill_from_database()
             //Get special possibly-non-visible field values:
             if(!primary_key_is_empty)
             {
-              if(index_primary_key < cols_count)
+              if((int)index_primary_key < cols_count)
               {
                 m_primary_key_value = result->get_value_at(index_primary_key, row_number);
                 set_found_set_from_primary_key_value();
