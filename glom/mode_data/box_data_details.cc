@@ -327,8 +327,9 @@ bool Box_Data_Details::fill_from_database()
               continue;
 
             //Compare the relationship and related relationship:
-            auto uses_a = layout_item_pk;
-            auto uses_b = element;
+            //Don't use auto here. We need to compare them as UsesRelationship.
+            const std::shared_ptr<const UsesRelationship> uses_a = layout_item_pk;
+            const std::shared_ptr<const UsesRelationship> uses_b = element;
             if(*uses_a == *uses_b)
             {
               index_primary_key = i;
