@@ -112,46 +112,53 @@ void FlowTableWithFields::add_layout_item(const std::shared_ptr<LayoutItem>& ite
   }
   else
   {
-    auto portal = std::dynamic_pointer_cast<LayoutItem_Portal>(item);
-    if(portal)
+    auto group = std::dynamic_pointer_cast<LayoutGroup>(item);
+    if(group)
     {
-      add_layout_portal(portal);
+      add_layout_group_or_derived(group);
     }
     else
     {
-      auto notebook = std::dynamic_pointer_cast<LayoutItem_Notebook>(item);
-      if(notebook)
-      {
-        add_layout_notebook(notebook);
-      }
+      auto layout_button = std::dynamic_pointer_cast<LayoutItem_Button>(item);
+      if(layout_button)
+        add_button(layout_button, m_table_name);
       else
       {
-        auto group = std::dynamic_pointer_cast<LayoutGroup>(item);
-        if(group)
-          add_layout_group(group);
+        auto layout_textobject = std::dynamic_pointer_cast<LayoutItem_Text>(item);
+        if(layout_textobject)
+          add_textobject(layout_textobject, m_table_name);
         else
         {
-          auto layout_button = std::dynamic_pointer_cast<LayoutItem_Button>(item);
-          if(layout_button)
-            add_button(layout_button, m_table_name);
-          else
-          {
-            auto layout_textobject = std::dynamic_pointer_cast<LayoutItem_Text>(item);
-            if(layout_textobject)
-              add_textobject(layout_textobject, m_table_name);
-            else
-            {
-              auto layout_imageobject = std::dynamic_pointer_cast<LayoutItem_Image>(item);
-              if(layout_imageobject)
-                add_imageobject(layout_imageobject, m_table_name);
-            }
-          }
+          auto layout_imageobject = std::dynamic_pointer_cast<LayoutItem_Image>(item);
+          if(layout_imageobject)
+            add_imageobject(layout_imageobject, m_table_name);
         }
       }
     }
   }
 }
 
+void FlowTableWithFields::add_layout_group_or_derived(const std::shared_ptr<LayoutGroup>& group, bool with_indent)
+{
+  auto portal = std::dynamic_pointer_cast<LayoutItem_Portal>(group);
+  if(portal)
+  {
+    add_layout_portal(portal);
+  }
+  else
+  {
+    auto notebook = std::dynamic_pointer_cast<LayoutItem_Notebook>(group);
+    if(notebook)
+    {
+      add_layout_notebook(notebook);
+    }
+    else
+    {
+      add_layout_group(group, with_indent);
+    }
+  }
+}
+          
 void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& group, bool with_indent)
 {
   if(!group)

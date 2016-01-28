@@ -86,10 +86,10 @@ public:
 
   void add_layout_item(const std::shared_ptr<LayoutItem>& item);
 
-  /**
+    /**
    * @param with_indent Pass true for top-level groups, to avoid wasting extra space with an unnecessary indent.
    */
-  void add_layout_group(const std::shared_ptr<LayoutGroup>& group, bool with_indent = true);
+  void add_layout_group_or_derived(const std::shared_ptr<LayoutGroup>& group, bool with_indent = true);
 
   void set_field_editable(const std::shared_ptr<const LayoutItem_Field>& field, bool editable = true);
 
@@ -247,6 +247,14 @@ private:
   void add_imageobject(const std::shared_ptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& table_name);
 
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget);
+
+  /** Add a normal group, not a notebook or portal.
+   * See also add_layout_group_or_derived().
+   *
+   * @param with_indent Pass true for top-level groups, to avoid wasting extra space with an unnecessary indent.
+   */
+  void add_layout_group(const std::shared_ptr<LayoutGroup>& group, bool with_indent = true);
+
   void add_layout_notebook(const std::shared_ptr<LayoutItem_Notebook>& notebook);
   void add_layout_portal(const std::shared_ptr<LayoutItem_Portal>& portal);
 
