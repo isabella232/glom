@@ -1049,15 +1049,26 @@ void Dialog_Layout_Details::save_to_document()
     for(const auto& row : m_model_items->children())
     {
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-      auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
-      auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
-      if(layout_group && !layout_portal) //There may be top-level groups, but no top-level fields, because the fields must be in a group (so that they are in columns)
-      {
-        auto group = std::make_shared<LayoutGroup>();
-        fill_group(row, group);
 
-        list_groups.push_back(group);
+      //There may be top-level groups, but no top-level fields, because the fields must be in a group (so that they are in columns)
+      auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+      if(!layout_group)
+        continue;
+
+      auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+      auto layout_notebook = std::dynamic_pointer_cast<LayoutItem_Notebook>(layout_item);
+      std::shared_ptr<LayoutGroup> group;
+      if(layout_portal) {
+        group = std::make_shared<LayoutItem_Portal>();
+      } else if(layout_notebook) {
+        group = std::make_shared<LayoutItem_Notebook>();
+      } else {
+        group = std::make_shared<LayoutGroup>();
       }
+
+      fill_group(row, group);
+
+      list_groups.push_back(group);
     }
 
     if(document)
