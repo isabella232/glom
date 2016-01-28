@@ -113,10 +113,10 @@ void FlowTableWithFields::add_layout_item(const sharedptr<LayoutItem>& item)
   }
   else
   {
-    sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(item);
-    if(portal)
+    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(item);
+    if(group)
     {
-      add_layout_portal(portal);
+      add_layout_group_or_derived(group);
     }
     else
     {
@@ -153,7 +153,29 @@ void FlowTableWithFields::add_layout_item(const sharedptr<LayoutItem>& item)
   }
 }
 
-void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, bool with_indent)
+void FlowTableWithFields::add_layout_group_or_derived(const sharedptr<LayoutGroup>& group, bool with_indent)
+{
+  auto portal = std::dynamic_pointer_cast<LayoutItem_Portal>(group);
+  if(portal)
+  {
+    add_layout_portal(portal);
+  }
+  else
+  {
+    auto notebook = std::dynamic_pointer_cast<LayoutItem_Notebook>(group);
+    if(notebook)
+    {
+      add_layout_notebook(notebook);
+    }
+    else
+    {
+      add_layout_group(group, with_indent);
+    }
+  }
+}
+          
+void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& group, bool with_indent)
+>>>>>>> 59a1b05... Box_Data_Details/FlowTableWithFields: Allow notebooks at the top-level.
 {
   if(!group)
     return;
