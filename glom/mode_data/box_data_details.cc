@@ -224,7 +224,7 @@ void Box_Data_Details::create_layout()
 
     for(const auto& item : layout_groups)
     {
-      m_FlowTable.add_layout_group(item, false /* no indent at this top level */);
+      m_FlowTable.add_layout_group_or_derived(item, false /* no indent at this top level */);
     }
 
     m_FlowTable.align_child_group_labels();
