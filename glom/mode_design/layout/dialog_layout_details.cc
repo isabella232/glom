@@ -1055,11 +1055,15 @@ void Dialog_Layout_Details::save_to_document()
       if(!layout_group)
         continue;
 
+      //TODO: This is very ugly:
       auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+      auto layout_calendar_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(layout_item);
       auto layout_notebook = std::dynamic_pointer_cast<LayoutItem_Notebook>(layout_item);
       std::shared_ptr<LayoutGroup> group;
       if(layout_portal) {
         group = std::make_shared<LayoutItem_Portal>();
+      } else if(layout_calendar_portal) {
+        group = std::make_shared<LayoutItem_CalendarPortal>();
       } else if(layout_notebook) {
         group = std::make_shared<LayoutItem_Notebook>();
       } else {
