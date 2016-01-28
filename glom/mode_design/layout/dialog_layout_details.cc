@@ -1071,15 +1071,30 @@ void Dialog_Layout_Details::save_to_document()
       Gtk::TreeModel::Row row = *iterFields;
 
       sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-      sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
-      sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
-      if(layout_group && !layout_portal) //There may be top-level groups, but no top-level fields, because the fields must be in a group (so that they are in columns)
-      {
-        sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
-        fill_group(iterFields, group);
 
-        list_groups.push_back(group);
+      //There may be top-level groups, but no top-level fields, because the fields must be in a group (so that they are in columns)
+      auto layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+      if(!layout_group)
+        continue;
+
+      //TODO: This is very ugly:
+      auto layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+      auto layout_calendar_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(layout_item);
+      auto layout_notebook = sharedptr<LayoutItem_Notebook>::cast_dynamic(layout_item);
+      sharedptr<LayoutGroup> group;
+      if(layout_portal) {
+        group = sharedptr<LayoutItem_Portal>::create();
+      } else if(layout_calendar_portal) {
+        group = sharedptr<LayoutItem_CalendarPortal>::create();
+      } else if(layout_notebook) {
+        group = sharedptr<LayoutItem_Notebook>::create();
+      } else {
+        group = sharedptr<LayoutGroup>::create();
       }
+
+      fill_group(row, group);
+
+      list_groups.emplace_back(group);
     }
 
     if(document)
