@@ -102,7 +102,7 @@ void ComboBox_Fields::set_selected_field(const Glib::ustring& field_name)
     unset_active();
 }
 
-void ComboBox_Fields::set_fields(Document* document, const Glib::ustring parent_table_name)
+void ComboBox_Fields::set_fields(const std::shared_ptr<Document>& document, const Glib::ustring parent_table_name)
 {
   if(!document)
     return;
@@ -124,7 +124,7 @@ void ComboBox_Fields::set_fields(Document* document, const Glib::ustring parent_
   }
 }
 
-void ComboBox_Fields::set_fields(Document* document, const Glib::ustring parent_table_name, Field::glom_field_type field_type)
+void ComboBox_Fields::set_fields(const std::shared_ptr<Document>& document, const Glib::ustring parent_table_name, Field::glom_field_type field_type)
 {
   if(!document)
     return;

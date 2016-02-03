@@ -52,7 +52,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   //Create and self-host the document:
   {
-    Glom::Document document;
+    auto document = std::make_shared<Glom::Document>();
     const bool recreated = 
       test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
     if(!recreated)
@@ -85,7 +85,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       return false;
     }
 
-    if(!Glom::DbUtils::add_user(&document, operator_user, operator_password, operator_group_name))
+    if(!Glom::DbUtils::add_user(document, operator_user, operator_password, operator_group_name))
     {
       std::cerr << G_STRFUNC << ": DbUtils::add_user() failed." << std::endl;
       test_selfhosting_cleanup();
@@ -106,11 +106,11 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   
   //Self-host the document again, this time as operator:
   {
-    Glom::Document document;
-    document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
-    document.set_file_uri(temp_file_uri);
+    auto document = std::make_shared<Glom::Document>();
+    document->set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
+    document->set_file_uri(temp_file_uri);
     int failure_code = 0;
-    const auto test = document.load(failure_code);
+    const auto test = document->load(failure_code);
     //std::cout << "Document load result=" << test << std::endl;
     if(!test)
     {

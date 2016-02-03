@@ -59,7 +59,7 @@ Dialog_ChooseRelationship::Dialog_ChooseRelationship(BaseObjectType* cobject, co
   show_all_children();
 }
 
-void Dialog_ChooseRelationship::set_document(Document* document, const Glib::ustring& table_name)
+void Dialog_ChooseRelationship::set_document(const std::shared_ptr<Document>& document, const Glib::ustring& table_name)
 {
   m_document = document;
   m_table_name = table_name;

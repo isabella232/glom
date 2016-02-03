@@ -40,7 +40,7 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  void set_layout_groups(Document::type_list_layout_groups& mapGroups, Document* document, const Glib::ustring& table_name);
+  void set_layout_groups(Document::type_list_layout_groups& mapGroups, const std::shared_ptr<Document>& document, const Glib::ustring& table_name);
 
   void get_layout_groups(Document::type_list_layout_groups& layout_groups) const;
 

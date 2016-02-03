@@ -170,7 +170,7 @@ bool gda_python_module_is_available()
 }
 
 static boost::python::object glom_python_call(Field::glom_field_type result_type,
-  const Document* pDocument,
+  const std::shared_ptr<const Document>& document,
   const Glib::ustring& func_impl,
   Glib::ustring& error_message,
   const boost::python::object& param1,
@@ -224,11 +224,11 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   }
 
   //Allow the function to import from our script library:
-  if(pDocument)
+  if(document)
   {
-    for(const auto& name : pDocument->get_library_module_names())
+    for(const auto& name : document->get_library_module_names())
     {
-      const auto script = pDocument->get_library_module(name);
+      const auto script = document->get_library_module(name);
       if(!name.empty() && !script.empty())
       {
         //TODO: Is there a boost::python equivalent for Py_CompileString()?
@@ -372,7 +372,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
 
 void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
   const type_map_fields& field_values,
-  const Document* pDocument,
+  const std::shared_ptr<const Document>& document,
   const Glib::ustring& table_name,
   const std::shared_ptr<const Field>& key_field,
   const Gnome::Gda::Value& key_field_value,
@@ -399,20 +399,20 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
   if(pParam)
   {
     //Fill the record's details:
-    pParam->set_fields(field_values, pDocument, table_name, key_field, key_field_value, opened_connection);
+    pParam->set_fields(field_values, document, table_name, key_field, key_field_value, opened_connection);
     pParam->set_read_only();
   }
 
   //Pass an additional ui parameter for use by scripts:
   boost::python::object objUI(new PyGlomUI(callbacks));
 
-  glom_python_call(Field::glom_field_type::TEXT, pDocument, func_impl, error_message, objRecord, objUI);
+  glom_python_call(Field::glom_field_type::TEXT, document, func_impl, error_message, objRecord, objUI);
 }
 
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type,
   const Glib::ustring& func_impl,
   const type_map_fields& field_values,
-  const Document* pDocument,
+  const std::shared_ptr<const Document>& document,
   const Glib::ustring& table_name,
   const std::shared_ptr<const Field>& key_field,
   const Gnome::Gda::Value& key_field_value,
@@ -440,10 +440,10 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   if(pParam)
   {
     //Fill the record's details:
-    pParam->set_fields(field_values, pDocument, table_name, key_field, key_field_value, opened_connection);
+    pParam->set_fields(field_values, document, table_name, key_field, key_field_value, opened_connection);
   }
 
-  const boost::python::object pyResultCpp = glom_python_call(result_type, pDocument, func_impl, error_message, objRecord);
+  const boost::python::object pyResultCpp = glom_python_call(result_type, document, func_impl, error_message, objRecord);
 
   //Deal with the various possible return types:
   Gnome::Gda::Value valueResult;

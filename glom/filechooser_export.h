@@ -36,7 +36,7 @@ public:
   FileChooser_Export();
   virtual ~FileChooser_Export();
 
-  void set_export_layout(const Document::type_list_layout_groups& layout_groups, const Glib::ustring& table_name, Document* document);
+  void set_export_layout(const Document::type_list_layout_groups& layout_groups, const Glib::ustring& table_name, const std::shared_ptr<Document>& document);
 
   void get_layout_groups(Document::type_list_layout_groups& layout_groups) const;
 
@@ -58,7 +58,7 @@ private:
   Glib::ustring m_table_name;
 
   Document::type_list_layout_groups m_layout_groups;
-  Document* m_document;
+  std::shared_ptr<Document> m_document;
 };
 
 } //namespace Glom

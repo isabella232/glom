@@ -45,9 +45,9 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  void init_with_portal(const Glib::ustring& layout, const Glib::ustring& layout_platform, Document* document, const std::shared_ptr<const LayoutItem_CalendarPortal>& portal);
+  void init_with_portal(const Glib::ustring& layout, const Glib::ustring& layout_platform, const std::shared_ptr<Document>& document, const std::shared_ptr<const LayoutItem_CalendarPortal>& portal);
 
-  void init_with_tablename(const Glib::ustring& layout, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& parent_table);
+  void init_with_tablename(const Glib::ustring& layout, const Glib::ustring& layout_platform, const std::shared_ptr<Document>& document, const Glib::ustring& parent_table);
 
   void update_ui(bool including_relationships_list = true);
 

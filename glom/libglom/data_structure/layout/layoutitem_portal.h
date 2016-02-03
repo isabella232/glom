@@ -112,13 +112,13 @@ public:
    * @param table_name The table that should be shown.
    * @param relationship The relationship in the directly related table that should be used to get to that table. If this is empty then we should just show the table directly.
    */
-  void get_suitable_table_to_view_details(Glib::ustring& table_name, std::shared_ptr<const UsesRelationship>& relationship, const Document* document) const;
+  void get_suitable_table_to_view_details(Glib::ustring& table_name, std::shared_ptr<const UsesRelationship>& relationship, const std::shared_ptr<const Document>& document) const;
 
   /** Get the relationship (from the related table) into which the row button should navigate,
    * or none if it should use the portal's directly related table itself.
    * (If that should be chosen automatically, by looking at the fields in the portal.)
    */
-  std::shared_ptr<const UsesRelationship> get_portal_navigation_relationship_automatic(const Document* document) const;
+  std::shared_ptr<const UsesRelationship> get_portal_navigation_relationship_automatic(const std::shared_ptr<const Document>& document) const;
 
   /// This is used only for the print layouts.
   double get_print_layout_row_height() const;
@@ -156,8 +156,8 @@ public:
 
 private:
 
-  std::shared_ptr<const LayoutItem_Field> get_field_is_from_non_hidden_related_record(const Document* document) const;
-  std::shared_ptr<const LayoutItem_Field> get_field_identifies_non_hidden_related_record(std::shared_ptr<const Relationship>& used_in_relationship, const Document* document) const;
+  std::shared_ptr<const LayoutItem_Field> get_field_is_from_non_hidden_related_record(const std::shared_ptr<const Document>& document) const;
+  std::shared_ptr<const LayoutItem_Field> get_field_identifies_non_hidden_related_record(std::shared_ptr<const Relationship>& used_in_relationship, const std::shared_ptr<const Document>& document) const;
 
 
   std::shared_ptr<UsesRelationship> m_navigation_relationship_specific;

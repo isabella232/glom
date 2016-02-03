@@ -256,8 +256,8 @@ Box_Data_List_Related* FlowTableWithFields::create_related(const std::shared_ptr
   if(!portal)
     return nullptr;
 
-  auto pDocument = static_cast<Document*>(get_document());
-  if(pDocument)
+  auto document = std::static_pointer_cast<Document>(get_document());
+  if(document)
   {
     auto portal_box = Gtk::manage(new Box_Data_List_Related);
     portal_box->set_find_mode(m_find_mode);
@@ -270,7 +270,7 @@ Box_Data_List_Related* FlowTableWithFields::create_related(const std::shared_ptr
       portal_box->init_db_details(m_table_name, show_title);
 
     Glib::ustring to_table;
-    auto relationship = pDocument->get_relationship(m_table_name, portal->get_relationship_name());
+    auto relationship = document->get_relationship(m_table_name, portal->get_relationship_name());
     if(relationship)
       to_table = relationship->get_to_table();
 
@@ -296,8 +296,8 @@ Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const st
   if(!portal)
     return nullptr;
 
-  auto pDocument = static_cast<Document*>(get_document());
-  if(pDocument)
+  auto document = std::static_pointer_cast<Document>(get_document());
+  if(document)
   {
     auto portal_box = Gtk::manage(new Box_Data_Calendar_Related);
     portal_box->set_find_mode(m_find_mode); //TODO: Implement this in the class
@@ -310,7 +310,7 @@ Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const st
       portal_box->init_db_details(m_table_name, show_title);
 
     Glib::ustring to_table;
-    auto relationship = pDocument->get_relationship(m_table_name, portal->get_relationship_name());
+    auto relationship = document->get_relationship(m_table_name, portal->get_relationship_name());
     if(relationship)
       to_table = relationship->get_to_table();
 
@@ -1328,8 +1328,8 @@ std::shared_ptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship(
   if(!dialog) //Unlikely and it already warns on stderr.
     return std::shared_ptr<LayoutItem_Portal>();
 
-  Document* pDocument = static_cast<Document*>(get_document());
-  dialog->set_document(pDocument, m_table_name);
+  auto document = std::static_pointer_cast<Document>(get_document());
+  dialog->set_document(document, m_table_name);
   //TODO: dialog->set_transient_for(*get_app_window());
   const auto response = dialog->run();
   dialog->hide();

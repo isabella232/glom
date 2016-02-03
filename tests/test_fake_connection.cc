@@ -49,10 +49,10 @@ int main()
   }
 
   // Load the document:
-  Glom::Document document;
-  document.set_file_uri(uri);
+  auto document = std::make_shared<Glom::Document>();
+  document->set_file_uri(uri);
   int failure_code = 0;
-  const auto test = document.load(failure_code);
+  const auto test = document->load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -66,16 +66,16 @@ int main()
 
   //Build a SQL query and get the string for it:
   const Gnome::Gda::Value value("Born To Run");
-  auto where_field = document.get_field("albums", "name");
+  auto where_field = document->get_field("albums", "name");
   const Gnome::Gda::SqlExpr where_clause = 
     Glom::Utils::build_simple_where_expression("albums", where_field, value);
   
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  auto field = document.get_field("albums", "album_id");
+  auto field = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
-  field = document.get_field("albums", "name");
+  field = document->get_field("albums", "name");
   layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);

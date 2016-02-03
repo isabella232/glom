@@ -455,7 +455,7 @@ void Frame_Glom::show_no_table()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 bool Frame_Glom::attempt_change_usermode_to_developer()
 {
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
     return false;
 
@@ -521,7 +521,7 @@ bool Frame_Glom::attempt_change_usermode_to_developer()
 
 bool Frame_Glom::attempt_change_usermode_to_operator()
 {
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
     return false;
     
@@ -800,7 +800,7 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
 {
   //Prevent this change if not in developer mode,
   //though the menu item should be disabled then anyway.
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document || document->get_userlevel() != AppState::userlevels::DEVELOPER)
     return false;
 
@@ -1393,7 +1393,7 @@ void Frame_Glom::on_userlevel_changed(AppState::userlevels /* userlevel */)
 
 void Frame_Glom::show_table_title()
 {
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
     return;
 
@@ -1433,7 +1433,7 @@ void Frame_Glom::update_table_in_document_from_database()
       " Falling back to the field details in the document." << std::endl;
   }
 
-  auto pDoc = dynamic_cast<Document*>(get_document());
+  auto pDoc = std::dynamic_pointer_cast<Document>(get_document());
   if(pDoc)
   {
     bool document_must_be_updated = false;
@@ -1509,11 +1509,10 @@ void Frame_Glom::update_table_in_document_from_database()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-void Frame_Glom::set_document(Document* pDocument)
+void Frame_Glom::set_document(const std::shared_ptr<Document>& document)
 {
-  View_Composite_Glom::set_document(pDocument);
+  View_Composite_Glom::set_document(document);
 
-  auto document = get_document();
   if(document)
   {
     //Connect to a signal that is only on the derived document class:
@@ -1526,7 +1525,7 @@ void Frame_Glom::set_document(Document* pDocument)
 
 void Frame_Glom::load_from_document()
 {
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(document)
   {
     //Call base class:
@@ -1574,7 +1573,7 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustri
   // Some database backends (SQLite) require the table to change to no longer
   // be in use when changing the records, so we stop the database usage
   // here. We reshow everything in on_developer_dialog_hide() anyway.
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(document && document->get_hosting_mode() == Document::HostingMode::SQLITE)
     show_no_table();
 
@@ -1926,7 +1925,7 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
   user = Glib::ustring();
   password = Glib::ustring();
 
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
     return false;
 
@@ -1994,7 +1993,7 @@ void Frame_Glom::instantiate_dialog_connection()
 
 bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 {
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
     return false;
 
@@ -2216,7 +2215,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
   //Initialize output parameter:
   database_not_found = false;
 
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
     return false;
 
@@ -2476,7 +2475,7 @@ void Frame_Glom::on_dialog_layout_print_hide()
 void Frame_Glom::on_dialog_tables_hide()
 {
   //If tables could have been added or removed, update the tables menu:
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(document)
   {
     // This is never true in client only mode, so we can as well save the

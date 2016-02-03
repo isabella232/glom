@@ -38,6 +38,10 @@ Document::Document()
 
 Document::~Document()
 {
+}
+
+void Document::emit_forget()
+{
   //Tell views to forget the document -  to null their pointers to it. We should maybe use the Document via a sharing smartpointer instead.
   signal_forget_.emit();
 }

@@ -215,7 +215,7 @@ void Box_Data_Details::create_layout()
   //Remove existing child widgets:
   m_FlowTable.remove_all();
 
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(document)
   {
     m_FlowTable.set_table(m_table_name); //This allows portals to get full Relationship information
@@ -351,7 +351,7 @@ bool Box_Data_Details::fill_from_database()
 
         if((result && result->get_n_rows()) || primary_key_is_empty) //either a working result or no result needed.
         {
-          const auto pDoc = dynamic_cast<const Document*>(get_document());
+          const auto pDoc = std::dynamic_pointer_cast<const Document>(get_document());
           if(pDoc)
           {
             //Get glom-specific field info:
@@ -714,7 +714,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
 
   auto window = get_app_window();
 
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
 
   Gnome::Gda::Value primary_key_value = get_primary_key_value_selected();
   //std::cout << "debug: " << G_STRFUNC << ": primary_key_value=" << primary_key_value.to_string() << std::endl;
@@ -927,7 +927,7 @@ void Box_Data_Details::print_layout()
   if(!table_privs.m_view)
     return;  //TODO: Warn the user.
    
-  const auto document = dynamic_cast<const Document*>(get_document());
+  const auto document = std::dynamic_pointer_cast<const Document>(get_document());
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document was null" << std::endl;

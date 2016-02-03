@@ -358,10 +358,10 @@ int main(int argc, char* argv[])
 
 
   // Load the document:
-  Glom::Document document;
-  document.set_file_uri(input_uri);
+  auto document = std::make_shared<Glom::Document>();
+  document->set_file_uri(input_uri);
   int failure_code = 0;
-  const auto test = document.load(failure_code);
+  const auto test = document->load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -370,7 +370,7 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  g_assert(document.get_is_example_file());;
+  g_assert(document->get_is_example_file());;
 
   auto connection_pool = Glom::ConnectionPool::get_instance();
 
@@ -402,7 +402,7 @@ int main(int argc, char* argv[])
   if(file_uri.empty())
     return EXIT_FAILURE;
 
-  document.set_file_uri(file_uri);
+  document->set_file_uri(file_uri);
 
   const auto self_hosting = group.m_arg_server_hostname.empty();
   if(self_hosting)
@@ -411,11 +411,11 @@ int main(int argc, char* argv[])
 
 #if GLOM_ENABLE_MYSQL
     if(group.m_arg_use_mysql)
-      document.set_hosting_mode(Glom::Document::HostingMode::MYSQL_SELF);
+      document->set_hosting_mode(Glom::Document::HostingMode::MYSQL_SELF);
     else
 #endif //GLOM_ENABLE_MYSQL
     {
-      document.set_hosting_mode(Glom::Document::HostingMode::POSTGRES_SELF);
+      document->set_hosting_mode(Glom::Document::HostingMode::POSTGRES_SELF);
     }
   }
   else
@@ -424,27 +424,27 @@ int main(int argc, char* argv[])
 
 #if GLOM_ENABLE_MYSQL
     if(group.m_arg_use_mysql)
-      document.set_hosting_mode(Glom::Document::HostingMode::MYSQL_CENTRAL);
+      document->set_hosting_mode(Glom::Document::HostingMode::MYSQL_CENTRAL);
     else
 #endif //GLOM_ENABLE_MYSQL
     {
-      document.set_hosting_mode(Glom::Document::HostingMode::POSTGRES_CENTRAL);
+      document->set_hosting_mode(Glom::Document::HostingMode::POSTGRES_CENTRAL);
     }
   }
    
-  document.set_is_example_file(false);
-  document.set_network_shared(false);
-  const auto saved = document.save();
+  document->set_is_example_file(false);
+  document->set_network_shared(false);
+  const auto saved = document->save();
   g_assert(saved);
 
   //Specify the backend and backend-specific details to be used by the connectionpool.
-  connection_pool->setup_from_document(&document);
+  connection_pool->setup_from_document(document);
 
   //We must specify a default username and password:
   if(self_hosting)
   {
     Glib::ustring password;
-    const auto user = Glom::Privs::get_default_developer_user_name(password, document.get_hosting_mode());
+    const auto user = Glom::Privs::get_default_developer_user_name(password, document->get_hosting_mode());
     connection_pool->set_user(user);
     connection_pool->set_password(password);
   }
@@ -487,13 +487,13 @@ int main(int argc, char* argv[])
     }
     
     const Glib::ustring database_name =
-      Glom::DbUtils::get_unused_database_name(document.get_connection_database());
+      Glom::DbUtils::get_unused_database_name(document->get_connection_database());
     if(database_name.empty())
     {
       std::cerr << G_STRFUNC << ": Could not find an unused database name" << std::endl;
     }
     else
-      document.set_connection_database(database_name);
+      document->set_connection_database(database_name);
   }
         
   //Startup. For instance, create the self-hosting files if necessary:
@@ -511,7 +511,7 @@ int main(int argc, char* argv[])
   }
   g_assert(started == Glom::ConnectionPool::Backend::StartupErrors::NONE);
 
-  const auto recreated = Glom::DbUtils::recreate_database_from_document(&document, &on_recreate_progress);
+  const auto recreated = Glom::DbUtils::recreate_database_from_document(document, &on_recreate_progress);
   if(!recreated)
     cleanup();
   g_assert(recreated);
@@ -520,11 +520,11 @@ int main(int argc, char* argv[])
   std::string output_path_used;
   try
   {
-    output_path_used = Glib::filename_from_uri(document.get_file_uri());
+    output_path_used = Glib::filename_from_uri(document->get_file_uri());
   }
   catch(const Glib::ConvertError& ex)
   {
-    std::cerr << G_STRFUNC << ": Could not convert URI to output filepath: " << document.get_file_uri() << std::endl;
+    std::cerr << G_STRFUNC << ": Could not convert URI to output filepath: " << document->get_file_uri() << std::endl;
   }
    
   std::cout << "Glom file created at: " << output_path_used << std::endl;

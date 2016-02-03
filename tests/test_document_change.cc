@@ -30,37 +30,37 @@ int main()
 {
   Glom::libglom_init();
 
-  Glom::Document document;
-  document.set_allow_autosave(false); //Avoid warnings about it having no URI.
+  auto document = std::make_shared<Glom::Document>();
+  document->set_allow_autosave(false); //Avoid warnings about it having no URI.
 
   //Test some simple get/set operations:
   const char* title = "Music Collection";
-  document.set_database_title_original(title);
-  g_assert(document.get_database_title_original() == title);
+  document->set_database_title_original(title);
+  g_assert(document->get_database_title_original() == title);
 
   const char* value = "someuser";
-  document.set_connection_user(value);
-  g_assert(document.get_connection_user() == value);
+  document->set_connection_user(value);
+  g_assert(document->get_connection_user() == value);
 
   value = "someserver";
-  document.set_connection_server(value);
-  g_assert(document.get_connection_server() == value);
+  document->set_connection_server(value);
+  g_assert(document->get_connection_server() == value);
 
   value = "somedb";
-  document.set_connection_database(value);
-  g_assert(document.get_connection_database() == value);
+  document->set_connection_database(value);
+  g_assert(document->get_connection_database() == value);
 
   const guint port = 12345;
-  document.set_connection_port(port);
-  g_assert(document.get_connection_port() == port);
+  document->set_connection_port(port);
+  g_assert(document->get_connection_port() == port);
 
   const bool try_other_ports = false;
-  document.set_connection_try_other_ports(try_other_ports);
-  g_assert(document.get_connection_try_other_ports() == try_other_ports);
+  document->set_connection_try_other_ports(try_other_ports);
+  g_assert(document->get_connection_try_other_ports() == try_other_ports);
 
   value = "somescriptcontents";
-  document.set_startup_script(value);
-  g_assert(document.get_startup_script() == value);
+  document->set_startup_script(value);
+  g_assert(document->get_startup_script() == value);
 
 
   const Glib::ustring table_name = "sometable";
@@ -70,14 +70,14 @@ int main()
   const Glib::ustring table_title = "sometabletitle";
   table_info->set_title_original(table_title);
   g_assert(table_info->get_title_original() == table_title);  
-  document.add_table(table_info);
+  document->add_table(table_info);
 
   const float x = 20.0f;
   const float y = 30.0f;
-  document.set_table_overview_position(table_name, x, y);
+  document->set_table_overview_position(table_name, x, y);
   float x_out = 0;
   float y_out = 0;
-  document.get_table_overview_position(table_name, x_out, y_out);
+  document->get_table_overview_position(table_name, x_out, y_out);
   g_assert(x == x_out);
   g_assert(y == y_out);
 

@@ -154,7 +154,7 @@ void Window_RelationshipsOverview::draw_tables()
   while(m_group_tables->get_n_children() > 0)
     m_group_tables->remove_child(0);
 
-  const auto document = dynamic_cast<Document*>(get_document());
+  const auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(document)
   {
     double max_table_height = 0;
@@ -211,7 +211,7 @@ void Window_RelationshipsOverview::draw_lines()
   while(m_group_lines->get_n_children() > 0)
     m_group_lines->remove_child(0);
 
-  const auto document = dynamic_cast<Document*>(get_document());
+  const auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(document)
   {
     //Create the lines linking tables to show relationships:
@@ -413,7 +413,7 @@ void Window_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasItemM
   if(!table)
     return;
 
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(document && table)
   {
     //Save the new position in the document:

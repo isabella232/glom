@@ -214,7 +214,7 @@ void LayoutItem_Portal::set_print_layout_line_color(const Glib::ustring& color)
   m_print_layout_line_color = color;
 }
 
-void LayoutItem_Portal::get_suitable_table_to_view_details(Glib::ustring& table_name, std::shared_ptr<const UsesRelationship>& relationship, const Document* document) const
+void LayoutItem_Portal::get_suitable_table_to_view_details(Glib::ustring& table_name, std::shared_ptr<const UsesRelationship>& relationship, const std::shared_ptr<const Document>& document) const
 {
   //Initialize output parameters:
   table_name = Glib::ustring();
@@ -278,7 +278,7 @@ void LayoutItem_Portal::get_suitable_table_to_view_details(Glib::ustring& table_
   relationship = navigation_relationship;
 }
 
-std::shared_ptr<const UsesRelationship> LayoutItem_Portal::get_portal_navigation_relationship_automatic(const Document* document) const
+std::shared_ptr<const UsesRelationship> LayoutItem_Portal::get_portal_navigation_relationship_automatic(const std::shared_ptr<const Document>& document) const
 {
   if(!document)
   {
@@ -329,7 +329,7 @@ std::shared_ptr<const UsesRelationship> LayoutItem_Portal::get_portal_navigation
   return std::shared_ptr<const UsesRelationship>();
 }
 
-std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_is_from_non_hidden_related_record(const Document* document) const
+std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_is_from_non_hidden_related_record(const std::shared_ptr<const Document>& document) const
 {
   //Find the first field that is from a non-hidden related table.
   std::shared_ptr<LayoutItem_Field> result;
@@ -361,7 +361,7 @@ std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_is_from_non
   return result;
 }
 
-std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_identifies_non_hidden_related_record(std::shared_ptr<const Relationship>& used_in_relationship, const Document* document) const
+std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_identifies_non_hidden_related_record(std::shared_ptr<const Relationship>& used_in_relationship, const std::shared_ptr<const Document>& document) const
 {
   //Find the first field that is from a non-hidden related table.
   std::shared_ptr<LayoutItem_Field> result;

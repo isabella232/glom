@@ -68,43 +68,43 @@ int main()
 
   //Test manual saving:
   {
-    Glom::Document document;
-    document.set_allow_autosave(false);
-    document.set_file_uri(file_uri);
-    document.set_hosting_mode(Glom::Document::HostingMode::POSTGRES_CENTRAL);
-    document.set_database_title_original(test_title);
-    const auto saved = document.save();
+    auto document = std::make_shared<Glom::Document>();
+    document->set_allow_autosave(false);
+    document->set_file_uri(file_uri);
+    document->set_hosting_mode(Glom::Document::HostingMode::POSTGRES_CENTRAL);
+    document->set_database_title_original(test_title);
+    const auto saved = document->save();
     g_assert(saved);
   }
   {
-    Glom::Document document;
-    document.set_file_uri(file_uri);
+    auto document = std::make_shared<Glom::Document>();
+    document->set_file_uri(file_uri);
     int failure_code = 0;
-    const auto test = document.load(failure_code);
+    const auto test = document->load(failure_code);
     g_assert(test);
 
-    g_assert( document.get_database_title_original() == test_title );
+    g_assert( document->get_database_title_original() == test_title );
   }
 
   cleanup();
 
   //Test autosaving:
   {
-    Glom::Document document;
-    document.set_file_uri(file_uri);
-    document.set_hosting_mode(Glom::Document::HostingMode::POSTGRES_CENTRAL);
-    document.set_allow_autosave();
-    document.set_database_title_original(test_title);
-    g_assert( !document.get_modified() );
+    auto document = std::make_shared<Glom::Document>();
+    document->set_file_uri(file_uri);
+    document->set_hosting_mode(Glom::Document::HostingMode::POSTGRES_CENTRAL);
+    document->set_allow_autosave();
+    document->set_database_title_original(test_title);
+    g_assert( !document->get_modified() );
   }
   {
-    Glom::Document document;
-    document.set_file_uri(file_uri);
+    auto document = std::make_shared<Glom::Document>();
+    document->set_file_uri(file_uri);
     int failure_code = 0;
-    const auto test = document.load(failure_code);
+    const auto test = document->load(failure_code);
     g_assert(test);
 
-    g_assert( document.get_database_title_original() == test_title );
+    g_assert( document->get_database_title_original() == test_title );
   }
 
   cleanup();

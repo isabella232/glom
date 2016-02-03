@@ -168,7 +168,7 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
   on_check_lookup_toggled();
 
   //Fill the lookup relationships combo:
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(document)
   {
     //Get the relationships used by this table, excluding relationships triggered
@@ -343,7 +343,7 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
   if(relationship)
   {
     //Get the relationship details:
-    auto document = dynamic_cast<Document*>(get_document());
+    auto document = std::dynamic_pointer_cast<Document>(get_document());
     if(document)
     {
       const auto to_table = relationship->get_to_table();

@@ -35,9 +35,9 @@ bool contains(const T_Container& container, const T_Value& name)
   return Glom::Utils::find_exists(container, name);
 }
 
-static bool test_add_group(const Glom::Document& document, const Glib::ustring& group)
+static bool test_add_group(const std::shared_ptr<Glom::Document>& document, const Glib::ustring& group)
 {
-  if(!Glom::DbUtils::add_group(&document, group))
+  if(!Glom::DbUtils::add_group(document, group))
   {
     std::cerr << G_STRFUNC << ": DbUtils::add_group() failed." << std::endl;
     return false;
@@ -61,10 +61,10 @@ static bool test_add_group(const Glom::Document& document, const Glib::ustring& 
   return true;
 }
 
-static bool test_add_user(const Glom::Document& document, const Glib::ustring& user, const Glib::ustring& group)
+static bool test_add_user(const std::shared_ptr<Glom::Document>& document, const Glib::ustring& user, const Glib::ustring& group)
 {
   //Add an operator user, adding it to the group:
-  if(!Glom::DbUtils::add_user(&document, user, "somepassword", group))
+  if(!Glom::DbUtils::add_user(document, user, "somepassword", group))
   {
     std::cerr << G_STRFUNC << ": DbUtils::add_user() failed." << std::endl;
     test_selfhosting_cleanup();
@@ -122,7 +122,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   //Create and self-host the document:
-  Glom::Document document;
+  auto document = std::make_shared<Glom::Document>();
     if(!(test_create_and_selfhost_new_database(document, hosting_mode, "test_db")))
   {
     std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_database() failed" << std::endl;
@@ -147,7 +147,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //Add some tables, for the groups to have rights for:
   for(const auto& table_name : table_names)
   {
-    if(!Glom::DbUtils::create_table_with_default_fields(&document, table_name))
+    if(!Glom::DbUtils::create_table_with_default_fields(document, table_name))
     {
       std::cerr << G_STRFUNC << ": Failure: create_table_with_default_fields() failed." << std::endl;
       return false;

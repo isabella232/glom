@@ -36,6 +36,9 @@ public:
   Document();
   virtual ~Document();
 
+  //TODO: Properly use a weak pointer instead.
+  void emit_forget();
+
   /* Saves the data to disk.
    * Asks the View to update this document before saving to disk,
    * but you should probably ensure that the document is updated more regularly than this,

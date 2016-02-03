@@ -49,7 +49,7 @@ void CellRendererDbList::set_choices_fixed(const Formatting::type_list_values& l
   //The other cells are added in on_editing_started().
 }
 
-void CellRendererDbList::set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
+void CellRendererDbList::set_choices_related(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
 {
   ComboChoicesWithTreeModel::set_choices_related(document, layout_field, foreign_key_value);
 

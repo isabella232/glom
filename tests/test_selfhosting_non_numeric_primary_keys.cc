@@ -28,7 +28,7 @@
 
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
-  Glom::Document document;
+  auto document = std::make_shared<Glom::Document>();
   const bool recreated = 
     test_create_and_selfhost_from_test_example("test_example_music_collection_text_pk_fields.glom", document, hosting_mode);
   if(!recreated)
@@ -37,7 +37,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
   
-  if(!test_example_musiccollection_data(&document))
+  if(!test_example_musiccollection_data(document))
   {
     std::cerr << G_STRFUNC << ": test_example_musiccollection_data() failed." << std::endl;
     return false;
@@ -58,7 +58,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //and make it translatable:
   /* TODO: This is not stored in the examples. Should it be?
   const Glom::SystemPrefs prefs = 
-    Glom::DbUtils::get_database_preferences(&document);
+    Glom::DbUtils::get_database_preferences(document);
   g_return_val_if_fail(prefs.m_name == "Music Collection", false);
   g_return_val_if_fail(prefs.m_org_name == "SomeOrganization Incorporated", false);
   g_return_val_if_fail(prefs.m_org_address_street == "Some House", false);

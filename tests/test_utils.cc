@@ -23,9 +23,9 @@
 #include <glibmm/fileutils.h>
 #include <iostream>
 
-std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Document& document, const Glib::ustring& layout_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name)
+std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const std::shared_ptr<Glom::Document>& document, const Glib::ustring& layout_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
-  for(const auto& group : document.get_data_layout_groups("details", layout_table_name))
+  for(const auto& group : document->get_data_layout_groups("details", layout_table_name))
   {
     if(!group)
       continue;

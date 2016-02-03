@@ -632,12 +632,12 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::
   //Create a DOM Document with the XML:
   xmlpp::DomParser dom_parser;;
 
-  auto pDocument = dom_parser.get_document();
-  auto nodeRoot = pDocument->get_root_node();
+  auto document = dom_parser.get_document();
+  auto nodeRoot = document->get_root_node();
   if(!nodeRoot)
   {
     //Add it if it isn't there already:
-    nodeRoot = pDocument->create_root_node("report_print");
+    nodeRoot = document->create_root_node("report_print");
   }
 
   Glib::ustring table_title = get_document()->get_table_title(found_set.m_table_name, m_locale_id);
@@ -716,7 +716,7 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::
     }
   }
 
-  return GlomXslUtils::transform(*pDocument, "print_report_to_html.xsl");
+  return GlomXslUtils::transform(*document, "print_report_to_html.xsl");
 }
 
 static void fill_standard_list_report_fill(const std::shared_ptr<Report>& report, const std::shared_ptr<const LayoutGroup>& layout_group)
@@ -737,7 +737,7 @@ static void fill_standard_list_report_fill(const std::shared_ptr<Report>& report
   }
 }
 
-std::shared_ptr<Report> ReportBuilder::create_standard_list_report(const Document* document, const Glib::ustring& table_name)
+std::shared_ptr<Report> ReportBuilder::create_standard_list_report(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name)
 {
   auto result = std::make_shared<Report>();
   result->set_name("list");
@@ -755,12 +755,12 @@ std::shared_ptr<Report> ReportBuilder::create_standard_list_report(const Documen
   return result;
 }
 
-void ReportBuilder::set_document(Document* document)
+void ReportBuilder::set_document(const std::shared_ptr<Document>& document)
 {
   m_document = document;
 }
 
-Document* ReportBuilder::get_document()
+std::shared_ptr<Document> ReportBuilder::get_document()
 {
   return m_document;
 }

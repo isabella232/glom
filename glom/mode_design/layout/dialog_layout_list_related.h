@@ -45,7 +45,7 @@ public:
    * @param portal The layout item, which knows its from_table, for instance.
    * @apram for_print_layout If true, don't show the navigation options, for instance.
    */
-  void init_with_portal(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const std::shared_ptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table, bool for_print_layout = false);
+  void init_with_portal(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, const std::shared_ptr<Document>& document, const std::shared_ptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table, bool for_print_layout = false);
 
   void update_ui(bool including_relationships_list = true);
 

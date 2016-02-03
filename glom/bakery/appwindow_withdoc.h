@@ -81,10 +81,10 @@ protected:
   static void add_mime_type(const Glib::ustring& mime_type);
 
   ///static_cast<> or dynamic_cast<> this pointer to the correct type.
-  virtual Document* get_document();
+  virtual std::shared_ptr<Document> get_document();
 
   ///static_cast<> or dynamic_cast<> this pointer to the correct type.
-  virtual const Document* get_document() const ;
+  virtual std::shared_ptr<const Document> get_document() const ;
 
   virtual void set_document_modified(bool bModified = true);
 
@@ -165,7 +165,7 @@ protected:
   virtual enumSaveChanges ui_offer_to_save_changes() = 0;
 
   //Document:
-  Document* m_pDocument; //An instance of a derived type.
+  std::shared_ptr<Document> m_document; //An instance of a derived type.
   bool m_bCloseAfterSave;
 
   //Mime types which this application can load and save:

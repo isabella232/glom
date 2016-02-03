@@ -139,7 +139,7 @@ ConnectionPool* ConnectionPool::get_instance()
   }
 }
 
-void ConnectionPool::setup_from_document(const Document* document)
+void ConnectionPool::setup_from_document(const std::shared_ptr<const Document>& document)
 {
   switch(document->get_hosting_mode())
   {
@@ -147,7 +147,7 @@ void ConnectionPool::setup_from_document(const Document* document)
     {
       auto backend = new ConnectionPoolBackends::PostgresSelfHosted;
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
-      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
+      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend)); //TODO: Use make_shared()?
     }
     break;
   case Document::HostingMode::POSTGRES_CENTRAL:
@@ -156,21 +156,21 @@ void ConnectionPool::setup_from_document(const Document* document)
       backend->set_host(document->get_connection_server());
       backend->set_port(document->get_connection_port());
       backend->set_try_other_ports(document->get_connection_try_other_ports());
-      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
+      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend)); //TODO: Use make_shared()?
     }
     break;
   case Document::HostingMode::SQLITE:
     {
       auto backend = new ConnectionPoolBackends::Sqlite;
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
-      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
+      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend)); //TODO: Use make_shared()?
     }
     break;
   case Document::HostingMode::MYSQL_SELF:
     {
       auto backend = new ConnectionPoolBackends::MySQLSelfHosted;
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
-      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
+      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend)); //TODO: Use make_shared()?
     }
     break;
   case Document::HostingMode::MYSQL_CENTRAL:
@@ -179,7 +179,7 @@ void ConnectionPool::setup_from_document(const Document* document)
       backend->set_host(document->get_connection_server());
       backend->set_port(document->get_connection_port());
       backend->set_try_other_ports(document->get_connection_try_other_ports());
-      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
+      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend)); //TODO: Use make_shared()?
     }
     break;
 
@@ -813,7 +813,7 @@ ConnectionPool::InitErrors ConnectionPool::initialize(const SlotProgress& slot_p
     return Backend::InitErrors::OTHER;
 }
 
-Document* ConnectionPool::get_document()
+std::shared_ptr<Document> ConnectionPool::get_document()
 {
   if(!m_slot_get_document)
   {

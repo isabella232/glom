@@ -60,16 +60,16 @@ public:
       m_vecViews.erase(iter);
   }
 
-  void set_document(T_Document* pDocument) override
+  void set_document(const std::shared_ptr<T_Document>& document) override
   {
     //Call base class:
-    View<T_Document>::set_document(pDocument);
+    View<T_Document>::set_document(document);
 
     //Change the document in the child views.
     for(const auto& pView : m_vecViews)
     {
       if(pView)
-        pView->set_document(pDocument);
+        pView->set_document(document);
     }
   }
 

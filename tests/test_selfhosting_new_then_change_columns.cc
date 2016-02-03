@@ -34,7 +34,7 @@
 
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
-  Glom::Document document;
+  auto document = std::make_shared<Glom::Document>();
   const bool recreated = 
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
@@ -45,7 +45,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   
   const Glib::ustring table_name = "contacts";
   const Glib::ustring field_name_original = "date_of_birth";
-  auto field_original = document.get_field(table_name, field_name_original);
+  auto field_original = document->get_field(table_name, field_name_original);
   if(!field_original)
   {
     std::cerr << G_STRFUNC << ": Failure: Could not get field." << std::endl;

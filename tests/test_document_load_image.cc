@@ -52,10 +52,10 @@ int main()
 
 
   // Load the document:
-  Glom::Document document;
-  document.set_file_uri(uri);
+  auto document = std::make_shared<Glom::Document>();
+  document->set_file_uri(uri);
   int failure_code = 0;
-  const auto test = document.load(failure_code);
+  const auto test = document->load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -65,12 +65,12 @@ int main()
   }
 
   //Test some known details:
-  g_assert(document.get_is_example_file());
-  g_assert(document.get_database_title_original() == "Project Manager Example");
+  g_assert(document->get_is_example_file());
+  g_assert(document->get_database_title_original() == "Project Manager Example");
 
   //Check a layout:
   const Glom::Document::type_list_layout_groups groups = 
-    document.get_data_layout_groups("details", "projects");
+    document->get_data_layout_groups("details", "projects");
   g_assert(groups.size() == 3);
   const std::shared_ptr<const Glom::LayoutGroup> group =
     groups[0];

@@ -44,7 +44,7 @@ class DataWidget
    public View_Composite_Glom
 {
 public:
-  explicit DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document* document);
+  explicit DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const std::shared_ptr<const Document>& document);
 
   Gtk::Label* get_label();
   const Gtk::Label* get_label() const;
@@ -61,7 +61,7 @@ public:
   void set_viewable(bool viewable = true);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  static std::shared_ptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& start_field, Document* document, AppWindow* app);
+  static std::shared_ptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& start_field, const std::shared_ptr<Document>& document, AppWindow* app);
   std::shared_ptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name);
   std::shared_ptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& start_field);
 

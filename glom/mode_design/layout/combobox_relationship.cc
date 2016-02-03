@@ -145,7 +145,7 @@ void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relat
     unset_active();
 }
 
-void ComboBox_Relationship::set_relationships(Document* document, const Glib::ustring parent_table_name, bool show_related_relationships, bool show_parent_table_name)
+void ComboBox_Relationship::set_relationships(const std::shared_ptr<Document>& document, const Glib::ustring parent_table_name, bool show_related_relationships, bool show_parent_table_name)
 {
   if(!document)
     return;

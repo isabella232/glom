@@ -698,7 +698,7 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set, bool avoid_pa
   fill_with_data(m_items_group, found_set, avoid_page_margins);
 }
 
-void Canvas_PrintLayout::fill_with_data_system_preferences(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, Document* document)
+void Canvas_PrintLayout::fill_with_data_system_preferences(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, const std::shared_ptr<Document>& document)
 {
   auto layoutitem_field = 
     std::dynamic_pointer_cast<LayoutItem_Field>(canvas_item->get_layout_item());

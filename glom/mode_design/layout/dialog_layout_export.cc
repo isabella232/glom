@@ -93,7 +93,7 @@ Dialog_Layout_Export::Dialog_Layout_Export(BaseObjectType* cobject, const Glib::
   show_all_children();
 }
 
-void Dialog_Layout_Export::set_layout_groups(Document::type_list_layout_groups& mapGroups, Document* document, const Glib::ustring& table_name)
+void Dialog_Layout_Export::set_layout_groups(Document::type_list_layout_groups& mapGroups, const std::shared_ptr<Document>& document, const Glib::ustring& table_name)
 {
   Base_DB::set_document(document);
 

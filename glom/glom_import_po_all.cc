@@ -177,10 +177,10 @@ int main(int argc, char* argv[])
 
 
   // Load the document:
-  Glom::Document document;
-  document.set_file_uri(input_uri);
+  auto document = std::make_shared<Glom::Document>();
+  document->set_file_uri(input_uri);
   int failure_code = 0;
-  const auto test = document.load(failure_code);
+  const auto test = document->load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -205,16 +205,16 @@ int main(int argc, char* argv[])
     if(locale_id == basename)
       continue;
     
-    document.set_allow_autosave(false); //Prevent saving while we modify the document.
+    document->set_allow_autosave(false); //Prevent saving while we modify the document.
     const bool succeeded = 
-      Glom::import_translations_from_po_file(&document, child->get_uri(), locale_id);
+      Glom::import_translations_from_po_file(document, child->get_uri(), locale_id);
     if(!succeeded)
     {
       std::cerr << Glib::ustring::compose(_("Po file import failed for locale: %1"), locale_id) << std::endl;
       return EXIT_FAILURE;
     }
 
-    if(!document.save()) {
+    if(!document->save()) {
       std::cerr << Glib::ustring::compose(_("Po file import failed during document saving for locale: %1"), locale_id) << std::endl;
       return EXIT_FAILURE;
     }

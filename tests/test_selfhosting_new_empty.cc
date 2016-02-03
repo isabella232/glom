@@ -27,7 +27,7 @@
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   // Create the document:
-  Glom::Document document;
+  auto document = std::make_shared<Glom::Document>();
 
   if(!(test_create_and_selfhost_new_database(document, hosting_mode, "test_db")))
   {
@@ -41,7 +41,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     Glom::SystemPrefs prefs;
     prefs.m_name = "test name";
     prefs.m_org_name = "test org name";
-    Glom::DbUtils::set_database_preferences(&document, prefs);
+    Glom::DbUtils::set_database_preferences(document, prefs);
   }
   catch(const Glom::ExceptionConnection& ex)
   {

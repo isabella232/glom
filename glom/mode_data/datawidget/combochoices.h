@@ -56,13 +56,13 @@ public:
    *
    * See also refresh_data_from_database_with_foreign_key().
    */
-  virtual void set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value) = 0;
+  virtual void set_choices_related(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value) = 0;
 
   /** Update a choices widget's list of related choices if a relevant value in its parent table has changed.
    *
    * @param foreign_key_value: The value that should be found in this table.
    */
-  bool refresh_data_from_database_with_foreign_key(const Document* document, const Gnome::Gda::Value& foreign_key_value);
+  bool refresh_data_from_database_with_foreign_key(const std::shared_ptr<const Document>& document, const Gnome::Gda::Value& foreign_key_value);
 
 protected:
 

@@ -74,7 +74,7 @@ private:
   Glib::ustring m_table_name;
   Glib::ustring m_layout_platform;
 
-  Document* m_document;
+  std::shared_ptr<Document> m_document;
   Gnome::Gda::Value m_id_chosen;
 
   Box_Data_Details_Find m_box_find;

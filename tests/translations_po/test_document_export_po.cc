@@ -88,10 +88,10 @@ int main()
 
 
   // Load the document:
-  Glom::Document document;
-  document.set_file_uri(uri);
+  auto document = std::make_shared<Glom::Document>();
+  document->set_file_uri(uri);
   int failure_code = 0;
-  const auto test = document.load(failure_code);
+  const auto test = document->load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -111,7 +111,7 @@ int main()
 
   const Glib::ustring locale = "de";
   const bool success = 
-    Glom::write_translations_to_po_file(&document, po_file_uri, locale);
+    Glom::write_translations_to_po_file(document, po_file_uri, locale);
   if(!success)
   {
     std::cerr << G_STRFUNC << ": Glom::write_translations_to_po_file() failed." << std::endl;

@@ -451,7 +451,7 @@ Base_DB_Table_Data::type_vecConstLayoutFields Base_DB_Table_Data::get_related_fi
 {
   type_vecConstLayoutFields result;
 
-  const auto document = dynamic_cast<const Document*>(get_document());
+  const auto document = std::dynamic_pointer_cast<const Document>(get_document());
   if(document)
   {
     const auto field_name = field->get_name(); //At the moment, relationships can not be based on related fields on the from side.

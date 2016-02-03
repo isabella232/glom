@@ -34,33 +34,33 @@ namespace DbUtils
 /**
  * This also saves the connection port in the document if self-hosting.
  */
-bool create_database(Document* document, const Glib::ustring& database_name, const Glib::ustring& title, const std::function<void()>& progress);
+bool create_database(const std::shared_ptr<Document>& document, const Glib::ustring& database_name, const Glib::ustring& title, const std::function<void()>& progress);
 
 //TODO: Use this in Glom::AppWindow?
 /** Create the database on an already-connected server.
  * This also saves some details in the document.
  */
-bool recreate_database_from_document(Document* document, const std::function<void()>& progress);
+bool recreate_database_from_document(const std::shared_ptr<Document>& document, const std::function<void()>& progress);
 
 /** This creates the standard tables if necessary,
  * filling them with some information from the document.
  */
-SystemPrefs get_database_preferences(const Document* document);
+SystemPrefs get_database_preferences(const std::shared_ptr<const Document>& document);
 
 /**
  * This also saves the preferences in the document.
  */
-void set_database_preferences(Document* document, const SystemPrefs& prefs);
+void set_database_preferences(const std::shared_ptr<Document>& document, const SystemPrefs& prefs);
 
-bool add_standard_tables(const Document* document);
+bool add_standard_tables(const std::shared_ptr<const Document>& document);
 
 /**
  * This also saves the groups in the document.
  */
-bool add_standard_groups(Document* document);
+bool add_standard_groups(const std::shared_ptr<Document>& document);
 
-bool add_groups_from_document(const Document* document);
-bool set_table_privileges_groups_from_document(const Document* document);
+bool add_groups_from_document(const std::shared_ptr<const Document>& document);
+bool set_table_privileges_groups_from_document(const std::shared_ptr<const Document>& document);
 
 typedef std::vector< std::shared_ptr<Field> > type_vec_fields;
 type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_name, bool including_system_fields = false);
@@ -72,7 +72,7 @@ bool get_field_exists_in_database(const Glib::ustring& table_name, const Glib::u
  * @param including_system_fields Whether extra non-user-visible fields should be included in the list.
  * @result A list of fields.
  */
-type_vec_fields get_fields_for_table(const Document* document, const Glib::ustring& table_name, bool including_system_fields = false);
+type_vec_fields get_fields_for_table(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, bool including_system_fields = false);
 
 /** Get a single field definition for a table, even if the field is in the datasbase but not yet known in the document.
  *
@@ -80,7 +80,7 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
  * @param field_name The name of the field for which to get the definition.
  * @result The field definition.
  */
-std::shared_ptr<Field> get_fields_for_table_one_field(const Document* document, const Glib::ustring& table_name, const Glib::ustring& field_name);
+std::shared_ptr<Field> get_fields_for_table_one_field(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const Glib::ustring& field_name);
 
 typedef std::vector<Glib::ustring> type_vec_strings;
 
@@ -94,7 +94,7 @@ bool get_table_exists_in_database(const Glib::ustring& table_name);
 bool create_table(Document::HostingMode hosting_mode, const std::shared_ptr<const TableInfo>& table_info, const Document::type_vec_fields& fields);
 
 /// Also saves the table information in the document:
-bool create_table_with_default_fields(Document* document, const Glib::ustring& table_name);
+bool create_table_with_default_fields(const std::shared_ptr<Document>& document, const Glib::ustring& table_name);
 
 bool create_table_add_missing_fields(const std::shared_ptr<const TableInfo>& table_info, const Document::type_vec_fields& fields);
 
@@ -107,7 +107,7 @@ bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_nam
 
 /** Insert example data, from the document, into the table on the database server.
  */
-bool insert_example_data(const Document* document, const Glib::ustring& table_name);
+bool insert_example_data(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name);
 
 /** Execute a SQL Select command, returning the result.
  * @param builder The finished SqlBuilder object.
@@ -145,7 +145,7 @@ Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name,
  */
 void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
-void layout_item_fill_field_details(const Document* document, const Glib::ustring& parent_table_name, std::shared_ptr<LayoutItem_Field>& layout_item);
+void layout_item_fill_field_details(const std::shared_ptr<const Document>& document, const Glib::ustring& parent_table_name, std::shared_ptr<LayoutItem_Field>& layout_item);
 
 
 //TODO: It would be nice to use std::shared_ptr<const Relationship>& instead of std::shared_ptr<Relationship>&,
@@ -156,7 +156,7 @@ void layout_item_fill_field_details(const Document* document, const Glib::ustrin
  * @param layout_item A field on a layout. This must have full field details.
  * @param field_used_in_relationship_to_one A relationship, if the field identifies a single record, so a Find button would also make sense, to choose the ID, in editing mode.
  */
-bool layout_field_should_have_navigation(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& layout_item, const Document* document, std::shared_ptr<Relationship>& field_used_in_relationship_to_one);
+bool layout_field_should_have_navigation(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& layout_item, const std::shared_ptr<const Document>& document, std::shared_ptr<Relationship>& field_used_in_relationship_to_one);
 
 /** Discover a database name that is not yet used.
  * This assumes that all other connection details are correctly set.
@@ -201,7 +201,7 @@ Glib::ustring build_query_add_user_to_group(const Glib::ustring& group, const Gl
 /** Add a @a user to the database, with the specified @a password, in the specified @a group.
  * @result true if the addition succeeded.
  */
-bool add_user(const Document* document, const Glib::ustring& user, const Glib::ustring& password, const Glib::ustring& group);
+bool add_user(const std::shared_ptr<const Document>& document, const Glib::ustring& user, const Glib::ustring& password, const Glib::ustring& group);
 
 /** Remove the @a user from the database.
  * @result true if the removal succeeded.
@@ -211,18 +211,18 @@ bool remove_user(const Glib::ustring& user);
 /** Add a @a group to the database.
  * @result true if the addition succeeded.
  */
-bool add_group(const Document* document, const Glib::ustring& group, bool superuser = false);
+bool add_group(const std::shared_ptr<const Document>& document, const Glib::ustring& group, bool superuser = false);
 
 bool remove_user_from_group(const Glib::ustring& user, const Glib::ustring& group);
 
 /** Get the value of the @a source_field from the @a relationship, using the @a key_value.
  */
-Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring& table_name, const std::shared_ptr<const Relationship>& relationship, const std::shared_ptr<const Field>& source_field, const Gnome::Gda::Value & key_value);
+Gnome::Gda::Value get_lookup_value(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const std::shared_ptr<const Relationship>& relationship, const std::shared_ptr<const Field>& source_field, const Gnome::Gda::Value & key_value);
 
 typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
 
 //TODO: Performance: This is massively inefficient:
-type_map_fields get_record_field_values(const Document* document, const Glib::ustring& table_name, const std::shared_ptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
+type_map_fields get_record_field_values(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const std::shared_ptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
   
 /** Allow a fake connection, so sqlbuilder_get_full_query() can work.
  */

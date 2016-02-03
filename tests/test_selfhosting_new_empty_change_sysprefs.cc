@@ -27,7 +27,7 @@
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   // Create the document:
-  Glom::Document document;
+  auto document = std::make_shared<Glom::Document>();
 
   if(!(test_create_and_selfhost_new_database(document, hosting_mode, "test_db")))
   {
@@ -46,10 +46,10 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     prefs_in.m_org_address_county = "test county";
     prefs_in.m_org_address_postcode = "test postcode";
     prefs_in.m_org_address_country = "test country";
-    Glom::DbUtils::set_database_preferences(&document, prefs_in);
+    Glom::DbUtils::set_database_preferences(document, prefs_in);
 
     const Glom::SystemPrefs prefs_out = 
-      Glom::DbUtils::get_database_preferences(&document);
+      Glom::DbUtils::get_database_preferences(document);
     if(prefs_out != prefs_in)
     {
       std::cerr << G_STRFUNC << ": The System Preferences read out were not the same as those written." << std::endl;

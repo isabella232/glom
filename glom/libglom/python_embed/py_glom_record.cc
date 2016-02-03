@@ -211,7 +211,7 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
   //TODO: Do dependent calculations and lookups. Or just do them for all fields for this record when finishing the script?
 }
 
-void PyGlomRecord::set_fields(const PyGlomRecord::type_map_field_values& field_values, const Document* document, const Glib::ustring& table_name, const std::shared_ptr<const Field>& key_field, const Gnome::Gda::Value& key_field_value, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
+void PyGlomRecord::set_fields(const PyGlomRecord::type_map_field_values& field_values, const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const std::shared_ptr<const Field>& key_field, const Gnome::Gda::Value& key_field_value, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
   m_map_field_values = field_values;
   /* Just for debugging:

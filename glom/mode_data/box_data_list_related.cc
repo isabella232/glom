@@ -398,7 +398,7 @@ void Box_Data_List_Related::create_layout()
 {
   Box_Data::create_layout(); //Fills m_TableFields.
 
-  const auto pDoc = dynamic_cast<const Document*>(get_document());
+  const auto pDoc = std::dynamic_pointer_cast<const Document>(get_document());
   if(!pDoc)
     return;
 

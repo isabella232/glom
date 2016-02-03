@@ -66,7 +66,7 @@ static bool contains_field(const Glom::Document::type_list_lookups& container, c
 
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
-  Glom::Document document;
+  auto document = std::make_shared<Glom::Document>();
   const bool recreated = 
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
@@ -76,7 +76,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
   
   const Glib::ustring table_name = "invoice_lines";
-  auto primary_key_field = document.get_field_primary_key(table_name);
+  auto primary_key_field = document->get_field_primary_key(table_name);
   if(!primary_key_field)
   {
     std::cerr << G_STRFUNC << ": Failure: primary_key_field is empty." << std::endl;
@@ -85,7 +85,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
 
   // Get the fields whose values should be looked up when a field changes:
-  const auto lookups = document.get_lookup_fields(table_name, "product_id");
+  const auto lookups = document->get_lookup_fields(table_name, "product_id");
   if(lookups.size() != 3)
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected number of lookups: " << lookups.size() << std::endl;
@@ -177,8 +177,8 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   //Lookup the value from the related record.
   const auto field_source = 
-    document.get_field(relationship->get_to_table(), field->get_lookup_field());
-  const auto value = Glom::DbUtils::get_lookup_value(&document, 
+    document->get_field(relationship->get_to_table(), field->get_lookup_field());
+  const auto value = Glom::DbUtils::get_lookup_value(document, 
     table_name, relationship, field_source, Gnome::Gda::Value(2));
 
   if(!test_check_numeric_value_type(hosting_mode, value))

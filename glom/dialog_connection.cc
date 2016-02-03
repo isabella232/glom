@@ -95,7 +95,7 @@ std::shared_ptr<SharedConnection> Dialog_Connection::connect_to_server_with_conn
   //Remember the port, 
   //to make opening faster next time,
   //and so we can tell connecting clients (using browse network) what port to use:
-  auto unconst = const_cast<Document*>(document);
+  auto unconst = std::const_pointer_cast<Document>(document);
 
   if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_CENTRAL)
   {

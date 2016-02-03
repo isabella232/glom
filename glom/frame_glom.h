@@ -137,7 +137,7 @@ public:
 
   void on_dialog_tables_hide();
 
-  void set_document(Document* pDocument) override; //View override
+  void set_document(const std::shared_ptr<Document>& document) override; //View override
   void load_from_document() override; //View override
 
   enum class enumModes
@@ -189,7 +189,7 @@ public:
 
 private:
 
-  //void set_document(Document* pDocument) override;
+  //void set_document(const std::shared_ptr<Document>& document) override;
 
   /** Show the table, possibly selecting a particular record, possibly showing that in the details tab. This allows table_name to be empty in which case no
    * table will be shown.

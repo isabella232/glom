@@ -208,8 +208,8 @@ bool AppWindow::init_with_document(const Glib::ustring& document_uri, bool resto
 
   if(document_uri.empty())
   {
-    auto pDocument = static_cast<Document*>(get_document());
-    if(pDocument && pDocument->get_connection_database().empty()) //If it is a new (default) document.
+    auto document = std::static_pointer_cast<Document>(get_document());
+    if(document && document->get_connection_database().empty()) //If it is a new (default) document.
     {
         return offer_new_or_existing();
     }
@@ -706,7 +706,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
     //so we don't think that opening has failed because it has no URI,
     //and to stop us from allowing developer mode
     //(that would require changes to the original document).
-    auto document = dynamic_cast<Document*>(get_document());
+    auto document = std::dynamic_pointer_cast<Document>(get_document());
     if(document)
     {
       document->set_opened_from_browse();
@@ -769,29 +769,29 @@ void AppWindow::new_instance(const Glib::ustring& uri) //Override
 
 void AppWindow::init_create_document()
 {
-  if(!m_pDocument)
+  if(!m_document)
   {
-    auto document_glom = new Document();
+    auto document_glom = std::make_shared<Document>();
 
     //By default, we assume that the original is in the current locale.
     document_glom->set_translation_original_locale(AppWindow::get_current_locale());
 
-    m_pDocument = document_glom;
+    m_document = document_glom;
     //document_glom->set_parent_window(this); //So that it can show a BusyCursor when loading and saving.
 
 
     //Tell document about view:
-    m_pDocument->set_view(m_pFrame);
+    m_document->set_view(m_pFrame);
 
     //Tell view about document:
     //(This calls set_document() in the child views too.)
-    m_pFrame->set_document(static_cast<Document*>(m_pDocument));
+    m_pFrame->set_document(std::static_pointer_cast<Document>(m_document));
   }
 
   GlomBakery::AppWindow_WithDoc::init_create_document(); //Sets window title. Doesn't recreate doc.
 }
 
-bool AppWindow::check_document_hosting_mode_is_supported(Document* document)
+bool AppWindow::check_document_hosting_mode_is_supported(const std::shared_ptr<Document>& document)
 {
   //If it's an example then the document's hosting mode doesn't matter,
   //because the user will be asked to choose one when saving anyway.
@@ -854,25 +854,25 @@ bool AppWindow::on_document_load()
   //Link to the database described in the document.
   //Need to ask user for user/password:
   //m_pFrame->load_from_document();
-  auto pDocument = static_cast<Document*>(get_document());
-  if(!pDocument)
+  auto document = std::static_pointer_cast<Document>(get_document());
+  if(!document)
     return false;
 
   //Set this so that AppWindow::get_current_locale() works as expected:
-  AppWindow::set_original_locale(pDocument->get_translation_original_locale());
+  AppWindow::set_original_locale(document->get_translation_original_locale());
 
-  if(!pDocument->get_is_new() && !check_document_hosting_mode_is_supported(pDocument))
+  if(!document->get_is_new() && !check_document_hosting_mode_is_supported(document))
     return false;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Connect signals:
-  pDocument->signal_userlevel_changed().connect( sigc::mem_fun(*this, &AppWindow::on_userlevel_changed) );
+  document->signal_userlevel_changed().connect( sigc::mem_fun(*this, &AppWindow::on_userlevel_changed) );
 
   //Disable/Enable actions, depending on userlevel:
-  pDocument->emit_userlevel_changed();
+  document->emit_userlevel_changed();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  if(pDocument->get_connection_database().empty()) //If it is a new (default) document.
+  if(document->get_connection_database().empty()) //If it is a new (default) document.
   {
     //offer_new_or_existing();
   }
@@ -881,19 +881,19 @@ bool AppWindow::on_document_load()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     //Prevent saving until we are sure that everything worked.
     //This also stops us from losing the example data as soon as we say the new file (created from the example) is not an example.
-    pDocument->set_allow_autosave(false);
+    document->set_allow_autosave(false);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
     // Example files and backup files are not supported in client only mode because they
     // would need to be saved, but saving support is disabled.
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    const auto is_example = pDocument->get_is_example_file();
-    const auto is_backup = pDocument->get_is_backup_file();
+    const auto is_example = document->get_is_example_file();
+    const auto is_backup = document->get_is_backup_file();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
     //Note that the URI will be empty if we are loading from data,
     //such as when loading a backup.
-    const auto original_uri = pDocument->get_file_uri();
+    const auto original_uri = document->get_file_uri();
 
     if(is_example || is_backup)
     {
@@ -905,7 +905,7 @@ bool AppWindow::on_document_load()
       // TODO: This is a weird hack. Find a nicer way. murrayc.
       m_example_uri = original_uri;
 
-      pDocument->set_file_uri(Glib::ustring()); //Prevent it from defaulting to the read-only examples directory when offering saveas.
+      document->set_file_uri(Glib::ustring()); //Prevent it from defaulting to the read-only examples directory when offering saveas.
       //m_ui_save_extra_* are used by offer_saveas() if it's not empty:
       m_ui_save_extra_showextras = true;
 
@@ -936,17 +936,17 @@ bool AppWindow::on_document_load()
       if(!get_operation_cancelled())
       {
         //Get the results from the extended save dialog:
-        pDocument->set_database_title_original(m_ui_save_extra_newdb_title);
-        pDocument->set_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
+        document->set_database_title_original(m_ui_save_extra_newdb_title);
+        document->set_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
         m_ui_save_extra_newdb_hosting_mode = Document::HostingMode::DEFAULT;
-        pDocument->set_is_example_file(false);
-        pDocument->set_is_backup_file(false);
+        document->set_is_example_file(false);
+        document->set_is_backup_file(false);
 
         // For self-hosting, we will choose a port later. For central
         // hosting, try several default ports. Don't use the values that
         // are set in the example file.
-        pDocument->set_connection_port(0);
-        pDocument->set_connection_try_other_ports(true);
+        document->set_connection_port(0);
+        document->set_connection_try_other_ports(true);
 
         // We have a valid uri, so we can set it to !new and modified here
       }
@@ -956,9 +956,9 @@ bool AppWindow::on_document_load()
 
       if(get_operation_cancelled())
       {
-        pDocument->set_modified(false);
-        pDocument->set_is_new(true);
-        pDocument->set_allow_autosave(true); //Turn this back on.
+        document->set_modified(false);
+        document->set_is_new(true);
+        document->set_allow_autosave(true); //Turn this back on.
         std::cout << "debug: user cancelled creating database" << std::endl;
         return false;
       }
@@ -975,7 +975,7 @@ bool AppWindow::on_document_load()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     //Warn about read-only files, because users will otherwise wonder why they can't use Developer mode:
     Document::userLevelReason reason = Document::userLevelReason::UNKNOWN;
-    const auto userlevel = pDocument->get_userlevel(reason);
+    const auto userlevel = document->get_userlevel(reason);
     if( (userlevel == AppState::userlevels::OPERATOR) && (reason == Document::userLevelReason::FILE_READ_ONLY) )
     {
       Gtk::MessageDialog dialog(UiUtils::bold_message(_("Opening Read-Only File.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
@@ -1020,12 +1020,12 @@ bool AppWindow::on_document_load()
         //we already asked for them when getting the document over the network:
 
         //Use the default username/password if opening as non network-shared:
-        if(!(pDocument->get_network_shared()))
+        if(!(document->get_network_shared()))
         {
           // If the document is centrally hosted, don't pretend to know the
           // username or password, because we don't. The user will enter
           // the login credentials in a dialog.
-          const auto hosting_mode = pDocument->get_hosting_mode();
+          const auto hosting_mode = document->get_hosting_mode();
           if(hosting_mode != Document::HostingMode::POSTGRES_CENTRAL)
             m_temp_username = Privs::get_default_developer_user_name(m_temp_password, hosting_mode);
         }
@@ -1087,20 +1087,20 @@ bool AppWindow::on_document_load()
         {
           //Make sure that the changes (mark as non example, and save the new database name) are really saved:
           //Change the user level temporarily so that save_changes() actually saves:
-          const auto user_level = pDocument->get_userlevel();
-          pDocument->set_userlevel(AppState::userlevels::DEVELOPER);
-          pDocument->set_modified(true);
-          pDocument->set_allow_autosave(true); //Turn this back on.
-          pDocument->set_userlevel(user_level); //Change it back.
+          const auto user_level = document->get_userlevel();
+          document->set_userlevel(AppState::userlevels::DEVELOPER);
+          document->set_modified(true);
+          document->set_allow_autosave(true); //Turn this back on.
+          document->set_userlevel(user_level); //Change it back.
         }
       }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
       //Switch to operator mode when opening new documents:
-      pDocument->set_userlevel(AppState::userlevels::OPERATOR);
+      document->set_userlevel(AppState::userlevels::OPERATOR);
 
       //Make sure that it's saved in history, even if it was saved from an example file:
-      document_history_add(pDocument->get_file_uri());
+      document_history_add(document->get_file_uri());
 
       //Open default table, or show list of tables instead:
       m_pFrame->do_menu_Navigate_Table(true /* open the default if there is one */);
@@ -1113,7 +1113,7 @@ bool AppWindow::on_document_load()
   update_network_shared_ui();
 
   //Run any startup script:
-  const auto script = pDocument->get_startup_script();
+  const auto script = document->get_startup_script();
   if(!script.empty())
   {
     Glib::ustring error_message; //TODO: Check this and tell the user.
@@ -1122,7 +1122,7 @@ bool AppWindow::on_document_load()
     AppPythonUICallbacks callbacks;
     glom_execute_python_function_implementation(script,
       type_map_fields(), //only used when there is a current table and record.
-      pDocument,
+      document,
       Glib::ustring() /* table_name */,
       std::shared_ptr<Field>(), Gnome::Gda::Value(), // primary key - only used when there is a current table and record.
       sharedconnection->get_gda_connection(),
@@ -1136,7 +1136,7 @@ bool AppWindow::on_document_load()
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  pDocument->set_allow_autosave(true);
+  document->set_allow_autosave(true);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   return true; //Loading of the document into the application succeeded.
@@ -1190,7 +1190,7 @@ void AppWindow::statusbar_clear()
 
 void AppWindow::update_network_shared_ui()
 {
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
     return;
 
@@ -1332,7 +1332,7 @@ bool AppWindow::offer_new_or_existing()
       }
 
       //Check that a document was opened:
-      auto document = dynamic_cast<Document*>(get_document());
+      auto document = std::dynamic_pointer_cast<Document>(get_document());
       if(!document)
       {
         std::cerr << G_STRFUNC << ": document was NULL." << std::endl;
@@ -1376,7 +1376,7 @@ void AppWindow::existing_or_new_new()
   offer_saveas();
 
   //Check that the document was given a location:
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document is null." << std::endl;
@@ -1497,8 +1497,8 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
   ShowProgressMessage progress_message(_("Creating Glom database from example file."));
 
   //Create a database, based on the information in the current document:
-  const auto pDocument = static_cast<Document*>(get_document());
-  if(!pDocument)
+  const auto document = std::static_pointer_cast<Document>(get_document());
+  if(!document)
     return false;
 
   auto connection_pool = ConnectionPool::get_instance();
@@ -1506,7 +1506,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
     return false; //Impossible anyway.
 
   //Check whether the database exists already.
-  const auto db_name = pDocument->get_connection_database();
+  const auto db_name = document->get_connection_database();
   if(db_name.empty())
     return false;
 
@@ -1540,7 +1540,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
 
   //Create the database: (This will show a connection dialog)
   connection_pool->set_database( Glib::ustring() );
-  const auto db_created = m_pFrame->create_database(db_name, pDocument->get_database_title_original());
+  const auto db_created = m_pFrame->create_database(db_name, document->get_database_title_original());
 
   if(!db_created)
   {
@@ -1566,26 +1566,26 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
 
   //Create the developer group, and make this user a member of it:
   pulse_progress_message();
-  bool test = DbUtils::add_standard_groups(pDocument);
+  bool test = DbUtils::add_standard_groups(document);
   if(!test)
     return false;
 
   //Add any extra groups from the example file:
   pulse_progress_message();
-  test = DbUtils::add_groups_from_document(pDocument);
+  test = DbUtils::add_groups_from_document(document);
   if(!test)
     return false;
 
   //Create each table:
-  const auto tables = pDocument->get_tables();
+  const auto tables = document->get_tables();
   for(const auto& table_info : tables)
   {
     //Create SQL to describe all fields in this table:
     Glib::ustring sql_fields;
-    Document::type_vec_fields fields = pDocument->get_table_fields(table_info->get_name());
+    Document::type_vec_fields fields = document->get_table_fields(table_info->get_name());
 
     pulse_progress_message();
-    const auto table_creation_succeeded = DbUtils::create_table(pDocument->get_hosting_mode(), table_info, fields);
+    const auto table_creation_succeeded = DbUtils::create_table(document->get_hosting_mode(), table_info, fields);
     pulse_progress_message();
     if(!table_creation_succeeded)
     {
@@ -1595,11 +1595,11 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
   }
 
   pulse_progress_message();
-  DbUtils::add_standard_tables(pDocument); //Add internal, hidden, tables.
+  DbUtils::add_standard_tables(document); //Add internal, hidden, tables.
 
   //Set table priviliges, using the groups we just added:
   pulse_progress_message();
-  test = DbUtils::set_table_privileges_groups_from_document(pDocument);
+  test = DbUtils::set_table_privileges_groups_from_document(document);
   if(!test)
     return false;
 
@@ -1610,7 +1610,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
 
     //try
     //{
-      const auto table_insert_succeeded = DbUtils::insert_example_data(pDocument, table_info->get_name());
+      const auto table_insert_succeeded = DbUtils::insert_example_data(document, table_info->get_name());
 
       if(!table_insert_succeeded)
       {
@@ -1641,8 +1641,8 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
   ShowProgressMessage progress_message(_("Creating Glom database from backup file."));
 
   //Create a database, based on the information in the current document:
-  auto pDocument = static_cast<Document*>(get_document());
-  if(!pDocument)
+  auto document = std::static_pointer_cast<Document>(get_document());
+  if(!document)
     return false;
 
   auto connection_pool = ConnectionPool::get_instance();
@@ -1650,7 +1650,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
     return false; //Impossible anyway.
 
   //Check whether the database exists already.
-  const auto db_name = pDocument->get_connection_database();
+  const auto db_name = document->get_connection_database();
   if(db_name.empty())
     return false;
 
@@ -1711,7 +1711,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
 
   //Create the developer group, and make this user a member of it:
   pulse_progress_message();
-  bool test = DbUtils::add_standard_groups(pDocument);
+  bool test = DbUtils::add_standard_groups(document);
   if(!test)
   {
     std::cerr << G_STRFUNC << ": DbUtils::add_standard_groups(): failed." << std::endl;
@@ -1724,7 +1724,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
   //The backup file refers to these,
   //so the restore will fail if they are not present.
   pulse_progress_message();
-  test = DbUtils::add_groups_from_document(pDocument);
+  test = DbUtils::add_groups_from_document(document);
   if(!test)
     return false;
 
@@ -1744,7 +1744,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
 
 AppState::userlevels AppWindow::get_userlevel() const
 {
-  const auto document = dynamic_cast<const Document*>(get_document());
+  const auto document = std::dynamic_pointer_cast<const Document>(get_document());
   if(document)
   {
     return document->get_userlevel();
@@ -1807,7 +1807,7 @@ void AppWindow::fill_menu_tables()
     menu->remove(0);
   }
 
-  const auto document = dynamic_cast<Document*>(get_document());
+  const auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document is null." << std::endl;
@@ -1861,7 +1861,7 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
 
   m_refNavReportsActionGroup = Gio::SimpleActionGroup::create();
 
-  const auto document = dynamic_cast<Document*>(get_document());
+  const auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document is null." << std::endl;
@@ -1941,7 +1941,7 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
 
   m_refNavPrintLayoutsActionGroup = Gio::SimpleActionGroup::create();
 
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document is null." << std::endl;
@@ -1989,7 +1989,7 @@ void AppWindow::on_menu_file_save_as_example()
 
   //Show the save dialog:
   bool bTest = false;
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document) {
     std::cerr << G_STRFUNC << ": document was null." << std::endl;
   } else {
@@ -2101,7 +2101,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
 
 
     //Start with something suitable:
-    auto document = dynamic_cast<Document*>(get_document());
+    auto document = std::dynamic_pointer_cast<Document>(get_document());
     g_assert(document);
     const auto filename = document->get_name(); //Get the filename without the path and extension.
 
@@ -2271,8 +2271,8 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
 /*
 void AppWindow::stop_self_hosting_of_document_database()
 {
-  auto pDocument = static_cast<Document*>(get_document());
-  if(pDocument)
+  auto document = std::static_pointer_cast<Document>(get_document());
+  if(document)
   {
     auto connection_pool = ConnectionPool::get_instance();
     if(!connection_pool)
@@ -2318,7 +2318,7 @@ void AppWindow::on_menu_developer_translations()
     {
       m_pFrame->add_view(m_window_translations);
       m_window_translations->set_transient_for(*this);
-      m_window_translations->set_document(static_cast<Document*>(m_pDocument));
+      m_window_translations->set_document(std::static_pointer_cast<Document>(m_document));
       m_window_translations->load_from_document();
       m_window_translations->show();
 
@@ -2337,7 +2337,7 @@ void AppWindow::on_menu_developer_active_platform(const Glib::ustring& parameter
   //The state is not changed automatically:
   m_action_menu_developer_active_platform->change_state(parameter);
 
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(document)
    document->set_active_layout_platform(parameter);
 
@@ -2346,7 +2346,7 @@ void AppWindow::on_menu_developer_active_platform(const Glib::ustring& parameter
 
 void AppWindow::on_menu_developer_export_backup()
 {
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
     return;
 
@@ -2424,7 +2424,7 @@ void AppWindow::do_print_layout(const Glib::ustring& print_layout_name, bool pre
 
 bool AppWindow::do_restore_backup(const Glib::ustring& backup_uri)
 {
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
     return false;
     
@@ -2500,9 +2500,9 @@ void AppWindow::do_menu_developer_relationships(Gtk::Window& parent, const Glib:
   m_pFrame->do_menu_developer_relationships(parent, table_name);
 }
 
-Document* AppWindow::on_connection_pool_get_document()
+std::shared_ptr<Document> AppWindow::on_connection_pool_get_document()
 {
-  return dynamic_cast<Document*>(get_document());
+  return std::dynamic_pointer_cast<Document>(get_document());
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
@@ -2511,7 +2511,7 @@ void AppWindow::update_window_title()
 {
   //Set application's main window title:
 
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
     return;
 
@@ -2800,7 +2800,7 @@ Glib::ustring AppWindow::ui_file_select_open(const Glib::ustring& starting_folde
 
 void AppWindow::ui_show_modification_status()
 {
-  const auto modified = m_pDocument->get_modified();
+  const auto modified = m_document->get_modified();
 
   //Enable Save and SaveAs menu items:
   if(m_action_save)
@@ -2814,11 +2814,11 @@ AppWindow::enumSaveChanges AppWindow::ui_offer_to_save_changes()
 {
   GlomBakery::AppWindow_WithDoc::enumSaveChanges result = GlomBakery::AppWindow_WithDoc::enumSaveChanges::Cancel;
 
-  if(!m_pDocument)
+  if(!m_document)
     return result;
 
   GlomBakery::Dialog_OfferSave* pDialogQuestion 
-    = new GlomBakery::Dialog_OfferSave( m_pDocument->get_file_uri() );
+    = new GlomBakery::Dialog_OfferSave( m_document->get_file_uri() );
 
   Gtk::Window* pWindow = this;
   if(pWindow)

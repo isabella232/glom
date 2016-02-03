@@ -73,22 +73,22 @@ static bool get_group_named(const Glom::Document::type_list_groups& container, c
   return false;
 }
 
-static bool needs_navigation(Glom::Document& document, const Glib::ustring& table_name, const Glib::ustring& field_name)
+static bool needs_navigation(const std::shared_ptr<Glom::Document>& document, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   auto layout_item = std::make_shared<Glom::LayoutItem_Field>();
   layout_item->set_name(field_name);
   layout_item->set_full_field_details(
-    document.get_field(table_name, field_name));
+    document->get_field(table_name, field_name));
 
   std::shared_ptr<Glom::Relationship> field_used_in_relationship_to_one;
   return Glom::DbUtils::layout_field_should_have_navigation(table_name, 
-    layout_item, &document, field_used_in_relationship_to_one);
+    layout_item, document, field_used_in_relationship_to_one);
 }
 
-static std::shared_ptr<const Glom::LayoutItem_Portal> get_portal_from_details_layout(const Glom::Document& document, const Glib::ustring& table_name, const Glib::ustring& relationship_name)
+static std::shared_ptr<const Glom::LayoutItem_Portal> get_portal_from_details_layout(const std::shared_ptr<Glom::Document>& document, const Glib::ustring& table_name, const Glib::ustring& relationship_name)
 {
   const auto groups = 
-    document.get_data_layout_groups("details", table_name);
+    document->get_data_layout_groups("details", table_name);
   if(groups.empty())
   {
     std::cerr << G_STRFUNC << ": groups is empty." << std::endl;
@@ -141,10 +141,10 @@ int main()
 
 
   // Load the document:
-  Glom::Document document;
-  document.set_file_uri(uri);
+  auto document = std::make_shared<Glom::Document>();
+  document->set_file_uri(uri);
   int failure_code = 0;
-  const auto test = document.load(failure_code);
+  const auto test = document->load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -154,10 +154,10 @@ int main()
   }
 
   //Test some known details:
-  g_assert(document.get_is_example_file());
-  g_assert(document.get_database_title_original() == "Openismus Film Manager");
+  g_assert(document->get_is_example_file());
+  g_assert(document->get_database_title_original() == "Openismus Film Manager");
 
-  const auto table_names = document.get_table_names();
+  const auto table_names = document->get_table_names();
   g_assert(contains(table_names, "accommodation"));
   g_assert(contains(table_names, "cars"));
   g_assert(contains(table_names, "characters"));
@@ -167,31 +167,31 @@ int main()
   g_assert(contains(table_names, "scenes"));
   g_assert(!contains(table_names, "Scenes")); //The title, not the name.
 
-  auto table = document.get_table("scenes");
+  auto table = document->get_table("scenes");
   g_assert(table);
   g_assert( table->get_title_original() == "Scenes" );
   g_assert( table->get_title_singular_original() == "Scene" );
 
   //Test known fields of one table:
-  const auto fields = document.get_table_fields("scenes");
+  const auto fields = document->get_table_fields("scenes");
   g_assert(contains_named(fields, "scene_id"));
   g_assert(contains_named(fields, "comments"));
   g_assert(contains_named(fields, "description"));
   g_assert(contains_named(fields, "date"));
   g_assert(!contains_named(fields, "nosuchfield"));
 
-  const auto relationships = document.get_relationships("scenes");
+  const auto relationships = document->get_relationships("scenes");
   g_assert(contains_named(relationships, "location"));
   g_assert(contains_named(relationships, "scene_crew"));
   g_assert(contains_named(relationships, "scene_cast"));
 
   //Check some fields:
-  auto field = document.get_field("contacts", "contact_id");
+  auto field = document->get_field("contacts", "contact_id");
   g_assert(field);
   g_assert( field->get_title_original() == "Contact ID" );
   g_assert(field->get_glom_type() == Glom::Field::glom_field_type::NUMERIC);
   g_assert(field->get_auto_increment());
-  field = document.get_field("locations", "rent");
+  field = document->get_field("locations", "rent");
   g_assert(field);
   g_assert( field->get_title_original() == "Rent" );
   g_assert(field->get_glom_type() == Glom::Field::glom_field_type::NUMERIC);
@@ -199,7 +199,7 @@ int main()
   g_assert(!field->get_unique_key());
 
   //Check a relationship:
-  const auto relationship = document.get_relationship("characters", "contacts_actor");
+  const auto relationship = document->get_relationship("characters", "contacts_actor");
   g_assert(relationship);
   g_assert(relationship->get_from_field() == "contact_id");
   g_assert(relationship->get_to_table() == "contacts");
@@ -208,7 +208,7 @@ int main()
 
   //Check a layout:
   const Glom::Document::type_list_layout_groups groups = 
-    document.get_data_layout_groups("details", "scenes");
+    document->get_data_layout_groups("details", "scenes");
   g_assert(groups.size() == 3);
   const std::shared_ptr<const Glom::LayoutGroup> group =
     groups[1];
@@ -230,7 +230,7 @@ int main()
 
   
   //Check Field Formatting:
-  field = document.get_field("contacts", "name_title");  
+  field = document->get_field("contacts", "name_title");  
   g_assert(field);
   g_assert(field->get_glom_type() == Glom::Field::glom_field_type::TEXT);
   const Glom::Formatting& formatting = field->m_default_formatting;
@@ -254,11 +254,11 @@ int main()
   g_assert(field_on_layout->get_formatting_used() == formatting);
 
   //Test this utility method:
-  g_assert( document.get_data_layout_groups_have_any_fields("list", "cars") );
+  g_assert( document->get_data_layout_groups_have_any_fields("list", "cars") );
 
 
   //Test library modules:
-  const auto module_names = document.get_library_module_names();
+  const auto module_names = document->get_library_module_names();
   if(!module_names.empty()) //TODO: Test a document that actually has some?
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected library module names." << std::endl;
@@ -268,7 +268,7 @@ int main()
 
   //Test print layouts:  
   const std::vector<Glib::ustring> print_layout_names = 
-    document.get_print_layout_names("contacts");
+    document->get_print_layout_names("contacts");
   if(print_layout_names.size() != 1)
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected number of print layouts." << std::endl;
@@ -281,7 +281,7 @@ int main()
     return false;
   }
   
-  const auto print_layout = document.get_print_layout("contacts", "contact_details");
+  const auto print_layout = document->get_print_layout("contacts", "contact_details");
   if(!print_layout)
   {
     std::cerr << G_STRFUNC << ": Failure: Could not get an expected print layout." << std::endl;
@@ -302,7 +302,7 @@ int main()
 
 
   const std::vector<Glib::ustring> report_names = 
-    document.get_report_names("contacts");
+    document->get_report_names("contacts");
   if(report_names.size() != 2)
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected number of reports." << std::endl;
@@ -315,7 +315,7 @@ int main()
     return false;
   }
 
-  const auto report = document.get_report("contacts", "by_country_by_town");
+  const auto report = document->get_report("contacts", "by_country_by_town");
   if(!report)
   {
     std::cerr << G_STRFUNC << ": Failure: Could not get an expected report." << std::endl;
@@ -336,7 +336,7 @@ int main()
 
   
   //Test user groups:
-  Glom::Document::type_list_groups user_groups = document.get_groups();
+  Glom::Document::type_list_groups user_groups = document->get_groups();
   Glom::GroupInfo group_info_ignored;
   g_assert(get_group_named(user_groups, "glom_developer", group_info_ignored));
 
@@ -380,7 +380,7 @@ int main()
 
   Glib::ustring navigation_table_name;
   std::shared_ptr<const Glom::UsesRelationship> navigation_relationship;
-  portal->get_suitable_table_to_view_details(navigation_table_name, navigation_relationship, &document);
+  portal->get_suitable_table_to_view_details(navigation_table_name, navigation_relationship, document);
 
   if(navigation_table_name != "characters")
   {

@@ -186,10 +186,10 @@ int main(int argc, char* argv[])
 
 
   // Load the document:
-  Glom::Document document;
-  document.set_file_uri(input_uri);
+  auto document = std::make_shared<Glom::Document>();
+  document->set_file_uri(input_uri);
   int failure_code = 0;
-  const auto test = document.load(failure_code);
+  const auto test = document->load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -198,14 +198,14 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  const auto locales = document.get_translation_available_locales();
+  const auto locales = document->get_translation_available_locales();
   if(locales.empty())
   {
     std::cerr << _("The Glom document has no translations.") << std::endl;
     return EXIT_FAILURE;
   }
 
-  const auto original_locale_id = document.get_translation_original_locale();
+  const auto original_locale_id = document->get_translation_original_locale();
   for(const auto& locale_id : locales)
   {
     if(locale_id == original_locale_id)
@@ -215,7 +215,7 @@ int main(int argc, char* argv[])
     const auto output_uri = file_output_full->get_uri();
 
     const bool succeeded = 
-      Glom::write_translations_to_po_file(&document, output_uri, locale_id);
+      Glom::write_translations_to_po_file(document, output_uri, locale_id);
     if(!succeeded)
     {
       std::cerr << _("Po file creation failed.") << std::endl;

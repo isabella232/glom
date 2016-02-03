@@ -557,7 +557,7 @@ Window_PrintLayout_Edit::~Window_PrintLayout_Edit()
 
 void Window_PrintLayout_Edit::update_table_title()
 {
-  const auto document = dynamic_cast<const Document*>(get_document());
+  const auto document = std::dynamic_pointer_cast<const Document>(get_document());
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document was null" << std::endl;
@@ -842,7 +842,7 @@ void Window_PrintLayout_Edit::on_menu_insert_create_standard()
   if(response != Gtk::RESPONSE_OK)
     return;
 
-  const auto document = dynamic_cast<const Document*>(get_document());
+  const auto document = std::dynamic_pointer_cast<const Document>(get_document());
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document was null" << std::endl;
@@ -1020,7 +1020,7 @@ void Window_PrintLayout_Edit::on_menu_file_print_preview()
 {
   //Save any recent changes in the document,
   //so that the preview will show them:
-  auto document = dynamic_cast<Document*>(get_document());
+  auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
     return;
 

@@ -212,7 +212,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
       // unnecessary extra stuff just to get the field added into the
       // document:
 
-      auto pDoc = static_cast<Document*>(get_document());
+      auto pDoc = std::static_pointer_cast<Document>(get_document());
       if(pDoc)
       {
         std::cout << Utils::to_utype(field->get_glom_type()) << std::endl;
@@ -364,7 +364,7 @@ bool Box_DB_Table_Definition::check_field_change(const std::shared_ptr<const Fie
 void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint /* col */)
 {
   //Get old field definition:
-  auto pDoc = static_cast<Document*>(get_document());
+  auto pDoc = std::static_pointer_cast<Document>(get_document());
   if(pDoc)
   {
     const auto strFieldNameBeingEdited = m_AddDel.get_value_key(row);
@@ -449,7 +449,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::
   const auto strFieldNameBeforeEdit = m_AddDel.get_value_key(row);
 
   //Glom field definition:
-  auto pDoc = static_cast<Document*>(get_document());
+  auto pDoc = std::static_pointer_cast<Document>(get_document());
   if(pDoc)
   {
     Document::type_vec_fields vecFields= pDoc->get_table_fields(m_table_name);
@@ -598,7 +598,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::sha
   }
 
   //Extra Glom field definitions:
-  auto pDoc = static_cast<Document*>(get_document());
+  auto pDoc = std::static_pointer_cast<Document>(get_document());
   if(pDoc)
   {
     //Get Table's fields:

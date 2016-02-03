@@ -22,6 +22,7 @@
 #include <libglom/document/bakery/view/viewbase.h>
 #include <libglom/document/bakery/document.h>
 #include <sigc++/sigc++.h>
+#include <memory>
 
 namespace GlomBakery
 {
@@ -34,7 +35,6 @@ class View : public ViewBase
 {
 public: 
   View()
-  : m_pDocument(0)
   {
   }
 
@@ -42,28 +42,28 @@ public:
 
   //typedef typename T_Document type_document;
 
-  virtual T_Document* get_document()
+  virtual std::shared_ptr<T_Document> get_document()
   {
-    return m_pDocument;
+    return m_document;
   }
 
-  virtual const T_Document* get_document() const
+  virtual std::shared_ptr<const T_Document> get_document() const
   {
-    return m_pDocument;
+    return m_document;
   }
 
-  virtual void set_document(T_Document* pDocument)
+  virtual void set_document(const std::shared_ptr<T_Document>& document)
   {
-    m_pDocument = pDocument;
-    if(m_pDocument)
-      m_pDocument->signal_forget().connect( sigc::mem_fun(*this, &type_self::on_document_forget) );
+    m_document = document;
+    if(m_document)
+      m_document->signal_forget().connect( sigc::mem_fun(*this, &type_self::on_document_forget) );
   }
 
   ///Just a convenience, instead of get_docuement()->set_modified().
   virtual void set_modified(bool val = true)
   {
-    if(m_pDocument)
-      m_pDocument->set_modified(val);
+    if(m_document)
+      m_document->set_modified(val);
   }
 
 protected:
@@ -71,10 +71,10 @@ protected:
   void on_document_forget()
   {
     //This should prevent some segfaults:
-    m_pDocument = 0;
+    m_document.reset();
   }
   
-  T_Document* m_pDocument;
+  std::shared_ptr<T_Document> m_document;
 };
 
 } //namespace

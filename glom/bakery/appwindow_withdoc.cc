@@ -32,7 +32,7 @@ AppWindow_WithDoc::type_list_strings AppWindow_WithDoc::m_mime_types;
 
 AppWindow_WithDoc::AppWindow_WithDoc(const Glib::ustring& appname)
 : AppWindow(appname),
-  m_pDocument(nullptr),
+  m_document(nullptr),
   m_bCloseAfterSave(false)
 {
 }
@@ -40,8 +40,12 @@ AppWindow_WithDoc::AppWindow_WithDoc(const Glib::ustring& appname)
 AppWindow_WithDoc::~AppWindow_WithDoc()
 {
   //Delete the document:
-  delete m_pDocument; //This will cause Document::signal_forget to be emitted, so the Views will then null their pointers as well. A smartpointer might be a better way to do this.
-  m_pDocument = nullptr;
+  if (m_document) {
+    //TODO: Should the views have weak ptr?
+    //This will cause Document::signal_forget to be emitted, so the Views will then null their
+    //pointers as well.
+    m_document->emit_forget();
+  }
 }
 
 //static
@@ -53,7 +57,7 @@ void AppWindow_WithDoc::add_mime_type(const Glib::ustring& mime_type)
 
 void AppWindow_WithDoc::on_menu_file_close()
 {
-  if(m_pDocument->get_modified())
+  if(m_document->get_modified())
   {
     //Offer to save changes:
     m_bCloseAfterSave = true; //Checked in FileChooser signal handler.
@@ -73,7 +77,7 @@ void AppWindow_WithDoc::on_menu_file_close()
 bool AppWindow_WithDoc::open_document_from_data(const guchar* data, std::size_t length)
 {
   int failure_code = 0;
-  const auto bTest = m_pDocument->load_from_data(data, length, failure_code);
+  const auto bTest = m_document->load_from_data(data, length, failure_code);
 
   bool bOpenFailed = false;
   if(!bTest) //if open failed.
@@ -116,9 +120,9 @@ bool AppWindow_WithDoc::open_document(const Glib::ustring& file_uri)
   auto pApp = this; //Replace the default new document in this instance.
 
   //Open it.
-  pApp->m_pDocument->set_file_uri(file_uri);
+  pApp->m_document->set_file_uri(file_uri);
   int failure_code = 0;
-  const auto bTest = pApp->m_pDocument->load(failure_code);
+  const auto bTest = pApp->m_document->load(failure_code);
 
   bool bOpenFailed = false;
   bool bShowError = false;
@@ -141,7 +145,7 @@ bool AppWindow_WithDoc::open_document(const Glib::ustring& file_uri)
       //Update document history list:
       //(Getting the file URI again, in case it has changed while being opened,
       //for instance if it was a template file that was saved as a real file.)
-      if(pApp->m_pDocument)
+      if(pApp->m_document)
         document_history_add(file_uri);
     }
   }
@@ -156,8 +160,15 @@ bool AppWindow_WithDoc::open_document(const Glib::ustring& file_uri)
       document_history_remove(file_uri);
 
     //re-initialize document.
-    delete pApp->m_pDocument;
-    pApp->m_pDocument = nullptr;
+    if(m_document)
+    {
+      //TODO: Should the views have weak ptr?
+      //This will cause Document::signal_forget to be emitted, so the Views will then null their
+      //pointers as well.
+      m_document->emit_forget();
+    }
+
+    pApp->m_document.reset();
     pApp->init_create_document();
 
     return false; //failed.
@@ -215,16 +226,16 @@ void AppWindow_WithDoc::on_menu_file_saveas()
   ui_bring_to_front();
 
   //Show the save dialog:
-  const auto file_uriOld = m_pDocument->get_file_uri();
+  const auto file_uriOld = m_document->get_file_uri();
 
   auto file_uri = ui_file_select_save(file_uriOld); //Also asks for overwrite confirmation.
   if(!file_uri.empty())
   {
     //Enforce the file extension:
-    file_uri = m_pDocument->get_file_uri_with_extension(file_uri);
+    file_uri = m_document->get_file_uri_with_extension(file_uri);
 
-    m_pDocument->set_file_uri(file_uri, true); //true = enforce file extension
-    const auto bTest = m_pDocument->save();
+    m_document->set_file_uri(file_uri, true); //true = enforce file extension
+    const auto bTest = m_document->save();
 
     if(!bTest)
     {
@@ -253,12 +264,12 @@ void AppWindow_WithDoc::on_menu_file_saveas()
 
 void AppWindow_WithDoc::on_menu_file_save()
 {
-  if(m_pDocument)
+  if(m_document)
   {
     //If there is already a filepath, then save to that location:
-    if(!(m_pDocument->get_file_uri().empty()))
+    if(!(m_document->get_file_uri().empty()))
     {
-      auto bTest = m_pDocument->save();
+      auto bTest = m_document->save();
 
       if(bTest)
       {
@@ -307,33 +318,33 @@ void AppWindow_WithDoc::init_create_document()
 {
   //Overrides should call this base method at the end.
 
-  if(!m_pDocument)
+  if(!m_document)
   {
-    m_pDocument = new Document();
+    m_document = std::make_shared<Document>();
   }
 
-  m_pDocument->set_is_new(true); //Can't be modified if it's just been created.
+  m_document->set_is_new(true); //Can't be modified if it's just been created.
 
-  m_pDocument->signal_modified().connect(sigc::mem_fun(*this, &AppWindow_WithDoc::on_document_modified));
+  m_document->signal_modified().connect(sigc::mem_fun(*this, &AppWindow_WithDoc::on_document_modified));
 
   update_window_title();
 }
 
-Document* AppWindow_WithDoc::get_document()
+std::shared_ptr<Document> AppWindow_WithDoc::get_document()
 {
-  return m_pDocument;
+  return m_document;
 }
 
-const Document* AppWindow_WithDoc::get_document() const
+std::shared_ptr<const Document> AppWindow_WithDoc::get_document() const
 {
-  return m_pDocument;
+  return m_document;
 }
 
 void AppWindow_WithDoc::offer_to_save_changes()
 {
-  if(m_pDocument)
+  if(m_document)
   {
-    if(m_pDocument->get_modified())
+    if(m_document->get_modified())
     {
       set_operation_cancelled(false); //Initialize it again. It might be set later in this method by cancel_close_or_exit().
 
@@ -384,9 +395,9 @@ void AppWindow_WithDoc::cancel_close_or_exit()
 bool AppWindow_WithDoc::on_document_load()
 {
   //Show document contents:
-  if(m_pDocument)
+  if(m_document)
   {
-    auto pView = m_pDocument->get_view();
+    auto pView = m_document->get_view();
     if(pView)
       pView->load_from_document();
 
@@ -424,7 +435,7 @@ void AppWindow_WithDoc::on_document_modified(bool /* modified */)
 
 void AppWindow_WithDoc::set_document_modified(bool bModified /* = true */)
 {
-  m_pDocument->set_modified(bModified);
+  m_document->set_modified(bModified);
 
   //Enable/Disable Save menu item and toolbar item:
   ui_show_modification_status();
@@ -432,21 +443,21 @@ void AppWindow_WithDoc::set_document_modified(bool bModified /* = true */)
 
 void AppWindow_WithDoc::on_menu_edit_copy()
 {
-  auto pView = m_pDocument->get_view();
+  auto pView = m_document->get_view();
   if(pView)
     pView->clipboard_copy();
 }
 
 void AppWindow_WithDoc::on_menu_edit_paste()
 {
-  auto pView = m_pDocument->get_view();
+  auto pView = m_document->get_view();
   if(pView)
     pView->clipboard_paste();
 }
 
 void AppWindow_WithDoc::on_menu_edit_clear()
 {
-  auto pView = m_pDocument->get_view();
+  auto pView = m_document->get_view();
   if(pView)
     pView->clipboard_clear();
 }
@@ -456,7 +467,7 @@ void AppWindow_WithDoc::after_successful_save()
   set_document_modified(false); //enables/disables menu and toolbar widgets.
 
   //Update document history list:
-  document_history_add(m_pDocument->get_file_uri());
+  document_history_add(m_document->get_file_uri());
 }
 
 void AppWindow_WithDoc::document_history_add(const Glib::ustring& /* file_uri */)

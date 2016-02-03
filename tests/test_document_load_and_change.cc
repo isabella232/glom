@@ -27,12 +27,12 @@
 
 #include <iostream>
 
-static bool field_is_on_a_layout(Glom::Document& document, const Glib::ustring& table_name, const Glib::ustring& field_name)
+static bool field_is_on_a_layout(const std::shared_ptr<Glom::Document>& document, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Check that the field name is no longer used on a layout:
-  for(const auto& layout_table_name : document.get_table_names())
+  for(const auto& layout_table_name : document->get_table_names())
   {
-    for(const auto& group : document.get_data_layout_groups("details", layout_table_name))
+    for(const auto& group : document->get_data_layout_groups("details", layout_table_name))
     {
       if(group->has_field(layout_table_name, table_name, field_name))
       {
@@ -79,10 +79,10 @@ int main()
 
 
   // Load the document:
-  Glom::Document document;
-  document.set_file_uri(uri);
+  auto document = std::make_shared<Glom::Document>();
+  document->set_file_uri(uri);
   int failure_code = 0;
-  const auto test = document.load(failure_code);
+  const auto test = document->load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -92,30 +92,30 @@ int main()
   }
 
   //Prevent these test changes from being saved back to the example file:
-  document.set_allow_autosave(false);
+  document->set_allow_autosave(false);
 
   //Change a field name throughout the document:
   const Glib::ustring table_name = "products";
   const Glib::ustring field_name_original = "product_id";
   const Glib::ustring field_name_new = "newfieldname";
-  document.change_field_name(table_name, field_name_original, field_name_new);
+  document->change_field_name(table_name, field_name_original, field_name_new);
 
   //Check that the original field name is not known to the document:
-  if(document.get_field(table_name, field_name_original))
+  if(document->get_field(table_name, field_name_original))
   {
     std::cerr << G_STRFUNC << ": Failure: The document should have forgotten about the original field name." << std::endl;
     return false;
   }
 
   //Check that the new field name is known to the document:
-  if(!(document.get_field(table_name, field_name_new)))
+  if(!(document->get_field(table_name, field_name_new)))
   {
     std::cerr << G_STRFUNC << ": Failure: The document does not know about the new field name." << std::endl;
     return false;
   }
 
   //Check that the original field name is no longer used in the relationship:
-  auto relationship = document.get_relationship("invoice_lines", "products");
+  auto relationship = document->get_relationship("invoice_lines", "products");
   if(!relationship)
   {
     std::cerr << G_STRFUNC << ": Failure: The relationship could not be found in the document." << std::endl;
@@ -140,15 +140,15 @@ int main()
     const Glib::ustring table_name_invoices = "invoices";
     const Glib::ustring relationship_name_original = "contacts";
     const Glib::ustring relationship_name_new = "newrelationshipname";
-    document.change_relationship_name(table_name_invoices, 
+    document->change_relationship_name(table_name_invoices, 
       relationship_name_original, relationship_name_new);
-    if(document.get_relationship(table_name, relationship_name_original))
+    if(document->get_relationship(table_name, relationship_name_original))
     {
       std::cerr << G_STRFUNC << ": Failure: The original relationship name still exists." << std::endl;
       return false;
     }
 
-    if(!document.get_relationship(table_name, relationship_name_new))
+    if(!document->get_relationship(table_name, relationship_name_new))
     {
       std::cerr << G_STRFUNC << ": Failure: The new relationship name does not exist." << std::endl;
       return false;
@@ -166,7 +166,7 @@ int main()
   }
 
   //Remove a field from the whole document:
-  document.remove_field("publisher", "publisher_id");
+  document->remove_field("publisher", "publisher_id");
   if(field_is_on_a_layout(document, "publisher", "publisher_id"))
   {
     std::cerr << G_STRFUNC << ": Failure: The removed field name is still used on a layout." << std::endl;
@@ -174,8 +174,8 @@ int main()
   }
   
   //Remove a relationship:
-  document.remove_relationship(relationship);
-  relationship = document.get_relationship("invoice_lines", "products");
+  document->remove_relationship(relationship);
+  relationship = document->get_relationship("invoice_lines", "products");
   if(relationship)
   {
     std::cerr << G_STRFUNC << ": Failure: The removed relationship still exists." << std::endl;
@@ -184,14 +184,14 @@ int main()
   
   //Change a table name:
   const Glib::ustring table_renamed = "invoiceslinesrenamed";
-  document.change_table_name("invoice_lines", table_renamed);
-  if(document.get_table("invoice_lines"))
+  document->change_table_name("invoice_lines", table_renamed);
+  if(document->get_table("invoice_lines"))
   {
     std::cerr << G_STRFUNC << ": Failure: The renamed table still exists." << std::endl;
     return false;
   }
   
-  relationship = document.get_relationship("invoices", "invoice_lines");
+  relationship = document->get_relationship("invoices", "invoice_lines");
   if(!relationship)
   {
     std::cerr << G_STRFUNC << ": Failure: The expected relationship does not exist." << std::endl;
@@ -204,8 +204,8 @@ int main()
     return false;
   }
   
-  document.remove_table("products");
-  if(document.get_table("products"))
+  document->remove_table("products");
+  if(document->get_table("products"))
   {
     std::cerr << G_STRFUNC << ": Failure: The removed table still exists." << std::endl;
     return false;
@@ -214,16 +214,16 @@ int main()
  
   //Remove a print layout:
   auto print_layout = 
-    document.get_print_layout("contacts", "contact_details");
+    document->get_print_layout("contacts", "contact_details");
   if(!print_layout)
   {
     std::cerr << G_STRFUNC << ": Failure: Could not get an expected print layout." << std::endl;
     return false;
   }
   
-  document.remove_print_layout("contacts", "contact_details");
+  document->remove_print_layout("contacts", "contact_details");
   print_layout = 
-    document.get_print_layout("contacts", "contact_details");
+    document->get_print_layout("contacts", "contact_details");
   if(print_layout)
   {
     std::cerr << G_STRFUNC << ": Failure: The removed print layotu still exists." << std::endl;
@@ -231,13 +231,13 @@ int main()
   }
   
   //Test user groups:
-  Glom::Document::type_list_groups groups = document.get_groups();
+  Glom::Document::type_list_groups groups = document->get_groups();
   g_assert(groups_contain_named(groups, "glom_developer"));
   
   const Glib::ustring group_name = "accounts";
   g_assert(groups_contain_named(groups, group_name));
-  document.remove_group(group_name);
-  groups = document.get_groups();
+  document->remove_group(group_name);
+  groups = document->get_groups();
   g_assert(!groups_contain_named(groups, group_name));
   
   Glom::libglom_deinit();

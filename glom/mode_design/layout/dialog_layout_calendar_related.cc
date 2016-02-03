@@ -100,7 +100,7 @@ Dialog_Layout_Calendar_Related::Dialog_Layout_Calendar_Related(BaseObjectType* c
     m_label_table_title->hide(); // We don't use this (it's from the base class).
 }
 
-void Dialog_Layout_Calendar_Related::init_with_portal(const Glib::ustring& layout, const Glib::ustring& layout_platform, Document* document, const std::shared_ptr<const LayoutItem_CalendarPortal>& portal)
+void Dialog_Layout_Calendar_Related::init_with_portal(const Glib::ustring& layout, const Glib::ustring& layout_platform, const std::shared_ptr<Document>& document, const std::shared_ptr<const LayoutItem_CalendarPortal>& portal)
 {
   m_portal = glom_sharedptr_clone(portal);
 
@@ -111,7 +111,7 @@ void Dialog_Layout_Calendar_Related::init_with_portal(const Glib::ustring& layou
   init_with_tablename(layout, layout_platform, document, from_table);
 }
 
-void Dialog_Layout_Calendar_Related::init_with_tablename(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& from_table)
+void Dialog_Layout_Calendar_Related::init_with_tablename(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, const std::shared_ptr<Document>& document, const Glib::ustring& from_table)
 {
   if(!m_portal)
   {

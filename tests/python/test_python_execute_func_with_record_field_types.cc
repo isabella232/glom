@@ -30,7 +30,7 @@
 #include <boost/python.hpp>
 #include <iostream>
 
-static bool get_field_result(const Glom::Document& document,
+static bool get_field_result(const std::shared_ptr<Glom::Document>& document,
   const Glib::RefPtr<Gnome::Gda::Connection>& gda_connection,
   const Glib::ustring& table_name,
   const std::shared_ptr<const Glom::Field>& primary_key_field,
@@ -50,7 +50,7 @@ static bool get_field_result(const Glom::Document& document,
     value = Glom::glom_evaluate_python_function_implementation(
       Glom::Field::get_glom_type_for_gda_type(expected_value_gtype),
       calculation, field_values,
-      &document, table_name,
+      document, table_name,
       primary_key_field, primary_key_value,
       gda_connection,
       error_message);
@@ -95,7 +95,7 @@ static bool get_field_result(const Glom::Document& document,
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   //Connect to a Glom database
-  Glom::Document document;
+  auto document = std::make_shared<Glom::Document>();
   const bool recreated = 
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
@@ -115,7 +115,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //Some python code just to exercise our PyGlomRecord API:
   const Glib::ustring table_name = "products";
   const auto primary_key_field =
-    document.get_field_primary_key(table_name);
+    document->get_field_primary_key(table_name);
   if(!primary_key_field)
   {
     std::cerr << G_STRFUNC << ": Failure: primary_key_field is empty." << std::endl;
@@ -125,7 +125,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   const Gnome::Gda::Value primary_key_value(2);
 
   const Glom::type_map_fields field_values =
-    Glom::DbUtils::get_record_field_values(&document,
+    Glom::DbUtils::get_record_field_values(document,
       table_name,
       primary_key_field,
       primary_key_value);

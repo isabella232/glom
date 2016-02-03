@@ -2121,7 +2121,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
         //plus how to identify the record in that table.
         const auto relationship_name = layout_field->get_relationship_name();
 
-        auto document = dynamic_cast<Document*>(get_document());
+        auto document = std::dynamic_pointer_cast<Document>(get_document());
 
         auto relationship = document->get_relationship(m_found_set.m_table_name, relationship_name);
         if(relationship)

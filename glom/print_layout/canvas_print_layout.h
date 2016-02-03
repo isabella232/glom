@@ -68,7 +68,7 @@ public:
    * show the content instead of the field name,
    * because it will be the same for all records.
    */
-  void fill_with_data_system_preferences(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, Document* document);
+  void fill_with_data_system_preferences(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, const std::shared_ptr<Document>& document);
 
   void fill_with_data(const FoundSet& found_set, bool avoid_page_margins);
 

@@ -102,7 +102,7 @@ static bool update_gda_metastore_for_table(const Glib::ustring& table_name)
   return true;
 }
 
-bool create_database(Document* document, const Glib::ustring& database_name, const Glib::ustring& title, const std::function<void()>& progress)
+bool create_database(const std::shared_ptr<Document>& document, const Glib::ustring& database_name, const Glib::ustring& title, const std::function<void()>& progress)
 {
 #if 1
   // This seems to increase the chance that the database creation does not
@@ -215,7 +215,7 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
   }
 }
 
-bool recreate_database_from_document(Document* document, const std::function<void()>& progress)
+bool recreate_database_from_document(const std::shared_ptr<Document>& document, const std::function<void()>& progress)
 {
   auto connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
@@ -348,7 +348,7 @@ bool recreate_database_from_document(Document* document, const std::function<voi
 }
 
 
-SystemPrefs get_database_preferences(const Document* document)
+SystemPrefs get_database_preferences(const std::shared_ptr<const Document>& document)
 {
   //if(get_userlevel() == AppState::userlevels::DEVELOPER)
   //  add_standard_tables(document);
@@ -437,7 +437,7 @@ SystemPrefs get_database_preferences(const Document* document)
 }
 
 
-void set_database_preferences(Document* document, const SystemPrefs& prefs)
+void set_database_preferences(const std::shared_ptr<Document>& document, const SystemPrefs& prefs)
 {
    //The logo field was introduced in a later version of Glom.
   //If the user is not in developer mode then the new field has not yet been added:
@@ -469,7 +469,7 @@ void set_database_preferences(Document* document, const SystemPrefs& prefs)
 }
 
 
-bool add_standard_tables(const Document* document)
+bool add_standard_tables(const std::shared_ptr<const Document>& document)
 {
   try
   {
@@ -573,7 +573,7 @@ bool add_standard_tables(const Document* document)
   }
 }
 
-bool add_standard_groups(Document* document)
+bool add_standard_groups(const std::shared_ptr<Document>& document)
 {
   //Add the glom_developer group if it does not exist:
   const Glib::ustring devgroup = GLOM_STANDARD_GROUP_NAME_DEVELOPER;
@@ -647,7 +647,7 @@ bool add_standard_groups(Document* document)
   return true;
 }
 
-bool add_groups_from_document(const Document* document)
+bool add_groups_from_document(const std::shared_ptr<const Document>& document)
 {
   auto gda_connection = get_connection();
   if(!gda_connection)
@@ -683,7 +683,7 @@ bool add_groups_from_document(const Document* document)
   return true;
 }
 
-bool set_table_privileges_groups_from_document(const Document* document)
+bool set_table_privileges_groups_from_document(const std::shared_ptr<const Document>& document)
 {
   auto gda_connection = get_connection();
   if(!gda_connection)
@@ -969,7 +969,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
 }
 
 //TODO: This is very inefficient, because it is 
-type_vec_fields get_fields_for_table(const Document* document, const Glib::ustring& table_name, bool /* including_system_fields */)
+type_vec_fields get_fields_for_table(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, bool /* including_system_fields */)
 {
   //We could also get the field definitions from the database:
   //But that is inefficient because this method is called so often,
@@ -1033,7 +1033,7 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
   return result;
 }
 
-std::shared_ptr<Field> get_fields_for_table_one_field(const Document* document, const Glib::ustring& table_name, const Glib::ustring& field_name)
+std::shared_ptr<Field> get_fields_for_table_one_field(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Initialize output parameter:
   std::shared_ptr<Field> result;
@@ -1143,7 +1143,7 @@ bool get_table_exists_in_database(const Glib::ustring& table_name)
   return Utils::find_exists(tables, table_name);
 }
 
-bool create_table_with_default_fields(Document* document, const Glib::ustring& table_name)
+bool create_table_with_default_fields(const std::shared_ptr<Document>& document, const Glib::ustring& table_name)
 {
   if(table_name.empty())
     return false;
@@ -1566,7 +1566,7 @@ void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring&
     std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
 }
 
-bool insert_example_data(const Document* document, const Glib::ustring& table_name)
+bool insert_example_data(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name)
 {
   //TODO_Performance: Avoid copying:
   const auto example_rows = document->get_table_example_data(table_name);
@@ -1843,7 +1843,7 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
   return (exec_retval >= 0);
 }
 
-void layout_item_fill_field_details(const Document* document, const Glib::ustring& parent_table_name, std::shared_ptr<LayoutItem_Field>& layout_item)
+void layout_item_fill_field_details(const std::shared_ptr<const Document>& document, const Glib::ustring& parent_table_name, std::shared_ptr<LayoutItem_Field>& layout_item)
 {
   if(!document)
   {
@@ -1860,7 +1860,7 @@ void layout_item_fill_field_details(const Document* document, const Glib::ustrin
   layout_item->set_full_field_details( document->get_field(table_name, layout_item->get_name()) );
 }
 
-bool layout_field_should_have_navigation(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& layout_item, const Document* document, std::shared_ptr<Relationship>& field_used_in_relationship_to_one)
+bool layout_field_should_have_navigation(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& layout_item, const std::shared_ptr<const Document>& document, std::shared_ptr<Relationship>& field_used_in_relationship_to_one)
 {
   //Initialize output parameter:
   field_used_in_relationship_to_one = std::shared_ptr<Relationship>();
@@ -2093,7 +2093,7 @@ static Glib::ustring build_query_add_user(const Glib::ustring& user, const Glib:
   return strQuery;
 }
 
-bool add_user(const Document* document, const Glib::ustring& user, const Glib::ustring& password, const Glib::ustring& group)
+bool add_user(const std::shared_ptr<const Document>& document, const Glib::ustring& user, const Glib::ustring& password, const Glib::ustring& group)
 {
   if(!document)
   {
@@ -2152,7 +2152,7 @@ bool add_user(const Document* document, const Glib::ustring& user, const Glib::u
   return true;
 }
 
-bool add_group(const Document* document, const Glib::ustring& group, bool superuser)
+bool add_group(const std::shared_ptr<const Document>& document, const Glib::ustring& group, bool superuser)
 {
   if(!document)
   {
@@ -2248,7 +2248,7 @@ void set_fake_connection()
   connection_pool->set_fake_connection();
 }
 
-Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring& /* table_name */, const std::shared_ptr<const Relationship>& relationship, const std::shared_ptr<const Field>& source_field, const Gnome::Gda::Value& key_value)
+Gnome::Gda::Value get_lookup_value(const std::shared_ptr<const Document>& document, const Glib::ustring& /* table_name */, const std::shared_ptr<const Relationship>& relationship, const std::shared_ptr<const Field>& source_field, const Gnome::Gda::Value& key_value)
 {
   Gnome::Gda::Value result;
 
@@ -2283,7 +2283,7 @@ Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring
   return result;
 }
 
-type_map_fields get_record_field_values(const Document* document, const Glib::ustring& table_name, const std::shared_ptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
+type_map_fields get_record_field_values(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const std::shared_ptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
   type_map_fields field_values;
 

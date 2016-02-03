@@ -35,7 +35,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return true;
   }
 
-  Glom::Document document;
+  auto document = std::make_shared<Glom::Document>();
   //Note: We avoid using a path that is longer than 107 characters to avoid a PostgreSQL error.
   //(107 == sizeof(struct sockaddr_un.sun_path) at least here). murrayc.
   //See http://lists.debian.org/debian-wb-team/2013/05/msg00015.html
@@ -50,7 +50,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
   
-  if(!test_example_musiccollection_data(&document))
+  if(!test_example_musiccollection_data(document))
   {
     std::cerr << G_STRFUNC << ": test_example_musiccollection_data() failed." << std::endl;
     return false;

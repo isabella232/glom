@@ -41,7 +41,7 @@ ComboChoices::ComboChoices()
 {
 }
 
-bool ComboChoices::refresh_data_from_database_with_foreign_key(const Document* /* document */, const Gnome::Gda::Value& /* foreign_key_value */)
+bool ComboChoices::refresh_data_from_database_with_foreign_key(const std::shared_ptr<const Document>& /* document */, const Gnome::Gda::Value& /* foreign_key_value */)
 {
   /** TODO:
   auto layout_item =
@@ -64,7 +64,7 @@ bool ComboChoices::refresh_data_from_database_with_foreign_key(const Document* /
   return true;
 }
 
-void ComboChoices::set_choices_related(const Document* /* document */, const std::shared_ptr<const LayoutItem_Field>& /* layout_field */, const Gnome::Gda::Value& /* foreign_key_value */)
+void ComboChoices::set_choices_related(const std::shared_ptr<const Document>& /* document */, const std::shared_ptr<const LayoutItem_Field>& /* layout_field */, const Gnome::Gda::Value& /* foreign_key_value */)
 {
   /* TODO:
   type_list_values_with_second list_values;

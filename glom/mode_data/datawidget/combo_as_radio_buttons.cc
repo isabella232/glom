@@ -145,7 +145,7 @@ void ComboAsRadioButtons::set_choices_fixed(const Formatting::type_list_values& 
   }
 }
 
-void ComboAsRadioButtons::set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
+void ComboAsRadioButtons::set_choices_related(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
 {
   const Utils::type_list_values_with_second list_values =
     Utils::get_choice_values(document, layout_field, foreign_key_value);

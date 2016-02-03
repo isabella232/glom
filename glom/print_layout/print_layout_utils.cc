@@ -310,7 +310,7 @@ guint get_page_for_y(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::
   return pages_integral;
 }
 
-std::shared_ptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, const Glib::ustring& table_name, const Document* document, bool avoid_page_margins)
+std::shared_ptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, const Glib::ustring& table_name, const std::shared_ptr<const Document>& document, bool avoid_page_margins)
 {
   const Gtk::Unit units = Gtk::UNIT_MM;
   auto print_layout = std::make_shared<PrintLayout>();  
@@ -365,7 +365,7 @@ std::shared_ptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageS
   return print_layout;
 }
 
-void do_print_layout(const std::shared_ptr<const PrintLayout>& print_layout, const FoundSet& found_set, bool preview, const Document* document, bool avoid_page_margins, Gtk::Window* transient_for)
+void do_print_layout(const std::shared_ptr<const PrintLayout>& print_layout, const FoundSet& found_set, bool preview, const std::shared_ptr<const Document>& document, bool avoid_page_margins, Gtk::Window* transient_for)
 {
   if(!print_layout)
   {
@@ -387,7 +387,7 @@ void do_print_layout(const std::shared_ptr<const PrintLayout>& print_layout, con
   }
 
   Canvas_PrintLayout canvas;
-  canvas.set_document(const_cast<Document*>(document)); //We const_cast because, for this use, it will not be changed.
+  canvas.set_document(std::const_pointer_cast<Document>(document)); //We const_cast because, for this use, it will not be changed.
 
   //We cast to unconst because we know that the layout will not be changed by this use: 
   auto unconst = std::const_pointer_cast<PrintLayout>(print_layout);

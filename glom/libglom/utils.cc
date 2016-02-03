@@ -505,13 +505,13 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib
     std::shared_ptr<const Relationship>(), sort_clause, limit);
 }
 
-Utils::type_list_values_with_second Utils::get_choice_values_all(const Document* document, const std::shared_ptr<const LayoutItem_Field>& field)
+Utils::type_list_values_with_second Utils::get_choice_values_all(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& field)
 {
   return get_choice_values(document, field,
     Gnome::Gda::Value() /* means get all with no WHERE clause */);
 }
 
-Utils::type_list_values_with_second Utils::get_choice_values(const Document* document, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value)
+Utils::type_list_values_with_second Utils::get_choice_values(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value)
 {
   //TODO: Reduce duplication between this and get_choice_values(field).
 
@@ -1079,7 +1079,7 @@ std::string Utils::sqlbuilder_get_full_query(
   return str;
 }
 
-Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search)
+Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search)
 {
   if(table_name.empty())
   {
@@ -1467,7 +1467,7 @@ Glib::ustring Utils::get_temp_directory_uri(const std::string& prefix)
   }
 }
 
-LayoutGroup::type_list_const_items Utils::get_layout_items_plus_primary_key(const LayoutGroup::type_list_const_items& items, const Document* document, const Glib::ustring& table_name)
+LayoutGroup::type_list_const_items Utils::get_layout_items_plus_primary_key(const LayoutGroup::type_list_const_items& items, const std::shared_ptr<const Document>& document, const Glib::ustring& table_name)
 {
   if(!document)
   {
@@ -1495,7 +1495,7 @@ LayoutGroup::type_list_const_items Utils::get_layout_items_plus_primary_key(cons
 }
 
 //TODO: Avoid the horrible code duplication with the const version.
-LayoutGroup::type_list_items Utils::get_layout_items_plus_primary_key(const LayoutGroup::type_list_items& items, const Document* document, const Glib::ustring& table_name)
+LayoutGroup::type_list_items Utils::get_layout_items_plus_primary_key(const LayoutGroup::type_list_items& items, const std::shared_ptr<const Document>& document, const Glib::ustring& table_name)
 {
   if(!document)
   {

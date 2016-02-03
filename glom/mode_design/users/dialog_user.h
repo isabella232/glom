@@ -45,7 +45,7 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  //virtual void set_document(const Glib::ustring& layout, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
+  //virtual void set_document(const Glib::ustring& layout, const std::shared_ptr<Document>& document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
 
   Gtk::Entry* m_entry_user;
   Combo_TextGlade* m_combo_group;

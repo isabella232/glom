@@ -51,7 +51,7 @@ public:
   void set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted = false) override;
 
   //This creates a db-based tree model, with appropriate cell renderers:
-  void set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value) override;
+  void set_choices_related(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value) override;
 
   void set_read_only(bool read_only = true) override;
 

@@ -199,10 +199,10 @@ int main(int argc, char* argv[])
 
 
   // Load the document:
-  Glom::Document document;
-  document.set_file_uri(input_uri);
+  auto document = std::make_shared<Glom::Document>();
+  document->set_file_uri(input_uri);
   int failure_code = 0;
-  const auto test = document.load(failure_code);
+  const auto test = document->load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -214,7 +214,7 @@ int main(int argc, char* argv[])
   if(group.m_arg_template)
   {
     const bool succeeded = 
-      Glom::write_pot_file(&document, output_uri);
+      Glom::write_pot_file(document, output_uri);
     if(!succeeded)
     {
       std::cerr << _("Pot file creation failed.") << std::endl;
@@ -226,7 +226,7 @@ int main(int argc, char* argv[])
   else
   {
     const bool succeeded = 
-      Glom::write_translations_to_po_file(&document, output_uri, group.m_arg_locale_id);
+      Glom::write_translations_to_po_file(document, output_uri, group.m_arg_locale_id);
     if(!succeeded)
     {
       std::cerr << _("Po file creation failed.") << std::endl;

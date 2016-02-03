@@ -441,19 +441,19 @@ void Box_Formatting::on_combo_choices_relationship_changed()
 {
   auto relationship = m_combo_choices_relationship->get_selected_relationship();
 
-  auto pDocument = get_document();
-  if(pDocument)
+  auto document = get_document();
+  if(document)
   {
     //Show the list of fields from this relationship:
     if(relationship)
     {
       const auto related_table = relationship->get_to_table();
-      const auto vecFields = pDocument->get_table_fields(related_table);
+      const auto vecFields = document->get_table_fields(related_table);
       m_combo_choices_field->set_fields(vecFields);
 
       //Default to using the Primary Key field from the related table,
       //because this is almost always what people want to use:
-      const auto related_primary_key = pDocument->get_field_primary_key(related_table);
+      const auto related_primary_key = document->get_field_primary_key(related_table);
       if(related_primary_key)
         m_combo_choices_field->set_selected_field(related_primary_key);
 

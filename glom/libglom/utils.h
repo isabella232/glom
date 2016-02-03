@@ -124,7 +124,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_key(
  */
 Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_count_rows(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql_query);
 
-Gnome::Gda::SqlExpr get_find_where_clause_quick(const Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search);
+Gnome::Gda::SqlExpr get_find_where_clause_quick(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search);
 
 /** Generate a SQL statement to UPDATE field values,
  */
@@ -135,9 +135,9 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_update_with_where_clause(
 
 typedef std::vector<Gnome::Gda::Value> type_list_values;
 typedef std::vector< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second; //TODO: Rename this now that we have more than just 1 extra field.
-type_list_values_with_second get_choice_values_all(const Document* document, const std::shared_ptr<const LayoutItem_Field>& field);
+type_list_values_with_second get_choice_values_all(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& field);
 
-type_list_values_with_second get_choice_values(const Document* document, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value);
+type_list_values_with_second get_choice_values(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value);
 
 /// Get the full query string suitable for use with std::cout.
 std::string sqlbuilder_get_full_query(
@@ -223,13 +223,13 @@ Glib::ustring get_list_of_sort_fields_for_display(const Formatting::type_list_so
 /** This returns the provided list of layout items,
  * plus the primary key, if the primary key is not already present in the list
  */
-LayoutGroup::type_list_const_items get_layout_items_plus_primary_key(const LayoutGroup::type_list_const_items& items, const Document* document, const Glib::ustring& table_name);
+LayoutGroup::type_list_const_items get_layout_items_plus_primary_key(const LayoutGroup::type_list_const_items& items, const std::shared_ptr<const Document>& document, const Glib::ustring& table_name);
 
 //TODO: Avoid the overload just for constness.
 /** This returns the provided list of layout items,
  * plus the primary key, if the primary key is not already present in the list
  */
-LayoutGroup::type_list_items get_layout_items_plus_primary_key(const LayoutGroup::type_list_items& items, const Document* document, const Glib::ustring& table_name);
+LayoutGroup::type_list_items get_layout_items_plus_primary_key(const LayoutGroup::type_list_items& items, const std::shared_ptr<const Document>& document, const Glib::ustring& table_name);
 
 std::string get_temp_file_path(const std::string& prefix = std::string(), const std::string& extension = std::string());
 Glib::ustring get_temp_file_uri(const std::string& prefix = std::string(), const std::string& extension = std::string());

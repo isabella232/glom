@@ -71,7 +71,7 @@ FileChooser_Export::~FileChooser_Export()
 #endif //GLOM_ENABLE_CLIENT_ONLY
 }
 
-void FileChooser_Export::set_export_layout(const Document::type_list_layout_groups& layout_groups, const Glib::ustring& table_name, Document* document)
+void FileChooser_Export::set_export_layout(const Document::type_list_layout_groups& layout_groups, const Glib::ustring& table_name, const std::shared_ptr<Document>& document)
 {
   m_layout_groups = layout_groups;
   m_table_name = table_name;

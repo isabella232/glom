@@ -73,7 +73,7 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
   show_all_children();
 }
 
-void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& field)
+void Dialog_ChooseField::set_document(const std::shared_ptr<Document>& document, const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& field)
 {
   set_document(document, table_name);
 
@@ -124,7 +124,7 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
   }
 }
 
-void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& table_name)
+void Dialog_ChooseField::set_document(const std::shared_ptr<Document>& document, const Glib::ustring& table_name)
 {
   m_document = document;
   m_table_name = table_name;
@@ -301,17 +301,17 @@ void Dialog_ChooseField::on_combo_relationship_changed()
 {
   auto relationship = m_combo_relationship->get_selected_relationship();
 
-  auto pDocument = m_document;
-  if(pDocument)
+  auto document = m_document;
+  if(document)
   {
     //Show the list of fields from this relationship:
 
     Document::type_vec_fields vecFields;
     if(!relationship)
-      vecFields = pDocument->get_table_fields(m_table_name);
+      vecFields = document->get_table_fields(m_table_name);
     else
     {
-      vecFields = pDocument->get_table_fields(relationship->get_to_table());
+      vecFields = document->get_table_fields(relationship->get_to_table());
     }
 
     m_model->clear();

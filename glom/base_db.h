@@ -65,7 +65,7 @@ public:
 
   static std::shared_ptr<SharedConnection> connect_to_server(Gtk::Window* parent_window = 0);
 
-  void set_document(Document* pDocument) override; //View override
+  void set_document(const std::shared_ptr<Document>& document) override; //View override
   void load_from_document() override; //View override
 
   std::shared_ptr<Field> change_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field_old, const std::shared_ptr<const Field>& field, Gtk::Window* parent_window) const;
@@ -79,7 +79,7 @@ public:
 
   //TODO: This is not a very good place for this function.
   /// Get the active layout platform for the document, or get a suitable default.
-  static Glib::ustring get_active_layout_platform(Document* document);
+  static Glib::ustring get_active_layout_platform(const std::shared_ptr<Document>& document);
 
   typedef std::vector< std::shared_ptr<LayoutItem_Field> > type_vecLayoutFields;
   typedef std::vector< std::shared_ptr<const LayoutItem_Field> > type_vecConstLayoutFields;
@@ -138,7 +138,7 @@ protected:
     {
     }
 
-    FieldInRecord(const std::shared_ptr<const LayoutItem_Field>& layout_item, const Glib::ustring& parent_table_name, const std::shared_ptr<const Field>& parent_key, const Gnome::Gda::Value& key_value, const Document& document)
+    FieldInRecord(const std::shared_ptr<const LayoutItem_Field>& layout_item, const Glib::ustring& parent_table_name, const std::shared_ptr<const Field>& parent_key, const Gnome::Gda::Value& key_value, const std::shared_ptr<const Document>& document)
     : m_field(layout_item->get_full_field_details()),
       m_key_value(key_value)
     {
@@ -157,13 +157,13 @@ protected:
             if(related_rel)
             {
               //Actually a foreign key in a doubly-related table:
-              m_key = document.get_field(m_table_name, related_rel->get_to_field());
+              m_key = document->get_field(m_table_name, related_rel->get_to_field());
             }
           }
           else
           {
             //Actually a foreign key:
-            m_key = document.get_field(m_table_name, rel->get_to_field());
+            m_key = document->get_field(m_table_name, rel->get_to_field());
           }
         }
       }
@@ -203,7 +203,7 @@ protected:
     LayoutFieldInRecord(LayoutFieldInRecord&& src) = delete;
     LayoutFieldInRecord& operator=(LayoutFieldInRecord&& src) = delete;
 
-    FieldInRecord get_fieldinrecord(const Document& document) const
+    FieldInRecord get_fieldinrecord(const std::shared_ptr<const Document>& document) const
     {
       return FieldInRecord(m_field, m_table_name, m_key, m_key_value, document);
     }

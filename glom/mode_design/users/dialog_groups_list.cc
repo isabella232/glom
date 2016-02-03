@@ -113,7 +113,7 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
 }
 
 /*
-void Dialog_GroupsList::set_document(const Glib::ustring& layout, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
+void Dialog_GroupsList::set_document(const Glib::ustring& layout, const std::shared_ptr<Document>& document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
 {
   m_modified = false;
 
@@ -379,15 +379,15 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
   //Fill the model rows:
   m_model_tables->clear();
 
- auto pDocument = get_document();
-  if(pDocument)
+ auto document = get_document();
+  if(document)
   {
     // Make sure that these are in the document,
     // so that the correct groups will be created if we recreate the database from the document:
     GroupInfo group_info;
     group_info.set_name(group_name);
 
-    Document::type_listTableInfo table_list = pDocument->get_tables(true /* plus system prefs */);
+    Document::type_listTableInfo table_list = document->get_tables(true /* plus system prefs */);
 
     for(const auto& table : table_list)
     {
@@ -409,7 +409,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
       group_info.m_map_privileges[table_name] = privs;
     }
 
-    pDocument->set_group(group_info);
+    document->set_group(group_info);
   }
 }
 

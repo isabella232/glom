@@ -149,12 +149,12 @@ void test_selfhosting_cleanup(bool delete_file)
   temp_file_uri.clear(); //Forget this too.
 }
 
-bool test_selfhost(Glom::Document& document, const Glib::ustring& user, const Glib::ustring& password)
+bool test_selfhost(const std::shared_ptr<Glom::Document>& document, const Glib::ustring& user, const Glib::ustring& password)
 {
   //TODO: Let this happen automatically on first connection?
   auto connection_pool = Glom::ConnectionPool::get_instance();
 
-  connection_pool->setup_from_document(&document);
+  connection_pool->setup_from_document(document);
 
   connection_pool->set_user(user);
   connection_pool->set_password(password);
@@ -171,7 +171,7 @@ bool test_selfhost(Glom::Document& document, const Glib::ustring& user, const Gl
   return true;
 }
 
-bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
+bool test_create_and_selfhost_new_empty(const std::shared_ptr<Glom::Document>& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
 {
   if( (hosting_mode != Glom::Document::HostingMode::POSTGRES_SELF) &&
     (hosting_mode != Glom::Document::HostingMode::MYSQL_SELF) &&
@@ -198,18 +198,18 @@ bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document
 
    //Save the example as a real file:
   temp_file_uri = Glib::filename_to_uri(temp_filepath);
-  document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
-  document.set_file_uri(temp_file_uri);
+  document->set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
+  document->set_file_uri(temp_file_uri);
 
-  document.set_hosting_mode(hosting_mode);
-  document.set_is_example_file(false);
-  document.set_network_shared(false);
-  const auto saved = document.save();
+  document->set_hosting_mode(hosting_mode);
+  document->set_is_example_file(false);
+  document->set_network_shared(false);
+  const auto saved = document->save();
   g_assert(saved);
 
   //Specify the backend and backend-specific details to be used by the connectionpool.
   auto connection_pool = Glom::ConnectionPool::get_instance();
-  connection_pool->setup_from_document(&document);
+  connection_pool->setup_from_document(document);
 
   //We must specify a default username and password:
   Glib::ustring password;
@@ -237,7 +237,7 @@ Glib::ustring test_get_temp_file_uri()
   return temp_file_uri;
 }
 
-bool test_create_and_selfhost_new_database(Glom::Document& document, Glom::Document::HostingMode hosting_mode, const Glib::ustring& database_name, const std::string& subdirectory_path)
+bool test_create_and_selfhost_new_database(const std::shared_ptr<Glom::Document>& document, Glom::Document::HostingMode hosting_mode, const Glib::ustring& database_name, const std::string& subdirectory_path)
 {
   if(!test_create_and_selfhost_new_empty(document, hosting_mode, subdirectory_path))
   {
@@ -253,7 +253,7 @@ bool test_create_and_selfhost_new_database(Glom::Document& document, Glom::Docum
   }
 
   //Create a database:
-  const auto created = Glom::DbUtils::create_database(&document, db_name,
+  const auto created = Glom::DbUtils::create_database(document, db_name,
     "test title", &on_db_creation_progress);
   if(!created)
   {
@@ -264,7 +264,7 @@ bool test_create_and_selfhost_new_database(Glom::Document& document, Glom::Docum
   return true;
 }
 
-static bool test_create_and_selfhost_from_example_full_path(const std::string& example_path, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path = std::string())
+static bool test_create_and_selfhost_from_example_full_path(const std::string& example_path, const std::shared_ptr<Glom::Document>& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path = std::string())
 {
   Glib::ustring uri;
   try
@@ -280,7 +280,7 @@ static bool test_create_and_selfhost_from_example_full_path(const std::string& e
   return test_create_and_selfhost_from_uri(uri, document, hosting_mode, subdirectory_path);
 }
 
-bool test_create_and_selfhost_from_example(const std::string& example_filename, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
+bool test_create_and_selfhost_from_example(const std::string& example_filename, const std::shared_ptr<Glom::Document>& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
 {
   Glib::ustring uri;
   
@@ -301,7 +301,7 @@ bool test_create_and_selfhost_from_example(const std::string& example_filename, 
   return test_create_and_selfhost_from_example_full_path(path, document, hosting_mode, subdirectory_path);
 }
 
-bool test_create_and_selfhost_from_test_example(const std::string& example_filename, Glom::Document& document, Glom::Document::HostingMode hosting_mode)
+bool test_create_and_selfhost_from_test_example(const std::string& example_filename, const std::shared_ptr<Glom::Document>& document, Glom::Document::HostingMode hosting_mode)
 {
   Glib::ustring uri;
   
@@ -322,9 +322,9 @@ bool test_create_and_selfhost_from_test_example(const std::string& example_filen
   return test_create_and_selfhost_from_example_full_path(path, document, hosting_mode);
 }
 
-static bool after_load(Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
+static bool after_load(const std::shared_ptr<Glom::Document>& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
 {
-  if(!document.get_is_example_file() && !document.get_is_backup_file())
+  if(!document->get_is_example_file() && !document->get_is_backup_file())
   {
     std::cerr << G_STRFUNC << ": The document is not an example or a backup." << std::endl;
     return false;
@@ -336,14 +336,14 @@ static bool after_load(Glom::Document& document, Glom::Document::HostingMode hos
     return false;
   }
 
-  const auto recreated = Glom::DbUtils::recreate_database_from_document(&document, sigc::ptr_fun(&on_recreate_progress) );
+  const auto recreated = Glom::DbUtils::recreate_database_from_document(document, sigc::ptr_fun(&on_recreate_progress) );
   if(!recreated)
     test_selfhosting_cleanup();
 
   return recreated;
 }
 
-bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
+bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, const std::shared_ptr<Glom::Document>& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
 {
   if( (hosting_mode != Glom::Document::HostingMode::POSTGRES_SELF) &&
     (hosting_mode != Glom::Document::HostingMode::MYSQL_SELF) &&
@@ -354,10 +354,10 @@ bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Gl
   }
 
   // Load the document:
-  document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
-  document.set_file_uri(example_file_uri);
+  document->set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
+  document->set_file_uri(example_file_uri);
   int failure_code = 0;
-  const auto test = document.load(failure_code);
+  const auto test = document->load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -369,7 +369,7 @@ bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Gl
   return after_load(document, hosting_mode, subdirectory_path);
 }
 
-bool test_create_and_selfhost_from_data(const Glib::ustring& example_file_contents, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
+bool test_create_and_selfhost_from_data(const Glib::ustring& example_file_contents, const std::shared_ptr<Glom::Document>& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
 {
   if( (hosting_mode != Glom::Document::HostingMode::POSTGRES_SELF) &&
     (hosting_mode != Glom::Document::HostingMode::MYSQL_SELF) &&
@@ -379,10 +379,10 @@ bool test_create_and_selfhost_from_data(const Glib::ustring& example_file_conten
     return false;
   }
 
-  document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
+  document->set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
 
   int failure_code = 0;
-  const auto test = document.load_from_data((const guchar*)example_file_contents.c_str(), example_file_contents.bytes(), failure_code);
+  const auto test = document->load_from_data((const guchar*)example_file_contents.c_str(), example_file_contents.bytes(), failure_code);
 
   if(!test)
   {
@@ -415,11 +415,11 @@ bool test_model_expected_size(const Glib::RefPtr<const Gnome::Gda::DataModel>& d
   return true;
 }
 
-bool test_table_exists(const Glib::ustring& table_name, const Glom::Document& document)
+bool test_table_exists(const Glib::ustring& table_name, const std::shared_ptr<Glom::Document>& document)
 {
   //Try to get more rows than intended:
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  auto field = document.get_field_primary_key(table_name); //To to get some field.
+  auto field = document->get_field_primary_key(table_name); //To to get some field.
   if(!field)
   {
     std::cerr << G_STRFUNC << "Failure: Could not get primary key for table=" << table_name << std::endl;
@@ -444,7 +444,7 @@ bool test_table_exists(const Glib::ustring& table_name, const Glom::Document& do
   return true;
 }
 
-static bool test_example_musiccollection_data_related(const Glom::Document* document, const Gnome::Gda::Value& album_id)
+static bool test_example_musiccollection_data_related(const std::shared_ptr<const Glom::Document>& document, const Gnome::Gda::Value& album_id)
 {
   if(!document)
   {
@@ -501,7 +501,7 @@ static bool test_example_musiccollection_data_related(const Glom::Document* docu
   return true;
 }
 
-bool test_example_musiccollection_data(const Glom::Document* document)
+bool test_example_musiccollection_data(const std::shared_ptr<const Glom::Document>& document)
 {
   if(!document)
   {

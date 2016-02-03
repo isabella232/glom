@@ -61,7 +61,7 @@ static DataWidgetChildren::ComboChoices* create_combo_widget_for_field(const std
   return result;
 }
 
-DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document* document)
+DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const std::shared_ptr<const Document>& document)
 :  m_child(nullptr),
    m_button_go_to_details(nullptr)
 {
@@ -461,7 +461,7 @@ std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustri
   return offer_field_list(table_name, start_field, get_document(), get_appwindow());
 }
 
-std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& start_field, Document* document, AppWindow* app)
+std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& start_field, const std::shared_ptr<Document>& document, AppWindow* app)
 {
   std::shared_ptr<LayoutItem_Field> result;
 

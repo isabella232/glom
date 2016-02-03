@@ -90,26 +90,26 @@ int main()
 
 
   // Load the document:
-  Glom::Document document;
-  document.set_file_uri(uri);
+  auto document = std::make_shared<Glom::Document>();
+  document->set_file_uri(uri);
   int failure_code = 0;
-  const auto test = document.load(failure_code);
+  const auto test = document->load(failure_code);
   std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
     return 1;
 
-  std::cout << "Database Title: " << document.get_database_title_original() << std::endl;
-  std::cout << "Default Table: " << document.get_default_table() << std::endl;
+  std::cout << "Database Title: " << document->get_database_title_original() << std::endl;
+  std::cout << "Default Table: " << document->get_default_table() << std::endl;
 
 
   // Look at each table:
-  for(const auto& table_name : document.get_table_names())
+  for(const auto& table_name : document->get_table_names())
   {
     std::cout << "Table: " << table_name << std::endl;
 
     // List the fields for this table:
-    for(const auto& field : document.get_table_fields(table_name))
+    for(const auto& field : document->get_table_fields(table_name))
     {
        if(!field)
          continue;
@@ -123,7 +123,7 @@ int main()
     }
 
     // List the relationships for this table:
-    for(const auto& relationship : document.get_relationships(table_name))
+    for(const auto& relationship : document->get_relationships(table_name))
     {
        if(!relationship)
          continue;
@@ -135,12 +135,12 @@ int main()
 
     //Show the layouts for this table:
     const Glom::Document::type_list_layout_groups layout_list =
-      document.get_data_layout_groups("list", table_name);
+      document->get_data_layout_groups("list", table_name);
     std::cout << "  Layout: List:" << std::endl;
     print_layout(layout_list);
 
     const Glom::Document::type_list_layout_groups layout_details =
-      document.get_data_layout_groups("details", table_name);
+      document->get_data_layout_groups("details", table_name);
     std::cout << "  Layout: Details:" << std::endl;
     print_layout(layout_details);
   }

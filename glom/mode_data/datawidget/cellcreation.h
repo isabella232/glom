@@ -30,7 +30,7 @@ namespace Glom
 /** Create a Gtk::CellRenderer that's appropriate to display a layout item,
  * for internal use by a DbAddDel or ComboChoices widget.
  */
-Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_item, const Glib::ustring& table_name, const Document* document, guint fixed_cell_height);
+Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_item, const Glib::ustring& table_name, const std::shared_ptr<const Document>& document, guint fixed_cell_height);
 
 } //namespace Glom
 

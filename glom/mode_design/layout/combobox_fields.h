@@ -50,14 +50,14 @@ public:
    * @param parent_table_name The table whose fields should be shown.
    * @param field_type Show only fields of this type.
    */
-  void set_fields(Document* document, const Glib::ustring parent_table_name);
+  void set_fields(const std::shared_ptr<Document>& document, const Glib::ustring parent_table_name);
     
   /** Fill the combo box with fields, but only fields of a certain type.
    * @param document The Document, used to get the list of fields.
    * @param parent_table_name The table whose fields should be shown.
    * @param field_type Show only fields of this type.
    */
-  void set_fields(Document* document, const Glib::ustring parent_table_name, Field::glom_field_type field_type);
+  void set_fields(const std::shared_ptr<Document>& document, const Glib::ustring parent_table_name, Field::glom_field_type field_type);
 
   void set_selected_field(const std::shared_ptr<const Field>& field);
   void set_selected_field(const Glib::ustring& field_name);

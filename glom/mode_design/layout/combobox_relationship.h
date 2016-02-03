@@ -42,7 +42,7 @@ public:
 
   void set_relationships_excluding_triggered_by(const type_vec_relationships& relationship, const Glib::ustring& excluding_triggered_by_field);
 
-  void set_relationships(Document* document, const Glib::ustring parent_table_name, bool show_related_relationships = false, bool show_parent_table = true);
+  void set_relationships(const std::shared_ptr<Document>& document, const Glib::ustring parent_table_name, bool show_related_relationships = false, bool show_parent_table = true);
 
   void set_selected_relationship(const std::shared_ptr<const Relationship>& relationship);
   void set_selected_relationship(const std::shared_ptr<const Relationship>& relationship, const std::shared_ptr<const Relationship>& related_relationship);

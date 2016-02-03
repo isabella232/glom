@@ -26,7 +26,7 @@
 
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
-  Glom::Document document;
+  auto document = std::make_shared<Glom::Document>();
   const bool recreated = 
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)

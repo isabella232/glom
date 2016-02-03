@@ -72,9 +72,9 @@ bool contains_item_type(const Glom::Document::type_list_translatables& container
   );
 }
 
-static std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Document& document, const Glib::ustring& layout_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name)
+static std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const std::shared_ptr<Glom::Document>& document, const Glib::ustring& layout_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
-  for(const auto& group : document.get_data_layout_groups("details", layout_table_name))
+  for(const auto& group : document->get_data_layout_groups("details", layout_table_name))
   {
     if(!group)
       continue;
@@ -171,10 +171,10 @@ int main()
 
 
   // Load the document:
-  Glom::Document document;
-  document.set_file_uri(uri);
+  auto document = std::make_shared<Glom::Document>();
+  document->set_file_uri(uri);
   int failure_code = 0;
-  const auto test = document.load(failure_code);
+  const auto test = document->load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -183,26 +183,26 @@ int main()
     return EXIT_FAILURE;
   }
 
-  const auto locales = document.get_translation_available_locales();
+  const auto locales = document->get_translation_available_locales();
   g_assert(locales.size() == 16);
   g_assert(contains(locales, "de"));
 
-  const auto table_names = document.get_table_names();
+  const auto table_names = document->get_table_names();
   g_assert(contains(table_names, "scenes"));
 
-  g_assert( document.get_table_title_original("scenes") == "Scenes" );
-  g_assert( document.get_table_title_singular_original("scenes") == "Scene" );
+  g_assert( document->get_table_title_original("scenes") == "Scenes" );
+  g_assert( document->get_table_title_singular_original("scenes") == "Scene" );
   
-  g_assert( document.get_table_title("scenes", locale_de) == "Szenen" );
-  g_assert( document.get_table_title_singular("scenes", locale_de) == "Szene" );
+  g_assert( document->get_table_title("scenes", locale_de) == "Szenen" );
+  g_assert( document->get_table_title_singular("scenes", locale_de) == "Szene" );
 
   //Check a field:
-  auto field = document.get_field("contacts", "contact_id");
+  auto field = document->get_field("contacts", "contact_id");
   g_assert(field);
   check_title(field, "Contact ID", "Kontaktkennung");
 
   //Check a field and its custom choices:
-  field = document.get_field("scenes", "day_or_night");
+  field = document->get_field("scenes", "day_or_night");
   g_assert(field);
   check_title(field, "Day/Night", "Tag/Nacht");
 
@@ -223,7 +223,7 @@ int main()
   g_assert( value->get_title_original() == "Day" );
 
   //Check a relationship:
-  const auto relationship = document.get_relationship("characters", "contacts_actor");
+  const auto relationship = document->get_relationship("characters", "contacts_actor");
   g_assert(relationship);
   check_title(relationship, "Actor", "Schauspieler");
 
@@ -248,12 +248,12 @@ int main()
   g_assert(field_on_layout->get_formatting_used_has_translatable_choices());
 
   //Check a print layout:
-  const auto print_layout = document.get_print_layout("contacts", "contact_details");
+  const auto print_layout = document->get_print_layout("contacts", "contact_details");
   g_assert(print_layout);
   check_title(print_layout, "Contact Details", "Kontakt Details" );
 
   //Check the whole list of translatable items:
-  Glom::Document::type_list_translatables list_layout_items = document.get_translatable_items();
+  Glom::Document::type_list_translatables list_layout_items = document->get_translatable_items();
   g_assert(!list_layout_items.empty());
   const bool contains_databasetitle =
     contains_item_type<Glom::DatabaseTitle>(list_layout_items);

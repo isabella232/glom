@@ -32,7 +32,7 @@
 
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
-  Glom::Document document;
+  auto document = std::make_shared<Glom::Document>();
   const bool recreated = 
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
@@ -42,7 +42,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
   
   const Glib::ustring table_name = "products";
-  auto primary_key_field = document.get_field_primary_key(table_name);
+  auto primary_key_field = document->get_field_primary_key(table_name);
   if(!primary_key_field)
   {
     std::cerr << G_STRFUNC << ": Failure: primary_key_field is empty." << std::endl;
@@ -55,7 +55,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     Glom::Utils::build_simple_where_expression(table_name, primary_key_field, pk_value);
   
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  auto field = document.get_field(table_name, "price");
+  auto field = document->get_field(table_name, "price");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);

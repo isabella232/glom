@@ -43,7 +43,7 @@ public:
   void set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted = false) override;
 
   //This creates a db-based tree model, with appropriate cell renderers:
-  void set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value) override;
+  void set_choices_related(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value) override;
 
   void set_restrict_values_to_list(bool val = true);
 
@@ -62,7 +62,7 @@ private:
 
   bool m_repacked_first_cell;
 
-  const Document* m_document;
+  std::shared_ptr<const Document> m_document;
 };
 
 } //namespace Glom

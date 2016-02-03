@@ -84,7 +84,7 @@ auto find_if_layout_item_is_equal(T_Container& container, const typename T_Conta
 
 Base_DB::Base_DB()
 {
-  //m_pDocument = nullptr;
+  //m_document = nullptr;
 }
 
 bool Base_DB::init_db_details()
@@ -153,7 +153,7 @@ void Base_DB::load_from_document()
 
 AppState::userlevels Base_DB::get_userlevel() const
 {
-  const auto document = dynamic_cast<const Document*>(get_document());
+  const auto document = std::dynamic_pointer_cast<const Document>(get_document());
   if(document)
   {
     return document->get_userlevel();
@@ -181,12 +181,10 @@ void Base_DB::on_userlevel_changed(AppState::userlevels /* userlevel */)
 
 
 
-void Base_DB::set_document(Document* pDocument)
+void Base_DB::set_document(const std::shared_ptr<Document>& document)
 {
-  View_Composite_Glom::set_document(pDocument);
+  View_Composite_Glom::set_document(document);
 
-  //Connect to a signal that is only on the derived document class:
-  auto document = get_document();
   if(document)
   {
     document->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Base_DB::on_userlevel_changed) );
@@ -579,7 +577,7 @@ std::shared_ptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustr
 
 void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vec_fields& all_db_fields, const std::shared_ptr<LayoutGroup>& group, Base_DB::type_vecConstLayoutFields& vecFields) const
 {
-  const auto document = dynamic_cast<const Document*>(get_document());
+  const auto document = std::dynamic_pointer_cast<const Document>(get_document());
 
   //g_warning("Box_Data::get_table_fields_to_show_for_sequence_add_group(): table_name=%s, all_db_fields.size()=%d, group->name=%s", table_name.c_str(), all_db_fields.size(), group->get_name().c_str());
 
@@ -656,7 +654,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
 
 Base_DB::type_vecConstLayoutFields Base_DB::get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document::type_list_layout_groups& mapGroupSequence) const
 {
-  const auto pDoc = dynamic_cast<const Document*>(get_document());
+  const auto pDoc = std::dynamic_pointer_cast<const Document>(get_document());
 
   //Get field definitions from the database, with corrections from the document:
   type_vec_fields all_fields = DbUtils::get_fields_for_table(pDoc, table_name);
@@ -932,7 +930,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   auto document = get_document();
   g_assert(document);
 
-  const auto field_in_record = layoutfield_in_record.get_fieldinrecord(*document);
+  const auto field_in_record = layoutfield_in_record.get_fieldinrecord(document);
 
   //row is invalid, and ignored, for Box_Data_Details.
   if(!(field_in_record.m_field))
@@ -1129,7 +1127,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculated_fields(const Glib::
 
   type_list_const_field_items result;
 
-  const auto document = dynamic_cast<const Document*>(get_document());
+  const auto document = std::dynamic_pointer_cast<const Document>(get_document());
   if(document)
   {
     //Look at each field in the table, and get lists of what fields trigger their calculations,
@@ -1502,7 +1500,7 @@ bool Base_DB::disable_user(const Glib::ustring& user)
   return true;
 }
 
-Glib::ustring Base_DB::get_active_layout_platform(Document* document)
+Glib::ustring Base_DB::get_active_layout_platform(const std::shared_ptr<Document>& document)
 {
   Glib::ustring result;
   if(document)

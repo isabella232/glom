@@ -37,10 +37,10 @@ class ReportBuilder
 public:
   explicit ReportBuilder(const std::locale& locale);
 
-  static std::shared_ptr<Report> create_standard_list_report(const Document* document, const Glib::ustring& table_name);
+  static std::shared_ptr<Report> create_standard_list_report(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name);
 
   //TODO: Remove set_document() and get_document()?
-  void set_document(Document* document);
+  void set_document(const std::shared_ptr<Document>& document);
 
   //void set_report(const Glib::ustring& table_name, const std::shared_ptr<const Report>& report);
   //std::shared_ptr<Report> get_report();
@@ -73,9 +73,9 @@ private:
   bool report_build_records_image(const FoundSet& found_set, xmlpp::Element& nodeParent, const std::shared_ptr<const LayoutItem_Image>& imageobject, bool vertical = false);
   bool report_build_records_vertical_group(const FoundSet& found_set, xmlpp::Element& vertical_group_node, const std::shared_ptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index);
 
-  Document* get_document();
+  std::shared_ptr<Document> get_document();
 
-  Document* m_document;
+  std::shared_ptr<Document> m_document;
 
   std::locale m_locale; //For use with GlomConversions
   Glib::ustring m_locale_id; //To get the appropriate translations.

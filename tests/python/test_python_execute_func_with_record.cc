@@ -53,10 +53,10 @@ int main()
 
 
   // Load the document:
-  Glom::Document document;
-  document.set_file_uri(uri);
+  auto document = std::make_shared<Glom::Document>();
+  document->set_file_uri(uri);
   int failure_code = 0;
-  const auto test = document.load(failure_code);
+  const auto test = document->load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -65,10 +65,10 @@ int main()
     return EXIT_FAILURE;
   }
 
-  g_assert(!document.get_is_example_file());;
+  g_assert(!document->get_is_example_file());;
 
   auto connection_pool = Glom::ConnectionPool::get_instance();
-  connection_pool->setup_from_document(&document);
+  connection_pool->setup_from_document(document);
 
   //This is not really necessary for sqlite-based databases.
   const Glom::ConnectionPool::StartupErrors started =

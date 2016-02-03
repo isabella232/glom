@@ -53,10 +53,10 @@ int main()
 
 
   // Load the document:
-  Glom::Document document;
-  document.set_file_uri(uri);
+  auto document = std::make_shared<Glom::Document>();
+  document->set_file_uri(uri);
   int failure_code = 0;
-  const auto test = document.load(failure_code);
+  const auto test = document->load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
@@ -65,7 +65,7 @@ int main()
     return EXIT_FAILURE;
   }
 
-  document.set_allow_autosave(false); //Do not save changes back to the example file:
+  document->set_allow_autosave(false); //Do not save changes back to the example file:
   
   Glib::ustring po_file_uri;
   try
@@ -91,7 +91,7 @@ int main()
 
   const Glib::ustring locale = "de";
   const bool success = 
-    Glom::import_translations_from_po_file(&document, po_file_uri, locale);
+    Glom::import_translations_from_po_file(document, po_file_uri, locale);
   if(!success)
   {
     std::cerr << G_STRFUNC << ": Glom::import_translations_from_po_file() failed." << std::endl;
@@ -100,7 +100,7 @@ int main()
 
 
   //Check that some expected translated titles are now in the document:
-  auto table = document.get_table("scenes");
+  auto table = document->get_table("scenes");
   g_assert(table);
   g_assert( table->get_title_original() == "Scenes" ); //The original title should be unchanged:
 
@@ -111,7 +111,7 @@ int main()
     return EXIT_FAILURE;
   }
 
-  const auto report = document.get_report("crew", "crew_list");
+  const auto report = document->get_report("crew", "crew_list");
   g_assert(report);
   g_assert(report->get_title_original() == "Crew List"); //The original title should be unchanged:
 

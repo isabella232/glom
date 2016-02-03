@@ -110,7 +110,7 @@ public:
   /** Make the ConnectionPool use the correct backend, with the necessary details,
    * as required by the document.
    */
-  void setup_from_document(const Document* document);
+  void setup_from_document(const std::shared_ptr<const Document>& document);
 
   /// Delete the singleton so it doesn't show up as leaked memory in, for instance, valgrind.
   static void delete_instance();
@@ -287,7 +287,7 @@ public:
    * This callback avoids Connection having to link to AppWindow,
    * and avoids us worrying about whether a previously-set document (via a set_document() method) is still valid.
    */
-  typedef std::function<Document*()> SlotGetDocument;
+  typedef std::function<std::shared_ptr<Document>()> SlotGetDocument;
   void set_get_document_func(const SlotGetDocument& slot);
 
 #ifndef G_OS_WIN32
@@ -321,7 +321,7 @@ private:
    */
   //static int discover_first_free_port(int start_port, int end_port);
 
-  Document* get_document();
+  std::shared_ptr<Document> get_document();
 
 #ifndef G_OS_WIN32
   /** Advertize self-hosting via avahi:

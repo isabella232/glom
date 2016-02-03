@@ -28,7 +28,7 @@
 
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
-  Glom::Document document;
+  auto document = std::make_shared<Glom::Document>();
   const bool recreated = 
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
@@ -38,7 +38,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   const auto report = 
-    document.get_report("invoices", "by_customer");
+    document->get_report("invoices", "by_customer");
   if(!report)
   {
     std::cerr << G_STRFUNC << ": The report could not be found." << std::endl;
@@ -50,7 +50,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   const std::locale locale("en_US.UTF-8"); //Instead of just "" (current locale) so we know what numeric representations to expect and check for.
   Glom::ReportBuilder report_builder(locale);
-  report_builder.set_document(&document);
+  report_builder.set_document(document);
   const Glib::ustring html = 
     report_builder.report_build(found_set, report);
 

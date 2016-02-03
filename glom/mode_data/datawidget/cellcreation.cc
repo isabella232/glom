@@ -65,7 +65,7 @@ static void apply_formatting(Gtk::CellRenderer* renderer, const std::shared_ptr<
     text_renderer->property_background() = bg;
 }
 
-Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_item, const Glib::ustring& table_name, const Document* document, guint fixed_cell_height)
+Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_item, const Glib::ustring& table_name, const std::shared_ptr<const Document>& document, guint fixed_cell_height)
 {
   Gtk::CellRenderer* cell = nullptr;
 

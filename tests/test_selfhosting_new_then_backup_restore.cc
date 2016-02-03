@@ -38,7 +38,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   Glib::ustring backup_uri_tarball;
   {
-    Glom::Document document;
+    auto document = std::make_shared<Glom::Document>();
     const bool recreated = 
       test_create_and_selfhost_from_example("example_music_collection.glom", document, hosting_mode);
     if(!recreated)
@@ -48,7 +48,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     }
 
     const auto backup_uri = Glom::Utils::get_temp_directory_uri();
-    backup_uri_tarball = document.save_backup_file(
+    backup_uri_tarball = document->save_backup_file(
       backup_uri,
       sigc::ptr_fun(&on_backup_progress));
     if(backup_uri_tarball.empty())
@@ -76,7 +76,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     
     //Create a document from the backup:
     //std::cout << "debug: recreated_uri=" << recreated_uri << std::endl;
-    Glom::Document document;
+    auto document = std::make_shared<Glom::Document>();
     const bool recreated = 
       test_create_and_selfhost_from_data(backup_glom_file_contents, document, hosting_mode);
     if(!recreated)
@@ -88,7 +88,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
     //Check that the new file has the expected data:
     /* TODO: Find out why this test fails, though it seems to work fine in the UI:
-    if(!test_example_musiccollection_data(&document))
+    if(!test_example_musiccollection_data(document))
     {
       std::cerr << G_STRFUNC << ": test_example_musiccollection_data() failed." << std::endl;
       return false;
