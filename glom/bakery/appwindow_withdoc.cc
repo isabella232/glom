@@ -39,13 +39,7 @@ AppWindow_WithDoc::AppWindow_WithDoc(const Glib::ustring& appname)
 
 AppWindow_WithDoc::~AppWindow_WithDoc()
 {
-  //Delete the document:
-  if (m_document) {
-    //TODO: Should the views have weak ptr?
-    //This will cause Document::signal_forget to be emitted, so the Views will then null their
-    //pointers as well.
-    m_document->emit_forget();
-  }
+  //TODO: Should the views have weak_ptr to m_document?
 }
 
 //static
@@ -160,14 +154,6 @@ bool AppWindow_WithDoc::open_document(const Glib::ustring& file_uri)
       document_history_remove(file_uri);
 
     //re-initialize document.
-    if(m_document)
-    {
-      //TODO: Should the views have weak ptr?
-      //This will cause Document::signal_forget to be emitted, so the Views will then null their
-      //pointers as well.
-      m_document->emit_forget();
-    }
-
     pApp->m_document.reset();
     pApp->init_create_document();
 

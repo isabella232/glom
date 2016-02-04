@@ -40,12 +40,6 @@ Document::~Document()
 {
 }
 
-void Document::emit_forget()
-{
-  //Tell views to forget the document -  to null their pointers to it. We should maybe use the Document via a sharing smartpointer instead.
-  signal_forget_.emit();
-}
-
 Glib::ustring Document::get_file_uri() const
 {
   return m_file_uri;
@@ -506,13 +500,5 @@ Document::type_signal_modified& Document::signal_modified()
 {
   return signal_modified_;
 }
-
-Document::type_signal_forget& Document::signal_forget()
-{
-  return signal_forget_;
-}
-
-
-
 
 } //namespace

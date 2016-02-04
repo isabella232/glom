@@ -55,8 +55,6 @@ public:
   virtual void set_document(const std::shared_ptr<T_Document>& document)
   {
     m_document = document;
-    if(m_document)
-      m_document->signal_forget().connect( sigc::mem_fun(*this, &type_self::on_document_forget) );
   }
 
   ///Just a convenience, instead of get_docuement()->set_modified().
@@ -67,12 +65,6 @@ public:
   }
 
 protected:
-
-  void on_document_forget()
-  {
-    //This should prevent some segfaults:
-    m_document.reset();
-  }
   
   std::shared_ptr<T_Document> m_document;
 };

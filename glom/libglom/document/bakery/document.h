@@ -36,9 +36,6 @@ public:
   Document();
   virtual ~Document();
 
-  //TODO: Properly use a weak pointer instead.
-  void emit_forget();
-
   /* Saves the data to disk.
    * Asks the View to update this document before saving to disk,
    * but you should probably ensure that the document is updated more regularly than this,
@@ -110,13 +107,6 @@ public:
    */
   type_signal_modified& signal_modified();
 
-  typedef sigc::signal<void> type_signal_forget;
-
-  /** This signal is emitted when the view should forget the document.
-   * This is used internally, and you should not need to use it yourself.
-   */
-  type_signal_forget& signal_forget();
-
   ///Allow app to update icons/title bar.
 
 protected:
@@ -142,7 +132,6 @@ protected:
   ViewBase* m_pView;
 
   type_signal_modified signal_modified_;
-  type_signal_forget signal_forget_;
 
   bool m_bModified;
   bool m_bIsNew; //see get_is_new().
