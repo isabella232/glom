@@ -469,8 +469,7 @@ int main(int argc, char* argv[])
     connection_pool->set_password(password); //TODO: Take this from stdin instead.
     
     auto backend = connection_pool->get_backend();
-    auto central = 
-      dynamic_cast<Glom::ConnectionPoolBackends::PostgresCentralHosted*>(backend);
+    auto central = std::dynamic_pointer_cast<Glom::ConnectionPoolBackends::PostgresCentralHosted>(backend);
     g_assert(central);
 
     central->set_host(group.m_arg_server_hostname);

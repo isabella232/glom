@@ -2143,7 +2143,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_CENTRAL)
   {
     auto backend = connection_pool->get_backend();
-    auto central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
+    auto central = std::dynamic_pointer_cast<ConnectionPoolBackends::PostgresCentralHosted>(backend);
     g_assert(central);
 
     document->set_connection_server(central->get_host());
@@ -2160,7 +2160,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   else if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_SELF)
   {
     auto backend = connection_pool->get_backend();
-    auto self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
+    auto self = std::dynamic_pointer_cast<ConnectionPoolBackends::PostgresSelfHosted>(backend);
     g_assert(self);
 
     document->set_connection_port(self->get_port());

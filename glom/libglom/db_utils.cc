@@ -199,8 +199,7 @@ bool create_database(const std::shared_ptr<Document>& document, const Glib::ustr
     
     //Save the port, if appropriate, so the document can be used to connect again:
     auto backend = connection_pool->get_backend();
-    auto central = 
-      dynamic_cast<Glom::ConnectionPoolBackends::PostgresCentralHosted*>(backend);
+    auto central = std::dynamic_pointer_cast<Glom::ConnectionPoolBackends::PostgresCentralHosted>(backend);
     if(central)
     {
       document->set_connection_port( central->get_port() );
@@ -2242,9 +2241,8 @@ void set_fake_connection()
 {
   //Allow a fake connection, so sqlbuilder_get_full_query() can work:
   auto connection_pool = Glom::ConnectionPool::get_instance();
-  auto backend = 
-    new Glom::ConnectionPoolBackends::PostgresCentralHosted();
-  connection_pool->set_backend(std::shared_ptr<Glom::ConnectionPool::Backend>(backend));
+  auto backend = std::make_shared<Glom::ConnectionPoolBackends::PostgresCentralHosted>();
+  connection_pool->set_backend(backend);
   connection_pool->set_fake_connection();
 }
 

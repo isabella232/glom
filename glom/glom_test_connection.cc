@@ -194,13 +194,13 @@ int main(int argc, char* argv[])
 
   //Specify the backend and backend-specific details to be used by the connectionpool.
   //This is usually done by ConnectionPool::setup_from_document():
-  Glom::ConnectionPoolBackends::Backend* backend = nullptr;
+  std::shared_ptr<Glom::ConnectionPoolBackends::Backend> backend;
 #ifdef GLOM_ENABLE_MYSQL
   if(group.m_arg_use_mysql)
   {
     //TODO: Move some of the *CentralHosted API into a multiply-inherited Server base class,
     //to avoid the duplication?
-    auto derived_backend = new Glom::ConnectionPoolBackends::MySQLCentralHosted;
+    auto derived_backend = std::make_shared<Glom::ConnectionPoolBackends::MySQLCentralHosted;
 
     //Use a specified port, or try all suitable ports:
     if(group.m_arg_server_port)
@@ -219,7 +219,7 @@ int main(int argc, char* argv[])
   else
 #endif //GLOM_ENABLE_MYSQL
   {
-    auto derived_backend = new Glom::ConnectionPoolBackends::PostgresCentralHosted;
+    auto derived_backend = std::make_shared<Glom::ConnectionPoolBackends::PostgresCentralHosted>();
 
     //Use a specified port, or try all suitable ports:
     if(group.m_arg_server_port)

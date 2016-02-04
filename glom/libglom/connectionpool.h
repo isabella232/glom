@@ -84,12 +84,9 @@ class Document;
  */
 class ConnectionPool : public sigc::trackable
 {
-private:
-
-
 public:
 
-  //These are public for use by std::make_shared<>().
+  //This are public for use by std::make_shared<>().
   //TODO: Does this need to be virtual?
   ConnectionPool();
   virtual ~ConnectionPool();
@@ -142,10 +139,10 @@ public:
    */
   void set_fake_connection();
 
-  void set_backend(std::shared_ptr<Backend> backend);
+  void set_backend(const std::shared_ptr<Backend>& backend);
 
-  Backend* get_backend();
-  const Backend* get_backend() const;
+  std::shared_ptr<Backend> get_backend();
+  std::shared_ptr<const Backend> get_backend() const;
   
   /** Discover whether the backend can create GdaDataModels that can be iterated,
    * by creating them with the GDA_STATEMENT_MODEL_CURSOR_FORWARD flag.

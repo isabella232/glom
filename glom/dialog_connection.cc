@@ -78,7 +78,7 @@ std::shared_ptr<SharedConnection> Dialog_Connection::connect_to_server_with_conn
   if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_CENTRAL)
   {
     auto backend = connection_pool->get_backend();
-    auto central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
+    auto central = std::dynamic_pointer_cast<ConnectionPoolBackends::PostgresCentralHosted>(backend);
     g_assert(central);
 
     central->set_host(m_entry_host->get_text());
@@ -100,7 +100,7 @@ std::shared_ptr<SharedConnection> Dialog_Connection::connect_to_server_with_conn
   if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_CENTRAL)
   {
     auto backend = connection_pool->get_backend();
-    auto central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
+    auto central = std::dynamic_pointer_cast<ConnectionPoolBackends::PostgresCentralHosted>(backend);
     g_assert(central);
 
     unconst->set_connection_port(central->get_port() );
@@ -113,7 +113,7 @@ std::shared_ptr<SharedConnection> Dialog_Connection::connect_to_server_with_conn
   else if(document->get_hosting_mode() == Document::HostingMode::POSTGRES_SELF)
   {
     auto backend = connection_pool->get_backend();
-    auto self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
+    auto self = std::dynamic_pointer_cast<ConnectionPoolBackends::PostgresSelfHosted>(backend);
     g_assert(self);
 
     unconst->set_connection_port(self->get_port() );

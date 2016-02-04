@@ -110,7 +110,6 @@ ConnectionPool::ConnectionPool()
 :
   m_epc_publisher(nullptr),
   m_dialog_epc_progress(nullptr),
-  m_backend(nullptr),
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
   m_pFieldTypes(nullptr),
@@ -145,41 +144,41 @@ void ConnectionPool::setup_from_document(const std::shared_ptr<const Document>& 
   {
   case Document::HostingMode::POSTGRES_SELF:
     {
-      auto backend = new ConnectionPoolBackends::PostgresSelfHosted;
+      auto backend = std::make_shared<ConnectionPoolBackends::PostgresSelfHosted>();
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
-      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend)); //TODO: Use make_shared()?
+      set_backend(backend);
     }
     break;
   case Document::HostingMode::POSTGRES_CENTRAL:
     {
-      auto backend = new ConnectionPoolBackends::PostgresCentralHosted;
+      auto backend = std::make_shared<ConnectionPoolBackends::PostgresCentralHosted>();
       backend->set_host(document->get_connection_server());
       backend->set_port(document->get_connection_port());
       backend->set_try_other_ports(document->get_connection_try_other_ports());
-      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend)); //TODO: Use make_shared()?
+      set_backend(backend);
     }
     break;
   case Document::HostingMode::SQLITE:
     {
-      auto backend = new ConnectionPoolBackends::Sqlite;
+      auto backend = std::make_shared<ConnectionPoolBackends::Sqlite>();
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
-      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend)); //TODO: Use make_shared()?
+      set_backend(backend);
     }
     break;
   case Document::HostingMode::MYSQL_SELF:
     {
-      auto backend = new ConnectionPoolBackends::MySQLSelfHosted;
+      auto backend = std::make_shared<ConnectionPoolBackends::MySQLSelfHosted>();
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
-      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend)); //TODO: Use make_shared()?
+      set_backend(backend);
     }
     break;
   case Document::HostingMode::MYSQL_CENTRAL:
     {
-      auto backend = new ConnectionPoolBackends::MySQLCentralHosted;
+      auto backend = std::make_shared<ConnectionPoolBackends::MySQLCentralHosted>();
       backend->set_host(document->get_connection_server());
       backend->set_port(document->get_connection_port());
       backend->set_try_other_ports(document->get_connection_try_other_ports());
-      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend)); //TODO: Use make_shared()?
+      set_backend(backend);
     }
     break;
 
@@ -212,26 +211,25 @@ void ConnectionPool::set_ready_to_connect(bool val)
   m_ready_to_connect = val;
 }
 
-void ConnectionPool::set_backend(std::shared_ptr<Backend> backend)
+void ConnectionPool::set_backend(const std::shared_ptr<Backend>& backend)
 {
   m_backend = backend;
 }
 
-ConnectionPool::Backend* ConnectionPool::get_backend()
+std::shared_ptr<ConnectionPool::Backend> ConnectionPool::get_backend()
 {
-  return m_backend.get();
+  return m_backend;
 }
 
-const ConnectionPool::Backend* ConnectionPool::get_backend() const
+std::shared_ptr<const ConnectionPool::Backend> ConnectionPool::get_backend() const
 {
-  return m_backend.get();
+  return m_backend;
 }
 
 bool ConnectionPool::get_backend_supports_cursor() const
 {
   //TODO: Is there a generic libgda way to discover this?
-  const auto sqlite_backend =
-    dynamic_cast<const ConnectionPoolBackends::Sqlite*>(get_backend());
+  const auto sqlite_backend = std::dynamic_pointer_cast<const ConnectionPoolBackends::Sqlite>(get_backend());
   return !sqlite_backend;
 }
 
@@ -244,7 +242,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::get_and_connect()
   if(!connection_pool)
     return result;
 
-  if(!(connection_pool->m_backend.get()))
+  if(!(connection_pool->m_backend))
   {
     std::cerr << G_STRFUNC << ": m_backend is null." << std::endl;
     return result; //TODO: Return a failure_type::NO_BACKEND error?, though that would be tedious.
@@ -289,7 +287,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
   //std::cout << G_STRFUNC << ": debug" << std::endl;
 
   //Don't try to connect if we don't have a backend to connect to.
-  g_return_val_if_fail(m_backend.get(), std::shared_ptr<SharedConnection>());
+  g_return_val_if_fail(m_backend, std::shared_ptr<SharedConnection>());
 
   if(get_ready_to_connect() || m_fake_connection)
   {
@@ -402,7 +400,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
 
 void ConnectionPool::create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name)
 {
-  if(m_backend.get())
+  if(m_backend)
     m_backend->create_database(slot_progress, database_name, get_user(), get_password());
 }
 
@@ -423,7 +421,7 @@ void ConnectionPool::set_user(const Glib::ustring& value)
 
 bool ConnectionPool::save_backup(const SlotProgress& slot_progress, const std::string& path_dir)
 {
-  g_assert(m_backend.get());
+  g_assert(m_backend);
 
   const auto old_uri = m_backend->get_database_directory_uri();
 
@@ -449,7 +447,7 @@ bool ConnectionPool::save_backup(const SlotProgress& slot_progress, const std::s
 
 bool ConnectionPool::convert_backup(const SlotProgress& slot_progress, const std::string& backup_data_file_path)
 {
-  g_assert(m_backend.get());
+  g_assert(m_backend);
 
   const auto result = m_backend->convert_backup(slot_progress, backup_data_file_path, m_user, m_password, m_database);
   if(!result)
@@ -517,7 +515,7 @@ const FieldTypes* ConnectionPool::get_field_types() const
 
 Gnome::Gda::SqlOperatorType ConnectionPool::get_string_find_operator() const
 {
-  g_assert(m_backend.get());
+  g_assert(m_backend);
   return m_backend->get_string_find_operator();
 }
 
@@ -629,7 +627,7 @@ static void on_linux_signal(int signum)
 
 ConnectionPool::StartupErrors ConnectionPool::startup(const SlotProgress& slot_progress, bool network_shared)
 {
-  if(!m_backend.get())
+  if(!m_backend)
     return Backend::StartupErrors::FAILED_UNKNOWN_REASON;
 
   const auto started = m_backend->startup(slot_progress, network_shared);
@@ -667,7 +665,7 @@ bool ConnectionPool::cleanup(const SlotProgress& slot_progress)
   //And make sure that connect() tries to make a new connection:
   invalidate_connection();
       
-  if(m_backend.get())
+  if(m_backend)
     result = m_backend->cleanup(slot_progress);
 
 #ifndef G_OS_WIN32
@@ -688,7 +686,7 @@ bool ConnectionPool::cleanup(const SlotProgress& slot_progress)
 
 bool ConnectionPool::set_network_shared(const SlotProgress& slot_progress, bool network_shared)
 {
-  if(m_backend.get())
+  if(m_backend)
     return m_backend->set_network_shared(slot_progress, network_shared);
   else
     return false;
@@ -806,7 +804,7 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
 
 ConnectionPool::InitErrors ConnectionPool::initialize(const SlotProgress& slot_progress, bool network_shared)
 {
-  if(m_backend.get())
+  if(m_backend)
     return m_backend->initialize(slot_progress, get_user(), get_password(), network_shared);
   else
     return Backend::InitErrors::OTHER;

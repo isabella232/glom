@@ -50,15 +50,15 @@ int main()
       connection_pool->set_password("murraycpw");
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-      auto backend = new Glom::ConnectionPoolBackends::PostgresCentralHosted;
+      auto backend = std::make_shared<Glom::ConnectionPoolBackends::PostgresCentralHosted>();
       backend->set_host("localhost");
       backend->set_port(5433);
       backend->set_try_other_ports(false);
 #else
-      auto backend = new Glom::ConnectionPoolBackends::Sqlite;
+      auto backend = std::make_shared<Glom::ConnectionPoolBackends::Sqlite>();
 #endif //GLOM_ENABLE_POSTGRESQL
 
-      connection_pool->set_backend(std::shared_ptr<Glom::ConnectionPool::Backend>(backend));
+      connection_pool->set_backend(backend);
       connection_pool->set_ready_to_connect(); //connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
     }
 
