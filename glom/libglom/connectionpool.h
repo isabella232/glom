@@ -197,7 +197,7 @@ public:
   Glib::ustring get_password() const;
   Glib::ustring get_database() const;
 
-  const FieldTypes* get_field_types() const;
+  std::shared_ptr<const FieldTypes> get_field_types() const;
   Gnome::Gda::SqlOperatorType get_string_find_operator() const;
 
   typedef Backend::InitErrors InitErrors;
@@ -342,7 +342,7 @@ private:
   bool m_ready_to_connect;
   Glib::ustring m_user, m_password, m_database;
 
-  FieldTypes* m_pFieldTypes;
+  std::shared_ptr<FieldTypes> m_field_types;
   bool m_show_debug_output, m_auto_server_shutdown;
 
   bool m_fake_connection;

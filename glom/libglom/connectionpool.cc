@@ -112,7 +112,6 @@ ConnectionPool::ConnectionPool()
   m_dialog_epc_progress(nullptr),
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
-  m_pFieldTypes(nullptr),
   m_show_debug_output(false),
   m_auto_server_shutdown(true),
   m_fake_connection(false)
@@ -121,8 +120,6 @@ ConnectionPool::ConnectionPool()
 
 ConnectionPool::~ConnectionPool()
 {
-  delete m_pFieldTypes;
-  m_pFieldTypes = nullptr;
 }
 
 //static
@@ -372,8 +369,8 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
 
         // Connection succeeded
         // Create the fieldtypes member if it has not already been done:
-        if(!m_pFieldTypes)
-          m_pFieldTypes = new FieldTypes(m_refGdaConnection);
+        if(!m_field_types)
+          m_field_types = std::make_shared<FieldTypes>(m_refGdaConnection);
 
 #ifndef G_OS_WIN32
         //Let other clients discover this server via avahi:
@@ -504,13 +501,13 @@ Glib::ustring ConnectionPool::get_database() const
   return m_database;
 }
 
-const FieldTypes* ConnectionPool::get_field_types() const
+std::shared_ptr<const FieldTypes> ConnectionPool::get_field_types() const
 {
   //TODO: Investigate this:
-  //if(!m_pFieldTypes)
-  //  std::cerr << G_STRFUNC << ": m_pFieldTypes is null but this should never happen." << std::endl;
+  //if(!m_field_types)
+  //  std::cerr << G_STRFUNC << ": m_field_types is null but this should never happen." << std::endl;
 
-  return m_pFieldTypes;
+  return m_field_types;
 }
 
 Gnome::Gda::SqlOperatorType ConnectionPool::get_string_find_operator() const
@@ -532,8 +529,7 @@ void ConnectionPool::invalidate_connection()
   m_refGdaConnection.reset();
   m_sharedconnection_refcount = 0;
 
-  delete m_pFieldTypes;
-  m_pFieldTypes = nullptr;
+  m_field_types.reset();
 }
 
 void ConnectionPool::on_sharedconnection_finished()

@@ -132,7 +132,7 @@ Glib::RefPtr<const Gnome::Gda::Column> Field::get_field_info() const
   return m_field_info;
 }
 
-static const FieldTypes* get_field_types()
+static std::shared_ptr<const FieldTypes> get_field_types()
 {
   auto connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
@@ -161,12 +161,12 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
   {
     cur_type = get_gda_type_for_glom_type(glom_type);
 
-    const auto pFieldTypes = get_field_types();
+    const auto field_types = get_field_types();
 
-    if(pFieldTypes)
+    if(field_types)
     {
       while(cur_type != new_type && cur_type != G_TYPE_NONE)
-        cur_type = pFieldTypes->get_fallback_type_for_gdavaluetype(cur_type);
+        cur_type = field_types->get_fallback_type_for_gdavaluetype(cur_type);
     }
   }
 
@@ -188,13 +188,13 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
 GType Field::get_gda_data_type_with_fallback(const Gnome::Gda::Value& value)
 {
   auto cur_type = get_gda_type_for_glom_type(get_glom_type());
-  const auto pFieldTypes = get_field_types();
+  const auto field_types = get_field_types();
 
   // Take into account that value might be one of the fallback types
-  if(pFieldTypes)
+  if(field_types)
   {
     while(cur_type != value.get_value_type() && cur_type != G_TYPE_NONE)
-      cur_type = pFieldTypes->get_fallback_type_for_gdavaluetype(cur_type);
+      cur_type = field_types->get_fallback_type_for_gdavaluetype(cur_type);
   }
 
   return cur_type;
@@ -538,11 +538,11 @@ Glib::ustring Field::get_sql_type() const
     auto pConnectionPool = ConnectionPool::get_instance();
     if(pConnectionPool)
     {
-      const auto pFieldTypes = pConnectionPool->get_field_types();
-      if(pFieldTypes)
+      const auto field_types = pConnectionPool->get_field_types();
+      if(field_types)
       {
         const auto fieldType = m_field_info->get_g_type();
-        strType = pFieldTypes->get_string_name_for_gdavaluetype(fieldType);
+        strType = field_types->get_string_name_for_gdavaluetype(fieldType);
       }
       else
       {
