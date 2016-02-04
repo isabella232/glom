@@ -85,23 +85,27 @@ class Document;
 class ConnectionPool : public sigc::trackable
 {
 private:
+
+
+public:
+
+  //These are public for use by std::make_shared<>().
+  //TODO: Does this need to be virtual?
   ConnectionPool();
+  virtual ~ConnectionPool();
+
   ConnectionPool(const ConnectionPool& src) = delete;
   ConnectionPool(ConnectionPool&& src) = delete;
   ConnectionPool& operator=(const ConnectionPool& src) = delete;
   ConnectionPool& operator=(ConnectionPool&& src) = delete;
 
-  virtual ~ConnectionPool();
-  //ConnectionPool& operator=(const ConnectionPool& src);
-
-public:
   typedef ConnectionPoolBackends::Backend Backend;
   typedef Backend::type_vec_const_fields type_vec_const_fields;
 
   /** Get the singleton instance.
    * Use delete_instance() when the program quits.
    */
-  static ConnectionPool* get_instance();
+  static std::shared_ptr<ConnectionPool> get_instance();
   
   /** Whether the connection is ready to be used.
    */ 
@@ -348,7 +352,7 @@ private:
 
 private:
 
-  static ConnectionPool* m_instance;
+  static std::shared_ptr<ConnectionPool> m_instance;
   SlotGetDocument m_slot_get_document;
 
   type_void_slot m_epc_slot_begin, m_epc_slot_progress, m_epc_slot_done;

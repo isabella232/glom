@@ -104,7 +104,7 @@ void SharedConnection::close()
 }
 
 //init_db_details static data:
-ConnectionPool* ConnectionPool::m_instance = nullptr;
+std::shared_ptr<ConnectionPool> ConnectionPool::m_instance;
 
 ConnectionPool::ConnectionPool()
 :
@@ -127,14 +127,14 @@ ConnectionPool::~ConnectionPool()
 }
 
 //static
-ConnectionPool* ConnectionPool::get_instance()
+std::shared_ptr<ConnectionPool> ConnectionPool::get_instance()
 {
   //TODO: Synchronize this for threads?
   if(m_instance)
     return m_instance;
   else
   {
-    m_instance = new ConnectionPool();
+    m_instance = std::make_shared<ConnectionPool>();
     return m_instance;
   }
 }
@@ -199,8 +199,7 @@ void ConnectionPool::setup_from_document(const std::shared_ptr<const Document>& 
 
 void ConnectionPool::delete_instance()
 {
-  delete m_instance;
-  m_instance = nullptr;
+  m_instance.reset();
 }
 
 bool ConnectionPool::get_ready_to_connect() const
