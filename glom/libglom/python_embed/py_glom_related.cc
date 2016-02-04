@@ -85,11 +85,11 @@ boost::python::object PyGlomRelated::getitem(const boost::python::object& cppite
               if(from_key_field)
               {
                 //Return a new RelatedRecord:
-                auto pyRelatedRecord = new PyGlomRelatedRecord();
+                auto pyRelatedRecord = std::unique_ptr<PyGlomRelatedRecord>();
                 pyRelatedRecord->set_relationship(iterFind->second, from_key_value, record->m_document);
 
                 //Store it in the cache:
-                boost::python::object objectRelatedRecord(pyRelatedRecord);
+                boost::python::object objectRelatedRecord(pyRelatedRecord.get());
                 m_map_relatedrecords[key] = objectRelatedRecord;
 
                 return objectRelatedRecord;
