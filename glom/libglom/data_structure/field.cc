@@ -459,6 +459,8 @@ Gnome::Gda::SqlOperatorType Field::sql_find_operator() const
       return Gnome::Gda::SQL_OPERATOR_TYPE_EQ;
     }
   }
+
+  return Gnome::Gda::SQL_OPERATOR_TYPE_EQ;
 }
 
 
