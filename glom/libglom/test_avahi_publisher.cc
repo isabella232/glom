@@ -22,7 +22,7 @@ private:
   Gtk::Button m_button_start;
   Gtk::Button m_button_stop;
 
-  Glom::AvahiPublisher* m_avahi_publisher;
+  std::unique_ptr<Glom::AvahiPublisher> m_avahi_publisher;
 };
 
 
@@ -30,8 +30,7 @@ private:
 TestWindow::TestWindow()
 : m_box(Gtk::ORIENTATION_VERTICAL, Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL)),
   m_button_start("Start"),
-  m_button_stop("Stop"),
-  m_avahi_publisher(nullptr)
+  m_button_stop("Stop")
 {
   set_border_width(10);
   add(m_box);
@@ -46,7 +45,6 @@ TestWindow::TestWindow()
 
 TestWindow::~TestWindow()
 {
-  delete m_avahi_publisher;
 }
 
 void TestWindow::on_button_start()
@@ -56,7 +54,7 @@ void TestWindow::on_button_start()
 
   std::cout << "Starting" << std::endl;
  
-  m_avahi_publisher = new Glom::AvahiPublisher("testservice", "_testthing._tcp", 1234 /* port */);
+  m_avahi_publisher = std::make_unique<Glom::AvahiPublisher>("testservice", "_testthing._tcp", 1234 /* port */);
 }
 
 void TestWindow::on_button_stop()
@@ -66,8 +64,7 @@ void TestWindow::on_button_stop()
 
   std::cout << "Stopping" << std::endl;
 
-  delete m_avahi_publisher;
-  m_avahi_publisher = nullptr;
+  m_avahi_publisher.reset();
 }
 
 
