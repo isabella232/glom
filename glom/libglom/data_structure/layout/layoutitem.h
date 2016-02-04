@@ -110,7 +110,7 @@ private:
     bool m_split_across_pages;
   };
   
-  mutable PrintLayoutPosition* m_positions;
+  mutable std::unique_ptr<PrintLayoutPosition> m_positions;
 };
 
 } //namespace Glom

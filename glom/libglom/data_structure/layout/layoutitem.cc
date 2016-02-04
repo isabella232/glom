@@ -64,8 +64,7 @@ bool LayoutItem::PrintLayoutPosition::operator==(const LayoutItem::PrintLayoutPo
 
 LayoutItem::LayoutItem()
 : m_editable(true),
-  m_display_width(0),
-  m_positions(0)
+  m_display_width(0)
 {
   m_translatable_item_type = enumTranslatableItemType::LAYOUT_ITEM;
 }
@@ -73,16 +72,14 @@ LayoutItem::LayoutItem()
 LayoutItem::LayoutItem(const LayoutItem& src)
 : TranslatableItem(src),
   m_editable(src.m_editable),
-  m_display_width(src.m_display_width),
-  m_positions(0)
+  m_display_width(src.m_display_width)
 {
   if(src.m_positions)
-    m_positions = new PrintLayoutPosition(*(src.m_positions));
+    m_positions = std::make_unique<PrintLayoutPosition>(*(src.m_positions));
 }
 
 LayoutItem::~LayoutItem()
 {
-  delete m_positions;
 }
 
 LayoutItem& LayoutItem::operator=(const LayoutItem& src)
@@ -95,11 +92,8 @@ LayoutItem& LayoutItem::operator=(const LayoutItem& src)
   m_editable = src.m_editable;
   m_display_width = src.m_display_width;
 
-  delete m_positions;
-  m_positions = 0;
-
   if(src.m_positions)
-    m_positions = new PrintLayoutPosition(*(src.m_positions));
+    m_positions = std::make_unique<PrintLayoutPosition>(*(src.m_positions));
 
   return *this;
 }
@@ -161,7 +155,7 @@ void LayoutItem::set_display_width(guint value)
 void LayoutItem::instantiate_positions() const
 {
   if(!m_positions)
-    m_positions = new PrintLayoutPosition();
+    m_positions = std::make_unique<PrintLayoutPosition>();
 }
 
 void LayoutItem::get_print_layout_position(double& x, double& y, double& width, double& height) const
