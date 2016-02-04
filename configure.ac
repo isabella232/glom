@@ -31,7 +31,7 @@ AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CXX
 
-AX_CXX_COMPILE_STDCXX([11], [noext], [mandatory])
+AX_CXX_COMPILE_STDCXX([14], [noext], [mandatory])
 
 LT_PREREQ([2.2.0])
 LT_INIT([disable-static win32-dll])
