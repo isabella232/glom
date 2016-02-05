@@ -75,7 +75,6 @@ AddDelColumnInfo& AddDelColumnInfo::operator=(const AddDelColumnInfo& src)
 AddDel::AddDel()
 : Gtk::Box(Gtk::ORIENTATION_VERTICAL),
   m_col_key(0),
-  m_pMenuPopup(nullptr),
   m_auto_add(true),
   m_allow_add(true),
   m_allow_delete(true)
@@ -87,7 +86,6 @@ AddDel::AddDel()
 AddDel::AddDel(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::Box(cobject),
   m_col_key(0),
-  m_pMenuPopup(nullptr),
   m_auto_add(true),
   m_allow_add(true),
   m_allow_delete(true)
@@ -241,7 +239,7 @@ void AddDel::setup_menu(Gtk::Widget* /* widget */)
   menu->append(_("_Edit"), "context.edit");
   menu->append(_("_Delete"), "context.delete");
 
-  m_pMenuPopup = new Gtk::Menu(menu);
+  m_pMenuPopup = std::make_unique<Gtk::Menu>(menu);
   m_pMenuPopup->attach_to_widget(*this);
 }
 

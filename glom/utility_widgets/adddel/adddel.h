@@ -304,7 +304,7 @@ private:
   type_vec_strings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
 
   Glib::ustring m_strTextActiveCell; //value before the change
-  Gtk::Menu* m_pMenuPopup;
+  std::unique_ptr<Gtk::Menu> m_pMenuPopup;
   Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup;
   Glib::RefPtr<Gio::SimpleAction> m_refContextEdit, m_refContextDelete;
 
