@@ -49,8 +49,7 @@ ImageGlom::type_vec_ustrings ImageGlom::m_gdkpixbuf_supported_mime_types;
 
 ImageGlom::ImageGlom()
 : m_ev_view(nullptr),
-  m_ev_document_model(nullptr),
-  m_pMenuPopup_UserMode(nullptr)
+  m_ev_document_model(nullptr)
 {
   init();
 }
@@ -58,8 +57,7 @@ ImageGlom::ImageGlom()
 ImageGlom::ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::EventBox(cobject),
   m_ev_view(nullptr),
-  m_ev_document_model(nullptr),
-  m_pMenuPopup_UserMode(nullptr)
+  m_ev_document_model(nullptr)
 {
   init();
 }
@@ -97,7 +95,6 @@ void ImageGlom::init()
 
 ImageGlom::~ImageGlom()
 {
-  delete m_pMenuPopup_UserMode;
 }
 
 void ImageGlom::set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
@@ -948,7 +945,7 @@ void ImageGlom::setup_menu_usermode()
   menu->append(_("_Paste"), "context.paste");
   menu->append(_("_Clear"), "context.clear");
 
-  m_pMenuPopup_UserMode = new Gtk::Menu(menu);
+  m_pMenuPopup_UserMode = std::make_unique<Gtk::Menu>(menu);
   m_pMenuPopup_UserMode->attach_to_widget(*this);
 }
 
