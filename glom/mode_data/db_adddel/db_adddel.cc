@@ -46,7 +46,6 @@ DbAddDel::DbAddDel()
   m_column_is_sorted(false),
   m_column_sorted_direction(false),
   m_column_sorted(0),
-  m_pMenuPopup(nullptr),
   m_bAllowUserActions(true),
   m_bPreventUserSignals(false),
   m_bIgnoreTreeViewSignals(false),
@@ -260,7 +259,7 @@ void DbAddDel::setup_menu(Gtk::Widget* /* widget */)
   menu->append(_("_Layout"), "context.layout");
 #endif
 
-  m_pMenuPopup = new Gtk::Menu(menu);
+  m_pMenuPopup = std::make_unique<Gtk::Menu>(menu);
   m_pMenuPopup->attach_to_widget(*this);
 
   if(get_allow_user_actions())
