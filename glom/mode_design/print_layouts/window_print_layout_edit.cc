@@ -279,9 +279,10 @@ void Window_PrintLayout_Edit::init_menu()
     g_warning("GMenu not found");
 
   //Menubar:
-  auto pMenuBar = new Gtk::MenuBar(gmenu);
-  m_box_menu->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
-  pMenuBar->show();
+  auto menubar = std::make_unique<Gtk::MenuBar>(gmenu);
+  menubar->show();
+  m_box_menu->pack_start(*(Gtk::manage(menubar.release())), Gtk::PACK_SHRINK);
+
 
   //TODO: Create a generic checking method to test that
   //  all actions from the action group are in the GMenu?
@@ -706,7 +707,7 @@ void Window_PrintLayout_Edit::setup_context_menu()
   if(!gmenu)
     g_warning("GMenu not found");
 
-  m_context_menu = new Gtk::Menu(gmenu);
+  m_context_menu = std::make_unique<Gtk::Menu>(gmenu);
   m_context_menu->attach_to_widget(*this);
 }
 

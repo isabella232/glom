@@ -205,7 +205,7 @@ private:
   PrintLayoutToolbar m_toolbar;
   
   //Context menu for clicking on empty space on the canvas:
-  Gtk::Menu* m_context_menu;
+  std::unique_ptr<Gtk::Menu> m_context_menu;
 };
 
 } //namespace Glom
