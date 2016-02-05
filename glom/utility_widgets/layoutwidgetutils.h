@@ -39,7 +39,7 @@ public:
 protected:
   void setup_util_menu(Gtk::Widget* widget);
 
-  Gtk::Menu* m_pPopupMenuUtils;
+  std::unique_ptr<Gtk::Menu> m_pPopupMenuUtils;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_menu_properties_activate();
 

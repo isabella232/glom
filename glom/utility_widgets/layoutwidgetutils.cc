@@ -29,8 +29,7 @@
 namespace Glom
 {
   
-LayoutWidgetUtils::LayoutWidgetUtils() :
-  m_pPopupMenuUtils(nullptr)
+LayoutWidgetUtils::LayoutWidgetUtils()
 {
   //Derived class's constructors must call this:
   //setup_util_menu(this);
@@ -53,7 +52,7 @@ void LayoutWidgetUtils::setup_util_menu(Gtk::Widget* widget)
   menu->append(_("Properties"), "context.properties");
   menu->append(_("_Delete"), "context.delete");
 
-  m_pPopupMenuUtils = new Gtk::Menu(menu);
+  m_pPopupMenuUtils = std::make_unique<Gtk::Menu>(menu);
   m_pPopupMenuUtils->attach_to_widget(*widget);
 #endif
 }
