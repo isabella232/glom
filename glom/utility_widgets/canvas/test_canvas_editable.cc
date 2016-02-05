@@ -184,11 +184,11 @@ private:
     menu->append(_("_Delete"), "context.delete");
     
     //Get the menu:
-    m_context_menu = new Gtk::Menu(menu); 
+    m_context_menu = std::make_unique<Gtk::Menu>(menu);
     m_context_menu->attach_to_widget(*this);
   }
  
-  Gtk::Menu* m_context_menu;
+  std::unique_ptr<Gtk::Menu> m_context_menu;
   Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
   Glib::RefPtr<Gtk::Builder> m_context_menu_builder;
 };
