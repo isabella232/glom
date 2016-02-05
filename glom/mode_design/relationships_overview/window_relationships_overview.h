@@ -80,7 +80,6 @@ private:
 
   Glib::RefPtr<Gtk::Builder> m_builder;
   Glib::RefPtr<Gio::SimpleAction> m_action_showgrid;
-  Gtk::MenuBar* m_menu;
 
   bool m_modified;
   CanvasEditable m_canvas;
@@ -98,7 +97,7 @@ private:
   type_list_connections m_list_table_connections;
   
   //Context menu:
-  Gtk::Menu* m_context_menu;
+  std::unique_ptr<Gtk::Menu> m_context_menu;
   Glib::RefPtr<Gio::SimpleAction> m_action_edit_fields, m_action_edit_relationships;
   sigc::connection m_connection_edit_fields, m_connection_edit_relationships;
 

@@ -44,7 +44,6 @@ const bool Window_RelationshipsOverview::glade_developer(true);
 Window_RelationshipsOverview::Window_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
   : Gtk::ApplicationWindow(cobject),
     m_builder(builder),
-    m_menu(nullptr),
     m_modified(false),
     m_scrolledwindow_canvas(nullptr)
 {
@@ -83,10 +82,9 @@ Window_RelationshipsOverview::Window_RelationshipsOverview(BaseObjectType* cobje
   if(!gmenu)
     g_warning("GMenu not found");
 
-  m_menu = new Gtk::MenuBar(gmenu);
-
-  vbox->pack_start(*m_menu, Gtk::PACK_SHRINK);
-  m_menu->show();
+  auto menu = std::make_unique<Gtk::MenuBar>(gmenu);
+  menu->show();
+  vbox->pack_start(*(Gtk::manage(menu.release())), Gtk::PACK_SHRINK);
 
 
   //Get the scolled window and add the canvas to it:
@@ -465,7 +463,7 @@ void Window_RelationshipsOverview::setup_context_menu()
   if(!gmenu)
     g_warning("GMenu not found");
 
-  m_context_menu = new Gtk::Menu(gmenu);
+  m_context_menu = std::make_unique<Gtk::Menu>(gmenu);
   m_context_menu->attach_to_widget(*this);
 }
 
