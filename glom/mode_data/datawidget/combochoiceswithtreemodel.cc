@@ -66,30 +66,28 @@ void ComboChoicesWithTreeModel::create_model_non_db(guint columns_count)
 
   //Create the TreeModelColumns, adding them to the ColumnRecord:
     
-  m_vec_model_columns_value_fixed.resize(columns_count, 0);
+  m_vec_model_columns_value_fixed.resize(columns_count);
   for(guint i = 0; i < columns_count; ++i)
   {    
     //Create a value column for all columns
     //for instance for later value comparison.
-    auto model_column = new type_model_column_value_fixed();
-   
-    //Store it so we can use it and delete it later:
-    m_vec_model_columns_value_fixed[i] = model_column;
-
+    auto model_column = std::make_unique<type_model_column_value_fixed>();
     record.add(*model_column);
+
+    //Store it so we can use it and delete it later:
+    m_vec_model_columns_value_fixed[i] = std::move(model_column);
   }
   
   //Create a text column, for use by a GtkComboBox with has-entry, which allows no other column type:
   //Note that get_fixed_model_text_column() assumes that this is the last column:
-  m_vec_model_columns_string_fixed.resize(1, 0);
+  m_vec_model_columns_string_fixed.resize(1); //TODO: Shouldn't this be 0?
   if(columns_count > 0)
   {
-    auto model_column = new type_model_column_string_fixed();
-   
-    //Store it so we can use it and delete it later:
-    m_vec_model_columns_string_fixed.push_back(model_column);
-
+    auto model_column = std::make_unique<type_model_column_string_fixed>();
     record.add(*model_column);
+
+    //Store it so we can use it and delete it later:
+    m_vec_model_columns_string_fixed.push_back(std::move(model_column));
   }
 
   //Create the model:
@@ -98,21 +96,6 @@ void ComboChoicesWithTreeModel::create_model_non_db(guint columns_count)
 
 void ComboChoicesWithTreeModel::delete_model()
 {
-  //Delete the vector's items:
-  for(const auto& model_column : m_vec_model_columns_string_fixed)
-  {
-    delete model_column;
-  }
-  m_vec_model_columns_string_fixed.clear();
-  
-  //Delete the vector's items:
-  for(const auto& model_column : m_vec_model_columns_value_fixed)
-  {
-    delete model_column;
-  }
-  m_vec_model_columns_value_fixed.clear();
-
-  m_refModel.reset();
 }
 
 /* TODO: Remove this

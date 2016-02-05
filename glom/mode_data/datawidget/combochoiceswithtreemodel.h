@@ -59,11 +59,11 @@ protected:
   
 
   typedef Gtk::TreeModelColumn<Glib::ustring> type_model_column_string_fixed;
-  typedef std::vector< type_model_column_string_fixed* > type_vec_model_columns_string_fixed;
+  typedef std::vector<std::unique_ptr<type_model_column_string_fixed>> type_vec_model_columns_string_fixed;
   type_vec_model_columns_string_fixed m_vec_model_columns_string_fixed; //If set_choices_fixed() was used.
 
   typedef Gtk::TreeModelColumn<Gnome::Gda::Value> type_model_column_value_fixed;
-  typedef std::vector< type_model_column_value_fixed* > type_vec_model_columns_value_fixed;
+  typedef std::vector<std::unique_ptr<type_model_column_value_fixed>> type_vec_model_columns_value_fixed;
   type_vec_model_columns_value_fixed m_vec_model_columns_value_fixed; //If set_choices_fixed() was used.
 
   /** Get the index of the extra column, at the end, that is just a 
