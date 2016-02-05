@@ -209,7 +209,7 @@ protected:
 
   //Menu Builder and Actions
   Glib::RefPtr<Gtk::Builder> m_builder;
-  Gtk::MenuBar* m_menubar;
+  std::unique_ptr<Gtk::MenuBar> m_menubar;
   Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup_File,
      m_refActionGroup_Edit, m_refActionGroup_Tables,
      m_refActionGroup_Developer, m_refActionGroup_Reports;

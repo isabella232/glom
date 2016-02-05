@@ -84,7 +84,6 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 : GlomBakery::AppWindow_WithDoc("Glom"),
   Gtk::ApplicationWindow(cobject),
   m_builder(builder),
-  m_menubar(nullptr),
   m_pVBox(nullptr),
   m_VBox_PlaceHolder(Gtk::ORIENTATION_VERTICAL),
   m_pBoxTop(nullptr),
@@ -118,7 +117,7 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
   if(!gmenu)
     g_warning("GMenu not found");
 
-  m_menubar = new Gtk::MenuBar(gmenu);
+  m_menubar = std::make_unique<Gtk::MenuBar>(gmenu);
   m_menubar->show();
   m_pBoxTop->pack_start(*m_menubar, Gtk::PACK_SHRINK);
 
