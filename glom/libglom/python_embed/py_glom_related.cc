@@ -89,7 +89,7 @@ boost::python::object PyGlomRelated::getitem(const boost::python::object& cppite
                 pyRelatedRecord->set_relationship(iterFind->second, from_key_value, record->m_document);
 
                 //Store it in the cache:
-                boost::python::object objectRelatedRecord(pyRelatedRecord.get());
+                boost::python::object objectRelatedRecord(pyRelatedRecord.release());
                 m_map_relatedrecords[key] = objectRelatedRecord;
 
                 return objectRelatedRecord;
