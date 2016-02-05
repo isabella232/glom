@@ -151,7 +151,7 @@ private:
   type_vec_margins m_vec_margin_bottoms;
 
   //Context menu for existing items:
-  Gtk::Menu* m_context_menu;
+  std::unique_ptr<Gtk::Menu> m_context_menu;
   Glib::RefPtr<Gio::SimpleActionGroup> m_context_menu_action_group;
   Glib::RefPtr<Gio::SimpleAction> m_action_edit, m_action_formatting, m_action_delete;
   Glib::RefPtr<CanvasLayoutItem> m_context_item; //The selected item when showing the context menu.,
