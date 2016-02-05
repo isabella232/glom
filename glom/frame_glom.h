@@ -282,11 +282,11 @@ private:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Developer:
-  Window_BoxHolder* m_pDialog_Reports;
+  std::unique_ptr<Window_BoxHolder> m_pDialog_Reports;
   Dialog_Layout_Report* m_pDialogLayoutReport;
   Box_Reports* m_pBox_Reports;
 
-  Window_BoxHolder* m_pDialog_PrintLayouts;
+  std::unique_ptr<Window_BoxHolder> m_pDialog_PrintLayouts;
   Window_PrintLayout_Edit* m_pDialogLayoutPrint;
   Box_Print_Layouts* m_pBox_PrintLayouts;
 

@@ -87,7 +87,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pDialog_Reports(nullptr),
   m_pDialogLayoutReport(nullptr),
   m_pBox_Reports(nullptr),
-  m_pDialog_PrintLayouts(nullptr),
   m_pDialogLayoutPrint(nullptr),
   m_pBox_PrintLayouts(nullptr),
   m_pDialog_Fields(nullptr),
@@ -1702,7 +1701,7 @@ void Frame_Glom::on_menu_developer_reports()
       return;
     }
 
-    m_pDialog_Reports = new Window_BoxHolder(m_pBox_Reports);
+    m_pDialog_Reports = std::make_unique<Window_BoxHolder>(m_pBox_Reports);
     m_pDialog_Reports->set_transient_for(*(get_app_window()));
     m_pDialog_Reports->set_title(_("Reports"));
 
@@ -1745,7 +1744,7 @@ void Frame_Glom::on_menu_developer_print_layouts()
       return;
     }
 
-    m_pDialog_PrintLayouts = new Window_BoxHolder(m_pBox_PrintLayouts);
+    m_pDialog_PrintLayouts = std::make_unique<Window_BoxHolder>(m_pBox_PrintLayouts);
 
     m_pDialog_PrintLayouts->set_transient_for(*get_app_window());
     m_pDialog_PrintLayouts->set_title(_("Print Layouts"));
