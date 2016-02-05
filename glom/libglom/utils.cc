@@ -246,7 +246,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
   {
     auto uses_rel = std::make_shared<UsesRelationship>();
     uses_rel->set_relationship(layout_item->get_relationship());
-    list_relationships.push_front(uses_rel); //These need to be at the front, so that related relationships can use them later in the SQL statement.
+    list_relationships.emplace_front(uses_rel); //These need to be at the front, so that related relationships can use them later in the SQL statement.
   }
 
   //Add the relationship to the list:
