@@ -241,9 +241,9 @@ const Glib::ustring& Dialog_Import_CSV::get_data(guint row, guint col)
   return m_parser->get_data(row, col);
 }
 
-CsvParser& Dialog_Import_CSV::get_parser()
+std::shared_ptr<CsvParser> Dialog_Import_CSV::get_parser()
 {
-  return *(m_parser.get());
+  return m_parser;
 }
 
 void Dialog_Import_CSV::clear()

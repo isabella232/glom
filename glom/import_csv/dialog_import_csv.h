@@ -63,7 +63,7 @@ public:
   const Glib::ustring& get_data(unsigned int row, unsigned int col);
 
   // TODO: perhaps it would be safer to just wrap the needed parser API here.
-  CsvParser& get_parser();
+  std::shared_ptr<CsvParser> get_parser();
 
   typedef sigc::signal<void> type_signal_state_changed;
 
