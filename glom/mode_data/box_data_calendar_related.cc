@@ -33,8 +33,7 @@ namespace Glom
 {
 
 Box_Data_Calendar_Related::Box_Data_Calendar_Related()
-: m_pMenuPopup(nullptr),
-  m_query_column_date_field(-1)
+: m_query_column_date_field(-1)
 {
   set_size_request(400, -1); //An arbitrary default.
 
@@ -528,7 +527,7 @@ void Box_Data_Calendar_Related::setup_menu(Gtk::Widget* /* this */)
   menu->append(_("_Edit"), "context.edit");
   menu->append(_("_Layout"), "context.layout");
 
-  m_pMenuPopup = new Gtk::Menu(menu);
+  m_pMenuPopup = std::make_unique<Gtk::Menu>(menu);
   m_pMenuPopup->attach_to_widget(*this);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

@@ -96,7 +96,7 @@ private:
   Gtk::Calendar m_calendar;
     
   //TODO: Avoid repeating these in so many widgets:
-  Gtk::Menu* m_pMenuPopup;
+  std::unique_ptr<Gtk::Menu> m_pMenuPopup;
   Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup;
   Glib::RefPtr<Gio::SimpleAction> m_refContextEdit, m_refContextAdd, m_refContextDelete;
 
