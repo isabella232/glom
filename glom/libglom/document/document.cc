@@ -4734,66 +4734,25 @@ static void handle_archive_error(archive* a)
   std::cerr << "  " << archive_error_string(a) << std::endl;
 }
 
-// TODO: Use shared_ptr or unique_ptr?
-// We use this to make sure that the C object is always released.
-template <typename T_Object>
-class ScopedArchivePtr
+/** Helper to deal with memory allocated for archive.
+ *
+ * This just creates a std::unique_ptr that uses archive_write_free() as its deleter.
+ */
+template <typename T>
+auto make_unique_ptr_archive(T* p) -> decltype(auto)
 {
-public:
-  typedef int (*T_ReleaseFunc)(T_Object*);
+  return std::unique_ptr<T[], decltype(&archive_write_free)>(p, &archive_write_free);
+}
 
-  ScopedArchivePtr(T_Object* ptr, T_ReleaseFunc release_func)
-  : ptr_(ptr),
-    release_func_(release_func)
-  {}
-
-  ~ScopedArchivePtr() 
-  {
-    if(!release_func_)
-      return;
-
-    const auto r = (*release_func_)(ptr_);
-    if(r != ARCHIVE_OK)
-    {
-      std::cerr << G_STRFUNC << ": The release_func failed." << std::endl;
-      handle_archive_error(ptr_);
-    }
-  }
-
-private:
-  T_Object* ptr_;
-  T_ReleaseFunc release_func_;
-
-  ScopedArchivePtr(const ScopedArchivePtr<T_Object>&);
-  ScopedArchivePtr<T_Object>& operator=(const ScopedArchivePtr<T_Object>&);
-};
-
-//The same as ScopedArchivePtr but with a different release function signature.
-template <typename T_Object>
-class ScopedArchiveEntryPtr
+/** Helper to deal with memory allocated for archive.
+ *
+ * This just creates a std::unique_ptr that uses archive_entry_free() as its deleter.
+ */
+template <typename T>
+auto make_unique_ptr_archive_entry(T* p) -> decltype(auto)
 {
-public:
-  typedef void (*T_ReleaseFunc)(T_Object*);
-
-  ScopedArchiveEntryPtr(T_Object* ptr, T_ReleaseFunc release_func)
-  : ptr_(ptr),
-    release_func_(release_func)
-  {}
-
-  ~ScopedArchiveEntryPtr() 
-  {
-    if(release_func_)
-      (*release_func_)(ptr_);
-  }
-
-private:
-  T_Object* ptr_;
-  T_ReleaseFunc release_func_;
-
-  explicit ScopedArchiveEntryPtr(const ScopedArchivePtr<T_Object>&);
-  ScopedArchiveEntryPtr<T_Object>& operator=(const ScopedArchivePtr<T_Object>&);
-
-};
+  return std::unique_ptr<T[], decltype(&archive_entry_free)>(p, &archive_entry_free);
+}
 
 /** A utility to add an archive entry to an archive.
  * @param a The libarchive archive, ready for writing.
@@ -4828,7 +4787,7 @@ bool add_file_to_archive(archive* a, const std::string& parent_dir_path, const s
   }
 
   struct archive_entry* entry = archive_entry_new();
-  ScopedArchiveEntryPtr<archive_entry> scoped_entry(entry, &archive_entry_free); //Make sure it is always released.
+  auto scoped = make_unique_ptr_archive_entry(entry);
 
   archive_entry_copy_stat(entry, &st); //This has no return value.
 
@@ -4926,7 +4885,7 @@ Glib::ustring Document::save_backup_file(const Glib::ustring& uri, const SlotPro
   const std::string tarball_path = path_dir + ".tar.gz";
 
   struct archive* a = archive_write_new();
-  ScopedArchivePtr<archive> scoped(a, &archive_write_free); //Make sure it is always released.
+  auto scoped = make_unique_ptr_archive(a);
 
   if(archive_write_add_filter_gzip(a) != ARCHIVE_OK)
   {
@@ -5016,7 +4975,7 @@ Glib::ustring Document::extract_backup_file(const Glib::ustring& backup_uri, std
   const auto filename_tarball = Glib::filename_from_uri(backup_uri);
 
   struct archive* a = archive_read_new();
-  ScopedArchivePtr<archive> scoped(a, &archive_read_free); //Make sure it is always released.
+  auto scoped = make_unique_ptr_archive(a);
 
   if(archive_read_support_filter_gzip(a) != ARCHIVE_OK)
   {
