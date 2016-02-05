@@ -520,23 +520,23 @@ void Dialog_Import_CSV::setup_sample_model(const CsvParser::type_row_strings& ro
   for(guint i = 0; i < m_cols_count; ++ i)
   {
     const Glib::ustring& data = row[i];
-    m_sample_view->append_column(*Gtk::manage(create_sample_column(data, i)));
+    m_sample_view->append_column(*Gtk::manage(create_sample_column(data, i).release()));
   }
 }
 
-Gtk::TreeViewColumn* Dialog_Import_CSV::create_sample_column(const Glib::ustring& title, guint index)
+std::unique_ptr<Gtk::TreeViewColumn> Dialog_Import_CSV::create_sample_column(const Glib::ustring& title, guint index)
 {
-  auto col = new Gtk::TreeViewColumn(title);
+  auto col = std::make_unique<Gtk::TreeViewColumn>(title);
   auto cell = create_sample_cell(index);
-  col->pack_start(*Gtk::manage(cell), true);
+  col->pack_start(*Gtk::manage(cell.release()), true);
   col->set_cell_data_func(*cell, sigc::bind(sigc::mem_fun(*this, &Dialog_Import_CSV::field_data_func), index));
   col->set_sizing(Gtk::TREE_VIEW_COLUMN_AUTOSIZE);
   return col;
 }
 
-Gtk::CellRendererCombo* Dialog_Import_CSV::create_sample_cell(guint index)
+std::unique_ptr<Gtk::CellRendererCombo> Dialog_Import_CSV::create_sample_cell(guint index)
 {
-  auto cell = new Gtk::CellRendererCombo;
+  auto cell = std::make_unique<Gtk::CellRendererCombo>();
   cell->property_model() = m_field_model_sorted;
   cell->property_text_column() = 0;
   cell->property_has_entry() = false;

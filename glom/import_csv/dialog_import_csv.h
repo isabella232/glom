@@ -80,8 +80,8 @@ private:
   void begin_parse();
 
   void setup_sample_model(const CsvParser::type_row_strings& row);
-  Gtk::TreeViewColumn* create_sample_column(const Glib::ustring& title, guint index);
-  Gtk::CellRendererCombo* create_sample_cell(guint index);
+  std::unique_ptr<Gtk::TreeViewColumn> create_sample_column(const Glib::ustring& title, guint index);
+  std::unique_ptr<Gtk::CellRendererCombo> create_sample_cell(guint index);
 
   //CellRenderer cell_data_func callbacks:
   void line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
