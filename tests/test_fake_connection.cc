@@ -74,11 +74,11 @@ int main()
   auto field = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
-  fieldsToGet.push_back(layoutitem);
+  fieldsToGet.emplace_back(layoutitem);
   field = document->get_field("albums", "name");
   layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
-  fieldsToGet.push_back(layoutitem);
+  fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
     Glom::Utils::build_sql_select_with_where_clause("albums",

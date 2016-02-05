@@ -474,7 +474,7 @@ void Box_Tables::save_to_document()
           //std::cout << "debug: " << G_STRFUNC << ": title=" << item_get_title(table_info) << std::endl;
           table_info->set_default( m_AddDel.get_value_as_bool(row, m_colDefault) );
 
-          listTables.push_back(table_info);
+          listTables.emplace_back(table_info);
         }
       }
     }

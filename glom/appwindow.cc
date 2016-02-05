@@ -273,27 +273,27 @@ void AppWindow::init_menus_file()
 
   action = m_refActionGroup_File->add_action("export",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
-  m_listTableSensitiveActions.push_back(action);
+  m_listTableSensitiveActions.emplace_back(action);
 
   action = m_refActionGroup_File->add_action("import",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_import));
-  m_listTableSensitiveActions.push_back(action);
+  m_listTableSensitiveActions.emplace_back(action);
 
   m_toggleaction_network_shared = m_refActionGroup_File->add_action_bool("share",
     sigc::mem_fun(*this, &AppWindow::on_menu_file_toggle_share) );
-  m_listTableSensitiveActions.push_back(m_toggleaction_network_shared);
+  m_listTableSensitiveActions.emplace_back(m_toggleaction_network_shared);
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
   action = m_refActionGroup_File->add_action("print",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print) );
-  m_listTableSensitiveActions.push_back(action);
+  m_listTableSensitiveActions.emplace_back(action);
 
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   auto action_print_edit =
     m_refActionGroup_File->add_action("edit-print-layouts",
       sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print_edit_layouts));
-  m_listDeveloperActions.push_back(action_print_edit);
+  m_listDeveloperActions.emplace_back(action_print_edit);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //Add to the window's regular "win" ActionMap:
@@ -317,12 +317,12 @@ void AppWindow::init_menus()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   action = m_refActionGroup_Tables->add_action("edit-tables",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_EditTables) );
-  m_listDeveloperActions.push_back(action);
+  m_listDeveloperActions.emplace_back(action);
 
 /* Commented out because it is useful but confusing to new users:
   action = m_refActionGroup_Tables->add_action("GlomAction_Menu_AddRelatedTable", //_("Add _Related Table"));
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_AddRelatedTable) );
-  m_listDeveloperActions.push_back(action);
+  m_listDeveloperActions.emplace_back(action);
 */
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -335,8 +335,8 @@ void AppWindow::init_menus()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_refActionGroup_Reports->add_action("edit-reports",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Reports_EditReports) );
-  m_listDeveloperActions.push_back(action);
-  m_listTableSensitiveActions.push_back(action);
+  m_listDeveloperActions.emplace_back(action);
+  m_listTableSensitiveActions.emplace_back(action);
 #endif
 
   insert_action_group("reports", m_refActionGroup_Developer);
@@ -352,67 +352,67 @@ void AppWindow::init_menus()
 
   action = m_refActionGroup_Developer->add_action("database-preferences",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_database_preferences) );
-  m_listDeveloperActions.push_back(action);
+  m_listDeveloperActions.emplace_back(action);
 
   action = m_refActionGroup_Developer->add_action("fields",
    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_fields) );
-  m_listDeveloperActions.push_back(action);
-  m_listTableSensitiveActions.push_back(action);
+  m_listDeveloperActions.emplace_back(action);
+  m_listTableSensitiveActions.emplace_back(action);
 
   action = m_refActionGroup_Developer->add_action("relationships-overview",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships_overview) );
-  m_listDeveloperActions.push_back(action);
-  m_listTableSensitiveActions.push_back(action);
+  m_listDeveloperActions.emplace_back(action);
+  m_listTableSensitiveActions.emplace_back(action);
 
   action = m_refActionGroup_Developer->add_action("relationships",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships) );
-  m_listDeveloperActions.push_back(action);
-  m_listTableSensitiveActions.push_back(action);
+  m_listDeveloperActions.emplace_back(action);
+  m_listTableSensitiveActions.emplace_back(action);
 
   m_action_developer_users = m_refActionGroup_Developer->add_action("users",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_users));
-  m_listDeveloperActions.push_back(m_action_developer_users);
+  m_listDeveloperActions.emplace_back(m_action_developer_users);
 
   action = m_refActionGroup_Developer->add_action("print-layouts",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_print_layouts));
-  m_listDeveloperActions.push_back(action);
-  m_listTableSensitiveActions.push_back(action);
+  m_listDeveloperActions.emplace_back(action);
+  m_listTableSensitiveActions.emplace_back(action);
 
   action = m_refActionGroup_Developer->add_action("reports",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_reports));
-  m_listDeveloperActions.push_back(action);
-  m_listTableSensitiveActions.push_back(action);
+  m_listDeveloperActions.emplace_back(action);
+  m_listTableSensitiveActions.emplace_back(action);
 
   action = m_refActionGroup_Developer->add_action("script-library",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_script_library));
-  m_listDeveloperActions.push_back(action);
+  m_listDeveloperActions.emplace_back(action);
 
   action = m_refActionGroup_Developer->add_action("layout",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_layout));
-  m_listDeveloperActions.push_back(action);
-  m_listTableSensitiveActions.push_back(action);
+  m_listDeveloperActions.emplace_back(action);
+  m_listTableSensitiveActions.emplace_back(action);
 
   action = m_refActionGroup_Developer->add_action("change-language",
     sigc::mem_fun(*this, &AppWindow::on_menu_developer_changelanguage));
-  m_listDeveloperActions.push_back(action);
+  m_listDeveloperActions.emplace_back(action);
 
   action = m_refActionGroup_Developer->add_action("translations",
     sigc::mem_fun(*this, &AppWindow::on_menu_developer_translations));
-  m_listDeveloperActions.push_back(action);
+  m_listDeveloperActions.emplace_back(action);
 
   //"Active Platform" menu:
   m_action_menu_developer_active_platform = m_refActionGroup_Developer->add_action_radio_string("active-platform",
     sigc::mem_fun(*this, &AppWindow::on_menu_developer_active_platform),
     "");
-  m_listDeveloperActions.push_back(m_action_menu_developer_active_platform);
+  m_listDeveloperActions.emplace_back(m_action_menu_developer_active_platform);
 
   action = m_refActionGroup_Developer->add_action("export-backup",
     sigc::mem_fun(*this, &AppWindow::on_menu_developer_export_backup));
-  m_listDeveloperActions.push_back(action);
+  m_listDeveloperActions.emplace_back(action);
 
   action = m_refActionGroup_Developer->add_action("restore-backup",
     sigc::mem_fun(*this, &AppWindow::on_menu_developer_restore_backup));
-  m_listDeveloperActions.push_back(action);
+  m_listDeveloperActions.emplace_back(action);
 
   //TODO: Think of a better name for this menu item,
   //though it mostly only exists because it is not quite ready to be on by default:
@@ -420,7 +420,7 @@ void AppWindow::init_menus()
   m_action_enable_layout_drag_and_drop =
     m_refActionGroup_Developer->add_action_bool("drag-and-drop-layout",
       sigc::mem_fun(*this, &AppWindow::on_menu_developer_enable_layout_drag_and_drop));
-  m_listDeveloperActions.push_back(m_action_enable_layout_drag_and_drop);
+  m_listDeveloperActions.emplace_back(m_action_enable_layout_drag_and_drop);
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -1760,7 +1760,7 @@ void AppWindow::add_developer_action(const Glib::RefPtr<Gio::SimpleAction>& refA
   //Prevent it from being added twice:
   remove_developer_action(refAction);
 
-  m_listDeveloperActions.push_back(refAction);
+  m_listDeveloperActions.emplace_back(refAction);
 }
 
 void AppWindow::remove_developer_action(const Glib::RefPtr<Gio::SimpleAction>& refAction)
@@ -1824,7 +1824,7 @@ void AppWindow::fill_menu_tables()
 
       auto action = m_refNavTablesActionGroup->add_action(action_name,
         sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_box_tables_selected), table_info->get_name()) );
-      m_listNavTableActions.push_back(action);
+      m_listNavTableActions.emplace_back(action);
     }
   }
 
@@ -1882,7 +1882,7 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
 
         auto action = m_refNavReportsActionGroup->add_action(action_name,
           sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_report_selected), report->get_name()) );
-        m_listNavReportActions.push_back(action);
+        m_listNavReportActions.emplace_back(action);
      }
     }
   }
@@ -1966,7 +1966,7 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
         auto action = m_refNavPrintLayoutsActionGroup->add_action(action_name,
           sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_print_layout_selected), name) );
 
-        m_listNavPrintLayoutActions.push_back(action);
+        m_listNavPrintLayoutActions.emplace_back(action);
       }
     }
   }
@@ -2732,7 +2732,7 @@ void AppWindow::init_menus_edit()
   m_action_mode_find = m_refActionGroup_Edit->add_action_bool("find",
     sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_find),
     false);
-  m_listTableSensitiveActions.push_back(m_action_mode_find);
+  m_listTableSensitiveActions.emplace_back(m_action_mode_find);
 
   insert_action_group("edit", m_refActionGroup_Edit);
 }

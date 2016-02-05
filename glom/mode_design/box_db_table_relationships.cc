@@ -163,7 +163,7 @@ void Box_DB_Table_Relationships::save_to_document()
         relationship->set_allow_edit(m_AddDel.get_value_as_bool(item, m_colAllowEdit));
         relationship->set_auto_create(m_AddDel.get_value_as_bool(item, m_colAutoCreate));
 
-        vecRelationships.push_back(relationship);
+        vecRelationships.emplace_back(relationship);
       }
     }
   }

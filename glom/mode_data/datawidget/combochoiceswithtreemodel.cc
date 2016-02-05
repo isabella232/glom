@@ -87,7 +87,7 @@ void ComboChoicesWithTreeModel::create_model_non_db(guint columns_count)
     record.add(*model_column);
 
     //Store it so we can use it and delete it later:
-    m_vec_model_columns_string_fixed.push_back(std::move(model_column));
+    m_vec_model_columns_string_fixed.emplace_back(std::move(model_column));
   }
 
   //Create the model:
@@ -257,7 +257,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const std::shared_ptr<const 
     extra_fields = layout_choice_extra_full->get_items_recursive();
 
   LayoutGroup::type_list_const_items layout_items;
-  layout_items.push_back(layout_choice_first);
+  layout_items.emplace_back(layout_choice_first);
   layout_items.insert(layout_items.end(), extra_fields.begin(), extra_fields.end());
 
   //Make sure that the primary key is also in the list, but hidden,
@@ -281,7 +281,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const std::shared_ptr<const 
   if(found_set.m_sort_clause.empty())
   {
     //Sort by the first field, because that is better than so sort at all.
-    found_set.m_sort_clause.push_back( FoundSet::type_pair_sort_field(layout_choice_first, true /* ascending */) );
+    found_set.m_sort_clause.emplace_back( FoundSet::type_pair_sort_field(layout_choice_first, true /* ascending */) );
   }
 
   m_db_layout_items.clear();

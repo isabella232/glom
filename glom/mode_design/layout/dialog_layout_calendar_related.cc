@@ -169,7 +169,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
     Document::type_list_layout_groups mapGroups;
     if(m_portal)
     {
-      mapGroups.push_back(m_portal);
+      mapGroups.emplace_back(m_portal);
       document->fill_layout_field_details(related_table_name, mapGroups); //Update with full field information.
     }
 

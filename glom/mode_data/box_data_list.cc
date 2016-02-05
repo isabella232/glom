@@ -432,7 +432,7 @@ void Box_Data_List::create_layout()
       }
       */
 
-      items_to_use.push_back(child_item);
+      items_to_use.emplace_back(child_item);
     }
   }
 
@@ -446,7 +446,7 @@ void Box_Data_List::create_layout()
     layout_item->set_hidden();
     layout_item->set_full_field_details(m_AddDel.get_key_field());
 
-    m_FieldsShown.push_back(layout_item); //TODO: Do this only if it is not already present.
+    m_FieldsShown.emplace_back(layout_item); //TODO: Do this only if it is not already present.
   }
 
   const auto table_privs = Privs::get_current_privs(m_found_set.m_table_name);

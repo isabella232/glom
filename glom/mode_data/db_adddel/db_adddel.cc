@@ -923,7 +923,7 @@ void DbAddDel::set_columns(const LayoutGroup::type_list_items& layout_items)
     }
     */
 
-    m_column_items.push_back(layout_item);
+    m_column_items.emplace_back(layout_item);
   }
 
   //Generate appropriate model columns:
@@ -958,7 +958,7 @@ DbAddDel::type_list_indexes DbAddDel::get_data_model_column_index(const std::sha
       if(field->is_same_field(layout_item_field)
         && (including_specified_field_layout || field != layout_item_field))
       {
-        list_indexes.push_back(data_model_column_index);
+        list_indexes.emplace_back(data_model_column_index);
       }
 
       ++data_model_column_index;
@@ -988,11 +988,11 @@ DbAddDel::type_list_indexes DbAddDel::get_column_index(const std::shared_ptr<con
     const auto field = std::dynamic_pointer_cast<const LayoutItem_Field>(item); //TODO_Performance: This would be unnecessary if !layout_item_field
     if(field && layout_item_field && field->is_same_field(layout_item_field))
     {
-      list_indexes.push_back(i);
+      list_indexes.emplace_back(i);
     }
     else if(*(item) == *(layout_item))
     {
-      list_indexes.push_back(i);
+      list_indexes.emplace_back(i);
     }
 
     ++i;
@@ -1025,7 +1025,7 @@ DbAddDel::type_list_indexes DbAddDel::get_choice_index(const std::shared_ptr<con
     if(choice_relationship && !choice_show_all) //"Show All" choices don't use the ID field values.
     {
       if(choice_relationship->get_from_field() == from_key_name)
-        result.push_back(index);
+        result.emplace_back(index);
     }
 
     index++;
@@ -1594,7 +1594,7 @@ void DbAddDel::on_treeview_column_clicked(int model_column_index)
 
     //Set the sort clause to be used by refresh_from_database():
     m_found_set.m_sort_clause.clear();
-    m_found_set.m_sort_clause.push_back( type_pair_sort_field(layout_item, ascending) );
+    m_found_set.m_sort_clause.emplace_back( type_pair_sort_field(layout_item, ascending) );
   }
 
   refresh_from_database();
@@ -1618,7 +1618,7 @@ void DbAddDel::on_treeview_columns_changed()
       if(pViewColumn)
       {
         const auto column_id = pViewColumn->get_column_id();
-        m_vecColumnIDs.push_back(column_id);
+        m_vecColumnIDs.emplace_back(column_id);
 
       }
     }

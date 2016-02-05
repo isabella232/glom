@@ -386,7 +386,7 @@ Document::type_list_layout_groups Box_Data_List_Related::create_layout_get_layou
   //Do not use get_data_layout_groups(m_layout_name).
   //instead do this:
   if(m_portal)
-    result.push_back(m_portal);
+    result.emplace_back(m_portal);
 
   return result;
 }
@@ -462,7 +462,7 @@ void Box_Data_List_Related::create_layout()
       }
       */
 
-      items_to_use.push_back(child_item);
+      items_to_use.emplace_back(child_item);
     }
   }
 
@@ -474,9 +474,9 @@ void Box_Data_List_Related::create_layout()
     auto layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_hidden();
     layout_item->set_full_field_details(m_AddDel.get_key_field());
-    m_FieldsShown.push_back(layout_item);
+    m_FieldsShown.emplace_back(layout_item);
 
-    items_to_use.push_back(layout_item);
+    items_to_use.emplace_back(layout_item);
   }
 
   const auto table_privs = Privs::get_current_privs(m_found_set.m_table_name);

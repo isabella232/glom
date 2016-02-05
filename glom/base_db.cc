@@ -204,7 +204,7 @@ Base_DB::type_vec_strings Base_DB::util_vecStrings_from_Fields(const type_vec_fi
   type_vec_strings vecNames;
   for(type_vec_fields::size_type i = 0; i < fields.size(); ++i)
   {
-    vecNames.push_back(fields[i]->get_name());
+    vecNames.emplace_back(fields[i]->get_name());
   }
 
   return vecNames;
@@ -604,7 +604,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
           layout_item->m_priv_view = privs_related.m_view;
           layout_item->m_priv_edit = privs_related.m_edit;
 
-          vecFields.push_back(layout_item);
+          vecFields.emplace_back(layout_item);
         }
         else
         {
@@ -627,7 +627,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
           layout_item->m_priv_view = table_privs.m_view;
           layout_item->m_priv_edit = table_privs.m_edit;
 
-          vecFields.push_back(layout_item);
+          vecFields.emplace_back(layout_item);
         }
       }
     }
@@ -687,7 +687,7 @@ Base_DB::type_vecConstLayoutFields Base_DB::get_table_fields_to_show_for_sequenc
         layout_item->m_priv_view = table_privs.m_view;
         layout_item->m_priv_edit = table_privs.m_edit;
 
-        result.push_back(layout_item);
+        result.emplace_back(layout_item);
       }
 
       //Add the rest:
@@ -704,7 +704,7 @@ Base_DB::type_vecConstLayoutFields Base_DB::get_table_fields_to_show_for_sequenc
           layout_item->m_priv_view = table_privs.m_view;
           layout_item->m_priv_edit = table_privs.m_edit;
 
-          result.push_back(layout_item);
+          result.emplace_back(layout_item);
         }
       }
     }
@@ -1027,7 +1027,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
 
   type_vecConstLayoutFields list_fields;
   auto layout_item = field_in_record.m_field;
-  list_fields.push_back(layout_item);
+  list_fields.emplace_back(layout_item);
   auto sql_query = Utils::build_sql_select_with_key(field_in_record.m_table_name,
     list_fields, field_in_record.m_key, field_in_record.m_key_value, type_sort_clause(), 1);
 
@@ -1067,7 +1067,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const std::shared_ptr<Fie
   type_vecConstLayoutFields list_fields;
   auto layout_item = std::make_shared<LayoutItem_Field>();
   layout_item->set_full_field_details(field);
-  list_fields.push_back(layout_item);
+  list_fields.emplace_back(layout_item);
   auto sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
     list_fields,
     found_set.m_where_clause,
@@ -1152,7 +1152,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculated_fields(const Glib::
         //Tell the caller that this field is triggered by the specified field:
         //TODO: Test related fields too?
 
-        result.push_back(layoutitem_field_to_examine);
+        result.emplace_back(layoutitem_field_to_examine);
       }
     }
   }
@@ -1202,7 +1202,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
           auto layout_item = std::make_shared<LayoutItem_Field>();
           layout_item->set_full_field_details(field_found);
 
-          result.push_back(layout_item);
+          result.emplace_back(layout_item);
         }
 
         index = pos_find_end + 1;
@@ -1226,7 +1226,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
         auto layout_item = std::make_shared<LayoutItem_Field>();
         layout_item->set_full_field_details(field_from);
 
-        result.push_back(layout_item);
+        result.emplace_back(layout_item);
       }
     }
   }
@@ -1368,7 +1368,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
 
   auto layout_item = std::make_shared<LayoutItem_Field>();
   layout_item->set_full_field_details(primary_key);
-  fieldsToGet.push_back(layout_item);
+  fieldsToGet.emplace_back(layout_item);
 
   auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_target(found_set.m_table_name);

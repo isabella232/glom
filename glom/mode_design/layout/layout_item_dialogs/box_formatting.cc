@@ -422,7 +422,7 @@ bool Box_Formatting::get_formatting(Formatting& format) const
           {
             auto choicevalue = std::make_shared<ChoiceValue>();
             choicevalue->set_value(value);
-            list_choice_values.push_back(choicevalue);
+            list_choice_values.emplace_back(choicevalue);
           }
         }
       }

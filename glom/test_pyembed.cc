@@ -19,10 +19,10 @@ std::list<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::
     unsigned int pos = str.find(separators);
     Glib::ustring tmp = str.substr(0,pos);
     str=str.erase(0, pos+separators.size());
-    result.push_back(tmp);
+    result.emplace_back(tmp);
     count++;
   }
-  result.push_back(str);
+  result.emplace_back(str);
 
   return result;
 }

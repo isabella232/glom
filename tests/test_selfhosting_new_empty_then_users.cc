@@ -141,7 +141,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //MySQL has a 64-character limit on SQL identifiers:
   if(hosting_mode != Glom::Document::HostingMode::MYSQL_SELF)
   {
-    table_names.push_back("sometablewithaverylongnameyaddayaddayaddayaddayaddyaddayaddayaddayaddayaddayaddayaddayaddayaddayaddayaddayadda");
+    table_names.emplace_back("sometablewithaverylongnameyaddayaddayaddayaddayaddyaddayaddayaddayaddayaddayaddayaddayaddayaddayaddayaddayadda");
   }
 
   //Add some tables, for the groups to have rights for:
@@ -186,7 +186,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     "somegroup with a ' quote character",
      "somegroupwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayad"} ); //Almost too big.
   //We expect this to fail because of an apparently-undocumented max pg_user size of 63 characters in PostgreSQL:
-  //group_names.push_back("somegroupwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayadd");
+  //group_names.emplace_back("somegroupwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayadd");
 
   //Add groups:
   for(const auto& group_name : group_names)
@@ -206,7 +206,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     "someuser with a ' quote character",
     "someuserwithaverylongnameyaddayaddayaddayaddayaddyaddayadda"} ); //Almost too big, with space for the numeric suffix below.
   //We expect this to fail because of an apparently-undocumented max pg_user size of 63 characters in PostgreSQL:
-  //user_names.push_back("someuserwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayadd");
+  //user_names.emplace_back("someuserwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayadd");
 
   guint i = 0;
   for(const auto& user_name : user_names)

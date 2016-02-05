@@ -210,14 +210,14 @@ Glib::RefPtr<CanvasLineMovable> CanvasGroupGrid::create_rule_line(double pos, bo
 void CanvasGroupGrid::add_vertical_rule(double x)
 {
   auto line = create_rule_line(x, false);
-  m_rules_x.push_back(line);
+  m_rules_x.emplace_back(line);
   m_grid_rules_group->add_child(line);
 }
 
 void CanvasGroupGrid::add_horizontal_rule(double y)
 {
   auto line = create_rule_line(y, true);
-  m_rules_y.push_back(line);
+  m_rules_y.emplace_back(line);
   m_grid_rules_group->add_child(line);
 }
 
@@ -241,7 +241,7 @@ CanvasGroupGrid::type_vec_doubles CanvasGroupGrid::get_horizontal_rules() const
     double x = 0;
     double y = 0;
     line->get_xy(x, y);
-    result.push_back(y);
+    result.emplace_back(y);
   }
 
   return result;
@@ -258,7 +258,7 @@ CanvasGroupGrid::type_vec_doubles CanvasGroupGrid::get_vertical_rules() const
     double x = 0;
     double y = 0;
     line->get_xy(x, y);
-    result.push_back(x);
+    result.emplace_back(x);
   }
 
   return result;

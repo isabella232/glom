@@ -238,7 +238,7 @@ void Dialog_Layout_Export::get_layout_groups(Document::type_list_layout_groups& 
     }
   }
 
-  groups.push_back(others);
+  groups.emplace_back(others);
   layout_groups.swap(groups);
 }
 

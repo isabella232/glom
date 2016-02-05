@@ -215,7 +215,7 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
         if(item_field->get_glom_type() == Field::glom_field_type::INVALID)
           std::cerr << G_STRFUNC << ": field has invalid type. field name: " << item_field->get_name() << std::endl;
 
-        m_column_fields.push_back(item_field);
+        m_column_fields.emplace_back(item_field);
       }
     }
   }

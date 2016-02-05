@@ -81,7 +81,7 @@ type_list_currencies get_list_of_currency_symbols()
               currency.m_name = name;
             }
 
-            list_currencies.push_back(currency);
+            list_currencies.emplace_back(currency);
           }
         }
       }
@@ -133,14 +133,14 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     {
       Glib::ustring id_language, id_country;
       split_locale_id(id, id_language, id_country);
-      list_ids_simple.push_back(id_language);
+      list_ids_simple.emplace_back(id_language);
     }
 
     //Add the non-specific locales:
     for(const auto& id : list_ids_simple)
     {
       if(!Utils::find_exists(list_ids, id))
-        list_ids.push_back(id);
+        list_ids.emplace_back(id);
     }
 
     //Get the (translated) language names:
@@ -301,7 +301,7 @@ type_list_locales get_list_of_locales()
     //Put the map into a list:
     for(const auto& the_pair : map_locales)
     {
-      list_locales.push_back(the_pair.second);
+      list_locales.emplace_back(the_pair.second);
     }
   }
 

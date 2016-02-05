@@ -189,7 +189,7 @@ void Window_RelationshipsOverview::draw_tables()
       sigc::connection the_connection = table_group->signal_show_context().connect( sigc::bind(
         sigc::mem_fun(*this, &Window_RelationshipsOverview::on_table_show_context),
         table_group) );
-      m_list_table_connections.push_back(the_connection);
+      m_list_table_connections.emplace_back(the_connection);
 
       //tv->x2 = tv->x1 + table_width;
       //tv->y2 = tv->y1 + table_height;

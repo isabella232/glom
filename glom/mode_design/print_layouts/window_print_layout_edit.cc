@@ -97,7 +97,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_spinbutton_height));
 
   const Gtk::TargetEntry target_rule(DRAG_TARGET_NAME_RULE, Gtk::TARGET_SAME_APP, 0);
-  m_drag_targets_rule.push_back(target_rule);
+  m_drag_targets_rule.emplace_back(target_rule);
 
   //The rulers are not in the glade file because they use an unusual widget 
   //that Glade wouldn't usually know about:
@@ -150,7 +150,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   //TODO: Does this need to be a member variable?
   m_drag_targets_all = m_drag_targets_rule;
   const auto toolbar_target = Gtk::ToolPalette::get_drag_target_item();
-  m_drag_targets_all.push_back(toolbar_target);
+  m_drag_targets_all.emplace_back(toolbar_target);
 
   //Note that we don't use Gtk::DEST_DEFAULT_DEFAULTS because that would prevent our signal handlers from being used:
   m_canvas.drag_dest_set(m_drag_targets_all, Gtk::DEST_DEFAULT_HIGHLIGHT, Gdk::ACTION_COPY);
@@ -1059,7 +1059,7 @@ void Window_PrintLayout_Edit::on_menu_edit_copy()
     auto cloned = 
       glom_sharedptr_clone(item->get_layout_item());
 
-    m_layout_items_to_paste.push_back(cloned);
+    m_layout_items_to_paste.emplace_back(cloned);
   }
 
   m_action_edit_paste->set_enabled();
@@ -1412,8 +1412,8 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
       continue;
 
     //Cache the selected items and handle their signal_moved signals:
-    m_layout_items_selected.push_back(item);
-    m_connections_items_selected_moved.push_back(
+    m_layout_items_selected.emplace_back(item);
+    m_connections_items_selected_moved.emplace_back(
       item->signal_moved().connect(
         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_selected_item_moved)));
   }

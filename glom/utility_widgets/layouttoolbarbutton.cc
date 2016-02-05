@@ -45,7 +45,7 @@ LayoutToolbarButton::LayoutToolbarButton(const std::string& icon_name, LayoutWid
   g_object_set_data(G_OBJECT(gobj()), "glom-type", GINT_TO_POINTER(type));
 
   std::vector<Gtk::TargetEntry> targetentries;
-  targetentries.push_back(Gtk::TargetEntry(get_target()));
+  targetentries.emplace_back(Gtk::TargetEntry(get_target()));
 
   drag_source_set(targetentries, Gdk::MODIFIER_MASK,
                   Gdk::ACTION_COPY | Gdk::ACTION_MOVE);

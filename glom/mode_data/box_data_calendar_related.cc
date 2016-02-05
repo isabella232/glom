@@ -238,7 +238,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
         (*pVector)[column_index] = datamodel->get_value_at(column_index, row_index);
       }
 
-      m_map_values[date].push_back(pVector);
+      m_map_values[date].emplace_back(pVector);
     }
   }
 
@@ -343,7 +343,7 @@ Box_Data_Calendar_Related::type_vecConstLayoutFields Box_Data_Calendar_Related::
   //Add it to the list to ensure that we request the date (though it will not really be shown in the calendar):
   auto layout_item_date_field = std::make_shared<LayoutItem_Field>();
   layout_item_date_field->set_full_field_details(date_field);
-  layout_fields.push_back(layout_item_date_field);
+  layout_fields.emplace_back(layout_item_date_field);
   m_query_column_date_field = layout_fields.size() - 1;
   return layout_fields;
 }

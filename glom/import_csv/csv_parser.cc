@@ -464,7 +464,7 @@ void CsvParser::do_line_scanned(const Glib::ustring& line, guint line_number)
   if(line.empty())
    return;
 
-  m_rows.push_back(CsvParser::type_row_strings());
+  m_rows.emplace_back(CsvParser::type_row_strings());
   auto& row = m_rows.back();
 
   Glib::ustring field;
@@ -472,7 +472,7 @@ void CsvParser::do_line_scanned(const Glib::ustring& line, guint line_number)
 
   // Parse first field:
   auto line_iter = CsvParser::advance_field(line.begin(), line.end(), field);
-  row.push_back(field);
+  row.emplace_back(field);
 
   // Parse more fields:
   while(line_iter != line.end())
@@ -484,7 +484,7 @@ void CsvParser::do_line_scanned(const Glib::ustring& line, guint line_number)
     line_iter = advance_field(line_iter, line.end(), field);
 
     // Add field to current row:
-    row.push_back(field);
+    row.emplace_back(field);
   }
 
   signal_line_scanned().emit(row, line_number);

@@ -77,7 +77,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
       auto layout_item = std::make_shared<LayoutItem_Field>();
       layout_item->set_full_field_details(item);
 
-      fieldsToAdd.push_back(layout_item);
+      fieldsToAdd.emplace_back(layout_item);
     }
   }
 
@@ -468,7 +468,7 @@ Base_DB_Table_Data::type_vecConstLayoutFields Base_DB_Table_Data::get_related_fi
           if(relationship->get_from_field() == field_name)
           {
             //Add it:
-            result.push_back(layout_field);
+            result.emplace_back(layout_field);
           }
         }
       }

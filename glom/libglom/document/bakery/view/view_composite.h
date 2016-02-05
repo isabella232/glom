@@ -49,7 +49,7 @@ public:
       pView->set_document(View<T_Document>::get_document());
 
       //Add it to the list of child views:
-      m_vecViews.push_back(pView);
+      m_vecViews.emplace_back(pView);
     }
   }
 

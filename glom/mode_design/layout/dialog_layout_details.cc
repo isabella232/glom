@@ -345,7 +345,7 @@ void Dialog_Layout_Details::init(const Glib::ustring& layout_name, const Glib::u
       group->set_name("main");
       group->set_columns_count(1);
 
-      list_groups.push_back(group);
+      list_groups.emplace_back(group);
     }
 
     //Show the field layout
@@ -1072,7 +1072,7 @@ void Dialog_Layout_Details::save_to_document()
 
       fill_group(row, group);
 
-      list_groups.push_back(group);
+      list_groups.emplace_back(group);
     }
 
     if(document)

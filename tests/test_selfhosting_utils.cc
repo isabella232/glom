@@ -428,7 +428,7 @@ bool test_table_exists(const Glib::ustring& table_name, const std::shared_ptr<Gl
 
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
-  fieldsToGet.push_back(layoutitem);
+  fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
     Glom::Utils::build_sql_select_with_where_clause(table_name,
@@ -458,7 +458,7 @@ static bool test_example_musiccollection_data_related(const std::shared_ptr<cons
   auto field_album_id = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field_album_id);
-  fieldsToGet.push_back(layoutitem);
+  fieldsToGet.emplace_back(layoutitem);
   auto field = document->get_field("albums", "name");
   if(!field)
   {
@@ -467,7 +467,7 @@ static bool test_example_musiccollection_data_related(const std::shared_ptr<cons
   }
   layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
-  fieldsToGet.push_back(layoutitem);
+  fieldsToGet.emplace_back(layoutitem);
 
   //Related field:
   const auto relationship = document->get_relationship("albums", "artist");
@@ -485,7 +485,7 @@ static bool test_example_musiccollection_data_related(const std::shared_ptr<cons
     return false;
   }
   layoutitem->set_full_field_details(field);
-  fieldsToGet.push_back(layoutitem);
+  fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =
     Glom::Utils::build_sql_select_with_key("albums", fieldsToGet, field_album_id, album_id);
@@ -518,7 +518,7 @@ bool test_example_musiccollection_data(const std::shared_ptr<const Glom::Documen
   auto field = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
-  fieldsToGet.push_back(layoutitem);
+  fieldsToGet.emplace_back(layoutitem);
 
   field = document->get_field("albums", "name");
   if(!field)
@@ -528,7 +528,7 @@ bool test_example_musiccollection_data(const std::shared_ptr<const Glom::Documen
   }
   layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
-  fieldsToGet.push_back(layoutitem);
+  fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
     Glom::Utils::build_sql_select_with_where_clause("albums",

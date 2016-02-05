@@ -849,7 +849,7 @@ void AddDel::remove_all_columns()
 
 guint AddDel::add_column(const AddDelColumnInfo& column_info)
 {
-  m_ColumnTypes.push_back(column_info);
+  m_ColumnTypes.emplace_back(column_info);
 
   //Generate appropriate model columns:
   construct_specified_columns();
@@ -1333,7 +1333,7 @@ void AddDel::on_treeview_columns_changed()
       if(pViewColumn)
       {
         const auto column_id = pViewColumn->get_column_id();
-        m_vecColumnIDs.push_back(column_id);
+        m_vecColumnIDs.emplace_back(column_id);
 
       }
     }

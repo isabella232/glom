@@ -689,8 +689,8 @@ void Field::init_map()
     type_list_conversion_targets list_conversions( {
       Field::glom_field_type::BOOLEAN,
       Field::glom_field_type::TEXT} );
-    //to_date(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::glom_field_type::DATE);
-    //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::glom_field_type::TIME);
+    //to_date(numeric) was supported in 8.2 but not in 8.3: list_conversions.emplace_back(Field::glom_field_type::DATE);
+    //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.emplace_back(Field::glom_field_type::TIME);
     m_map_conversions[Field::glom_field_type::NUMERIC] = list_conversions;
 
     //Text:
@@ -705,15 +705,15 @@ void Field::init_map()
     list_conversions = {
       Field::glom_field_type::TEXT,
       Field::glom_field_type::NUMERIC};
-    //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::glom_field_type::DATE);
-    //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::glom_field_type::TIME);
+    //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.emplace_back(Field::glom_field_type::DATE);
+    //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.emplace_back(Field::glom_field_type::TIME);
     m_map_conversions[Field::glom_field_type::BOOLEAN] = list_conversions;
 
     //Date:
     list_conversions = {
       Field::glom_field_type::TEXT};
-    //to_number(textcat()) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::glom_field_type::NUMERIC);
-    //to_number(textcat()) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::glom_field_type::BOOLEAN);
+    //to_number(textcat()) was supported in 8.2 but not in 8.3: list_conversions.emplace_back(Field::glom_field_type::NUMERIC);
+    //to_number(textcat()) was supported in 8.2 but not in 8.3: list_conversions.emplace_back(Field::glom_field_type::BOOLEAN);
     m_map_conversions[Field::glom_field_type::DATE] = list_conversions;
 
     //Time:
@@ -838,7 +838,7 @@ Field::type_list_strings Field::get_calculation_relationships() const
       {
         Glib::ustring::size_type pos_start = pos_find + prefix_size;
         const auto field_name = m_calculation.substr(pos_start, pos_find_end - pos_start);
-        result.push_back(field_name);
+        result.emplace_back(field_name);
         index = pos_find_end + 1;
       }
     }

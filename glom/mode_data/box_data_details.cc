@@ -308,7 +308,7 @@ bool Box_Data_Details::fill_from_database()
         //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
         if(!find_if_layout_item_field_is_same_field_exists(fieldsToGet, layout_item_pk))
         {
-          fieldsToGet.push_back(layout_item_pk);
+          fieldsToGet.emplace_back(layout_item_pk);
           index_primary_key = fieldsToGet.size() - 1;
           index_primary_key_found = true;
         }

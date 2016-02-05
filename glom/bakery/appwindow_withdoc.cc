@@ -46,7 +46,7 @@ AppWindow_WithDoc::~AppWindow_WithDoc()
 void AppWindow_WithDoc::add_mime_type(const Glib::ustring& mime_type)
 {
   if( !Glom::Utils::find_exists(m_mime_types, mime_type) )
-    m_mime_types.push_back(mime_type);
+    m_mime_types.emplace_back(mime_type);
 }
 
 void AppWindow_WithDoc::on_menu_file_close()

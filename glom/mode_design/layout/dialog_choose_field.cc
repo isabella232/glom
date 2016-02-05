@@ -269,7 +269,7 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
     field->set_full_field_details(field_details);
     field->set_name(row[m_ColumnsFields.m_col_name]);
     
-    list_fields.push_back(field);
+    list_fields.emplace_back(field);
   }
 
   return list_fields;

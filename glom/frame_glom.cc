@@ -386,7 +386,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
           auto layout_item_temp = std::make_shared<LayoutItem_Field>();
           layout_item_temp->set_full_field_details(field_primary_key);
           type_vecLayoutFields layout_fields;
-          layout_fields.push_back(layout_item_temp);
+          layout_fields.emplace_back(layout_item_temp);
           auto sql_query_without_sort = Utils::build_sql_select_with_where_clause(found_set.m_table_name, layout_fields, found_set.m_where_clause, found_set.m_extra_join, type_sort_clause());
 
           const Privileges table_privs = Privs::get_current_privs(found_set.m_table_name);
@@ -395,7 +395,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
             count = DbUtils::count_rows_returned_by(sql_query_without_sort);
             
           if(count < 10000) //Arbitrary large number.
-            found_set.m_sort_clause.push_back( type_pair_sort_field(layout_item_sort, true /* ascending */) );
+            found_set.m_sort_clause.emplace_back( type_pair_sort_field(layout_item_sort, true /* ascending */) );
         }
       }
 
@@ -621,7 +621,7 @@ void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, 
           //{
 
             //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
-            row_data.push_back(value);  //TODO_Performance: reserve the size.
+            row_data.emplace_back(value);  //TODO_Performance: reserve the size.
 
             //if(layout_item->m_field.get_glom_type() == Field::glom_field_type::IMAGE) //This is too much data.
             //{
@@ -630,7 +630,7 @@ void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, 
         }
 
         //std::cout << " row_string=" << row_string << std::endl;
-        the_vector.push_back(row_data); //TODO_Performance: Reserve the size.
+        the_vector.emplace_back(row_data); //TODO_Performance: Reserve the size.
     }
   }
 }
@@ -1450,7 +1450,7 @@ void Frame_Glom::update_table_in_document_from_database()
         if(iterFindDoc == fieldsDocument.end()) //If it was not found:
         {
           //Add it
-          fieldsDocument.push_back(field_database);
+          fieldsDocument.emplace_back(field_database);
           document_must_be_updated = true;
         }
         else //if it was found.
@@ -1493,7 +1493,7 @@ void Frame_Glom::update_table_in_document_from_database()
         //Check whether it's in the database:
         if(find_if_same_name_exists(fieldsDatabase, field->get_name())) //If it was found
         {
-          fieldsActual.push_back(field);
+          fieldsActual.emplace_back(field);
         }
         else
         {

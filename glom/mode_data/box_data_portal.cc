@@ -185,7 +185,7 @@ Box_Data_Portal::type_vecConstLayoutFields Box_Data_Portal::get_fields_to_show()
   if(document && m_portal)
   {
     Document::type_list_layout_groups mapGroups;
-    mapGroups.push_back(m_portal);
+    mapGroups.emplace_back(m_portal);
 
     auto relationship = m_portal->get_relationship();
     if(relationship)
@@ -279,7 +279,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
 
   //Get the value of the navigation related primary key:
   type_vecLayoutFields fieldsToGet;
-  fieldsToGet.push_back(layout_item);
+  fieldsToGet.emplace_back(layout_item);
 
   //For instance "invoice_line_id" if this is a portal to an "invoice_lines" table:
   const auto related_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
@@ -336,7 +336,7 @@ Document::type_list_layout_groups Box_Data_Portal::create_layout_get_layout()
   Document::type_list_layout_groups result;
 
   if(m_portal)
-    result.push_back(m_portal);
+    result.emplace_back(m_portal);
 
   return result;
 }

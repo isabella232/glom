@@ -496,7 +496,7 @@ void Document::set_relationship(const Glib::ustring& table_name, const std::shar
   if(!existing)
   {
     //Add a new one if it's not there.
-    info->m_relationships.push_back(relationship);
+    info->m_relationships.emplace_back(relationship);
   }
 }
 
@@ -531,61 +531,61 @@ std::shared_ptr<TableInfo> Document::create_table_system_preferences(type_vec_fi
   auto primary_key = std::make_shared<Field>(); //It's not used, because there's only one record, but we must have one.
   primary_key->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ID);
   primary_key->set_glom_type(Field::glom_field_type::NUMERIC);
-  fields.push_back(primary_key);
+  fields.emplace_back(primary_key);
 
   auto field_name = std::make_shared<Field>();
   field_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME);
   field_name->set_title_original(_("System Name"));
   field_name->set_glom_type(Field::glom_field_type::TEXT);
-  fields.push_back(field_name);
+  fields.emplace_back(field_name);
 
   auto field_org_name = std::make_shared<Field>();
   field_org_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME);
   field_org_name->set_title_original(_("Organisation Name"));
   field_org_name->set_glom_type(Field::glom_field_type::TEXT);
-  fields.push_back(field_org_name);
+  fields.emplace_back(field_org_name);
 
   auto field_org_logo = std::make_shared<Field>();
   field_org_logo->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO);
   field_org_logo->set_title_original(_("Organisation Logo"));
   field_org_logo->set_glom_type(Field::glom_field_type::IMAGE);
-  fields.push_back(field_org_logo);
+  fields.emplace_back(field_org_logo);
 
   auto field_org_address_street = std::make_shared<Field>();
   field_org_address_street->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET);
   field_org_address_street->set_title_original(_("Street"));
   field_org_address_street->set_glom_type(Field::glom_field_type::TEXT);
-  fields.push_back(field_org_address_street);
+  fields.emplace_back(field_org_address_street);
 
   auto field_org_address_street2 = std::make_shared<Field>();
   field_org_address_street2->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2);
   field_org_address_street2->set_title_original(_("Street (line 2)"));
   field_org_address_street2->set_glom_type(Field::glom_field_type::TEXT);
-  fields.push_back(field_org_address_street2);
+  fields.emplace_back(field_org_address_street2);
 
   auto field_org_address_town = std::make_shared<Field>();
   field_org_address_town->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN);
   field_org_address_town->set_title_original(_("City"));
   field_org_address_town->set_glom_type(Field::glom_field_type::TEXT);
-  fields.push_back(field_org_address_town);
+  fields.emplace_back(field_org_address_town);
 
   auto field_org_address_county = std::make_shared<Field>();
   field_org_address_county->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY);
   field_org_address_county->set_title_original(_("State"));
   field_org_address_county->set_glom_type(Field::glom_field_type::TEXT);
-  fields.push_back(field_org_address_county);
+  fields.emplace_back(field_org_address_county);
 
   auto field_org_address_country = std::make_shared<Field>();
   field_org_address_country->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY);
   field_org_address_country->set_title_original(_("Country"));
   field_org_address_country->set_glom_type(Field::glom_field_type::TEXT);
-  fields.push_back(field_org_address_country);
+  fields.emplace_back(field_org_address_country);
 
   auto field_org_address_postcode = std::make_shared<Field>();
   field_org_address_postcode->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE);
   field_org_address_postcode->set_title_original(_("Zip Code"));
   field_org_address_postcode->set_glom_type(Field::glom_field_type::TEXT);
-  fields.push_back(field_org_address_postcode);
+  fields.emplace_back(field_org_address_postcode);
 
   return prefs_table_info;
 }
@@ -633,7 +633,7 @@ Document::type_vec_relationships Document::get_relationships(const Glib::ustring
   {
     if(find_if_same_name_exists(result, GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES))
     {
-      result.push_back(create_relationship_system_preferences(table_name));
+      result.emplace_back(create_relationship_system_preferences(table_name));
     }
   }
 
@@ -1150,7 +1150,7 @@ Document::type_listConstTableInfo Document::get_tables(bool plus_system_prefs) c
   {
     const auto doctableinfo = table_pair.second;
     if(doctableinfo)
-      result.push_back(doctableinfo->m_info);
+      result.emplace_back(doctableinfo->m_info);
 
     //std::cout << "debug: " << G_STRFUNC << ": title=" << iter->second->m_info->get_title() << std::endl;
   }
@@ -1159,7 +1159,7 @@ Document::type_listConstTableInfo Document::get_tables(bool plus_system_prefs) c
   if(plus_system_prefs)
   {
     if(find_if_same_name_exists(result, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
-      result.push_back(create_table_system_preferences());
+      result.emplace_back(create_table_system_preferences());
   }
 
   return result;
@@ -1173,7 +1173,7 @@ Document::type_listTableInfo Document::get_tables(bool plus_system_prefs)
   {
     const auto doctableinfo = table_pair.second;
     if(doctableinfo)
-      result.push_back(doctableinfo->m_info);
+      result.emplace_back(doctableinfo->m_info);
 
     //std::cout << "debug: " << G_STRFUNC << ": title=" << iter->second->m_info->get_title() << std::endl;
   }
@@ -1182,7 +1182,7 @@ Document::type_listTableInfo Document::get_tables(bool plus_system_prefs)
   if(plus_system_prefs)
   {
     if(find_if_same_name_exists(result, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
-      result.push_back(create_table_system_preferences());
+      result.emplace_back(create_table_system_preferences());
   }
 
   return result;
@@ -1195,7 +1195,7 @@ std::vector<Glib::ustring> Document::get_table_names(bool plus_system_prefs) con
   for (const auto& info : list_full)
   {
     if(info)
-      result.push_back(info->get_name());
+      result.emplace_back(info->get_name());
   }
 
   return result;
@@ -1397,13 +1397,13 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
     overview->set_name("overview");
     overview->set_title_original(_("Overview"));
     overview->set_columns_count(2);
-    result.push_back(overview);
+    result.emplace_back(overview);
 
     details = std::make_shared<LayoutGroup>();
     details->set_name("details");
     details->set_title_original(_("Details"));
     details->set_columns_count(2);
-    result.push_back(details);
+    result.emplace_back(details);
   }
   
   //If, for some reason, we didn't create the-subgroups, add everything to a top level group:
@@ -1412,7 +1412,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
     overview = std::make_shared<LayoutGroup>();
     overview->set_name("main");
     overview->set_columns_count(1);
-    result.push_back(overview);
+    result.emplace_back(overview);
       
     details = overview; //Adding anything to details adds it to the overview, which is the only group.
   }
@@ -1560,7 +1560,7 @@ void Document::set_data_layout_groups(const Glib::ustring& layout_name, const Gl
     DocumentTableInfo::type_layouts& layouts = info->m_layouts;
     auto iter = find_if_layout(layouts, layout_name, layout_platform);
     if(iter == layouts.end())
-      layouts.push_back(layout_info);
+      layouts.emplace_back(layout_info);
     else
       *iter = layout_info;
 
@@ -1975,7 +1975,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
 
             auto value = std::make_shared<ChoiceValue>();
             load_after_choicevalue(element_custom_choices, value, field_type);
-            list_values.push_back(value);
+            list_values.emplace_back(value);
           }
         }
 
@@ -2137,7 +2137,7 @@ void Document::load_after_sort_by(const xmlpp::Element* node, const Glib::ustrin
 
       const auto ascending = XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_SORT_ASCENDING);
 
-      list_fields.push_back( LayoutItem_GroupBy::type_pair_sort_field(item, ascending) );
+      list_fields.emplace_back( LayoutItem_GroupBy::type_pair_sort_field(item, ascending) );
     }
   }
 }
@@ -2476,7 +2476,7 @@ void Document::load_after_translations(const xmlpp::Element* element, const std:
         //TODO: Use a set instead?
         if(!Utils::find_exists(m_translation_available_locales, locale))
         {
-          m_translation_available_locales.push_back(locale);
+          m_translation_available_locales.emplace_back(locale);
         }
       }
     }
@@ -2573,7 +2573,7 @@ bool Document::load_after(int& failure_code)
       m_startup_script = XmlUtils::get_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT);
 
       m_translation_original_locale = XmlUtils::get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE);
-      m_translation_available_locales.push_back(m_translation_original_locale); //Just a cache.
+      m_translation_available_locales.emplace_back(m_translation_original_locale); //Just a cache.
 
       const auto nodeConnection = XmlUtils::get_node_child_named(nodeRoot, GLOM_NODE_CONNECTION);
       if(nodeConnection)
@@ -2680,7 +2680,7 @@ bool Document::load_after(int& failure_code)
                 //Translations:
                 load_after_translations(node_rel, relationship);
 
-                doctableinfo->m_relationships.push_back(relationship);
+                doctableinfo->m_relationships.emplace_back(relationship);
               }
             }
           }
@@ -2749,7 +2749,7 @@ bool Document::load_after(int& failure_code)
                 //Translations:
                 load_after_translations(node_field, field);
 
-                doctableinfo->m_fields.push_back(field);
+                doctableinfo->m_fields.emplace_back(field);
               }
             }
           } //Fields
@@ -2797,7 +2797,7 @@ bool Document::load_after(int& failure_code)
                 }
 
                 // Append line to doctableinfo->m_example_rows
-                doctableinfo->m_example_rows.push_back(field_values);
+                doctableinfo->m_example_rows.emplace_back(field_values);
               }
             }
           } // Example Rows
@@ -2847,7 +2847,7 @@ bool Document::load_after(int& failure_code)
                         auto group = std::make_shared<LayoutGroup>();
                         load_after_layout_group(node_layout_group, table_name, group);
 
-                        layout_groups.push_back(group);
+                        layout_groups.emplace_back(group);
                       }
                     }
                   }
@@ -2857,7 +2857,7 @@ bool Document::load_after(int& failure_code)
                 layout_info.m_layout_name = layout_name;
                 layout_info.m_layout_platform = layout_platform;
                 layout_info.m_layout_groups = layout_groups;
-                doctableinfo->m_layouts.push_back(layout_info);
+                doctableinfo->m_layouts.emplace_back(layout_info);
               }
             }
           } //if(nodeDataLayouts)
@@ -2940,7 +2940,7 @@ bool Document::load_after(int& failure_code)
                     continue;
 
                   const auto pos = XmlUtils::get_node_attribute_value_as_decimal(node_rule, GLOM_ATTRIBUTE_RULE_POSITION);
-                  vec_rules_h.push_back(pos);
+                  vec_rules_h.emplace_back(pos);
                 }
                 print_layout->set_horizontal_rules(vec_rules_h);
 
@@ -2952,7 +2952,7 @@ bool Document::load_after(int& failure_code)
                     continue;
 
                   const auto pos = XmlUtils::get_node_attribute_value_as_decimal(node_rule, GLOM_ATTRIBUTE_RULE_POSITION);
-                  vec_rules_v.push_back(pos);
+                  vec_rules_v.emplace_back(pos);
                 }
                 print_layout->set_vertical_rules(vec_rules_v);
 
@@ -3966,7 +3966,7 @@ Document::type_list_groups Document::get_groups() const
   type_list_groups result;
   for(const auto& group_pair : m_groups)
   {
-    result.push_back(group_pair.second);
+    result.emplace_back(group_pair.second);
   }
 
   return result;
@@ -4012,7 +4012,7 @@ std::vector<Glib::ustring> Document::get_report_names(const Glib::ustring& table
     std::vector<Glib::ustring> result;
     for(const auto& report_pair : info->m_reports)
     {
-      result.push_back(report_pair.second->get_name());
+      result.emplace_back(report_pair.second->get_name());
     }
 
     return result;
@@ -4070,7 +4070,7 @@ std::vector<Glib::ustring> Document::get_print_layout_names(const Glib::ustring&
     std::vector<Glib::ustring> result;
     for(const auto& print_layout_pair : info->m_print_layouts)
     {
-      result.push_back(print_layout_pair.second->get_name());
+      result.emplace_back(print_layout_pair.second->get_name());
     }
 
     return result;
@@ -4335,7 +4335,7 @@ static void add_to_translatable_list(Document::type_list_translatables& list, co
   const Document::pair_translatable_item_and_hint item_and_hint(item, hint);
   if(find_if_item_and_hint_equal(list, item_and_hint) == list.end())
   {
-    list.push_back( item_and_hint );
+    list.emplace_back( item_and_hint );
   }
 }
 
@@ -4346,7 +4346,7 @@ static void add_to_translatable_list(Document::type_list_translatables& list, co
   {
     if(find_if_item_and_hint_equal(list, item_and_hint) == list.end())
     {
-      list.push_back( item_and_hint );
+      list.emplace_back( item_and_hint );
     }
   }
 }
@@ -4490,7 +4490,7 @@ void Document::fill_translatable_custom_choices(Formatting& formatting, type_lis
 
   for(const auto& value : formatting.get_choices_custom())
   {
-    the_list.push_back( pair_translatable_item_and_hint(value, hint) );
+    the_list.emplace_back( pair_translatable_item_and_hint(value, hint) );
   }
 }
 
@@ -4501,7 +4501,7 @@ void Document::fill_translatable_layout_items(const std::shared_ptr<LayoutItem_F
   auto custom_title = layout_field->get_title_custom();
   if(custom_title)
   {
-    the_list.push_back( pair_translatable_item_and_hint(custom_title, hint) ); 
+    the_list.emplace_back( pair_translatable_item_and_hint(custom_title, hint) ); 
   }
 
   //The field will be added separately.
@@ -4522,7 +4522,7 @@ void Document::fill_translatable_layout_items(const std::shared_ptr<LayoutGroup>
   auto portal = std::dynamic_pointer_cast<LayoutItem_Portal>(group);
   if(!portal)
   {
-    the_list.push_back( pair_translatable_item_and_hint(group, hint) );
+    the_list.emplace_back( pair_translatable_item_and_hint(group, hint) );
   }
   
   const auto group_name = group->get_name();
@@ -4553,22 +4553,22 @@ void Document::fill_translatable_layout_items(const std::shared_ptr<LayoutGroup>
       //Buttons too:
       auto button = std::dynamic_pointer_cast<LayoutItem_Button>(item);
       if(button)
-        the_list.push_back( pair_translatable_item_and_hint(button, this_hint) );
+        the_list.emplace_back( pair_translatable_item_and_hint(button, this_hint) );
       else
       {
         auto text = std::dynamic_pointer_cast<LayoutItem_Text>(item);
         if(text)
         {
-          the_list.push_back( pair_translatable_item_and_hint(text, this_hint) );
+          the_list.emplace_back( pair_translatable_item_and_hint(text, this_hint) );
           if(text->m_text)
-            the_list.push_back( pair_translatable_item_and_hint(text->m_text, this_hint) );
+            the_list.emplace_back( pair_translatable_item_and_hint(text->m_text, this_hint) );
         }
         else
         {
           //Images have titles:
           auto image = std::dynamic_pointer_cast<LayoutItem_Image>(item);
           if(image)
-            the_list.push_back( pair_translatable_item_and_hint(image, this_hint) );
+            the_list.emplace_back( pair_translatable_item_and_hint(image, this_hint) );
           else
           {
             auto layout_field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
@@ -4634,7 +4634,7 @@ std::vector<Glib::ustring> Document::get_library_module_names() const
   std::vector<Glib::ustring> result;
   for(const auto& script_pair : m_map_library_scripts)
   {
-    result.push_back(script_pair.first);
+    result.emplace_back(script_pair.first);
   }
 
   return result;
@@ -5082,7 +5082,7 @@ Document::type_list_lookups Document::get_lookup_fields(const Glib::ustring& tab
           //Add it:
           auto item = std::make_shared<LayoutItem_Field>();
           item->set_full_field_details(field);
-          result.push_back( type_pairFieldTrigger(item, relationship) );
+          result.emplace_back( type_pairFieldTrigger(item, relationship) );
         }
       }
     }

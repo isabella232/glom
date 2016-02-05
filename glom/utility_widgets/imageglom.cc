@@ -295,7 +295,7 @@ void ImageGlom::fill_evince_supported_mime_types()
     while((mime_type = info->mime_types[i++]))
     {
       if(mime_type)
-        m_evince_supported_mime_types.push_back(mime_type);
+        m_evince_supported_mime_types.emplace_back(mime_type);
       //std::cout << "evince supported mime_type=" << mime_type << std::endl; 
     }
   }  
@@ -860,7 +860,7 @@ void ImageGlom::on_menupopup_activate_copy()
   }
   
   std::vector<Gtk::TargetEntry> listTargets;
-  listTargets.push_back( Gtk::TargetEntry(mime_type) );
+  listTargets.emplace_back( Gtk::TargetEntry(mime_type) );
 
   refClipboard->set( listTargets, sigc::mem_fun(*this, &ImageGlom::on_clipboard_get), sigc::mem_fun(*this, &ImageGlom::on_clipboard_clear) );
 }

@@ -622,13 +622,13 @@ void Canvas_PrintLayout::update_page_bounds()
     auto margin_top = 
       create_margin_line(
         bounds.get_x1(), top_y, bounds.get_x2(), top_y);
-    m_vec_margin_tops.push_back(margin_top);
+    m_vec_margin_tops.emplace_back(margin_top);
       
     const double bottom_y = paper_size.get_height(units) * (page + 1) - m_page_setup->get_bottom_margin(units);
     auto margin_bottom = 
       create_margin_line(
         bounds.get_x1(), bottom_y, bounds.get_x2(), bottom_y);
-    m_vec_margin_bottoms.push_back(margin_bottom);
+    m_vec_margin_bottoms.emplace_back(margin_bottom);
   }
   
   m_bounds_group->lower();
@@ -761,7 +761,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
     auto layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
     if(layoutitem_field && !(layoutitem_field->get_name().empty()))
     {
-      fieldsToGet.push_back(layoutitem_field);
+      fieldsToGet.emplace_back(layoutitem_field);
 
       //Remember the index so we can use it later,
       //to get the data for this column from the query results:
@@ -1064,7 +1064,7 @@ Base_DB::type_vecConstLayoutFields Canvas_PrintLayout::get_portal_fields_to_show
   if(document && portal)
   {
     Document::type_list_layout_groups mapGroups;
-    mapGroups.push_back(portal);
+    mapGroups.emplace_back(portal);
 
     auto relationship = portal->get_relationship();
     if(relationship)
@@ -1110,7 +1110,7 @@ Canvas_PrintLayout::type_vec_items Canvas_PrintLayout::get_selected_items()
       continue;
 
     if(derived->get_selected())
-      result.push_back(derived);
+      result.emplace_back(derived);
   }
 
   return result;

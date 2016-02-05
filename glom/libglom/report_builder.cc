@@ -133,7 +133,7 @@ bool ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Eleme
       }
       else
       {
-        itemsToGet.push_back( glom_sharedptr_clone(item) );
+        itemsToGet.emplace_back( glom_sharedptr_clone(item) );
       }
     }
   }
@@ -189,7 +189,7 @@ bool ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xml
       }
       else
       {
-        itemsToGet.push_back( glom_sharedptr_clone(item) );
+        itemsToGet.emplace_back( glom_sharedptr_clone(item) );
       }
     }
   }
@@ -275,7 +275,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
           type_vecLayoutItems itemsToGet;
           for(const auto& item : group_by->get_secondary_fields()->m_list_items)
           {
-            itemsToGet.push_back( glom_sharedptr_clone(item) );
+            itemsToGet.emplace_back( glom_sharedptr_clone(item) );
           }
 
           if(!itemsToGet.empty())
@@ -326,7 +326,7 @@ bool ReportBuilder::report_build_records_get_fields(const FoundSet& found_set, c
     {
       auto pField = std::dynamic_pointer_cast<LayoutItem_Field>(item);
       if(pField)
-        items.push_back(pField);
+        items.emplace_back(pField);
     }
   }
 
@@ -357,7 +357,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
     {
       auto layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
       if(layoutitem_field)
-        fieldsToGet.push_back(layoutitem_field);
+        fieldsToGet.emplace_back(layoutitem_field);
       else
       {
         auto vertical_group = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(layout_item);
@@ -700,7 +700,7 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::
           }
         }
         else
-          itemsToGet_TopLevel.push_back( glom_sharedptr_clone(pPart) );
+          itemsToGet_TopLevel.emplace_back( glom_sharedptr_clone(pPart) );
       }
     }
   }

@@ -55,7 +55,7 @@ static type_list_encodings list_encodings;
 
 static void add_encoding(const gchar* name, const gchar* encoding)
 {
-  list_encodings.push_back(Encoding(name, encoding));
+  list_encodings.emplace_back(Encoding(name, encoding));
 }
 
 type_list_encodings get_list_of_encodings()

@@ -79,7 +79,7 @@ void Box_DB_Table_Definition::init()
   for(auto iter = mapFieldTypes.begin(); iter != mapFieldTypes.end();++iter)
   {
     const Glib::ustring& name = (*iter).second;
-    vecTypes.push_back(name);
+    vecTypes.emplace_back(name);
   }
 
   m_AddDel.set_column_choices(m_colType, vecTypes);
@@ -217,7 +217,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
       {
         std::cout << Utils::to_utype(field->get_glom_type()) << std::endl;
         Document::type_vec_fields vecFields = pDoc->get_table_fields(m_table_name);
-        vecFields.push_back(field);
+        vecFields.emplace_back(field);
         pDoc->set_table_fields(m_table_name, vecFields);
       }
 
@@ -563,8 +563,8 @@ std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::sha
       {
         auto existing_primary_key_unset = glom_sharedptr_clone(existing_primary_key);
         existing_primary_key_unset->set_primary_key(false);
-	old_fields.push_back(existing_primary_key);
-	new_fields.push_back(existing_primary_key_unset);
+	old_fields.emplace_back(existing_primary_key);
+	new_fields.emplace_back(existing_primary_key_unset);
       }
     }
 
@@ -574,8 +574,8 @@ std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::sha
     document->forget_layout_record_viewed(m_table_name);
   }
 
-  old_fields.push_back(fieldOld);
-  new_fields.push_back(glom_sharedptr_clone(field));
+  old_fields.emplace_back(fieldOld);
+  new_fields.emplace_back(glom_sharedptr_clone(field));
 
   //TODO: Warn about a delay, and possible loss of precision, before actually
   //changing types or when the backend needs to recreate the whole column or
@@ -617,7 +617,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::sha
       else
       {
         //Add it, because it's not there already:
-        vecFields.push_back( glom_sharedptr_clone(new_fields[i]) );
+        vecFields.emplace_back( glom_sharedptr_clone(new_fields[i]) );
       }
 
       // TODO_Performance: Can we do this at the end, after the loop? Or do

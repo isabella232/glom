@@ -194,7 +194,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(c
   type_vecConstLayoutFields constFieldsToGet;
   for(const auto& field : fieldsToGet)
   {
-    constFieldsToGet.push_back(field);
+    constFieldsToGet.emplace_back(field);
   }
 
   return build_sql_select_with_where_clause(table_name, constFieldsToGet, where_clause, extra_join, sort_clause, limit);
@@ -256,7 +256,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
     auto uses_rel = std::make_shared<UsesRelationship>();
     uses_rel->set_relationship(layout_item->get_relationship());
     uses_rel->set_related_relationship(layout_item->get_related_relationship());
-    list_relationships.push_back(uses_rel);
+    list_relationships.emplace_back(uses_rel);
   }
 
 }
@@ -452,7 +452,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib
   type_vecConstLayoutFields constFieldsToGet;
   for(const auto& field : fieldsToGet)
   {
-    constFieldsToGet.push_back(field);
+    constFieldsToGet.emplace_back(field);
   }
 
   return build_sql_select_with_key(table_name, constFieldsToGet, key_field, key_value, sort_clause, limit);
@@ -541,7 +541,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const std::shared_p
   }
 
   Utils::type_vecConstLayoutFields fields;
-  fields.push_back(layout_choice_first);
+  fields.emplace_back(layout_choice_first);
 
   if(layout_choice_extra)
   {
@@ -549,7 +549,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const std::shared_p
     {
       const auto& item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
       if(item_field)
-         fields.push_back(item_field); //TODO: Don't ignore other usable items such as static text.
+         fields.emplace_back(item_field); //TODO: Don't ignore other usable items such as static text.
     }
   }
 
@@ -564,7 +564,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const std::shared_p
   //Default to some sort order rather than none:
   if(choice_sort_fields.empty())
   {
-    choice_sort_fields.push_back( type_pair_sort_field(layout_choice_first, true /* ascending */));
+    choice_sort_fields.emplace_back( type_pair_sort_field(layout_choice_first, true /* ascending */));
   }
 
   //TODO: Support related relationships (in the UI too):
@@ -612,13 +612,13 @@ Utils::type_list_values_with_second Utils::get_choice_values(const std::shared_p
         type_list_values list_values;
         for(guint i = 1; i < cols_count; ++i)
         {
-          list_values.push_back(datamodel->get_value_at(i, row));
+          list_values.emplace_back(datamodel->get_value_at(i, row));
         }
 
         itempair.second = list_values;
       }
 
-      result.push_back(itempair);
+      result.emplace_back(itempair);
     }
   }
   else
@@ -919,7 +919,7 @@ Utils::type_vec_strings Utils::string_separate(const Glib::ustring& str, const G
     }
 
     item = string_trim(item, " ");
-    result.push_back(item);
+    result.emplace_back(item);
   } //while
 
   return result;
@@ -1490,7 +1490,7 @@ LayoutGroup::type_list_const_items Utils::get_layout_items_plus_primary_key(cons
     return items; //It is already in the list:
 
   LayoutGroup::type_list_const_items items_plus_pk = items;
-  items_plus_pk.push_back(pk_layout_item);
+  items_plus_pk.emplace_back(pk_layout_item);
   return items_plus_pk;
 }
 
@@ -1518,7 +1518,7 @@ LayoutGroup::type_list_items Utils::get_layout_items_plus_primary_key(const Layo
     return items; //It is already in the list:
 
   LayoutGroup::type_list_items items_plus_pk = items;
-  items_plus_pk.push_back(pk_layout_item);
+  items_plus_pk.emplace_back(pk_layout_item);
   return items_plus_pk;
 }
 

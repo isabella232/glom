@@ -58,7 +58,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   auto field = document->get_field(table_name, "price");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
-  fieldsToGet.push_back(layoutitem);
+  fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
     Glom::Utils::build_sql_select_with_where_clause(table_name,

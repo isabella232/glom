@@ -78,7 +78,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   Glom::Utils::type_vecLayoutFields fieldsToGet;
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
-  fieldsToGet.push_back(layoutitem);
+  fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder_get = 
     Glom::Utils::build_sql_select_with_where_clause(table_name,

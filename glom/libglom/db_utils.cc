@@ -529,22 +529,22 @@ bool add_standard_tables(const std::shared_ptr<const Document>& document)
       auto primary_key = std::make_shared<Field>(); //It's not used, because there's only one record, but we must have one.
       primary_key->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_ID);
       primary_key->set_glom_type(Field::glom_field_type::NUMERIC);
-      fields.push_back(primary_key);
+      fields.emplace_back(primary_key);
 
       auto field_table_name = std::make_shared<Field>();
       field_table_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME);
       field_table_name->set_glom_type(Field::glom_field_type::TEXT);
-      fields.push_back(field_table_name);
+      fields.emplace_back(field_table_name);
 
       auto field_field_name = std::make_shared<Field>();
       field_field_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME);
       field_field_name->set_glom_type(Field::glom_field_type::TEXT);
-      fields.push_back(field_field_name);
+      fields.emplace_back(field_field_name);
 
       auto field_next_value = std::make_shared<Field>();
       field_next_value->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE);
       field_next_value->set_glom_type(Field::glom_field_type::TEXT);
-      fields.push_back(field_next_value);
+      fields.emplace_back(field_next_value);
 
       const auto test = create_table(document->get_hosting_mode(), table_info, fields);
       if(!test)
@@ -844,7 +844,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
     holder_table_name->set_value(quoted_table_name);
 
     std::vector< Glib::RefPtr<Gnome::Gda::Holder> > holder_list;
-    holder_list.push_back(holder_table_name);
+    holder_list.emplace_back(holder_table_name);
 
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_fields;
     try
@@ -947,7 +947,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
         field->set_primary_key(
           meta_table_column_is_primary_key(meta_table, field_info->get_name()) );
 
-        result.push_back(field);
+        result.emplace_back(field);
 
         ++row;
       }
@@ -1013,7 +1013,7 @@ type_vec_fields get_fields_for_table(const std::shared_ptr<const Document>& docu
 
       field->set_field_info(field_info);
 
-      result.push_back(*iter);
+      result.emplace_back(*iter);
     }
   }
 
@@ -1025,7 +1025,7 @@ type_vec_fields get_fields_for_table(const std::shared_ptr<const Document>& docu
     //Look in the result so far:
     //Add it if it is not there:
     if(!find_if_same_name_exists(result, field_name))
-      result.push_back(*iter);
+      result.emplace_back(*iter);
   }
   */
 
@@ -1125,7 +1125,7 @@ type_vec_strings get_table_names_from_database(bool ignore_system_tables)
           //if(table_name.substr(0, 23) == "information_schema.sql_")
           //  continue;
 
-          result.push_back(table_name);
+          result.emplace_back(table_name);
         }
       }
     }
@@ -1171,14 +1171,14 @@ bool create_table_with_default_fields(const std::shared_ptr<Document>& document,
   //std::cout << "debug: " << G_STRFUNC << ":" << field_primary_key->get_auto_increment() << std::endl;
 
   type_vec_fields fields;
-  fields.push_back(field_primary_key);
+  fields.emplace_back(field_primary_key);
 
   //Description:
   auto field_description = std::make_shared<Field>();
   field_description->set_name("description");
   field_description->set_title_original(_("Description")); //Use a translation, because the original locale will be marked as non-English if the current locale is non-English.
   field_description->set_glom_type(Field::glom_field_type::TEXT);
-  fields.push_back(field_description);
+  fields.emplace_back(field_description);
 
   //Comments:
   auto field_comments = std::make_shared<Field>();
@@ -1186,7 +1186,7 @@ bool create_table_with_default_fields(const std::shared_ptr<Document>& document,
   field_comments->set_title_original(_("Comments"));
   field_comments->set_glom_type(Field::glom_field_type::TEXT);
   field_comments->m_default_formatting.set_text_format_multiline();
-  fields.push_back(field_comments);
+  fields.emplace_back(field_comments);
 
   auto table_info = std::make_shared<TableInfo>();
   table_info->set_name(table_name);
@@ -1224,7 +1224,7 @@ bool create_table(Document::HostingMode hosting_mode, const std::shared_ptr<cons
     auto field = std::make_shared<Field>();
     field->set_name(GLOM_STANDARD_FIELD_LOCK);
     field->set_glom_type(Field::glom_field_type::TEXT);
-    fields.push_back(field);
+    fields.emplace_back(field);
   }
 
   //Create SQL to describe all fields in this table:
@@ -1504,7 +1504,7 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
   //Get the max key value in the database:
   auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   std::vector<guint> args;
-  args.push_back(builder->add_field_id(field_name, table_name));
+  args.emplace_back(builder->add_field_id(field_name, table_name));
   builder->add_field_value_id(builder->add_function("MAX", args));
   builder->select_add_target(table_name);
 
@@ -2302,7 +2302,7 @@ type_map_fields get_record_field_values(const std::shared_ptr<const Document>& d
     const auto layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_full_field_details(field);
 
-    fieldsToGet.push_back(layout_item);
+    fieldsToGet.emplace_back(layout_item);
   }
 
   if(!Conversions::value_is_empty(primary_key_value))

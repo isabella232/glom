@@ -29,7 +29,7 @@ void on_line_scanned(const std::vector<Glib::ustring>& row, guint /*line_number*
   {
     //std::cout << "debug: " << G_STRFUNC << ": item=" << *iter << std::endl;
 
-    get_tokens_instance().push_back(*iter);
+    get_tokens_instance().emplace_back(*iter);
   }
 }
 

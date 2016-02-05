@@ -234,7 +234,7 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
 
     add_widgets(*frame, true /* expand */);
 
-    m_sub_flow_tables.push_back(flow_table);
+    m_sub_flow_tables.emplace_back(flow_table);
     flow_table->set_layout_item(group, m_table_name);
     add_layoutwidgetbase(flow_table);
 
@@ -277,7 +277,7 @@ Box_Data_List_Related* FlowTableWithFields::create_related(const std::shared_ptr
     portal_box->set_layout_item(portal, to_table);
     portal_box->show();
 
-    m_portals.push_back(portal_box);
+    m_portals.emplace_back(portal_box);
 
     //Connect signals:
     //Just reemit this object's signal when receiving the same signal from the portal:
@@ -317,7 +317,7 @@ Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const st
     portal_box->set_layout_item(portal, to_table);
     portal_box->show();
 
-    m_portals.push_back(portal_box);
+    m_portals.emplace_back(portal_box);
 
     //Connect signals:
     //Just reemit this object's signal when receiving the same signal from the portal:
@@ -428,7 +428,7 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
           }
         }
 
-        m_sub_flow_tables.push_back(flow_table);
+        m_sub_flow_tables.emplace_back(flow_table);
         flow_table->set_layout_item(group, m_table_name);
         add_layoutwidgetbase(flow_table);
 
@@ -521,7 +521,7 @@ void FlowTableWithFields::add_field(const std::shared_ptr<LayoutItem_Field>& lay
 
   info.m_second->signal_open_details_requested().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_open_details_requested), layoutitem_field)  );
 
-  m_listFields.push_back(info); //This would be the wrong position, but you should only use this method directly when you expect it to be followed by a complete re-layout.
+  m_listFields.emplace_back(info); //This would be the wrong position, but you should only use this method directly when you expect it to be followed by a complete re-layout.
 }
 
 
@@ -635,7 +635,7 @@ void FlowTableWithFields::get_layout_groups(Document::type_list_layout_groups& g
   std::shared_ptr<LayoutGroup> group(get_layout_group());
   if(group)
   {
-    groups.push_back(group);
+    groups.emplace_back(group);
   }
 }
 
@@ -789,7 +789,7 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const std::sh
       {
         auto relationship = portal->get_relationship(); //In this case, we only care about the first relationship (not any child relationships), because that's what would trigger a change.
         if(relationship && (relationship->get_from_field() == from_key_name))
-          result.push_back(pPortalUI);
+          result.emplace_back(pPortalUI);
       }
       else
       {
@@ -851,7 +851,7 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
       continue; //"Show All" choices don't use the ID field values.
 
     if(choice_relationship->get_from_field() == from_key_name)
-      result.push_back(combochoices);
+      result.emplace_back(combochoices);
   }
 
   //Check the sub-flowtables:
@@ -1050,7 +1050,7 @@ void FlowTableWithFields::set_design_mode(bool value)
 
 void FlowTableWithFields::add_layoutwidgetbase(LayoutWidgetBase* layout_widget)
 {
-  m_list_layoutwidgets.push_back(layout_widget);
+  m_list_layoutwidgets.emplace_back(layout_widget);
 
   //Handle layout_changed signal:
 #ifndef GLOM_ENABLE_CLIENT_ONLY

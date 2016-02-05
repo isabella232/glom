@@ -136,7 +136,7 @@ void FlowTable::insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool 
   if(first && second)
   {
     auto hbox = new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, get_horizontal_spacing());
-    m_list_hboxes.push_back(hbox); //So we can delete it whenever necessary.
+    m_list_hboxes.emplace_back(hbox); //So we can delete it whenever necessary.
 
     hbox->pack_start(*first, Gtk::PACK_SHRINK);
     hbox->pack_start(*second, expand ? Gtk::PACK_EXPAND_WIDGET : Gtk::PACK_SHRINK);
@@ -146,14 +146,14 @@ void FlowTable::insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool 
     Egg::SpreadTableDnd::insert_child(*hbox, index);
     //std::cout << "DEBUG: inserted hbox=" << hbox << " for first=" << first << std::endl;
 
-    m_list_first_widgets.push_back(first);
+    m_list_first_widgets.emplace_back(first);
   }
   else if(first)
   {
     first->set_halign(expand ? Gtk::ALIGN_FILL : Gtk::ALIGN_START);
     Egg::SpreadTableDnd::append_child(*first);
     //std::cout << "DEBUG: inserted first=" << first << std::endl;
-    m_list_first_widgets.push_back(first);
+    m_list_first_widgets.emplace_back(first);
   }
   else
   {
@@ -251,7 +251,7 @@ bool FlowTable::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
   cr->set_line_cap(Cairo::LINE_CAP_SQUARE);
   cr->set_line_join(Cairo::LINE_JOIN_MITER);
   std::vector<double> dashes;
-  dashes.push_back(10);
+  dashes.emplace_back(10);
   cr->set_dash(dashes, 0);
 
   //Draw lines based on the allocations of the "first" widgets:

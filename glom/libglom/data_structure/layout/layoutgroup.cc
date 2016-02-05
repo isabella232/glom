@@ -43,7 +43,7 @@ LayoutGroup::LayoutGroup(const LayoutGroup& src)
   for(const auto& item : src.m_list_items)
   {
     if(item)
-      m_list_items.push_back( glom_sharedptr_clone(item) );
+      m_list_items.emplace_back( glom_sharedptr_clone(item) );
   }
 }
 
@@ -80,7 +80,7 @@ LayoutGroup& LayoutGroup::operator=(const LayoutGroup& src)
     for(const auto& item : src.m_list_items)
     {
       if(item)
-        m_list_items.push_back( glom_sharedptr_clone(item) );
+        m_list_items.emplace_back( glom_sharedptr_clone(item) );
     }
   }
 
@@ -141,7 +141,7 @@ bool LayoutGroup::has_any_fields() const
 
 void LayoutGroup::add_item(const std::shared_ptr<LayoutItem>& item)
 {
-  m_list_items.push_back(item);
+  m_list_items.emplace_back(item);
 }
 
 void LayoutGroup::add_item(const std::shared_ptr<LayoutItem>& item, const std::shared_ptr<const LayoutItem>& position)
@@ -177,7 +177,7 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items() const
 
   for(const auto& item : m_list_items)
   {
-    result.push_back(item);
+    result.emplace_back(item);
   }
 
   return result;
@@ -196,7 +196,7 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive() const
       result.insert(result.end(), sub_result.begin(), sub_result.end());
     }
     else
-      result.push_back(item);
+      result.emplace_back(item);
   }
 
   return result;
@@ -215,7 +215,7 @@ LayoutGroup::type_list_items LayoutGroup::get_items_recursive()
       result.insert(result.end(), sub_result.begin(), sub_result.end());
     }
     else
-      result.push_back(item);
+      result.emplace_back(item);
   }
 
   return result;
@@ -228,7 +228,7 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive_with_groups(
   for(const auto& item : m_list_items)
   {    
     //Add the item itself:
-    result.push_back(item);
+    result.emplace_back(item);
     
     auto group = std::dynamic_pointer_cast<const LayoutGroup>(item);
     if(group)

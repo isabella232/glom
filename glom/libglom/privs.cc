@@ -52,7 +52,7 @@ Privs::type_vec_strings Privs::get_database_groups()
     {
       const auto value = data_model->get_value_at(0, row);
       const auto name = value.get_string();
-      result.push_back(name);
+      result.emplace_back(name);
     }
   }
 
@@ -128,7 +128,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
       {
         const auto value = data_model->get_value_at(0, row);
         const auto name = value.get_string();
-        result.push_back(name);
+        result.emplace_back(name);
       }
     }
   }
@@ -174,7 +174,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
           {
             const auto value_user = data_model_user->get_value_at(0, 0);
             //std::cout << G_STRFUNC << "DEBUG:  username=" << value.get_string() << std::endl; 
-            result.push_back(value_user.get_string());
+            result.emplace_back(value_user.get_string());
           }
           else
           {
@@ -328,25 +328,25 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
   //However, note that libgda does seem to escape characters here (for instance, changing ' to '').
   //const Glib::ustring group_name_for_arg = connection->quote_sql_identifier(group_name);
   const Glib::ustring group_name_for_arg = group_name;
-  args_base.push_back(builder->add_expr(group_name_for_arg));
+  args_base.emplace_back(builder->add_expr(group_name_for_arg));
 
   //The table name must be quoted if it needs to be quoted,
   //but not quoted if it is does not need to be quoted,
   //because it must match how it was created, and libgda probably did not quote it unless necessary.
   const auto table_name_for_arg = connection->quote_sql_identifier(table_name);
-  args_base.push_back(builder->add_expr(table_name_for_arg));
+  args_base.emplace_back(builder->add_expr(table_name_for_arg));
 
   std::vector<Gnome::Gda::SqlBuilder::Id> args = args_base;
-  args.push_back(builder->add_expr("SELECT"));
+  args.emplace_back(builder->add_expr("SELECT"));
   builder->add_field_value_id(builder->add_function(function_name, args));
   args = args_base;
-  args.push_back(builder->add_expr("UPDATE"));
+  args.emplace_back(builder->add_expr("UPDATE"));
   builder->add_field_value_id(builder->add_function(function_name, args));
   args = args_base;
-  args.push_back(builder->add_expr("INSERT"));
+  args.emplace_back(builder->add_expr("INSERT"));
   builder->add_field_value_id(builder->add_function(function_name, args));
   args = args_base;
-  args.push_back(builder->add_expr("DELETE"));
+  args.emplace_back(builder->add_expr("DELETE"));
   builder->add_field_value_id(builder->add_function(function_name, args));
 
   //const Glib::ustring sql_debug = Utils::sqlbuilder_get_full_query(builder);
@@ -405,7 +405,7 @@ Privs::type_vec_strings Privs::get_groups_of_user(const Glib::ustring& user)
     if(get_user_is_in_group(user, group))
     {
       //Add the group to the result:
-      result.push_back(group);
+      result.emplace_back(group);
     }
   }
 

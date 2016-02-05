@@ -193,7 +193,7 @@ LayoutItem_GroupBy::type_list_sort_fields Dialog_SortFields::get_fields() const
       auto field_copy = glom_sharedptr_clone(item);
 
       const bool ascending = row[m_ColumnsFields.m_col_ascending];
-      result.push_back( LayoutItem_GroupBy::type_pair_sort_field(field_copy, ascending) );
+      result.emplace_back( LayoutItem_GroupBy::type_pair_sort_field(field_copy, ascending) );
 
       ++field_sequence;
     }
