@@ -119,7 +119,7 @@ void NotebookLabel::setup_menu(Gtk::Widget* /* widget */)
   menu->append(_("New Group"), "context.new-group");
   menu->append(_("_Delete"), "context.delete");
 
-  m_pPopupMenu = new Gtk::Menu(menu);
+  m_pPopupMenu = std::make_unique<Gtk::Menu>(menu);
   m_pPopupMenu->attach_to_widget(*this);
 }
 

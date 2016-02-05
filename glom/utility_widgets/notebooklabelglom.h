@@ -50,7 +50,7 @@ private:
   NotebookGlom* m_notebook;
   
   void setup_menu(Gtk::Widget* widget);
-  Gtk::Menu* m_pPopupMenu;
+  std::unique_ptr<Gtk::Menu> m_pPopupMenu;
   
   void on_menu_new_group_activate();
   void on_menu_delete_activate();
