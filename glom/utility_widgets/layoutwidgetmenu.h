@@ -49,7 +49,7 @@ public:
     
 protected:
 #ifndef GLOM_ENABLE_CLIENT_ONLY    
-  Gtk::Menu* m_pMenuPopup;
+  std::unique_ptr<Gtk::Menu> m_pMenuPopup;
 
   //TODO_Performance: //Presumably we waste lots of memory by having this in each layout widget. Maybe we can use one shared menu.
   Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup;

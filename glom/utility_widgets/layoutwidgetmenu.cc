@@ -29,9 +29,6 @@ namespace Glom
 {
 
 LayoutWidgetMenu::LayoutWidgetMenu()
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  : m_pMenuPopup(nullptr)
-#endif
 {
   #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_refActionGroup = Gio::SimpleActionGroup::create();
@@ -122,7 +119,7 @@ void LayoutWidgetMenu::setup_menu(Gtk::Widget* widget)
   menu->append(_("Delete"), "context.delete");
 
 
-  m_pMenuPopup = new Gtk::Menu(menu);
+  m_pMenuPopup = std::make_unique<Gtk::Menu>(menu);
   m_pMenuPopup->attach_to_widget(*widget);
 
   if(pApp)
