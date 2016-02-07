@@ -283,7 +283,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
       auto document = get_document();
       if(document)
       {
-        //Don't open a table that the document does not know about, because we need information from the document:
+        //Don't delete a table that the document does not know about, because we need information from the document:
         if(!document->get_table_is_known(table_name))
         {
            //TODO: Do not show tables that are not in the document.
@@ -302,7 +302,6 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           
           //Get a list of autoincrementing fields in the table:
           const auto fields = document->get_table_fields(table_name);
-   
 
           //Delete the table:
           if(iButtonClicked == Gtk::RESPONSE_OK)
