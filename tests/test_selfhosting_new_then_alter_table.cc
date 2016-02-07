@@ -59,6 +59,12 @@ static bool do_test(Glom::Document::HostingMode hosting_mode, const Glib::ustrin
     return false;
   }
 
+  const auto table_names = Glom::DbUtils::get_table_names_from_database();
+  if(Glom::Utils::find_exists(table_names, renamed_table_name)) {
+    std::cerr << G_STRFUNC << ": Failure: The dropped table seems to still exist." << std::endl;
+    return false;
+  }
+
   test_selfhosting_cleanup();
  
   return true; 

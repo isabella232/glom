@@ -2008,7 +2008,11 @@ bool rename_table(const Glib::ustring& table_name, const Glib::ustring& new_tabl
 bool drop_table(const Glib::ustring& table_name)
 {
   //TODO: Escape the table names:
-  return DbUtils::query_execute_string( "DROP TABLE " + escape_sql_id(table_name));
+  if(!DbUtils::query_execute_string( "DROP TABLE " + escape_sql_id(table_name)))
+    return false;
+
+  auto connection_pool = ConnectionPool::get_instance();
+  return connection_pool->update_meta_store_for_table_names();
 }
 
 Glib::ustring escape_sql_id(const Glib::ustring& id)
