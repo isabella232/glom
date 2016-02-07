@@ -4849,7 +4849,19 @@ Glib::ustring Document::save_backup_file(const Glib::ustring& uri, const SlotPro
   //Save a copy of the .glom document,
   //with the same name as the directory:
   //For instance <path>/chosendirectory/chosendirectory.glom
-  const auto path_dir = Glib::filename_from_uri(uri);
+
+  std::string path_dir;
+  try
+  {
+    path_dir = Glib::filename_from_uri(uri);
+  }
+  catch(const Glib::ConvertError& ex)
+  {
+    std::cerr << G_STRFUNC << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
+
+    return Glib::ustring();
+  }
+
   const auto basename_dir = Glib::path_get_basename(path_dir);
   const auto filepath_document = Glib::build_filename(path_dir, basename_dir + ".glom");
   const auto uri_document = Glib::filename_to_uri(filepath_document);
@@ -4972,7 +4984,17 @@ Glib::ustring Document::extract_backup_file(const Glib::ustring& backup_uri, std
   backup_path.clear();
 
   // We cannot use an uri here, because we cannot untar remote files.
-  const auto filename_tarball = Glib::filename_from_uri(backup_uri);
+  std::string filename_tarball;
+  try
+  {
+    filename_tarball = Glib::filename_from_uri(backup_uri);
+  }
+  catch(const Glib::ConvertError& ex)
+  {
+    std::cerr << G_STRFUNC << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
+
+    return Glib::ustring();
+  }
 
   struct archive* a = archive_read_new();
   auto scoped = make_unique_ptr_archive(a);
