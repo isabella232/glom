@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-01-13 07:40+0000\n"
-"PO-Revision-Date: 2016-01-13 12:03+0100\n"
+"POT-Creation-Date: 2016-02-01 07:42+0000\n"
+"PO-Revision-Date: 2016-02-01 15:50+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -579,8 +579,14 @@ msgid "The details view showing records from a related table"
 msgstr "La vista de detalles mostrando registros de la tabla relacionada"
 
 #: ../glom.desktop.in.in.h:2
-msgid "A user-friendly database environment."
-msgstr "Un entorno de bases de datos amigable."
+#| msgid "A user-friendly database environment."
+msgid "A user-friendly database environment"
+msgstr "Un entorno de bases de datos amigable"
+
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../glom.desktop.in.in.h:4
+msgid "database;ui;tables;postgresql;forms;"
+msgstr "base de datos;iu;tablas;postgresql;formulario;"
 
 #: ../glom/dialog_connection.cc:195
 msgid "Not yet created."
@@ -1266,7 +1272,7 @@ msgstr "Número"
 #: ../glom/libglom/data_structure/field.cc:659
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:69
 #: ../glom/libglom/data_structure/translatable_item.cc:268
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1137
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1148
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
 msgid "Text"
 msgstr "Texto"
@@ -1291,7 +1297,7 @@ msgstr "Booleano"
 #: ../glom/libglom/data_structure/field.cc:671
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:66
 #: ../glom/libglom/data_structure/translatable_item.cc:262
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1144
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1155
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
 #: ../glom/utility_widgets/layouttoolbar.cc:46
 msgid "Image"
@@ -1346,7 +1352,7 @@ msgstr "Agrupar"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:64
 #: ../glom/libglom/data_structure/translatable_item.cc:258
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1130
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1141
 #: ../glom/utility_widgets/layouttoolbar.cc:42
 msgid "Button"
 msgstr "Botón"
@@ -1693,7 +1699,6 @@ msgid "The Glom file path is a directory instead of a file."
 msgstr "La ruta del archivo de Glom es una carpeta en lugar de un archivo."
 
 #: ../glom/glom_export_po_all.cc:174
-#| msgid "The ouput directory could not be created."
 msgid "The output directory could not be created."
 msgstr "No se pudo crear la carpeta de salida."
 
@@ -2084,11 +2089,11 @@ msgstr "Ver el siguiente registro de la lista."
 msgid "View the last record in the list."
 msgstr "Ver el último registro de la lista."
 
-#: ../glom/mode_data/box_data_details.cc:416
+#: ../glom/mode_data/box_data_details.cc:424
 msgid "Layout Contains No Fields"
 msgstr "El esquema no contiene ningún campo"
 
-#: ../glom/mode_data/box_data_details.cc:416
+#: ../glom/mode_data/box_data_details.cc:424
 msgid ""
 "There are no fields on the layout, so there is no way to enter data in a new "
 "record."
@@ -2097,20 +2102,20 @@ msgstr ""
 "datos en un nuevo registro."
 
 #. Tell user that a primary key is needed to delete a record:
-#: ../glom/mode_data/box_data_details.cc:443
+#: ../glom/mode_data/box_data_details.cc:451
 msgid "No primary key value."
 msgstr "No hay un valor para la clave primaria."
 
-#: ../glom/mode_data/box_data_details.cc:444
+#: ../glom/mode_data/box_data_details.cc:452
 msgid "This record cannot be deleted because there is no primary key."
 msgstr "Este registro no se puede eliminar porque no hay una clave primaria."
 
 #. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:845
+#: ../glom/mode_data/box_data_details.cc:853
 msgid "Primary key auto increments"
 msgstr "La clave primaria es autoincrementable"
 
-#: ../glom/mode_data/box_data_details.cc:846
+#: ../glom/mode_data/box_data_details.cc:854
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
@@ -2130,53 +2135,53 @@ msgstr ""
 "No existe ningún registro con ese valor. Por consiguiente la navegación "
 "hasta el registro relacionado no es posible."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1093
+#: ../glom/mode_data/flowtablewithfields.cc:1100
 #: ../glom/utility_widgets/notebooklabelglom.cc:72
 #: ../glom/utility_widgets/notebooklabelglom.cc:119
 msgid "New Group"
 msgstr "Grupo nuevo"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1099
+#: ../glom/mode_data/flowtablewithfields.cc:1106
 #: ../glom/mode_design/layout/dialog_layout_details.cc:724
 msgid "notebook"
 msgstr "cuaderno"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1105
+#: ../glom/mode_data/flowtablewithfields.cc:1112
 msgid "tab1"
 msgstr "tab1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1108
+#: ../glom/mode_data/flowtablewithfields.cc:1115
 msgid "Tab One"
 msgstr "Pestaña uno"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1121
+#: ../glom/mode_data/flowtablewithfields.cc:1128
 msgid "button"
 msgstr "botón"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1122
+#: ../glom/mode_data/flowtablewithfields.cc:1129
 #: ../glom/mode_design/layout/dialog_layout_details.cc:650
 msgid "New Button"
 msgstr "Botón nuevo"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1128
+#: ../glom/mode_data/flowtablewithfields.cc:1135
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:385
 msgid "text"
 msgstr "texto"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1129
+#: ../glom/mode_data/flowtablewithfields.cc:1136
 msgid "New Text"
 msgstr "Texto nuevo"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1278
+#: ../glom/mode_data/flowtablewithfields.cc:1285
 msgid "Delete whole group \"%1\"?"
 msgstr "¿Eliminar el grupo «%1» entero?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1284
+#: ../glom/mode_data/flowtablewithfields.cc:1291
 msgid "Delete whole group?"
 msgstr "¿Eliminar el grupo entero?"
 
@@ -2464,19 +2469,19 @@ msgstr "Pestañas del cuaderno"
 msgid "Add child groups to the notebook to add tabs."
 msgstr "Añadir grupos hijos al cuaderno para añadir pestañas."
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1100
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1111
 msgid "Related Calendar: %1"
 msgstr "Calendario relacionado: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1102
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1113
 msgid "Related List: %1"
 msgstr "Lista relacionada: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1119
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1130
 msgid "Field: %1"
 msgstr "Campo: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1178
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1189
 msgid "(Notebook)"
 msgstr "(Cuaderno)"
 
