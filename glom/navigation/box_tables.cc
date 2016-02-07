@@ -301,14 +301,17 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
         {
           //Ask the user to confirm:
           const Glib::ustring strMsg = Glib::ustring::compose(_("Are you sure that you want to delete this table?\nTable name: %1"), table_name);
-          Gtk::MessageDialog dialog(UiUtils::bold_message(_("Delete Table")), true);
+          Gtk::MessageDialog dialog(UiUtils::bold_message(_("Delete Table")),
+            true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE,
+            true /* modal */);
           dialog.set_secondary_text(strMsg);
           dialog.set_transient_for(*AppWindow::get_appwindow());
+          dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
+          dialog.add_button(_("Delete Table"), Gtk::RESPONSE_OK);
           const int iButtonClicked = dialog.run();
           
           //Get a list of autoincrementing fields in the table:
           const Glom::Document::type_vec_fields fields = document->get_table_fields(table_name);
-   
 
           //Delete the table:
           if(iButtonClicked == Gtk::RESPONSE_OK)
