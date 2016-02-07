@@ -337,7 +337,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
 
       {
         //Allow get_meta_store_data() to succeed:
-        //Hopefully this (and the update_meta_store_for_table() calls) is all we need.
+        //Hopefully this (and the update_meta_store_table() calls) is all we need.
         //std::cout << "DEBUG: Calling update_meta_store_data_types() ..." << std::endl;
         try
         {
@@ -357,26 +357,8 @@ sharedptr<SharedConnection> ConnectionPool::connect()
 
         //std::cout << "DEBUG: Calling update_meta_store_table_names() ..." << std::endl;
 
-        try
-        {
-          //update_meta_store_table_names() has been known to throw an exception.
-          //Glom is mostly unusable when it fails, but that's still better than a crash.
-          //std::cout << G_STRFUNC << ": Before update_meta_store_table_name()" << std::endl;
-          const bool test = m_refGdaConnection->update_meta_store_table_names(m_backend->get_public_schema_name());
-          if(!test && !m_fake_connection)
-          {
-            std::cerr << G_STRFUNC << ": update_meta_store_table_names() failed without an exception." << std::endl;
-          }
-        }
-        catch(const Glib::Error& ex)
-        {
-          //If the connection was not opened, because it is a fake connection,
-          //then we should not be surprised that this fails,
-          //and a warning will only be useful later when get_meta_store_data() fails when used in get_table_names_from_database().
-          if(!m_fake_connection)
-          {
-            std::cerr << G_STRFUNC << ": update_meta_store_table_names() failed: " << ex.what() << std::endl;
-          }
+        if(!update_meta_store_for_table_names()) {
+          std::cerr << G_STRFUNC << ": update_meta_store_table_names() failed without an exception." << std::endl;
         }
         //std::cout << "DEBUG: ... update_meta_store_table_names() has finished." << std::endl;
 
@@ -1026,6 +1008,35 @@ void ConnectionPool::set_fake_connection()
   //Set a fake username and password, to avoid a GError from gda_connection_new_from_string():
   set_user("glom_fake_user");
   set_password("glom_fake_password");
+}
+
+bool ConnectionPool::update_meta_store_for_table_names()
+{
+  try
+  {
+    //update_meta_store_table_names() has been known to throw an exception.
+    //Glom is mostly unusable when it fails, but that's still better than a crash.
+    //std::cout << G_STRFUNC << ": Before update_meta_store_table_name()" << std::endl;
+    const bool test = m_refGdaConnection->update_meta_store_table_names(m_backend->get_public_schema_name());
+    if(!test && !m_fake_connection)
+    {
+      std::cerr << G_STRFUNC << ": update_meta_store_table_names() failed without an exception." << std::endl;
+      return false;
+    }
+  }
+  catch(const Glib::Error& ex)
+  {
+    //If the connection was not opened, because it is a fake connection,
+    //then we should not be surprised that this fails,
+    //and a warning will only be useful later when get_meta_store_data() fails when used in get_table_names_from_database().
+    if(!m_fake_connection)
+    {
+      std::cerr << G_STRFUNC << ": update_meta_store_table_names() failed: " << ex.what() << std::endl;
+      return false;
+    }
+  }
+
+  return true;
 }
 
 } //namespace Glom
