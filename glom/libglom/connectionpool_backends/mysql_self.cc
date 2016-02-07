@@ -146,7 +146,18 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
   if(file_exists_uri(dbdir_uri))
     return INITERROR_DIRECTORY_ALREADY_EXISTS;
 
-  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+  std::string dbdir;
+  try
+  {
+    dbdir = Glib::filename_from_uri(dbdir_uri);
+  }
+  catch(const Glib::ConvertError& ex)
+  {
+    std::cerr << G_STRFUNC << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
+
+    return INITERROR_OTHER;
+  }
+
   //std::cout << "debug: dbdir=" << dbdir << std::endl;
   g_assert(!dbdir.empty());
 
@@ -308,7 +319,18 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
     return STARTUPERROR_FAILED_NO_MAIN_DIRECTORY;
   }
 
-  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+  std::string dbdir;
+  try
+  {
+    dbdir = Glib::filename_from_uri(dbdir_uri);
+  }
+  catch(const Glib::ConvertError& ex)
+  {
+    std::cerr << G_STRFUNC << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
+
+    return STARTUPERROR_FAILED_UNKNOWN_REASON;
+  }
+
   g_assert(!dbdir.empty());
 
   const std::string dbdir_data = Glib::build_filename(dbdir, FILENAME_DATA);

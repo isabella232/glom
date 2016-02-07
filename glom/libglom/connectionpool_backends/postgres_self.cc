@@ -166,7 +166,18 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   if(file_exists_uri(dbdir_uri))
     return INITERROR_DIRECTORY_ALREADY_EXISTS;
 
-  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+  std::string dbdir;
+  try
+  {
+    dbdir = Glib::filename_from_uri(dbdir_uri);
+  }
+  catch(const Glib::ConvertError& ex)
+  {
+    std::cerr << G_STRFUNC << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
+
+    return INITERROR_OTHER;
+  }
+
   //std::cout << "debug: dbdir=" << dbdir << std::endl;
   g_assert(!dbdir.empty());
 
@@ -356,7 +367,18 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
     return STARTUPERROR_FAILED_NO_MAIN_DIRECTORY;
   }
 
-  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+  std::string dbdir;
+  try
+  {
+    dbdir = Glib::filename_from_uri(dbdir_uri);
+  }
+  catch(const Glib::ConvertError& ex)
+  {
+    std::cerr << G_STRFUNC << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
+
+    return STARTUPERROR_FAILED_UNKNOWN_REASON;
+  }
+
   g_assert(!dbdir.empty());
 
   const std::string dbdir_data = Glib::build_filename(dbdir, FILENAME_DATA);
@@ -483,7 +505,18 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
     return true; //Don't try to stop it if we have not started it.
 
   const std::string dbdir_uri = m_database_directory_uri;
-  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+  std::string dbdir;
+  try
+  {
+    dbdir = Glib::filename_from_uri(dbdir_uri);
+  }
+  catch(const Glib::ConvertError& ex)
+  {
+    std::cerr << G_STRFUNC << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
+
+    return false;
+  }
+
   g_assert(!dbdir.empty());
 
   const std::string dbdir_data = Glib::build_filename(dbdir, FILENAME_DATA);
@@ -538,8 +571,19 @@ bool PostgresSelfHosted::set_network_shared(const SlotProgress& /* slot_progress
 
   m_network_shared = network_shared;
 
+
   const std::string dbdir_uri = m_database_directory_uri;
-  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+  std::string dbdir;
+  try
+  {
+    dbdir = Glib::filename_from_uri(dbdir_uri);
+  }
+  catch(const Glib::ConvertError& ex)
+  {
+    std::cerr << G_STRFUNC << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
+
+    return false;
+  }
 
   const std::string dbdir_uri_config = dbdir_uri + "/config";
   const char* default_conf_contents = 0;
