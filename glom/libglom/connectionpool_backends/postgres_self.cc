@@ -220,8 +220,15 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
 
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_initdb = get_path_to_postgres_executable("initdb") + " -D " + Glib::shell_quote(dbdir_data) +
-                                        " -U " + initial_username + " --pwfile=" + Glib::shell_quote(temp_pwfile);
+  // We set the default locale, with --locale, to avoid the database's initial locale
+  // from being based on the current environment, because we want the database to be
+  // as portable as possible.
+  // See http://www.postgresql.org/docs/current/static/app-initdb.html
+  const std::string command_initdb = get_path_to_postgres_executable("initdb") +
+    " -D " + Glib::shell_quote(dbdir_data) +
+    " -U " + initial_username +
+    " --pwfile=" + Glib::shell_quote(temp_pwfile) +
+    " --locale=C";
 
   //Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
   const auto result = Glom::Spawn::execute_command_line_and_wait(command_initdb, slot_progress);
