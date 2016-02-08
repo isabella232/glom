@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-12-12 23:07+0000\n"
-"PO-Revision-Date: 2016-01-03 21:14+0100\n"
+"POT-Creation-Date: 2016-02-08 19:42+0000\n"
+"PO-Revision-Date: 2016-02-08 22:29+0100\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de_DE\n"
@@ -90,14 +90,15 @@ msgstr ""
 "von Glom erstellt wurde."
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
+#. This can only happen if we couldn't connect to the server at all.
 #. Warn the user, and let him try again:
-#: ../glom/appwindow.cc:642 ../glom/frame_glom.cc:2151
-#: ../glom/frame_glom.cc:2222
+#: ../glom/appwindow.cc:642 ../glom/frame_glom.cc:2125
+#: ../glom/frame_glom.cc:2194
 msgid "Connection Failed"
 msgstr "Verbindung gescheitert"
 
-#: ../glom/appwindow.cc:642 ../glom/frame_glom.cc:2151
-#: ../glom/frame_glom.cc:2222
+#: ../glom/appwindow.cc:642 ../glom/frame_glom.cc:2125
+#: ../glom/frame_glom.cc:2194
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an "
 "incorrect user name or password, or maybe the postgres database server is "
@@ -190,7 +191,7 @@ msgstr ""
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:838
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:882
 #: ../glom/mode_design/script_library/dialog_script_library.cc:131
-#: ../glom/navigation/box_tables.cc:397
+#: ../glom/navigation/box_tables.cc:307 ../glom/navigation/box_tables.cc:401
 #: ../glom/mode_design/translation/window_translations.cc:357
 #: ../glom/mode_design/translation/window_translations.cc:396
 #: ../glom/utility_widgets/imageglom.cc:682
@@ -589,10 +590,15 @@ msgid "The details view showing records from a related table"
 msgstr "Die Detailansicht, die Datensätze einer Bezugstabelle anzeigt"
 
 #: ../glom.desktop.in.in.h:2
-msgid "A user-friendly database environment."
-msgstr "Eine anwenderfreundliche Datenbankumgebung."
+msgid "A user-friendly database environment"
+msgstr "Eine anwenderfreundliche Datenbankumgebung"
 
-#: ../glom/dialog_connection.cc:205
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../glom.desktop.in.in.h:4
+msgid "database;ui;tables;postgresql;forms;"
+msgstr "Datenbank;grafisch;Tabellen;Postgresql;Formulare;"
+
+#: ../glom/dialog_connection.cc:199
 msgid "Not yet created."
 msgstr "Noch nicht fertiggestellt."
 
@@ -798,13 +804,12 @@ msgstr ""
 msgid "_Stop Sharing"
 msgstr "Freigabe _beenden"
 
-#: ../glom/frame_glom.cc:980 ../glom/frame_glom.cc:2208
+#: ../glom/frame_glom.cc:980 ../glom/frame_glom.cc:2180
 msgid "Stopping Database Server"
 msgstr "Datenbankserver wird angehalten"
 
-#. Do startup, such as starting the self-hosting database server
-#: ../glom/frame_glom.cc:983 ../glom/frame_glom.cc:2095
-#: ../glom/frame_glom.cc:2254
+#: ../glom/frame_glom.cc:983 ../glom/frame_glom.cc:2107
+#: ../glom/frame_glom.cc:2226
 msgid "Starting Database Server"
 msgstr "Datenbankserver wird gestartet"
 
@@ -898,12 +903,12 @@ msgid "There was an error when attempting to start the database server."
 msgstr ""
 "Beim Versuch, den Datenbankserver zu starten, ist ein Fehler aufgetreten."
 
-#: ../glom/frame_glom.cc:2027
+#: ../glom/frame_glom.cc:2037
 msgid "Initializing Database Data"
 msgstr "Datenbank-Daten werden initialisiert"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2599
+#: ../glom/frame_glom.cc:2562
 msgid "All"
 msgstr "Alle"
 
@@ -1289,7 +1294,7 @@ msgstr "Nummer"
 #: ../glom/libglom/data_structure/field.cc:666
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
 #: ../glom/libglom/data_structure/translatable_item.cc:268
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1150
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1165
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
 msgid "Text"
 msgstr "Text"
@@ -1314,7 +1319,7 @@ msgstr "Boolean"
 #: ../glom/libglom/data_structure/field.cc:678
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
 #: ../glom/libglom/data_structure/translatable_item.cc:262
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1157
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1172
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
 #: ../glom/utility_widgets/layouttoolbar.cc:46
 msgid "Image"
@@ -1370,7 +1375,7 @@ msgstr "Gruppe"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:68
 #: ../glom/libglom/data_structure/translatable_item.cc:258
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1143
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1158
 #: ../glom/utility_widgets/layouttoolbar.cc:42
 msgid "Button"
 msgstr "Schalter"
@@ -2163,53 +2168,53 @@ msgstr ""
 "Ex existiert kein Datensatz mit diesem Wert, daher ist die Navigation zu "
 "diesem Bezugsdatensatz nicht möglich."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1098
+#: ../glom/mode_data/flowtablewithfields.cc:1105
 #: ../glom/utility_widgets/notebooklabelglom.cc:77
 #: ../glom/utility_widgets/notebooklabelglom.cc:124
 msgid "New Group"
 msgstr "Neue Gruppe"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1104
+#: ../glom/mode_data/flowtablewithfields.cc:1111
 #: ../glom/mode_design/layout/dialog_layout_details.cc:729
 msgid "notebook"
 msgstr "Reitermappe"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1110
+#: ../glom/mode_data/flowtablewithfields.cc:1117
 msgid "tab1"
 msgstr "Reiter1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1113
+#: ../glom/mode_data/flowtablewithfields.cc:1120
 msgid "Tab One"
 msgstr "Reiter Eins"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1126
+#: ../glom/mode_data/flowtablewithfields.cc:1133
 msgid "button"
 msgstr "Schalter"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1127
+#: ../glom/mode_data/flowtablewithfields.cc:1134
 #: ../glom/mode_design/layout/dialog_layout_details.cc:655
 msgid "New Button"
 msgstr "Neuer Schalter"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1133
+#: ../glom/mode_data/flowtablewithfields.cc:1140
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:385
 msgid "text"
 msgstr "Text"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1134
+#: ../glom/mode_data/flowtablewithfields.cc:1141
 msgid "New Text"
 msgstr "Neuer Text"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1283
+#: ../glom/mode_data/flowtablewithfields.cc:1290
 msgid "Delete whole group \"%1\"?"
 msgstr "Gesamte Gruppe »%1« löschen?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1289
+#: ../glom/mode_data/flowtablewithfields.cc:1296
 msgid "Delete whole group?"
 msgstr "Gesamte Gruppe löschen?"
 
@@ -2503,19 +2508,19 @@ msgid "Add child groups to the notebook to add tabs."
 msgstr ""
 "Fügen Sie Kindgruppen zur Reitermappe hinzu, um weitere Reiter hinzuzufügen."
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1113
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1128
 msgid "Related Calendar: %1"
 msgstr "Bezugskalender: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1115
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1130
 msgid "Related List: %1"
 msgstr "Bezugsliste: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1132
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1147
 msgid "Field: %1"
 msgstr "Feld: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1191
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1206
 msgid "(Notebook)"
 msgstr "(Reitermappe)"
 
@@ -2653,7 +2658,7 @@ msgid "<b>Rename Print Layout</b>"
 msgstr "<b>Druck-Layout umbenennen</b>"
 
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:227
-#: ../glom/navigation/box_tables.cc:398
+#: ../glom/navigation/box_tables.cc:402
 msgid "Rename"
 msgstr "Umbenennen"
 
@@ -2876,24 +2881,24 @@ msgstr ""
 "Sind Sie sicher, dass Sie diese Tabelle löschen möchten?\n"
 "Tabellenname: %1"
 
-#: ../glom/navigation/box_tables.cc:302
+#: ../glom/navigation/box_tables.cc:302 ../glom/navigation/box_tables.cc:308
 msgid "Delete Table"
 msgstr "Tabelle löschen"
 
-#: ../glom/navigation/box_tables.cc:395
+#: ../glom/navigation/box_tables.cc:399
 msgid "Are you sure that you want to rename this table?"
 msgstr "Sind Sie sicher, dass Sie diese Tabelle umbenennen möchten?"
 
 #. TODO: Show old and new names?
-#: ../glom/navigation/box_tables.cc:396
+#: ../glom/navigation/box_tables.cc:400
 msgid "<b>Rename Table</b>"
 msgstr "<b>Tabelle umbenennen</b>"
 
-#: ../glom/navigation/box_tables.cc:438
+#: ../glom/navigation/box_tables.cc:442
 msgid "Unknown Table"
 msgstr "Unbekannte Tabelle"
 
-#: ../glom/navigation/box_tables.cc:439
+#: ../glom/navigation/box_tables.cc:443
 msgid ""
 "You cannot open this table, because there is no information about this table "
 "in the document."
