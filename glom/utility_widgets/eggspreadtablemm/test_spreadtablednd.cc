@@ -67,9 +67,9 @@ populate_spread_table_wrappy(Egg::SpreadTableDnd* spread_table)
     delete child;
   }
 
-  for(gsize i = 0; i < G_N_ELEMENTS (strings); ++i)
+  for(const auto& string : strings)
     {
-      auto label = Gtk::manage(new Gtk::Label(strings[i]));
+      auto label = Gtk::manage(new Gtk::Label(string));
       Gtk::Frame* frame  = Gtk::manage(new Gtk::Frame());
       auto eventbox = Gtk::manage(new Gtk::EventBox());
       label->show();

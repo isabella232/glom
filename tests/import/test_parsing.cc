@@ -23,13 +23,11 @@ type_tokens& get_tokens_instance()
 
 void on_line_scanned(const std::vector<Glib::ustring>& row, guint /*line_number*/)
 {
-  for(auto iter = row.begin();
-      iter != row.end();
-      ++iter)
+  for(const auto& elem : row)
   {
     //std::cout << "debug: " << G_STRFUNC << ": item=" << *iter << std::endl;
 
-    get_tokens_instance().emplace_back(*iter);
+    get_tokens_instance().emplace_back(elem);
   }
 }
 
@@ -65,11 +63,9 @@ bool check_tokens(const std::string& regex)
   if(get_tokens_instance().empty())
     return false;
 
-  for(auto iter = get_tokens_instance().begin();
-       iter != get_tokens_instance().end();
-       ++iter)
+  for(const auto& elem : get_tokens_instance())
   {
-    if(std::regex_match(*iter, check))
+    if(std::regex_match(elem, check))
       return true;
   }
 
