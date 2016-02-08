@@ -583,27 +583,22 @@ void UiUtils::treeview_delete_all_columns(Gtk::TreeView* treeview)
   //Deleting them explicitly is safer and clearer. murrayc.
 
   //Remove all View columns:
-  typedef std::vector<Gtk::TreeView::Column*> type_vec_columns;
-  type_vec_columns vecViewColumns (treeview->get_columns());
-
-  for (type_vec_columns::iterator iter (vecViewColumns.begin ()), columns_end (vecViewColumns.end ());
-    iter != columns_end;
-    ++iter)
+  auto vecViewColumns = treeview->get_columns();
+  for (auto& view_column : vecViewColumns)
   {
-    Gtk::TreeView::Column* pViewColumn (*iter);
-    if(!pViewColumn)
+    if(!view_column)
       continue;
 
     GtkTreeViewColumn* weak_ptr = nullptr;
-    g_object_add_weak_pointer (G_OBJECT (pViewColumn->gobj()), (gpointer*)&weak_ptr);
+    g_object_add_weak_pointer (G_OBJECT (view_column->gobj()), (gpointer*)&weak_ptr);
 
     //Keep the object alive, instead of letting gtk_tree_view_remove_column() delete it by reducing its reference to 0,
     //so we can explicitly delete it.
     //This feels safer, considering some strange crashes I've seen when using Gtk::TreeView::remove_all_columns(),
     //though that might have been just because we didn't reset m_treeviewcolumn_button. murrayc.
-    pViewColumn->reference();
-    treeview->remove_column(*pViewColumn);
-    delete pViewColumn; //This should cause it to be removed.
+    view_column->reference();
+    treeview->remove_column(*view_column);
+    delete view_column; //This should cause it to be removed.
 
     if(weak_ptr)
     {

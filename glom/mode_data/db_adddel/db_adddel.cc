@@ -516,14 +516,14 @@ guint DbAddDel::get_fixed_cell_height()
     m_fixed_cell_height = height_default;
 
     //Look at each column:
-    for(auto iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
+    for(const auto& item : m_column_items)
     {
       Glib::ustring font_name;
 
-      auto item_withformatting = std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(*iter);
+      const auto item_withformatting = std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(item);
       if(item_withformatting)
       {
-         const auto formatting = item_withformatting->get_formatting_used();
+         const auto& formatting = item_withformatting->get_formatting_used();
          font_name = formatting.get_text_format_font();
       }
 
@@ -691,9 +691,8 @@ void DbAddDel::construct_specified_columns()
   const auto has_expandable_column = get_column_to_expand(column_to_expand);
   //std::cout << "DEBUG: column_to_expand=" << column_to_expand  << ", has=" << has_expandable_column << std::endl;
 
-  for(auto iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
+  for(const auto& layout_item : m_column_items)
   {
-    const auto layout_item = m_column_items[model_column_index]; //TODO: Inefficient.
     if(layout_item) //column_info.m_visible)
     {
       no_columns_used = false;
@@ -1609,18 +1608,14 @@ void DbAddDel::on_treeview_columns_changed()
     //Get the new column order, and save it in m_vecColumnIDs:
     m_vecColumnIDs.clear();
 
-    typedef std::vector<Gtk::TreeViewColumn*> type_vecViewColumns;
-    type_vecViewColumns vecViewColumns = m_TreeView.get_columns();
-
-    for(auto iter = vecViewColumns.begin(); iter != vecViewColumns.end(); ++iter)
+    for(const auto& vecViewColumn : m_TreeView.get_columns())
     {
-      auto pViewColumn = dynamic_cast<DbTreeViewColumnGlom*>(*iter);
-      if(pViewColumn)
-      {
-        const auto column_id = pViewColumn->get_column_id();
-        m_vecColumnIDs.emplace_back(column_id);
+      const auto view_column = dynamic_cast<DbTreeViewColumnGlom*>(vecViewColumn);
+      if(!view_column)
+        continue;
 
-      }
+      const auto column_id = view_column->get_column_id();
+      m_vecColumnIDs.emplace_back(column_id);
     }
 
     //Tell other code that something has changed, so the new column order can be serialized.

@@ -117,9 +117,8 @@ void Application::on_open(const Gio::Application::type_vec_files& files,
   // The application has been asked to open some files,
   // so let's open a new window for each one.
   //std::cout << "debug: files.size()=" << files.size() << std::endl;
-  for(guint i = 0; i < files.size(); i++)
+  for(const auto& file : files)
   {
-    auto file = files[i];
     if(!file)
     {
       std::cerr << G_STRFUNC << ": file is null." << std::endl;

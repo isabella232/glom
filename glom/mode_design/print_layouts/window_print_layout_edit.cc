@@ -1393,8 +1393,6 @@ void Window_PrintLayout_Edit::get_dimensions_of_multiple_selected_items(double& 
 
 void Window_PrintLayout_Edit::on_canvas_selection_changed()
 {
-  Canvas_PrintLayout::type_vec_items items = m_canvas.get_selected_items();
-
   //Forget about any previously selected items:
   m_layout_items_selected.clear();
   for(auto item : m_connections_items_selected_moved)
@@ -1403,11 +1401,10 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
   }
   m_connections_items_selected_moved.clear();
   
-
-  for(auto iter = items.begin();
-    iter != items.end(); ++iter)
+  const auto items = m_canvas.get_selected_items();
+  for(const auto& base_item : items)
   {
-    auto item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(*iter);
+    auto item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_item);
     if(!item)
       continue;
 

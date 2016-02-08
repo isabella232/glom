@@ -94,18 +94,16 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
   //Add the rule lines:
   remove_rules();
 
-  const PrintLayout::type_vec_doubles h_rules = print_layout->get_horizontal_rules();
-  for(auto iter = h_rules.begin();
-    iter != h_rules.end(); ++iter)
+  const auto h_rules = print_layout->get_horizontal_rules();
+  for(const auto& h_rule : h_rules)
   {
-    add_horizontal_rule(*iter);
+    add_horizontal_rule(h_rule);
   }
 
-  const PrintLayout::type_vec_doubles v_rules = print_layout->get_vertical_rules();
-  for(auto iter = v_rules.begin();
-    iter != v_rules.end(); ++iter)
+  const auto v_rules = print_layout->get_vertical_rules();
+  for(const auto& v_rule : v_rules)
   {
-    add_vertical_rule(*iter);
+    add_vertical_rule(v_rule);
   }
 
   //TODO: This needs a number, but that is decided in WindowPrintLayoutEdit: set_grid_gap( print_layout->get_show_grid() );

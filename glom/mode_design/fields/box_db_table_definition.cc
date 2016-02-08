@@ -74,11 +74,11 @@ void Box_DB_Table_Definition::init()
 
   //Set Type choices:
 
-  Field::type_map_type_names mapFieldTypes = Field::get_usable_type_names();
+  const auto mapFieldTypes = Field::get_usable_type_names();
   AddDel::type_vec_strings vecTypes;
-  for(auto iter = mapFieldTypes.begin(); iter != mapFieldTypes.end();++iter)
+  for(const auto& mapFieldType : mapFieldTypes)
   {
-    const Glib::ustring& name = (*iter).second;
+    const auto& name = (mapFieldType).second;
     vecTypes.emplace_back(name);
   }
 

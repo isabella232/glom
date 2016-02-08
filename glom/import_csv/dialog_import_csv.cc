@@ -643,11 +643,11 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
 
   // Lookup field indicated by new_text
   const auto children = m_field_model->children();
-  for(auto field_iter = children.begin(); field_iter != children.end(); ++ field_iter)
+  for(const auto & elem : children)
   {
-    if( (*field_iter)[m_field_columns.m_col_field_name] == new_text)
+    if( (elem)[m_field_columns.m_col_field_name] == new_text)
     {
-      std::shared_ptr<Field> field = (*field_iter)[m_field_columns.m_col_field];
+      std::shared_ptr<Field> field = (elem)[m_field_columns.m_col_field];
       // Check whether another column is already using that field
       auto vec_field_iter = Utils::find(m_fields, field);
       // Reset the old column since two different columns cannot be imported into the same field

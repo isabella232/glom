@@ -716,11 +716,10 @@ void FlowTableWithFields::set_other_field_value(const std::shared_ptr<const Layo
 
 Gnome::Gda::Value FlowTableWithFields::get_field_value(const std::shared_ptr<const LayoutItem_Field>& field) const
 {
-  type_list_const_widgets list_widgets = get_field(field, true);
-  for(auto iter = list_widgets.begin();
-    iter != list_widgets.end(); ++iter)
+  const type_list_const_widgets list_widgets = get_field(field, true);
+  for(const auto& list_widget : list_widgets)
   {
-    const auto datawidget = dynamic_cast<const DataWidget*>(*iter);
+    const auto datawidget = dynamic_cast<const DataWidget*>(list_widget);
     if(!datawidget)
       continue;
 

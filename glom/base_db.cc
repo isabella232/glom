@@ -202,9 +202,10 @@ Base_DB::type_vec_strings Base_DB::util_vecStrings_from_Fields(const type_vec_fi
   //Get vector of field names, suitable for a combo box:
 
   type_vec_strings vecNames;
-  for(type_vec_fields::size_type i = 0; i < fields.size(); ++i)
+  for(const auto& field : fields)
   {
-    vecNames.emplace_back(fields[i]->get_name());
+    if(field)
+      vecNames.emplace_back(field->get_name());
   }
 
   return vecNames;
