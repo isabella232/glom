@@ -111,7 +111,7 @@ bool insert_example_data(const std::shared_ptr<const Document>& document, const 
 
 /** Execute a SQL Select command, returning the result.
  * @param builder The finished SqlBuilder object.
- * @use_cursor Whether the data model should be cursor-based (not allowing random access).
+ * @param use_cursor Whether the data model should be cursor-based (not allowing random access).
  */
 Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
@@ -171,7 +171,7 @@ Glib::ustring get_unused_database_name(const Glib::ustring& base_name);
  * This uses a COUNT * on a the @a sql_query as a sub-statement.
  * Be careful not to include ORDER BY clauses in the supplied SQL query, because that would make it unnecessarily slow.
  *
- * @sql_query A SQL query.
+ * @param sql_query A SQL query.
  * @result The number of rows. Or -1 if something went wrong.
  */
 int count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql_query);

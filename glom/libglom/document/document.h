@@ -256,7 +256,7 @@ public:
   void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform, const type_list_layout_groups& groups);
 
   /**
-   * @param The layout_name, such as "details", "list".
+   * @param layout_name The layout_name, such as "details", "list".
    * @param parent_table_name The name of the table on whose layout the layout appears.
    * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal".
    */
@@ -413,7 +413,7 @@ public:
    * @param x The x coordinate of the table position.
    * @param y The y coordinate of the table position.
    */
-  void set_table_overview_position( const Glib::ustring& utable_name, float x, float y );
+  void set_table_overview_position( const Glib::ustring& table_name, float x, float y );
 
   enum class userLevelReason
   {
@@ -448,7 +448,7 @@ public:
   Glib::ustring get_active_layout_platform() const;
 
   /** This is transitory information, not saved to disk.
-   * @layout_platform the active platform name - see get_data_layout_groups().
+   * @param layout_platform the active platform name - see get_data_layout_groups().
    */
   void set_active_layout_platform(const Glib::ustring& layout_platform = Glib::ustring());
 
@@ -463,7 +463,7 @@ public:
   
   /** Save a copy of the document as a backup.
    * This document (and its URI) will not be changed.
-   * @param The location at which to save the backup Glom file.
+   * @param uri The location at which to save the backup Glom file.
    * @result The URI of the .tar.gz tarball.
    */
   Glib::ustring save_backup_file(const Glib::ustring& uri, const SlotProgress& slot_progress);

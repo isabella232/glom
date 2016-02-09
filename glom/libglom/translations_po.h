@@ -28,13 +28,13 @@ namespace Glom
 
 /** Create a pot template file that can be used by translators to create a new .po file.
  * @param document The document whose translations should be written to a .po file.
- * @param pot_file The filepath at which to create a .po file.
+ * @param pot_file_uri The filepath at which to create a .po file.
  */
 bool write_pot_file(const std::shared_ptr<Document>& document, const Glib::ustring& pot_file_uri);
 
 /** Create a po file containing the translations from the Glom document.
  * @param document The document whose translations should be written to a .po file.
- * @param po_file The filepath at which to create a .po file.
+ * @param po_file_uri The filepath at which to create a .po file.
  * @param translation_locale For instance, de_DE.
  * @param locale_name For instance, Deutsch, to identify the translation team.
  */
@@ -42,7 +42,7 @@ bool write_translations_to_po_file(const std::shared_ptr<Document>& document, co
 
 /** Parse a po file, storing its translations in the Glom document.
  * @param document The document into which the translations should be stored.
- * @param po_file The filepath at which to find a .po file.
+ * @param po_file_uri The filepath at which to find a .po file.
  * @param translation_locale For instance, de_DE.
  */
 bool import_translations_from_po_file(const std::shared_ptr<Document>& document, const Glib::ustring& po_file_uri, const Glib::ustring& translation_locale);

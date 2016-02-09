@@ -119,7 +119,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_key(
  * This uses a COUNT * on a the @a sql_query as a sub-statement.
  * Be careful not to include ORDER BY clauses in the supplied SQL query, because that would make it unnecessarily slow.
  *
- * @sql_query A SQL query.
+ * @param sql_query A SQL query.
  * @result The number of rows.
  */
 Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_count_rows(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql_query);
