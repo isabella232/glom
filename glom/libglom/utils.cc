@@ -505,13 +505,13 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib
     std::shared_ptr<const Relationship>(), sort_clause, limit);
 }
 
-Utils::type_list_values_with_second Utils::get_choice_values_all(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& field)
+Utils::type_list_values_with_second Utils::get_choice_values_all(const std::shared_ptr<const Document>& document, const LayoutItem_Field& field)
 {
   return get_choice_values(document, field,
     Gnome::Gda::Value() /* means get all with no WHERE clause */);
 }
 
-Utils::type_list_values_with_second Utils::get_choice_values(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value)
+Utils::type_list_values_with_second Utils::get_choice_values(const std::shared_ptr<const Document>& document, const LayoutItem_Field& field, const Gnome::Gda::Value& foreign_key_value)
 {
   //TODO: Reduce duplication between this and get_choice_values(field).
 
@@ -526,7 +526,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const std::shared_p
   }
   */
 
-  const Formatting& format = field->get_formatting_used();
+  const Formatting& format = field.get_formatting_used();
   std::shared_ptr<const Relationship> choice_relationship;
   std::shared_ptr<const LayoutItem_Field> layout_choice_first;
   std::shared_ptr<const LayoutGroup> layout_choice_extra;
@@ -1486,7 +1486,7 @@ LayoutGroup::type_list_const_items Utils::get_layout_items_plus_primary_key(cons
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
   
-  if(find_if_layout_item_field_is_same_field_exists(items, pk_layout_item))
+  if(find_if_layout_item_field_is_same_field_exists(items, *pk_layout_item))
     return items; //It is already in the list:
 
   LayoutGroup::type_list_const_items items_plus_pk = items;
@@ -1514,7 +1514,7 @@ LayoutGroup::type_list_items Utils::get_layout_items_plus_primary_key(const Layo
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
   
-  if(find_if_layout_item_field_is_same_field_exists(items, pk_layout_item))
+  if(find_if_layout_item_field_is_same_field_exists(items, *pk_layout_item))
     return items; //It is already in the list:
 
   LayoutGroup::type_list_items items_plus_pk = items;

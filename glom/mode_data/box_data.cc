@@ -100,7 +100,7 @@ Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
   //Look at each field entry and build e.g. 'Name = "Bob"'
   for(const auto& item : m_FieldsShown)
   {
-    const auto data = get_entered_field_data(item);
+    const auto data = get_entered_field_data(*item);
 
     if(!Conversions::value_is_empty(data))
     {

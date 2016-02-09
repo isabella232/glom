@@ -54,7 +54,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   const Glom::Utils::type_list_values_with_second values_with_second = 
-    Glom::Utils::get_choice_values_all(document, field_with_choice);
+    Glom::Utils::get_choice_values_all(document, *field_with_choice);
   if(values_with_second.size() != 3)
   {
     std::cerr << G_STRFUNC << ": Failure: There were an unexpected number of choices." << std::endl;

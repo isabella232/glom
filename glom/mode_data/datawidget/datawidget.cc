@@ -131,7 +131,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
         combo = create_combo_widget_for_field(field);
         combo->set_layout_item( get_layout_item(), table_name);
 
-        combo->set_choices_related(document, field, Gnome::Gda::Value() /* no ID means show all related records */);
+        combo->set_choices_related(document, *field, Gnome::Gda::Value() /* no ID means show all related records */);
       }
       else
       {

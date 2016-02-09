@@ -306,7 +306,7 @@ bool Box_Data_Details::fill_from_database()
         bool index_primary_key_found = false;
         unsigned int index_primary_key = 0; //Arbitrary default.
         //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
-        if(!find_if_layout_item_field_is_same_field_exists(fieldsToGet, layout_item_pk))
+        if(!find_if_layout_item_field_is_same_field_exists(fieldsToGet, *layout_item_pk))
         {
           fieldsToGet.emplace_back(layout_item_pk);
           index_primary_key = fieldsToGet.size() - 1;
@@ -389,7 +389,7 @@ bool Box_Data_Details::fill_from_database()
                 value = Conversions::get_empty_value(layout_item->get_glom_type());
               }
 
-              m_FlowTable.set_field_value(layout_item, value);
+              m_FlowTable.set_field_value(*layout_item, value);
             }
           }
         }
@@ -493,17 +493,17 @@ void Box_Data_Details::on_button_nav_last()
     signal_nav_last().emit();
 }
 
-Gnome::Gda::Value Box_Data_Details::get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const
+Gnome::Gda::Value Box_Data_Details::get_entered_field_data(const LayoutItem_Field& field) const
 {
   return m_FlowTable.get_field_value(field);
 }
 
-void Box_Data_Details::set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_Details::set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
   m_FlowTable.set_field_value(field, value);
 }
 
-void Box_Data_Details::set_entered_field_data(const Gtk::TreeModel::iterator& /* row */, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_Details::set_entered_field_data(const Gtk::TreeModel::iterator& /* row */, const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
   set_entered_field_data(field, value);
 }
@@ -747,7 +747,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
           auto layout_item = std::make_shared<LayoutItem_Field>();
           layout_item->set_full_field_details( document->get_field(relationship->get_from_table(), relationship->get_from_field()) );
 
-          primary_key_value = get_entered_field_data(layout_item);
+          primary_key_value = get_entered_field_data(*layout_item);
 
           //Note: This just uses an existing record if one already exists:
           Gnome::Gda::Value primary_key_value_used;
@@ -775,14 +775,14 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
     {
       //Revert to the value in the database:
       const auto value_old = get_field_value_in_database(field_in_record, window);
-      set_entered_field_data(layout_field, value_old);
+      set_entered_field_data(*layout_field, value_old);
 
       return;
     }
 
     //Set the value in all instances of this field in the layout (The field might be on the layout more than once):
     //We don't need to set the value in the layout_field itself, as this is where the value comes from.
-    m_FlowTable.set_other_field_value(layout_field, field_value);
+    m_FlowTable.set_other_field_value(*layout_field, field_value);
 
     //Update the field in the record (the record with this primary key):
 
@@ -807,7 +807,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
         //Update failed.
         //Replace with correct values.
         const auto value_old = get_field_value_in_database(field_in_record, window);
-        set_entered_field_data(layout_field, value_old);
+        set_entered_field_data(*layout_field, value_old);
       }
       else
       {
@@ -873,7 +873,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
         {
           //Revert to a blank value:
           const auto value_old = Conversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());
-          set_entered_field_data(layout_field, value_old);
+          set_entered_field_data(*layout_field, value_old);
         }
         else
         {
@@ -900,7 +900,13 @@ void Box_Data_Details::on_flowtable_field_choices_changed(const std::shared_ptr<
   if(m_ignore_signals)
     return;
 
-  m_FlowTable.update_choices(layout_field);
+  if(!layout_field)
+  {
+      std::cerr << G_STRFUNC << ": layout_field is null.\n";
+      return;
+  }
+
+  m_FlowTable.update_choices(*layout_field);
 }
 
 void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)

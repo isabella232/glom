@@ -87,7 +87,7 @@ public:
 
   void remove_item(const Gtk::TreeModel::iterator& iter);
 
-  Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const LayoutItem_Field>& layout_item) const;
+  Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item) const;
 
   /** Get the row's hidden key
    */
@@ -100,7 +100,7 @@ public:
   /** @param col A value returned from add_column().
    * @result The value on the selected row.
    */
-  Gnome::Gda::Value get_value_selected(const std::shared_ptr<const LayoutItem_Field>& layout_item) const;
+  Gnome::Gda::Value get_value_selected(const LayoutItem_Field& layout_item) const;
   Gnome::Gda::Value get_value_key_selected() const;
 
   Gtk::TreeModel::iterator get_item_selected();
@@ -112,7 +112,7 @@ public:
    * @param start_editing Whether editing should start in the cell.
    * @result Whether the row was successfully selected.
    */
-  bool select_item(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const LayoutItem>& layout_item, bool start_editing = false);  //bool indicates success.
+  bool select_item(const Gtk::TreeModel::iterator& iter, const LayoutItem& layout_item, bool start_editing = false);  //bool indicates success.
   bool select_item(const Gtk::TreeModel::iterator& iter, bool start_editing = false);
 
   guint get_count() const;
@@ -122,13 +122,13 @@ public:
    * @param layout_item Describes the column(s) whose values should be changed.
    * @param value The new value.
    */
-  virtual void set_value(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value);
+  virtual void set_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value);
 
   /**
    * @param col A value returned from add_column().
    * @param value The new value.
    */
-  virtual void set_value_selected(const std::shared_ptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value);
+  virtual void set_value_selected(const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value);
 
   bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
 
@@ -267,12 +267,12 @@ public:
 
 private:
 
-  void set_value(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value, bool set_specified_field_layout);
+  void set_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value, bool set_specified_field_layout);
 
   //Overrides of Base_DB/Base_DB_Table methods:
-  void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
-  void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
-  Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const override;
+  void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value) override;
+  void set_entered_field_data(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field, const Gnome::Gda::Value& value) override;
+  Gnome::Gda::Value get_entered_field_data(const LayoutItem_Field& field) const override;
   Gtk::TreeModel::iterator get_row_selected() override;
 
   //Implementations of pure virtual methods from Base_DB_Table_Data:
@@ -288,15 +288,16 @@ private:
 
   typedef std::list<guint> type_list_indexes;
   ///Return the column indexes of any columns that display this field.
-  type_list_indexes get_column_index(const std::shared_ptr<const LayoutItem>& layout_item) const;
+  type_list_indexes get_column_index(const LayoutItem& layout_item) const;
 
+  //TODO: Make this const?
   /// Get indexes of any columns with choices with !show_all relationships that have @a from_key as the from_key.
-  type_list_indexes get_choice_index(const std::shared_ptr<const LayoutItem_Field>& from_key);
+  type_list_indexes get_choice_index(const LayoutItem_Field& from_key);
 
   /** Return the query column index of any columns that display this field:
    * @param including_specified_field_layout If false, then don't return the actual layout item itself.
    */
-  type_list_indexes get_data_model_column_index(const std::shared_ptr<const LayoutItem_Field>& layout_item_field, bool including_specified_field_layout = true) const;
+  type_list_indexes get_data_model_column_index(const LayoutItem_Field& layout_item_field, bool including_specified_field_layout = true) const;
 
 protected:
   void setup_menu(Gtk::Widget* widget);

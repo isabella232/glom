@@ -281,7 +281,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
     //m_key_field is the field in this table that must match another field in the parent table.
     auto layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_full_field_details(m_key_field);
-    key_value = m_AddDel.get_value(row, layout_item);
+    key_value = m_AddDel.get_value(row, *layout_item);
   }
 
 
@@ -312,7 +312,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
 
       //TODO: Although the to-field value is visible on the new related record, get_value() returns NULL so you can't immediately navigate to the new record:
       //std::cout << "debug: " << G_STRFUNC << ": setting field=" << layout_item->get_name() << "m_key_value=" << m_key_value.to_string() << std::endl;
-      m_AddDel.set_value(row, layout_item, m_key_value);
+      m_AddDel.set_value(row, *layout_item, m_key_value);
     }
     else
       std::cerr << G_STRFUNC << ": m_key_field is NULL" << std::endl;

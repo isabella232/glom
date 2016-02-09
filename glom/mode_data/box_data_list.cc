@@ -345,19 +345,19 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_first() const
   return Gnome::Gda::Value();
 }
 
-Gnome::Gda::Value Box_Data_List::get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const
+Gnome::Gda::Value Box_Data_List::get_entered_field_data(const LayoutItem_Field& field) const
 {
   return m_AddDel.get_value_selected(field);
 }
 
-void Box_Data_List::set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_List::set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
-  return m_AddDel.set_value_selected(field, value);
+  m_AddDel.set_value_selected(field, value);
 }
 
-void Box_Data_List::set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_List::set_entered_field_data(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
-  return m_AddDel.set_value(row, field, value);
+  m_AddDel.set_value(row, field, value);
 }
 
 bool Box_Data_List::get_showing_multiple_records() const

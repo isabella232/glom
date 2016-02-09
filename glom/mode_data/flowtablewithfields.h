@@ -91,22 +91,22 @@ public:
    */
   void add_layout_group_or_derived(const std::shared_ptr<LayoutGroup>& group, bool with_indent = true);
 
-  void set_field_editable(const std::shared_ptr<const LayoutItem_Field>& field, bool editable = true);
+  void set_field_editable(const LayoutItem_Field& field, bool editable = true);
 
-  Gnome::Gda::Value get_field_value(const std::shared_ptr<const LayoutItem_Field>& field) const;
+  Gnome::Gda::Value get_field_value(const LayoutItem_Field& field) const;
 
   /** Set the displayed @a value in any instances of the specified @a field.
    */
-  void set_field_value(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  void set_field_value(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
 
   /** Set the displayed @a value in any instances of the field other than the specified @a layout_field.
    */
-  void set_other_field_value(const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& value);
+  void set_other_field_value(const LayoutItem_Field& layout_field, const Gnome::Gda::Value& value);
 
   /** Refresh the list of related records in choice combo boxes, 
    * in any instance of the specified field.
    */
-  void update_choices(const std::shared_ptr<const LayoutItem_Field>& field);
+  void update_choices(const LayoutItem_Field& field);
 
   typedef std::list<Gtk::Widget*> type_list_widgets;
   typedef std::list<const Gtk::Widget*> type_list_const_widgets;
@@ -178,23 +178,23 @@ public:
 
 private:
 
-  void set_field_value(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, bool set_specified_field_layout);
+  void set_field_value(const LayoutItem_Field& field, const Gnome::Gda::Value& value, bool set_specified_field_layout);
 
   // If include_item is set, then the output list will contain field's widget,
   // otherwise not.
-  type_list_widgets get_field(const std::shared_ptr<const LayoutItem_Field>& field, bool include_item);
-  type_list_const_widgets get_field(const std::shared_ptr<const LayoutItem_Field>& field, bool include_item) const;
+  type_list_widgets get_field(const LayoutItem_Field& field, bool include_item);
+  type_list_const_widgets get_field(const LayoutItem_Field& field, bool include_item) const;
 
   typedef std::list<Box_Data_Portal*> type_portals;
 
   /// Get portals whose relationships have @a from_key as the from_key.
-  type_portals get_portals(const std::shared_ptr<const LayoutItem_Field>& from_key);
+  type_portals get_portals(const LayoutItem_Field& from_key);
 
 
   typedef std::list<DataWidgetChildren::ComboChoices*> type_choice_widgets;
 
   /// Get choice widgets with !show_all relationships that have @a from_key as the from_key.
-  type_choice_widgets get_choice_widgets(const std::shared_ptr<const LayoutItem_Field>& from_key);
+  type_choice_widgets get_choice_widgets(const LayoutItem_Field& from_key);
 
   /** Examine this flow table and all child flow tables, discovering which
    * has the most columns.

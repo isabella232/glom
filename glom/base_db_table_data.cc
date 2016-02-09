@@ -36,7 +36,7 @@ Base_DB_Table_Data::Base_DB_Table_Data()
 {
 }
 
-Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& /* field */) const
+Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data(const LayoutItem_Field& /* field */) const
 {
   //Override this to use Field::set_data() too.
 
@@ -112,7 +112,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
         else
         {
           if(use_entered_data)
-            value = get_entered_field_data(layout_item);
+            value = get_entered_field_data(*layout_item);
         }
 
         if(Conversions::value_is_empty(value)) //This deals with empty strings too.
@@ -194,7 +194,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
       for(const auto& layout_item : fieldsToAdd)
       {
         //TODO_Performance: We just set this with set_entered_field_data() above. Maybe we could just remember it.
-        const auto field_value = get_entered_field_data(layout_item);
+        const auto field_value = get_entered_field_data(*layout_item);
 
         const LayoutFieldInRecord field_in_record(layout_item, m_table_name, fieldPrimaryKey, primary_key_value);
 
@@ -245,7 +245,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
     dialog.run();
 
     //Clear the field again, discarding the entered data.
-    set_entered_field_data(layout_item_parent, Gnome::Gda::Value());
+    set_entered_field_data(*layout_item_parent, Gnome::Gda::Value());
 
     return false;
   }
@@ -267,7 +267,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
       dialog.run();
 
       //Clear the field again, discarding the entered data.
-      set_entered_field_data(layout_item_parent, Gnome::Gda::Value());
+      set_entered_field_data(*layout_item_parent, Gnome::Gda::Value());
 
       return false;
     }
@@ -299,7 +299,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
         item_from_key->set_name(relationship->get_from_field());
 
         //Show the new from key in the parent table's layout:
-        set_entered_field_data(item_from_key, primary_key_value);
+        set_entered_field_data(*item_from_key, primary_key_value);
 
         //Set it in the database too:
         auto document = get_document();
@@ -526,7 +526,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
             //std::cout << "debug: " << G_STRFUNC << ": value_as_string=" << value.to_string()  << std::endl;
 
             //m_AddDel.set_value(row, layout_item, value);
-            set_entered_field_data(row, layout_item, value);
+            set_entered_field_data(row, *layout_item, value);
             //g_warning("addedel size=%d", m_AddDel.get_count());
           }
 

@@ -64,7 +64,7 @@ bool ComboChoices::refresh_data_from_database_with_foreign_key(const std::shared
   return true;
 }
 
-void ComboChoices::set_choices_related(const std::shared_ptr<const Document>& /* document */, const std::shared_ptr<const LayoutItem_Field>& /* layout_field */, const Gnome::Gda::Value& /* foreign_key_value */)
+void ComboChoices::set_choices_related(const std::shared_ptr<const Document>& /* document */, const LayoutItem_Field& /* layout_field */, const Gnome::Gda::Value& /* foreign_key_value */)
 {
   /* TODO:
   type_list_values_with_second list_values;

@@ -259,18 +259,18 @@ void Dialog_Import_CSV_Progress::on_response(int /* response_id */)
   clear();
 }
 
-Gnome::Gda::Value Dialog_Import_CSV_Progress::get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const
+Gnome::Gda::Value Dialog_Import_CSV_Progress::get_entered_field_data(const LayoutItem_Field& field) const
 {
-  const auto iter = m_current_row_values.find(field->get_name());
+  const auto iter = m_current_row_values.find(field.get_name());
   if(iter == m_current_row_values.end())
     return Gnome::Gda::Value();
 
   return iter->second;
 }
 
-void Dialog_Import_CSV_Progress::set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value&  value)
+void Dialog_Import_CSV_Progress::set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value&  value)
 {
-  m_current_row_values[field->get_name()] = value;
+  m_current_row_values[field.get_name()] = value;
 }
 
 std::shared_ptr<Field> Dialog_Import_CSV_Progress::get_field_primary_key() const

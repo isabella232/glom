@@ -228,7 +228,7 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const Formatting::type_list_va
   //then sets up the view, using the model.
 }
 
-void ComboChoicesWithTreeModel::set_choices_related(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
+void ComboChoicesWithTreeModel::set_choices_related(const std::shared_ptr<const Document>& document, const LayoutItem_Field& layout_field, const Gnome::Gda::Value& foreign_key_value)
 {
   if(!document)
   {
@@ -236,7 +236,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const std::shared_ptr<const 
     return;
   }
 
-  const auto format = layout_field->get_formatting_used();
+  const auto format = layout_field.get_formatting_used();
   std::shared_ptr<const Relationship> choice_relationship;
   std::shared_ptr<const LayoutItem_Field> layout_choice_first;
   std::shared_ptr<const LayoutGroup> layout_choice_extra;

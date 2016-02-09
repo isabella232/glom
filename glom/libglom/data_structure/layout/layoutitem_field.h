@@ -141,7 +141,7 @@ public:
 
   /** Compare the name, relationship, and related_relationship.
    */
-  bool is_same_field(const std::shared_ptr<const LayoutItem_Field>& field) const;
+  bool is_same_field(const LayoutItem_Field& field) const;
 
 private:
 
@@ -166,15 +166,15 @@ private:
  */
 template
 <typename T_Container>
-bool find_if_layout_item_field_is_same_field_exists(T_Container& container, const std::shared_ptr<const LayoutItem_Field>& layout_item)
+bool find_if_layout_item_field_is_same_field_exists(T_Container& container, const LayoutItem_Field& layout_item)
 {
   return Utils::find_if_exists(container,
-    [&layout_item](const typename T_Container::value_type& element)
+      [&layout_item](const auto& element)
     {
       //Assume that element is a shared_ptr<>.
 
-      if(!layout_item && !element)
-        return true;
+      if(!element)
+        return false; //layout_item cannot (should not) be null because it's a reference.
 
       //Allow this to be used on a container of LayoutItems,
       //as well as just of LayoutItem_Fields.
@@ -182,7 +182,7 @@ bool find_if_layout_item_field_is_same_field_exists(T_Container& container, cons
       if(!element_field)
         return false;
 
-      return layout_item && layout_item->is_same_field(element_field);
+      return layout_item.is_same_field(*element_field);
     }
   );
 }

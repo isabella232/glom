@@ -135,9 +135,9 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_update_with_where_clause(
 
 typedef std::vector<Gnome::Gda::Value> type_list_values;
 typedef std::vector< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second; //TODO: Rename this now that we have more than just 1 extra field.
-type_list_values_with_second get_choice_values_all(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& field);
+type_list_values_with_second get_choice_values_all(const std::shared_ptr<const Document>& document, const LayoutItem_Field& field);
 
-type_list_values_with_second get_choice_values(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value);
+type_list_values_with_second get_choice_values(const std::shared_ptr<const Document>& document, const LayoutItem_Field& field, const Gnome::Gda::Value& foreign_key_value);
 
 /// Get the full query string suitable for use with std::cout.
 std::string sqlbuilder_get_full_query(
