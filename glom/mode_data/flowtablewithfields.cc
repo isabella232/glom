@@ -564,7 +564,7 @@ void FlowTableWithFields::add_button(const std::shared_ptr<LayoutItem_Button>& l
 
   add_widgets(*widget_to_add, expand);
 
-  apply_formatting(*button, layoutitem_button);
+  apply_formatting(*button, *layoutitem_button);
 }
 
 void FlowTableWithFields::add_textobject(const std::shared_ptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name)
@@ -581,7 +581,7 @@ void FlowTableWithFields::add_textobject(const std::shared_ptr<LayoutItem_Text>&
   label->set_valign(Gtk::ALIGN_CENTER);
   label->show();
 
-  apply_formatting(*label, layoutitem_text);
+  apply_formatting(*label, *layoutitem_text);
 
   add_layoutwidgetbase(label);
 

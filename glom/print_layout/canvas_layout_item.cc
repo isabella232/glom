@@ -58,21 +58,18 @@ std::shared_ptr<LayoutItem> CanvasLayoutItem::get_layout_item()
   return m_layout_item;
 }
 
-void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item)
+void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const LayoutItem_WithFormatting& layout_item)
 {
   if(!canvas_item)
     return;
 
-  if(!layout_item)
-    return;
-
   //Horizontal alignment:
   const Formatting::HorizontalAlignment alignment =
-    layout_item->get_formatting_used_horizontal_alignment();
+    layout_item.get_formatting_used_horizontal_alignment();
   const Pango::Alignment x_align = (alignment == Formatting::HorizontalAlignment::LEFT ? Pango::ALIGN_LEFT : Pango::ALIGN_RIGHT);
   canvas_item->property_alignment() = x_align;
 
-  const auto formatting = layout_item->get_formatting_used();
+  const auto formatting = layout_item.get_formatting_used();
 
   Glib::ustring font = formatting.get_text_format_font();
   if(font.empty())
@@ -162,7 +159,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
     auto canvas_item = CanvasTextMovable::create();
     canvas_item->property_line_width() = 0;
 
-    apply_formatting(canvas_item, text);
+    apply_formatting(canvas_item, *text);
 
     canvas_item->set_text(text->get_text(AppWindow::get_current_locale()));
     child = canvas_item;
@@ -226,7 +223,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
           {
             auto canvas_item = CanvasTextMovable::create();
             canvas_item->property_line_width() = 0;
-            apply_formatting(canvas_item, field);
+            apply_formatting(canvas_item, *field);
 
             Glib::ustring name = field->get_name();
             if(name.empty())

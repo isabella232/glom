@@ -78,8 +78,8 @@ private:
   /// Create the appropriate inner canvas item to represent the layout item.
   static Glib::RefPtr<CanvasItemMovable> create_canvas_item_for_layout_item(const std::shared_ptr<LayoutItem>& layout_item);
 
-  static void apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item);
-
+  static void apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const LayoutItem_WithFormatting& layout_item);
+  
   static void add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTableMovable>& canvas_table, const std::shared_ptr<LayoutItem_Portal>& portal, guint rows_count);
 
   void on_resized();

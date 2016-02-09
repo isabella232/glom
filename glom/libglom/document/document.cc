@@ -586,9 +586,9 @@ std::shared_ptr<TableInfo> Document::create_table_system_preferences(type_vec_fi
   return prefs_table_info;
 }
 
-bool Document::get_relationship_is_system_properties(const std::shared_ptr<const Relationship>& relationship)
+bool Document::get_relationship_is_system_properties(const Relationship& relationship)
 {
-  return relationship && (relationship->get_name() == GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES);
+  return (relationship.get_name() == GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES);
 }
 
 std::shared_ptr<Relationship> Document::get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const

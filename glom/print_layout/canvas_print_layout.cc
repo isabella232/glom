@@ -708,16 +708,16 @@ void Canvas_PrintLayout::fill_with_data_system_preferences(const Glib::RefPtr<Ca
   bool empty = true;
   if(!layoutitem_field->get_name().empty())
   {
-    const auto relationship =
-      layoutitem_field->get_relationship();
-
     if(!document)
     {
       std::cerr << G_STRFUNC << ": document is null\n";
       return;
     }
 
-    if(document->get_relationship_is_system_properties(relationship))
+    const auto relationship =
+      layoutitem_field->get_relationship();
+
+    if(relationship && document->get_relationship_is_system_properties(*relationship))
       empty = false;
   }
 
