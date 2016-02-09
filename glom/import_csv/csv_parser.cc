@@ -125,12 +125,10 @@ const Glib::ustring& CsvParser::get_data(guint row, guint col) const
   return row_data[col];
 }
 
-const CsvParser::type_row_strings CsvParser::fetch_next_row()
+CsvParser::type_row_strings CsvParser::fetch_next_row()
 {
-  const type_row_strings empty;
-
-  g_return_val_if_fail(m_state == CsvParser::State::PARSING, empty);
-  g_return_val_if_fail(m_state == CsvParser::State::PARSED, empty);
+  g_return_val_if_fail(m_state == CsvParser::State::PARSING, fetch_next_row());
+  g_return_val_if_fail(m_state == CsvParser::State::PARSED, fetch_next_row());
 
   // We cannot fetch the next row, but since we are still parsing we might just have to parse a bit more!
   if(m_state == CsvParser::State::PARSING && m_row_index >= m_rows.size())
@@ -142,7 +140,7 @@ const CsvParser::type_row_strings CsvParser::fetch_next_row()
 
   if(m_state == CsvParser::State::PARSED && m_row_index >= m_rows.size())
   {
-    return empty;
+    return type_row_strings();
   }
 
   if(m_row_index < m_rows.size())
@@ -150,7 +148,7 @@ const CsvParser::type_row_strings CsvParser::fetch_next_row()
     return m_rows[m_row_index++];
   }
 
-  g_return_val_if_reached(empty);
+  return type_row_strings();
 }
 
 CsvParser::type_signal_file_read_error CsvParser::signal_file_read_error() const

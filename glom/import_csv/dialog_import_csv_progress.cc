@@ -163,7 +163,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   while(gtk_events_pending())
     gtk_main_iteration_do(true);
 
-  const auto row = m_data_source->get_parser()->fetch_next_row();
+  const auto row = m_data_source->parser_fetch_next_row();
 
   //If there are no more rows to import, then stop, by returning false:
   // TODO: Perhaps abort on 0 == row instead, so that we do not stop import on

@@ -124,7 +124,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   m_encoding_combo->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_combo_encoding_changed));
 
   // TODO: Reset parser encoding on selection changed.
-  m_parser = std::make_shared<CsvParser>(get_current_encoding());
+  m_parser = std::make_unique<CsvParser>(get_current_encoding());
   m_parser->signal_file_read_error().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_parser_file_read_error));
   m_parser->signal_have_display_name().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_parser_have_display_name));
   m_parser->signal_encoding_error().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_parser_encoding_error));
@@ -241,9 +241,12 @@ const Glib::ustring& Dialog_Import_CSV::get_data(guint row, guint col)
   return m_parser->get_data(row, col);
 }
 
-std::shared_ptr<CsvParser> Dialog_Import_CSV::get_parser()
+CsvParser::type_row_strings Dialog_Import_CSV::parser_fetch_next_row()
 {
-  return m_parser;
+  if(!m_parser)
+    return CsvParser::type_row_strings();
+
+  return m_parser->fetch_next_row();
 }
 
 void Dialog_Import_CSV::clear()

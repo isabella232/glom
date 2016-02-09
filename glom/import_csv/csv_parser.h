@@ -84,7 +84,7 @@ public:
     */
   // TODO: Fix to cope with valid empty rows in between, without requiring the
   // client of this method to check for the parser's state/cache size.
-  const type_row_strings fetch_next_row();
+  type_row_strings fetch_next_row();
 
   // Signals:
   typedef sigc::signal<void, const Glib::ustring&> type_signal_file_read_error;

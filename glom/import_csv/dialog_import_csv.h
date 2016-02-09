@@ -62,8 +62,7 @@ public:
   std::shared_ptr<const Field> get_field_for_column(unsigned int col) const;
   const Glib::ustring& get_data(unsigned int row, unsigned int col);
 
-  // TODO: perhaps it would be safer to just wrap the needed parser API here.
-  std::shared_ptr<CsvParser> get_parser();
+  CsvParser::type_row_strings parser_fetch_next_row();
 
   typedef sigc::signal<void> type_signal_state_changed;
 
@@ -129,7 +128,7 @@ private:
     Gtk::TreeModelColumn<int> m_col_row;
   };
 
-  std::shared_ptr<CsvParser> m_parser;
+  std::unique_ptr<CsvParser> m_parser;
 
   EncodingColumns m_encoding_columns;
   Glib::RefPtr<Gtk::ListStore> m_encoding_model;
