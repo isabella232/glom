@@ -69,7 +69,7 @@ void ComboGlom::on_fixed_cell_data(const Gtk::TreeModel::iterator& iter, Gtk::Ce
   if(!iter)
     return;
 
-  const std::shared_ptr<const LayoutItem>& layout_item = get_layout_item();
+  const auto layout_item = get_layout_item();
   const auto field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
   if(!field)
     return;
@@ -116,7 +116,7 @@ void ComboGlom::set_choices_fixed(const Formatting::type_list_values& list_value
   if(columns_count)
     columns_count -= 1; //The last one is the just the extra text-equivalent of the first one, for GtkComboBox with has-entry=true, or for translations.
 
-  const std::shared_ptr<const LayoutItem>& layout_item = get_layout_item();
+  const auto layout_item = get_layout_item();
   const auto field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
 
   //For fixed (custom) choices, this will always be 1 column anyway,
@@ -228,7 +228,7 @@ void ComboGlom::check_for_change()
 
 void ComboGlom::set_value(const Gnome::Gda::Value& value)
 {
-  auto layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
+  const auto layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
   if(!layout_item)
     return;
 
