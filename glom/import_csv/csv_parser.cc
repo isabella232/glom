@@ -508,7 +508,7 @@ void CsvParser::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result, const
   {
     m_stream = source->read_finish(result);
 
-    m_buffer.reset(new Buffer);
+    m_buffer = std::make_unique<Buffer>();
     m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &CsvParser::on_buffer_read));
   }
   catch(const Glib::Exception& ex)
@@ -524,7 +524,7 @@ void CsvParser::copy_buffer_and_continue_reading(gssize size)
   {
     m_raw.insert(m_raw.end(), m_buffer->buf, m_buffer->buf + size);
 
-    m_buffer.reset(new Buffer);
+    m_buffer = std::make_unique<Buffer>();
     m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &CsvParser::on_buffer_read));
   }
   else // When size == 0 we finished reading.
