@@ -36,7 +36,7 @@ public:
   LayoutItem(LayoutItem&& src) = delete;
   LayoutItem& operator=(const LayoutItem& src);
   LayoutItem& operator=(LayoutItem&& src) = delete;
-  virtual ~LayoutItem();
+  ~LayoutItem() override;
 
   /** Create a new copied instance.
    * This allows us to deep-copy a list of LayoutItems.

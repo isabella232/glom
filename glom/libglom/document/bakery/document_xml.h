@@ -35,7 +35,7 @@ class Document_XML : public GlomBakery::Document
 {
 public: 
   Document_XML();
-  virtual ~Document_XML();
+  ~Document_XML() override;
 
   bool load_after(int& failure_code) override;
   bool save_before() override;
