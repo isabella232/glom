@@ -105,7 +105,7 @@ bool MySQLSelfHosted::install_mysql(const SlotProgress& /* slot_progress */)
   const auto result = gst_packages_install(parent_window->gobj() /* parent window */, packages);
   if(result)
   {
-    std::cout << "Glom: gst_packages_install() reports success." << std::endl;
+    std::cout << "Glom: gst_packages_install() reports success.\n";
     //Double-check, because gst_packages_install() incorrectly returns TRUE if it fails because
     //a) synaptic is already running, or
     //b) synaptic did not know about the package (no warning is shown in this case.)
@@ -114,7 +114,7 @@ bool MySQLSelfHosted::install_mysql(const SlotProgress& /* slot_progress */)
   }
   else
   {
-    std::cout << "Glom: gst_packages_install() reports failure." << std::endl;
+    std::cout << "Glom: gst_packages_install() reports failure.\n";
     return false; //Failed to install mysql.
   }
 #else
@@ -128,13 +128,13 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
 
   if(m_database_directory_uri.empty())
   {
-    std::cerr << G_STRFUNC << ": initialize: m_self_hosting_data_uri is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": initialize: m_self_hosting_data_uri is empty.\n";
     return InitErrors::OTHER;
   }
 
   if(initial_username.empty())
   {
-    std::cerr << G_STRFUNC << ": MySQLSelfHosted::initialize(). Username was empty while attempting to create self-hosting database" << std::endl;
+    std::cerr << G_STRFUNC << ": MySQLSelfHosted::initialize(). Username was empty while attempting to create self-hosting database\n";
     return InitErrors::OTHER;
   }
 
@@ -198,7 +198,7 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
   const auto result = Glom::Spawn::execute_command_line_and_wait(command_initdb, slot_progress);
   if(!result)
   {
-    std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting MySQL database." << std::endl;
+    std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting MySQL database.\n";
   }
   else
   {
@@ -220,14 +220,14 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
     //and we cannot take the risk of leaving the database with a default password.
     if(startup(slot_progress, false) != StartupErrors::NONE)
     {
-      std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting MySQL database, while starting for the first time, to set the initial username and password." << std::endl;
+      std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting MySQL database, while starting for the first time, to set the initial username and password.\n";
       return InitErrors::OTHER;
     }
     else
     {
       if(!cleanup(slot_progress))
       {
-        std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting MySQL database, while shutting down, after setting the initial username and password." << std::endl;
+        std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting MySQL database, while shutting down, after setting the initial username and password.\n";
         return InitErrors::OTHER;
       }
     }
@@ -249,7 +249,7 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
 
     if(m_temporary_password.empty())
     {
-       std::cerr << G_STRFUNC << " Unable to discover the initial MySQL password." << std::endl;
+       std::cerr << G_STRFUNC << " Unable to discover the initial MySQL password.\n";
        result = false;
     }
     */
@@ -272,13 +272,13 @@ static Glib::ustring build_query_change_username(const Glib::RefPtr<Gnome::Gda::
 {
   if(old_username.empty())
   {
-    std::cerr << G_STRFUNC << ": old_username is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": old_username is empty.\n";
     return Glib::ustring();
   }
 
   if(new_username.empty())
   {
-    std::cerr << G_STRFUNC << ": new_username is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": new_username is empty.\n";
     return Glib::ustring();
   }
 
@@ -306,7 +306,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
 
   if(get_self_hosting_active())
   {
-    std::cerr << G_STRFUNC << ": Already started." << std::endl;
+    std::cerr << G_STRFUNC << ": Already started.\n";
     return StartupErrors::NONE; //Just do it once.
   }
 
@@ -340,7 +340,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
     const auto dbdir_backup_uri = Glib::filename_to_uri(dbdir_backup);
     if(file_exists_uri(dbdir_backup_uri))
     {
-      std::cerr << G_STRFUNC << ": There is no data, but there is backup data." << std::endl;
+      std::cerr << G_STRFUNC << ": There is no data, but there is backup data.\n";
       //Let the caller convert the backup to real data and then try again:
       return StartupErrors::FAILED_NO_DATA_HAS_BACKUP_DATA;
     }
@@ -387,7 +387,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
   {
     m_port = 0;
 
-    std::cerr << G_STRFUNC << "Error while attempting to self-host a MySQL database." << std::endl;
+    std::cerr << G_STRFUNC << "Error while attempting to self-host a MySQL database.\n";
     return StartupErrors::FAILED_UNKNOWN_REASON;
   }
 
@@ -398,7 +398,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
   {
     if(m_initial_password_to_set.empty()) {
       //If this is empty then mysqladmin will ask for it on stdout, blocking us.
-      std::cerr << G_STRFUNC << "Error while attempting to self-host a MySQL database: m_initial_password_to_set is empty." << std::endl;
+      std::cerr << G_STRFUNC << "Error while attempting to self-host a MySQL database: m_initial_password_to_set is empty.\n";
       return StartupErrors::FAILED_UNKNOWN_REASON;
     }
 
@@ -409,7 +409,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
 
     if(!Glom::Spawn::execute_command_line_and_wait(command_initdb_set_initial_password, slot_progress))
     {
-      std::cerr << G_STRFUNC << ": Error while attempting to start self-hosting MySQL database, when setting the initial password." << std::endl;
+      std::cerr << G_STRFUNC << ": Error while attempting to start self-hosting MySQL database, when setting the initial password.\n";
       return StartupErrors::FAILED_UNKNOWN_REASON;
     }
 
@@ -422,7 +422,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
     const auto gda_connection = connect(DEFAULT_DATABASE_NAME, "root", m_initial_password_to_set);
     if(!gda_connection)
     {
-      std::cerr << G_STRFUNC << "Error while attempting to start self-hosting MySQL database, when setting the initial username: connection failed." << std::endl;
+      std::cerr << G_STRFUNC << "Error while attempting to start self-hosting MySQL database, when setting the initial username: connection failed.\n";
       return StartupErrors::FAILED_UNKNOWN_REASON;
     }
     m_saved_password = m_initial_password_to_set;
@@ -438,7 +438,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
       /*
       if(!test)
       {
-        std::cerr << G_STRFUNC << "Error while attempting to start self-hosting MySQL database, when setting the initial username: UPDATE failed." << std::endl;
+        std::cerr << G_STRFUNC << "Error while attempting to start self-hosting MySQL database, when setting the initial username: UPDATE failed.\n";
        return StartupErrors::FAILED_UNKNOWN_REASON;
       }
       */
@@ -467,17 +467,17 @@ void MySQLSelfHosted::show_active_connections()
  
   auto gda_connection = connect(m_saved_database_name, m_saved_username, m_saved_password);
   if(!gda_connection)
-    std::cerr << G_STRFUNC << ": connection failed." << std::endl;
+    std::cerr << G_STRFUNC << ": connection failed.\n";
   
   auto datamodel = DbUtils::query_execute_select(builder);
   if(!datamodel)
-    std::cerr << G_STRFUNC << ": pg_stat_activity SQL query failed." << std::endl;
+    std::cerr << G_STRFUNC << ": pg_stat_activity SQL query failed.\n";
   
   const auto rows_count = datamodel->get_n_rows(); 
   if(datamodel->get_n_rows() < 1)
-    std::cerr << G_STRFUNC << ": pg_stat_activity SQL query returned no rows." << std::endl;
+    std::cerr << G_STRFUNC << ": pg_stat_activity SQL query returned no rows.\n";
 
-  std::cout << "Active connections according to a pg_stat_activity SQL query:" << std::endl;
+  std::cout << "Active connections according to a pg_stat_activity SQL query:\n";
   const auto cols_count = datamodel->get_n_columns();
   for(int row = 0; row < rows_count; ++row)
   {
@@ -501,7 +501,7 @@ std::string MySQLSelfHosted::get_mysqladmin_command(const Glib::ustring& usernam
 {
   if(username.empty())
   {
-    std::cerr << G_STRFUNC << ": username is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": username is empty.\n";
   }
 
   const auto port_as_text = Glib::Ascii::dtostr(m_port);
@@ -527,7 +527,7 @@ bool MySQLSelfHosted::cleanup(const SlotProgress& slot_progress)
 
   if(!get_self_hosting_active())
   {
-    //std::cout << G_STRFUNC << ": self-hosting is not active." << std::endl;
+    //std::cout << G_STRFUNC << ": self-hosting is not active.\n";
     return true; //Don't try to stop it if we have not started it.
   }
 
@@ -604,7 +604,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQLSelfHosted::connect(const Glib::ustrin
 {
   if(database.empty())
   {
-    std::cerr << G_STRFUNC << ": The database name is empty. This is strange." << std::endl;
+    std::cerr << G_STRFUNC << ": The database name is empty. This is strange.\n";
     return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
@@ -744,7 +744,7 @@ unsigned int MySQLSelfHosted::discover_first_free_port(unsigned int start_port, 
   close(fd);
 #endif //G_OS_WIN32
 
-  std::cerr << G_STRFUNC << ": No port was available." << std::endl;
+  std::cerr << G_STRFUNC << ": No port was available.\n";
   return 0;
 }
 

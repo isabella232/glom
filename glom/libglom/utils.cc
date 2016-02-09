@@ -120,7 +120,7 @@ Glib::ustring Utils::string_replace(const Glib::ustring& src, const Glib::ustrin
 {
   if(search_for.empty())
   {
-    std::cerr << G_STRFUNC << ": search_for was empty." << std::endl;
+    std::cerr << G_STRFUNC << ": search_for was empty.\n";
     return src;
   }
 
@@ -136,9 +136,9 @@ Glib::ustring Utils::string_replace(const Glib::ustring& src, const Glib::ustrin
   while((pos = result.find(search_for, pos_after_prev)) != std::string::npos)
   {
     //std::cout << "  debug: pos=" << pos << ", found=" << search_for << ", in string: " << result.substr(pos_after_prev, 20) << std::endl;
-    //std::cout << "  debug: before: result =" << result << ", pos_after_prev=pos_after_prev" << std::endl;
+    //std::cout << "  debug: before: result =" << result << ", pos_after_prev=pos_after_prev\n";
     result.replace(pos, len_search, replace_with);
-    //std::cout << "  after: before: result = result" << std::endl;
+    //std::cout << "  after: before: result = result\n";
     pos_after_prev = pos + len_replace;
   }
 
@@ -214,7 +214,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_count_rows(const Gl
 
   if(!sql_query)
   {
-    std::cerr << G_STRFUNC << ": sql_query was null." << std::endl;
+    std::cerr << G_STRFUNC << ": sql_query was null.\n";
     return result;
   }
 
@@ -462,7 +462,7 @@ Gnome::Gda::SqlExpr Utils::build_simple_where_expression(const Glib::ustring& ta
 {
   if(!key_field)
   {
-    std::cerr << G_STRFUNC << ": key_field was empty" << std::endl;
+    std::cerr << G_STRFUNC << ": key_field was empty\n";
     return Gnome::Gda::SqlExpr();
   }
   
@@ -521,7 +521,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const std::shared_p
   /*
   if(Conversions::value_is_empty(foreign_key_value))
   {
-    std::cout << G_STRFUNC << "debug: foreign_key_value is empty." << std::endl;
+    std::cout << G_STRFUNC << "debug: foreign_key_value is empty.\n";
     return result;
   }
   */
@@ -536,7 +536,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const std::shared_p
 
   if(!choice_relationship)
   {
-    std::cerr << G_STRFUNC << ": !choice_relationship." << std::endl;
+    std::cerr << G_STRFUNC << ": !choice_relationship.\n";
     return result;
   }
 
@@ -558,7 +558,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const std::shared_p
 
   if(!to_field)
   {
-    std::cerr << G_STRFUNC << ": to_field is null." << std::endl;
+    std::cerr << G_STRFUNC << ": to_field is null.\n";
   }
 
   //Default to some sort order rather than none:
@@ -577,7 +577,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const std::shared_p
 
   if(!builder)
   {
-    std::cerr << G_STRFUNC << ": builder is null." << std::endl;
+    std::cerr << G_STRFUNC << ": builder is null.\n";
     return result;
   }
 
@@ -588,7 +588,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const std::shared_p
 
   if(!connection)
   {
-    std::cerr << G_STRFUNC << ": connection is null." << std::endl;
+    std::cerr << G_STRFUNC << ": connection is null.\n";
     return result;
   }
 
@@ -623,7 +623,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const std::shared_p
   }
   else
   {
-      std::cerr << G_STRFUNC << ": Error while executing SQL" << std::endl <<
+      std::cerr << G_STRFUNC << ": Error while executing SQL\n" <<
                    "  " <<  sql_query << std::endl;
       return result;
   }
@@ -743,10 +743,10 @@ Glib::ustring Utils::create_local_image_uri(const Gnome::Gda::Value& value)
       }
     }
     else
-       std::cerr << G_STRFUNC << ": binary GdaValue contains no data." << std::endl;
+       std::cerr << G_STRFUNC << ": binary GdaValue contains no data.\n";
   }
   //else
-  //  std::cerr << G_STRFUNC << ": type != BINARY" << std::endl;
+  //  std::cerr << G_STRFUNC << ": type != BINARY\n";
 
   if(result.empty())
     result = "/tmp/glom_report_image_invalid.png";
@@ -833,7 +833,7 @@ Utils::type_vec_strings Utils::string_separate(const Glib::ustring& str, const G
         bool bContinue = true;
         while(bContinue && (posLastQuote < posComma))
         {
-          //std::cout << "  continue" << std::endl;
+          //std::cout << "  continue\n";
           Glib::ustring closing_quote;
           if(!m_current_quotes.empty())
             closing_quote = m_current_quotes.top();
@@ -867,13 +867,13 @@ Utils::type_vec_strings Utils::string_separate(const Glib::ustring& str, const G
             //Was it an expected closing quote, if we expected any:
             if(first_quote == closing_quote)
             {
-              //std::cout << "   popping quote" << std::endl;
+              //std::cout << "   popping quote\n";
               //Yes, so remove that quote from our stack, because we found the closing quote:
               m_current_quotes.pop();
             }
             else
             {
-              //std::cout << "   pushing quote" << std::endl;
+              //std::cout << "   pushing quote\n";
               //This must be an opening quote, so remember it:
               m_current_quotes.push(first_quote);
             }
@@ -894,7 +894,7 @@ Utils::type_vec_strings Utils::string_separate(const Glib::ustring& str, const G
 
       if(!in_quotes) //or if we don't care about quotes.
       {
-        //std::cout << "!in_quotes" << std::endl;
+        //std::cout << "!in_quotes\n";
 
         //Store this item, and start the next item after it:
         item = str.substr(item_start, posComma - item_start);
@@ -903,7 +903,7 @@ Utils::type_vec_strings Utils::string_separate(const Glib::ustring& str, const G
       }
       else
       {
-        //std::cout << "in quotes." << std::endl;
+        //std::cout << "in quotes.\n";
         // Continue behind separator
         unprocessed_start = posComma + size_separator;
         // Do not add this item to the result, because it was quoted.
@@ -1012,7 +1012,7 @@ static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
 
   if(!sharedconnection)
   {
-    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet.\n";
     return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
@@ -1028,7 +1028,7 @@ std::string Utils::sqlbuilder_get_full_query(
   if(!connection)
   {
     //TODO: Just use the correct provider, without an actual connection?
-    std::cerr << G_STRFUNC << ": There is no connection, so the SQL statement might not be created correctly." << std::endl;
+    std::cerr << G_STRFUNC << ": There is no connection, so the SQL statement might not be created correctly.\n";
   }
 
   Glib::ustring result = "glom_query_not_parsed";
@@ -1038,7 +1038,7 @@ std::string Utils::sqlbuilder_get_full_query(
     auto stmt = builder->get_statement();
     if(!stmt)
     {
-      std::cerr << G_STRFUNC << ": builder->get_statement() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": builder->get_statement() failed.\n";
       return result;
     }
 
@@ -1073,7 +1073,7 @@ std::string Utils::sqlbuilder_get_full_query(
   const Glib::ustring str = std::string(buf.get());
   if(str.empty())
   {
-    std::cerr << G_STRFUNC << ": Returning an empty string." << std::endl;
+    std::cerr << G_STRFUNC << ": Returning an empty string.\n";
   }
 
   return str;
@@ -1083,7 +1083,7 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const std::shared_ptr<con
 {
   if(table_name.empty())
   {
-    std::cerr << G_STRFUNC << ": table_name is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": table_name is empty.\n";
     return Gnome::Gda::SqlExpr();
   }
 
@@ -1100,7 +1100,7 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const std::shared_ptr<con
 
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document was null." << std::endl;
+    std::cerr << G_STRFUNC << ": document was null.\n";
     return Gnome::Gda::SqlExpr();
   }
 
@@ -1108,7 +1108,7 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const std::shared_ptr<con
   auto connection = get_connection();
   if(!connection)
   {
-    std::cerr << G_STRFUNC << ": connection was null." << std::endl;
+    std::cerr << G_STRFUNC << ": connection was null.\n";
     return Gnome::Gda::SqlExpr();
   }
 
@@ -1152,7 +1152,7 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const std::shared_ptr<con
   }
   else
   {
-    std::cerr << G_STRFUNC << ": Returning null SqlExpr" << std::endl;
+    std::cerr << G_STRFUNC << ": Returning null SqlExpr\n";
     return Gnome::Gda::SqlExpr();
   }
 }
@@ -1166,13 +1166,13 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_update_with_where_clause(
 
   if(!field || field->get_name().empty())
   {
-    std::cerr << G_STRFUNC << ": field was null or its name was empty." << std::endl;
+    std::cerr << G_STRFUNC << ": field was null or its name was empty.\n";
     return builder;
   }
 
   if(table_name.empty())
   {
-    std::cerr << G_STRFUNC << ": table_name was empty." << std::endl;
+    std::cerr << G_STRFUNC << ": table_name was empty.\n";
     return builder;
   }
 
@@ -1250,7 +1250,7 @@ bool Utils::delete_file(const std::string& uri)
   auto file = Gio::File::create_for_uri(uri);
   if(file->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
   {
-    std::cerr << G_STRFUNC << ": The file is a directory." << std::endl;
+    std::cerr << G_STRFUNC << ": The file is a directory.\n";
     return false;
   }
 
@@ -1410,13 +1410,13 @@ std::string Utils::get_temp_file_path(const std::string& prefix, const std::stri
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << G_STRFUNC << ": Glib::file_open_tmp() failed" << std::endl;
+    std::cerr << G_STRFUNC << ": Glib::file_open_tmp() failed\n";
     return filepath;
   }
   
   if(filepath.empty())
   {
-    std::cerr << G_STRFUNC << ": Glib::file_open_tmp() returned an empty filepath" << std::endl;
+    std::cerr << G_STRFUNC << ": Glib::file_open_tmp() returned an empty filepath\n";
   }
 
   return filepath;
@@ -1471,14 +1471,14 @@ LayoutGroup::type_list_const_items Utils::get_layout_items_plus_primary_key(cons
 {
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document was null." << std::endl;
+    std::cerr << G_STRFUNC << ": document was null.\n";
     return items;
   }
 
   const auto field_primary_key = document->get_field_primary_key(table_name);
   if(!field_primary_key)
   {
-    std::cerr << G_STRFUNC << ": Could not find the primary key." << std::endl;
+    std::cerr << G_STRFUNC << ": Could not find the primary key.\n";
     return items;
   }
 
@@ -1499,14 +1499,14 @@ LayoutGroup::type_list_items Utils::get_layout_items_plus_primary_key(const Layo
 {
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document was null." << std::endl;
+    std::cerr << G_STRFUNC << ": document was null.\n";
     return items;
   }
 
   const auto field_primary_key = document->get_field_primary_key(table_name);
   if(!field_primary_key)
   {
-    std::cerr << G_STRFUNC << ": Could not find the primary key." << std::endl;
+    std::cerr << G_STRFUNC << ": Could not find the primary key.\n";
     return items;
   }
 

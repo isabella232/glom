@@ -66,7 +66,7 @@ boost::python::object PyGlomRecord::get_connection()
   {
     if(!_PyGObject_API)
     {
-      std::cerr << G_STRFUNC << ": pyggobject does not seem to be initialized properly." << std::endl;
+      std::cerr << G_STRFUNC << ": pyggobject does not seem to be initialized properly.\n";
       return result;
     }
 
@@ -170,13 +170,13 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
   //Set the value in the database:
   if(!m_key_field || Conversions::value_is_empty(m_key_field_value))
   {
-    std::cerr << G_STRFUNC << ": The primary key name and value is not set. This would be a Glom bug." << std::endl;
+    std::cerr << G_STRFUNC << ": The primary key name and value is not set. This would be a Glom bug.\n";
     return;
   }
 
   if(!m_connection)
   {
-    std::cerr << G_STRFUNC << ": The connection is null. This would be a Glom bug." << std::endl;
+    std::cerr << G_STRFUNC << ": The connection is null. This would be a Glom bug.\n";
     return;
   }
 
@@ -205,7 +205,7 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
 
   if(!updated)
   {
-    std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
+    std::cerr << G_STRFUNC << ": UPDATE failed.\n";
   }
 
   //TODO: Do dependent calculations and lookups. Or just do them for all fields for this record when finishing the script?

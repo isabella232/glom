@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
     //https://bugzilla.gnome.org/show_bug.cgi?id=619445
     //This should tell us what the problem is:
     std::cerr << G_STRFUNC << ": exception from std::locale::global(std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
   }
 
   

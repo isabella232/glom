@@ -184,7 +184,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   {
     const auto test = DbUtils::query_execute(builder);
     if(!test)
-      std::cerr << G_STRFUNC << ": INSERT failed." << std::endl;
+      std::cerr << G_STRFUNC << ": INSERT failed.\n";
     else
     {
       auto row = get_row_selected(); //Null and ignored for details views.
@@ -211,7 +211,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
     }
   }
   else
-    std::cerr << G_STRFUNC << ": Empty field names or values." << std::endl;
+    std::cerr << G_STRFUNC << ": Empty field names or values.\n";
 
   return false; //Failed.
 }
@@ -288,7 +288,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
       builder_insert->add_field_value(primary_key_field->get_name(), primary_key_value);
       if(!DbUtils::query_execute(builder_insert))
       {
-        std::cerr << G_STRFUNC << ": INSERT failed." << std::endl;
+        std::cerr << G_STRFUNC << ": INSERT failed.\n";
         return false;
       }
 
@@ -307,7 +307,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
           relationship->get_from_table(), relationship->get_from_field()); //TODO_Performance.
         if(!field_from_key)
         {
-          std::cerr << G_STRFUNC << ": get_fields_for_table_one_field() failed." << std::endl;
+          std::cerr << G_STRFUNC << ": get_fields_for_table_one_field() failed.\n";
           return false;
         }
 
@@ -339,7 +339,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
 
             if(!DbUtils::query_execute(builder_update))
             {
-              std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
+              std::cerr << G_STRFUNC << ": UPDATE failed.\n";
               return false;
             }
           }
@@ -480,7 +480,7 @@ Base_DB_Table_Data::type_vecConstLayoutFields Base_DB_Table_Data::get_related_fi
 
 void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& /* field_value */)
 {
-  //std::cout << "DEBUG: Base_DB_Table_Data::refresh_related_fields()" << std::endl;
+  //std::cout << "DEBUG: Base_DB_Table_Data::refresh_related_fields()\n";
 
   if(field_in_record_changed.m_table_name != m_table_name)
     return; //TODO: Handle these too?
@@ -498,7 +498,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
     Glib::RefPtr<const Gnome::Gda::DataModel> result = DbUtils::query_execute_select(query);
     if(!result)
     {
-      std::cerr << G_STRFUNC << ": no result." << std::endl;
+      std::cerr << G_STRFUNC << ": no result.\n";
       handle_error();
     }
     else
@@ -511,7 +511,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
         const guint cols_count = result->get_n_columns();
         if(cols_count <= 0)
         {
-          std::cerr << G_STRFUNC << ": The result had 0 columns" << std::endl;
+          std::cerr << G_STRFUNC << ": The result had 0 columns\n";
         }
 
         for(guint uiCol = 0; uiCol < cols_count; ++uiCol)
@@ -519,7 +519,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
           const auto value = result->get_value_at(uiCol, 0 /* row */);
           auto layout_item = *iterFields;
           if(!layout_item)
-            std::cerr << G_STRFUNC << ": The layout_item was null." << std::endl;
+            std::cerr << G_STRFUNC << ": The layout_item was null.\n";
           else
           {
             //std::cout << "debug: " << G_STRFUNC << ": field_name=" << layout_item->get_name() << std::endl;
@@ -534,7 +534,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
         }
       }
       else
-        std::cerr << G_STRFUNC << ": no records found." << std::endl;
+        std::cerr << G_STRFUNC << ": no records found.\n";
     }
   }
 }

@@ -55,7 +55,7 @@ static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
 
   if(!sharedconnection)
   {
-    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet.\n";
     return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
@@ -74,17 +74,17 @@ static bool update_gda_metastore_for_table(const Glib::ustring& table_name)
   auto gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << G_STRFUNC << ": No gda_connection." << std::endl;
+    std::cerr << G_STRFUNC << ": No gda_connection.\n";
     return false;
   }
 
   if(table_name.empty())
   {
-    std::cerr << G_STRFUNC << ": table_name is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": table_name is empty.\n";
     return false;
   }
 
-  //std::cout << "debug: " << G_STRFUNC << ": Calling Gda::Connection::update_meta_store_table(" << table_name << ") ..." << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": Calling Gda::Connection::update_meta_store_table(" << table_name << ") ...\n";
   //TODO: This doesn't seem to quite work yet:
   try
   {
@@ -97,7 +97,7 @@ static bool update_gda_metastore_for_table(const Glib::ustring& table_name)
   }
 
   //This does work, though it takes ages: gda_connection->update_meta_store();
-  //std::cout << "debug: " << G_STRFUNC << ": ... Finished calling Gda::Connection::update_meta_store_table()" << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": ... Finished calling Gda::Connection::update_meta_store_table()\n";
 
   return true;
 }
@@ -107,9 +107,9 @@ bool create_database(const std::shared_ptr<Document>& document, const Glib::ustr
 #if 1
   // This seems to increase the chance that the database creation does not
   // fail due to the "source database is still in use" error. armin.
-  //std::cout << "Going to sleep" << std::endl;
+  //std::cout << "Going to sleep\n";
   Glib::usleep(500 * 1000);
-  //std::cout << "Awake" << std::endl;
+  //std::cout << "Awake\n";
 #endif
 
   if(progress)
@@ -160,7 +160,7 @@ bool create_database(const std::shared_ptr<Document>& document, const Glib::ustr
     bool test = add_standard_tables(document); //Add internal, hidden, tables.
     if(!test)
     {
-      std::cerr << G_STRFUNC << ": add_standard_tables() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": add_standard_tables() failed.\n";
       return false;
     }
     
@@ -172,20 +172,20 @@ bool create_database(const std::shared_ptr<Document>& document, const Glib::ustr
     test = add_standard_groups(document);
     if(!test)
     {
-      std::cerr << G_STRFUNC << ": add_standard_groups() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": add_standard_groups() failed.\n";
       return false;
     }
     
     if(progress)
       progress();
 
-    //std::cout << "debug: " << G_STRFUNC << ": Creation of standard tables and groups finished." << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": Creation of standard tables and groups finished.\n";
 
     //Set the title based on the title in the example document, or the user-supplied title when creating new documents:
     SystemPrefs prefs = get_database_preferences(document);
     if(prefs.m_name.empty())
     {
-      //std::cout << "debug: " << G_STRFUNC << ": Setting title in the database." << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": Setting title in the database.\n";
       prefs.m_name = title;
       set_database_preferences(document, prefs);
     }
@@ -209,7 +209,7 @@ bool create_database(const std::shared_ptr<Document>& document, const Glib::ustr
   }
   else
   {
-    std::cerr << G_STRFUNC << ": Could not connect to just-created database." << std::endl;
+    std::cerr << G_STRFUNC << ": Could not connect to just-created database.\n";
     return false;
   }
 }
@@ -230,7 +230,7 @@ bool recreate_database_from_document(const std::shared_ptr<Document>& document, 
   {
     connection_pool->set_ready_to_connect(); //This has succeeded already.
     auto sharedconnection = connection_pool->connect();
-    std::cerr << G_STRFUNC << ": Failed because database exists already." << std::endl;
+    std::cerr << G_STRFUNC << ": Failed because database exists already.\n";
 
     return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
   }
@@ -238,7 +238,7 @@ bool recreate_database_from_document(const std::shared_ptr<Document>& document, 
   {
     if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
     {
-      std::cerr << G_STRFUNC << ": AppWindow::recreate_database(): Failed because connection to server failed even without specifying a database." << std::endl;
+      std::cerr << G_STRFUNC << ": AppWindow::recreate_database(): Failed because connection to server failed even without specifying a database.\n";
       return false;
     }
 
@@ -270,7 +270,7 @@ bool recreate_database_from_document(const std::shared_ptr<Document>& document, 
   }
   catch(const ExceptionConnection& ex)
   {
-    std::cerr << G_STRFUNC << ": Failed to connect to the newly-created database." << std::endl;
+    std::cerr << G_STRFUNC << ": Failed to connect to the newly-created database.\n";
     return false;
   }
 
@@ -292,7 +292,7 @@ bool recreate_database_from_document(const std::shared_ptr<Document>& document, 
       progress();
     if(!table_creation_succeeded)
     {
-      std::cerr << G_STRFUNC << ": CREATE TABLE failed with the newly-created database." << std::endl;
+      std::cerr << G_STRFUNC << ": CREATE TABLE failed with the newly-created database.\n";
       return false;
     }
   }
@@ -304,7 +304,7 @@ bool recreate_database_from_document(const std::shared_ptr<Document>& document, 
     progress();
   if(!add_groups_from_document(document))
   {
-    std::cerr << G_STRFUNC << ": add_groups_from_document() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": add_groups_from_document() failed.\n";
     return false;
   }
   
@@ -313,7 +313,7 @@ bool recreate_database_from_document(const std::shared_ptr<Document>& document, 
     progress();
   if(!DbUtils::set_table_privileges_groups_from_document(document))
   {
-    std::cerr << G_STRFUNC << ": set_table_privileges_groups_from_document() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": set_table_privileges_groups_from_document() failed.\n";
     return false;
   }
     
@@ -331,7 +331,7 @@ bool recreate_database_from_document(const std::shared_ptr<Document>& document, 
 
       if(!table_insert_succeeded)
       {
-        std::cerr << G_STRFUNC << ": INSERT of example data failed with the newly-created database." << std::endl;
+        std::cerr << G_STRFUNC << ": INSERT of example data failed with the newly-created database.\n";
         return false;
       }
     //}
@@ -425,7 +425,7 @@ SystemPrefs get_database_preferences(const std::shared_ptr<const Document>& docu
       const auto test = add_standard_tables(document);
       if(!test)
       {
-         std::cerr << G_STRFUNC << ": add_standard_tables() failed." << std::endl;
+         std::cerr << G_STRFUNC << ": add_standard_tables() failed.\n";
       }
       
       ++attempts; //Try again now that we have tried to create the table.
@@ -461,7 +461,7 @@ void set_database_preferences(const std::shared_ptr<Document>& document, const S
   const auto test = query_execute(builder);
 
   if(!test)
-    std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
+    std::cerr << G_STRFUNC << ": UPDATE failed.\n";
 
   //Set some information in the document too, so we can use it to recreate the database:
   document->set_database_title_original(prefs.m_name);
@@ -487,7 +487,7 @@ bool add_standard_tables(const std::shared_ptr<const Document>& document)
         builderAdd->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
         builderAdd->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, 1);
         if(!query_execute(builderAdd))
-          std::cerr << G_STRFUNC << ": INSERT failed." << std::endl;
+          std::cerr << G_STRFUNC << ": INSERT failed.\n";
 
         //Use the database title from the document, if there is one:
         const auto system_name = document->get_database_title_original();
@@ -500,12 +500,12 @@ bool add_standard_tables(const std::shared_ptr<const Document>& document)
                                                builderUpdate->add_field_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME),
                                                builderUpdate->add_expr(1)));
           if(!query_execute(builderUpdate))
-            std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
+            std::cerr << G_STRFUNC << ": UPDATE failed.\n";
         }
       }
       else
       {
-        std::cerr << G_STRFUNC << ": add_standard_tables(): create_table(prefs) failed." << std::endl;
+        std::cerr << G_STRFUNC << ": add_standard_tables(): create_table(prefs) failed.\n";
         return false;
       }
     }
@@ -549,7 +549,7 @@ bool add_standard_tables(const std::shared_ptr<const Document>& document)
       const auto test = create_table(document->get_hosting_mode(), table_info, fields);
       if(!test)
       {
-        std::cerr << G_STRFUNC << ": add_standard_tables(): create_table(autoincrements) failed." << std::endl;
+        std::cerr << G_STRFUNC << ": add_standard_tables(): create_table(autoincrements) failed.\n";
         return false;
       }
 
@@ -580,7 +580,7 @@ bool add_standard_groups(const std::shared_ptr<Document>& document)
   auto gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet.\n";
   }
 
   // If the connection doesn't support users we can skip this step
@@ -599,7 +599,7 @@ bool add_standard_groups(const std::shared_ptr<Document>& document)
       DbUtils::build_query_create_group(GLOM_STANDARD_GROUP_NAME_DEVELOPER, true /* superuser */));
     if(!test)
     {
-      std::cerr << G_STRFUNC << ": CREATE GROUP failed when adding the developer group." << std::endl;
+      std::cerr << G_STRFUNC << ": CREATE GROUP failed when adding the developer group.\n";
       return false;
     }
 
@@ -610,11 +610,11 @@ bool add_standard_groups(const std::shared_ptr<Document>& document)
     test = query_execute_string(strQuery);
     if(!test)
     {
-      std::cerr << G_STRFUNC << ": ALTER GROUP failed when adding the user to the developer group." << std::endl;
+      std::cerr << G_STRFUNC << ": ALTER GROUP failed when adding the user to the developer group.\n";
       return false;
     }
 
-    //std::cout << "DEBUG: Added user " << current_user << " to glom developer group on postgres server." << std::endl;
+    //std::cout << "DEBUG: Added user " << current_user << " to glom developer group on postgres server.\n";
 
     Privileges priv_devs;
     priv_devs.m_view = true;
@@ -640,7 +640,7 @@ bool add_standard_groups(const std::shared_ptr<Document>& document)
   }
   else
   {
-    std::cout << "DEBUG: Connection does not support users" << std::endl;
+    std::cout << "DEBUG: Connection does not support users\n";
   }
 
   return true;
@@ -651,7 +651,7 @@ bool add_groups_from_document(const std::shared_ptr<const Document>& document)
   auto gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << G_STRFUNC << ": add_standard_groups(): No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": add_standard_groups(): No connection yet.\n";
   }
 
   // If the connection doesn't support users we can skip this step
@@ -687,7 +687,7 @@ bool set_table_privileges_groups_from_document(const std::shared_ptr<const Docum
   auto gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet.\n";
   }
 
   // If the connection doesn't support users we can skip this step
@@ -830,7 +830,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
     auto connection = get_connection();
     if(!connection)
     {
-      std::cerr << G_STRFUNC << ": connection is null" << std::endl;
+      std::cerr << G_STRFUNC << ": connection is null\n";
       return result;
     }
 
@@ -865,15 +865,15 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
 
     if(!data_model_fields)
     {
-      std::cerr << G_STRFUNC << ": libgda reported empty fields schema data_model for the table." << std::endl;
+      std::cerr << G_STRFUNC << ": libgda reported empty fields schema data_model for the table.\n";
     }
     else if(data_model_fields->get_n_columns() == 0)
     {
-      std::cerr << G_STRFUNC << ": libgda reported 0 fields for the table." << std::endl;
+      std::cerr << G_STRFUNC << ": libgda reported 0 fields for the table.\n";
     }
     else if(data_model_fields->get_n_rows() == 0)
     {
-      std::cerr << G_STRFUNC << ": table_name=" << table_name << ": data_model_fields->get_n_rows() == 0: The table probably does not exist in the specified database, or the user does not have SELECT rights." << std::endl;
+      std::cerr << G_STRFUNC << ": table_name=" << table_name << ": data_model_fields->get_n_rows() == 0: The table probably does not exist in the specified database, or the user does not have SELECT rights.\n";
     }
     else
     {
@@ -978,7 +978,7 @@ type_vec_fields get_fields_for_table(const std::shared_ptr<const Document>& docu
 
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document is null" << std::endl;
+    std::cerr << G_STRFUNC << ": document is null\n";
     return type_vec_fields(); //This should never happen.
   }
 
@@ -1076,11 +1076,11 @@ type_vec_strings get_table_names_from_database(bool ignore_system_tables)
 
     if(!data_model_tables)
     {
-      std::cerr << G_STRFUNC << ": libgda returned an empty tables GdaDataModel for the database." << std::endl;
+      std::cerr << G_STRFUNC << ": libgda returned an empty tables GdaDataModel for the database.\n";
     }
     else if(data_model_tables->get_n_columns() <= 0)
     {
-      std::cerr << G_STRFUNC << ": libgda reported 0 tables for the database." << std::endl;
+      std::cerr << G_STRFUNC << ": libgda reported 0 tables for the database.\n";
     }
     else
     {
@@ -1150,7 +1150,7 @@ bool create_table_with_default_fields(const std::shared_ptr<Document>& document,
   auto gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet.\n";
     return false;
   }
 
@@ -1194,7 +1194,7 @@ bool create_table_with_default_fields(const std::shared_ptr<Document>& document,
 
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document was null." << std::endl;
+    std::cerr << G_STRFUNC << ": document was null.\n";
     return false;
   }
   
@@ -1266,7 +1266,7 @@ bool create_table(Document::HostingMode hosting_mode, const std::shared_ptr<cons
 
   if(sql_fields.empty())
   {
-    std::cerr << G_STRFUNC << ": sql_fields is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": sql_fields is empty.\n";
   }
 
   //Actually create the table
@@ -1275,11 +1275,11 @@ bool create_table(Document::HostingMode hosting_mode, const std::shared_ptr<cons
     //TODO: Escape the table name?
     //TODO: Use GDA_SERVER_OPERATION_CREATE_TABLE instead?
     const Glib::ustring query = "CREATE TABLE " + escape_sql_id(table_info->get_name()) + " (" + sql_fields + ");";
-    //std::cout << G_STRFUNC << ": debug: CREATE TABLE query:" << std::endl;
+    //std::cout << G_STRFUNC << ": debug: CREATE TABLE query:\n";
     //std::cout << "    " << query << std::endl;
     table_creation_succeeded = query_execute_string(query);
     if(!table_creation_succeeded)
-      std::cerr << G_STRFUNC << ": CREATE TABLE failed." << std::endl;
+      std::cerr << G_STRFUNC << ": CREATE TABLE failed.\n";
   }
   catch(const ExceptionConnection& ex)
   {
@@ -1363,13 +1363,13 @@ static void builder_set_where_autoincrement(const Glib::RefPtr<Gnome::Gda::SqlBu
 {
   if(table_name.empty())
   {
-    std::cerr << G_STRFUNC << ": table_name is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": table_name is empty\n";
     return;
   }
   
   if(field_name.empty())
   {
-    std::cerr << G_STRFUNC << ": field_name is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": field_name is empty\n";
     return;
   }
   
@@ -1386,13 +1386,13 @@ Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name,
 {
   if(table_name.empty())
   {
-    std::cerr << G_STRFUNC << ": table_name is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": table_name is empty\n";
     return Gnome::Gda::Value();
   }
   
   if(field_name.empty())
   {
-    std::cerr << G_STRFUNC << ": field_name is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": field_name is empty\n";
     return Gnome::Gda::Value();
   }
   
@@ -1410,7 +1410,7 @@ Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name,
 
   const auto test = query_execute(builder);
   if(!test)
-    std::cerr << G_STRFUNC << ": Increment failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Increment failed.\n";
 
   return result;
 }
@@ -1419,13 +1419,13 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
 {
   if(table_name.empty())
   {
-    std::cerr << G_STRFUNC << ": table_name is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": table_name is empty\n";
     return Gnome::Gda::Value();
   }
   
   if(field_name.empty())
   {
-    std::cerr << G_STRFUNC << ": field_name is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": field_name is empty\n";
     return Gnome::Gda::Value();
   }
 
@@ -1436,7 +1436,7 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
   if(!table_privs.m_view || !table_privs.m_edit)
   {
     //This should not happen:
-    std::cerr << G_STRFUNC << ": The current user may not edit the autoincrements table. Any user who has create rights for a table should have edit rights to the autoincrements table." << std::endl;
+    std::cerr << G_STRFUNC << ": The current user may not edit the autoincrements table. Any user who has create rights for a table should have edit rights to the autoincrements table.\n";
   }
 
   auto builder =
@@ -1459,7 +1459,7 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
 
     const auto test = query_execute(builder);
     if(!test)
-      std::cerr << G_STRFUNC << ": INSERT of new row failed." << std::endl;
+      std::cerr << G_STRFUNC << ": INSERT of new row failed.\n";
 
     //GdaNumeric is a pain, so we take a short-cut:
     bool success = false;
@@ -1488,13 +1488,13 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
 {
   if(table_name.empty())
   {
-    std::cerr << G_STRFUNC << ": table_name is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": table_name is empty\n";
     return;
   }
   
   if(field_name.empty())
   {
-    std::cerr << G_STRFUNC << ": field_name is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": field_name is empty\n";
     return;
   }
 
@@ -1535,23 +1535,23 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
 
     const auto test = query_execute(builder);
     if(!test)
-      std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
+      std::cerr << G_STRFUNC << ": UPDATE failed.\n";
   }
   else
-    std::cerr << G_STRFUNC << ": SELECT MAX() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": SELECT MAX() failed.\n";
 }
 
 void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   if(table_name.empty())
   {
-    std::cerr << G_STRFUNC << ": table_name is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": table_name is empty\n";
     return;
   }
   
   if(field_name.empty())
   {
-    std::cerr << G_STRFUNC << ": field_name is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": field_name is empty\n";
     return;
   }
   
@@ -1562,7 +1562,7 @@ void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring&
 
   const auto test = query_execute(builder);
   if(!test)
-    std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
+    std::cerr << G_STRFUNC << ": UPDATE failed.\n";
 }
 
 bool insert_example_data(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name)
@@ -1571,14 +1571,14 @@ bool insert_example_data(const std::shared_ptr<const Document>& document, const 
   const auto example_rows = document->get_table_example_data(table_name);
   if(example_rows.empty())
   {
-    //std::cout << "debug: " << G_STRFUNC << ": No example data available." << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": No example data available.\n";
     return true;
   }
 
   auto gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << G_STRFUNC << ": connection is null" << std::endl;
+    std::cerr << G_STRFUNC << ": connection is null\n";
     return false;
   }
 
@@ -1603,7 +1603,7 @@ bool insert_example_data(const std::shared_ptr<const Document>& document, const 
     if(row_data.empty())
       break;
 
-    //std::cout << "DEBUG: row_data size = " << row_data.size() << ", (fields size= " << vec_fields.size() << " )" << std::endl;
+    //std::cout << "DEBUG: row_data size = " << row_data.size() << ", (fields size= " << vec_fields.size() << " )\n";
 
     const auto hosting_mode = document->get_hosting_mode();
 
@@ -1626,7 +1626,7 @@ bool insert_example_data(const std::shared_ptr<const Document>& document, const 
           (hosting_mode == Document::HostingMode::MYSQL_SELF))
         {
           //TODO: See https://bugzilla.gnome.org/show_bug.cgi?id=691099
-          std::cerr << G_STRFUNC << ": Skipping Image field because libgda does not support it for MySQL." << std::endl;
+          std::cerr << G_STRFUNC << ": Skipping Image field because libgda does not support it for MySQL.\n";
           break;
         }
       }
@@ -1638,7 +1638,7 @@ bool insert_example_data(const std::shared_ptr<const Document>& document, const 
     //After this, the Parser will know how many SQL parameters there are in
     //the query, and allow us to set their values.
 
-    //std::cout << G_STRFUNC << ": debug: INSERT query: " << std::endl
+    //std::cout << G_STRFUNC << ": debug: INSERT query: \n"
     //  << "    " << Utils::sqlbuilder_get_full_query(builder) << std::endl;
 
     insert_succeeded = query_execute(builder);
@@ -1669,7 +1669,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
   auto gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet.\n";
     return result;
   }
 
@@ -1732,7 +1732,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
   auto gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet.\n";
     return false;
   }
 
@@ -1796,7 +1796,7 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
   auto gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet.\n";
     return false;
   }
 
@@ -1846,13 +1846,13 @@ void layout_item_fill_field_details(const std::shared_ptr<const Document>& docum
 {
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document was null." << std::endl;
+    std::cerr << G_STRFUNC << ": document was null.\n";
     return;
   }
 
   if(!layout_item)
   {
-    std::cerr << G_STRFUNC << ": layout_item was null." << std::endl;
+    std::cerr << G_STRFUNC << ": layout_item was null.\n";
   }
 
   const auto table_name = layout_item->get_table_used(parent_table_name);
@@ -1866,19 +1866,19 @@ bool layout_field_should_have_navigation(const Glib::ustring& table_name, const 
   
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document was null." << std::endl;
+    std::cerr << G_STRFUNC << ": document was null.\n";
     return false;
   }
   
   if(table_name.empty())
   {
-    std::cerr << G_STRFUNC << ": table_name was empty." << std::endl;
+    std::cerr << G_STRFUNC << ": table_name was empty.\n";
     return false;
   } 
   
   if(!layout_item)
   {
-    std::cerr << G_STRFUNC << ": layout_item was null." << std::endl;
+    std::cerr << G_STRFUNC << ": layout_item was null.\n";
     return false;
   }
 
@@ -1944,7 +1944,7 @@ Glib::ustring get_unused_database_name(const Glib::ustring& base_name)
       {
         //We couldn't even connect to the server,
         //regardless of what database we try to connect to:
-        std::cerr << G_STRFUNC << ": Could not connect to the server." << std::endl;
+        std::cerr << G_STRFUNC << ": Could not connect to the server.\n";
         return Glib::ustring();
       }
       else
@@ -1963,7 +1963,7 @@ int count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql
 {
   if(!sql_query)
   {
-    std::cerr << G_STRFUNC << ": sql_query was null." << std::endl;
+    std::cerr << G_STRFUNC << ": sql_query was null.\n";
     return 0;
   }
 
@@ -2019,14 +2019,14 @@ Glib::ustring escape_sql_id(const Glib::ustring& id)
 {
   if(id.empty())
   {
-    std::cerr << G_STRFUNC << ": id is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": id is empty.\n";
     return id;
   }
 
   auto gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << G_STRFUNC << ": No gda_connection." << std::endl;
+    std::cerr << G_STRFUNC << ": No gda_connection.\n";
     return id;
   }
 
@@ -2048,7 +2048,7 @@ Glib::ustring build_query_create_group(const Glib::ustring& group, bool superuse
 {
   if(group.empty())
   {
-    std::cerr << G_STRFUNC << ": group is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": group is empty\n";
   }
 
   Glib::ustring query = "CREATE GROUP " + escape_sql_id(group);
@@ -2065,12 +2065,12 @@ Glib::ustring build_query_add_user_to_group(const Glib::ustring& group, const Gl
 {
   if(group.empty())
   {
-    std::cerr << G_STRFUNC << ": group is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": group is empty\n";
   }
 
   if(user.empty())
   {
-    std::cerr << G_STRFUNC << ": user is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": user is empty\n";
   }
 
   return "ALTER GROUP " + escape_sql_id(group) + " ADD USER " + escape_sql_id(user);
@@ -2080,12 +2080,12 @@ static Glib::ustring build_query_add_user(const Glib::ustring& user, const Glib:
 {
   if(user.empty())
   {
-    std::cerr << G_STRFUNC << ": user is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": user is empty\n";
   }
 
   if(password.empty())
   {
-    std::cerr << G_STRFUNC << ": password is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": password is empty\n";
   }
 
   //Note that ' around the user fails, so we use ".
@@ -2100,25 +2100,25 @@ bool add_user(const std::shared_ptr<const Document>& document, const Glib::ustri
 {
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    std::cerr << G_STRFUNC << ": document is null.\n";
     return false;
   }
 
   if(user.empty())
   {
-    std::cerr << G_STRFUNC << ": user is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": user is empty.\n";
     return false;
   }
 
   if(password.empty())
   {
-    std::cerr << G_STRFUNC << ": password is  empty." << std::endl;
+    std::cerr << G_STRFUNC << ": password is  empty.\n";
     return false;
   }
 
   if(group.empty())
   {
-    std::cerr << G_STRFUNC << ": group is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": group is empty.\n";
     return false;
   }
 
@@ -2128,7 +2128,7 @@ bool add_user(const std::shared_ptr<const Document>& document, const Glib::ustri
   bool test = DbUtils::query_execute_string(query_add);
   if(!test)
   {
-    std::cerr << G_STRFUNC << ": CREATE USER failed." << std::endl;
+    std::cerr << G_STRFUNC << ": CREATE USER failed.\n";
     return false;
   }
 
@@ -2137,7 +2137,7 @@ bool add_user(const std::shared_ptr<const Document>& document, const Glib::ustri
   test = DbUtils::query_execute_string(query_add_to_group);
   if(!test)
   {
-    std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;
+    std::cerr << G_STRFUNC << ": ALTER GROUP failed.\n";
     return false;
   }
 
@@ -2149,7 +2149,7 @@ bool add_user(const std::shared_ptr<const Document>& document, const Glib::ustri
     const auto table_name = table->get_name();
     const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);
     if(!DbUtils::query_execute_string(strQuery))
-      std::cerr << G_STRFUNC << ": REVOKE failed." << std::endl;
+      std::cerr << G_STRFUNC << ": REVOKE failed.\n";
   }
 
   return true;
@@ -2159,13 +2159,13 @@ bool add_group(const std::shared_ptr<const Document>& document, const Glib::ustr
 {
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    std::cerr << G_STRFUNC << ": document is null.\n";
     return false;
   }
 
   if(group.empty())
   {
-    std::cerr << G_STRFUNC << ": group is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": group is empty.\n";
     return false;
   }
  
@@ -2174,7 +2174,7 @@ bool add_group(const std::shared_ptr<const Document>& document, const Glib::ustr
   const auto test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
-    std::cerr << G_STRFUNC << ": CREATE GROUP failed." << std::endl;
+    std::cerr << G_STRFUNC << ": CREATE GROUP failed.\n";
     return false;
   }
 
@@ -2189,7 +2189,7 @@ bool add_group(const std::shared_ptr<const Document>& document, const Glib::ustr
   {
     if(!Privs::set_table_privileges(group, table, priv))
     {
-      std::cerr << G_STRFUNC << "Privs::set_table_privileges() failed." << std::endl;
+      std::cerr << G_STRFUNC << "Privs::set_table_privileges() failed.\n";
       return false;
     }
   }
@@ -2201,7 +2201,7 @@ bool add_group(const std::shared_ptr<const Document>& document, const Glib::ustr
     
   if(!Privs::set_table_privileges(group, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv))
   {
-    std::cerr << G_STRFUNC << "Privs::set_table_privileges() failed." << std::endl;
+    std::cerr << G_STRFUNC << "Privs::set_table_privileges() failed.\n";
     return false;
   }
 
@@ -2218,7 +2218,7 @@ bool remove_user(const Glib::ustring& user)
   const auto test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
-    std::cerr << G_STRFUNC << ": DROP USER failed" << std::endl;
+    std::cerr << G_STRFUNC << ": DROP USER failed\n";
     return false;
   }
 
@@ -2234,7 +2234,7 @@ bool remove_user_from_group(const Glib::ustring& user, const Glib::ustring& grou
   const auto test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
-    std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;
+    std::cerr << G_STRFUNC << ": ALTER GROUP failed.\n";
     return false;
   }
 
@@ -2291,7 +2291,7 @@ type_map_fields get_record_field_values(const std::shared_ptr<const Document>& d
 
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document is NULL." << std::endl;
+    std::cerr << G_STRFUNC << ": document is NULL.\n";
     return field_values;
   }
 

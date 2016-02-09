@@ -369,20 +369,20 @@ void do_print_layout(const std::shared_ptr<const PrintLayout>& print_layout, con
 {
   if(!print_layout)
   {
-    std::cerr << G_STRFUNC << ": print_layout was null" << std::endl;
+    std::cerr << G_STRFUNC << ": print_layout was null\n";
     return;
   }
   
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document was null" << std::endl;
+    std::cerr << G_STRFUNC << ": document was null\n";
     return;
   }
   
   //TODO: All this to be null when we allow that in Gtk::PrintOperation::run().
   if(!transient_for)
   {
-    std::cerr << G_STRFUNC << ":  transient_for was null" << std::endl;
+    std::cerr << G_STRFUNC << ":  transient_for was null\n";
     return;
   }
 

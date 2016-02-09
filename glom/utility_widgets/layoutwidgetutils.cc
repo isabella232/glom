@@ -63,7 +63,7 @@ void LayoutWidgetUtils::on_menu_delete_activate()
   if(!parent)
   {
     // Should never happen!
-    std::cerr << G_STRFUNC << ": LayoutWidgetUtils is no Gtk::Widget" << std::endl;
+    std::cerr << G_STRFUNC << ": LayoutWidgetUtils is no Gtk::Widget\n";
     return;
   }
 
@@ -93,7 +93,7 @@ void LayoutWidgetUtils::on_menu_delete_activate()
 void LayoutWidgetUtils::on_menu_properties_activate()
 {
   //This is not pure virtual, so we can easily use this base class in unit tests.
-  std::cerr << G_STRFUNC << ": Not imlemented. Derived classes should override this." << std::endl;
+  std::cerr << G_STRFUNC << ": Not imlemented. Derived classes should override this.\n";
 }
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY

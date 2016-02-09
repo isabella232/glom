@@ -70,7 +70,7 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const std:
 {
   if(!table_info)
   {
-    std::cerr << G_STRFUNC << ": table_info was null." << std::endl;
+    std::cerr << G_STRFUNC << ": table_info was null.\n";
     return;
   }
   
@@ -146,7 +146,7 @@ bool Box_Tables::fill_from_database()
     listTablesDocument = document->get_tables();
   }
   else
-    std::cerr << G_STRFUNC << ": document is null" << std::endl;
+    std::cerr << G_STRFUNC << ": document is null\n";
 
   //Get the list of tables in the database, from the server:
   auto sharedconnection = connect_to_server(AppWindow::get_appwindow());
@@ -312,7 +312,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           {
             const auto test = DbUtils::drop_table(table_name);
             if(!test)
-              std::cerr << G_STRFUNC << ": DROP TABLE failed." << std::endl;
+              std::cerr << G_STRFUNC << ": DROP TABLE failed.\n";
             else
             {
               //Forget about it in the document too.
@@ -334,7 +334,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
                 DbUtils::remove_auto_increment(table_name, field_name);
               else
               {
-                std::cerr << G_STRFUNC << ": field_name is empty" << std::endl;
+                std::cerr << G_STRFUNC << ": field_name is empty\n";
               }
             }
           }

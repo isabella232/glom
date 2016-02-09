@@ -103,7 +103,7 @@ int main()
   const auto po_file_uri = Glom::Utils::get_temp_file_uri("glom_export.po");
   if(po_file_uri.empty())
   {
-    std::cerr << G_STRFUNC << ": Could not generate a temporary file URI=" << std::endl;
+    std::cerr << G_STRFUNC << ": Could not generate a temporary file URI=\n";
     return EXIT_FAILURE;
   }
 
@@ -114,7 +114,7 @@ int main()
     Glom::write_translations_to_po_file(document, po_file_uri, locale);
   if(!success)
   {
-    std::cerr << G_STRFUNC << ": Glom::write_translations_to_po_file() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Glom::write_translations_to_po_file() failed.\n";
     return EXIT_FAILURE;
   }
 

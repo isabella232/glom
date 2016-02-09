@@ -62,7 +62,7 @@ void libglom_init()
   if(!PyDateTimeAPI)
   {
     //Give people a clue on stdout:
-    std::cerr << G_STRFUNC << ": PyDateTime_IMPORT (a python module import) failed." << std::endl;
+    std::cerr << G_STRFUNC << ": PyDateTime_IMPORT (a python module import) failed.\n";
 
     //This gives more information. When this happens it is generally a linker
     //failure while importing a python module:

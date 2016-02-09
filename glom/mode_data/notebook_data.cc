@@ -118,7 +118,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
 
       if(!details_record_specified)
       {
-        //std::cout << "debug: no new_found_set" << std::endl;
+        //std::cout << "debug: no new_found_set\n";
         primary_key_for_details = document->get_layout_record_viewed(m_table_name, m_Box_Details.get_layout_name());
       }
       else if(details_record_specified)
@@ -140,7 +140,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
         //std::cout << "debug:  m_Box_List.get_primary_key_value_selected()=" << primary_key_for_details.to_string() << std::endl;
         if(Conversions::value_is_empty(primary_key_for_details))
         {
-          //std::cout << "debug: calling list.get_primary_key_value_first()" << std::endl;
+          //std::cout << "debug: calling list.get_primary_key_value_first()\n";
           primary_key_for_details = m_Box_List.get_primary_key_value_first();
           //std::cout << "  debug:  result=" <<  primary_key_for_details.to_string() << std::endl;
         }
@@ -149,7 +149,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
       m_Box_Details.init_db_details(found_set, get_active_layout_platform(get_document()), primary_key_for_details);
     }
     else
-      std::cerr << G_STRFUNC << ": document is NULL" << std::endl;
+      std::cerr << G_STRFUNC << ": document is NULL\n";
   }
 
 
@@ -252,7 +252,7 @@ FoundSet Notebook_Data::get_found_set_selected() const
     const auto document = get_document();
     if(!document)
     {
-      std::cerr << G_STRFUNC << ": document is null" << std::endl;
+      std::cerr << G_STRFUNC << ": document is null\n";
       found_set.m_where_clause = Gnome::Gda::SqlExpr();
       return found_set;
     }
@@ -363,14 +363,14 @@ void Notebook_Data::on_switch_page_handler(Gtk::Widget* pPage)
     //b) show changed field contents, changed elsewhere.
     if(box == &m_Box_List)
     {
-      //std::cout << "debug: switching to list" << std::endl;
+      //std::cout << "debug: switching to list\n";
       const auto primary_key_selected = m_Box_List.get_primary_key_value_selected();
       m_Box_List.refresh_data_from_database();
       m_Box_List.set_primary_key_value_selected(primary_key_selected);
     }
     else if(box == &m_Box_Details)
     {
-      //std::cout << "debug: switching to details" << std::endl;
+      //std::cout << "debug: switching to details\n";
       const auto primary_key_selected = m_Box_List.get_primary_key_value_selected();
       m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_selected);
     }

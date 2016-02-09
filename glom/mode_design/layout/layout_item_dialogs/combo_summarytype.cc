@@ -62,7 +62,7 @@ void Combo_SummaryType::set_summary_type(LayoutItem_FieldSummary::summaryType su
     }
   }
 
-  std::cerr << G_STRFUNC << ": no item found" << std::endl;
+  std::cerr << G_STRFUNC << ": no item found\n";
 
   //Not found, so mark it as blank:
   unset_active();

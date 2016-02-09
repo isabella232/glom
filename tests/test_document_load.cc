@@ -91,7 +91,7 @@ static std::shared_ptr<const Glom::LayoutItem_Portal> get_portal_from_details_la
     document->get_data_layout_groups("details", table_name);
   if(groups.empty())
   {
-    std::cerr << G_STRFUNC << ": groups is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": groups is empty.\n";
   }
   
   for(const auto& group : groups)
@@ -261,7 +261,7 @@ int main()
   const auto module_names = document->get_library_module_names();
   if(!module_names.empty()) //TODO: Test a document that actually has some?
   {
-    std::cerr << G_STRFUNC << ": Failure: Unexpected library module names." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected library module names.\n";
     return false;
   }
 
@@ -271,32 +271,32 @@ int main()
     document->get_print_layout_names("contacts");
   if(print_layout_names.size() != 1)
   {
-    std::cerr << G_STRFUNC << ": Failure: Unexpected number of print layouts." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected number of print layouts.\n";
     return false;
   }
 
   if(!contains(print_layout_names, "contact_details"))
   {
-    std::cerr << G_STRFUNC << ": Failure: Could not find the expected print layout name." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Could not find the expected print layout name.\n";
     return false;
   }
   
   const auto print_layout = document->get_print_layout("contacts", "contact_details");
   if(!print_layout)
   {
-    std::cerr << G_STRFUNC << ": Failure: Could not get an expected print layout." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Could not get an expected print layout.\n";
     return false;
   }
   
   if(print_layout->get_title_original() != "Contact Details")
   {
-    std::cerr << G_STRFUNC << ": Failure: Unexpected print layout title." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected print layout title.\n";
     return false;
   }
   
   if(!print_layout->get_layout_group())
   {
-    std::cerr << G_STRFUNC << ": Failure: The print layout has no layout group." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The print layout has no layout group.\n";
     return false;
   }
 
@@ -305,32 +305,32 @@ int main()
     document->get_report_names("contacts");
   if(report_names.size() != 2)
   {
-    std::cerr << G_STRFUNC << ": Failure: Unexpected number of reports." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected number of reports.\n";
     return false;
   }
 
   if(!contains(report_names, "by_country"))
   {
-    std::cerr << G_STRFUNC << ": Failure: Could not find the expected report name." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Could not find the expected report name.\n";
     return false;
   }
 
   const auto report = document->get_report("contacts", "by_country_by_town");
   if(!report)
   {
-    std::cerr << G_STRFUNC << ": Failure: Could not get an expected report." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Could not get an expected report.\n";
     return false;
   }
   
   if(report->get_title_original() != "By Country, By Town")
   {
-    std::cerr << G_STRFUNC << ": Failure: Unexpected report title." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected report title.\n";
     return false;
   }
   
   if(!report->get_layout_group())
   {
-    std::cerr << G_STRFUNC << ": Failure: The report has no layout group." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The report has no layout group.\n";
     return false;
   }
 
@@ -355,13 +355,13 @@ int main()
   //Test navigation:
   if(!needs_navigation(document, "scenes", "location_id"))
   {
-    std::cerr << G_STRFUNC << ": Failure: DbUtils::layout_field_should_have_navigation() did not return the expected result." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: DbUtils::layout_field_should_have_navigation() did not return the expected result.\n";
     return false;
   }
 
   if(needs_navigation(document, "scenes", "description"))
   {
-    std::cerr << G_STRFUNC << ": Failure: DbUtils::layout_field_should_have_navigation() did not return the expected result." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: DbUtils::layout_field_should_have_navigation() did not return the expected result.\n";
     return false;
   }
 
@@ -374,7 +374,7 @@ int main()
     get_portal_from_details_layout(document, "scenes", portal_relationship_name);
   if(!portal)
   {
-    std::cerr << G_STRFUNC << ": Failure: Could not get the portal from the layout." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Could not get the portal from the layout.\n";
     return false;
   }
 
@@ -390,7 +390,7 @@ int main()
 
   if(!navigation_relationship)
   {
-    std::cerr << G_STRFUNC << ": Failure: get_suitable_table_to_view_details() returned an empty navigation_relationship." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: get_suitable_table_to_view_details() returned an empty navigation_relationship.\n";
     return false;
   }
 

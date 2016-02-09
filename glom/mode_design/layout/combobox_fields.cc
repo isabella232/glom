@@ -139,9 +139,9 @@ void ComboBox_Fields::set_fields(const std::shared_ptr<Document>& document, cons
   {
     if(rel && (rel->get_glom_type() == field_type))
     {
-      std::cout << "DEBUG: ComboBox_Fields::set_fields() 1" << std::endl;
+      std::cout << "DEBUG: ComboBox_Fields::set_fields() 1\n";
       auto tree_iter = m_model->append();
-      std::cout << "DEBUG: ComboBox_Fields::set_fields() 2" << std::endl;
+      std::cout << "DEBUG: ComboBox_Fields::set_fields() 2\n";
       Gtk::TreeModel::Row row = *tree_iter;
 
       row[m_model_columns.m_field] = rel;

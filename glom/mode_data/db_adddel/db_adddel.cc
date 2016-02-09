@@ -154,7 +154,7 @@ void DbAddDel::do_user_requested_edit()
     signal_user_requested_edit()(iter);
   }
   else
-    std::cerr << G_STRFUNC << ": No item was selected." << std::endl;
+    std::cerr << G_STRFUNC << ": No item was selected.\n";
 }
 
 void DbAddDel::on_idle_row_edit()
@@ -817,7 +817,7 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const std::shared
 
   if(!m_refListStore)
   {
-    std::cerr << G_STRFUNC << ": No model." << std::endl;
+    std::cerr << G_STRFUNC << ": No model.\n";
     return;
   }
 
@@ -863,7 +863,7 @@ void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint mo
   auto layout_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
   if(!layout_field)
   {
-    std::cerr << G_STRFUNC << ": The layout item was not a LayoutItem_Field." << std::endl;
+    std::cerr << G_STRFUNC << ": The layout item was not a LayoutItem_Field.\n";
     return;
   }
 
@@ -975,7 +975,7 @@ DbAddDel::type_list_indexes DbAddDel::get_column_index(const std::shared_ptr<con
 
   if(!layout_item)
   {
-    std::cerr << G_STRFUNC << ": layout_item was null." << std::endl;
+    std::cerr << G_STRFUNC << ": layout_item was null.\n";
     return list_indexes;
   }
 
@@ -1365,14 +1365,14 @@ void DbAddDel::on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& ro
   auto pColumn = m_TreeView.get_column(view_column_index);
   if(!pColumn)
   {
-    std::cerr << G_STRFUNC << ": pColumn is null." << std::endl;
+    std::cerr << G_STRFUNC << ": pColumn is null.\n";
     return;
   }
   
   auto pCell = dynamic_cast<Gtk::CellRendererText*>(pColumn->get_first_cell());
   if(!pCell)
   {
-    std::cerr << G_STRFUNC << ": pCell is null." << std::endl;
+    std::cerr << G_STRFUNC << ": pCell is null.\n";
     return;
   }
     
@@ -1395,7 +1395,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
  
   if(path.empty())
   {
-    std::cerr << G_STRFUNC << ": path is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": path is empty.\n";
     return;
   }
 
@@ -1500,7 +1500,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
         //Store the value in the model:
         //std::cout << "debug: setting value: column=" << treemodel_column_index << ", type=" << value.get_value_type() << std::endl;
         row.set_value(treemodel_column_index, value);
-        //std::cout << "debug: after setting value" << std::endl;
+        //std::cout << "debug: after setting value\n";
       }
 
       if(!bIsAdd)
@@ -1838,7 +1838,7 @@ bool DbAddDel::get_view_column_index(guint model_column_index, guint& view_colum
     ++view_column_index;
   }
   else
-    std::cout << "m_treeviewcolumn_button is null." << std::endl;
+    std::cout << "m_treeviewcolumn_button is null.\n";
 
   return true;
 }
@@ -1862,7 +1862,7 @@ void DbAddDel::set_key_field(const std::shared_ptr<Field>& field)
 
 void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index)
 {
-  //std::cout << "debug: DbAddDel::treeviewcolumn_on_cell_data()" << std::endl;
+  //std::cout << "debug: DbAddDel::treeviewcolumn_on_cell_data()\n";
 
   if(iter)
   {
@@ -1880,7 +1880,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
       GType debug_type = value.get_value_type();
       std::cout << "debug: " << G_STRFUNC << ": GType=" << debug_type << std::endl;
       if(debug_type)
-         std::cout << "    GType name=\"" << g_type_name(debug_type) << "\"" << std::endl;
+         std::cout << "    GType name=\"" << g_type_name(debug_type) << "\"\n";
       */
 
       const auto type = field->get_glom_type();
@@ -1908,7 +1908,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
             pDerived->property_pixbuf() = pixbuf;
           }
           else
-            std::cerr << G_STRFUNC << ": glom_type is enumType::IMAGE but gda type is not VALUE_TYPE_BINARY" << std::endl;
+            std::cerr << G_STRFUNC << ": glom_type is enumType::IMAGE but gda type is not VALUE_TYPE_BINARY\n";
 
           break;
         }
@@ -2149,7 +2149,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
           }
           else
           {
-            std::cerr << G_STRFUNC << ": key not found for edited related field." << std::endl;
+            std::cerr << G_STRFUNC << ": key not found for edited related field.\n";
           }
         }
       }
@@ -2231,7 +2231,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
     else
     {
       //A field value was entered, but the record has not been added yet, because not enough information exists yet.
-      std::cout << G_STRFUNC << ": debug: record not yet added." << std::endl;
+      std::cout << G_STRFUNC << ": debug: record not yet added.\n";
     }
   }
 }
@@ -2252,7 +2252,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
     return;
   }
 
-  //std::cout << "DbAddDel::on_adddel_user_added" << std::endl;
+  //std::cout << "DbAddDel::on_adddel_user_added\n";
 
   Gnome::Gda::Value primary_key_value;
 

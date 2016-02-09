@@ -86,7 +86,7 @@ static void clear_flowtable(Glom::FlowTable& flowtable)
 {
   flowtable.remove_all();
 
-  //std::cout << G_STRFUNC << ": debug 1" << std::endl;
+  //std::cout << G_STRFUNC << ": debug 1\n";
   for(const auto& widget : vec_child_widgets)
   {
     //std::cout << "  loop: widget=" << widget << std::endl;

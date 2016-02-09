@@ -126,7 +126,7 @@ bool PostgresSelfHosted::install_postgres(const SlotProgress& /* slot_progress *
   const auto result = gst_packages_install(parent_window->gobj() /* parent window */, packages);
   if(result)
   {
-    std::cout << "Glom: gst_packages_install() reports success." << std::endl;
+    std::cout << "Glom: gst_packages_install() reports success.\n";
     //Double-check, because gst_packages_install() incorrectly returns TRUE if it fails because
     //a) synaptic is already running, or
     //b) synaptic did not know about the package (no warning is shown in this case.)
@@ -135,7 +135,7 @@ bool PostgresSelfHosted::install_postgres(const SlotProgress& /* slot_progress *
   }
   else
   {
-    std::cout << "Glom: gst_packages_install() reports failure." << std::endl;
+    std::cout << "Glom: gst_packages_install() reports failure.\n";
     return false; //Failed to install postgres.
   }
 #else
@@ -149,13 +149,13 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
 
   if(m_database_directory_uri.empty())
   {
-    std::cerr << G_STRFUNC << ": initialize: m_self_hosting_data_uri is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": initialize: m_self_hosting_data_uri is empty.\n";
     return InitErrors::OTHER;
   }
 
   if(initial_username.empty())
   {
-    std::cerr << G_STRFUNC << ": PostgresSelfHosted::initialize(). Username was empty while attempting to create self-hosting database" << std::endl;
+    std::cerr << G_STRFUNC << ": PostgresSelfHosted::initialize(). Username was empty while attempting to create self-hosting database\n";
     return InitErrors::OTHER;
   }
 
@@ -234,7 +234,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   const auto result = Glom::Spawn::execute_command_line_and_wait(command_initdb, slot_progress);
   if(!result)
   {
-    std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting database." << std::endl;
+    std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting database.\n";
   }
 
   const auto temp_pwfile_removed = g_remove(temp_pwfile.c_str()); //Of course, we don't want this to stay around. It would be a security risk.
@@ -253,7 +253,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
 
   if(get_self_hosting_active())
   {
-    std::cerr << G_STRFUNC << ": Already started." << std::endl;
+    std::cerr << G_STRFUNC << ": Already started.\n";
     return StartupErrors::NONE; //Just do it once.
   }
 
@@ -287,7 +287,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
     const auto dbdir_backup_uri = Glib::filename_to_uri(dbdir_backup);
     if(file_exists_uri(dbdir_backup_uri))
     {
-      std::cerr << G_STRFUNC << ": There is no data, but there is backup data." << std::endl;
+      std::cerr << G_STRFUNC << ": There is no data, but there is backup data.\n";
       //Let the caller convert the backup to real data and then try again:
       return StartupErrors::FAILED_NO_DATA_HAS_BACKUP_DATA;
     }
@@ -346,7 +346,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   const auto result = Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_postgres_start, command_check_postgres_has_started, slot_progress, second_command_success_text);
   if(!result)
   {
-    std::cerr << G_STRFUNC << ": Error while attempting to self-host a database." << std::endl;
+    std::cerr << G_STRFUNC << ": Error while attempting to self-host a database.\n";
     return StartupErrors::FAILED_UNKNOWN_REASON;
   }
 
@@ -364,17 +364,17 @@ void PostgresSelfHosted::show_active_connections()
  
   auto gda_connection = connect(m_saved_database_name, m_saved_username, m_saved_password);
   if(!gda_connection)
-    std::cerr << G_STRFUNC << ": connection failed." << std::endl;
+    std::cerr << G_STRFUNC << ": connection failed.\n";
   
   auto datamodel = DbUtils::query_execute_select(builder);
   if(!datamodel)
-    std::cerr << G_STRFUNC << ": pg_stat_activity SQL query failed." << std::endl;
+    std::cerr << G_STRFUNC << ": pg_stat_activity SQL query failed.\n";
   
   const auto rows_count = datamodel->get_n_rows(); 
   if(datamodel->get_n_rows() < 1)
-    std::cerr << G_STRFUNC << ": pg_stat_activity SQL query returned no rows." << std::endl;
+    std::cerr << G_STRFUNC << ": pg_stat_activity SQL query returned no rows.\n";
 
-  std::cout << "Active connections according to a pg_stat_activity SQL query:" << std::endl;
+  std::cout << "Active connections according to a pg_stat_activity SQL query:\n";
   const auto cols_count = datamodel->get_n_columns();
   for(int row = 0; row < rows_count; ++row)
   {
@@ -652,7 +652,7 @@ unsigned int PostgresSelfHosted::discover_first_free_port(unsigned int start_por
   close(fd);
 #endif //G_OS_WIN32
 
-  std::cerr << G_STRFUNC << ": No port was available." << std::endl;
+  std::cerr << G_STRFUNC << ": No port was available.\n";
   return 0;
 }
 

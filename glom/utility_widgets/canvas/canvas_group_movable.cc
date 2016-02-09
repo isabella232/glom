@@ -136,7 +136,7 @@ void CanvasGroupMovable::set_width_height(double width, double height)
 
 void CanvasGroupMovable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid)
 {
-  std::cout << "CanvasGroupMovable::set_grid" << std::endl;
+  std::cout << "CanvasGroupMovable::set_grid\n";
 
   //Call the base class:
   CanvasItemMovable::set_grid(grid);
@@ -203,7 +203,7 @@ void CanvasGroupMovable::snap_position_one_corner(Corners corner, double& x, dou
 
 void CanvasGroupMovable::snap_position(double& x, double& y) const
 {
-  //std::cout << "CanvasGroupMovable::snap_position" << std::endl;
+  //std::cout << "CanvasGroupMovable::snap_position\n";
 
   double offset_x_min = 0;
   double offset_y_min = 0;

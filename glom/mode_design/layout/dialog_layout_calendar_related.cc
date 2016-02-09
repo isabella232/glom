@@ -246,7 +246,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
 
   auto debugfield = m_portal->get_date_field();
   if(!debugfield)
-    std::cout << "debug: " << G_STRFUNC << ": date field is NULL" << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": date field is NULL\n";
   else
     std::cout << "debug: " << G_STRFUNC << ": date field:" << debugfield->get_name() << std::endl;
 
@@ -299,7 +299,7 @@ void Dialog_Layout_Calendar_Related::save_to_document()
     }
     else
     {
-      //std::cout << "debug: set_navigation_relationship_specific(false, none)" << std::endl;
+      //std::cout << "debug: set_navigation_relationship_specific(false, none)\n";
       std::shared_ptr<UsesRelationship> none;
       m_portal->set_navigation_relationship_specific(none);
     }
@@ -308,7 +308,7 @@ void Dialog_Layout_Calendar_Related::save_to_document()
 
     auto debugfield = m_portal->get_date_field();
     if(!debugfield)
-      std::cout << "debug: " << G_STRFUNC << ": date field is NULL" << std::endl;
+      std::cout << "debug: " << G_STRFUNC << ": date field is NULL\n";
     else
       std::cout << "debug: " << G_STRFUNC << ": date field:" << debugfield->get_name() << std::endl;
   }
@@ -351,7 +351,7 @@ void Dialog_Layout_Calendar_Related::on_combo_relationship_changed()
 
 std::shared_ptr<Relationship> Dialog_Layout_Calendar_Related::get_relationship() const
 {
-  std::cout << "debug: I wonder if this function is used." << std::endl;
+  std::cout << "debug: I wonder if this function is used.\n";
   return m_combo_relationship->get_selected_relationship();
 }
 

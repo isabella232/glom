@@ -46,7 +46,7 @@ void PrintOperationPrintLayout::on_begin_print(
 
 bool PrintOperationPrintLayout::on_paginate(const Glib::RefPtr<Gtk::PrintContext>& print_context)
 {
-  //std::cout << "PrintOperationPrintLayout::on_paginate" << std::endl;
+  //std::cout << "PrintOperationPrintLayout::on_paginate\n";
 
   if(!m_canvas)
     return false;

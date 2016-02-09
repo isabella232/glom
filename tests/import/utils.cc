@@ -13,7 +13,7 @@ static bool finished_parsing = true;
 bool check(const std::string& name, bool test, std::stringstream& report)
 {
   if(!test)
-    report << name << ": FAILED" << std::endl;
+    report << name << ": FAILED\n";
 
   return test;
 }
@@ -24,7 +24,7 @@ static Glib::ustring create_file_from_buffer(const char* input, guint input_size
   const auto file_uri = Glom::Utils::get_temp_file_uri("glom_import_testdata");
   if(file_uri.empty())
   {
-    std::cerr << G_STRFUNC << ": file_uri was empty." << std::endl;
+    std::cerr << G_STRFUNC << ": file_uri was empty.\n";
     return std::string();
   }
 

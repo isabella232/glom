@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
 
   if(argc <= 2 )
   {
-    std::cerr << G_STRFUNC << ": Usage: test_document_load_and_save filepath dtd_filepath" << std::endl;
+    std::cerr << G_STRFUNC << ": Usage: test_document_load_and_save filepath dtd_filepath\n";
     return EXIT_FAILURE;
   }
 
@@ -112,7 +112,7 @@ int main(int argc, char* argv[])
   const auto saved = document->save();
   if(!saved)
   {
-    std::cerr << G_STRFUNC << ": Document::save() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Document::save() failed.\n";
     return EXIT_FAILURE;
   }
 

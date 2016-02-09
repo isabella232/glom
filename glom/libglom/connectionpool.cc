@@ -241,7 +241,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::get_and_connect()
 
   if(!(connection_pool->m_backend))
   {
-    std::cerr << G_STRFUNC << ": m_backend is null." << std::endl;
+    std::cerr << G_STRFUNC << ": m_backend is null.\n";
     return result; //TODO: Return a failure_type::NO_BACKEND error?, though that would be tedious.
   }
 
@@ -270,7 +270,7 @@ static sigc::connection connection_cached_finished_connection;
 
 static bool on_connection_pool_cache_timeout()
 {
-  //std::cout << "DEBUG: Clearing connection cache." << std::endl;
+  //std::cout << "DEBUG: Clearing connection cache.\n";
 
   //Forget the cached connection after a few seconds:
   connection_cached.reset();
@@ -281,7 +281,7 @@ static bool on_connection_pool_cache_timeout()
 
 std::shared_ptr<SharedConnection> ConnectionPool::connect()
 {
-  //std::cout << G_STRFUNC << ": debug" << std::endl;
+  //std::cout << G_STRFUNC << ": debug\n";
 
   //Don't try to connect if we don't have a backend to connect to.
   g_return_val_if_fail(m_backend, std::shared_ptr<SharedConnection>());
@@ -311,7 +311,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
       m_sharedconnection_refcount++;
 
       //Store the connection in a cache for a few seconds to avoid unnecessary disconnections/reconnections:
-      //std::cout << "DEBUG: Stored connection cache." << std::endl;
+      //std::cout << "DEBUG: Stored connection cache.\n";
       connection_cached = sharedConnection;
       connection_cached_timeout_connection.disconnect(); //Stop the existing timeout if it has not run yet.
       connection_cached_timeout_connection = Glib::signal_timeout().connect_seconds(&on_connection_pool_cache_timeout, 30 /* seconds */);
@@ -325,7 +325,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
       {
         //Allow get_meta_store_data() to succeed:
         //Hopefully this (and the update_meta_store_table() calls) is all we need.
-        //std::cout << "DEBUG: Calling update_meta_store_data_types() ..." << std::endl;
+        //std::cout << "DEBUG: Calling update_meta_store_data_types() ...\n";
         try
         {
           m_refGdaConnection->update_meta_store_data_types();
@@ -340,14 +340,14 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
             std::cerr << G_STRFUNC << ": update_meta_store_data_types() failed: " << ex.what() << std::endl;
           }
         }
-        //std::cout << "DEBUG: ... update_meta_store_data_types() has finished." << std::endl;
+        //std::cout << "DEBUG: ... update_meta_store_data_types() has finished.\n";
 
-        //std::cout << "DEBUG: Calling update_meta_store_table_names() ..." << std::endl;
+        //std::cout << "DEBUG: Calling update_meta_store_table_names() ...\n";
 
         if(!update_meta_store_for_table_names()) {
-          std::cerr << G_STRFUNC << ": update_meta_store_table_names() failed without an exception." << std::endl;
+          std::cerr << G_STRFUNC << ": update_meta_store_table_names() failed without an exception.\n";
         }
-        //std::cout << "DEBUG: ... update_meta_store_table_names() has finished." << std::endl;
+        //std::cout << "DEBUG: ... update_meta_store_table_names() has finished.\n";
 
         // Connection succeeded
         // Create the fieldtypes member if it has not already been done:
@@ -371,7 +371,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
   }
   else
   {
-    //std::cerr << G_STRFUNC << ": not ready to connect." << std::endl;
+    //std::cerr << G_STRFUNC << ": not ready to connect.\n";
   }
 
   return std::shared_ptr<SharedConnection>();
@@ -388,7 +388,7 @@ void ConnectionPool::set_user(const Glib::ustring& value)
   if(value.empty())
   {
 #ifdef GLOM_CONNECTION_DEBUG
-    std::cout << "debug: " << G_STRFUNC << ": user is empty." << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": user is empty.\n";
 #endif
   }
 
@@ -487,7 +487,7 @@ std::shared_ptr<const FieldTypes> ConnectionPool::get_field_types() const
 {
   //TODO: Investigate this:
   //if(!m_field_types)
-  //  std::cerr << G_STRFUNC << ": m_field_types is null but this should never happen." << std::endl;
+  //  std::cerr << G_STRFUNC << ": m_field_types is null but this should never happen.\n";
 
   return m_field_types;
 }
@@ -500,7 +500,7 @@ Gnome::Gda::SqlOperatorType ConnectionPool::get_string_find_operator() const
 
 void ConnectionPool::invalidate_connection()
 {
-  //std::cerr << G_STRFUNC << ": debug" << std::endl;
+  //std::cerr << G_STRFUNC << ": debug\n";
   connection_cached.reset();
   connection_cached_timeout_connection.disconnect();
   connection_cached_finished_connection.disconnect();
@@ -526,7 +526,7 @@ void ConnectionPool::on_sharedconnection_finished()
   {
     //There should be no copies of the m_refConnection, so the Gnome::Gda::Connection destructor should
     //run when we clear this last RefPtr of it, but we will explicitly close it just in case.
-    //std::cerr << G_STRFUNC << ": closing GdaConnection" << std::endl;
+    //std::cerr << G_STRFUNC << ": closing GdaConnection\n";
     m_refGdaConnection->close();
 
     m_refGdaConnection.reset();
@@ -794,7 +794,7 @@ std::shared_ptr<Document> ConnectionPool::get_document()
   {
     //Don't bother warning because all the code that calls get_document() checks 
     //for 0 and responds reasonably.
-    //std::cerr << G_STRFUNC << ": m_slot_get_document is null." << std::endl;
+    //std::cerr << G_STRFUNC << ": m_slot_get_document is null.\n";
     return nullptr;
   }
 
@@ -814,7 +814,7 @@ EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* /* pu
     return nullptr;
 
   const auto contents = document->get_contents();
-  //std::cout << "debug: " << G_STRFUNC << ": returning: " << std::endl << "  " << contents << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": returning: \n" << "  " << contents << std::endl;
   return epc_contents_new_dup ("text/plain", (void*)contents.c_str(), -1);
 }
 
@@ -843,12 +843,12 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
 
   if(connection)
   {
-    //std::cout << "debug: " << G_STRFUNC << ": succeeded." << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": succeeded.\n";
     return true; //Succeeded.
   }
   else
   {
-    //std::cout << "debug: " << G_STRFUNC << ": failed." << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": failed.\n";
     return false; //Failed.
   }
 }
@@ -899,7 +899,7 @@ void ConnectionPool::avahi_start_publishing()
   if(m_epc_publisher)
     return;
 #ifdef GLOM_CONNECTION_DEBUG
-  std::cout << "debug: ConnectionPool::avahi_start_publishing" << std::endl;
+  std::cout << "debug: ConnectionPool::avahi_start_publishing\n";
 #endif
 
   //Publish the document contents over HTTPS (discoverable via avahi):
@@ -954,7 +954,7 @@ void ConnectionPool::avahi_stop_publishing()
   if(!m_epc_publisher)
     return;
 #ifdef GLOM_CONNECTION_DEBUG
-  std::cout << "debug: ConnectionPool::avahi_stop_publishing" << std::endl;
+  std::cout << "debug: ConnectionPool::avahi_stop_publishing\n";
 #endif
 
 #ifndef G_OS_WIN32
@@ -1000,11 +1000,11 @@ bool ConnectionPool::update_meta_store_for_table_names()
   {
     //update_meta_store_table_names() has been known to throw an exception.
     //Glom is mostly unusable when it fails, but that's still better than a crash.
-    //std::cout << G_STRFUNC << ": Before update_meta_store_table_name()" << std::endl;
+    //std::cout << G_STRFUNC << ": Before update_meta_store_table_name()\n";
     const auto test = m_refGdaConnection->update_meta_store_table_names(m_backend->get_public_schema_name());
     if(!test && !m_fake_connection)
     {
-      std::cerr << G_STRFUNC << ": update_meta_store_table_names() failed without an exception." << std::endl;
+      std::cerr << G_STRFUNC << ": update_meta_store_table_names() failed without an exception.\n";
       return false;
     }
   }

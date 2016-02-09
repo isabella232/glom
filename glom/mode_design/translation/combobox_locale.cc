@@ -76,7 +76,7 @@ void ComboBox_Locale::set_selected_locale(const Glib::ustring& locale)
     for(const auto& row : model->children())
     {
       const Glib::ustring& this_text = row[m_model_columns.m_identifier];
-      //std::cout << G_STRFUNC << ": DEBUG: locale=" << locale << ", this_text=" << this_text << "." << std::endl;
+      //std::cout << G_STRFUNC << ": DEBUG: locale=" << locale << ", this_text=" << this_text << ".\n";
  
       if(this_text == locale)
       {
@@ -90,7 +90,7 @@ void ComboBox_Locale::set_selected_locale(const Glib::ustring& locale)
   }
   else
   {
-    std::cerr << G_STRFUNC << ": locale not found in list: " << locale << ". The model is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": locale not found in list: " << locale << ". The model is empty.\n";
   }
 
   unset_active();

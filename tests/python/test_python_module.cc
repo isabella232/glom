@@ -19,7 +19,7 @@ bool glom_python_module_is_available()
 
   if(!module_glom)
   {
-    std::cerr << "Glom: A python import of " << name << " failed." << std::endl;
+    std::cerr << "Glom: A python import of " << name << " failed.\n";
   }
 
   Py_XDECREF(module_glom);
@@ -39,7 +39,7 @@ bool gda_python_module_is_available()
 
   if(!module_glom)
   {
-    std::cerr << "Glom: A python import of " << name << " failed." << std::endl;
+    std::cerr << "Glom: A python import of " << name << " failed.\n";
   }
 
   Py_XDECREF(module_glom);

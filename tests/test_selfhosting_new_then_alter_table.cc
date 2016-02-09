@@ -37,31 +37,31 @@ static bool do_test(Glom::Document::HostingMode hosting_mode, const Glib::ustrin
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
-    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
   
   if(!Glom::DbUtils::create_table_with_default_fields(document, first_table_name))
   {
-    std::cerr << G_STRFUNC << ": Failure: create_table_with_default_fields() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: create_table_with_default_fields() failed.\n";
     return false;
   }
 
   if(!Glom::DbUtils::rename_table(first_table_name, renamed_table_name))
   {
-    std::cerr << G_STRFUNC << ": Failure: rename_table() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: rename_table() failed.\n";
     return false;
   }
 
   if(!Glom::DbUtils::drop_table(renamed_table_name))
   {
-    std::cerr << G_STRFUNC << ": Failure: drop_table() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: drop_table() failed.\n";
     return false;
   }
 
   const auto table_names = Glom::DbUtils::get_table_names_from_database();
   if(Glom::Utils::find_exists(table_names, renamed_table_name)) {
-    std::cerr << G_STRFUNC << ": Failure: The dropped table seems to still exist." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The dropped table seems to still exist.\n";
     return false;
   }
 

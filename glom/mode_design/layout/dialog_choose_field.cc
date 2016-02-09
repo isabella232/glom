@@ -132,12 +132,12 @@ void Dialog_ChooseField::set_document(const std::shared_ptr<Document>& document,
 
   if(!m_document)
   {
-    std::cerr << G_STRFUNC << ": document is null" << std::endl;
+    std::cerr << G_STRFUNC << ": document is null\n";
   }
 
   if(table_name.empty())
   {
-    std::cerr << G_STRFUNC << ": table_name is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": table_name is empty\n";
   }
   
   auto selection = m_treeview->get_selection();

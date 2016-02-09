@@ -311,7 +311,7 @@ void Window_RelationshipsOverview::draw_lines()
   }
   else
   {
-    std::cout << "ERROR: Could not retrieve the Glom document." << std::endl;
+    std::cout << "ERROR: Could not retrieve the Glom document.\n";
   }
 }
 

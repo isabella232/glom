@@ -92,7 +92,7 @@ void FlowTable::delete_and_forget_hbox(Gtk::Box* hbox)
   const auto iter = Utils::find(m_list_hboxes, hbox);
   if(iter == m_list_hboxes.end())
   {
-    std::cerr << G_STRFUNC << ": hbox=" << hbox << " is not in our list of hboxes." << std::endl;
+    std::cerr << G_STRFUNC << ": hbox=" << hbox << " is not in our list of hboxes.\n";
     return;
   }
   
@@ -106,7 +106,7 @@ void FlowTable::delete_and_forget_hbox(Gtk::Box* hbox)
   else
   {
     //TODO: Fix this leak.
-    //std::cerr << G_STRFUNC << ": hbox=" << hbox << " has no parent. Not removing from SpreadTableDnd" << std::endl;
+    //std::cerr << G_STRFUNC << ": hbox=" << hbox << " has no parent. Not removing from SpreadTableDnd\n";
   }
 
   //Delete and forget it:
@@ -157,7 +157,7 @@ void FlowTable::insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool 
   }
   else
   {
-    std::cerr << G_STRFUNC << ": first was null" << std::endl;
+    std::cerr << G_STRFUNC << ": first was null\n";
   }
 }
 

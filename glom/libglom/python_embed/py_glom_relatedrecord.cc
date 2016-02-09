@@ -143,7 +143,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
     }
     else if(!datamodel)
     {
-      std::cerr << G_STRFUNC << ": The datamodel was null." << std::endl;
+      std::cerr << G_STRFUNC << ": The datamodel was null.\n";
       ConnectionPool::handle_error_cerr_only();
       RelatedRecord_HandlePythonError();
     }
@@ -153,7 +153,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
     }
   }
 
-  std::cerr << G_STRFUNC << ": return null." << std::endl;
+  std::cerr << G_STRFUNC << ": return null.\n";
   return boost::python::object();
 }
 

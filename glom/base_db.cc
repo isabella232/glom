@@ -160,7 +160,7 @@ AppState::userlevels Base_DB::get_userlevel() const
   }
   else
   {
-    std::cerr << G_STRFUNC << ": document not found." << std::endl;
+    std::cerr << G_STRFUNC << ": document not found.\n";
     return AppState::userlevels::OPERATOR;
   }
 }
@@ -262,7 +262,7 @@ std::shared_ptr<Field> Base_DB::change_column(const Glib::ustring& table_name, c
   {
     if(!connection_pool->change_column(table_name, field_old, result))
     {
-      std::cerr << G_STRFUNC << ": change_column() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": change_column() failed.\n";
       return std::shared_ptr<Field>();
     }
   }
@@ -319,7 +319,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection()
 
   if(!sharedconnection)
   {
-    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet.\n";
     return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
@@ -649,7 +649,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
 
   if(vecFields.empty())
   {
-    //std::cerr << G_STRFUNC << ": Returning empty list." << std::endl;
+    //std::cerr << G_STRFUNC << ": Returning empty list.\n";
   }
 }
 
@@ -725,7 +725,7 @@ Base_DB::type_vecConstLayoutFields Base_DB::get_table_fields_to_show_for_sequenc
 
   if(result.empty())
   {
-    //std::cerr << G_STRFUNC << ": Returning empty list." << std::endl;
+    //std::cerr << G_STRFUNC << ": Returning empty list.\n";
   }
 
   return result;
@@ -803,7 +803,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
   }
   else if(calc_progress.m_calc_finished)
   {
-    //std::cerr << G_STRFUNC << ": Already calculated." << std::endl;
+    //std::cerr << G_STRFUNC << ": Already calculated.\n";
 
     //Don't bother calculating it again. The correct value is already in the database and layout.
   }
@@ -936,13 +936,13 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   //row is invalid, and ignored, for Box_Data_Details.
   if(!(field_in_record.m_field))
   {
-    std::cerr << G_STRFUNC << ": field_in_record.m_field is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": field_in_record.m_field is empty.\n";
     return false;
   }
 
   if(!(field_in_record.m_key))
   {
-    std::cerr << G_STRFUNC << ": field_in_record.m_key is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": field_in_record.m_key is empty.\n";
     return false;
   }
 
@@ -961,7 +961,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
       const auto test = DbUtils::query_execute(builder); //TODO: Respond to failure.
       if(!test)
       {
-        std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
+        std::cerr << G_STRFUNC << ": UPDATE failed.\n";
         return false; //failed.
       }
     }
@@ -987,7 +987,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
     //Prevent circular calculations during the recursive do_calculations:
     {
       //Recalculate any calculated fields that depend on this calculated field.
-      //std::cerr << G_STRFUNC << ": calling do_calculations" << std::endl;
+      //std::cerr << G_STRFUNC << ": calling do_calculations\n";
 
       do_calculations(layoutfield_in_record, !use_current_calculations);
     }
@@ -1003,7 +1003,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
   //row is invalid, and ignored, for Box_Data_Details.
   if(!(field_in_record.m_field))
   {
-    std::cerr << G_STRFUNC << ": field_in_record.m_field is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": field_in_record.m_field is empty.\n";
     return result;
   }
 
@@ -1020,7 +1020,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
       
     if(!to_field.empty())
     {
-      std::cerr << G_STRFUNC << ": field_in_record.m_key is empty." << std::endl;
+      std::cerr << G_STRFUNC << ": field_in_record.m_key is empty.\n";
       return result;
     }
   }
@@ -1055,13 +1055,13 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const std::shared_ptr<Fie
   //row is invalid, and ignored, for Box_Data_Details.
   if(!field)
   {
-    std::cerr << G_STRFUNC << ": field is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": field is empty.\n";
     return result;
   }
 
   if(found_set.m_where_clause.empty())
   {
-    std::cerr << G_STRFUNC << ": where_clause is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": where_clause is empty.\n";
     return result;
   }
 
@@ -1471,7 +1471,7 @@ bool Base_DB::set_database_owner_user(const Glib::ustring& user)
   const auto test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
-    std::cerr << G_STRFUNC << ": ALTER DATABASE failed." << std::endl;
+    std::cerr << G_STRFUNC << ": ALTER DATABASE failed.\n";
     return false;
   }
 
@@ -1494,7 +1494,7 @@ bool Base_DB::disable_user(const Glib::ustring& user)
   const auto test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
-    std::cerr << G_STRFUNC << ": DROP USER failed" << std::endl;
+    std::cerr << G_STRFUNC << ": DROP USER failed\n";
     return false;
   }
 

@@ -349,7 +349,7 @@ std::string Document::get_connection_self_hosted_directory_uri() const
   const auto uri_file = get_file_uri();
   if(uri_file.empty())
   {
-    std::cerr << G_STRFUNC << ": file_uri is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": file_uri is empty.\n";
     return std::string();
   }
   else
@@ -389,7 +389,7 @@ std::string Document::get_connection_self_hosted_directory_uri() const
     }
   }
 
-  std::cerr << G_STRFUNC << ": returning empty string." << std::endl;
+  std::cerr << G_STRFUNC << ": returning empty string.\n";
   return std::string();
 }
 
@@ -878,7 +878,7 @@ Document::type_vec_fields Document::get_table_fields(const Glib::ustring& table_
   }
   else
   {
-    //std::cerr << G_STRFUNC << ": table name is empty." << std::endl;
+    //std::cerr << G_STRFUNC << ": table name is empty.\n";
   }
 
   //Hide any system fields:
@@ -1475,7 +1475,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fiel
 
   if(create_default)
   {
-    std::cout << "debug: " << G_STRFUNC << ": Creating a default layout." << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": Creating a default layout.\n";
     result = get_data_layout_groups_default(layout_name, parent_table_name, layout_platform);
 
     /*
@@ -1737,7 +1737,7 @@ bool Document::set_userlevel(AppState::userlevels userlevel)
   //Prevent incorrect user level:
   if((userlevel == AppState::userlevels::DEVELOPER) && get_read_only())
   {
-    std::cout << "debug: " << G_STRFUNC << ": Developer mode denied because get_read_only() returned true." << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": Developer mode denied because get_read_only() returned true.\n";
     std::cout << "  DEBUG: get_read_only()=" << get_read_only() << std::endl;
     std::cout << "  DEBUG: get_file_uri()=" << get_file_uri() << std::endl;
 
@@ -1836,7 +1836,7 @@ void Document::save_changes()
     auto test = save_before();
     if(test)
     {
-      //std::cout << "debug: " << G_STRFUNC << ": calling write_to_disk()." << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": calling write_to_disk().\n";
       test = write_to_disk();
       if(test)
       {
@@ -1846,17 +1846,17 @@ void Document::save_changes()
   }
   else
   {
-    //std::cout << "debug: " << G_STRFUNC << ": Not saving, because not AppState::userlevels::DEVELOPER" << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": Not saving, because not AppState::userlevels::DEVELOPER\n";
   }
 }
 
 void Document::set_modified(bool value)
 {
-  //std::cout << "Document::set_modified()" << std::endl;
+  //std::cout << "Document::set_modified()\n";
 
   if(value && m_block_modified_set) //For instance, don't save changes while loading.
   {
-    //std::cout << "  Document::set_modified() m_block_modified_set" << std::endl;
+    //std::cout << "  Document::set_modified() m_block_modified_set\n";
     return;
   }
 
@@ -1877,7 +1877,7 @@ void Document::set_modified(bool value)
 
     if(value)
     {
-      //std::cout << "  Document::set_modified() save_changes" << std::endl;
+      //std::cout << "  Document::set_modified() save_changes\n";
 
       //TODO: Combine m_allow_auto_save and m_block_modified_set?
       if(!m_allow_auto_save) //For instance, don't save changes while making many changes.
@@ -2146,7 +2146,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
 {
   if(!node || !group)
   {
-    //std::cerr << G_STRFUNC << ": node is NULL" << std::endl;
+    //std::cerr << G_STRFUNC << ": node is NULL\n";
     return;
   }
 
@@ -2619,7 +2619,7 @@ bool Document::load_after(int& failure_code)
             mode = HostingMode::MYSQL_SELF;
           else
 	  {
-            std::cerr << G_STRFUNC << ": Hosting mode " << attr_mode << " is not supported" << std::endl;
+            std::cerr << G_STRFUNC << ": Hosting mode " << attr_mode << " is not supported\n";
             return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
 	  }
         }
@@ -3665,7 +3665,7 @@ bool Document::save_before()
 
       const auto table_name = doctableinfo->m_info->get_name();
       if(table_name.empty())
-        std::cerr << G_STRFUNC << ": table name is empty." << std::endl;
+        std::cerr << G_STRFUNC << ": table name is empty.\n";
 
       if(!table_name.empty())
       {
@@ -3876,7 +3876,7 @@ bool Document::save_before()
       if(group_name.empty())
       {
         //I saw this in at least one .glom file. murrayc.
-        std::cerr << G_STRFUNC << ": The group name is empty." << std::endl;
+        std::cerr << G_STRFUNC << ": The group name is empty.\n";
         continue;
       }
 
@@ -4141,7 +4141,7 @@ std::shared_ptr<const Relationship> Document::get_field_used_in_relationship_to_
 
   if(!layout_field)
   {
-    std::cerr << G_STRFUNC << ": layout_field was null" << std::endl;
+    std::cerr << G_STRFUNC << ": layout_field was null\n";
     return result;
   }
 
@@ -4781,7 +4781,7 @@ bool add_file_to_archive(archive* a, const std::string& parent_dir_path, const s
   struct stat st;
   if(stat(filepath.c_str(), &st) < 0)
   {
-    std::cerr << G_STRFUNC << ": stat() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": stat() failed.\n";
     std::cerr << "  : with path: " << filepath << std::endl;
     return false;
   }
@@ -4797,7 +4797,7 @@ bool add_file_to_archive(archive* a, const std::string& parent_dir_path, const s
 
   if(archive_write_header(a, entry) != ARCHIVE_OK)
   {
-    std::cerr << G_STRFUNC << ": Could not write archive header." << std::endl;
+    std::cerr << G_STRFUNC << ": Could not write archive header.\n";
     handle_archive_error(a);
     return false;
   }
@@ -4822,7 +4822,7 @@ bool add_file_to_archive(archive* a, const std::string& parent_dir_path, const s
         ssize_t check = archive_write_data(a, buffer, bytes_read);
         if(check != bytes_read)
         {
-          std::cerr << G_STRFUNC << ": archive_write_data() wrote an unexpected number of bytes. " << std::endl;
+          std::cerr << G_STRFUNC << ": archive_write_data() wrote an unexpected number of bytes. \n";
           handle_archive_error(a);
           return false;
         }
@@ -4901,28 +4901,28 @@ Glib::ustring Document::save_backup_file(const Glib::ustring& uri, const SlotPro
 
   if(archive_write_add_filter_gzip(a) != ARCHIVE_OK)
   {
-    std::cerr << G_STRFUNC << ": libarchive does not support tar." << std::endl;
+    std::cerr << G_STRFUNC << ": libarchive does not support tar.\n";
     handle_archive_error(a);
     return Glib::ustring();
   }
 
   if(archive_write_set_format_pax_restricted(a) != ARCHIVE_OK)
   {
-    std::cerr << G_STRFUNC << ": libarchive does not support pax_restricted." << std::endl;
+    std::cerr << G_STRFUNC << ": libarchive does not support pax_restricted.\n";
     handle_archive_error(a);
     return Glib::ustring();
   }
 
   if(archive_write_set_bytes_per_block(a, 4096) != ARCHIVE_OK)
   {
-    std::cerr << G_STRFUNC << ": libarchive: cannot set bytes per block." << std::endl;
+    std::cerr << G_STRFUNC << ": libarchive: cannot set bytes per block.\n";
     handle_archive_error(a);
     return Glib::ustring();
   }
 
   if(archive_write_open_filename(a, tarball_path.c_str()) != ARCHIVE_OK)
   {
-    std::cerr << G_STRFUNC << ": Could not open a new archive file for writing." << std::endl;
+    std::cerr << G_STRFUNC << ": Could not open a new archive file for writing.\n";
     handle_archive_error(a);
     return Glib::ustring();
   }
@@ -4937,7 +4937,7 @@ Glib::ustring Document::save_backup_file(const Glib::ustring& uri, const SlotPro
 
   if(archive_write_close(a))
   {
-    std::cerr << G_STRFUNC << ": Could not close archive." << std::endl;
+    std::cerr << G_STRFUNC << ": Could not close archive.\n";
     handle_archive_error(a);
     return Glib::ustring();
   }
@@ -5001,14 +5001,14 @@ Glib::ustring Document::extract_backup_file(const Glib::ustring& backup_uri, std
 
   if(archive_read_support_filter_gzip(a) != ARCHIVE_OK)
   {
-    std::cerr << G_STRFUNC << ": libarchive apparently does not support gzip." << std::endl;
+    std::cerr << G_STRFUNC << ": libarchive apparently does not support gzip.\n";
     handle_archive_error(a);
     return Glib::ustring();
   }
 
   if(archive_read_support_format_all(a) != ARCHIVE_OK)
   {
-    std::cerr << G_STRFUNC << ": libarchive apparently does not support standard formats." << std::endl;
+    std::cerr << G_STRFUNC << ": libarchive apparently does not support standard formats.\n";
     handle_archive_error(a);
     return Glib::ustring();
   }
@@ -5016,7 +5016,7 @@ Glib::ustring Document::extract_backup_file(const Glib::ustring& backup_uri, std
 
   if(archive_read_open_filename(a, filename_tarball.c_str(), 10240) != ARCHIVE_OK) //TODO
   {
-    std::cerr << G_STRFUNC << ": could not read filename from archive." << std::endl;
+    std::cerr << G_STRFUNC << ": could not read filename from archive.\n";
     handle_archive_error(a);
     return Glib::ustring();
   }

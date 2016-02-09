@@ -325,7 +325,7 @@ void CanvasGroupGrid::set_rules_visibility(bool visible)
   if(m_grid_rules_group)
     m_grid_rules_group->property_visibility() = (visible ? Goocanvas::ITEM_VISIBLE : Goocanvas::ITEM_INVISIBLE);
   else
-    std::cerr << G_STRFUNC << ": m_grid_rules_group was null." << std::endl;
+    std::cerr << G_STRFUNC << ": m_grid_rules_group was null.\n";
 
   //Make sure that the gris is below the rules, so that the rules are visible:
   if(m_grid_lines && m_grid_rules_group)

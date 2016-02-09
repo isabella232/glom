@@ -83,7 +83,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
 
   if(!m_sample_view || !m_encoding_combo || !m_target_table || !m_encoding_info || !m_first_line_as_title || !m_sample_rows || !m_error_label)
   {
-    std::cerr << G_STRFUNC << ": Missing widgets from glade file for Dialog_Import_CSV" << std::endl;
+    std::cerr << G_STRFUNC << ": Missing widgets from glade file for Dialog_Import_CSV\n";
   }
 
   //Set the adjustment details, to avoid a useless 0-to-0 range and a 0 incremenet.

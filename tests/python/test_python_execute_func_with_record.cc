@@ -10,12 +10,12 @@
 
 static void on_startup_progress()
 {
-  std::cout << "Database startup progress" << std::endl;
+  std::cout << "Database startup progress\n";
 }
 
 static void on_cleanup_progress()
 {
-  std::cout << "Database cleanup progress" << std::endl;
+  std::cout << "Database cleanup progress\n";
 }
 
 void cleanup()
@@ -112,7 +112,7 @@ int main()
   }
   catch(const boost::python::error_already_set& ex)
   {
-    std::cerr << G_STRFUNC << ": Exception: boost::python::error_already_set" << std::endl;
+    std::cerr << G_STRFUNC << ": Exception: boost::python::error_already_set\n";
     return EXIT_FAILURE;
   }
 

@@ -50,7 +50,7 @@ bool Document_XML::load_after(int& failure_code)
     //m_DOM_Parser.setDoValidation(true);
 
     if(m_strContents.empty())
-      std::cerr << G_STRFUNC << ": parsing empty document." << std::endl;
+      std::cerr << G_STRFUNC << ": parsing empty document.\n";
 
     m_DOM_Parser.parse_memory(m_strContents);
     m_pDOM_Document = m_DOM_Parser.get_document();
@@ -206,7 +206,7 @@ void Document_XML::add_indenting_white_space_to_node(xmlpp::Node* node, const Gl
     }
 
     //Add a text item for the indenting, before the child:
-    //std::cout << "  Adding indent after node=" << child->get_name() << ": START" << indent << "END" << std::endl;
+    //std::cout << "  Adding indent after node=" << child->get_name() << ": START" << indent << "END\n";
     node_as_element->add_child_text_before(child, indent);
     had_children = true;
 

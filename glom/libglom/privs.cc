@@ -250,7 +250,7 @@ bool Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::us
   const auto test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
-    std::cerr << G_STRFUNC << ": GRANT failed." << std::endl;
+    std::cerr << G_STRFUNC << ": GRANT failed.\n";
     return false;
   }
 
@@ -263,7 +263,7 @@ bool Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::us
     priv_autoincrements.m_edit = true;
     if(!set_table_privileges(group_name, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv_autoincrements))
     {
-      std::cerr << G_STRFUNC << ": GRANT failed on autoincrements table." << std::endl;
+      std::cerr << G_STRFUNC << ": GRANT failed on autoincrements table.\n";
       return false;
     }
   }
@@ -285,7 +285,7 @@ static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
 
   if(!sharedconnection)
   {
-    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet.\n";
     return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
@@ -318,7 +318,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
   auto connection = get_connection();
   if(!connection)
   {
-    std::cerr << G_STRFUNC << ": : Could not get a connection." << std::endl;
+    std::cerr << G_STRFUNC << ": : Could not get a connection.\n";
     return result;
   }
 
@@ -355,13 +355,13 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
   auto data_model = DbUtils::query_execute_select(builder);
   if(!data_model || (data_model->get_n_rows() <= 0))
   {
-    std::cerr << G_STRFUNC << ": The query returned no data." << std::endl;
+    std::cerr << G_STRFUNC << ": The query returned no data.\n";
     return result;
   }
 
   if(data_model->get_n_columns() < 4)
   {
-    std::cerr << G_STRFUNC << ": The query did not return enough columns." << std::endl;
+    std::cerr << G_STRFUNC << ": The query did not return enough columns.\n";
     return result;
   }
 
@@ -437,7 +437,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
 {
   if(table_name.empty())
   {
-    std::cerr << G_STRFUNC << ": table_name is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": table_name is empty.\n";
     return Privileges();
   }
   
@@ -451,7 +451,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   const auto iter = m_privileges_cache.find(table_name);
   if(iter != m_privileges_cache.end())
   {
-    //std::cout << "debug: " << G_STRFUNC << ": Returning cache." << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": Returning cache.\n";
     return iter->second;
   }
 
@@ -459,7 +459,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   //Get the up-to-date privileges from the database:
   Privileges result;
 
-  //std::cout << "debug: " << G_STRFUNC << ": Getting non-cached." << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": Getting non-cached.\n";
 
   auto connection_pool = ConnectionPool::get_instance();
   const auto current_user = connection_pool->get_user();

@@ -47,7 +47,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
 
     if(input_c == Py_None)
     {
-      std::cerr << G_STRFUNC << ": Returning false for Py_None" << std::endl;
+      std::cerr << G_STRFUNC << ": Returning false for Py_None\n";
       return false;
     }
     
@@ -162,7 +162,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
        }
      }
 #else
-  //std::cout << "DEBUG Dates not supported." << std::endl;
+  //std::cout << "DEBUG Dates not supported.\n";
 #endif
 
     PyObject* as_string = PyObject_Repr(input_c);
@@ -227,7 +227,7 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
           const auto day = g_date_get_day(val);
 
           if(!g_date_valid(val))
-            std::cerr << G_STRFUNC << ": The GDate is not valid." << std::endl;
+            std::cerr << G_STRFUNC << ": The GDate is not valid.\n";
 
           //std::cout << "DEBUG G_TYPE_DATE: year=" << year << ", month=" << month << ", day=" << day << std::endl;
           PyObject* cobject = PyDate_FromDate(year, month, day);
@@ -276,7 +276,7 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
     } else if(value_type == G_TYPE_UINT) {
         ret = boost::python::object(g_value_get_uint(boxed));
     } else if(value_type == GDA_TYPE_NULL) {
-        std::cerr << G_STRFUNC << ": Returning Py_None for GDA_TYPE_NULL." << std::endl;
+        std::cerr << G_STRFUNC << ": Returning Py_None for GDA_TYPE_NULL.\n";
         ret = boost::python::object();
     } else {
       std::cerr << G_STRFUNC << ": Glom: G_VALUE_TYPE() returned unknown type: " << value_type << std::endl;

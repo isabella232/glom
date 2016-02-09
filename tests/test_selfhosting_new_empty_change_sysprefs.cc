@@ -31,7 +31,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   if(!(test_create_and_selfhost_new_database(document, hosting_mode, "test_db")))
   {
-    std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_database() failed" << std::endl;
+    std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_database() failed\n";
     return false;
   }
   
@@ -52,7 +52,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       Glom::DbUtils::get_database_preferences(document);
     if(prefs_out != prefs_in)
     {
-      std::cerr << G_STRFUNC << ": The System Preferences read out were not the same as those written." << std::endl;
+      std::cerr << G_STRFUNC << ": The System Preferences read out were not the same as those written.\n";
       return false;
     }
   }

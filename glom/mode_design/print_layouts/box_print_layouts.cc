@@ -109,7 +109,7 @@ bool Box_Print_Layouts::fill_from_database()
     }
    }
   else
-    std::cerr << G_STRFUNC << ": document is null" << std::endl;
+    std::cerr << G_STRFUNC << ": document is null\n";
 
   //TODO:
 

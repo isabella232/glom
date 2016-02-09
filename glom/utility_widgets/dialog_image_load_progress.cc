@@ -46,7 +46,7 @@ DialogImageLoadProgress::DialogImageLoadProgress(BaseObjectType* cobject, const 
 
   if(!m_progress_bar)
   {
-    std::cerr << G_STRFUNC << ": Missing widgets from glade file for DialogImageLoadProgress" << std::endl;
+    std::cerr << G_STRFUNC << ": Missing widgets from glade file for DialogImageLoadProgress\n";
   }
 }
 

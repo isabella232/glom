@@ -37,7 +37,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
-    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
   
@@ -45,7 +45,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   auto primary_key_field = document->get_field_primary_key(table_name);
   if(!primary_key_field)
   {
-    std::cerr << G_STRFUNC << ": Failure: primary_key_field is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: primary_key_field is empty.\n";
     return false;
   }
 
@@ -92,7 +92,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   if(Glom::Conversions::get_double_for_gda_value_numeric(value) != 3.5l)
   {
-    std::cerr << G_STRFUNC << ": Failure: The value has an unexpected value: " << value.to_string() << " instead of 3.5" << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The value has an unexpected value: " << value.to_string() << " instead of 3.5\n";
     std::cerr << G_STRFUNC << ":     value as string: " << value.to_string() << std::endl;
     std::cerr << G_STRFUNC << ":     value GType: " << g_type_name(value.get_value_type()) << std::endl;
     return false;

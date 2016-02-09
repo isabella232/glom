@@ -93,7 +93,7 @@ Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
   auto connection = get_connection();
   if(!connection)
   {
-    std::cerr << G_STRFUNC << ": connection was null." << std::endl;
+    std::cerr << G_STRFUNC << ": connection was null.\n";
     return Gnome::Gda::SqlExpr();
   }
 
@@ -267,7 +267,7 @@ Document::type_list_layout_groups Box_Data::get_data_layout_groups(const Glib::u
       {
         fill_layout_group_field_info(item, table_privs);
 
-        //std::cout << "debug: Box_Data::get_data_layout_groups: " << std::endl;
+        //std::cout << "debug: Box_Data::get_data_layout_groups: \n";
         //*iterGroups->debug();
       }
     }

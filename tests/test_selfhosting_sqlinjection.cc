@@ -93,7 +93,7 @@ static bool check_drop_table(const Glib::ustring& quote_char)
 
   if(!test_table_exists("songs", document))
   {
-    std::cerr << G_STRFUNC << ": Failure: The table may have been dropped." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The table may have been dropped.\n";
     return false;
   }
 
@@ -124,7 +124,7 @@ static bool check_avoid_quotes_and_drop_table_with_false_value_type()
     Glom::Utils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
 
-  std::cout << "This test expects some std::cerr output about exceptions now:" << std::endl;
+  std::cout << "This test expects some std::cerr output about exceptions now:\n";
   
   //Glom::ConnectionPool::get_instance()->set_show_debug_output(true);
 
@@ -141,13 +141,13 @@ static bool check_avoid_quotes_and_drop_table_with_false_value_type()
     //though even with SQLite there is quoting that prevents the SQL injection.
     result = true;
     //result = false;
-    //std::cerr << G_STRFUNC << ": Failure: The SQL query should have failed." << std::endl;
+    //std::cerr << G_STRFUNC << ": Failure: The SQL query should have failed.\n";
   }
 
   //We should not get this far, but if we do, tell us more about what happened:
   if(!test_table_exists("songs", document))
   {
-    std::cerr << G_STRFUNC << ": Failure: The table may have been dropped." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The table may have been dropped.\n";
     return false;
   }
 
@@ -188,13 +188,13 @@ static bool check_avoid_quotes_and_drop_table_with_false_field_type()
     = Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 2, 0)) //No rows should be returned because the match value was stupid, if escaped properly.
   {
-    std::cerr << G_STRFUNC << ": Failure: Unexpected data model size for query." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected data model size for query.\n";
     return false;
   }
 
   if(!test_table_exists("songs", document))
   {
-    std::cerr << G_STRFUNC << ": Failure: The table may have been dropped." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The table may have been dropped.\n";
     return false;
   }
 
@@ -207,43 +207,43 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     test_create_and_selfhost_from_example("example_music_collection.glom", document, hosting_mode);
   if(!recreated)
   {
-    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
 
   if(!check_get_extra_rows("\""))
   {
-    std::cerr << G_STRFUNC << ": Failure: check_get_extra_rows() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: check_get_extra_rows() failed.\n";
     return false;
   }
   
   if(!check_get_extra_rows("'"))
   {
-    std::cerr << G_STRFUNC << ": Failure: check_get_extra_rows() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: check_get_extra_rows() failed.\n";
     return false;
   }
 
   if(!check_drop_table("\""))
   {
-    std::cerr << G_STRFUNC << ": Failure: check_drop_table() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: check_drop_table() failed.\n";
     return false;
   }
   
   if(!check_drop_table("'"))
   {
-    std::cerr << G_STRFUNC << ": Failure: check_drop_table() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: check_drop_table() failed.\n";
     return false;
   }
 
   if(!check_avoid_quotes_and_drop_table_with_false_value_type())
   {
-    std::cerr << G_STRFUNC << ": Failure: check_avoid_quotes_and_drop_table_with_false_value_type() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: check_avoid_quotes_and_drop_table_with_false_value_type() failed.\n";
     return false;
   }
 
   if(!check_avoid_quotes_and_drop_table_with_false_field_type())
   {
-    std::cerr << G_STRFUNC << ": Failure: check_avoid_quotes_and_drop_table_with_false_field_type() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: check_avoid_quotes_and_drop_table_with_false_field_type() failed.\n";
     return false;
   }
 

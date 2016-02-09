@@ -45,7 +45,7 @@ Glib::RefPtr<Application> Application::create()
 
 void Application::create_window(const Glib::RefPtr<Gio::File>& file)
 {
-  //std::cout << G_STRFUNC << ": debug" << std::endl;
+  //std::cout << G_STRFUNC << ": debug\n";
 
   AppWindow* window = nullptr;
   Glom::Utils::get_glade_widget_derived_with_warning(window);
@@ -81,7 +81,7 @@ void Application::on_window_hide(Gtk::Window* window)
 
 void Application::on_activate()
 {
-  //std::cout << G_STRFUNC << ": debug" << std::endl;
+  //std::cout << G_STRFUNC << ": debug\n";
 
   // The application has been started, so let's show a window:
   create_window();
@@ -112,7 +112,7 @@ void Application::on_startup()
 void Application::on_open(const Gio::Application::type_vec_files& files,
   const Glib::ustring& hint)
 {
-  //std::cout << G_STRFUNC << ": debug" << std::endl;
+  //std::cout << G_STRFUNC << ": debug\n";
   
   // The application has been asked to open some files,
   // so let's open a new window for each one.
@@ -121,7 +121,7 @@ void Application::on_open(const Gio::Application::type_vec_files& files,
   {
     if(!file)
     {
-      std::cerr << G_STRFUNC << ": file is null." << std::endl;
+      std::cerr << G_STRFUNC << ": file is null.\n";
     }
     else
       create_window(file);
@@ -133,7 +133,7 @@ void Application::on_open(const Gio::Application::type_vec_files& files,
 
 int Application::on_command_line(const Glib::RefPtr<Gio::ApplicationCommandLine>& command_line)
 {
-  //std::cout << G_STRFUNC << ": debug" << std::endl;
+  //std::cout << G_STRFUNC << ": debug\n";
   
   //Parse command-line arguments that were passed either to the main (first) instance
   //or to subsequent instances.

@@ -45,7 +45,7 @@ Box_Reports::Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   builder->get_widget("button_cancel", pButtonCancel);
   if(!pButtonCancel)
   {
-    std::cerr << G_STRFUNC << "Missing widget from glade file." << std::endl;
+    std::cerr << G_STRFUNC << "Missing widget from glade file.\n";
     return;
   }
   set_button_cancel(*pButtonCancel);
@@ -54,7 +54,7 @@ Box_Reports::Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   builder->get_widget("vbox_adddel_parent", pAddDelParent);
   if(!pAddDelParent)
   {
-    std::cerr << G_STRFUNC << "Missing widget from glade file." << std::endl;
+    std::cerr << G_STRFUNC << "Missing widget from glade file.\n";
     return;
   }
   pAddDelParent->pack_start(m_AddDel);
@@ -120,7 +120,7 @@ bool Box_Reports::fill_from_database()
     }
    }
   else
-    std::cerr << G_STRFUNC << ": document is null" << std::endl;
+    std::cerr << G_STRFUNC << ": document is null\n";
 
   //TODO:
 

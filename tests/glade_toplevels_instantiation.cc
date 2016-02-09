@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
     filepath = argv[1]; //Allow the user to specify a different XML file to parse.
   else
   {
-    std::cerr << G_STRFUNC << ": Usage: glade_toplevels_instantiation filepath" << std::endl;
+    std::cerr << G_STRFUNC << ": Usage: glade_toplevels_instantiation filepath\n";
     return EXIT_FAILURE;
   }
 

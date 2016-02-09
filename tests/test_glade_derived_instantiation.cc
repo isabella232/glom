@@ -115,7 +115,7 @@ bool instantiate_widget()
     std::cerr << G_STRFUNC << ": Test: The window/widget is too big: " << T_Widget::glade_id << std::endl;
     std::cerr << G_STRFUNC << ":   height=" << allocation.get_height() << std::endl; 
     std::cerr << G_STRFUNC << ":   width=" << allocation.get_width() << std::endl;
-    std::cerr << G_STRFUNC << ":   (Ignored, though it should be fixed.)" << std::endl; 
+    std::cerr << G_STRFUNC << ":   (Ignored, though it should be fixed.)\n"; 
     //TODO: Uncomment this when all the windows are small enough: exit(EXIT_FAILURE); //Make sure that our test case fails.
   }
   

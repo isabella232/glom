@@ -717,7 +717,7 @@ void AddDel::construct_specified_columns()
     }
     else
     {
-      std::cerr << G_STRFUNC << ": Leaking a Gtk::TreeModelColumn<>." << std::endl;
+      std::cerr << G_STRFUNC << ": Leaking a Gtk::TreeModelColumn<>.\n";
     }
 
     ++model_column_index;
@@ -734,7 +734,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gn
   {
     case(AddDelColumnInfo::enumStyles::Boolean):
     {
-      std::cerr << G_STRFUNC << ": boolean column being set as bool." << std::endl;
+      std::cerr << G_STRFUNC << ": boolean column being set as bool.\n";
       set_value(iter, col, value.get_bool());
       break;
     }
@@ -752,7 +752,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gl
   InnerIgnore innerIgnore(this);
 
   if(!m_refListStore)
-    std::cerr << G_STRFUNC << ": No model." << std::endl;
+    std::cerr << G_STRFUNC << ": No model.\n";
   else
   {
     Gtk::TreeModel::Row treerow = *iter;
@@ -802,7 +802,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVa
   InnerIgnore innerIgnore(this);
 
   if(!m_refListStore)
-    std::cerr << G_STRFUNC << ": No model." << std::endl;
+    std::cerr << G_STRFUNC << ": No model.\n";
   else
   {
     Gtk::TreeModel::Row treerow = *iter;

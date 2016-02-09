@@ -70,14 +70,14 @@ bool LocalOptionGroup::handle_options()
     Glom::Conversions::sanity_check_date_text_representation_uses_4_digit_years(m_arg_debug_date_check /* show debug output */);
   if(!test1)
   {
-    std::cerr << G_STRFUNC << ": Glom: ERROR: Date presentation sanity checks failed. Glom will not display dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;
+    std::cerr << G_STRFUNC << ": Glom: ERROR: Date presentation sanity checks failed. Glom will not display dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org.\n";
     m_debug_date_check_result = false;
   }
 
   const auto test2 = Glom::Conversions::sanity_check_date_parsing();
   if(!test2)
   {
-    std::cerr << G_STRFUNC << ": Glom: ERROR: Date parsing sanity checks failed. Glom will not interpret dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;
+    std::cerr << G_STRFUNC << ": Glom: ERROR: Date parsing sanity checks failed. Glom will not interpret dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org.\n";
     m_debug_date_check_result = false;
   }
 

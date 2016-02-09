@@ -680,7 +680,7 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const std::shared_ptr<
 {
   if(!layout_item)
   {
-    std::cerr << G_STRFUNC << ": layout_item is null" << std::endl;
+    std::cerr << G_STRFUNC << ": layout_item is null\n";
     return;
   }
   
@@ -762,7 +762,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
         }
         else
         {
-          std::cerr << G_STRFUNC << ": key not found for edited related field." << std::endl;
+          std::cerr << G_STRFUNC << ": key not found for edited related field.\n";
         }
       }
     }
@@ -930,14 +930,14 @@ void Box_Data_Details::print_layout()
   const auto document = std::dynamic_pointer_cast<const Document>(get_document());
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document was null" << std::endl;
+    std::cerr << G_STRFUNC << ": document was null\n";
     return;
   }
 
   auto page_setup = Gtk::PageSetup::create(); //TODO: m_canvas.get_page_setup();
   if(!page_setup)
   {
-    std::cerr << G_STRFUNC << ": page_setup was null" << std::endl;
+    std::cerr << G_STRFUNC << ": page_setup was null\n";
     return;
   }
 

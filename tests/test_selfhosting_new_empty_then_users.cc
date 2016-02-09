@@ -39,14 +39,14 @@ static bool test_add_group(const std::shared_ptr<Glom::Document>& document, cons
 {
   if(!Glom::DbUtils::add_group(document, group))
   {
-    std::cerr << G_STRFUNC << ": DbUtils::add_group() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": DbUtils::add_group() failed.\n";
     return false;
   }
 
   const auto group_list = Glom::Privs::get_database_groups();
   if(!contains(group_list, group))
   {
-    std::cerr << G_STRFUNC << ": Privs::get_database_groups() does not contain the expected group." << std::endl;
+    std::cerr << G_STRFUNC << ": Privs::get_database_groups() does not contain the expected group.\n";
     std::cerr << G_STRFUNC << ":   group: " << group << std::endl;
     return false;
   }
@@ -54,7 +54,7 @@ static bool test_add_group(const std::shared_ptr<Glom::Document>& document, cons
   const auto user_list = Glom::Privs::get_database_users(group);
   if(!user_list.empty())
   {
-    std::cerr << G_STRFUNC << ": The user list is not empty as expected.." << std::endl;
+    std::cerr << G_STRFUNC << ": The user list is not empty as expected..\n";
     return false;
   }
 
@@ -66,7 +66,7 @@ static bool test_add_user(const std::shared_ptr<Glom::Document>& document, const
   //Add an operator user, adding it to the group:
   if(!Glom::DbUtils::add_user(document, user, "somepassword", group))
   {
-    std::cerr << G_STRFUNC << ": DbUtils::add_user() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": DbUtils::add_user() failed.\n";
     test_selfhosting_cleanup();
     return false;
   }
@@ -74,7 +74,7 @@ static bool test_add_user(const std::shared_ptr<Glom::Document>& document, const
   const auto user_list = Glom::Privs::get_database_users(group);
   if(!contains(user_list, user))
   {
-    std::cerr << G_STRFUNC << ": Privs::get_database_users() does not contain the expected user:" << std::endl;
+    std::cerr << G_STRFUNC << ": Privs::get_database_users() does not contain the expected user:\n";
     std::cerr << G_STRFUNC << ":   group: " << group << std::endl;
     std::cerr << G_STRFUNC << ":   user: " << user << std::endl;
     return false;
@@ -125,7 +125,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   auto document = std::make_shared<Glom::Document>();
     if(!(test_create_and_selfhost_new_database(document, hosting_mode, "test_db")))
   {
-    std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_database() failed" << std::endl;
+    std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_database() failed\n";
     return false;
   }
 
@@ -149,7 +149,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   {
     if(!Glom::DbUtils::create_table_with_default_fields(document, table_name))
     {
-      std::cerr << G_STRFUNC << ": Failure: create_table_with_default_fields() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: create_table_with_default_fields() failed.\n";
       return false;
     }
   }
@@ -167,13 +167,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   const auto group_list_original = Glom::Privs::get_database_groups();
   if(group_list_original.empty())
   {
-    std::cerr << G_STRFUNC << ": Privs::get_database_groups() returned an empty list." << std::endl;
+    std::cerr << G_STRFUNC << ": Privs::get_database_groups() returned an empty list.\n";
     return false;
   }
 
   if(!contains(group_list_original, GLOM_STANDARD_GROUP_NAME_DEVELOPER))
   {
-    std::cerr << G_STRFUNC << ": Privs::get_database_groups() does not contain the developers group." << std::endl;
+    std::cerr << G_STRFUNC << ": Privs::get_database_groups() does not contain the developers group.\n";
     return false;
   }
 

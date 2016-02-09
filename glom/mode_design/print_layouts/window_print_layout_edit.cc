@@ -485,7 +485,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
   const auto item_type = PrintLayoutToolbarButton::get_item_type_from_selection_data(drag_context, selection_data);
   if(item_type == PrintLayoutToolbarButton::enumItems::INVALID)
   {
-    std::cerr << G_STRFUNC << ": item_type was invalid" << std::endl;
+    std::cerr << G_STRFUNC << ": item_type was invalid\n";
     return;
   }
 
@@ -520,7 +520,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
     auto layout_item = create_empty_item(item_type);
     if(!layout_item)
     {
-      std::cerr << G_STRFUNC << ": layout_item is null." << std::endl;
+      std::cerr << G_STRFUNC << ": layout_item is null.\n";
       return;
     }
 
@@ -561,7 +561,7 @@ void Window_PrintLayout_Edit::update_table_title()
   const auto document = std::dynamic_pointer_cast<const Document>(get_document());
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document was null" << std::endl;
+    std::cerr << G_STRFUNC << ": document was null\n";
     return;
   }
 
@@ -728,7 +728,7 @@ bool Window_PrintLayout_Edit::on_canvas_motion_notify_event(GdkEventMotion* moti
 void Window_PrintLayout_Edit::on_canvas_show_context_menu(guint button, guint32 activate_time)
 {
   //TODO: This is never called when right-clicking on the canvas.
-  //std::cout << G_STRFUNC << ": debug" << std::endl;
+  //std::cout << G_STRFUNC << ": debug\n";
 
   if(m_context_menu)
     m_context_menu->popup(button, activate_time);
@@ -846,14 +846,14 @@ void Window_PrintLayout_Edit::on_menu_insert_create_standard()
   const auto document = std::dynamic_pointer_cast<const Document>(get_document());
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document was null" << std::endl;
+    std::cerr << G_STRFUNC << ": document was null\n";
     return;
   }
 
   auto page_setup = m_canvas.get_page_setup();
   if(!page_setup)
   {
-    std::cerr << G_STRFUNC << ": page_setup was null" << std::endl;
+    std::cerr << G_STRFUNC << ": page_setup was null\n";
     return;
   }
   

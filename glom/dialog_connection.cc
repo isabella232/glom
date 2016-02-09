@@ -55,7 +55,7 @@ Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr
 
 std::shared_ptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection_settings() const
 {
-  //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings()" << std::endl;
+  //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings()\n";
 
   //TODO: BusyCursor busy_cursor(get_app_window());
 
@@ -168,7 +168,7 @@ void Dialog_Connection::load_from_document()
     set_database_name(document->get_connection_database());
   }
   else
-    std::cerr << G_STRFUNC << ": no document" << std::endl;
+    std::cerr << G_STRFUNC << ": no document\n";
 
 }
 

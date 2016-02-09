@@ -74,7 +74,7 @@ void CanvasTableMovable::set_width_height(double width, double height)
 {
   if(width == -1)
   {
-    std::cout << "debug: " << G_STRFUNC << ": width is -1" << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": width is -1\n";
   }
 
   property_width() = width;
@@ -148,7 +148,7 @@ void CanvasTableMovable::snap_position_one_corner(Corners corner, double& x, dou
 
 void CanvasTableMovable::snap_position(double& x, double& y) const
 {
-  //std::cout << "CanvasTableMovable::snap_position" << std::endl;
+  //std::cout << "CanvasTableMovable::snap_position\n";
 
   double offset_x_min = 0;
   double offset_y_min = 0;

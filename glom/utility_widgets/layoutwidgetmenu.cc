@@ -61,7 +61,7 @@ void LayoutWidgetMenu::setup_menu(Gtk::Widget* widget)
 {
   if(!widget)
   {
-    std::cerr << G_STRFUNC << ": parent is NULL." << std::endl;
+    std::cerr << G_STRFUNC << ": parent is NULL.\n";
     return;
   }
 
@@ -156,7 +156,7 @@ void LayoutWidgetMenu::on_menupopup_activate_delete()
   if(!parent)
   {
     // Should never happen:
-    std::cerr << G_STRFUNC << ": this is not a Gtk::Widget" << std::endl;
+    std::cerr << G_STRFUNC << ": this is not a Gtk::Widget\n";
     return;
   }
 

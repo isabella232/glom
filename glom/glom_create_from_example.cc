@@ -125,22 +125,22 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
 
 static void on_initialize_progress()
 {
-  std::cout << "Database initialization progress" << std::endl;
+  std::cout << "Database initialization progress\n";
 }
 
 static void on_startup_progress()
 {
-  std::cout << "Database startup progress" << std::endl;
+  std::cout << "Database startup progress\n";
 }
 
 static void on_recreate_progress()
 {
-  std::cout << "Database re-creation progress" << std::endl;
+  std::cout << "Database re-creation progress\n";
 }
 
 static void on_cleanup_progress()
 {
-  std::cout << "Database cleanup progress" << std::endl;
+  std::cout << "Database cleanup progress\n";
 }
 
 /** Delete a directory, if it exists, and its contents.
@@ -240,7 +240,7 @@ int main(int argc, char* argv[])
     //https://bugzilla.gnome.org/show_bug.cgi?id=619445
     //This should tell us what the problem is:
     std::cerr << G_STRFUNC << ": exception from std::locale::global(std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
   }
 
   
@@ -312,7 +312,7 @@ int main(int argc, char* argv[])
   
   if(input_uri.empty())
   {
-    std::cerr << G_STRFUNC << ": Please specify a glom example file." << std::endl;
+    std::cerr << G_STRFUNC << ": Please specify a glom example file.\n";
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
@@ -321,7 +321,7 @@ int main(int argc, char* argv[])
   //Check the output directory path: 
   if(group.m_arg_filepath_dir_output.empty())
   {
-    std::cerr << G_STRFUNC << ": Please specify an output directory path." << std::endl;
+    std::cerr << G_STRFUNC << ": Please specify an output directory path.\n";
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
@@ -351,7 +351,7 @@ int main(int argc, char* argv[])
   //Check the output name path: 
   if(group.m_arg_filepath_name_output.empty())
   {
-    std::cerr << G_STRFUNC << ": Please specify an output name." << std::endl;
+    std::cerr << G_STRFUNC << ": Please specify an output name.\n";
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
@@ -407,7 +407,7 @@ int main(int argc, char* argv[])
   const auto self_hosting = group.m_arg_server_hostname.empty();
   if(self_hosting)
   {
-    std::cout << "Using self-hosting instead of a central database server." << std::endl;
+    std::cout << "Using self-hosting instead of a central database server.\n";
 
 #if GLOM_ENABLE_MYSQL
     if(group.m_arg_use_mysql)
@@ -459,7 +459,7 @@ int main(int argc, char* argv[])
 
 #ifdef G_OS_WIN32
     const char* password = "";
-    std::cerr << G_STRFUNC << ": Error: getpass() is not implemented in the Windows build. The connection will fail." << std::endl;
+    std::cerr << G_STRFUNC << ": Error: getpass() is not implemented in the Windows build. The connection will fail.\n";
 #else
     const auto password = ::getpass(prompt.c_str());
 #endif
@@ -489,7 +489,7 @@ int main(int argc, char* argv[])
       Glom::DbUtils::get_unused_database_name(document->get_connection_database());
     if(database_name.empty())
     {
-      std::cerr << G_STRFUNC << ": Could not find an unused database name" << std::endl;
+      std::cerr << G_STRFUNC << ": Could not find an unused database name\n";
     }
     else
       document->set_connection_database(database_name);

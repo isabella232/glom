@@ -35,27 +35,27 @@
 
 static void on_initialize_progress()
 {
-  //std::cout << "Database initialization progress" << std::endl;
+  //std::cout << "Database initialization progress\n";
 }
 
 static void on_startup_progress()
 {
-  //std::cout << "Database startup progress" << std::endl;
+  //std::cout << "Database startup progress\n";
 }
 
 static void on_recreate_progress()
 {
-  //std::cout << "Database re-creation progress" << std::endl;
+  //std::cout << "Database re-creation progress\n";
 }
 
 static void on_cleanup_progress()
 {
-  //std::cout << "Database cleanup progress" << std::endl;
+  //std::cout << "Database cleanup progress\n";
 }
 
 static void on_db_creation_progress()
 {
-  //std::cout << "Database creation progress" << std::endl;
+  //std::cout << "Database creation progress\n";
 }
 
 static std::string temp_filepath_dir; //Remembered so we can delete it later.
@@ -65,7 +65,7 @@ static bool check_directory_exists()
 {
   if(temp_filepath_dir.empty())
   {
-    std::cerr << G_STRFUNC << ": temp_filepath_dir is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": temp_filepath_dir is empty.\n";
     return false;
   }
   
@@ -224,7 +224,7 @@ bool test_create_and_selfhost_new_empty(const std::shared_ptr<Glom::Document>& d
   
   if(!check_directory_exists())
   {
-    std::cerr << G_STRFUNC << ": Failure: The data directory does not exist after calling initialize()." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The data directory does not exist after calling initialize().\n";
     return false;
   }
 
@@ -241,14 +241,14 @@ bool test_create_and_selfhost_new_database(const std::shared_ptr<Glom::Document>
 {
   if(!test_create_and_selfhost_new_empty(document, hosting_mode, subdirectory_path))
   {
-    std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_empty() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_empty() failed.\n";
     return false;
   } 
 
   const auto db_name = Glom::DbUtils::get_unused_database_name(database_name);
   if(db_name.empty())
   {
-    std::cerr << G_STRFUNC << ": DbUtils::get_unused_database_name) failed." << std::endl;
+    std::cerr << G_STRFUNC << ": DbUtils::get_unused_database_name) failed.\n";
     return false;
   }
 
@@ -257,7 +257,7 @@ bool test_create_and_selfhost_new_database(const std::shared_ptr<Glom::Document>
     "test title", &on_db_creation_progress);
   if(!created)
   {
-    std::cerr << G_STRFUNC << ": DbUtils::create_database() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": DbUtils::create_database() failed.\n";
     return false;
   }
   
@@ -326,13 +326,13 @@ static bool after_load(const std::shared_ptr<Glom::Document>& document, Glom::Do
 {
   if(!document->get_is_example_file() && !document->get_is_backup_file())
   {
-    std::cerr << G_STRFUNC << ": The document is not an example or a backup." << std::endl;
+    std::cerr << G_STRFUNC << ": The document is not an example or a backup.\n";
     return false;
   }
 
   if(!test_create_and_selfhost_new_empty(document, hosting_mode, subdirectory_path))
   {
-    std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_empty() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_empty() failed.\n";
     return false;
   }
 
@@ -396,7 +396,7 @@ bool test_model_expected_size(const Glib::RefPtr<const Gnome::Gda::DataModel>& d
 {
   if(!data_model)
   {
-    std::cerr << G_STRFUNC << ": Failure: data_model was null" << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: data_model was null\n";
     return false;
   }
 
@@ -448,7 +448,7 @@ static bool test_example_musiccollection_data_related(const std::shared_ptr<cons
 {
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document is null" << std::endl;
+    std::cerr << G_STRFUNC << ": document is null\n";
     return false;
   }
 
@@ -462,7 +462,7 @@ static bool test_example_musiccollection_data_related(const std::shared_ptr<cons
   auto field = document->get_field("albums", "name");
   if(!field)
   {
-    std::cerr << G_STRFUNC << "Failure: Could not get field." << std::endl;
+    std::cerr << G_STRFUNC << "Failure: Could not get field.\n";
     return false;
   }
   layoutitem = std::make_shared<Glom::LayoutItem_Field>();
@@ -473,7 +473,7 @@ static bool test_example_musiccollection_data_related(const std::shared_ptr<cons
   const auto relationship = document->get_relationship("albums", "artist");
   if(!relationship)
   {
-    std::cerr << G_STRFUNC << ": Failure: The relationship could not be found." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The relationship could not be found.\n";
     return false;
   }
   layoutitem = std::make_shared<Glom::LayoutItem_Field>();
@@ -481,7 +481,7 @@ static bool test_example_musiccollection_data_related(const std::shared_ptr<cons
   field = document->get_field("artists", "name");
   if(!field)
   {
-    std::cerr << G_STRFUNC << "Failure: Could not get field." << std::endl;
+    std::cerr << G_STRFUNC << "Failure: Could not get field.\n";
     return false;
   }
   layoutitem->set_full_field_details(field);
@@ -505,7 +505,7 @@ bool test_example_musiccollection_data(const std::shared_ptr<const Glom::Documen
 {
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document is null" << std::endl;
+    std::cerr << G_STRFUNC << ": document is null\n";
     return false;
   }
   
@@ -523,7 +523,7 @@ bool test_example_musiccollection_data(const std::shared_ptr<const Glom::Documen
   field = document->get_field("albums", "name");
   if(!field)
   {
-    std::cerr << G_STRFUNC << "Failure: Could not get field." << std::endl;
+    std::cerr << G_STRFUNC << "Failure: Could not get field.\n";
     return false;
   }
   layoutitem = std::make_shared<Glom::LayoutItem_Field>();
@@ -574,7 +574,7 @@ static bool test_hosting_mode(const SlotTest& slot, Glom::Document::HostingMode 
   }
   catch(...)
   {
-    std::cerr << G_STRFUNC << ": Failed with " << name << " with unknown exception: " << std::endl;
+    std::cerr << G_STRFUNC << ": Failed with " << name << " with unknown exception: \n";
     test_selfhosting_cleanup();
     return false;
   }

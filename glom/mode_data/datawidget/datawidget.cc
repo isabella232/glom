@@ -135,7 +135,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
       }
       else
       {
-        std::cerr << G_STRFUNC << ": Unexpected choice type." << std::endl;
+        std::cerr << G_STRFUNC << ": Unexpected choice type.\n";
       }
 
       pFieldWidget = combo;

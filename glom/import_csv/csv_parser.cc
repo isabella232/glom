@@ -111,14 +111,14 @@ const Glib::ustring& CsvParser::get_data(guint row, guint col) const
 
   if(row >= m_rows.size())
   {
-    //std::cerr << G_STRFUNC << ": get_data(): row out of range." << std::endl;
+    //std::cerr << G_STRFUNC << ": get_data(): row out of range.\n";
     return empty_result;
   }
 
   const auto row_data = m_rows[row];
   if(col >= row_data.size())
   {
-    //std::cerr << G_STRFUNC << ": get_data(): col out of range." << std::endl;
+    //std::cerr << G_STRFUNC << ": get_data(): col out of range.\n";
     return empty_result;
   }
 
@@ -350,12 +350,12 @@ bool CsvParser::on_idle_parse()
 
     if(pos == outbuf)
     {
-      //std::cout << "debug: not found. stopping" << std::endl;
+      //std::cout << "debug: not found. stopping\n";
       break;
     }
 
     char ch = *pos;
-    //std::cout << "debug: ch=START" << ch << "END" << std::endl;
+    //std::cout << "debug: ch=START" << ch << "END\n";
 
     if(ch == '\0')
     {
@@ -363,7 +363,7 @@ bool CsvParser::on_idle_parse()
       // contain null bytes this only occurs when converting, for example, a UTF-16
       // file from ISO-8859-1 to UTF-8 (note that the UTF-16 file is valid ISO-8859-1 -
       // it just contains lots of nullbytes). We therefore produce an error here.
-      //std::cerr << G_STRFUNC << ": on_idle_parse(): Encoding error" << std::endl;
+      //std::cerr << G_STRFUNC << ": on_idle_parse(): Encoding error\n";
       set_state(State::ENCODING_ERROR);
       signal_encoding_error().emit();
       return false;  //Stop calling the idle handler.
@@ -386,7 +386,7 @@ bool CsvParser::on_idle_parse()
         */
       }
       //else
-      //  std::cout << "Ignoring a newline in quotes." << std::endl;
+      //  std::cout << "Ignoring a newline in quotes.\n";
 
       prev = pos + 1;
       continue;
@@ -407,7 +407,7 @@ bool CsvParser::on_idle_parse()
 
       if(!m_current_line.empty())
       {
-        //std::cout << "debug: intermediate chunk" << std::endl;
+        //std::cout << "debug: intermediate chunk\n";
         do_line_scanned(m_current_line, m_line_number);
       }
 
@@ -437,7 +437,7 @@ bool CsvParser::on_idle_parse()
     // Handle last line, if nonempty
     if(!m_current_line.empty())
     {
-      //std::cout << "debug: last chunk" << std::endl;
+      //std::cout << "debug: last chunk\n";
       do_line_scanned(m_current_line, m_line_number);
     }
 

@@ -111,7 +111,7 @@ bool Sqlite::create_database(const SlotProgress& slot_progress, const Glib::ustr
 {
   if(m_database_directory_uri.empty())
   {
-    std::cerr << G_STRFUNC << ": m_database_directory_uri was empty." << std::endl;
+    std::cerr << G_STRFUNC << ": m_database_directory_uri was empty.\n";
     return false;
   }
  
@@ -364,7 +364,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   catch(const Glib::Error& ex)
   {
     std::cerr << G_STRFUNC << ": exception=" << ex.what() << std::endl;
-    std::cerr << G_STRFUNC << ": Reverting the transaction." << std::endl;
+    std::cerr << G_STRFUNC << ": Reverting the transaction.\n";
 
     try
     {

@@ -438,7 +438,7 @@ main(int argc, char* argv[])
   std::string current_path = Glib::getenv("PYTHONPATH");
   if(current_path.empty()) current_path = python_path;
   else current_path += (std::string(";") + python_path); // PATH-like variables are separated by ; on Windows because : is a valid character in paths.
-  std::cout << "Setting " << current_path << ":" << std::endl;
+  std::cout << "Setting " << current_path << ":\n";
   std::cout << Glib::setenv("PYTHONPATH", current_path) << std::endl;
   std::cout << getenv("PYTHONPATH") << std::endl;
 #endif
@@ -475,7 +475,7 @@ main(int argc, char* argv[])
     //https://bugzilla.gnome.org/show_bug.cgi?id=619445
     //This should tell us what the problem is:
     std::cerr << G_STRFUNC << ": exception from std::locale::global(std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
   }
 
   Glom::libglom_init(); //Also initializes python.

@@ -30,7 +30,7 @@ bool test_compare_empty_instances()
   auto layout_item2 = std::make_shared<Glom::LayoutItem_Field>();
   if(!layout_item1->is_same_field(layout_item2))
   {
-    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with empty instances." << std::endl;
+    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with empty instances.\n";
     return false;
   }
 
@@ -46,7 +46,7 @@ bool test_compare_same_named_instances()
   layout_item2->set_name("two");
   if(layout_item1->is_same_field(layout_item2))
   {
-    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with named field instances." << std::endl;
+    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with named field instances.\n";
     return false;
   }
 
@@ -63,7 +63,7 @@ bool test_compare_same_named_instances_unrelated_differences()
   layout_item2->set_hidden(); //is_same_field() should ignore this.
   if(!layout_item1->is_same_field(layout_item2))
   {
-    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with named field instances with unrelated differences." << std::endl;
+    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with named field instances with unrelated differences.\n";
     return false;
   }
 
@@ -89,14 +89,14 @@ bool test_compare_same_named_instances_with_relationship()
 
   if(layout_item1->is_same_field(layout_item2))
   {
-    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with field instances with different relationships." << std::endl;
+    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with field instances with different relationships.\n";
     return false;
   }
 
   layout_item2->set_relationship(relationship1);
   if(!layout_item1->is_same_field(layout_item2))
   {
-    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with field instances with same relationships." << std::endl;
+    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with field instances with same relationships.\n";
     return false;
   }
 
@@ -122,7 +122,7 @@ bool test_compare_same_named_instances_with_related_relationship()
 
   if(layout_item1->is_same_field(layout_item2))
   {
-    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with field instances with different (one unset) related relationships." << std::endl;
+    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with field instances with different (one unset) related relationships.\n";
     return false;
   }
 
@@ -132,14 +132,14 @@ bool test_compare_same_named_instances_with_related_relationship()
 
   if(layout_item1->is_same_field(layout_item2))
   {
-    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with field instances with different related relationships." << std::endl;
+    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with field instances with different related relationships.\n";
     return false;
   }
 
   layout_item2->set_related_relationship(relationship_related1);
   if(!layout_item1->is_same_field(layout_item2))
   {
-    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with field instances with same related relationships." << std::endl;
+    std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with field instances with same related relationships.\n";
     return false;
   }
 

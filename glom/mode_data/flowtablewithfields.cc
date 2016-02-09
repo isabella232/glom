@@ -346,7 +346,7 @@ void FlowTableWithFields::add_layout_portal(const std::shared_ptr<LayoutItem_Por
     add_layoutwidgetbase(portal_box);
   }
   else
-    std::cerr << G_STRFUNC << ": No portal was created." << std::endl;
+    std::cerr << G_STRFUNC << ": No portal was created.\n";
 }
 
 void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_Notebook>& notebook)
@@ -728,7 +728,7 @@ Gnome::Gda::Value FlowTableWithFields::get_field_value(const std::shared_ptr<con
       return value;
   }
 
-  //std::cerr << G_STRFUNC << ": returning null" << std::endl;
+  //std::cerr << G_STRFUNC << ": returning null\n";
   return Gnome::Gda::Value(); //null.
 }
 
@@ -792,7 +792,7 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const std::sh
       }
       else
       {
-        std::cerr << G_STRFUNC << ": get_portal() returned NULL." << std::endl;
+        std::cerr << G_STRFUNC << ": get_portal() returned NULL.\n";
       }
     }
   }
@@ -1067,7 +1067,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   auto layout_item_parent = pDataWidget->get_layout_item();
   if(!layout_item_parent)
   {
-    std::cerr << G_STRFUNC << ": layout_item_parent is null." << std::endl;
+    std::cerr << G_STRFUNC << ": layout_item_parent is null.\n";
     return;
   }
 
@@ -1077,7 +1077,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(get_layout_item());
   if(!layout_group)
   {
-    std::cerr << G_STRFUNC << ": layout_group is null." << std::endl;
+    std::cerr << G_STRFUNC << ": layout_group is null.\n";
     return;
   }
 
@@ -1385,7 +1385,7 @@ void FlowTableWithFields::set_enable_drag_and_drop(bool enabled)
   {
     if(child)
     {
-      //std::cout << G_STRFUNC << ": child" << std::endl;
+      //std::cout << G_STRFUNC << ": child\n";
       child->set_drag_enabled(drag_mode);
       child->set_drop_enabled(enabled);  
     }

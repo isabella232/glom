@@ -28,7 +28,7 @@
 
 static void on_backup_progress()
 {
-  std::cout << "Restore progress" << std::endl;
+  std::cout << "Restore progress\n";
 }
 
 
@@ -43,7 +43,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       test_create_and_selfhost_from_example("example_music_collection.glom", document, hosting_mode);
     if(!recreated)
     {
-      std::cerr << G_STRFUNC << ": Recreation from the example failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Recreation from the example failed.\n";
       return false;
     }
 
@@ -53,7 +53,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       sigc::ptr_fun(&on_backup_progress));
     if(backup_uri_tarball.empty())
     {
-      std::cerr << G_STRFUNC << ": Backup failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Backup failed.\n";
       return false;
     }
 
@@ -70,7 +70,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
         sigc::ptr_fun(&on_backup_progress));
     if(backup_glom_file_contents.empty())
     {
-      std::cerr << G_STRFUNC << ": Extraction from the backup file failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Extraction from the backup file failed.\n";
       return false;
     }
     
@@ -81,7 +81,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       test_create_and_selfhost_from_data(backup_glom_file_contents, document, hosting_mode);
     if(!recreated)
     {
-      std::cerr << G_STRFUNC << ": Recreation from the backup failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Recreation from the backup failed.\n";
       return false;
     }
 
@@ -90,7 +90,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     /* TODO: Find out why this test fails, though it seems to work fine in the UI:
     if(!test_example_musiccollection_data(document))
     {
-      std::cerr << G_STRFUNC << ": test_example_musiccollection_data() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": test_example_musiccollection_data() failed.\n";
       return false;
     }
     */
@@ -107,7 +107,7 @@ int main()
 
   if(!test(Glom::Document::HostingMode::POSTGRES_SELF))
   {
-    std::cerr << G_STRFUNC << ": Failed with PostgreSQL" << std::endl;
+    std::cerr << G_STRFUNC << ": Failed with PostgreSQL\n";
     test_selfhosting_cleanup();
     return EXIT_FAILURE;
   }
@@ -115,7 +115,7 @@ int main()
   /* TODO: Make this work with sqlite too:
   if(!test(Glom::Document::HostingMode::SQLITE))
   {
-    std::cerr << G_STRFUNC << ": Failed with SQLite" << std::endl;
+    std::cerr << G_STRFUNC << ": Failed with SQLite\n";
     test_selfhosting_cleanup();
     return EXIT_FAILURE;
   }

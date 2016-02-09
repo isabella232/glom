@@ -253,7 +253,7 @@ Glib::ustring ComboAsRadioButtons::get_text() const
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void ComboAsRadioButtons::show_context_menu(GdkEventButton *button_event)
 {
-  std::cout << "ComboAsRadioButtons::show_context_menu()" << std::endl;
+  std::cout << "ComboAsRadioButtons::show_context_menu()\n";
   auto pApp = get_appwindow();
   if(pApp)
   {

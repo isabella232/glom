@@ -83,7 +83,7 @@ int main()
 
   if(po_file_uri.empty())
   {
-    std::cerr << G_STRFUNC << ": po_file_uri was empty." << std::endl;
+    std::cerr << G_STRFUNC << ": po_file_uri was empty.\n";
     return EXIT_FAILURE;
   }
 
@@ -94,7 +94,7 @@ int main()
     Glom::import_translations_from_po_file(document, po_file_uri, locale);
   if(!success)
   {
-    std::cerr << G_STRFUNC << ": Glom::import_translations_from_po_file() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Glom::import_translations_from_po_file() failed.\n";
     return EXIT_FAILURE;
   }
 
@@ -107,7 +107,7 @@ int main()
   //This should have a new translated title:
   if(table->get_title_translation(locale) != "TestResult1")
   {
-    std::cerr << G_STRFUNC << ": Failure: Unexpected translated report title." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected translated report title.\n";
     return EXIT_FAILURE;
   }
 
@@ -118,7 +118,7 @@ int main()
   //This should have a new translated title:
   if(report->get_title_translation(locale) != "TestResult2")
   {
-    std::cerr << G_STRFUNC << ": Failure: Unexpected translated report title." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected translated report title.\n";
     return EXIT_FAILURE;
   }
 

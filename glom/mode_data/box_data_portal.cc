@@ -57,18 +57,18 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
   //Create the link by setting the foreign key
   if(!m_key_field)
   {
-    std::cerr << G_STRFUNC << ": m_key_field was null." << std::endl;
+    std::cerr << G_STRFUNC << ": m_key_field was null.\n";
   }
 
   if(Conversions::value_is_empty(m_key_value))
   {
-    std::cerr << G_STRFUNC << ": m_key_value was empty." << std::endl;
+    std::cerr << G_STRFUNC << ": m_key_value was empty.\n";
   }
 
 
   if(!m_portal)
   {
-    std::cerr << G_STRFUNC << ": m_portal was null." << std::endl;
+    std::cerr << G_STRFUNC << ": m_portal was null.\n";
   }
 
   const auto target_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
@@ -84,7 +84,7 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
   const auto test = DbUtils::query_execute(builder);
   if(!test)
   {
-    std::cerr << G_STRFUNC << ": SQL query failed." << std::endl;
+    std::cerr << G_STRFUNC << ": SQL query failed.\n";
   }
 }
 
@@ -303,7 +303,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
     if(Conversions::value_is_empty(table_primary_key_value))
     {
       value_found = false;
-      std::cout << "debug: " << G_STRFUNC << ": SQL query returned empty primary key." << std::endl;
+      std::cout << "debug: " << G_STRFUNC << ": SQL query returned empty primary key.\n";
     }
   }
   else

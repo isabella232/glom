@@ -432,7 +432,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
 
   if(!stderr_text.empty())
   {
-    std::cerr << G_STRFUNC << ": command produced stderr text: " << std::endl <<
+    std::cerr << G_STRFUNC << ": command produced stderr text: \n" <<
       "  command: " << command << std::endl <<
       "  error text: " << stderr_text << std::endl;
   }
@@ -458,7 +458,7 @@ namespace
       // (Note that we can not just do "LANG=C;the_command", as on the command line, because g_spawn() does not support that.)
 
       #ifdef GLOM_SPAWN_DEBUG
-      std::cout << std::endl << "debug: temporarily setting LANG and LANGUAGE environment variables to \"C\"" << std::endl;
+      std::cout << std::endl << "debug: temporarily setting LANG and LANGUAGE environment variables to \"C\"\n";
       #endif //GLOM_SPAWN_DEBUG
 
       stored_env_lang = Glib::getenv("LANG");
@@ -488,7 +488,7 @@ namespace
     {
       // Restore the previous environment variable values:
       #ifdef GLOM_SPAWN_DEBUG
-      std::cout << std::endl << "debug: restoring the LANG and LANGUAGE environment variables." << std::endl;
+      std::cout << std::endl << "debug: restoring the LANG and LANGUAGE environment variables.\n";
       #endif //GLOM_SPAWN_DEBUG
 
       Glib::setenv("LANG", stored_env_lang, true /* overwrite */);
@@ -511,7 +511,7 @@ namespace
       if(success)
       {
         #ifdef GLOM_SPAWN_DEBUG
-        std::cout << "debug: Success, do response" << std::endl;
+        std::cout << "debug: Success, do response\n";
         #endif //GLOM_SPAWN_DEBUG
 
         // Exit from run() in execute_command_line_and_wait_until_second_command_returns_success().

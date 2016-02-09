@@ -32,7 +32,7 @@ static bool test_string_value(const Glib::ustring& str)
     Glom::Conversions::parse_value(field_type, str, success, true);
   if(!success)
   {
-    std::cerr << G_STRFUNC << ": parse_value() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": parse_value() failed.\n";
     return false;
   }
 

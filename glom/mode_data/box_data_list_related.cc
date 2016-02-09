@@ -85,7 +85,7 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
 
   if(LayoutWidgetBase::m_table_name.empty())
   {
-    std::cerr << G_STRFUNC << ": LayoutWidgetBase::m_table_name is null" << std::endl;
+    std::cerr << G_STRFUNC << ": LayoutWidgetBase::m_table_name is null\n";
   }
   
   Base_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
@@ -155,7 +155,7 @@ bool Box_Data_List_Related::fill_from_database()
     result = Base_DB_Table_Data::fill_from_database();
     if(!result)
     {
-      std::cerr << G_STRFUNC << ": Base_DB_Table_Data::fill_from_database() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Base_DB_Table_Data::fill_from_database() failed.\n";
     }
 
     //create_layout();
@@ -165,7 +165,7 @@ bool Box_Data_List_Related::fill_from_database()
     result = Box_Data_Portal::fill_from_database();
     if(!result)
     {
-      std::cerr << G_STRFUNC << ": Box_Data_Portal::fill_from_database() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Box_Data_Portal::fill_from_database() failed.\n";
     }
 
     //TODO: Disable add if the from_field already has a value and the to_field is auto-incrementing because
@@ -295,7 +295,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
   }
   else if(Conversions::value_is_empty(m_key_value))
   {
-    std::cerr << G_STRFUNC << ": m_key_value is NULL." << std::endl;
+    std::cerr << G_STRFUNC << ": m_key_value is NULL.\n";
   }
   else
   {
@@ -315,7 +315,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
       m_AddDel.set_value(row, layout_item, m_key_value);
     }
     else
-      std::cerr << G_STRFUNC << ": m_key_field is NULL" << std::endl;
+      std::cerr << G_STRFUNC << ": m_key_field is NULL\n";
 
 
     //on_adddel_user_changed(row, iKey); //Update the database.
@@ -421,7 +421,7 @@ void Box_Data_List_Related::create_layout()
   auto field_primary_key = get_field_primary_key_for_table(Base_DB_Table::m_table_name);
   if(!field_primary_key)
   {
-    std::cerr << G_STRFUNC << ": primary key not found." << std::endl;
+    std::cerr << G_STRFUNC << ": primary key not found.\n";
     return;
   }
 

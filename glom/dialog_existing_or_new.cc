@@ -666,13 +666,13 @@ void Dialog_ExistingOrNew::append_example(const Glib::ustring& title, const std:
 {
   if(!m_new_model)
   {
-    std::cerr << G_STRFUNC << ": m_new_model is null" << std::endl;
+    std::cerr << G_STRFUNC << ": m_new_model is null\n";
     return;
   }
 
   if(!m_iter_new_template)
   {
-    std::cerr << G_STRFUNC << ": m_iter_new_template is null" << std::endl;
+    std::cerr << G_STRFUNC << ": m_iter_new_template is null\n";
     return;
   }
 

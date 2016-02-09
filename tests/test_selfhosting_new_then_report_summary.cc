@@ -33,7 +33,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
-    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
 
@@ -41,7 +41,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     document->get_report("invoices", "by_customer");
   if(!report)
   {
-    std::cerr << G_STRFUNC << ": The report could not be found." << std::endl;
+    std::cerr << G_STRFUNC << ": The report could not be found.\n";
     return false;
   }
 
@@ -56,19 +56,19 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   if(html.empty())
   {
-    std::cerr << G_STRFUNC << ": Failed: html was empty." << std::endl;
+    std::cerr << G_STRFUNC << ": Failed: html was empty.\n";
     return false;
   }
 
   if(html.find("Yodda Yossarian") == std::string::npos)
   {
-    std::cerr << G_STRFUNC << ": Failed: html did not contain the expected text." << std::endl;
+    std::cerr << G_STRFUNC << ": Failed: html did not contain the expected text.\n";
     return false;
   }
 
   if(html.find("90.47") == std::string::npos)
   {
-    std::cerr << G_STRFUNC << ": Failed: html did not contain the expected summary number." << std::endl;
+    std::cerr << G_STRFUNC << ": Failed: html did not contain the expected summary number.\n";
     return false;
   }
 
@@ -88,14 +88,14 @@ int main()
 
   if(!test(Glom::Document::HostingMode::POSTGRES_SELF))
   {
-    std::cerr << G_STRFUNC << ": Failed with PostgreSQL" << std::endl;
+    std::cerr << G_STRFUNC << ": Failed with PostgreSQL\n";
     test_selfhosting_cleanup();
     return EXIT_FAILURE;
   }
   
   if(!test(Glom::Document::HostingMode::SQLITE))
   {
-    std::cerr << G_STRFUNC << ": Failed with SQLite" << std::endl;
+    std::cerr << G_STRFUNC << ": Failed with SQLite\n";
     test_selfhosting_cleanup();
     return EXIT_FAILURE;
   }

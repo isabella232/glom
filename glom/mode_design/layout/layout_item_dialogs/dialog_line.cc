@@ -51,7 +51,7 @@ void Dialog_Line::set_line(const std::shared_ptr<const LayoutItem_Line>& line)
 {
   if(!line)
   {
-    std::cerr << G_STRFUNC << ": line is null" << std::endl;
+    std::cerr << G_STRFUNC << ": line is null\n";
   }
 
   //set_blocked();
@@ -72,14 +72,14 @@ std::shared_ptr<LayoutItem_Line> Dialog_Line::get_line() const
 {
   if(!m_line)
   {
-    std::cerr << G_STRFUNC <<  ": m_line is null" << std::endl;
+    std::cerr << G_STRFUNC <<  ": m_line is null\n";
   }
   
   auto result = glom_sharedptr_clone(m_line); //Start with the old details, to preserve anything that is not in our UI.
 
   if(!result)
   {
-    std::cerr << G_STRFUNC << ": : result is null" << std::endl;
+    std::cerr << G_STRFUNC << ": : result is null\n";
     return result;
   }
 

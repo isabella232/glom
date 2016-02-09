@@ -90,7 +90,7 @@ void Box_Data_List::refresh_data_from_database_blank()
   found_set.m_where_clause = Gnome::Gda::SqlExpr();
   m_AddDel.set_found_set(found_set);
 
-  std::cout << "debug: " << G_STRFUNC << ": before refresh_from_database_blank()." << std::endl;
+  std::cout << "debug: " << G_STRFUNC << ": before refresh_from_database_blank().\n";
   m_AddDel.refresh_from_database_blank();
   m_found_set = found_set;
 }
@@ -249,7 +249,7 @@ void Box_Data_List::on_details_nav_next()
     //Don't go past the last record:
     if( !m_AddDel.get_is_last_row(iter) )
     {
-      //std::cout << "debug: " << G_STRFUNC << ": The current row was not the last row." << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": The current row was not the last row.\n";
 
       iter++;
       m_AddDel.select_item(iter);
@@ -257,7 +257,7 @@ void Box_Data_List::on_details_nav_next()
       signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
     }
     //else
-    //  std::cout << "debug: " << G_STRFUNC << ": Not going past the last row." << std::endl;
+    //  std::cout << "debug: " << G_STRFUNC << ": Not going past the last row.\n";
   }
 }
 
@@ -330,7 +330,7 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_first() const
       Gnome::Gda::Value value = get_primary_key_value(iter);
       if(Conversions::value_is_empty(value))
       {
-       //std::cout << "debug: " << G_STRFUNC << ": get_primary_key_value_first() iter val is NULL" << std::endl;
+       //std::cout << "debug: " << G_STRFUNC << ": get_primary_key_value_first() iter val is NULL\n";
         ++iter;
       }
       else
@@ -341,7 +341,7 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_first() const
     }
   }
 
- // std::cout << "debug: " << G_STRFUNC << ": get_primary_key_value_first() return NULL" << std::endl;
+ // std::cout << "debug: " << G_STRFUNC << ": get_primary_key_value_first() return NULL\n";
   return Gnome::Gda::Value();
 }
 

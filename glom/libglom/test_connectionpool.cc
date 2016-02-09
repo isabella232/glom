@@ -75,9 +75,9 @@ int main()
     }
     
     if(connection)
-      std::cout << "Connected" << std::endl;
+      std::cout << "Connected\n";
     else
-      std::cout << "Connection failed." << std::endl;
+      std::cout << "Connection failed.\n";
 
     gdaconnection = connection->get_gda_connection();
     //Cleanup:

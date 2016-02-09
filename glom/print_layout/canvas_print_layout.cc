@@ -668,7 +668,7 @@ void Canvas_PrintLayout::set_page_count(guint count)
 {
   if(count < 1)
   {
-    std::cerr << G_STRFUNC << ": count was less than 1" << std::endl;
+    std::cerr << G_STRFUNC << ": count was less than 1\n";
     return;
   }
 
@@ -689,7 +689,7 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set, bool avoid_pa
   {
     //This might help a developer/debugger:
     //This is not an error.
-    std::cout << G_STRFUNC << ": Not attempting to show real data because the where_clause is empty, maybe because there are no records in the database yet." << std::endl;
+    std::cout << G_STRFUNC << ": Not attempting to show real data because the where_clause is empty, maybe because there are no records in the database yet.\n";
     return;
   }
   
@@ -711,7 +711,7 @@ void Canvas_PrintLayout::fill_with_data_system_preferences(const Glib::RefPtr<Ca
 
     if(!document)
     {
-      std::cerr << G_STRFUNC << ": document is null" << std::endl;
+      std::cerr << G_STRFUNC << ": document is null\n";
       return;
     }
 
@@ -999,7 +999,7 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
     auto canvas_text = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(canvas_item);
     if(!canvas_text)
     {
-      std::cerr << G_STRFUNC << ": The canvas item is not of the expected type. Instead it is of type." << std::endl;
+      std::cerr << G_STRFUNC << ": The canvas item is not of the expected type. Instead it is of type.\n";
       return;
     }
 
@@ -1057,7 +1057,7 @@ Base_DB::type_vecConstLayoutFields Canvas_PrintLayout::get_portal_fields_to_show
 {
   const auto document = get_document();
   if(!document)
-    std::cerr << G_STRFUNC << ": document is NULL." << std::endl;
+    std::cerr << G_STRFUNC << ": document is NULL.\n";
 
   if(document && portal)
   {
@@ -1212,7 +1212,7 @@ Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::move_items_down(double y_star
       Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(child);
     if(!derived)
     {
-      std::cout << "debug: not derived" << std::endl;
+      std::cout << "debug: not derived\n";
       continue;
     }
 

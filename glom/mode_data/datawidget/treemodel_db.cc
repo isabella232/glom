@@ -48,12 +48,12 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
   //std::cout << "debug: " << G_STRFUNC << ": row=" << row << std::endl;
   //if(row == 1000)
   //{
-  //  std::cout << "1000" << std::endl;
+  //  std::cout << "1000\n";
   //}
 
   if(m_values_retrieved)
   {
-     //std::cout << "debug: " << G_STRFUNC << ": already retrieved" << std::endl;
+     //std::cout << "debug: " << G_STRFUNC << ": already retrieved\n";
   }
   else
   {
@@ -100,10 +100,10 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
     }
     else
     {
-      //std::cerr << G_STRFUNC << ": Non-db row." << std::endl;
+      //std::cerr << G_STRFUNC << ": Non-db row.\n";
       if(m_extra)
       {
-        //std::cout << "debug: " << G_STRFUNC << ": using default value" << std::endl;
+        //std::cout << "debug: " << G_STRFUNC << ": using default value\n";
 
         //It is an extra row, added with append().
       }
@@ -155,10 +155,10 @@ void DbTreeModelRow::set_value(DbTreeModel& model, int column, int row, const Db
   {
     std::cout << "debug: " << G_STRFUNC << ": expected GType=" << debug_type_expected << ", but received GType=" << debug_type_in << std::endl;
     if(debug_type_expected)
-      std::cout << "  expected GType name=\"" << g_type_name(debug_type_expected) << "\"" << std::endl;
+      std::cout << "  expected GType name=\"" << g_type_name(debug_type_expected) << "\"\n";
 
     if(debug_type_in)
-      std::cout << "  received GType name=\"" << g_type_name(debug_type_in) << "\"" << std::endl;
+      std::cout << "  received GType name=\"" << g_type_name(debug_type_in) << "\"\n";
   }
   */
 
@@ -175,7 +175,7 @@ DbTreeModelRow::DbValue DbTreeModelRow::get_value(DbTreeModel& model, int column
     return iterFind->second;
   else
   {
-    std::cout << "debug: " << G_STRFUNC << ": column not found." << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": column not found.\n";
     return DbValue();
   }
 }
@@ -235,7 +235,7 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
       {
         const auto field_full = layout_item->get_full_field_details();
         if(!field_full)
-          std::cerr << G_STRFUNC << ": The layout item (" << layout_item->get_name() << ") has no field details." << std::endl;
+          std::cerr << G_STRFUNC << ": The layout item (" << layout_item->get_name() << ") has no field details.\n";
         else if(field_full->get_primary_key() )
         {
           key_found = true;
@@ -248,7 +248,7 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
 
     if(!key_found)
     {
-      std::cerr << G_STRFUNC << ": no primary key field found in the list of items:" << std::endl;
+      std::cerr << G_STRFUNC << ": no primary key field found in the list of items:\n";
       for(const auto& layout_item : m_column_fields)
       {
         if(layout_item)
@@ -289,7 +289,7 @@ Glib::RefPtr<DbTreeModel> DbTreeModel::create(const FoundSet& found_set, const t
 
 bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 {
-  //std::cout << "DbTreeModel::refresh_from_database()" << std::endl;
+  //std::cout << "DbTreeModel::refresh_from_database()\n";
   m_found_set = found_set;
 
   if(!m_get_records && !m_find_mode)
@@ -333,7 +333,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
   }
 
   if(m_found_set.m_table_name.empty())
-    std::cerr << G_STRFUNC << ": found_set.m_table_name is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": found_set.m_table_name is empty.\n";
 
   if(m_connection && !m_found_set.m_table_name.empty() && m_get_records)
   {
@@ -347,7 +347,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       m_data_model_rows_count = 0;
       m_data_model_columns_count = m_columns_count;
 
-      std::cerr << G_STRFUNC << ": error executing SQL. SQL query: " << std::endl;
+      std::cerr << G_STRFUNC << ": error executing SQL. SQL query: \n";
       std::cerr << G_STRFUNC << ":   " << Utils::sqlbuilder_get_full_query(sql_query) << std::endl;
       ConnectionPool::handle_error_cerr_only();
       return false; //No records were found.
@@ -373,7 +373,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       const int count = DbUtils::count_rows_returned_by(sql_query_without_sort);
       if(count < 0)
       {
-        std::cerr << G_STRFUNC << ": count is < 0" << std::endl;
+        std::cerr << G_STRFUNC << ": count is < 0\n";
         m_data_model_rows_count = 0;
       }
       else
@@ -419,11 +419,11 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
 
   if(check_treeiter_validity(iter))
   {
-    //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1" << std::endl;
+    //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1\n";
 
     if(column < (int)m_columns_count)
     {
-       //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1.1" << std::endl;
+       //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1.1\n";
 
       //Get the correct ValueType from the Gtk::TreeModel::Column's type, so we don't have to repeat it here:
       //(This would be a custom boxed type for our Gda::Value (stored inside the TreeModel's Glib::Value just as an int or char* would be stored in it.)
@@ -441,7 +441,7 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
       const unsigned int internal_rows_count = get_internal_rows_count();
       if( datamodel_row < internal_rows_count) //!= m_rows.end())
       {
-         //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1.2" << std::endl;
+         //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1.2\n";
 
         //const typeRow& dataRow = *datamodel_row;
 
@@ -453,13 +453,13 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
         const int column_sql = column;
         if(column_sql < (int)m_columns_count) //TODO_Performance: Remove the checks.
         {
-           //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1.3" << std::endl;
+           //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1.3\n";
 
           if( !(datamodel_row < (internal_rows_count - 1)))
           {
-              //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1.4" << std::endl;
+              //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1.4\n";
 
-             //std::cout << "DbTreeModel::get_value_vfunc: row " << datamodel_row << " is placeholder" << std::endl;
+             //std::cout << "DbTreeModel::get_value_vfunc: row " << datamodel_row << " is placeholder\n";
 
              //If it's after the database rows then it must be a placeholder row.
              //We have only one of these because iter_n_root_children_vfunc() only adds 1 to the row count.
@@ -499,7 +499,7 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
         GType debug_type = result.get_value_type();
         std::cout << "debug: " << G_STRFUNC << ": result value type: GType=" << debug_type << std::endl;
         if(debug_type)
-          std::cout << "    GType name=\"" << g_type_name(debug_type) << "\"" << std::endl;
+          std::cout << "    GType name=\"" << g_type_name(debug_type) << "\"\n";
         */
 
         value_specific.set(result); //The compiler would complain if the type was wrong.
@@ -777,7 +777,7 @@ void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::Va
 
     const auto pDbValue = static_cast<const ValueDbValue*>(&value);
     if(!pDbValue)
-      std::cerr << G_STRFUNC << ": value is not a Value< DbValue >." << std::endl;
+      std::cerr << G_STRFUNC << ": value is not a Value< DbValue >.\n";
     else
     {
       DbTreeModelRow& row_details = m_map_rows[datamodel_row]; //Adds it if necessary.
@@ -943,7 +943,7 @@ Gtk::TreeModel::iterator DbTreeModel::get_placeholder_row()
         --row;
       else
       {
-        std::cerr << G_STRFUNC << ": Placeholder row not found." << std::endl;
+        std::cerr << G_STRFUNC << ": Placeholder row not found.\n";
         return result; //failed, because there are no non-removed rows.
       }
     }

@@ -147,7 +147,7 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
   layout_item->set_full_field_details(field_default_value);
   m_pDataWidget_DefaultValueSimple = Gtk::manage( new DataWidget(layout_item, "", get_document()) );
   if(!m_pDataWidget_DefaultValueSimple->get_data_child_widget())
-    std::cerr << G_STRFUNC << ": The DataWidget did not create a child widget." << std::endl;
+    std::cerr << G_STRFUNC << ": The DataWidget did not create a child widget.\n";
 
   connect_each_widget(m_pDataWidget_DefaultValueSimple);
 
@@ -201,7 +201,7 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
 
   //std::cout << "debug: dialog_fielddefinition.c:: m_pTextView_Calculation.gobj() gtype = " << G_OBJECT_TYPE_NAME(m_pTextView_Calculation->gobj()) << std::endl;
   m_pTextView_Calculation->get_buffer()->set_text(calculation);
-  //std::cout << "  debug: dialog_fielddefinition.c:: after get_buffer()" << std::endl;
+  //std::cout << "  debug: dialog_fielddefinition.c:: after get_buffer()\n";
 
   m_pEntry_Title->set_text(item_get_title(field));
 

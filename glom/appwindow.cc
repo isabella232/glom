@@ -603,7 +603,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
     Utils::get_glade_widget_derived_with_warning(dialog_connection);
     if(!dialog_connection)
     {
-      std::cerr << G_STRFUNC << ": dialog_connection is null." << std::endl;
+      std::cerr << G_STRFUNC << ": dialog_connection is null.\n";
       return;
     }
 
@@ -628,14 +628,14 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
       document_contents = (gchar*)epc_consumer_lookup(consumer, "document", &length, &error);
       if(error)
       {
-        std::cout << "debug: " << G_STRFUNC << ": " << std::endl << "  " << error->message << std::endl;
+        std::cout << "debug: " << G_STRFUNC << ": \n" << "  " << error->message << std::endl;
         const int error_code = error->code;
         g_clear_error(&error);
 
         if(error_code == SOUP_STATUS_FORBIDDEN ||
            error_code == SOUP_STATUS_UNAUTHORIZED)
         {
-          //std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
+          //std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED\n";
 
           UiUtils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *this, Gtk::MESSAGE_ERROR); //TODO: Add help button.
         }
@@ -958,7 +958,7 @@ bool AppWindow::on_document_load()
         document->set_modified(false);
         document->set_is_new(true);
         document->set_allow_autosave(true); //Turn this back on.
-        std::cout << "debug: user cancelled creating database" << std::endl;
+        std::cout << "debug: user cancelled creating database\n";
         return false;
       }
 
@@ -1044,14 +1044,14 @@ bool AppWindow::on_document_load()
           }
           else
           #endif // !GLOM_ENABLE_CLIENT_ONLY
-            std::cerr << G_STRFUNC << ": unexpected database_not_found error when opening example." << std::endl;
+            std::cerr << G_STRFUNC << ": unexpected database_not_found error when opening example.\n";
         }
         else if(!test)
         {
           //std::cerr might show some hints, but we don't want to confront the user with them:
           //TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
           Frame_Glom::show_ok_dialog(_("Problem Loading Document"), _("Glom could not load the document."), *this, Gtk::MESSAGE_ERROR);
-          std::cerr << G_STRFUNC << ": unexpected error." << std::endl;
+          std::cerr << G_STRFUNC << ": unexpected error.\n";
         }
       }
 
@@ -1334,7 +1334,7 @@ bool AppWindow::offer_new_or_existing()
       auto document = std::dynamic_pointer_cast<Document>(get_document());
       if(!document)
       {
-        std::cerr << G_STRFUNC << ": document was NULL." << std::endl;
+        std::cerr << G_STRFUNC << ": document was NULL.\n";
         return false;
       }
 
@@ -1378,7 +1378,7 @@ void AppWindow::existing_or_new_new()
   auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    std::cerr << G_STRFUNC << ": document is null.\n";
     return;
   }
 
@@ -1514,7 +1514,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
   {
     connection_pool->set_ready_to_connect(); //This has succeeded already.
     auto sharedconnection = connection_pool->connect();
-    std::cerr << G_STRFUNC << ": Failed because database exists already." << std::endl;
+    std::cerr << G_STRFUNC << ": Failed because database exists already.\n";
 
     return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
   }
@@ -1523,7 +1523,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
     if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
     {
       user_cancelled = true; //Eventually, the user will cancel after retrying.
-      std::cerr << G_STRFUNC << ": Failed because connection to server failed, without specifying a database." << std::endl;
+      std::cerr << G_STRFUNC << ": Failed because connection to server failed, without specifying a database.\n";
       return false;
     }
 
@@ -1559,7 +1559,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
   }
   catch(const ExceptionConnection& ex)
   {
-    std::cerr << G_STRFUNC << ": Failed to connect to the newly-created database." << std::endl;
+    std::cerr << G_STRFUNC << ": Failed to connect to the newly-created database.\n";
     return false;
   }
 
@@ -1588,7 +1588,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
     pulse_progress_message();
     if(!table_creation_succeeded)
     {
-      std::cerr << G_STRFUNC << ": CREATE TABLE failed with the newly-created database." << std::endl;
+      std::cerr << G_STRFUNC << ": CREATE TABLE failed with the newly-created database.\n";
       return false;
     }
   }
@@ -1613,7 +1613,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
 
       if(!table_insert_succeeded)
       {
-        std::cerr << G_STRFUNC << ": INSERT of example data failed with the newly-created database." << std::endl;
+        std::cerr << G_STRFUNC << ": INSERT of example data failed with the newly-created database.\n";
         return false;
       }
     //}
@@ -1633,7 +1633,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
 {
   if(backup_data_file_path.empty())
   {
-    std::cerr << G_STRFUNC << ": backup_data_file_path is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": backup_data_file_path is empty.\n";
     return false;
   }
 
@@ -1658,7 +1658,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
   {
     connection_pool->set_ready_to_connect(); //This has succeeded already.
     auto sharedconnection = connection_pool->connect();
-    std::cerr << G_STRFUNC << ": Failed because database exists already." << std::endl;
+    std::cerr << G_STRFUNC << ": Failed because database exists already.\n";
 
     return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
   }
@@ -1667,7 +1667,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
     if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
     {
       user_cancelled = true; //Eventually, the user will cancel after retrying.
-      std::cerr << G_STRFUNC << ": Failed because connection to server failed, without specifying a database." << std::endl;
+      std::cerr << G_STRFUNC << ": Failed because connection to server failed, without specifying a database.\n";
       return false;
     }
 
@@ -1713,7 +1713,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
   bool test = DbUtils::add_standard_groups(document);
   if(!test)
   {
-    std::cerr << G_STRFUNC << ": DbUtils::add_standard_groups(): failed." << std::endl;
+    std::cerr << G_STRFUNC << ": DbUtils::add_standard_groups(): failed.\n";
     return false;
   }
 
@@ -1733,7 +1733,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
 
   if(!restored)
   {
-    std::cerr << G_STRFUNC << ": Restore failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Restore failed.\n";
     return false;
   }
 
@@ -1796,7 +1796,7 @@ void AppWindow::fill_menu_tables()
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!menu)
   {
-    std::cerr << G_STRFUNC << ": GMenu not found" << std::endl;
+    std::cerr << G_STRFUNC << ": GMenu not found\n";
     return;
   }
 
@@ -1809,7 +1809,7 @@ void AppWindow::fill_menu_tables()
   const auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    std::cerr << G_STRFUNC << ": document is null.\n";
     return;
   }
 
@@ -1842,7 +1842,7 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!menu)
   {
-    std::cerr << G_STRFUNC << ": GMenu not found" << std::endl;
+    std::cerr << G_STRFUNC << ": GMenu not found\n";
     return;
   }
 
@@ -1863,7 +1863,7 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
   const auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    std::cerr << G_STRFUNC << ": document is null.\n";
     return;
   }
 
@@ -1922,7 +1922,7 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!menu)
   {
-    std::cerr << G_STRFUNC << ": GMenu not found" << std::endl;
+    std::cerr << G_STRFUNC << ": GMenu not found\n";
     return;
   }
 
@@ -1943,7 +1943,7 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
   auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    std::cerr << G_STRFUNC << ": document is null.\n";
     return;
   }
 
@@ -1990,7 +1990,7 @@ void AppWindow::on_menu_file_save_as_example()
   bool bTest = false;
   auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document) {
-    std::cerr << G_STRFUNC << ": document was null." << std::endl;
+    std::cerr << G_STRFUNC << ": document was null.\n";
   } else {
     const auto file_uriOld = document->get_file_uri();
 

@@ -221,7 +221,7 @@ void Dialog_GroupsList::on_button_group_delete()
           const Glib::ustring strQuery = "DROP GROUP " + DbUtils::escape_sql_id(group);
           const auto test = DbUtils::query_execute_string(strQuery);
           if(!test)
-            std::cerr << G_STRFUNC << ": DROP GROUP failed." << std::endl;
+            std::cerr << G_STRFUNC << ": DROP GROUP failed.\n";
 
           fill_group_list();
         }
@@ -251,13 +251,13 @@ void Dialog_GroupsList::on_button_group_new()
 
   if(group_name.empty())
   {
-    std::cerr << G_STRFUNC << ": : group_name is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": : group_name is empty\n";
     return;
   }
 
   if(!DbUtils::add_group(get_document(), group_name))
   {
-    std::cerr << G_STRFUNC << ": : DbUtils::add_group() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": : DbUtils::add_group() failed.\n";
   }
 
   fill_group_list();
@@ -373,7 +373,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
 {
   if(group_name.empty())
   {
-    std::cerr << G_STRFUNC << ": group_name is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": group_name is empty.\n";
   }
 
   //Fill the model rows:
@@ -480,7 +480,7 @@ bool Dialog_GroupsList::set_table_privilege(const Glib::ustring& table_name, con
 
   const auto test = DbUtils::query_execute_string(strQuery); //TODO: Handle errors.
   if(!test)
-    std::cerr << G_STRFUNC << ": GRANT/REVOKE failed." << std::endl;
+    std::cerr << G_STRFUNC << ": GRANT/REVOKE failed.\n";
 
   return test;
 }

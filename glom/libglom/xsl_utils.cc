@@ -64,7 +64,7 @@ namespace Glom
 static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std::string& resource_path_xslt)
 {
   //Debug output:
-  //std::cout << "XML before XSLT processing: " << std::endl;
+  //std::cout << "XML before XSLT processing: \n";
   //std::cout << "  ";
   //xmlpp::Document& nonconst = const_cast<xmlpp::Document&>(xml_document);
   //nonconst.write_to_stream_formatted(std::cout);

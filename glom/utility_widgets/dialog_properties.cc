@@ -72,7 +72,7 @@ void Dialog_Properties::widget_connect_changed_signal(Gtk::Widget* widget)
 {
   if(!widget)
   {
-    std::cerr << G_STRFUNC << ": widget is null." << std::endl;
+    std::cerr << G_STRFUNC << ": widget is null.\n";
     return;
   }
 
@@ -136,7 +136,7 @@ void Dialog_Properties::connect_each_widget(Gtk::Widget* widget)
 {
   if(!widget)
   {
-    std::cerr << G_STRFUNC << ": widget is null." << std::endl;
+    std::cerr << G_STRFUNC << ": widget is null.\n";
     return;
   }
 

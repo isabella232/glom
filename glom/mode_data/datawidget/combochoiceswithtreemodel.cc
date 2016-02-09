@@ -131,7 +131,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
   auto list_store = Glib::RefPtr<Gtk::ListStore>::cast_dynamic(m_refModel);
   if(!list_store)
   {
-    std::cerr << G_STRFUNC << ": list_store is null." << std::endl;
+    std::cerr << G_STRFUNC << ": list_store is null.\n";
     return;
   }
 
@@ -186,7 +186,7 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const Formatting::type_list_va
   auto list_store = Glib::RefPtr<Gtk::ListStore>::cast_dynamic(m_refModel);
   if(!list_store)
   {
-    std::cerr << G_STRFUNC << ": list_store is null." << std::endl;
+    std::cerr << G_STRFUNC << ": list_store is null.\n";
     return;
   }
 
@@ -232,7 +232,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const std::shared_ptr<const 
 {
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    std::cerr << G_STRFUNC << ": document is null.\n";
     return;
   }
 
@@ -293,7 +293,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const std::shared_ptr<const 
   m_refModel = DbTreeModelWithExtraText::create(found_set, layout_items, table_privs.m_view, false /* find mode */, m_db_layout_items);
   if(!m_refModel)
   {
-    std::cerr << G_STRFUNC << ": DbTreeModel::create() returned a null model." << std::endl;
+    std::cerr << G_STRFUNC << ": DbTreeModel::create() returned a null model.\n";
   }
 
   //The derived class's (virtual) implementation calls this base method and
@@ -337,7 +337,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
         pDerived->property_pixbuf() = pixbuf;
       }
       else
-        std::cerr << G_STRFUNC << ": Field::sql(): glom_type is enumType::IMAGE but gda type is not VALUE_TYPE_BINARY" << std::endl;
+        std::cerr << G_STRFUNC << ": Field::sql(): glom_type is enumType::IMAGE but gda type is not VALUE_TYPE_BINARY\n";
 
       break;
     }
@@ -383,7 +383,7 @@ void ComboChoicesWithTreeModel::on_cell_data(const Gtk::TreeModel::iterator& ite
    
   if(!cell)
   {
-    std::cerr << G_STRFUNC << ": cell is null." << std::endl;
+    std::cerr << G_STRFUNC << ": cell is null.\n";
     return;
   }
 

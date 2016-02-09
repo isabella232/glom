@@ -46,7 +46,7 @@ Dialog_Import_CSV_Progress::Dialog_Import_CSV_Progress(BaseObjectType* cobject, 
 
   if(!m_progress_bar || !m_text_view)
   {
-    std::cerr << G_STRFUNC << "Missing widgets from glade file for Dialog_Import_CSV_Progress" << std::endl;
+    std::cerr << G_STRFUNC << "Missing widgets from glade file for Dialog_Import_CSV_Progress\n";
   }
 }
 
@@ -241,9 +241,9 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   }
   else
   {
-    //std::cout << "debug: " << G_STRFUNC << ": Calling record_new() with primary_key_value=" << primary_key_value.to_string() << " ..." << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": Calling record_new() with primary_key_value=" << primary_key_value.to_string() << " ...\n";
     record_new(true /* use_entered_data */, primary_key_value);
-    //std::cout << "debug: " << G_STRFUNC << ": ... Finished calling record_new()" << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": ... Finished calling record_new()\n";
   }
 
   m_current_row_values.clear();

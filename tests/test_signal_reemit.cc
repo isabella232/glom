@@ -9,7 +9,7 @@ const int param_value = 1;
 
 void on_reemit_void()
 {
-  //std::cout << "Success: signal_to_reemit_void was emitted when signal_first_emit was emitted." << std::endl;
+  //std::cout << "Success: signal_to_reemit_void was emitted when signal_first_emit was emitted.\n";
   success_reemit_void = true;
 }
 

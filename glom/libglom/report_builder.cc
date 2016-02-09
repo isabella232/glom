@@ -52,7 +52,7 @@ bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
     {
       if(!report_build_records_text(found_set, *node, item_text))
       {
-        std::cerr << G_STRFUNC << ": report_build_records_text() failed." << std::endl;
+        std::cerr << G_STRFUNC << ": report_build_records_text() failed.\n";
         return false;
       }
     }
@@ -63,7 +63,7 @@ bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
       {
         if(!report_build_records_image(found_set, *node, item_image))
         {
-          std::cerr << G_STRFUNC << ": report_build_records_image() failed." << std::endl;
+          std::cerr << G_STRFUNC << ": report_build_records_image() failed.\n";
           return false;
         }
       }
@@ -75,7 +75,7 @@ bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
           guint col_index = 0; //ignored.
           if(!report_build_records_field(found_set, *node, pField, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index))
           {
-            std::cerr << G_STRFUNC << ": report_build_records_field() failed." << std::endl;
+            std::cerr << G_STRFUNC << ": report_build_records_field() failed.\n";
             return false;
           }
         }
@@ -88,7 +88,7 @@ bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
             guint col_index = 0; //Ignored, because the model is null.
             if(!report_build_records_vertical_group(found_set, *node, vertical_group, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index))
             {
-              std::cerr << G_STRFUNC << ": report_build_records_vertical_group() failed." << std::endl;
+              std::cerr << G_STRFUNC << ": report_build_records_vertical_group() failed.\n";
               return false;
             }
           }
@@ -115,7 +115,7 @@ bool ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Eleme
       //Recurse, adding a sub-groupby block:
       if(!report_build_groupby(found_set, *node, pGroupBy))
       {
-        std::cerr << G_STRFUNC << ": report_build_groupby() failed." << std::endl;
+        std::cerr << G_STRFUNC << ": report_build_groupby() failed.\n";
         return false;
       }
     }
@@ -127,7 +127,7 @@ bool ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Eleme
         //Recurse, adding a summary block:
         if(!report_build_summary(found_set, *node, pSummary))
         {
-          std::cerr << G_STRFUNC << ": report_build_summary() failed." << std::endl;
+          std::cerr << G_STRFUNC << ": report_build_summary() failed.\n";
           return false;
         }
       }
@@ -149,7 +149,7 @@ bool ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Eleme
     //Rows, with data:
     if(!report_build_records(found_set_used, *node, itemsToGet))
     {
-      std::cerr << G_STRFUNC << ": report_build_records() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": report_build_records() failed.\n";
       return false;
     }
   }
@@ -171,7 +171,7 @@ bool ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xml
       //Recurse, adding a sub-groupby block:
       if(!report_build_groupby(found_set, node, pGroupBy))
       {
-        std::cerr << G_STRFUNC << ": report_build_groupby() failed." << std::endl;
+        std::cerr << G_STRFUNC << ": report_build_groupby() failed.\n";
         return false;
       }
     }
@@ -183,7 +183,7 @@ bool ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xml
         //Recurse, adding a summary block:
         if(!report_build_summary(found_set, node, pSummary))
         {
-          std::cerr << G_STRFUNC << ": report_build_summary() failed." << std::endl;
+          std::cerr << G_STRFUNC << ": report_build_summary() failed.\n";
           return false;
         }
       }
@@ -201,7 +201,7 @@ bool ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xml
     found_set_records.m_sort_clause = group_by->get_fields_sort_by();
     if(!report_build_records(found_set_records, node, itemsToGet))
     {
-      std::cerr << G_STRFUNC << ": report_build_records() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": report_build_records() failed.\n";
       return false;
     }
   }
@@ -235,7 +235,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
     auto datamodel = DbUtils::query_execute_select(builder);
     if(!datamodel)
     {
-      std::cerr << G_STRFUNC << ": The SQL query failed." << std::endl;
+      std::cerr << G_STRFUNC << ": The SQL query failed.\n";
       return false; 
     }
     else
@@ -282,7 +282,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
           {
             if(!report_build_records(found_set_records, *nodeSecondaryFields, itemsToGet, true /* one record only */))
             {
-              std::cerr << G_STRFUNC << ": report_build_records() failed." << std::endl;
+              std::cerr << G_STRFUNC << ": report_build_records() failed.\n";
               return false;
             }
           }
@@ -291,7 +291,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
         //Get data and add child rows:
         if(!report_build_groupby_children(found_set_records, *nodeGroupBy, group_by))
         {
-          std::cerr << G_STRFUNC << ": report_build_groupby_children() failed." << std::endl;
+          std::cerr << G_STRFUNC << ": report_build_groupby_children() failed.\n";
           return false;
         }
       }
@@ -318,7 +318,7 @@ bool ReportBuilder::report_build_records_get_fields(const FoundSet& found_set, c
     {
       if(!report_build_records_get_fields(found_set, pVerticalGroup, items))
       {
-        std::cerr << G_STRFUNC << ": report_build_records_get_fields() failed." << std::endl;
+        std::cerr << G_STRFUNC << ": report_build_records_get_fields() failed.\n";
         return false;
       }
     }
@@ -366,7 +366,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
           //Get all the fields in this group:
           if(!report_build_records_get_fields(found_set, vertical_group, fieldsToGet))
           {
-            std::cerr << G_STRFUNC << ": report_build_records_get_fields() failed." << std::endl;
+            std::cerr << G_STRFUNC << ": report_build_records_get_fields() failed.\n";
             return false;
           }
         }
@@ -386,7 +386,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
     auto datamodel = DbUtils::query_execute_select(sql_query);
     if(!datamodel)
     {
-      std::cerr << G_STRFUNC << ": The SLQ query failed." << std::endl;
+      std::cerr << G_STRFUNC << ": The SLQ query failed.\n";
       return false; 
     }
     else
@@ -405,7 +405,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
           {
             if(!report_build_records_field(found_set, *nodeRow, field, datamodel, row, colField))
             {
-              std::cerr << G_STRFUNC << ": report_build_records_field() failed." << std::endl;
+              std::cerr << G_STRFUNC << ": report_build_records_field() failed.\n";
               return false;
             }
           }
@@ -416,7 +416,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
             {
               if(!report_build_records_text(found_set, *nodeRow, item_text))
               {
-                std::cerr << G_STRFUNC << ": report_build_records_text() failed." << std::endl;
+                std::cerr << G_STRFUNC << ": report_build_records_text() failed.\n";
                 return false;
               }
             }
@@ -427,7 +427,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
               {
                 if(!report_build_records_vertical_group(found_set, *nodeRow, item_verticalgroup, datamodel, row, colField))
                 {
-                  std::cerr << G_STRFUNC << ": report_build_records_vertical_group() failed." << std::endl;
+                  std::cerr << G_STRFUNC << ": report_build_records_vertical_group() failed.\n";
                   return false;
                 }
               }
@@ -470,7 +470,7 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
 
     if(!datamodel_syspref)
     {
-      std::cerr << G_STRFUNC << ": The SQL query failed." << std::endl;
+      std::cerr << G_STRFUNC << ": The SQL query failed.\n";
       return false;
     }
 
@@ -542,7 +542,7 @@ bool ReportBuilder::report_build_records_vertical_group(const FoundSet& found_se
     {
       if(!report_build_records_vertical_group(found_set, *nodeGroupVertical, pVerticalGroup, datamodel, row, field_index))
       {
-        std::cerr << G_STRFUNC << ": report_build_records_vertical_group() failed." << std::endl;
+        std::cerr << G_STRFUNC << ": report_build_records_vertical_group() failed.\n";
         return false;
       }
     }
@@ -553,7 +553,7 @@ bool ReportBuilder::report_build_records_vertical_group(const FoundSet& found_se
       {
         if(!report_build_records_field(found_set, *nodeGroupVertical, pField, datamodel, row, field_index, true /* vertical, so we get a row for each field too. */))
         {
-          std::cerr << G_STRFUNC << ": report_build_records_field() failed." << std::endl;
+          std::cerr << G_STRFUNC << ": report_build_records_field() failed.\n";
           return false;
         }
       }
@@ -564,7 +564,7 @@ bool ReportBuilder::report_build_records_vertical_group(const FoundSet& found_se
         {
           if(!report_build_records_text(found_set, *nodeGroupVertical, pText, true))
           {
-            std::cerr << G_STRFUNC << ": report_build_records_text() failed." << std::endl;
+            std::cerr << G_STRFUNC << ": report_build_records_text() failed.\n";
             return false;
           }
         }
@@ -666,7 +666,7 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::
     {
       if(!report_build_groupby(found_set, *nodeParent, pGroupBy))
       {
-        std::cerr << G_STRFUNC << ": report_build_groupby() failed." << std::endl;
+        std::cerr << G_STRFUNC << ": report_build_groupby() failed.\n";
         return Glib::ustring();
       }
     }
@@ -678,7 +678,7 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::
         //Recurse, adding a summary block:
         if(!report_build_summary(found_set, *nodeParent, pSummary))
         {
-          std::cerr << G_STRFUNC << ": report_build_summary() failed." << std::endl;
+          std::cerr << G_STRFUNC << ": report_build_summary() failed.\n";
           return Glib::ustring();
         }
       }
@@ -694,7 +694,7 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::
             //Recurse, adding a summary block:
             if(!report_build_headerfooter(found_set, *nodeParent, pGroup))
             {
-              std::cerr << G_STRFUNC << ": report_build_headerfooter() failed." << std::endl;
+              std::cerr << G_STRFUNC << ": report_build_headerfooter() failed.\n";
               return Glib::ustring();
             }
           }
@@ -711,7 +711,7 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::
     auto nodeGroupBy = nodeParent->add_child_element("ungrouped_records");
     if(!report_build_records(found_set, *nodeGroupBy, itemsToGet_TopLevel))
     {
-      std::cerr << G_STRFUNC << ": report_build_records() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": report_build_records() failed.\n";
       return Glib::ustring();
     }
   }

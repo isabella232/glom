@@ -265,7 +265,7 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::get_pixbuf_for_gda_value(const Gnome::Gda::Va
       {
         buffer_binary_length = 0;
         buffer_binary = 0;
-        std::cerr << G_STRFUNC << ": Failed to read BLOB data" << std::endl;
+        std::cerr << G_STRFUNC << ": Failed to read BLOB data\n";
       }
     }
     else
@@ -278,7 +278,7 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::get_pixbuf_for_gda_value(const Gnome::Gda::Va
     {
       //typedef std::list<Gdk::PixbufFormat> type_list_formats;
       //const type_list_formats formats = Gdk::Pixbuf::get_formats();
-      //std::cout << "Debug: Supported pixbuf formats:" << std::endl;
+      //std::cout << "Debug: Supported pixbuf formats:\n";
       //for(const auto& item : formats)
       //{
       //  std::cout << " name=" << iter->get_name() << ", writable=" << iter->is_writable() << std::endl;
@@ -602,7 +602,7 @@ void UiUtils::treeview_delete_all_columns(Gtk::TreeView* treeview)
 
     if(weak_ptr)
     {
-      std::cerr << G_STRFUNC << ": The GtkTreeViewColumn was not destroyed as expected." << std::endl;
+      std::cerr << G_STRFUNC << ": The GtkTreeViewColumn was not destroyed as expected.\n";
     }
   }
 }

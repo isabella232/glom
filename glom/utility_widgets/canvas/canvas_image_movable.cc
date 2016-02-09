@@ -171,7 +171,7 @@ void CanvasImageMovable::scale_to_size()
   auto canvas = get_canvas();
   if(!canvas)
   {
-    std::cerr << G_STRFUNC << ": canvas is null" << std::endl;
+    std::cerr << G_STRFUNC << ": canvas is null\n";
     return;
   }
   

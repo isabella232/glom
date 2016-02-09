@@ -52,7 +52,7 @@ void TestWindow::on_button_start()
   if(m_avahi_publisher)
     return;
 
-  std::cout << "Starting" << std::endl;
+  std::cout << "Starting\n";
  
   m_avahi_publisher = std::make_unique<Glom::AvahiPublisher>("testservice", "_testthing._tcp", 1234 /* port */);
 }
@@ -62,7 +62,7 @@ void TestWindow::on_button_stop()
   if(!m_avahi_publisher)
     return;
 
-  std::cout << "Stopping" << std::endl;
+  std::cout << "Stopping\n";
 
   m_avahi_publisher.reset();
 }

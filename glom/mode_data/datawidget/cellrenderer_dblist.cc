@@ -56,7 +56,7 @@ void CellRendererDbList::set_choices_related(const std::shared_ptr<const Documen
   auto model = get_choices_model();
   if(!model)
   {
-    std::cerr << G_STRFUNC << ": model is null" << std::endl;
+    std::cerr << G_STRFUNC << ": model is null\n";
   }
 
   //Show model in the view:
@@ -68,7 +68,7 @@ void CellRendererDbList::set_choices_related(const std::shared_ptr<const Documen
     property_text_column() = model_db->get_text_column();
   else
   {
-    std::cerr << G_STRFUNC << ": The model is not a DbTreeModelWithExtraText." << std::endl;
+    std::cerr << G_STRFUNC << ": The model is not a DbTreeModelWithExtraText.\n";
     return;
   }
 
@@ -91,7 +91,7 @@ void CellRendererDbList::repack_cells_fixed(Gtk::CellLayout* combobox)
   auto widget = dynamic_cast<Gtk::Widget*>(combobox);
   if(!widget)
   {
-    std::cerr << G_STRFUNC << ": widget is null." << std::endl;
+    std::cerr << G_STRFUNC << ": widget is null.\n";
   }
 
   if(!m_repacked_first_cell)
@@ -151,7 +151,7 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
   auto widget = dynamic_cast<Gtk::Widget*>(combobox);
   if(!widget)
   {
-    std::cerr << G_STRFUNC << ": widget is null." << std::endl;
+    std::cerr << G_STRFUNC << ": widget is null.\n";
   }
 
   const auto cells = combobox->get_cells();
@@ -169,7 +169,7 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
       if(!cell)
       {
         //This is normal, for instance if the item is meant to be hidden.
-        //std::cerr << G_STRFUNC << ": get_first_cell() returned null." << std::endl;
+        //std::cerr << G_STRFUNC << ": get_first_cell() returned null.\n";
       }
       else
       {
@@ -190,7 +190,7 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
       cell = create_cell(layout_item, m_table_name, m_document, get_fixed_cell_height(*widget));
       if(!cell)
       {
-        std::cerr << G_STRFUNC << ": create_cell() returned 0." << std::endl;
+        std::cerr << G_STRFUNC << ": create_cell() returned 0.\n";
       }
       else
       {
@@ -210,7 +210,7 @@ void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, co
   //though that shouldn't really happen.
   if(!cell_editable)
   {
-    std::cerr << G_STRFUNC << ": cell_editable was null" << std::endl;
+    std::cerr << G_STRFUNC << ": cell_editable was null\n";
     return;
   }
 

@@ -60,7 +60,7 @@ DbTreeModelWithExtraText::DbTreeModelWithExtraText(const FoundSet& found_set, co
   }
   else
   {
-    std::cerr << G_STRFUNC << ": The first field was found in the list." << std::endl;
+    std::cerr << G_STRFUNC << ": The first field was found in the list.\n";
   }
 }
 
@@ -105,7 +105,7 @@ void DbTreeModelWithExtraText::get_value_vfunc(const TreeModel::iterator& iter, 
     
     if(m_column_index_first == -1)
     {
-      std::cerr << G_STRFUNC << ": m_column_index_first is not set." << std::endl;
+      std::cerr << G_STRFUNC << ": m_column_index_first is not set.\n";
       //TODO: This then causes a crash later. Find out why.
     }
     else

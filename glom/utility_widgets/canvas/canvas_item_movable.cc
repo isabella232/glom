@@ -71,7 +71,7 @@ CanvasItemMovable::CanvasItemMovable()
 
 bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
 {
-  //std::cout << G_STRFUNC << ": DEBUG" << std::endl;
+  //std::cout << G_STRFUNC << ": DEBUG\n";
 
   m_shift_click = false;
 
@@ -198,7 +198,7 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
 
 bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
 {
-  //std::cout << G_STRFUNC << ": DEBUG" << std::endl;
+  //std::cout << G_STRFUNC << ": DEBUG\n";
 
   if(!m_allow_vertical_movement && !m_allow_horizontal_movement)
     return false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
@@ -313,7 +313,7 @@ void CanvasItemMovable::snap_position(double& x, double& y) const
     m_grid->snap_position(x, y);
   //else
   //{
-  //  std::cout << "debug: " << G_STRFUNC << ": m_grid is NULL" << std::endl;
+  //  std::cout << "debug: " << G_STRFUNC << ": m_grid is NULL\n";
   //}
 }
 

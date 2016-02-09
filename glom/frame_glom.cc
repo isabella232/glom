@@ -416,7 +416,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
     }
     default:
     {
-      std::cout << "debug: " << G_STRFUNC << ": Unexpected mode" << std::endl;
+      std::cout << "debug: " << G_STRFUNC << ": Unexpected mode\n";
       break;
     }
   }
@@ -473,16 +473,16 @@ bool Frame_Glom::attempt_change_usermode_to_developer()
 
   if(test)
   {
-    std::cout << "DEBUG: User=" << connection_pool->get_user() << " _is_ in the developer group on the server." << std::endl;
+    std::cout << "DEBUG: User=" << connection_pool->get_user() << " _is_ in the developer group on the server.\n";
     //Avoid double signals:
     //if(document->get_userlevel() != AppState::userlevels::DEVELOPER)
     test = document->set_userlevel(AppState::userlevels::DEVELOPER);
     if(!test)
-      std::cout << "  DEBUG: But document->set_userlevel(AppState::userlevels::DEVELOPER) failed." << std::endl;
+      std::cout << "  DEBUG: But document->set_userlevel(AppState::userlevels::DEVELOPER) failed.\n";
   }
   else
   {
-    std::cout << "DEBUG: User=" << connection_pool->get_user() << " is _not_ in the developer group on the server." << std::endl;
+    std::cout << "DEBUG: User=" << connection_pool->get_user() << " is _not_ in the developer group on the server.\n";
   }
 
   //If this was not possible then revert the menu:
@@ -591,7 +591,7 @@ void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, 
 
   if(fieldsSequence.empty())
   {
-    std::cerr << G_STRFUNC << ": No fields in sequence." << std::endl;
+    std::cerr << G_STRFUNC << ": No fields in sequence.\n";
     return;
   }
 
@@ -641,7 +641,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
 
   if(fieldsSequence.empty())
   {
-    std::cerr << G_STRFUNC << ": No fields in sequence." << std::endl;
+    std::cerr << G_STRFUNC << ": No fields in sequence.\n";
     return;
   }
 
@@ -676,7 +676,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
             auto field = layout_item->get_full_field_details();
             if(!field)
             {
-              std::cerr << G_STRFUNC << ": A field was null." << std::endl;
+              std::cerr << G_STRFUNC << ": A field was null.\n";
               return;
             }
 
@@ -765,7 +765,7 @@ void Frame_Glom::on_menu_file_import()
         int response = Gtk::RESPONSE_OK;
         if(!progress_dialog)
         {
-          std::cerr << G_STRFUNC << ": progress_dialog was null." << std::endl;
+          std::cerr << G_STRFUNC << ": progress_dialog was null.\n";
         }
         else
         {
@@ -901,13 +901,13 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
             {
               //This message should be reassuring if the user sees a previous error
               //about the default user not being removed.
-              std::cout << G_STRFUNC << ": The default user could not be removed, but it has been disabled." << std::endl;
+              std::cout << G_STRFUNC << ": The default user could not be removed, but it has been disabled.\n";
             }
           }
 
           if(!reowned || !(removed || disabled))
           {
-            std::cerr << G_STRFUNC << ": Failed to reown and remove/revoke default user." << std::endl;
+            std::cerr << G_STRFUNC << ": Failed to reown and remove/revoke default user.\n";
             shared = false;
             change = false;
           }
@@ -987,7 +987,7 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
     {
       //TODO: Output more exact details of the error message.
       //TODO: Recover somehow?
-      std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": startup() failed.\n";
       return false;
     }
 
@@ -1169,7 +1169,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
       const auto result = DbUtils::create_table_with_default_fields(get_document(), table_name);
       if(!result)
       {
-        std::cerr << G_STRFUNC << ": create_table_with_default_fields() failed." << std::endl;
+        std::cerr << G_STRFUNC << ": create_table_with_default_fields() failed.\n";
         return;
       }
 
@@ -1185,7 +1185,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
       auto related_primary_key = get_field_primary_key_for_table(table_name); //This field was created by create_table_with_default_fields().
       if(!related_primary_key)
       {
-        std::cerr << G_STRFUNC << ": get_field_primary_key_for_table() failed." << std::endl;
+        std::cerr << G_STRFUNC << ": get_field_primary_key_for_table() failed.\n";
         return;
       }
 
@@ -1312,7 +1312,7 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
   auto app = dynamic_cast<AppWindow*>(get_app_window());
   if(!app)
   {
-    std::cerr << G_STRFUNC << ": get_app_window() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": get_app_window() failed.\n";
     return;
   }
 
@@ -1429,7 +1429,7 @@ void Frame_Glom::update_table_in_document_from_database()
   {
     std::cerr << G_STRFUNC << ": Could not get the list of fields for table=" << m_table_name <<
       " from the database. This might be due to insufficient database user rights." << 
-      " Falling back to the field details in the document." << std::endl;
+      " Falling back to the field details in the document.\n";
   }
 
   auto pDoc = std::dynamic_pointer_cast<Document>(get_document());
@@ -1626,7 +1626,7 @@ void Frame_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib
     Utils::get_glade_widget_derived_with_warning(m_pDialog_Relationships);
     if(!m_pDialog_Relationships)
     {
-      std::cerr << G_STRFUNC << ": m_pDialog_Relationships is null." << std::endl;
+      std::cerr << G_STRFUNC << ": m_pDialog_Relationships is null.\n";
       return;
     }
     
@@ -1697,7 +1697,7 @@ void Frame_Glom::on_menu_developer_reports()
       Utils::get_glade_child_widget_derived_with_warning(m_pBox_Reports);
     if(!m_pBox_Reports)
     {
-      std::cerr << G_STRFUNC << ": m_pBox_Reports is null." << std::endl;
+      std::cerr << G_STRFUNC << ": m_pBox_Reports is null.\n";
       return;
     }
 
@@ -1708,7 +1708,7 @@ void Frame_Glom::on_menu_developer_reports()
     Utils::get_glade_widget_derived_with_warning(m_pDialogLayoutReport);
     if(!m_pDialogLayoutReport)
     {
-      std::cerr << G_STRFUNC << ": m_pDialogLayoutReport is null." << std::endl;
+      std::cerr << G_STRFUNC << ": m_pDialogLayoutReport is null.\n";
       return;
     }
 
@@ -1740,7 +1740,7 @@ void Frame_Glom::on_menu_developer_print_layouts()
       Utils::get_glade_child_widget_derived_with_warning(m_pBox_PrintLayouts);
     if(!m_pBox_PrintLayouts)
     {
-      std::cerr << G_STRFUNC << ": m_pBox_PrintLayouts is null." << std::endl;
+      std::cerr << G_STRFUNC << ": m_pBox_PrintLayouts is null.\n";
       return;
     }
 
@@ -1792,14 +1792,14 @@ void Frame_Glom::add_window_to_app(Gtk::ApplicationWindow* window)
 {
   if(!window)
   {
-    std::cerr << G_STRFUNC << ": window is null." << std::endl;
+    std::cerr << G_STRFUNC << ": window is null.\n";
     return;
   }
 
   auto app_window = get_app_window();
   if(!app_window)
   {
-    std::cerr << G_STRFUNC << ": app_window is null" << std::endl;
+    std::cerr << G_STRFUNC << ": app_window is null\n";
     return;
   }
 
@@ -1809,7 +1809,7 @@ void Frame_Glom::add_window_to_app(Gtk::ApplicationWindow* window)
     app->add_window(*window);
   else
   {
-    std::cerr << G_STRFUNC << ": app is null." << std::endl;
+    std::cerr << G_STRFUNC << ": app is null.\n";
   }
 }
 
@@ -1818,7 +1818,7 @@ void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout
   auto app_window = get_app_window();
   if(!app_window)
   {
-    std::cerr << G_STRFUNC << ": app_window is null" << std::endl;
+    std::cerr << G_STRFUNC << ": app_window is null\n";
     return;
   }
 
@@ -1828,7 +1828,7 @@ void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout
     Utils::get_glade_widget_derived_with_warning(m_pDialogLayoutPrint);
     if(!m_pDialogLayoutPrint)
     {
-      std::cerr << G_STRFUNC << ": m_pDialogLayoutPrint is null" << std::endl;
+      std::cerr << G_STRFUNC << ": m_pDialogLayoutPrint is null\n";
       return;
     }
 
@@ -1982,7 +1982,7 @@ void Frame_Glom::instantiate_dialog_connection()
   Utils::get_glade_widget_derived_with_warning(m_pDialogConnection);
   if(!m_pDialogConnection)
   {
-    std::cerr << G_STRFUNC << ": m_pDialogConnection is null." << std::endl;
+    std::cerr << G_STRFUNC << ": m_pDialogConnection is null.\n";
   }
 
   add_view(m_pDialogConnection); //Also a composite view.
@@ -2039,7 +2039,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         if(!initialized)
           return false;
 
-        //std::cout << "DEBUG: after connection_pool->initialize(). The database cluster should now exist." << std::endl;
+        //std::cout << "DEBUG: after connection_pool->initialize(). The database cluster should now exist.\n";
 
         break;
       }
@@ -2107,7 +2107,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
       if(started != ConnectionPool::Backend::StartupErrors::NONE)
       {
-        std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
+        std::cerr << G_STRFUNC << ": startup() failed.\n";
         //TODO: Output more exact details of the error message.
         cleanup_connection();
         return false;
@@ -2181,7 +2181,7 @@ void Frame_Glom::cleanup_connection()
 
 bool Frame_Glom::handle_request_password_connection_error(bool asked_for_password, const ExceptionConnection& ex, bool& database_not_found)
 {
-  std::cerr << G_STRFUNC << ": caught exception." << std::endl;
+  std::cerr << G_STRFUNC << ": caught exception.\n";
 
   //Initialize input parameter:
   database_not_found = false;
@@ -2227,7 +2227,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
   if(started != ConnectionPool::Backend::StartupErrors::NONE)
   {
-    std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": startup() failed.\n";
     return false;
     //TODO: Output more exact details of the error message.
   }
@@ -2235,7 +2235,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
   auto app = dynamic_cast<AppWindow*>(get_app_window());
   if(!app)
   {
-    std::cerr << G_STRFUNC << ": app is null." << std::endl;
+    std::cerr << G_STRFUNC << ": app is null.\n";
     return false;
   }
 
@@ -2355,7 +2355,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
     Utils::get_glade_widget_with_warning("glom_developer.glade", "dialog_error_create_database", dialog);
     if(!dialog)
     {
-      std::cerr << G_STRFUNC << ": dialog is null." << std::endl;
+      std::cerr << G_STRFUNC << ": dialog is null.\n";
       return false;
     }
 

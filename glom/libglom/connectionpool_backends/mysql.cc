@@ -78,7 +78,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQL::attempt_connect(const Glib::ustring&
 {
   if(database.empty())
   {
-    std::cerr << G_STRFUNC << ": The database name is empty. This is strange." << std::endl;
+    std::cerr << G_STRFUNC << ": The database name is empty. This is strange.\n";
     return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
@@ -122,7 +122,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQL::attempt_connect(const Glib::ustring&
   {
 #ifdef GLOM_CONNECTION_DEBUG
     std::cout << "debug: " << G_STRFUNC << ": Attempt to connect to database failed on port=" << port << ", database=" << database << ": " << "error code=" << ex.code() << ", error message: " <<  ex.what() << std::endl;
-    std::cout << "debug: " << G_STRFUNC << ": Attempting to connect without specifying the database." << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": Attempting to connect without specifying the database.\n";
 #endif
 
     const auto cnc_string_without_db = cnc_string_main + ";DB_NAME=" + DbUtils::gda_cnc_string_encode(default_database);
@@ -209,7 +209,7 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
 		    const auto added = add_column(connection, table_name, temp_field);
                     if(!added)
                     {
-                      std::cerr << G_STRFUNC << ": add_column() failed." << std::endl;
+                      std::cerr << G_STRFUNC << ": add_column() failed.\n";
                       //TODO: Stop the transaction and return?
                     }
 
@@ -388,7 +388,7 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
   catch(const Glib::Error& ex)
   {
     std::cerr << G_STRFUNC << "Exception: " << ex.what() << std::endl;
-    std::cerr << G_STRFUNC << ":   Reverting the transaction." << std::endl;
+    std::cerr << G_STRFUNC << ":   Reverting the transaction.\n";
     
     try
     {
@@ -546,33 +546,33 @@ bool MySQL::save_backup(const SlotProgress& slot_progress, const Glib::ustring& 
 /* TODO:
   if(m_network_shared && !running)
   {
-    std::cerr << G_STRFUNC << ": The self-hosted database is not running." << std::endl;
+    std::cerr << G_STRFUNC << ": The self-hosted database is not running.\n";
     return;
   }
 */
 
   if(m_host.empty())
   {
-    std::cerr << G_STRFUNC << ": m_host is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": m_host is empty.\n";
     return false;
   }
 
   if(m_port == 0)
   {
-    std::cerr << G_STRFUNC << ": m_port is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": m_port is empty.\n";
     return false;
   }
 
   //TODO: Remember the existing username and password?
   if(username.empty())
   {
-    std::cerr << G_STRFUNC << ": username is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": username is empty.\n";
     return false;
   }
 
   if(password.empty())
   {
-    std::cerr << G_STRFUNC << ": password is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": password is empty.\n";
     return false;
   }
 
@@ -591,7 +591,7 @@ bool MySQL::save_backup(const SlotProgress& slot_progress, const Glib::ustring& 
 
   if(!result)
   {
-    std::cerr << G_STRFUNC << ": Error while attempting to call pg_dump." << std::endl;
+    std::cerr << G_STRFUNC << ": Error while attempting to call pg_dump.\n";
   }
 
   return result;
@@ -602,33 +602,33 @@ bool MySQL::convert_backup(const SlotProgress& slot_progress, const std::string&
 /* TODO:
   if(m_network_shared && !running)
   {
-    std::cerr << G_STRFUNC << ": The self-hosted database is not running." << std::endl;
+    std::cerr << G_STRFUNC << ": The self-hosted database is not running.\n";
     return;
   }
 */
 
   if(m_host.empty())
   {
-    std::cerr << G_STRFUNC << ": m_host is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": m_host is empty.\n";
     return false;
   }
 
   if(m_port == 0)
   {
-    std::cerr << G_STRFUNC << ": m_port is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": m_port is empty.\n";
     return false;
   }
 
   //TODO: Remember the existing username and password?
   if(username.empty())
   {
-    std::cerr << G_STRFUNC << ": username is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": username is empty.\n";
     return false;
   }
 
   if(password.empty())
   {
-    std::cerr << G_STRFUNC << ": password is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": password is empty.\n";
     return false;
   }
 
@@ -651,7 +651,7 @@ bool MySQL::convert_backup(const SlotProgress& slot_progress, const std::string&
 
   if(!result)
   {
-    std::cerr << G_STRFUNC << ": Error while attempting to call pg_restore." << std::endl;
+    std::cerr << G_STRFUNC << ": Error while attempting to call pg_restore.\n";
   }
 
   return result;
@@ -801,7 +801,7 @@ bool MySQL::create_text_file(const std::string& file_uri, const std::string& con
   catch(const Gio::Error& ex)
   {
     // If the operation was not successful, print the error and abort
-    std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): exception while creating file." << std::endl
+    std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): exception while creating file.\n"
       << "  file uri:" << file_uri << std::endl
       << "  error:" << ex.what() << std::endl;
     return false; // print_error(ex, output_uri_string);
@@ -822,7 +822,7 @@ bool MySQL::create_text_file(const std::string& file_uri, const std::string& con
   catch(const Gio::Error& ex)
   {
     // If the operation was not successful, print the error and abort
-    std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): exception while writing to file." << std::endl
+    std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): exception while writing to file.\n"
       << "  file uri:" << file_uri << std::endl
       << "  error:" << ex.what() << std::endl;
     return false; //print_error(ex, output_uri_string);
@@ -830,7 +830,7 @@ bool MySQL::create_text_file(const std::string& file_uri, const std::string& con
 
   if(bytes_written != (gssize)contents_size)
   {
-    std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): not all bytes written when writing to file." << std::endl
+    std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): not all bytes written when writing to file.\n"
       << "  file uri:" << file_uri << std::endl;
     return false;
   }

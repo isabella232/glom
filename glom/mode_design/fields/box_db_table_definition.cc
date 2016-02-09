@@ -147,7 +147,7 @@ bool Box_DB_Table_Definition::fill_from_database()
   bool result = Box_DB_Table::fill_from_database();
   if(!result)
   {
-    std::cerr << G_STRFUNC << ":  Box_DB_Table::fill_from_database() failed." << std::endl;
+    std::cerr << G_STRFUNC << ":  Box_DB_Table::fill_from_database() failed.\n";
     return false;
   }
 
@@ -263,7 +263,7 @@ void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& r
         get_document()->remove_field(m_table_name, name);
       }
       else
-        std::cerr << G_STRFUNC << ": field deletion failed." << std::endl;
+        std::cerr << G_STRFUNC << ": field deletion failed.\n";
     }
   }
 
@@ -349,7 +349,7 @@ bool Box_DB_Table_Definition::check_field_change(const std::shared_ptr<const Fie
   if( (field_new->get_name() != field_old->get_name()) &&
       (DbUtils::get_field_exists_in_database(m_table_name, field_new->get_name())) )
   {
-    std::cout << "get_field_exists_in_database(" << m_table_name << ", " << field_new->get_name() << ") returned true" << std::endl;
+    std::cout << "get_field_exists_in_database(" << m_table_name << ", " << field_new->get_name() << ") returned true\n";
 
     //Warn the user and refuse to make the change:
     UiUtils::show_ok_dialog(_("Field Name Already Exists"), 
@@ -655,7 +655,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::sha
 
 void Box_DB_Table_Definition::fill_fields()
 {
-  //std::cout << "DEBUG: Box_DB_Table_Definition::fill_fields()" << std::endl;
+  //std::cout << "DEBUG: Box_DB_Table_Definition::fill_fields()\n";
 
   //Update the fields (also checking the actual database):
   m_vecFields = DbUtils::get_fields_for_table(get_document(), m_table_name);
@@ -685,7 +685,7 @@ bool Box_DB_Table_Definition::field_has_null_values(const std::shared_ptr<const 
   }
   else
   {
-    std::cerr << G_STRFUNC << ": query failed." << std::endl;
+    std::cerr << G_STRFUNC << ": query failed.\n";
   }
 
   return null_count > 0; 
@@ -710,7 +710,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const std::shared_ptr<
   }
   else
   {
-    std::cerr << G_STRFUNC << ": SELECT COUNT() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": SELECT COUNT() failed.\n";
   }
 
   //Count all rows, to compare. TODO_performance: Is there a more efficient way to do this? Maybe count(*), which apparently doesn't ignore NULL rows like count(somefield) would.
@@ -727,7 +727,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const std::shared_ptr<
   }
   else
   {
-    std::cerr << G_STRFUNC << ": SELECT COUNT() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": SELECT COUNT() failed.\n";
   }
 
 

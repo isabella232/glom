@@ -110,7 +110,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   {
 #ifdef GLOM_CONNECTION_DEBUG
     std::cout << "debug: " << G_STRFUNC << ": Attempt to connect to database failed on port=" << port << ", database=" << database << ": " << "error code=" << ex.code() << ", error message: " <<  ex.what() << std::endl;
-    std::cout << "debug: " << G_STRFUNC << ": Attempting to connect without specifying the database." << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": Attempting to connect without specifying the database.\n";
 #endif
 
     const auto cnc_string_with_db = cnc_string_main + ";DB_NAME=" + DbUtils::gda_cnc_string_encode(default_database);
@@ -197,7 +197,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 		    const auto added = add_column(connection, table_name, temp_field);
                     if(!added)
                     {
-                      std::cerr << G_STRFUNC << ": add_column() failed." << std::endl;
+                      std::cerr << G_STRFUNC << ": add_column() failed.\n";
                       //TODO: Stop the transaction and return?
                     }
 
@@ -374,7 +374,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
   catch(const Glib::Error& ex)
   {
     std::cerr << G_STRFUNC << ": Exception: " << ex.what() << std::endl;
-    std::cerr << G_STRFUNC << ": Reverting the transaction." << std::endl;
+    std::cerr << G_STRFUNC << ": Reverting the transaction.\n";
     
     try
     {
@@ -579,7 +579,7 @@ bool Postgres::save_password_to_pgpass(const Glib::ustring username, const Glib:
   const auto result = create_text_file(uri, contents, true /* current user only */);
   if(!result)
   {
-    std::cerr << G_STRFUNC << ": create_text_file() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": create_text_file() failed.\n";
     if(g_rename(filepath_previous.c_str(), filepath_pgpass.c_str()) != 0)
     {
       std::cerr << G_STRFUNC << "Could not rename file back again from=" << filepath_previous << ", to=" << filepath_pgpass << std::endl;
@@ -596,33 +596,33 @@ bool Postgres::save_backup(const SlotProgress& slot_progress, const Glib::ustrin
 /* TODO:
   if(m_network_shared && !running)
   {
-    std::cerr << G_STRFUNC << ": The self-hosted database is not running." << std::endl;
+    std::cerr << G_STRFUNC << ": The self-hosted database is not running.\n";
     return;
   }
 */
 
   if(m_host.empty())
   {
-    std::cerr << G_STRFUNC << ": m_host is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": m_host is empty.\n";
     return false;
   }
 
   if(m_port == 0)
   {
-    std::cerr << G_STRFUNC << ": m_port is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": m_port is empty.\n";
     return false;
   }
 
   //TODO: Remember the existing username and password?
   if(username.empty())
   {
-    std::cerr << G_STRFUNC << ": username is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": username is empty.\n";
     return false;
   }
 
   if(password.empty())
   {
-    std::cerr << G_STRFUNC << ": password is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": password is empty.\n";
     return false;
   }
 
@@ -632,7 +632,7 @@ bool Postgres::save_backup(const SlotProgress& slot_progress, const Glib::ustrin
   const auto pgpass_created = save_password_to_pgpass(username, password, pgpass_backup, pgpass_original);
   if(!pgpass_created)
   {
-    std::cerr << G_STRFUNC << ": save_password_to_pgpass() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": save_password_to_pgpass() failed.\n";
     return false;
   }
 
@@ -668,7 +668,7 @@ bool Postgres::save_backup(const SlotProgress& slot_progress, const Glib::ustrin
 
   if(!result)
   {
-    std::cerr << G_STRFUNC << ": Error while attempting to call pg_dump." << std::endl;
+    std::cerr << G_STRFUNC << ": Error while attempting to call pg_dump.\n";
   }
 
   return result;
@@ -679,33 +679,33 @@ bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::stri
 /* TODO:
   if(m_network_shared && !running)
   {
-    std::cerr << G_STRFUNC << ": The self-hosted database is not running." << std::endl;
+    std::cerr << G_STRFUNC << ": The self-hosted database is not running.\n";
     return;
   }
 */
 
   if(m_host.empty())
   {
-    std::cerr << G_STRFUNC << ": m_host is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": m_host is empty.\n";
     return false;
   }
 
   if(m_port == 0)
   {
-    std::cerr << G_STRFUNC << ": m_port is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": m_port is empty.\n";
     return false;
   }
 
   //TODO: Remember the existing username and password?
   if(username.empty())
   {
-    std::cerr << G_STRFUNC << ": username is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": username is empty.\n";
     return false;
   }
 
   if(password.empty())
   {
-    std::cerr << G_STRFUNC << ": password is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": password is empty.\n";
     return false;
   }
 
@@ -722,7 +722,7 @@ bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::stri
   const auto pgpass_created = save_password_to_pgpass(username, password, pgpass_backup, pgpass_original);
   if(!pgpass_created)
   {
-    std::cerr << G_STRFUNC << ": save_password_to_pgpass() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": save_password_to_pgpass() failed.\n";
     return false;
   }
 
@@ -754,7 +754,7 @@ bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::stri
 
   if(!result)
   {
-    std::cerr << G_STRFUNC << ": Error while attempting to call pg_restore." << std::endl;
+    std::cerr << G_STRFUNC << ": Error while attempting to call pg_restore.\n";
   }
 
   return result;
@@ -904,7 +904,7 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
   catch(const Gio::Error& ex)
   {
     // If the operation was not successful, print the error and abort
-    std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): exception while creating file." << std::endl
+    std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): exception while creating file.\n"
       << "  file uri:" << file_uri << std::endl
       << "  error:" << ex.what() << std::endl;
     return false; // print_error(ex, output_uri_string);
@@ -925,7 +925,7 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
   catch(const Gio::Error& ex)
   {
     // If the operation was not successful, print the error and abort
-    std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): exception while writing to file." << std::endl
+    std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): exception while writing to file.\n"
       << "  file uri:" << file_uri << std::endl
       << "  error:" << ex.what() << std::endl;
     return false; //print_error(ex, output_uri_string);
@@ -933,7 +933,7 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
 
   if(bytes_written != (gssize)contents_size)
   {
-    std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): not all bytes written when writing to file." << std::endl
+    std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): not all bytes written when writing to file.\n"
       << "  file uri:" << file_uri << std::endl;
     return false;
   }

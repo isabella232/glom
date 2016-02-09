@@ -62,7 +62,7 @@ void ComboGlom::on_fixed_cell_data(const Gtk::TreeModel::iterator& iter, Gtk::Ce
 {
   if(!cell)
   {
-    std::cerr << G_STRFUNC << ": cell is null." << std::endl;
+    std::cerr << G_STRFUNC << ": cell is null.\n";
     return;
   }
 
@@ -88,7 +88,7 @@ void ComboGlom::set_choices_fixed(const Formatting::type_list_values& list_value
   auto model = get_choices_model();
   if(!model)
   {
-    std::cerr << G_STRFUNC << ": model is null." << std::endl;
+    std::cerr << G_STRFUNC << ": model is null.\n";
     return;
   }
 
@@ -108,7 +108,7 @@ void ComboGlom::set_choices_fixed(const Formatting::type_list_values& list_value
     Glib::RefPtr<Gtk::CellAreaBox>::cast_dynamic(get_area());
   if(!cell_area)
   {
-    std::cerr << G_STRFUNC << ": Unexpected or null CellArea type." << std::endl;
+    std::cerr << G_STRFUNC << ": Unexpected or null CellArea type.\n";
     return;
   }
   
@@ -157,7 +157,7 @@ void ComboGlom::set_choices_related(const std::shared_ptr<const Document>& docum
   auto model = get_choices_model();
   if(!model)
   {
-    std::cerr << G_STRFUNC << ": model is null." << std::endl;
+    std::cerr << G_STRFUNC << ": model is null.\n";
     return;
   }
 
@@ -177,7 +177,7 @@ void ComboGlom::set_choices_related(const std::shared_ptr<const Document>& docum
     }
     else
     {
-      std::cerr << G_STRFUNC << ": The model is not a DbTreeModelWithExtraText." << std::endl;
+      std::cerr << G_STRFUNC << ": The model is not a DbTreeModelWithExtraText.\n";
       return;
     }
   }
@@ -237,7 +237,7 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
   auto model = get_choices_model();
   if(!model)
   {
-    std::cerr << G_STRFUNC << ": model is null." << std::endl;
+    std::cerr << G_STRFUNC << ": model is null.\n";
     return;
   }
 

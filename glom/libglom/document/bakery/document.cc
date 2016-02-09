@@ -271,7 +271,7 @@ bool Document::write_to_disk()
 {
   if(m_file_uri.empty())
   {
-    std::cerr << G_STRFUNC << ": m_file_uri is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": m_file_uri is empty.\n";
     return false;
   }
 

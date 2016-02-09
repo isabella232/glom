@@ -62,7 +62,7 @@ static bool get_field_result(const std::shared_ptr<Glom::Document>& document,
   }
   catch(const boost::python::error_already_set& ex)
   {
-    std::cerr << G_STRFUNC << ": Exception: boost::python::error_already_set" << std::endl;
+    std::cerr << G_STRFUNC << ": Exception: boost::python::error_already_set\n";
     return false;
   }
 
@@ -100,7 +100,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
-    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
 
@@ -118,7 +118,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     document->get_field_primary_key(table_name);
   if(!primary_key_field)
   {
-    std::cerr << G_STRFUNC << ": Failure: primary_key_field is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: primary_key_field is empty.\n";
     return false;
   }
 
@@ -131,7 +131,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       primary_key_value);
   if(field_values.empty())
   {
-    std::cerr << G_STRFUNC << ": field_values was empty: " << std::endl;
+    std::cerr << G_STRFUNC << ": field_values was empty: \n";
     return false;
   }
 

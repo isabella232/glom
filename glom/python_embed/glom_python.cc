@@ -91,7 +91,7 @@ static Glib::ustring get_traceback()
 
   if(!traceback)
   {
-    std::cerr << G_STRFUNC << ": traceback = 0" << std::endl;
+    std::cerr << G_STRFUNC << ": traceback = 0\n";
   }
 
   PyErr_NormalizeException(&type, &value, &traceback);
@@ -118,7 +118,7 @@ static Glib::ustring get_traceback()
 
 static void ShowTrace()
 {
-    std::cerr << G_STRFUNC << ": Glom: Python Error:" << std::endl << get_traceback() << std::endl;
+    std::cerr << G_STRFUNC << ": Glom: Python Error:\n" << get_traceback() << std::endl;
 
 }
 
@@ -176,7 +176,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   const boost::python::object& param1,
   const boost::python::object& param2 = boost::python::object())
 {
-  //std::cout << "glom_evaluate_python_function_implementation()" << std::endl;
+  //std::cout << "glom_evaluate_python_function_implementation()\n";
   //for(const auto& item : field_values)
   //{
   //  std::cout << "  field_value: name=" << iter->first << ", value=" << iter->second.to_string() << std::endl;
@@ -218,7 +218,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   //boost::python::dict pDict = pMain.attr("__dict__"); //TODO: Does boost::python have an equivalent for PyModule_GetDict()?
   if(!pDict)
   {
-     std::cerr << G_STRFUNC << ": pDict is null" << std::endl;
+     std::cerr << G_STRFUNC << ": pDict is null\n";
      error_message = get_traceback();
      return boost::python::object();
   }
@@ -276,7 +276,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   }
   catch(const boost::python::error_already_set& ex)
   {
-    std::cerr << G_STRFUNC << ": Glom: boost::python::eval() threw boost::python_error_already_set." << std::endl;
+    std::cerr << G_STRFUNC << ": Glom: boost::python::eval() threw boost::python_error_already_set.\n";
     HandlePythonError();
   }
   */
@@ -292,14 +292,14 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   }
   catch(const boost::python::error_already_set& ex)
   {
-    std::cerr << G_STRFUNC << ":  boost::python::exec() threw error_already_set when using text= " << std::endl << func_def << std::endl;
+    std::cerr << G_STRFUNC << ":  boost::python::exec() threw error_already_set when using text= \n" << func_def << std::endl;
     error_message = get_traceback();
     return boost::python::object();
   }
 
   if(!pyValue.ptr())
   {
-    std::cerr << G_STRFUNC << ": boost::python::exec failed." << std::endl;
+    std::cerr << G_STRFUNC << ": boost::python::exec failed.\n";
     error_message = get_traceback();
     return boost::python::object();
   }
@@ -312,14 +312,14 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   }
   catch(const boost::python::error_already_set& ex)
   {
-    std::cerr << G_STRFUNC << ":  pDict[func_name] threw error_already_set when func_name= " << std::endl << func_name << std::endl;
+    std::cerr << G_STRFUNC << ":  pDict[func_name] threw error_already_set when func_name= \n" << func_name << std::endl;
     error_message = get_traceback();
     return boost::python::object();
   }
 
   if(!pFunc.ptr())
   {
-    std::cerr << G_STRFUNC << ": pDict[func_name] failed." << std::endl;
+    std::cerr << G_STRFUNC << ": pDict[func_name] failed.\n";
     HandlePythonError();
     return boost::python::object();
   }
@@ -347,7 +347,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   }
   catch(const boost::python::error_already_set& ex)
   {
-    std::cerr << G_STRFUNC << ": Glom: Exception caught from pFunc(objRecord). func_name=" << std::endl << func_name << std::endl;
+    std::cerr << G_STRFUNC << ": Glom: Exception caught from pFunc(objRecord). func_name=\n" << func_name << std::endl;
     error_message = get_traceback();
     //std::cerr << G_STRFUNC << ":   traceback=" << error_message << std::endl;
   }
@@ -460,7 +460,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     valueResult = Gnome::Gda::Value(&value);
     if(valueResult.get_value_type() == 0)
     {
-      std::cerr << G_STRFUNC << ": valueResult (before convert_value()) has a GType of 0 before convert_value()." << std::endl;
+      std::cerr << G_STRFUNC << ": valueResult (before convert_value()) has a GType of 0 before convert_value().\n";
     }
 
     //Make sure that the value is of the expected Gda type:
@@ -468,7 +468,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     valueResult = Glom::Conversions::convert_value(valueResult, result_type);
     if(valueResult.get_value_type() == 0)
     {
-      std::cerr << G_STRFUNC << ": valueResult has a GType of 0 after convert_value()." << std::endl;
+      std::cerr << G_STRFUNC << ": valueResult has a GType of 0 after convert_value().\n";
     }
 
     //std::cout << "debug: " << G_STRFUNC << ": valueResult Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
@@ -499,7 +499,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       }
       catch(const boost::python::error_already_set& ex)
       {
-        std::cerr << G_STRFUNC << ": Glom: Exception caught from boost::python::extract() while converting result to a const char*." << std::endl;
+        std::cerr << G_STRFUNC << ": Glom: Exception caught from boost::python::extract() while converting result to a const char*.\n";
         ShowTrace();
         return valueResult;
       }

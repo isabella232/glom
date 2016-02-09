@@ -114,14 +114,14 @@ void CanvasLayoutItem::set_layout_item(const std::shared_ptr<LayoutItem>& layout
   //TODO: If we can ever avoid this the also update the CanvasLayoutItem class documentation.
   if(!get_canvas())
   {
-    std::cerr << G_STRFUNC << ": get_canvas() returned null. This should not be called before the CanvasLayoutItem is in a canvas due to goocanvas bug https://bugzilla.gnome.org/show_bug.cgi?id=657592#c16 ." << std::endl;
+    std::cerr << G_STRFUNC << ": get_canvas() returned null. This should not be called before the CanvasLayoutItem is in a canvas due to goocanvas bug https://bugzilla.gnome.org/show_bug.cgi?id=657592#c16 .\n";
   }
   
   //Add the new child:
   m_layout_item = layout_item;
 
   if(!m_layout_item)
-    std::cerr << G_STRFUNC << ": item was NULL." << std::endl;
+    std::cerr << G_STRFUNC << ": item was NULL.\n";
 
   auto child_item = create_canvas_item_for_layout_item(m_layout_item);
 
@@ -265,7 +265,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
           }
           else
           {
-            std::cerr << G_STRFUNC << ": NULL LayoutItem type." << std::endl;
+            std::cerr << G_STRFUNC << ": NULL LayoutItem type.\n";
           }
         }
       }
@@ -318,7 +318,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(guint rows_count)
     std::dynamic_pointer_cast<LayoutItem_Portal>(get_layout_item());
   if(!portal)
   {
-    std::cerr << G_STRFUNC << ": The layout item was not a portal." << std::endl;
+    std::cerr << G_STRFUNC << ": The layout item was not a portal.\n";
     return;
   }
 
@@ -344,7 +344,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
         get_canvas_table_cell_child(canvas_table, row, col);
       if(existing_child)
       {
-        //std::cout << "    existing child" << std::endl;
+        //std::cout << "    existing child\n";
         col++;
         continue;
       }
@@ -469,7 +469,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       break;
     }
     default:
-      std::cerr << G_STRFUNC << ": unhandled field type." << std::endl;
+      std::cerr << G_STRFUNC << ": unhandled field type.\n";
   }
 
 }

@@ -39,7 +39,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
-    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
   
@@ -53,7 +53,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   const auto key_field = document->get_field(table_name, "contact_id");
   if(!key_field)
   {
-    std::cerr << G_STRFUNC << ": Failure: Could not get key field." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Could not get key field.\n";
     return false;
   }
 
@@ -69,7 +69,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   const auto rows_affected = Glom::DbUtils::query_execute(builder_set);
   if(!rows_affected)
   {
-    std::cerr << G_STRFUNC << ": Failure: UPDATE failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: UPDATE failed.\n";
     return false;
   }
 
@@ -87,7 +87,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     Glom::DbUtils::query_execute_select(builder_get);
   if(!test_model_expected_size(data_model, 1, 1))
   {
-    std::cerr << G_STRFUNC << ": Failure: Unexpected data model size for main query." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected data model size for main query.\n";
     return false;
   }
 
@@ -118,7 +118,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     const auto read_all = gda_blob_op_read_all(const_cast<GdaBlobOp*>(blob->op), const_cast<GdaBlob*>(blob));
     if(!read_all)
     {
-      std::cerr << G_STRFUNC << ": Failure: gda_blob_op_read_all() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: gda_blob_op_read_all() failed.\n";
       return false;
     }
 
@@ -127,14 +127,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   if(!binary_read)
   {
-    std::cerr << G_STRFUNC << ": Failure: The value read's data was null." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The value read's data was null.\n";
     return false;
   }
 
   const auto binary_set = gda_value_get_binary(value_set.gobj());
   if(!binary_set)
   {
-    std::cerr << G_STRFUNC << ": Failure: The value read's data was null." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The value read's data was null.\n";
     return false;
   }
 
@@ -143,13 +143,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     std::cerr << G_STRFUNC << ": Failure: The value read's data length ("
       << binary_read->binary_length <<
       ") was not equal to that of the value set ("
-      << binary_set->binary_length << ")" << std::endl;
+      << binary_set->binary_length << ")\n";
     return false;
   }
 
   if(memcmp(binary_set->data, binary_read->data, binary_set->binary_length) != 0)
   {
-    std::cerr << G_STRFUNC << ": Failure: The value read was not equal to the value set." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The value read was not equal to the value set.\n";
     return false;
   }
 

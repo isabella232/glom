@@ -33,7 +33,7 @@ int main()
   }
   catch(const boost::python::error_already_set& ex)
   {
-    std::cerr << G_STRFUNC << ": Exception: boost::python::error_already_set" << std::endl;
+    std::cerr << G_STRFUNC << ": Exception: boost::python::error_already_set\n";
     return EXIT_FAILURE;
   }
 

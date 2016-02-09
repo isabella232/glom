@@ -179,7 +179,7 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
     // Check that the default value is consistent with the field's type
     if(!value.is_null() && value.get_value_type() != get_gda_data_type_with_fallback(value))
     {
-      std::cerr << G_STRFUNC << ": New field's default value type (" << g_type_name(value.get_value_type()) << " does not match field type (" << g_type_name(get_gda_type_for_glom_type(get_glom_type())) << "). Resetting default value." << std::endl;
+      std::cerr << G_STRFUNC << ": New field's default value type (" << g_type_name(value.get_value_type()) << " does not match field type (" << g_type_name(get_gda_type_for_glom_type(get_glom_type())) << "). Resetting default value.\n";
       m_field_info->set_default_value(Gnome::Gda::Value());
     }
   }
@@ -240,7 +240,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnom
   Glib::RefPtr<const Gnome::Gda::ServerProvider> provider = connection->get_provider();
   if(!provider)
   {
-    std::cerr << G_STRFUNC << ": The ServerProvider was null." << std::endl;
+    std::cerr << G_STRFUNC << ": The ServerProvider was null.\n";
     return Glib::ustring();
   } 
 
@@ -254,7 +254,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnom
   }
   else
   {
-    std::cerr << G_STRFUNC << ": The DataHandler was null." << std::endl;
+    std::cerr << G_STRFUNC << ": The DataHandler was null.\n";
     return Glib::ustring();
   }
 }
@@ -546,7 +546,7 @@ Glib::ustring Field::get_sql_type() const
       }
       else
       {
-        std::cerr << G_STRFUNC << ": get_field_types() returned null" << std::endl;
+        std::cerr << G_STRFUNC << ": get_field_types() returned null\n";
       }
     }
 

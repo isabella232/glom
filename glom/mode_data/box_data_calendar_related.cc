@@ -289,7 +289,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
   }
   else if(Conversions::value_is_empty(m_key_value))
   {
-    std::cerr << G_STRFUNC << ": m_key_value is NULL." << std::endl;
+    std::cerr << G_STRFUNC << ": m_key_value is NULL.\n";
   }
   else
   {
@@ -329,14 +329,14 @@ Box_Data_Calendar_Related::type_vecConstLayoutFields Box_Data_Calendar_Related::
   auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
   if(!derived_portal)
   {
-    std::cerr << G_STRFUNC << ": The portal is not a LayoutItem_CalendarPortal." << std::endl;
+    std::cerr << G_STRFUNC << ": The portal is not a LayoutItem_CalendarPortal.\n";
     return layout_fields;
   }
 
   auto date_field = derived_portal->get_date_field();
   if(!date_field)
   {
-    std::cerr << G_STRFUNC << ": get_date_field() returned no field." << std::endl;
+    std::cerr << G_STRFUNC << ": get_date_field() returned no field.\n";
     return layout_fields;
   }
 
@@ -409,14 +409,14 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
   auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
   if(!derived_portal)
   {
-    //std::cout << "debug: " << G_STRFUNC << ": date_field is NULL" << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": date_field is NULL\n";
     return Glib::ustring();
   }
 
   auto date_field = derived_portal->get_date_field();
   if(!date_field)
   {
-    std::cerr << G_STRFUNC << ":  get_date_field() returned no field." << std::endl;
+    std::cerr << G_STRFUNC << ":  get_date_field() returned no field.\n";
     return Glib::ustring();
   }
 

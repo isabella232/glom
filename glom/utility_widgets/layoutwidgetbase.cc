@@ -100,7 +100,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_p
 
   if(!widget_to_change)
   {
-    std::cerr << G_STRFUNC << ": widget_to_change is null." << std::endl;
+    std::cerr << G_STRFUNC << ": widget_to_change is null.\n";
     return;
   }
 

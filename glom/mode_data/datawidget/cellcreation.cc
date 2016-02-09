@@ -168,7 +168,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
 
   if(!cell)
   {
-    std::cerr << G_STRFUNC << ": Returning 0 because no cell was created." << std::endl;
+    std::cerr << G_STRFUNC << ": Returning 0 because no cell was created.\n";
     return nullptr;
   }
 

@@ -208,7 +208,7 @@ void Dialog_UsersList::on_button_user_add()
     //Add it to the group:
     const auto query_add_user = DbUtils::build_query_add_user_to_group(m_combo_group->get_active_text(), user);
     if(!DbUtils::query_execute_string(query_add_user))
-      std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;
+      std::cerr << G_STRFUNC << ": ALTER GROUP failed.\n";
 
     //Remove any user rights, so that all rights come from the user's presence in the group:
     const auto document = get_document();
@@ -217,7 +217,7 @@ void Dialog_UsersList::on_button_user_add()
       const auto table_name = table->get_name();
       const Glib::ustring query_revoke = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);
       if(!DbUtils::query_execute_string(query_revoke))
-        std::cerr << G_STRFUNC << ": REVOKE failed." << std::endl;
+        std::cerr << G_STRFUNC << ": REVOKE failed.\n";
     }
 
     fill_list();
@@ -261,7 +261,7 @@ void Dialog_UsersList::on_button_user_new()
 
   if(!DbUtils::add_user(get_document(), user, password, m_combo_group->get_active_text() /* group */))
   {
-    std::cerr << G_STRFUNC << ": add_user() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": add_user() failed.\n";
   }
 
   fill_list();
@@ -334,7 +334,7 @@ void Dialog_UsersList::on_button_user_edit()
         const Glib::ustring strQuery = "ALTER USER " + DbUtils::escape_sql_id(user) + " PASSWORD '" + password + "'" ; //TODO: Escape the password.
         const auto test = DbUtils::query_execute_string(strQuery);
         if(!test)
-          std::cerr << G_STRFUNC << ": ALTER USER failed." << std::endl;
+          std::cerr << G_STRFUNC << ": ALTER USER failed.\n";
 
         //Change the password in the current connection, if this is the current user.
         auto connection_pool = ConnectionPool::get_instance();

@@ -51,11 +51,11 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
     }
 
     if(!data_model_tables)
-      std::cerr << G_STRFUNC << ": Couldn't get datamodel" << std::endl;
+      std::cerr << G_STRFUNC << ": Couldn't get datamodel\n";
 
     if(data_model_tables && (data_model_tables->get_n_columns() == 0))
     {
-      std::cerr << G_STRFUNC << ": get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES) failed." << std::endl;
+      std::cerr << G_STRFUNC << ": get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES) failed.\n";
     }
     else if(data_model_tables)
     {
@@ -64,7 +64,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
       {
         //This happens with our developer user when sharing is activated, and with other extra users.
         //TODO: Find out why.
-        std::cout << G_STRFUNC << ": no rows from CONNECTION_META_TYPES. Using default type mappings." << std::endl;
+        std::cout << G_STRFUNC << ": no rows from CONNECTION_META_TYPES. Using default type mappings.\n";
       }
 
       for(int i = 0; i < rows; ++i)
@@ -84,12 +84,12 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
             auto type_string = value_gdatype.get_string();
             const auto gdatype = gda_g_type_from_string(type_string.c_str());
 
-            //std::cout << "debug: schema_type_string=" << schema_type_string << ", gda type=" << gdatype << "(" << g_type_name(gdatype) << ")" << std::endl;
+            //std::cout << "debug: schema_type_string=" << schema_type_string << ", gda type=" << gdatype << "(" << g_type_name(gdatype) << ")\n";
 
             //Save it for later:
             //const auto gdatypestring = gda_g_type_to_string(gdatype);
            
-            //std::cout << "schema type: " << schema_type_string << " = gdatype " << (guint)gdatype << "(" << gdatypestring << ")" << std::endl;
+            //std::cout << "schema type: " << schema_type_string << " = gdatype " << (guint)gdatype << "(" << gdatypestring << ")\n";
             
             m_mapGdaTypesToSchemaStrings[gdatype] = schema_type_string; //We save it twice, to just to make searching easier, without using std::find.
             
@@ -181,9 +181,9 @@ Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) con
     if(iterFallback != m_mapFallbackTypes.end())
       return get_string_name_for_gdavaluetype(iterFallback->second);
 
-    std::cerr << G_STRFUNC << ": returning unknowntype for field_type=" << field_type << " (" << g_type_name(field_type) << ")" << std::endl;
+    std::cerr << G_STRFUNC << ": returning unknowntype for field_type=" << field_type << " (" << g_type_name(field_type) << ")\n";
 
-    std::cerr << G_STRFUNC << ":   possible types are: " << std::endl;
+    std::cerr << G_STRFUNC << ":   possible types are: \n";
     for(const auto& item : m_mapGdaTypesToSchemaStrings)
     {
       std::cerr << G_STRFUNC << ":     gdatype=" << item.first << " (" << g_type_name(item.first) << "), sqltype=" << item.second << std::endl;

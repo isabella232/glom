@@ -33,7 +33,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
-    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
 
@@ -49,14 +49,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   auto field = document->get_field(table_name, "count");
   if(!field)
   {
-    std::cerr << G_STRFUNC << ": Failure: Could not get field." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Could not get field.\n";
     return false;
   }
 
   Gnome::Gda::Value default_value = field->get_default_value();
   if(default_value.get_value_type() != GDA_TYPE_NUMERIC)
   {
-    std::cerr << G_STRFUNC << ": Failure: Unexpected type of default value." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected type of default value.\n";
     std::cerr << "  type=" << g_type_name(default_value.get_value_type()) << std::endl;
     return false;
   }
@@ -79,14 +79,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   field = document->get_field(table_name, "website");
   if(!field)
   {
-    std::cerr << G_STRFUNC << ": Failure: Could not get field." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Could not get field.\n";
     return false;
   }
 
   default_value = field->get_default_value();
   if(default_value.get_value_type() != G_TYPE_STRING)
   {
-    std::cerr << G_STRFUNC << ": Failure: Unexpected type of default value." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected type of default value.\n";
     std::cerr << "  type=" << g_type_name(default_value.get_value_type()) << std::endl;
     return false;
   }

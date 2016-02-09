@@ -45,7 +45,7 @@ Dialog_IdentifyOriginal::Dialog_IdentifyOriginal(BaseObjectType* cobject, const 
 
 void Dialog_IdentifyOriginal::load_from_document()
 {
-  std::cout << "Dialog_IdentifyOriginal::load_from_document" << std::endl;
+  std::cout << "Dialog_IdentifyOriginal::load_from_document\n";
 
   if(m_label_original )
     m_label_original->set_markup( UiUtils::bold_message( IsoCodes::get_locale_name( get_document()->get_translation_original_locale()) ) );

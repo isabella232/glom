@@ -49,7 +49,7 @@ Glib::ustring Conversions::format_time(const tm& tm_data)
   catch(const std::runtime_error& ex)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
     return Glib::ustring();
   } 
 }
@@ -74,7 +74,7 @@ Glib::ustring Conversions::format_date(const tm& tm_data)
   catch(const std::runtime_error& ex)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
     return Glib::ustring();
   }
 }
@@ -205,7 +205,7 @@ bool Conversions::sanity_check_date_parsing()
      parsed_date.tm_mday != the_c_time.tm_mday)
   {
     //Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
-    std::cerr << _("ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not parse a date's text representation that it generated itself, in this locale.") << " (" << std::locale("").name() << ")" << std::endl;
+    std::cerr << _("ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not parse a date's text representation that it generated itself, in this locale.") << " (" << std::locale("").name() << ")\n";
 
     //If translators cannot be relied upon to do this, maybe we should default to "%d/%m/%Y" when "%x" fails this test.
 
@@ -290,7 +290,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
   catch(const std::runtime_error& ex)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
   }
 
   //std::cout << "debug: " << G_STRFUNC << ": returning: " << text << std::endl;
@@ -320,7 +320,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
   while((bufsize *= 2) <= 65536);
 
   // This error is quite unlikely (unless strftime is buggy).
-  std::cerr << G_STRFUNC << ": maximum size of strftime buffer exceeded. Giving up." << std::endl;
+  std::cerr << G_STRFUNC << ": maximum size of strftime buffer exceeded. Giving up.\n";
 
   return Glib::ustring();
   */
@@ -361,7 +361,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   catch(const std::runtime_error& ex)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
     return Glib::ustring();
   }
 }
@@ -420,7 +420,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
       bool success;
       the_c_time = parse_date(value.get_string(), std::locale::classic(), success);
       if(!success)
-        std::cerr << G_STRFUNC << ": Failed to convert string-represented date value" << std::endl;
+        std::cerr << G_STRFUNC << ": Failed to convert string-represented date value\n";
     }
     else if(value.get_value_type() == G_TYPE_DATE)
     {
@@ -461,7 +461,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
       bool success;
       the_c_time = parse_time(value.get_string(), std::locale::classic(), success);
       if(!success)
-        std::cerr << G_STRFUNC << ": Failed to convert string-represented time value" << std::endl;
+        std::cerr << G_STRFUNC << ": Failed to convert string-represented time value\n";
     }
     else if(value.get_value_type() == GDA_TYPE_TIME)
     {
@@ -551,7 +551,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     catch(const std::runtime_error& ex)
     {
       std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-      std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
+      std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
     }      
 
     //std::cout << "debug: " << G_STRFUNC << ": number=" << number << ", text=" << text << std::endl;
@@ -610,7 +610,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   catch(const std::runtime_error& ex)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
   } 
   
   //Put a NULL in the database for empty dates, times, and numerics, because 0 would be an actual value.
@@ -712,7 +712,7 @@ tm Conversions::parse_date(const Glib::ustring& text, bool& success)
   catch(const std::runtime_error& ex)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
     
     tm the_c_time;
     memset(&the_c_time, 0, sizeof(the_c_time));
@@ -770,7 +770,7 @@ tm Conversions::parse_date(const Glib::ustring& text, const std::locale& locale,
   }
   else
   {
-    //std::cout << "DEBUG: Skipping std::time_get<>  because it is incapable of parsing 4-digit years in the current locale." << std::endl;
+    //std::cout << "DEBUG: Skipping std::time_get<>  because it is incapable of parsing 4-digit years in the current locale.\n";
   }
 
   if(!skip_time_get && err != std::ios_base::failbit)
@@ -847,7 +847,7 @@ tm Conversions::parse_time(const Glib::ustring& text, bool& success)
   catch(const std::runtime_error& ex)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
   } 
   
   if(success)

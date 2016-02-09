@@ -358,7 +358,7 @@ void Dialog_Layout_List_Related::save_to_document()
       // TODO: Get rid of the else branch. Cleanup code for the relations should
       // go into the Glom::LayoutItem_Portal::set_navigation_relationship_type_* functions.
 
-      //std::cout << "debug: set_navigation_relationship_specific(false, none)" << std::endl;
+      //std::cout << "debug: set_navigation_relationship_specific(false, none)\n";
       std::shared_ptr<UsesRelationship> none;
       m_portal->set_navigation_relationship_specific(none);
     }
@@ -472,7 +472,7 @@ void Dialog_Layout_List_Related::on_spinbutton_changed()
 
 std::shared_ptr<Relationship> Dialog_Layout_List_Related::get_relationship() const
 {
-  std::cout << "debug: I wonder if this function is used." << std::endl;
+  std::cout << "debug: I wonder if this function is used.\n";
   return m_combo_relationship->get_selected_relationship();
 }
 

@@ -129,7 +129,7 @@ int main(int argc, char* argv[])
     //https://bugzilla.gnome.org/show_bug.cgi?id=619445
     //This should tell us what the problem is:
     std::cerr << G_STRFUNC << ": exception from std::locale::global(std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
   }
 
 
@@ -163,7 +163,7 @@ int main(int argc, char* argv[])
 
   if(group.m_arg_server_hostname.empty())
   {
-    std::cerr << G_STRFUNC << ": Please provide a database hostname." << std::endl;
+    std::cerr << G_STRFUNC << ": Please provide a database hostname.\n";
     print_options_hint();
     return EXIT_FAILURE;
   }
@@ -184,7 +184,7 @@ int main(int argc, char* argv[])
 
 #ifdef G_OS_WIN32
   const char* password = "";
-  std::cerr << G_STRFUNC << ": Error: getpass() is not implemented in the Windows build. The connection will fail." << std::endl;
+  std::cerr << G_STRFUNC << ": Error: getpass() is not implemented in the Windows build. The connection will fail.\n";
 #else
   const auto password = ::getpass(prompt.c_str());
 #endif

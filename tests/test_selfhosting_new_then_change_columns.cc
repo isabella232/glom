@@ -39,7 +39,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
-    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
   
@@ -48,14 +48,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   auto field_original = document->get_field(table_name, field_name_original);
   if(!field_original)
   {
-    std::cerr << G_STRFUNC << ": Failure: Could not get field." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Could not get field.\n";
     return false;
   }
 
   auto field_new = Glom::glom_sharedptr_clone(field_original);
   if(!field_new)
   {
-    std::cerr << G_STRFUNC << ": Failure: field_new is null." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: field_new is null.\n";
     return false;
   }
   field_new->set_glom_type(Glom::Field::glom_field_type::TEXT);
@@ -63,7 +63,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   auto connection_pool = Glom::ConnectionPool::get_instance();
   if(!connection_pool)
   {
-    std::cerr << G_STRFUNC << ": Failure: connection_pool is null." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: connection_pool is null.\n";
     return false;
   }
 
@@ -75,7 +75,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     const auto test = connection_pool->change_column(table_name, field_original, field_new);
     if(!test)
     {
-      std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: change_column() failed.\n";
       return false;
     }
   }
@@ -93,7 +93,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     const auto test = connection_pool->change_column(table_name, field_original, field_new);
     if(!test)
     {
-      std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: change_column() failed.\n";
       return false;
     }
   }
@@ -111,7 +111,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     const auto test = connection_pool->change_column(table_name, field_original, field_new);
     if(!test)
     {
-      std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: change_column() failed.\n";
       return false;
     }
   }
@@ -129,7 +129,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     const auto test = connection_pool->change_column(table_name, field_original, field_new);
     if(!test)
     {
-      std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: change_column() failed.\n";
       return false;
     }
   }
@@ -170,7 +170,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     const auto test = connection_pool->add_column(table_name, field_numeric);
     if(!test)
     {
-      std::cerr << G_STRFUNC << ": Failure: add_column() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: add_column() failed.\n";
       return false;
     }
   }

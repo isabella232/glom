@@ -356,7 +356,7 @@ void ImageGlom::show_image_data()
     const auto gda_binary = get_binary();
     if(!gda_binary || !gda_binary->data || !gda_binary->binary_length)
     {
-       std::cerr << G_STRFUNC << "Data was null or empty." << std::endl;
+       std::cerr << G_STRFUNC << "Data was null or empty.\n";
       return;
     }
     
@@ -368,7 +368,7 @@ void ImageGlom::show_image_data()
     const auto uri = save_to_temp_file(false /* don't show progress */);
     if(uri.empty())
     {
-      std::cerr << G_STRFUNC << "Could not save temp file to show in the EvView." << std::endl;
+      std::cerr << G_STRFUNC << "Could not save temp file to show in the EvView.\n";
     }
   
     EvJob *job = ev_job_load_new(uri.c_str());
@@ -460,7 +460,7 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
       if( !pixbuf_in_image || !pixbuf_scaled || (pixbuf_in_image->get_height() != pixbuf_scaled->get_height()) || (pixbuf_in_image->get_width() != pixbuf_scaled->get_width()) )
       {
         /*
-        std::cout << "get_scale(): returning scaled" << std::endl;
+        std::cout << "get_scale(): returning scaled\n";
         if(pixbuf_scaled)
         {
           std::cout << "scaled height=" << pixbuf_scaled->get_height() << ", scaled width=" << pixbuf_scaled->get_width() << std::endl;
@@ -479,7 +479,7 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
     }
   }
   
-  //std::cout << "get_scaled(): returning original" << std::endl;
+  //std::cout << "get_scaled(): returning original\n";
   return pixbuf;
 }
 
@@ -496,7 +496,7 @@ void ImageGlom::on_menupopup_activate_open_file_with()
   const auto mime_type = get_mime_type();
   if(mime_type.empty())
   {
-    std::cerr << G_STRFUNC << ": mime_type is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": mime_type is empty.\n";
   }
   
   Gtk::AppChooserDialog dialog(mime_type);
@@ -509,7 +509,7 @@ void ImageGlom::on_menupopup_activate_open_file_with()
   auto app_info = dialog.get_app_info();
   if(!app_info)
   {
-    std::cerr << G_STRFUNC << ": app_info was null." << std::endl;
+    std::cerr << G_STRFUNC << ": app_info was null.\n";
   }
   
   open_with(app_info);
@@ -531,13 +531,13 @@ static void make_file_read_only(const Glib::ustring& uri)
   
   if(filepath.empty())
   {
-    std::cerr << G_STRFUNC << ": filepath is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": filepath is empty.\n";
   }
   
   const auto result = chmod(filepath.c_str(), S_IRUSR);
   if(result != 0)
   {
-    std::cerr << G_STRFUNC << ": chmod() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": chmod() failed.\n";
   }
   
   //Setting the attribute via gio gives us this exception:
@@ -559,7 +559,7 @@ static void make_file_read_only(const Glib::ustring& uri)
   
   if(!file_info)
   {
-    std::cerr << G_STRFUNC << ": : file_info is null" << std::endl;
+    std::cerr << G_STRFUNC << ": : file_info is null\n";
     return;
   }
   
@@ -586,7 +586,7 @@ Glib::ustring ImageGlom::save_to_temp_file(bool show_progress)
   Glib::ustring uri = Utils::get_temp_file_uri("glom_image");
   if(uri.empty())
   {
-    std::cerr << G_STRFUNC << ": : uri is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": : uri is empty.\n";
   }
   
   bool saved = false;
@@ -598,7 +598,7 @@ Glib::ustring ImageGlom::save_to_temp_file(bool show_progress)
   if(!saved)
   {
     uri = Glib::ustring();
-    std::cerr << G_STRFUNC << ": save_file() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": save_file() failed.\n";
   }
   else
   {
@@ -693,13 +693,13 @@ bool ImageGlom::save_file_sync(const Glib::ustring& uri)
   const auto gda_binary = get_binary();
   if(!gda_binary)
   {
-    std::cerr << G_STRFUNC << ": GdaBinary is null" << std::endl;
+    std::cerr << G_STRFUNC << ": GdaBinary is null\n";
     return false;
   }
     
   if(!gda_binary->data)
   {
-    std::cerr << G_STRFUNC << ": GdaBinary::data is null" << std::endl;
+    std::cerr << G_STRFUNC << ": GdaBinary::data is null\n";
     return false;
   }
 
@@ -809,7 +809,7 @@ void ImageGlom::on_clipboard_get(Gtk::SelectionData& selection_data, guint /* in
   const auto mime_type = get_mime_type();
   if(mime_type.empty())
   {
-    std::cerr << G_STRFUNC << ": mime_type is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": mime_type is empty.\n";
   }
   
   if(target == mime_type)
@@ -856,7 +856,7 @@ void ImageGlom::on_menupopup_activate_copy()
   const auto mime_type = get_mime_type();
   if(mime_type.empty())
   {
-    std::cerr << G_STRFUNC << ": mime_type is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": mime_type is empty.\n";
   }
   
   std::vector<Gtk::TargetEntry> listTargets;
@@ -963,7 +963,7 @@ void ImageGlom::popup_menu(guint button, guint32 activate_time)
 {
   if(!m_pMenuPopup_UserMode)
   {
-    std::cerr << G_STRFUNC << ": m_pMenuPopup_UserMode is null" << std::endl;
+    std::cerr << G_STRFUNC << ": m_pMenuPopup_UserMode is null\n";
     return;
   }
 

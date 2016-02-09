@@ -224,7 +224,7 @@ void LayoutItem_Portal::get_suitable_table_to_view_details(Glib::ustring& table_
   //Check whether a relationship was specified:
   if(get_navigation_type() == LayoutItem_Portal::navigation_type::AUTOMATIC)
   {
-    //std::cout << "debug: decide automatically." << std::endl;
+    //std::cout << "debug: decide automatically.\n";
     //Decide automatically:
     navigation_relationship = get_portal_navigation_relationship_automatic(document);
     //if(navigation_relationship && navigation_relationship->get_relationship())
@@ -235,7 +235,7 @@ void LayoutItem_Portal::get_suitable_table_to_view_details(Glib::ustring& table_
   else
   {
     navigation_relationship = get_navigation_relationship_specific();
-    //std::cout << "debug: " << G_STRFUNC << ": Using specific nav." << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": Using specific nav.\n";
   }
 
 
@@ -258,13 +258,13 @@ void LayoutItem_Portal::get_suitable_table_to_view_details(Glib::ustring& table_
 
   if(navigation_table_name.empty())
   {
-    //std::cerr << G_STRFUNC << ": navigation_table_name is empty." << std::endl;
+    //std::cerr << G_STRFUNC << ": navigation_table_name is empty.\n";
     return;
   }
   
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document is null" << std::endl;
+    std::cerr << G_STRFUNC << ": document is null\n";
     return;
   }
   
@@ -282,7 +282,7 @@ std::shared_ptr<const UsesRelationship> LayoutItem_Portal::get_portal_navigation
 {
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document was null" << std::endl;
+    std::cerr << G_STRFUNC << ": document was null\n";
     return std::shared_ptr<const UsesRelationship>();
   }
 
@@ -336,7 +336,7 @@ std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_is_from_non
 
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document is null" << std::endl;
+    std::cerr << G_STRFUNC << ": document is null\n";
     return result;
   }
   
@@ -368,7 +368,7 @@ std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_identifies_
 
   if(!document)
   {
-    std::cerr << G_STRFUNC << ": document is null" << std::endl;
+    std::cerr << G_STRFUNC << ": document is null\n";
     return result;
   }
 

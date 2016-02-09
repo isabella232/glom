@@ -77,7 +77,7 @@ void FileChooser_Export::set_export_layout(const Document::type_list_layout_grou
   m_table_name = table_name;
   m_document = document;
   if(!m_document)
-    std::cerr << G_STRFUNC << ": FileChooser_Export::set_export_layout() document is NULL." << std::endl;
+    std::cerr << G_STRFUNC << ": FileChooser_Export::set_export_layout() document is NULL.\n";
 }
 
 //We only allow a full export in client-only mode, 

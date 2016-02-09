@@ -87,7 +87,7 @@ int main()
   g_assert(!query.empty());
   if(query.find("album_id") == Glib::ustring::npos)
   {
-    std::cerr << G_STRFUNC << ": Failed: The query did not contain an expected field name." << std::endl;
+    std::cerr << G_STRFUNC << ": Failed: The query did not contain an expected field name.\n";
     return EXIT_FAILURE;
   }
 

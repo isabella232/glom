@@ -212,7 +212,7 @@ void CanvasGroupResizable::set_outline_visible(bool visible)
 {
   if(!m_group_outline)
   {
-    std::cerr << G_STRFUNC << ": m_group_outline was null." << std::endl;
+    std::cerr << G_STRFUNC << ": m_group_outline was null.\n";
     return;
   }
   
@@ -380,7 +380,7 @@ void CanvasGroupResizable::set_child(const Glib::RefPtr<CanvasItemMovable>& chil
     item->remove();
   }
 
-  //std::cout << "DEBUG: CanvasGroupResizable::set_child() start" << std::endl;
+  //std::cout << "DEBUG: CanvasGroupResizable::set_child() start\n";
   if(!child)
     return;
 
@@ -727,7 +727,7 @@ bool CanvasGroupResizable::on_child_button_press_event(const Glib::RefPtr<Goocan
 
 bool CanvasGroupResizable::on_child_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
 { 
-  //std::cout << "CanvasGroupResizable::on_motion_notify_event()" << std::endl;
+  //std::cout << "CanvasGroupResizable::on_motion_notify_event()\n";
 
   const bool result = CanvasItemMovable::on_motion_notify_event(target, event);
   
@@ -798,7 +798,7 @@ bool CanvasGroupResizable::on_rect_enter_notify_event(const Glib::RefPtr<Goocanv
 
 bool CanvasGroupResizable::on_rect_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
 {
-  //std::cout << "CanvasGroupResizable::on_rect_leave_notify_event" << std::endl;
+  //std::cout << "CanvasGroupResizable::on_rect_leave_notify_event\n";
 
   //Glib::RefPtr<CanvasItemMovable> target_movable = CanvasItemMovable::cast_to_movable(target);
   //Hide the manipulators if we are outside of the main area,

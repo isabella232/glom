@@ -57,14 +57,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
     if(!recreated)
     {
-      std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Recreation failed.\n";
       return false;
     }
 
     temp_file_uri = test_get_temp_file_uri();
     if(temp_file_uri.empty())
     {
-      std::cerr << G_STRFUNC << ": temp_file_uri is empty." << std::endl;
+      std::cerr << G_STRFUNC << ": temp_file_uri is empty.\n";
       return false;
     }
 
@@ -81,13 +81,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       Glom::Privs::get_database_groups();
     if(!contains(group_list, operator_group_name))
     {
-      std::cerr << G_STRFUNC << ": The expected group was not found." << std::endl;
+      std::cerr << G_STRFUNC << ": The expected group was not found.\n";
       return false;
     }
 
     if(!Glom::DbUtils::add_user(document, operator_user, operator_password, operator_group_name))
     {
-      std::cerr << G_STRFUNC << ": DbUtils::add_user() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": DbUtils::add_user() failed.\n";
       test_selfhosting_cleanup();
       return false;
     }
@@ -97,7 +97,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       Glom::DbUtils::get_table_names_from_database(true /* ignore system tables */);
     if(tables.empty())
     {
-      std::cerr << G_STRFUNC << ": get_table_names_from_database() failed for developer user." << std::endl;
+      std::cerr << G_STRFUNC << ": get_table_names_from_database() failed for developer user.\n";
       return false;
     }
 
@@ -120,7 +120,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
     if(!test_selfhost(document, operator_user, operator_password))
     {
-      std::cerr << G_STRFUNC << ": test_selfhost() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": test_selfhost() failed.\n";
       return false;
     }
 
@@ -130,13 +130,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     const auto field_types = connection_pool->get_field_types();
     if(!field_types)
     {
-      std::cerr << G_STRFUNC << ": get_field_types() returned null." << std::endl;
+      std::cerr << G_STRFUNC << ": get_field_types() returned null.\n";
       return false;
     }
 
     if(field_types->get_types_count() == 0)
     {
-      std::cerr << G_STRFUNC << ": get_field_types() returned no types." << std::endl;
+      std::cerr << G_STRFUNC << ": get_field_types() returned no types.\n";
       return false;
     }
 
@@ -146,13 +146,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       Glom::DbUtils::get_table_names_from_database(true /* ignore system tables */);
     if(tables.empty())
     {
-      std::cerr << G_STRFUNC << ": get_table_names_from_database() failed for operator user." << std::endl;
+      std::cerr << G_STRFUNC << ": get_table_names_from_database() failed for operator user.\n";
       return false;
     }
 
     if(Glom::Privs::get_user_is_in_group(connection_pool->get_user(), GLOM_STANDARD_GROUP_NAME_DEVELOPER))
     {
-      std::cerr << G_STRFUNC << ": The operator user is in the developer group, but should not be." << std::endl;
+      std::cerr << G_STRFUNC << ": The operator user is in the developer group, but should not be.\n";
       return false;
     }
 

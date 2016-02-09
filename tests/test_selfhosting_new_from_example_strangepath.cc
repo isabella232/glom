@@ -46,13 +46,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       //hosting_mode, "path with space and \" quote and single ' quote and $ dollar sign and / forward slash and \\ backwards slash ");
   if(!recreated)
   {
-    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
   
   if(!test_example_musiccollection_data(document))
   {
-    std::cerr << G_STRFUNC << ": test_example_musiccollection_data() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": test_example_musiccollection_data() failed.\n";
     return false;
   }
 
