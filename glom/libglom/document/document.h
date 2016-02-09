@@ -488,7 +488,7 @@ public:
   static std::shared_ptr<TableInfo> create_table_system_preferences();
   static std::shared_ptr<TableInfo> create_table_system_preferences(type_vec_fields& fields);
   static std::shared_ptr<Relationship> create_relationship_system_preferences(const Glib::ustring& table_name);
-  static bool get_relationship_is_system_properties(const std::shared_ptr<const Relationship>& relationship);
+  static bool get_relationship_is_system_properties(const Relationship& relationship);
 #endif //SWIG
 
   /// Failure codes that could be returned by load_after()

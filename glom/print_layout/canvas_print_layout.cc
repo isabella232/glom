@@ -702,20 +702,20 @@ void Canvas_PrintLayout::fill_with_data_system_preferences(const Glib::RefPtr<Ca
     std::dynamic_pointer_cast<LayoutItem_Field>(canvas_item->get_layout_item());
   if(!layoutitem_field)
     return;
-  
+
   bool empty = true;
   if(!layoutitem_field->get_name().empty())
   {
-    const auto relationship = 
-      layoutitem_field->get_relationship();
-
     if(!document)
     {
       std::cerr << G_STRFUNC << ": document is null" << std::endl;
       return;
     }
 
-    if(document->get_relationship_is_system_properties(relationship))
+    const auto relationship = 
+      layoutitem_field->get_relationship();
+
+    if(relationship && document->get_relationship_is_system_properties(*relationship))
       empty = false;
   }
 

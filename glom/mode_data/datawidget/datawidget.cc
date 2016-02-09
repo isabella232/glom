@@ -178,7 +178,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
   if(m_child)
   {
     //Use the text formatting:
-    apply_formatting(*m_child, field);
+    apply_formatting(*m_child, *field);
 
     bool child_added = false; //Don't use an extra container unless necessary.
 

@@ -81,7 +81,7 @@ protected:
   virtual AppWindow* get_appwindow() const; // = 0;
 
 
-  static void apply_formatting(Gtk::Widget& widget, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item);
+  static void apply_formatting(Gtk::Widget& widget, const LayoutItem_WithFormatting& layout_item);
 
 protected: //TODO: Add accessor?
   std::shared_ptr<LayoutItem> m_pLayoutItem;

@@ -158,6 +158,9 @@ void ComboBox_Relationship::set_relationships(const std::shared_ptr<Document>& d
   //Fill the model:
   for(const auto& rel : document->get_relationships(parent_table_name, true /* plus system properties */))
   {
+    if(!rel)
+      continue;
+
     auto tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
 
@@ -165,7 +168,7 @@ void ComboBox_Relationship::set_relationships(const std::shared_ptr<Document>& d
     row[m_model_columns.m_separator] = false;
 
     //Children:
-    if(show_related_relationships && !Document::get_relationship_is_system_properties(rel))
+    if(show_related_relationships && !Document::get_relationship_is_system_properties(*rel))
     {
       for(const auto& sub_rel : document->get_relationships(rel->get_to_table(), false /* plus system properties */))
       {
