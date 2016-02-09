@@ -266,7 +266,6 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
     field->set_related_relationship(related_relationship);
     field->set_full_field_details(field_details); //So is_same_field() can work.
 
-    field->set_full_field_details(field_details);
     field->set_name(row[m_ColumnsFields.m_col_name]);
     
     list_fields.emplace_back(field);
