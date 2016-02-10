@@ -783,6 +783,7 @@ Glib::ustring Field::get_type_name_ui(glom_field_type glom_type)
   return result;
 }
 
+//TODO: Performance, though this is a small map.
 //static:
 Field::glom_field_type Field::get_type_for_ui_name(const Glib::ustring& glom_type)
 {
