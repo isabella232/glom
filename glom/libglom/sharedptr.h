@@ -54,6 +54,22 @@ std::shared_ptr<T_obj> glom_sharedptr_clone(const std::shared_ptr<const T_obj>& 
     return std::shared_ptr<T_obj>();
 }
 
+template <class T_container>
+decltype(auto) copy_with_cloned_items(T_container src)
+{
+  T_container result;
+  result.reserve(src.size());
+
+  for (const auto& item : src) {
+    if(!item)
+      continue;
+
+    result.emplace_back(glom_sharedptr_clone(item));
+  }
+
+  return result;
+}
+
 } //namespace Glom
 
 #endif //GLOM_SHAREDPTR_H

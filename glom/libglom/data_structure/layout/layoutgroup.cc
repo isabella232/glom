@@ -40,11 +40,7 @@ LayoutGroup::LayoutGroup(const LayoutGroup& src)
   m_border_width(src.m_border_width)
 {
   //Deep copy of the items map:
-  for(const auto& item : src.m_list_items)
-  {
-    if(item)
-      m_list_items.emplace_back( glom_sharedptr_clone(item) );
-  }
+  m_list_items = copy_with_cloned_items(src.m_list_items);
 }
 
 LayoutGroup::~LayoutGroup()
@@ -77,11 +73,7 @@ LayoutGroup& LayoutGroup::operator=(const LayoutGroup& src)
     //Deep copy of the items map:
     remove_all_items();
 
-    for(const auto& item : src.m_list_items)
-    {
-      if(item)
-        m_list_items.emplace_back( glom_sharedptr_clone(item) );
-    }
+    m_list_items = copy_with_cloned_items(src.m_list_items);
   }
 
   return *this;
