@@ -398,16 +398,13 @@ Privs::type_vec_strings Privs::get_groups_of_user(const Glib::ustring& user)
   type_vec_strings result;
 
   //Look at each group:
-  type_vec_strings groups = get_database_groups();
-  for(const auto& group : groups)
-  {
-    //See whether the user is in this group:
-    if(get_user_is_in_group(user, group))
-    {
-      //Add the group to the result:
-      result.emplace_back(group);
+  const auto groups = get_database_groups();
+  Utils::copy_if(groups, result,
+    [&user](const auto& group) {
+      //See whether the user is in this group:
+      return get_user_is_in_group(user, group);
     }
-  }
+  );
 
   return result;
 }

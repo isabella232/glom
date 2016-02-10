@@ -92,6 +92,16 @@ copy(T_container_input input, T_container_output& output)
     std::back_inserter(output));
 }
 
+template<typename T_container_input, typename T_container_output, typename T_callable>
+void
+copy_if(T_container_input input, T_container_output& output, T_callable f)
+{
+  std::copy_if(
+    std::begin(input), std::end(input),
+    std::back_inserter(output),
+    f);
+}
+
 } //namespace Utils
 
 } //namespace Glom
