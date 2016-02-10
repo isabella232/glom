@@ -111,7 +111,7 @@ bool LayoutGroup::has_any_fields() const
 {
   for(const auto& item : m_list_items)
   {
-    auto field_item = std::dynamic_pointer_cast<LayoutItem_Field>(item);
+    const auto field_item = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
     if(field_item)
     {
       return true;
@@ -119,7 +119,7 @@ bool LayoutGroup::has_any_fields() const
     else
     {
       //Recurse into the child groups:
-      auto group_item = std::dynamic_pointer_cast<LayoutGroup>(item);
+      const auto group_item = std::dynamic_pointer_cast<const LayoutGroup>(item);
       if(group_item)
       {
         if(group_item->has_any_fields())
