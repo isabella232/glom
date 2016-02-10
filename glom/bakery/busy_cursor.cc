@@ -16,7 +16,7 @@ BusyCursor::BusyCursor(Gtk::Window& window, Gdk::CursorType cursor_type)
 BusyCursor::BusyCursor(Gtk::Window* window, Gdk::CursorType cursor_type)
 : m_pWindow(window) //If this is a nested cursor then remember the previously-set cursor, so we can restore it.
 {
-  if(m_pWindow)
+  if(!m_pWindow)
     return;
 
   m_Cursor = Gdk::Cursor::create(m_pWindow->get_display(), cursor_type);
