@@ -83,6 +83,14 @@ add_unique(T_container& container, T_element&& element)
     container.emplace_back(std::forward<T_element>(element));
 }
 
+template<typename T_container_input, typename T_container_output>
+void
+copy(T_container_input input, T_container_output& output)
+{
+  std::copy(
+    std::begin(input), std::end(input),
+    std::back_inserter(output));
+}
 
 } //namespace Utils
 

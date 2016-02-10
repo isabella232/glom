@@ -192,10 +192,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(c
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
-  for(const auto& field : fieldsToGet)
-  {
-    constFieldsToGet.emplace_back(field);
-  }
+  Utils::copy(fieldsToGet, constFieldsToGet);
 
   return build_sql_select_with_where_clause(table_name, constFieldsToGet, where_clause, extra_join, sort_clause, limit);
 }
@@ -450,10 +447,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
-  for(const auto& field : fieldsToGet)
-  {
-    constFieldsToGet.emplace_back(field);
-  }
+  Utils::copy(fieldsToGet, constFieldsToGet);
 
   return build_sql_select_with_key(table_name, constFieldsToGet, key_field, key_value, sort_clause, limit);
 }
