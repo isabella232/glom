@@ -75,6 +75,15 @@ find_if(const T_container& container, const T_callable& callable)
   return std::find_if(std::begin(container), std::end(container), callable);
 }
 
+template<typename T_container, typename T_element>
+void
+add_unique(T_container& container, T_element&& element)
+{
+  if(!find_exists(container, element))
+    container.emplace_back(std::forward<T_element>(element));
+}
+
+
 } //namespace Utils
 
 } //namespace Glom

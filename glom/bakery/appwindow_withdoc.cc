@@ -21,6 +21,7 @@
 #include <glom/bakery/dialog_offersave.h>
 #include <libglom/algorithms_utils.h>
 #include <libglom/utils.h>
+#include <libglom/algorithms_utils.h>
 #include <giomm/file.h>
 #include <algorithm>
 #include <glibmm/i18n-lib.h>
@@ -45,8 +46,7 @@ AppWindow_WithDoc::~AppWindow_WithDoc()
 //static
 void AppWindow_WithDoc::add_mime_type(const Glib::ustring& mime_type)
 {
-  if( !Glom::Utils::find_exists(m_mime_types, mime_type) )
-    m_mime_types.emplace_back(mime_type);
+  Glom::Utils::add_unique(m_mime_types, mime_type);
 }
 
 void AppWindow_WithDoc::on_menu_file_close()

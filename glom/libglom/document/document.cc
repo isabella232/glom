@@ -2474,10 +2474,7 @@ void Document::load_after_translations(const xmlpp::Element* element, const std:
 
         //Remember any new translation locales in our cached list:
         //TODO: Use a set instead?
-        if(!Utils::find_exists(m_translation_available_locales, locale))
-        {
-          m_translation_available_locales.emplace_back(locale);
-        }
+        Utils::add_unique(m_translation_available_locales, locale);
       }
     }
   }

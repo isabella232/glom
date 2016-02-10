@@ -139,8 +139,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     //Add the non-specific locales:
     for(const auto& id : list_ids_simple)
     {
-      if(!Utils::find_exists(list_ids, id))
-        list_ids.emplace_back(id);
+      Utils::add_unique(list_ids, id);
     }
 
     //Get the (translated) language names:
