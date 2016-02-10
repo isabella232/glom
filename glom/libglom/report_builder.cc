@@ -272,11 +272,13 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
         {
           auto nodeSecondaryFields = nodeGroupBy->add_child_element("secondary_fields");
 
+          const auto& items = group_by->get_secondary_fields()->m_list_items;
           type_vecLayoutItems itemsToGet;
-          for(const auto& item : group_by->get_secondary_fields()->m_list_items)
-          {
-            itemsToGet.emplace_back( glom_sharedptr_clone(item) );
-          }
+          Utils::transform(items, itemsToGet,
+            [](const auto& item) {
+              return glom_sharedptr_clone(item);
+            }
+          );
 
           if(!itemsToGet.empty())
           {

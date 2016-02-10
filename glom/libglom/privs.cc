@@ -45,15 +45,15 @@ Privs::type_vec_strings Privs::get_database_groups()
   builder->select_add_target("pg_group");
 
   auto data_model = DbUtils::query_execute_select(builder);
-  if(data_model)
+  if(!data_model)
+    return result;
+
+  const auto rows_count = data_model->get_n_rows();
+  for(int row = 0; row < rows_count; ++row)
   {
-    const auto rows_count = data_model->get_n_rows();
-    for(int row = 0; row < rows_count; ++row)
-    {
-      const auto value = data_model->get_value_at(0, row);
-      const auto name = value.get_string();
-      result.emplace_back(name);
-    }
+    const auto value = data_model->get_value_at(0, row);
+    const auto name = value.get_string();
+    result.emplace_back(name);
   }
 
   return result;

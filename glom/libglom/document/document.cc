@@ -3961,10 +3961,11 @@ Glib::ustring Document::get_name() const
 Document::type_list_groups Document::get_groups() const
 {
   type_list_groups result;
-  for(const auto& group_pair : m_groups)
-  {
-    result.emplace_back(group_pair.second);
-  }
+  Utils::transform(m_groups, result,
+    [](const auto& group_pair) {
+      return group_pair.second;
+    }
+  );
 
   return result;
 }
@@ -4004,18 +4005,17 @@ void Document::remove_group(const Glib::ustring& group_name)
 std::vector<Glib::ustring> Document::get_report_names(const Glib::ustring& table_name) const
 {
   const auto info = get_table_info(table_name);
-  if(info)
-  {
-    std::vector<Glib::ustring> result;
-    for(const auto& report_pair : info->m_reports)
-    {
-      result.emplace_back(report_pair.second->get_name());
-    }
-
-    return result;
-  }
-  else
+  if(!info)
     return std::vector<Glib::ustring>();
+
+  std::vector<Glib::ustring> result;
+  Utils::transform(info->m_reports, result,
+    [](const auto& the_pair) {
+      return the_pair.second->get_name();
+    }
+  );
+
+  return result;
 }
 
 void Document::set_report(const Glib::ustring& table_name, const std::shared_ptr<Report>& report)
@@ -4062,18 +4062,17 @@ void Document::remove_report(const Glib::ustring& table_name, const Glib::ustrin
 std::vector<Glib::ustring> Document::get_print_layout_names(const Glib::ustring& table_name) const
 {
   const auto info = get_table_info(table_name);
-  if(info)
-  {
-    std::vector<Glib::ustring> result;
-    for(const auto& print_layout_pair : info->m_print_layouts)
-    {
-      result.emplace_back(print_layout_pair.second->get_name());
-    }
-
-    return result;
-  }
-  else
+  if(!info)
     return std::vector<Glib::ustring>();
+
+  std::vector<Glib::ustring> result;
+  Utils::transform(info->m_print_layouts, result,
+    [](const auto& the_pair) {
+      return the_pair.second->get_name();
+    }
+  );
+
+  return result;
 }
 
 
@@ -4485,10 +4484,11 @@ void Document::fill_translatable_custom_choices(Formatting& formatting, type_lis
   if(!formatting.get_has_custom_choices())
     return;
 
-  for(const auto& value : formatting.get_choices_custom())
-  {
-    the_list.emplace_back( pair_translatable_item_and_hint(value, hint) );
-  }
+  Utils::transform(formatting.get_choices_custom(), the_list,
+   [&hint](const auto& value) {
+     return pair_translatable_item_and_hint(value, hint);;
+   }
+  );
 }
 
 void Document::fill_translatable_layout_items(const std::shared_ptr<LayoutItem_Field>& layout_field, type_list_translatables& the_list, const Glib::ustring& hint)
@@ -4629,10 +4629,11 @@ guint Document::get_latest_known_document_format_version()
 std::vector<Glib::ustring> Document::get_library_module_names() const
 {
   std::vector<Glib::ustring> result;
-  for(const auto& script_pair : m_map_library_scripts)
-  {
-    result.emplace_back(script_pair.first);
-  }
+  Utils::transform(m_map_library_scripts, result,
+    [](const auto& the_pair) {
+      return the_pair.first;
+    }
+  );
 
   return result;
 }

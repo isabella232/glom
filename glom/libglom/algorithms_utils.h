@@ -102,6 +102,32 @@ copy_if(T_container_input input, T_container_output& output, T_callable f)
     f);
 }
 
+template<typename T_container_input, typename T_container_output, typename T_callable>
+void
+transform(T_container_input input, T_container_output& output, T_callable f)
+{
+  std::transform(
+    std::begin(input), std::end(input),
+    std::back_inserter(output),
+    f
+  );
+}
+
+/*
+template<typename T_container_input, typename T_container_output, typename T_callable_transform, typename T_callable_if>
+void
+transform_if(const T_container_input& input, T_container_output& output,
+  T_callable_transform f, T_callable_if)
+{
+  std::transform(
+    std::begin(input), std::end(input),
+    std::back_inserter(output),
+    f
+  );
+}
+*/
+
+
 } //namespace Utils
 
 } //namespace Glom

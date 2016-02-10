@@ -129,12 +129,13 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     //because this is normally what translators translate to.
     //For instance, po/ files generally contain po/de.po.
     type_list_ids list_ids_simple;
-    for(const auto& id : list_ids)
-    {
-      Glib::ustring id_language, id_country;
-      split_locale_id(id, id_language, id_country);
-      list_ids_simple.emplace_back(id_language);
-    }
+    Utils::transform(list_ids, list_ids_simple,
+      [](const auto& id) {
+        Glib::ustring id_language, id_country;
+        split_locale_id(id, id_language, id_country);
+        return id_language;
+      }
+    );
 
     //Add the non-specific locales:
     for(const auto& id : list_ids_simple)

@@ -76,11 +76,11 @@ void Box_DB_Table_Definition::init()
 
   const auto mapFieldTypes = Field::get_usable_type_names();
   AddDel::type_vec_strings vecTypes;
-  for(const auto& mapFieldType : mapFieldTypes)
-  {
-    const auto& name = (mapFieldType).second;
-    vecTypes.emplace_back(name);
-  }
+  Utils::transform(mapFieldTypes, vecTypes,
+    [](const auto& item) {
+      return item.second;
+    }
+  );
 
   m_AddDel.set_column_choices(m_colType, vecTypes);
 
