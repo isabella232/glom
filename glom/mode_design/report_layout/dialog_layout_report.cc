@@ -824,6 +824,12 @@ void Dialog_Layout_Report::on_button_edit()
       {
         Dialog_FieldSummary* dialog = nullptr;
         Utils::get_glade_widget_derived_with_warning(dialog);
+        if(!dialog)
+        {
+          std::cerr << G_STRFUNC << ": dialog is null." << std::endl;
+          return;
+        }
+
         add_view(dialog);
         dialog->set_item(fieldsummary, m_table_name);
         dialog->set_transient_for(*this);

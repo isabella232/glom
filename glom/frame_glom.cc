@@ -1565,6 +1565,11 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustri
   if(!m_pDialog_Fields)
   {
     Utils::get_glade_widget_derived_with_warning(m_pDialog_Fields);
+    if (!m_pDialog_Fields) {
+      std::cerr << G_STRFUNC << ": m_pDialog_Fields is null." << std::endl;
+      return;
+    }
+
     m_pDialog_Fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
     add_view(m_pDialog_Fields);
   }
@@ -1987,7 +1992,9 @@ void Frame_Glom::instantiate_dialog_connection()
 
   add_view(m_pDialogConnection); //Also a composite view.
 
-  m_pDialogConnection->set_transient_for(*get_app_window());
+  auto window = get_app_window();
+  if (window)
+    m_pDialogConnection->set_transient_for(*window);
 }
 
 bool Frame_Glom::connection_request_password_and_choose_new_database_name()

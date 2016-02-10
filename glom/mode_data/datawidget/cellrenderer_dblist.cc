@@ -92,6 +92,7 @@ void CellRendererDbList::repack_cells_fixed(Gtk::CellLayout* combobox)
   if(!widget)
   {
     std::cerr << G_STRFUNC << ": widget is null.\n";
+    return;
   }
 
   if(!m_repacked_first_cell)
@@ -152,6 +153,7 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
   if(!widget)
   {
     std::cerr << G_STRFUNC << ": widget is null.\n";
+    return;
   }
 
   const auto cells = combobox->get_cells();
