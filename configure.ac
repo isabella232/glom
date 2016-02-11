@@ -223,7 +223,7 @@ MM_ARG_ENABLE_WARNINGS([GLOM_WFLAGS],
 AC_LANG([C++])
 MM_ARG_ENABLE_WARNINGS([GLOM_WXXFLAGS],
                        [-Wall],
-                       [-pedantic -Wall -Wextra -Wsuggest-override -Wshadow -Wformat-security -Wno-long-long -Wno-missing-field-initializers -DGSEAL_ENABLE],
+                       [-pedantic -Wall -Wextra -Wsuggest-override -Wshadow -Wformat-security -Wformat=2 -Wno-long-long -Wno-missing-field-initializers -DGSEAL_ENABLE],
                        [G GDK GDK_PIXBUF GTK GDA GLIBMM GDKMM CAIROMM PANGOMM GTKMM SIGCXX LIBGDAMM])
 
 AC_CHECK_FUNCS([strptime])
