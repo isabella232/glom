@@ -66,6 +66,8 @@ public:
   
 private:
   void init();
+  void init_widgets(bool use_evince);
+  void clear_image_from_widgets();
 
   virtual void on_size_allocate(Gtk::Allocation& allocation);
 
@@ -115,7 +117,7 @@ private:
   
   //For anything supported by GdkPixbuf,
   //or for representative thumbnails and icons:
-  Gtk::Image m_image;
+  Gtk::Image* m_image;
   Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_original; //Only stored temporarily, because it could be big.
   Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_clipboard; //When copy is used, store it here until it is pasted.
 
