@@ -155,14 +155,14 @@ void FlowTableWithFields::add_layout_item(const sharedptr<LayoutItem>& item)
 
 void FlowTableWithFields::add_layout_group_or_derived(const sharedptr<LayoutGroup>& group, bool with_indent)
 {
-  auto portal = sharedptr<LayoutItem_Portal>::cast_dynamic(group);
+  sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(group);
   if(portal)
   {
     add_layout_portal(portal);
   }
   else
   {
-    auto notebook = sharedptr<LayoutItem_Notebook>::cast_dynamic(group);
+    sharedptr<LayoutItem_Notebook> notebook = sharedptr<LayoutItem_Notebook>::cast_dynamic(group);
     if(notebook)
     {
       add_layout_notebook(notebook);

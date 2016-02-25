@@ -1073,14 +1073,14 @@ void Dialog_Layout_Details::save_to_document()
       sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
 
       //There may be top-level groups, but no top-level fields, because the fields must be in a group (so that they are in columns)
-      auto layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+      sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
       if(!layout_group)
         continue;
 
       //TODO: This is very ugly:
-      auto layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
-      auto layout_calendar_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(layout_item);
-      auto layout_notebook = sharedptr<LayoutItem_Notebook>::cast_dynamic(layout_item);
+      sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+      sharedptr<LayoutItem_CalendarPortal> layout_calendar_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(layout_item);
+      sharedptr<LayoutItem_Notebook> layout_notebook = sharedptr<LayoutItem_Notebook>::cast_dynamic(layout_item);
       sharedptr<LayoutGroup> group;
       if(layout_portal) {
         group = sharedptr<LayoutItem_Portal>::create();
