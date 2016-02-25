@@ -1,4 +1,4 @@
-/glade_toplevels_instantiation
+/ui/glade_toplevels_instantiation
 /test_field_file_format
 /test_iso_codes
 /test_load_python_library
@@ -18,7 +18,8 @@
 /test_document_change
 /test_document_load_translations
 /test_fake_connection
-/test_glade_derived_instantiation
+/ui/test_glade_derived_instantiation
+/ui/test_imageglom_widget
 /test_glom_date_in_locales.sh
 /test_layout_item_field
 /test_script_check_for_problems
