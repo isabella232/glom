@@ -50,7 +50,8 @@ ImageGlom::type_vec_ustrings ImageGlom::m_gdkpixbuf_supported_mime_types;
 ImageGlom::ImageGlom()
 : m_ev_scrolled_window(nullptr),
   m_ev_view(nullptr),
-  m_ev_document_model(nullptr)
+  m_ev_document_model(nullptr),
+  m_image(nullptr)
 {
   init();
 }
@@ -59,25 +60,82 @@ ImageGlom::ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 : Gtk::EventBox(cobject),
   m_ev_scrolled_window(nullptr),
   m_ev_view(nullptr),
-  m_ev_document_model(nullptr)
+  m_ev_document_model(nullptr),
+  m_image(nullptr)
 {
   init();
 }
 
+void ImageGlom::clear_image_from_widgets()
+{
+  if(m_image)
+  {
+    m_image->set(Glib::RefPtr<Gdk::Pixbuf>()); //TODO: Add an unset() to gtkmm.
+  }
+
+  if(m_ev_document_model)
+  {
+    g_object_unref(m_ev_document_model);
+    m_ev_document_model = nullptr;
+  }
+}
+
+void ImageGlom::init_widgets(bool use_evince)
+{
+  clear_image_from_widgets();
+
+  m_frame.remove();
+
+  Gtk::Widget* widget = nullptr;
+
+  if(use_evince)
+  {
+    if(!m_ev_view)
+    {
+      m_ev_view = EV_VIEW(ev_view_new());
+      gtk_widget_show(GTK_WIDGET(m_ev_view));
+
+      m_ev_scrolled_window = Gtk::manage(new Gtk::ScrolledWindow());
+      gtk_container_add(GTK_CONTAINER(m_ev_scrolled_window->gobj()), GTK_WIDGET(m_ev_view));
+
+      //gtk_widget_add_events(GTK_WIDGET(m_ev_view), GDK_BUTTON_PRESS_MASK);
+
+      //Connect the the EvView's button-press-event signal, 
+      //because we don't get it otherwise.
+      //For some reason this is not necessary with the GtkImage.
+      auto cppEvView = Glib::wrap(GTK_WIDGET(m_ev_view));
+      cppEvView->signal_button_press_event().connect(
+        sigc::mem_fun(*this, &ImageGlom::on_button_press_event), false);
+    }
+
+    if(m_image)
+    {
+      delete m_image;
+      m_image = nullptr;
+    }
+
+    widget = m_ev_scrolled_window;
+  }
+  else
+  {
+    m_image = Gtk::manage(new Gtk::Image());
+    if(m_ev_view)
+    {
+      gtk_widget_destroy(GTK_WIDGET(m_ev_view));
+      m_ev_view = nullptr;
+      delete m_ev_scrolled_window;
+      m_ev_scrolled_window = nullptr;
+    }
+
+    widget = m_image;
+  }
+
+  widget->show();
+  m_frame.add(*widget);
+}
+
 void ImageGlom::init()
 {
-  //TODO: Don't instantiate this unnecessarily.
-  m_ev_view = EV_VIEW(ev_view_new());
-
-  //gtk_widget_add_events(GTK_WIDGET(m_ev_view), GDK_BUTTON_PRESS_MASK);
-
-  //Connect the the EvView's button-press-event signal, 
-  //because we don't get it otherwise.
-  //For some reason this is not necessary with the GtkImage.
-  auto cppEvView = Glib::wrap(GTK_WIDGET(m_ev_view));
-  cppEvView->signal_button_press_event().connect(
-    sigc::mem_fun(*this, &ImageGlom::on_button_press_event), false);
-
   m_read_only = false;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -85,9 +143,6 @@ void ImageGlom::init()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   setup_menu_usermode();
-
-  //m_image.set_size_request(150, 150);
-
 
   m_frame.set_shadow_type(Gtk::SHADOW_ETCHED_IN); //Without this, the image widget has no borders and is completely invisible when empty.
   m_frame.show();
@@ -208,7 +263,7 @@ void ImageGlom::on_size_allocate(Gtk::Allocation& allocation)
   if(m_pixbuf_original)
   {
     const auto pixbuf_scaled = get_scaled_image();
-    m_image.set(pixbuf_scaled);
+    m_image->set(pixbuf_scaled);
   }
 }
 
@@ -332,37 +387,15 @@ void ImageGlom::show_image_data()
   if(Utils::find_exists(m_evince_supported_mime_types, mime_type))
   {
     use_evince = true;
-  }  
+  }
   
-  m_frame.remove();
-    
+  init_widgets(use_evince);
+
   //Clear all possible display widgets:
   m_pixbuf_original.reset();
-  m_image.set(Glib::RefPtr<Gdk::Pixbuf>()); //TODO: Add an unset() to gtkmm.
-  
-  if(m_ev_document_model)
-  {
-    g_object_unref(m_ev_document_model);
-    m_ev_document_model = nullptr;
-  }
 
   if(use_evince)
   {
-    //Use EvView:
-    m_image.hide();
-    
-    gtk_widget_show(GTK_WIDGET(m_ev_view));
-
-    if (!m_ev_scrolled_window)
-    {
-      m_ev_scrolled_window = Gtk::manage(new Gtk::ScrolledWindow());
-      m_ev_scrolled_window->show();
-      gtk_container_add(GTK_CONTAINER(m_ev_scrolled_window->gobj()), GTK_WIDGET(m_ev_view));
-    }
-
-    m_frame.add(*m_ev_scrolled_window);
-
-
     // Try loading from data in memory:
     // TODO: Uncomment this if this API is added: https://bugzilla.gnome.org/show_bug.cgi?id=654832
     /*
@@ -400,10 +433,6 @@ void ImageGlom::show_image_data()
   else
   {
     //Use GtkImage instead:
-    gtk_widget_hide(GTK_WIDGET(m_ev_view));  
-    m_image.show();
-    m_frame.add(m_image);
-    
     Glib::RefPtr<const Gio::Icon> icon;
       
     bool use_gdkpixbuf = false;
@@ -427,15 +456,15 @@ void ImageGlom::show_image_data()
     if(m_pixbuf_original)
     {
       auto pixbuf_scaled = get_scaled_image();
-      m_image.set(pixbuf_scaled);
+      m_image->set(pixbuf_scaled);
     }
     else if(icon)
     {
-      m_image.set(icon, Gtk::ICON_SIZE_DIALOG);
+      m_image->set(icon, Gtk::ICON_SIZE_DIALOG);
     }
     else
     {
-      m_image.set_from_icon_name("image-missing", Gtk::ICON_SIZE_DIALOG);
+      m_image->set_from_icon_name("image-missing", Gtk::ICON_SIZE_DIALOG);
     }
   }
 }
@@ -447,7 +476,7 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
   if(!pixbuf)
     return pixbuf;
  
-  const auto allocation = m_image.get_allocation();
+  const auto allocation = m_image->get_allocation();
   const auto pixbuf_height = pixbuf->get_height();
   const auto pixbuf_width = pixbuf->get_width();
     
@@ -467,8 +496,8 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
       //Don't set a new pixbuf if the dimensions have not changed:
       Glib::RefPtr<Gdk::Pixbuf> pixbuf_in_image;
 
-      if(m_image.get_storage_type() == Gtk::IMAGE_PIXBUF) //Prevent warning.
-        pixbuf_in_image = m_image.get_pixbuf();
+      if(m_image->get_storage_type() == Gtk::IMAGE_PIXBUF) //Prevent warning.
+        pixbuf_in_image = m_image->get_pixbuf();
 
       if( !pixbuf_in_image || !pixbuf_scaled || (pixbuf_in_image->get_height() != pixbuf_scaled->get_height()) || (pixbuf_in_image->get_width() != pixbuf_scaled->get_width()) )
       {
