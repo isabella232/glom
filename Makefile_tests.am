@@ -216,6 +216,9 @@ dist_noinst_DATA = \
 	tests/import/data/albums.csv \
 	tests/translations_po/data/test.po \
 	tests/test_image.jpg \
+	tests/test_image2.jpg \
+	tests/test_image.pdf \
+	tests/test_image2.pdf \
 	tests/test_example_music_collection_text_pk_fields.glom
 
 # Let the .cc source code know about this path:
@@ -358,6 +361,7 @@ check_PROGRAMS += \
 	glom/utility_widgets/eggspreadtablemm/test_spreadtablednd \
 	glom/test_pyembed \
 	tests/ui/test_glade_derived_instantiation \
+	tests/ui/test_imageglom_widget \
 	tests/ui/glade_toplevels_instantiation \
 	tests/python/test_python_execute_func \
 	tests/python/test_python_execute_func_bad_syntax \
@@ -394,6 +398,7 @@ if GLOM_ENABLE_UI_TESTS
 TESTS += \
 	tests/ui/test_glade_toplevels_instantiation.sh \
 	tests/ui/test_glade_derived_instantiation \
+	tests/ui/test_imageglom_widget \
 	tests/test_glom_date_in_locales.sh \
 	tests/test_glom_date_in_locales_lc_time.sh
 endif #GLOM_ENABLE_UI_TESTS
@@ -490,6 +495,14 @@ tests_test_iso_codes_CPPFLAGS = $(tests_cppflags_ui)
 tests_ui_test_glade_derived_instantiation_SOURCES = tests/ui/test_glade_derived_instantiation.cc $(glom_source_files)
 tests_ui_test_glade_derived_instantiation_LDADD = $(glom_all_libs)
 tests_ui_test_glade_derived_instantiation_CPPFLAGS = $(tests_cppflags_ui)
+
+# TODO: Find a subset of glom_source_files that is enough:
+tests_ui_test_imageglom_widget_SOURCES = tests/ui/test_imageglom_widget.cc \
+  $(glom_source_files) \
+  $(sources_test_utils) \
+  $(sources_test_utils_images)
+tests_ui_test_imageglom_widget_LDADD = $(glom_all_libs)
+tests_ui_test_imageglom_widget_CPPFLAGS = $(tests_cppflags_ui) $(glom_test_image_defines)
 
 tests_ui_glade_toplevels_instantiation_SOURCES = tests/ui/glade_toplevels_instantiation.cc
 tests_ui_glade_toplevels_instantiation_LDADD = $(tests_ldadd) $(GLOM_LIBS)

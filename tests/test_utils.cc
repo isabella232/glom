@@ -48,11 +48,9 @@ std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const std::sha
   return std::shared_ptr<const Glom::LayoutItem_Field>();
 }
 
-Gnome::Gda::Value get_value_for_image()
+
+Gnome::Gda::Value get_value_for_image_from_file(const std::string& filename)
 {
-  //Fill a value from a file:
-  const std::string filename =
-    Glib::build_filename(GLOM_TESTS_IMAGE_DATA_NOTINSTALLED, "test_image.jpg");
   std::string data;
   try
   {
@@ -72,4 +70,12 @@ Gnome::Gda::Value get_value_for_image()
 
   //Set the value:
   return Gnome::Gda::Value((const guchar*)data.c_str(), data.size());
+}
+
+Gnome::Gda::Value get_value_for_image()
+{
+  //Fill a value from a file:
+  const std::string filename =
+    Glib::build_filename(GLOM_TESTS_IMAGE_DATA_NOTINSTALLED, "test_image.jpg");
+  return get_value_for_image_from_file(filename);
 }

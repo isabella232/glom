@@ -27,6 +27,7 @@
 std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const std::shared_ptr<Glom::Document>& document, const Glib::ustring& layout_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name);
 
 Gnome::Gda::Value get_value_for_image();
+Gnome::Gda::Value get_value_for_image_from_file(const std::string& filename);
 
 #endif //GLOM_TEST_UTILS_H
 
