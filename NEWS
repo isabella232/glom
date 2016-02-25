@@ -1,3 +1,23 @@
+1.28.6 (stable):
+
+* Fix crash when loading TIFF or PDF files into an image field,
+  caused by assert in recent versions of libevince-view.
+  (Murray Cumming) Bug #761396 (m.rick.mac))
+* Really forget a table when removing it.
+  (Murray Cumming) Bug #754645 (m.rick.mac)
+* Table deletion: Actually let the user cancel the dialog.
+  (Murray Cumming)
+* Initialize PostgresSQL database with the C locale.
+  Because using the current locale seems arbitrary and useless to other users.
+  (Murray Cumming) Bug #761372 (m.rick.mac)
+* Try to catch filesystem errors sooner.
+  (Murray Cumming) Bug #761373 (m.rick.mac)
+* Details layout: Allow notebooks at top-level.
+  (Murray Cumming) Bug #759511 (m.rick.mac)
+* Connection to central server:
+  - Specify a timeout.
+  (Murray Cumming)
+
 1.28.5 (stable):
 
 * Build: Fix the configure for python 3 versions of boost-python.
