@@ -224,7 +224,7 @@ void Box_Data_Details::create_layout()
 
     for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
     {
-      m_FlowTable.add_layout_group(*iter, false /* no indent at this top level */);
+      m_FlowTable.add_layout_group_or_derived(*iter, false /* no indent at this top level */);
     }
 
     m_FlowTable.align_child_group_labels();

@@ -92,7 +92,7 @@ public:
     /**
    * @param with_indent Pass true for top-level groups, to avoid wasting extra space with an unnecessary indent.
    */
-  void add_layout_group_or_derived(const std::shared_ptr<LayoutGroup>& group, bool with_indent = true);
+  void add_layout_group_or_derived(const sharedptr<LayoutGroup>& group, bool with_indent = true);
 
   void set_field_editable(const sharedptr<const LayoutItem_Field>& field, bool editable = true);
 
@@ -252,21 +252,16 @@ private:
   void add_imageobject(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& table_name);
 
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget);
-<<<<<<< HEAD
-  void add_layout_notebook(const sharedptr<LayoutItem_Notebook>& notebook);
-  void add_layout_portal(const sharedptr<LayoutItem_Portal>& portal);
-=======
 
   /** Add a normal group, not a notebook or portal.
    * See also add_layout_group_or_derived().
    *
    * @param with_indent Pass true for top-level groups, to avoid wasting extra space with an unnecessary indent.
    */
-  void add_layout_group(const std::shared_ptr<LayoutGroup>& group, bool with_indent = true);
+  void add_layout_group(const sharedptr<LayoutGroup>& group, bool with_indent = true);
 
-  void add_layout_notebook(const std::shared_ptr<LayoutItem_Notebook>& notebook);
-  void add_layout_portal(const std::shared_ptr<LayoutItem_Portal>& portal);
->>>>>>> 59a1b05... Box_Data_Details/FlowTableWithFields: Allow notebooks at the top-level.
+  void add_layout_notebook(const sharedptr<LayoutItem_Notebook>& notebook);
+  void add_layout_portal(const sharedptr<LayoutItem_Portal>& portal);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
