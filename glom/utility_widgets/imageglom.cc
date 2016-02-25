@@ -236,7 +236,7 @@ void ImageGlom::set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
 void ImageGlom::set_value(const Gnome::Gda::Value& value)
 {
   // Remember original data 
-  m_original_data = Gnome::Gda::Value();
+  clear_original_data();
   m_original_data = value;
   show_image_data();
 }
@@ -818,7 +818,7 @@ void ImageGlom::on_menupopup_activate_select_file()
           bin->data = image_data->data;
           bin->binary_length = image_data->binary_length;
 
-          m_original_data = Gnome::Gda::Value();
+          clear_original_data();
           
           g_value_unset(m_original_data.gobj());
           g_value_init(m_original_data.gobj(), GDA_TYPE_BINARY);
@@ -830,6 +830,11 @@ void ImageGlom::on_menupopup_activate_select_file()
       }
     }
   }
+}
+
+void ImageGlom::clear_original_data()
+{
+  m_original_data = Gnome::Gda::Value();
 }
 
 void ImageGlom::on_clipboard_get(Gtk::SelectionData& selection_data, guint /* info */)
@@ -905,8 +910,7 @@ void ImageGlom::on_clipboard_received_image(const Glib::RefPtr<Gdk::Pixbuf>& pix
 
   if(pixbuf)
   {
-    // Clear original data of previous image
-    m_original_data = Gnome::Gda::Value();
+    clear_original_data();
 
     m_pixbuf_original = pixbuf;
     show_image_data();
@@ -933,7 +937,7 @@ void ImageGlom::on_menupopup_activate_clear()
   if(m_read_only)
     return;
 
-  m_original_data = Gnome::Gda::Value();
+  clear_original_data();
   show_image_data();
   signal_edited().emit();
 }

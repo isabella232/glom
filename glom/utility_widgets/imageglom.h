@@ -68,6 +68,7 @@ private:
   void init();
   void init_widgets(bool use_evince);
   void clear_image_from_widgets();
+  void clear_original_data();
 
   void on_size_allocate(Gtk::Allocation& allocation) override;
 
