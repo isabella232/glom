@@ -43,7 +43,7 @@ public:
 
   void load(const Glib::ustring& uri);
 
-  std::shared_ptr<GdaBinary> get_image_data();
+  std::unique_ptr<GdaBinary> get_image_data();
 
 private:
   void error(const Glib::ustring& error_message);
@@ -53,7 +53,7 @@ private:
   void on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& result, unsigned int offset);
   void on_read_next(unsigned int at);
 
-  std::shared_ptr<GdaBinary> m_data;
+  std::unique_ptr<GdaBinary> m_data;
   Gtk::ProgressBar* m_progress_bar;
 
   Glib::RefPtr<Gio::File> m_file;
