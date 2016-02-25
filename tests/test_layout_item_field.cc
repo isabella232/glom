@@ -26,8 +26,8 @@
 static
 bool test_compare_empty_instances()
 {
-  auto layout_item1 = std::make_shared<Glom::LayoutItem_Field>();
-  auto layout_item2 = std::make_shared<Glom::LayoutItem_Field>();
+  sharedptr<Glom::LayoutItem_Field> layout_item1 = sharedptr<Glom::LayoutItem_Field>::create();
+  sharedptr<Glom::LayoutItem_Field> layout_item2 = sharedptr<Glom::LayoutItem_Field>::create();
   if(!layout_item1->is_same_field(layout_item2))
   {
     std::cerr << G_STRFUNC << ": Glom::LayoutItem_Field::is_same_field() failed with empty instances." << std::endl;
@@ -40,8 +40,8 @@ bool test_compare_empty_instances()
 static
 bool test_compare_same_named_instances()
 {
-  auto layout_item1 = std::make_shared<Glom::LayoutItem_Field>();
-  auto layout_item2 = std::make_shared<Glom::LayoutItem_Field>();
+  sharedptr<Glom::LayoutItem_Field> layout_item1 = sharedptr<Glom::LayoutItem_Field>::create();
+  sharedptr<Glom::LayoutItem_Field> layout_item2 = sharedptr<Glom::LayoutItem_Field>::create();
   layout_item1->set_name("one");
   layout_item2->set_name("two");
   if(layout_item1->is_same_field(layout_item2))
@@ -56,8 +56,8 @@ bool test_compare_same_named_instances()
 static
 bool test_compare_same_named_instances_unrelated_differences()
 {
-  auto layout_item1 = std::make_shared<Glom::LayoutItem_Field>();
-  auto layout_item2 = std::make_shared<Glom::LayoutItem_Field>();
+  sharedptr<Glom::LayoutItem_Field> layout_item1 = sharedptr<Glom::LayoutItem_Field>::create();
+  sharedptr<Glom::LayoutItem_Field> layout_item2 = sharedptr<Glom::LayoutItem_Field>::create();
   layout_item1->set_name("one");
   layout_item2->set_name("one");
   layout_item2->set_hidden(); //is_same_field() should ignore this.
@@ -74,16 +74,16 @@ bool test_compare_same_named_instances_unrelated_differences()
 static
 bool test_compare_same_named_instances_with_relationship()
 {
-  auto layout_item1 = std::make_shared<Glom::LayoutItem_Field>();
-  auto layout_item2 = std::make_shared<Glom::LayoutItem_Field>();
+  sharedptr<Glom::LayoutItem_Field> layout_item1 = sharedptr<Glom::LayoutItem_Field>::create();
+  sharedptr<Glom::LayoutItem_Field> layout_item2 = sharedptr<Glom::LayoutItem_Field>::create();
   layout_item1->set_name("one");
   layout_item2->set_name("one");
 
-  auto relationship1 = std::make_shared<Glom::Relationship>();
+  sharedptr<Glom::Relationship> relationship1 = sharedptr<Glom::Relationship>::create();
   relationship1->set_name("relationship1");
   layout_item1->set_relationship(relationship1);
 
-  auto relationship2 = std::make_shared<Glom::Relationship>();
+  sharedptr<Glom::Relationship> relationship2 = sharedptr<Glom::Relationship>::create();
   relationship2->set_name("relationship2");
   layout_item2->set_relationship(relationship2);
 
@@ -106,17 +106,17 @@ bool test_compare_same_named_instances_with_relationship()
 static
 bool test_compare_same_named_instances_with_related_relationship()
 {
-  auto layout_item1 = std::make_shared<Glom::LayoutItem_Field>();
-  auto layout_item2 = std::make_shared<Glom::LayoutItem_Field>();
+  sharedptr<Glom::LayoutItem_Field> layout_item1 = sharedptr<Glom::LayoutItem_Field>::create();
+  sharedptr<Glom::LayoutItem_Field> layout_item2 = sharedptr<Glom::LayoutItem_Field>::create();
   layout_item1->set_name("one");
   layout_item2->set_name("one");
 
-  auto relationship1 = std::make_shared<Glom::Relationship>();
+  sharedptr<Glom::Relationship> relationship1 = sharedptr<Glom::Relationship>::create();
   relationship1->set_name("relationship1");
   layout_item1->set_relationship(relationship1);
   layout_item2->set_relationship(relationship1);
 
-  auto relationship_related1 = std::make_shared<Glom::Relationship>();
+  sharedptr<Glom::Relationship> relationship2 = sharedptr<Glom::Relationship>::create();
   relationship_related1->set_name("relationship_related1");
   layout_item1->set_related_relationship(relationship_related1);
 
@@ -126,7 +126,7 @@ bool test_compare_same_named_instances_with_related_relationship()
     return false;
   }
 
-  auto relationship_related2 = std::make_shared<Glom::Relationship>();
+  sharedptr<Glom::Relationship> related2 = sharedptr<Glom::Relationship>::create();
   relationship_related2->set_name("relationship_related2");
   layout_item2->set_related_relationship(relationship_related2);
 
