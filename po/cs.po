@@ -7,15 +7,15 @@
 # Petr Kovar <pknbe@volny.cz>, 2009.
 # Pavel Mlčoch <pavkamlc@centrum.cz>, 2009.
 # Lucas Lommer <llommer@svn.gnome.org>, 2009.
-# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013, 2014, 2015.
+# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glom glom-1.30\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-12-13 07:40+0000\n"
-"PO-Revision-Date: 2015-12-20 17:41+0100\n"
+"POT-Creation-Date: 2016-02-25 07:42+0000\n"
+"PO-Revision-Date: 2016-02-25 10:26+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -83,14 +83,15 @@ msgstr ""
 "aplikace Glom."
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
+#. This can only happen if we couldn't connect to the server at all.
 #. Warn the user, and let him try again:
-#: ../glom/appwindow.cc:642 ../glom/frame_glom.cc:2151
-#: ../glom/frame_glom.cc:2222
+#: ../glom/appwindow.cc:642 ../glom/frame_glom.cc:2125
+#: ../glom/frame_glom.cc:2194
 msgid "Connection Failed"
 msgstr "Připojení selhalo"
 
-#: ../glom/appwindow.cc:642 ../glom/frame_glom.cc:2151
-#: ../glom/frame_glom.cc:2222
+#: ../glom/appwindow.cc:642 ../glom/frame_glom.cc:2125
+#: ../glom/frame_glom.cc:2194
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an "
 "incorrect user name or password, or maybe the postgres database server is "
@@ -164,13 +165,14 @@ msgstr ""
 "Tento soubor je jen pro čtení, takže nebudete moci přejít do vývojářského "
 "režimu a měnit návrh."
 
-#: ../glom/appwindow.cc:985 ../glom/appwindow.cc:2153 ../glom/appwindow.cc:2430
-#: ../glom/appwindow.cc:2467 ../glom/appwindow.cc:2843
-#: ../glom/base_db_table_data.cc:388 ../glom/box_withbuttons.cc:36
-#: ../glom/box_withbuttons.cc:50 ../glom/box_withbuttons.cc:64
-#: ../glom/dialog_existing_or_new.cc:802 ../glom/filechooser_export.cc:39
-#: ../glom/frame_glom.cc:513 ../glom/frame_glom.cc:737
-#: ../glom/frame_glom.cc:824 ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:515
+#: ../glom/appwindow.cc:985 ../glom/appwindow.cc:2153
+#: ../glom/appwindow.cc:2430 ../glom/appwindow.cc:2467
+#: ../glom/appwindow.cc:2843 ../glom/base_db_table_data.cc:388
+#: ../glom/box_withbuttons.cc:36 ../glom/box_withbuttons.cc:50
+#: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:802
+#: ../glom/filechooser_export.cc:39 ../glom/frame_glom.cc:513
+#: ../glom/frame_glom.cc:737 ../glom/frame_glom.cc:824
+#: ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:515
 #: ../glom/onlineglom_strings.cc:40 ../glom/bakery/dialog_offersave.cc:57
 #: ../glom/main.cc:267 ../glom/main.cc:323
 #: ../glom/mode_design/fields/box_db_table_definition.cc:291
@@ -180,7 +182,7 @@ msgstr ""
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:838
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:882
 #: ../glom/mode_design/script_library/dialog_script_library.cc:131
-#: ../glom/navigation/box_tables.cc:397
+#: ../glom/navigation/box_tables.cc:307 ../glom/navigation/box_tables.cc:401
 #: ../glom/mode_design/translation/window_translations.cc:357
 #: ../glom/mode_design/translation/window_translations.cc:396
 #: ../glom/utility_widgets/imageglom.cc:682
@@ -574,10 +576,15 @@ msgid "The details view showing records from a related table"
 msgstr "Podrobné zobrazení ukazující záznamy ze související tabulky"
 
 #: ../glom.desktop.in.in.h:2
-msgid "A user-friendly database environment."
-msgstr "Uživatelsky přívětivé prostředí pro práci s databázemi."
+msgid "A user-friendly database environment"
+msgstr "Uživatelsky přívětivé prostředí pro práci s databázemi"
 
-#: ../glom/dialog_connection.cc:205
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../glom.desktop.in.in.h:4
+msgid "database;ui;tables;postgresql;forms;"
+msgstr "databáze;db;ui;uživatelské rozhraní;postgresql;formuláře;"
+
+#: ../glom/dialog_connection.cc:199
 msgid "Not yet created."
 msgstr "Ještě nevytvořeno."
 
@@ -778,13 +785,12 @@ msgstr "Tímto zabráníte ostatním uživatelům na síti v používání této
 msgid "_Stop Sharing"
 msgstr "_Zastavit sdílení"
 
-#: ../glom/frame_glom.cc:980 ../glom/frame_glom.cc:2208
+#: ../glom/frame_glom.cc:980 ../glom/frame_glom.cc:2180
 msgid "Stopping Database Server"
 msgstr "Zastavuje se databázový server"
 
-#. Do startup, such as starting the self-hosting database server
-#: ../glom/frame_glom.cc:983 ../glom/frame_glom.cc:2095
-#: ../glom/frame_glom.cc:2254
+#: ../glom/frame_glom.cc:983 ../glom/frame_glom.cc:2107
+#: ../glom/frame_glom.cc:2226
 msgid "Starting Database Server"
 msgstr "Startuje se databázový server"
 
@@ -873,12 +879,12 @@ msgstr "Nelze spustit databázový server"
 msgid "There was an error when attempting to start the database server."
 msgstr "Vyskytla se chyba při pokusu o spuštění databázového serveru."
 
-#: ../glom/frame_glom.cc:2027
+#: ../glom/frame_glom.cc:2037
 msgid "Initializing Database Data"
 msgstr "Inicializují se databázová data"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2599
+#: ../glom/frame_glom.cc:2562
 msgid "All"
 msgstr "Vše"
 
@@ -1255,7 +1261,7 @@ msgstr "Číslo"
 #: ../glom/libglom/data_structure/field.cc:666
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
 #: ../glom/libglom/data_structure/translatable_item.cc:268
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1150
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1165
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
 msgid "Text"
 msgstr "Text"
@@ -1280,7 +1286,7 @@ msgstr "Booleovská hodnota"
 #: ../glom/libglom/data_structure/field.cc:678
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
 #: ../glom/libglom/data_structure/translatable_item.cc:262
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1157
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1172
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
 #: ../glom/utility_widgets/layouttoolbar.cc:46
 msgid "Image"
@@ -1334,7 +1340,7 @@ msgstr "Skupina"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:68
 #: ../glom/libglom/data_structure/translatable_item.cc:258
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1143
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1158
 #: ../glom/utility_widgets/layouttoolbar.cc:42
 msgid "Button"
 msgstr "Tlačítko"
@@ -2104,53 +2110,53 @@ msgstr ""
 "Neexistují záznamy s touto hodnotou a proto není možný přechod na "
 "související záznam."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1098
+#: ../glom/mode_data/flowtablewithfields.cc:1105
 #: ../glom/utility_widgets/notebooklabelglom.cc:77
 #: ../glom/utility_widgets/notebooklabelglom.cc:124
 msgid "New Group"
 msgstr "Nová skupina"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1104
+#: ../glom/mode_data/flowtablewithfields.cc:1111
 #: ../glom/mode_design/layout/dialog_layout_details.cc:729
 msgid "notebook"
 msgstr "poznámkový blok"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1110
+#: ../glom/mode_data/flowtablewithfields.cc:1117
 msgid "tab1"
 msgstr "tab1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1113
+#: ../glom/mode_data/flowtablewithfields.cc:1120
 msgid "Tab One"
 msgstr "Záložka"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1126
+#: ../glom/mode_data/flowtablewithfields.cc:1133
 msgid "button"
 msgstr "tlačítko"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1127
+#: ../glom/mode_data/flowtablewithfields.cc:1134
 #: ../glom/mode_design/layout/dialog_layout_details.cc:655
 msgid "New Button"
 msgstr "Nové tlačítko"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1133
+#: ../glom/mode_data/flowtablewithfields.cc:1140
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:385
 msgid "text"
 msgstr "text"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1134
+#: ../glom/mode_data/flowtablewithfields.cc:1141
 msgid "New Text"
 msgstr "Nový text"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1283
+#: ../glom/mode_data/flowtablewithfields.cc:1290
 msgid "Delete whole group \"%1\"?"
 msgstr "Odstranit celou skupinu „%1“?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1289
+#: ../glom/mode_data/flowtablewithfields.cc:1296
 msgid "Delete whole group?"
 msgstr "Odstranit celou skupinu?"
 
@@ -2436,19 +2442,19 @@ msgstr "Záložky poznámkového bloku"
 msgid "Add child groups to the notebook to add tabs."
 msgstr "Přidá do po poznámkového bloku dceřinné skupiny pro přidání karet."
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1113
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1128
 msgid "Related Calendar: %1"
 msgstr "Související kalendář: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1115
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1130
 msgid "Related List: %1"
 msgstr "Související seznam: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1132
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1147
 msgid "Field: %1"
 msgstr "Pole: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1191
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1206
 msgid "(Notebook)"
 msgstr "(Poznámkový blok)"
 
@@ -2583,7 +2589,7 @@ msgid "<b>Rename Print Layout</b>"
 msgstr "<b>Přejmenovat rozvržení tisku</b>"
 
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:227
-#: ../glom/navigation/box_tables.cc:398
+#: ../glom/navigation/box_tables.cc:402
 msgid "Rename"
 msgstr "Přejmenovat"
 
@@ -2794,24 +2800,24 @@ msgstr ""
 "Opravdu chcete odstranit tuto tabulku?\n"
 "Název tabulky: %1"
 
-#: ../glom/navigation/box_tables.cc:302
+#: ../glom/navigation/box_tables.cc:302 ../glom/navigation/box_tables.cc:308
 msgid "Delete Table"
 msgstr "Odstranit tabulku"
 
-#: ../glom/navigation/box_tables.cc:395
+#: ../glom/navigation/box_tables.cc:399
 msgid "Are you sure that you want to rename this table?"
 msgstr "Opravdu chcete přejmenovat tuto tabulku?"
 
 #. TODO: Show old and new names?
-#: ../glom/navigation/box_tables.cc:396
+#: ../glom/navigation/box_tables.cc:400
 msgid "<b>Rename Table</b>"
 msgstr "<b>Přejmenovat tabulku</b>"
 
-#: ../glom/navigation/box_tables.cc:438
+#: ../glom/navigation/box_tables.cc:442
 msgid "Unknown Table"
 msgstr "Neznámá tabulka"
 
-#: ../glom/navigation/box_tables.cc:439
+#: ../glom/navigation/box_tables.cc:443
 msgid ""
 "You cannot open this table, because there is no information about this table "
 "in the document."
