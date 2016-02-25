@@ -111,13 +111,13 @@ private:
   Gtk::Frame m_frame;
   
   //For anything supported by Evince:
-  Gtk::ScrolledWindow* m_ev_scrolled_window;
+  std::unique_ptr<Gtk::ScrolledWindow> m_ev_scrolled_window;
   EvView* m_ev_view;
   EvDocumentModel* m_ev_document_model;
   
   //For anything supported by GdkPixbuf,
   //or for representative thumbnails and icons:
-  Gtk::Image* m_image;
+  std::unique_ptr<Gtk::Image> m_image;
   Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_original; //Only stored temporarily, because it could be big.
   Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_clipboard; //When copy is used, store it here until it is pasted.
 

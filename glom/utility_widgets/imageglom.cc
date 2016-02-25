@@ -48,20 +48,16 @@ ImageGlom::type_vec_ustrings ImageGlom::m_evince_supported_mime_types;
 ImageGlom::type_vec_ustrings ImageGlom::m_gdkpixbuf_supported_mime_types;
 
 ImageGlom::ImageGlom()
-: m_ev_scrolled_window(nullptr),
-  m_ev_view(nullptr),
-  m_ev_document_model(nullptr),
-  m_image(nullptr)
+: m_ev_view(nullptr),
+  m_ev_document_model(nullptr)
 {
   init();
 }
 
 ImageGlom::ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::EventBox(cobject),
-  m_ev_scrolled_window(nullptr),
   m_ev_view(nullptr),
-  m_ev_document_model(nullptr),
-  m_image(nullptr)
+  m_ev_document_model(nullptr)
 {
   init();
 }
@@ -95,7 +91,7 @@ void ImageGlom::init_widgets(bool use_evince)
       m_ev_view = EV_VIEW(ev_view_new());
       gtk_widget_show(GTK_WIDGET(m_ev_view));
 
-      m_ev_scrolled_window = Gtk::manage(new Gtk::ScrolledWindow());
+      m_ev_scrolled_window = std::make_unique<Gtk::ScrolledWindow>();
       gtk_container_add(GTK_CONTAINER(m_ev_scrolled_window->gobj()), GTK_WIDGET(m_ev_view));
 
       //gtk_widget_add_events(GTK_WIDGET(m_ev_view), GDK_BUTTON_PRESS_MASK);
@@ -108,26 +104,21 @@ void ImageGlom::init_widgets(bool use_evince)
         sigc::mem_fun(*this, &ImageGlom::on_button_press_event), false);
     }
 
-    if(m_image)
-    {
-      delete m_image;
-      m_image = nullptr;
-    }
+    m_image.reset();
 
-    widget = m_ev_scrolled_window;
+    widget = m_ev_scrolled_window.get();
   }
   else
   {
-    m_image = Gtk::manage(new Gtk::Image());
+    m_image = std::make_unique<Gtk::Image>();
     if(m_ev_view)
     {
       gtk_widget_destroy(GTK_WIDGET(m_ev_view));
       m_ev_view = nullptr;
-      delete m_ev_scrolled_window;
-      m_ev_scrolled_window = nullptr;
+      m_ev_scrolled_window.reset();
     }
 
-    widget = m_image;
+    widget = m_image.get();
   }
 
   widget->show();
