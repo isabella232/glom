@@ -167,8 +167,9 @@ void DialogImageLoadProgress::error(const Glib::ustring& error_message)
 
 std::unique_ptr<GdaBinary> DialogImageLoadProgress::get_image_data()
 {
+  //This will not be as if it was reset.
+  //Not every std::move() does that, but std::move() with std::unique_ptr<> does.
   return std::move(m_data);
-  m_data.reset();
 }
 
 } // namespace Glom
