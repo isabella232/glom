@@ -1,3 +1,30 @@
+1.31.2 (unstable):
+
+* Fix crash when loading images into an image field.
+  (Murray Cumming)
+* Fix crash caused by assert in recent versions of libevince-view.
+  (Murray Cumming) Bug #761396 (m.rick.mac))
+* Really forget a table when removing it.
+  (Murray Cumming) Bug #754645 (m.rick.mac)
+* Table deletion: Actually let the user cancel the dialog.
+  (Murray Cumming)
+* Initialize PostgresSQL database with the C locale.
+  Because using the current locale seems arbitrary and useless to other users.
+  (Murray Cumming) Bug #761372 (m.rick.mac)
+* Try to catch filesystem errors sooner.
+  (Murray Cumming) Bug #761373 (m.rick.mac)
+* Details layout: Allow notebooks at top-level.
+  (Murray Cumming) Bug #759511 (m.rick.mac)
+* Connection to central server:
+  - Ask again if the connection fails.
+  (Murray Cumming)
+  - Specify a timeout.
+  (Murray Cumming)
+
+Build:
+* Check for, and require, C++14.
+* Lots of modernization of the C++ source code.
+
 1.31.1 (unstable):
 
 * Build: Convert the source code to C++11.
