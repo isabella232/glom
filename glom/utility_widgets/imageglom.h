@@ -28,6 +28,7 @@
 #include "layoutwidgetfield.h"
 #include <gtkmm/frame.h>
 #include <gtkmm/builder.h>
+#include <gtkmm/scrolledwindow.h>
 #include <giomm/appinfo.h>
 #include <giomm/simpleactiongroup.h>
 #include <evince-view.h>
@@ -108,6 +109,7 @@ private:
   Gtk::Frame m_frame;
   
   //For anything supported by Evince:
+  Gtk::ScrolledWindow* m_ev_scrolled_window;
   EvView* m_ev_view;
   EvDocumentModel* m_ev_document_model;
   
