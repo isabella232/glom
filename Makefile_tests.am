@@ -111,7 +111,7 @@ TESTS =	tests/test_document_load	\
 dist_noinst_SCRIPTS = tests/test_dtd_file_validation.sh \
 	tests/test_glade_file_validation.sh \
 	tests/test_xslt_file_validation.sh \
-	tests/test_glade_toplevels_instantiation.sh \
+	tests/ui/test_glade_toplevels_instantiation.sh \
 	tests/test_glom_date_in_locales.sh.in \
 	tests/test_glom_date_in_locales_lc_time.sh.in \
 	tests/test_selfhosting_new_from_example_in_locales.sh \
@@ -357,8 +357,8 @@ check_PROGRAMS += \
 	glom/utility_widgets/test_flowtable			\
 	glom/utility_widgets/eggspreadtablemm/test_spreadtablednd \
 	glom/test_pyembed \
-	tests/test_glade_derived_instantiation \
-	tests/glade_toplevels_instantiation \
+	tests/ui/test_glade_derived_instantiation \
+	tests/ui/glade_toplevels_instantiation \
 	tests/python/test_python_execute_func \
 	tests/python/test_python_execute_func_bad_syntax \
 	tests/python/test_python_execute_func_date \
@@ -392,8 +392,8 @@ TESTS += \
 # before initializing GTK+. See the comments in the code.
 if GLOM_ENABLE_UI_TESTS
 TESTS += \
-	tests/test_glade_toplevels_instantiation.sh \
-	tests/test_glade_derived_instantiation \
+	tests/ui/test_glade_toplevels_instantiation.sh \
+	tests/ui/test_glade_derived_instantiation \
 	tests/test_glom_date_in_locales.sh \
 	tests/test_glom_date_in_locales_lc_time.sh
 endif #GLOM_ENABLE_UI_TESTS
@@ -487,13 +487,13 @@ tests_test_iso_codes_CPPFLAGS = $(tests_cppflags_ui)
 #	glom/utility_widgets/placeholder-glom.cc \
 #	glom/utility_widgets/test_flowtable_dnd.cc
 
-tests_test_glade_derived_instantiation_SOURCES = tests/test_glade_derived_instantiation.cc $(glom_source_files)
-tests_test_glade_derived_instantiation_LDADD = $(glom_all_libs)
-tests_test_glade_derived_instantiation_CPPFLAGS = $(tests_cppflags_ui)
+tests_ui_test_glade_derived_instantiation_SOURCES = tests/ui/test_glade_derived_instantiation.cc $(glom_source_files)
+tests_ui_test_glade_derived_instantiation_LDADD = $(glom_all_libs)
+tests_ui_test_glade_derived_instantiation_CPPFLAGS = $(tests_cppflags_ui)
 
-tests_glade_toplevels_instantiation_SOURCES = tests/glade_toplevels_instantiation.cc
-tests_glade_toplevels_instantiation_LDADD = $(tests_ldadd) $(GLOM_LIBS)
-tests_glade_toplevels_instantiation_CPPFLAGS = $(tests_cppflags_ui)
+tests_ui_glade_toplevels_instantiation_SOURCES = tests/ui/glade_toplevels_instantiation.cc
+tests_ui_glade_toplevels_instantiation_LDADD = $(tests_ldadd) $(GLOM_LIBS)
+tests_ui_glade_toplevels_instantiation_CPPFLAGS = $(tests_cppflags_ui)
 
 glom_test_pyembed_SOURCES = glom/test_pyembed.cc
 glom_test_pyembed_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
