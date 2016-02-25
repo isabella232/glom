@@ -52,7 +52,7 @@ DialogImageLoadProgress::DialogImageLoadProgress(BaseObjectType* cobject, const 
 
 DialogImageLoadProgress::~DialogImageLoadProgress()
 {
-  if(m_data.get())
+  if(m_data)
     g_free(m_data->data);
 
   // TODO: Cancel outstanding async operations in destructor?
@@ -63,7 +63,7 @@ void DialogImageLoadProgress::load(const Glib::ustring& uri)
   // Can only load one file with data 
   g_assert(!m_data.get());
 
-  m_data.reset(new GdaBinary);
+  m_data = std::make_shared<GdaBinary>();
   m_data->data = nullptr;
   m_data->binary_length = 0;
 
@@ -167,7 +167,9 @@ void DialogImageLoadProgress::error(const Glib::ustring& error_message)
 
 std::shared_ptr<GdaBinary> DialogImageLoadProgress::get_image_data()
 {
-  return m_data;
+  auto result = m_data;
+  m_data.reset();
+  return result;
 }
 
 } // namespace Glom
