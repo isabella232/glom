@@ -391,6 +391,9 @@ AC_MSG_RESULT($enable_gcov)
 GLIB_COMPILE_RESOURCES=`$PKG_CONFIG --variable glib_compile_resources gio-2.0`
 AC_SUBST(GLIB_COMPILE_RESOURCES)
 
+AC_CHECK_PROGS([CLANG_FORMAT], [clang-format clang-format-3.9 clang-format-3.8 clang-format-3.7], [])
+AM_CONDITIONAL([HAVE_CLANG_FORMAT], test -n "$CLANG_FORMAT")
+
 AC_CONFIG_FILES([Makefile
                  po/Makefile.in
                  glom.desktop.in
