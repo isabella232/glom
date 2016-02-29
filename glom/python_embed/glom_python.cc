@@ -164,6 +164,8 @@ bool gda_python_module_is_available()
 {
   //TODO: How can we requests a specific version to avoid confusion
   //between the parallel-installed Gda-5.0 and Gda-6.0 APIs?
+  //In a python script we would do this, but how do we do it with the boost::python API?
+  //  gi.require_version('Gda', '5.0')
   const char* name = "gi.repository.Gda";
   const boost::python::object module_glom = import_module(name);
   return module_glom != boost::python::object();
@@ -211,6 +213,8 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   //between the parallel-installed Gda-5.0 and Gda-6.0 APIs?
   func_def = "def " + func_signature + ":\n"
   "  import glom_" GLOM_ABI_VERSION_UNDERLINED "\n"
+  "  import gi\n"
+  "  gi.require_version('Gda', '5.0')\n"
   "  from gi.repository import Gda\n" + func_def;
 
   //We did this in main(): Py_Initialize();
@@ -262,15 +266,19 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
     return boost::python::object(); // don't crash
   }
 
-  //TODO: Is this necessary?
-  //TODO: How can we requests a specific version to avoid confusion
-  //between the parallel-installed Gda-5.0 and Gda-6.0 APIs?
-  boost::python::object module_gda = import_module("gi.repository.Gda");
-  if(module_gda == boost::python::object())
-  {
-    g_warning("Could not import python gi.repository.Gda module.");
-    return boost::python::object();
-  }
+  //This doesn't seem to be necessary,
+  //because we do an import in the python script anyway.
+  //And we don't want to do this because the boost::python::import() API
+  //doesn't let us first say:
+  //  gi.require_version('Gda', '5.0')
+  //to specify a particular parallel-installable version.
+  //(There are 5.0 and 6.0 versions of Gda, for instance.)
+  //boost::python::object module_gda = import_module("gi.repository.Gda");
+  //if(module_gda == boost::python::object())
+  //{
+  //  g_warning("Could not import python gi.repository.Gda module.");
+  //  return boost::python::object();
+  //}
 
   //Create the function definition:
   /*
