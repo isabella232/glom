@@ -40,7 +40,10 @@ int main()
   //std::cout << "type=" << g_type_name(value.get_value_type()) << std::endl;
 
   //Check that there was no python error:
-  g_assert(error_message.empty());
+  if(!error_message.empty()) {
+    std::cerr << "Unexpected error message: " << error_message << "\n";
+    return EXIT_FAILURE;
+  }
 
   //Check that the return value is of the expected type:
   g_assert(Glom::Field::get_glom_type_for_gda_type(value.get_value_type()) == result_type);

@@ -7,6 +7,7 @@
 #include <glom/libglom/init.h>
 #include <glom/python_embed/glom_python.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <iostream>
 
 void execute_func_with_date_return_value()
 {
@@ -26,6 +27,9 @@ void execute_func_with_date_return_value()
   //std::cout << "type=" << g_type_name(value.get_value_type()) << std::endl;
 
   //Check that there was no python error:
+  if(!error_message.empty()) {
+    std::cerr << "Unexpected error message: " << error_message << "\n";
+  }
   g_assert(error_message.empty());
   
   //Check that the return value is of the expected type:
@@ -61,6 +65,9 @@ void execute_func_with_date_input_value()
   //std::cout << "type=" << g_type_name(value.get_value_type()) << std::endl;
 
   //Check that there was no python error:
+  if(!error_message.empty()) {
+    std::cerr << "Unexpected error message: " << error_message << "\n";
+  }
   g_assert(error_message.empty());
   
   //Check that the return value is of the expected type:
