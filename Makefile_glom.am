@@ -17,7 +17,7 @@
 
 
 # The location of the gettext catalogs as defined by intltool.
-glom_localedir = $(prefix)/$(DATADIRNAME)/locale
+glom_localedir = @localedir@
 
 #Let gimpruler build without changing the paths in its source code:
 glom_includes += -I$(top_srcdir)/glom/utility_widgets/gimpruler
