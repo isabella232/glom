@@ -208,7 +208,9 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
 
   //TODO: How can we requests a specific version to avoid confusion
   //between the parallel-installed Gda-5.0 and Gda-6.0 APIs?
-  func_def = "def " + func_signature + ":\n  import glom_" GLOM_ABI_VERSION_UNDERLINED "\n  from gi.repository import Gda\n" + func_def;
+  func_def = "def " + func_signature + ":\n"
+  "  import glom_" GLOM_ABI_VERSION_UNDERLINED "\n"
+  "  from gi.repository import Gda\n" + func_def;
 
   //We did this in main(): Py_Initialize();
 
