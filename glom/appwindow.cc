@@ -1478,7 +1478,7 @@ void AppWindow::set_mode_find()
 
 void AppWindow::on_menu_help_contents()
 {
-  Glom::UiUtils::show_help();
+  Glom::UiUtils::show_help(this);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

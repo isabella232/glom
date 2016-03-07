@@ -66,7 +66,7 @@ int dialog_run_with_help(T_Dialog* dialog)
  * to avoid the libgnome dependency.
  * TODO: GTK+ should have a function for this soon.
  */
-void show_help(const Glib::ustring& id = Glib::ustring());
+void show_help(Gtk::Window* parent_window, const Glib::ustring& id = Glib::ustring());
 
 void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type);
 void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window* parent, Gtk::MessageType message_type);
