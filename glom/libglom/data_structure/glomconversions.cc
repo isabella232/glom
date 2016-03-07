@@ -498,6 +498,9 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     std::stringstream another_stream;
     another_stream.imbue(locale); //Tell it to parse stuff as per this locale.
 
+    constexpr auto precision = std::numeric_limits<decltype(number)>::maxdigits10;
+    another_stream << std::setprecision(precision);
+
     //Numeric formatting:
     if(!iso_format)
     {
