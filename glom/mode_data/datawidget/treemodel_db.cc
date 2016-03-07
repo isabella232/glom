@@ -115,7 +115,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
 
       //Create default values, if necessary, of the correct types:
       //Examine the columns in the returned DataModel:
-      const Glib::RefPtr<const Gnome::Gda::DataModel> datamodel = model.m_gda_datamodel;
+      const auto datamodel = model.m_gda_datamodel;
       for(guint col = 0; col < model.m_data_model_columns_count; ++col)
       {
         if(m_db_values.find(col) == m_db_values.end()) //If there is not already a value in the map for this column.

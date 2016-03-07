@@ -1445,7 +1445,7 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
   builder->select_add_target(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   builder_set_where_autoincrement(builder, table_name, field_name);
 
-  const Glib::RefPtr<const Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
+  const auto datamodel = query_execute_select(builder);
   if(!datamodel || (datamodel->get_n_rows() == 0))
   {
     //Start with zero:

@@ -648,7 +648,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
   auto query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
 
   //TODO: Lock the database (prevent changes) during export.
-  Glib::RefPtr<const Gnome::Gda::DataModel> result = DbUtils::query_execute_select(query);
+  auto result = DbUtils::query_execute_select(query);
 
   guint rows_count = 0;
   if(result)

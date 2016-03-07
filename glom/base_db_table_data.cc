@@ -495,7 +495,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
     auto query = Utils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
     //std::cout << "debug: " << G_STRFUNC << ": query=" << query << std::endl;
 
-    Glib::RefPtr<const Gnome::Gda::DataModel> result = DbUtils::query_execute_select(query);
+    auto result = DbUtils::query_execute_select(query);
     if(!result)
     {
       std::cerr << G_STRFUNC << ": no result.\n";

@@ -906,7 +906,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
 
   const Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fields_shown, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
   //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
-  const Glib::RefPtr<const Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(sql_query);
+  const auto datamodel = DbUtils::query_execute_select(sql_query);
   if(!(datamodel))
     return;
 

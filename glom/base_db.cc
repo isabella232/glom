@@ -1032,7 +1032,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
   auto sql_query = Utils::build_sql_select_with_key(field_in_record.m_table_name,
     list_fields, field_in_record.m_key, field_in_record.m_key_value, type_sort_clause(), 1);
 
-  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(sql_query);
+  auto data_model = DbUtils::query_execute_select(sql_query);
   if(data_model)
   {
     if(data_model->get_n_rows())
@@ -1075,7 +1075,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const std::shared_ptr<Fie
     std::shared_ptr<const Relationship>() /* extra_join */, type_sort_clause(),
     1 /* limit */);
 
-  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(sql_query);
+  auto data_model = DbUtils::query_execute_select(sql_query);
   if(data_model)
   {
     if(data_model->get_n_rows())
@@ -1298,7 +1298,7 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
       builder->add_field_id(field->get_name(), table_name_used),
       builder->add_expr(value)));
 
-  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
+  auto data_model = DbUtils::query_execute_select(builder);
   if(data_model)
   {
     //std::cout << "debug: " << G_STRFUNC << ": table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << value.to_string() << ", rows count=" << data_model->get_n_rows() << std::endl;
@@ -1395,7 +1395,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
   auto query =
     Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsToGet,
       builder->export_expression(cond_id));
-  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(query);
+  auto data_model = DbUtils::query_execute_select(query);
 
   if(data_model && data_model->get_n_rows())
   {
