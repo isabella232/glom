@@ -546,7 +546,12 @@ void UiUtils::show_report_in_browser(const std::string& filepath, Gtk::Window* p
 
   //Use the GNOME browser:
   GError* gerror = nullptr;
-  if(!gtk_show_uri(0 /* screen */, uri.c_str(), GDK_CURRENT_TIME, &gerror))
+  Glib::RefPtr<Gdk::Screen> screen;
+  if(parent_window)
+    screen = parent_window->get_screen();
+
+  if(!gtk_show_uri(screen ? screen->gobj() : nullptr,
+    uri.c_str(), GDK_CURRENT_TIME, &gerror))
   {
     std::cerr << G_STRFUNC << ": " << gerror->message << std::endl;
     g_error_free(gerror);
