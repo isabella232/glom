@@ -39,7 +39,7 @@ static bool test_value(Glom::Field::glom_field_type field_type, const Gnome::Gda
 
   if(value != value_retrieved)
   {
-    std::shared_ptr<Glom::Field> field = std::make_shared<Glom::Field>();
+    std::cerr << "Unexpected: value=" << value.to_string() << ", value_retrieved=" << value_retrieved.to_string() << std::endl;
     std::cerr << "  value_retrieved type=" << g_type_name(value_retrieved.get_value_type()) << ", value type=" << g_type_name(value.get_value_type()) << std::endl;
     return false;
   }
@@ -86,6 +86,9 @@ int main()
     return EXIT_FAILURE;
 
   if(!test_value(Glom::Field::glom_field_type::NUMERIC, Glom::Conversions::parse_value((double)3.91l)))
+    return EXIT_FAILURE;
+
+  if(!test_value(Glom::Field::glom_field_type::NUMERIC, Glom::Conversions::parse_value(1004914l)))
     return EXIT_FAILURE;
 
 
