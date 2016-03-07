@@ -39,7 +39,6 @@ static bool test_value(Glom::Field::glom_field_type field_type, const Gnome::Gda
 
   if(value != value_retrieved)
   {
-    auto field = std::make_shared<Glom::Field>();
     std::cerr << "  value_retrieved type=" << g_type_name(value_retrieved.get_value_type()) << ", value type=" << g_type_name(value.get_value_type()) << std::endl;
     return false;
   }
