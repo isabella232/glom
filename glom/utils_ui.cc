@@ -57,42 +57,6 @@
 # include <windows.h>
 #endif
 
-namespace
-{
-
-// Basically copied from libgnome (gnome-help.c, Copyright (C) 2001 Sid Vicious
-// Copyright (C) 2001 Jonathan Blandford <jrb@alum.mit.edu>), but C++ified
-std::string locate_help_file(const std::string& path, const std::string& doc_name)
-{
-  // g_get_language_names seems not to be wrapped by glibmm
-  const char* const* lang_list = g_get_language_names ();
-
-  for(unsigned int j = 0; lang_list[j] != 0; ++j)
-  {
-    const char* lang = lang_list[j];
-
-    /* This must be a valid language AND a language with
-     * no encoding postfix.  The language will come up without
-     * encoding next. */
-    if(lang == 0 || strchr(lang, '.') != 0)
-      continue;
-
-    const char* exts[] = { "", ".xml", ".docbook", ".sgml", ".html", 0 };
-    for(unsigned i = 0; exts[i] != 0; ++i)
-    {
-      std::string name = doc_name + exts[i];
-      std::string full = Glib::build_filename(path, Glib::build_filename(lang, name));
-
-      if(Glib::file_test(full, Glib::FILE_TEST_EXISTS))
-        return full;
-    }
-  }
-
-  return std::string();
-}
-
-} //anonymous namespace
-
 namespace Glom
 {
 
@@ -103,7 +67,7 @@ int UiUtils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
   
   while (result == Gtk::RESPONSE_HELP)
   {
-    show_help(id);
+    show_help(dialog, id);
     result = dialog->run();
   }
 
@@ -117,46 +81,34 @@ int UiUtils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
  * Launch a help browser with the glom help and load the given id if given
  * If the help cannot be found an error dialog will be shown
  */
-void UiUtils::show_help(const Glib::ustring& id)
+void UiUtils::show_help(Gtk::Window* parent_window, const Glib::ustring& id)
 {
-  GError* err = 0;
-  const gchar* pId;
-  if(id.length())
-  {
-    pId = id.c_str();
-  }
-  else
-  {
-    pId = 0;
-  }
-
+  //TODO: Check that this actually works for any dialog that has an ID in the help files.
+  Glib::ustring uri = "help:glom";
+  if (!id.empty())
+    uri += "/" + id;
+    
   try
   {
-    const char path[] = GLOM_DATADIR G_DIR_SEPARATOR_S "gnome"
-                                     G_DIR_SEPARATOR_S "help"
-                                     G_DIR_SEPARATOR_S "glom";
-    std::string help_file = locate_help_file(path, "glom.xml");
-    if(help_file.empty())
-    {
-      throw std::runtime_error(_("No help file available"));
-    }
-    else
-    {
-      std::string uri = "ghelp:" + help_file;
-      if(pId) { uri += '?'; uri += pId; }
+    //Use the GNOME help browser:
+    GError* gerror = 0;
+    Glib::RefPtr<Gdk::Screen> screen;
+    if(parent_window)
+      screen = parent_window->get_screen();
 
-      // g_app_info_launch_default_for_uri seems not to be wrapped by giomm
-      if(!g_app_info_launch_default_for_uri(uri.c_str(), 0, &err))
-      {
-        std::string message(err->message);
-        g_error_free(err);
-        throw std::runtime_error(message);
-      }
+    if(!gtk_show_uri(screen ? screen->gobj() : 0,
+      uri.c_str(), GDK_CURRENT_TIME, &gerror))
+    {
+      std::cerr << G_STRFUNC << ": " << gerror->message << std::endl;
+
+      const Glib::ustring message(gerror->message);
+      g_error_free(gerror);
+      throw std::runtime_error(message);
     }
   }
   catch(const std::exception& ex)
   {
-    const Glib::ustring message = Glib::ustring::compose(_("Could not display help: %1"), Glib::ustring(ex.what()));
+    const auto message = Glib::ustring::compose(_("Could not display help: %1"), Glib::ustring(ex.what()));
     Gtk::MessageDialog dialog(message, false, Gtk::MESSAGE_ERROR);
     dialog.run();
   }
