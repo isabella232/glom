@@ -494,6 +494,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     const auto number = get_double_for_gda_value_numeric(value);
 
     //Get the locale-specific text representation, in the required format:
+    //TODO: Use std::to_string(), but with the correct locale.
     std::stringstream another_stream;
     another_stream.imbue(locale); //Tell it to parse stuff as per this locale.
 
