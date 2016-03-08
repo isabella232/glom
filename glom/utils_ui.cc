@@ -121,7 +121,7 @@ void UiUtils::show_help(Gtk::Window* parent_window, const Glib::ustring& id)
   //TODO: Check that this actually works for any dialog that has an ID in the help files.
   Glib::ustring uri = "help:glom";
   if (!id.empty())
-    uri + "/" + id;
+    uri += "/" + id;
     
   try
   {
@@ -131,7 +131,6 @@ void UiUtils::show_help(Gtk::Window* parent_window, const Glib::ustring& id)
     if(parent_window)
       screen = parent_window->get_screen();
 
-    std::cout << "debug: opening URI:" << uri << std::endl;
     if(!gtk_show_uri(screen ? screen->gobj() : nullptr,
       uri.c_str(), GDK_CURRENT_TIME, &gerror))
     {
