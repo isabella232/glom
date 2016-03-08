@@ -39,7 +39,7 @@ namespace
 
 // When auto-detecting the encoding, we try to read the file in these
 // encodings, in order:
-const char* AUTODETECT_ENCODINGS_CHARSETS[] = {
+constexpr const char* AUTODETECT_ENCODINGS_CHARSETS[] = {
   "UTF-8",
   "ISO-8859-1",
   "ISO-8859-15",
@@ -48,7 +48,7 @@ const char* AUTODETECT_ENCODINGS_CHARSETS[] = {
   "UCS-4"
 };
 
-const auto N_AUTODETECT_ENCODINGS_CHARSETS = sizeof(AUTODETECT_ENCODINGS_CHARSETS)/sizeof(AUTODETECT_ENCODINGS_CHARSETS[0]);
+constexpr auto N_AUTODETECT_ENCODINGS_CHARSETS = sizeof(AUTODETECT_ENCODINGS_CHARSETS)/sizeof(AUTODETECT_ENCODINGS_CHARSETS[0]);
 
 
 Glib::ustring encoding_display(const Glib::ustring& name, const Glib::ustring& charset)
