@@ -550,7 +550,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
         //Wait:
         auto mainloop = Glib::MainLoop::create(false);
           sigc::connection connection_timeout = Glib::signal_timeout().connect(
-          sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)),
+          sigc::bind(sigc::ptr_fun(&on_timeout_delay), std::ref(mainloop)),
           1000 /* 1 second */);
         mainloop->run();
         connection_timeout.disconnect();

@@ -144,7 +144,7 @@ private:
     channel->set_encoding("");
     channel->set_buffered(false);
 
-    Glib::signal_io().connect(sigc::bind(sigc::mem_fun(*this, &SpawnInfo::on_io), channel, sigc::ref(string)), channel, Glib::IO_IN);
+    Glib::signal_io().connect(sigc::bind(sigc::mem_fun(*this, &SpawnInfo::on_io), channel, std::ref(string)), channel, Glib::IO_IN);
   }
 #endif // !G_OS_WIN32
 
@@ -327,7 +327,7 @@ static int spawn_sync(const Glib::ustring& command_line, std::string* stdout_tex
 
   auto info = spawn_async(command_line, redirect_flags); //This could throw
   info->signal_finished().connect(
-    sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
+    sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), std::ref(mainloop) ) );
 
   // Block until signal_finished is emitted:
   mainloop->run();
@@ -358,7 +358,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
 
   auto mainloop = Glib::MainLoop::create(false);
   info->signal_finished().connect(
-    sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
+    sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), std::ref(mainloop) ) );
 
   // Pulse two times a second:
   sigc::connection timeout_connection = Glib::signal_timeout().connect(
@@ -403,7 +403,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
 
   auto mainloop = Glib::MainLoop::create(false);
   info->signal_finished().connect(
-    sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
+    sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), std::ref(mainloop) ) );
 
   // Pulse two times a second:
   sigc::connection timeout_connection = Glib::signal_timeout().connect(
@@ -573,10 +573,10 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
 
   auto mainloop = Glib::MainLoop::create(false);
   sigc::connection watch_conn = info->signal_finished().connect(
-    sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
+    sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), std::ref(mainloop) ) );
 
   // Call the second command once every second
-  sigc::connection timeout_conn = Glib::signal_timeout().connect(sigc::bind(sigc::ptr_fun(&second_command_on_timeout), sigc::ref(second_command), sigc::ref(success_text), slot_progress, sigc::ref(mainloop)), 1000);
+  sigc::connection timeout_conn = Glib::signal_timeout().connect(sigc::bind(sigc::ptr_fun(&second_command_on_timeout), std::ref(second_command), std::ref(success_text), slot_progress, std::ref(mainloop)), 1000);
   if(slot_progress)
     slot_progress(); //Make sure it is called at least once.
 
@@ -599,7 +599,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
     //Sleep for a bit more, because I think that pg_ctl sometimes reports success too early.
     auto mainloop = Glib::MainLoop::create(false);
     sigc::connection connection_timeout = Glib::signal_timeout().connect(
-     sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)),
+     sigc::bind(sigc::ptr_fun(&on_timeout_delay), std::ref(mainloop)),
      8000);
     mainloop->run();
 

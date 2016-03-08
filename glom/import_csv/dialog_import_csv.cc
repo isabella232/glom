@@ -117,7 +117,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   auto renderer = Gtk::manage(new Gtk::CellRendererText);
   m_encoding_combo->set_model(m_encoding_model);
   m_encoding_combo->pack_start(*renderer);
-  m_encoding_combo->set_cell_data_func(*renderer, sigc::bind(sigc::mem_fun(*this, &Dialog_Import_CSV::encoding_data_func), sigc::ref(*renderer)));
+  m_encoding_combo->set_cell_data_func(*renderer, sigc::bind(sigc::mem_fun(*this, &Dialog_Import_CSV::encoding_data_func), std::ref(*renderer)));
   m_encoding_combo->set_row_separator_func(sigc::mem_fun(*this, &Dialog_Import_CSV::row_separator_func));
   m_encoding_combo->set_active(0);
 
