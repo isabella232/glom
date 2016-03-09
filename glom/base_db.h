@@ -292,7 +292,6 @@ protected:
   static Glib::RefPtr<Gnome::Gda::Connection> get_connection();
 
   static bool get_field_primary_key_index_for_fields(const type_vec_fields& fields, guint& field_column);
-  static bool get_field_primary_key_index_for_fields(const type_vecLayoutFields& fields, guint& field_column);
 
   typedef std::vector<Glib::ustring> type_vec_strings;
   static type_vec_strings util_vecStrings_from_Fields(const type_vec_fields& fields);
