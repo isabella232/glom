@@ -539,7 +539,7 @@ void Frame_Glom::on_menu_file_export()
   if(!document)
     return;
 
-  Document::type_list_layout_groups mapGroupSequence = document->get_data_layout_groups_plus_new_fields("details", m_table_name, get_active_layout_platform(document));
+  auto mapGroupSequence = document->get_data_layout_groups_plus_new_fields("details", m_table_name, get_active_layout_platform(document));
 
   auto pWindowApp = get_app_window();
   g_assert(pWindowApp);
