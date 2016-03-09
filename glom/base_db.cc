@@ -561,31 +561,6 @@ bool Base_DB::get_field_primary_key_index_for_fields(const type_vec_fields& fiel
   return false; //Not found.
 }
 
-//static:
-bool Base_DB::get_field_primary_key_index_for_fields(const type_vecLayoutFields& fields, guint& field_column)
-{
-  //Initialize input parameter:
-  field_column = 0;
-
-  //TODO_performance: Cache the primary key?
-  guint col = 0;
-  guint cols_count = fields.size();
-  while(col < cols_count)
-  {
-    if(fields[col]->get_full_field_details()->get_primary_key())
-    {
-      field_column = col;
-      return true;
-    }
-    else
-    {
-      ++col;
-    }
-  }
-
-  return false; //Not found.
-}
-
 std::shared_ptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustring& table_name) const
 {
   const auto document = get_document();
