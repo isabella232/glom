@@ -41,6 +41,7 @@ check_PROGRAMS =						\
 	tests/test_selfhosting_new_from_example_float \
 	tests/test_selfhosting_new_from_example_operator \
 	tests/test_selfhosting_new_from_example_strangepath \
+	tests/test_selfhosting_new_then_export \
 	tests/test_selfhosting_new_then_report \
 	tests/test_selfhosting_new_then_report_summary \
 	tests/test_selfhosting_new_then_image \
@@ -87,6 +88,7 @@ TESTS =	tests/test_document_load	\
 	tests/test_selfhosting_new_from_example_operator \
 	tests/test_selfhosting_new_from_example_in_locales.sh \
 	tests/test_selfhosting_new_from_example_strangepath \
+	tests/test_selfhosting_new_then_export \
 	tests/test_selfhosting_new_then_report \
 	tests/test_selfhosting_new_then_report_summary \
 	tests/test_selfhosting_new_then_backup_restore \
@@ -303,6 +305,10 @@ tests_test_selfhosting_new_from_example_operator_CPPFLAGS = $(tests_cppflags)
 tests_test_selfhosting_new_from_example_strangepath_SOURCES = tests/test_selfhosting_new_from_example_strangepath.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_from_example_strangepath_LDADD = $(tests_ldadd)
 tests_test_selfhosting_new_from_example_strangepath_CPPFLAGS = $(tests_cppflags)
+
+tests_test_selfhosting_new_then_export_SOURCES = tests/test_selfhosting_new_then_export.cc $(sources_test_selfhosting_utils)
+tests_test_selfhosting_new_then_export_LDADD = $(tests_ldadd)
+tests_test_selfhosting_new_then_export_CPPFLAGS = $(tests_cppflags)
 
 tests_test_selfhosting_new_then_report_SOURCES = tests/test_selfhosting_new_then_report.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_then_report_LDADD = $(tests_ldadd)
