@@ -42,6 +42,7 @@ check_PROGRAMS =						\
 	tests/test_selfhosting_new_from_example_operator \
 	tests/test_selfhosting_new_from_example_strangepath \
 	tests/test_selfhosting_new_then_export \
+	tests/test_selfhosting_new_then_export_with_big_num \
 	tests/test_selfhosting_new_then_report \
 	tests/test_selfhosting_new_then_report_summary \
 	tests/test_selfhosting_new_then_image \
@@ -89,6 +90,7 @@ TESTS =	tests/test_document_load	\
 	tests/test_selfhosting_new_from_example_in_locales.sh \
 	tests/test_selfhosting_new_from_example_strangepath \
 	tests/test_selfhosting_new_then_export \
+	tests/test_selfhosting_new_then_export_with_big_num \
 	tests/test_selfhosting_new_then_report \
 	tests/test_selfhosting_new_then_report_summary \
 	tests/test_selfhosting_new_then_backup_restore \
@@ -221,7 +223,8 @@ dist_noinst_DATA = \
 	tests/test_image2.jpg \
 	tests/test_image.pdf \
 	tests/test_image2.pdf \
-	tests/test_example_music_collection_text_pk_fields.glom
+	tests/test_example_music_collection_text_pk_fields.glom \
+	tests/test_example_music_collection_with_big_num.glom
 
 # Let the .cc source code know about this path:
 glom_test_import_defines = -DGLOM_TESTS_IMPORT_DATA_NOTINSTALLED=\""$(abs_top_srcdir)/tests/import/data/"\"
@@ -309,6 +312,10 @@ tests_test_selfhosting_new_from_example_strangepath_CPPFLAGS = $(tests_cppflags)
 tests_test_selfhosting_new_then_export_SOURCES = tests/test_selfhosting_new_then_export.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_then_export_LDADD = $(tests_ldadd)
 tests_test_selfhosting_new_then_export_CPPFLAGS = $(tests_cppflags)
+
+tests_test_selfhosting_new_then_export_with_big_num_SOURCES = tests/test_selfhosting_new_then_export_with_big_num.cc $(sources_test_selfhosting_utils)
+tests_test_selfhosting_new_then_export_with_big_num_LDADD = $(tests_ldadd)
+tests_test_selfhosting_new_then_export_with_big_num_CPPFLAGS = $(tests_cppflags)
 
 tests_test_selfhosting_new_then_report_SOURCES = tests/test_selfhosting_new_then_report.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_then_report_LDADD = $(tests_ldadd)
