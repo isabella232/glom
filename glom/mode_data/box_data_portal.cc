@@ -190,7 +190,7 @@ Box_Data_Portal::type_vecConstLayoutFields Box_Data_Portal::get_fields_to_show()
     auto relationship = m_portal->get_relationship();
     if(relationship)
     {
-      type_vecConstLayoutFields result = get_table_fields_to_show_for_sequence(m_portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);
+      auto result = Utils::get_table_fields_to_show_for_sequence(document, m_portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);
 
       //If the relationship does not allow editing, then mark all these fields as non-editable:
       //TODO: Prevent this in some other way:

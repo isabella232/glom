@@ -242,7 +242,7 @@ Box_Data::type_vecConstLayoutFields Box_Data::get_table_fields_to_show(const Gli
   if(pDoc)
   {
     Document::type_list_layout_groups mapGroupSequence = pDoc->get_data_layout_groups_plus_new_fields(m_layout_name, table_name, m_layout_platform);
-    return get_table_fields_to_show_for_sequence(table_name, mapGroupSequence);
+    return Utils::get_table_fields_to_show_for_sequence(pDoc, table_name, mapGroupSequence);
   }
   else
     return type_vecConstLayoutFields();

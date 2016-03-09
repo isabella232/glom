@@ -275,9 +275,6 @@ protected:
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
-  type_vecConstLayoutFields get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document::type_list_layout_groups& mapGroupSequence) const;
-  void get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vec_fields& all_db_fields, const std::shared_ptr<LayoutGroup>& group, type_vecConstLayoutFields& vecFields) const;
-
   bool get_primary_key_is_in_foundset(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value);
 
 
@@ -290,8 +287,6 @@ protected:
   void set_found_set_where_clause_for_portal(FoundSet& found_set, const std::shared_ptr<LayoutItem_Portal>& portal, const Gnome::Gda::Value& foreign_key_value);
 
   static Glib::RefPtr<Gnome::Gda::Connection> get_connection();
-
-  static bool get_field_primary_key_index_for_fields(const type_vec_fields& fields, guint& field_column);
 
   typedef std::vector<Glib::ustring> type_vec_strings;
   static type_vec_strings util_vecStrings_from_Fields(const type_vec_fields& fields);

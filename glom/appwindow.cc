@@ -35,6 +35,7 @@
 #include <glom/glade_utils.h>
 #include <libglom/algorithms_utils.h>
 #include <libglom/db_utils.h>
+#include <libglom/db_utils_export.h>
 #include <libglom/privs.h>
 #include <glom/python_embed/python_ui_callbacks.h>
 #include <glom/python_embed/glom_python.h>
@@ -2027,7 +2028,7 @@ void AppWindow::on_menu_file_save_as_example()
         Document::type_example_rows example_rows;
         FoundSet found_set;
         found_set.m_table_name = table_name;
-        m_pFrame->export_data_to_vector(example_rows, found_set, sequence);
+        DbUtils::export_data_to_vector(document, example_rows, found_set, sequence);
         //std::cout << "  debug after row_text=" << row_text << std::endl;
 
         document->set_table_example_data(table_name, example_rows);

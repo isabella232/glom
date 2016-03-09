@@ -51,6 +51,7 @@ Glib::ustring string_clean_for_xml(const Glib::ustring& src);
 //typedef Base_DB::type_vecLayoutFields type_vecLayoutFields;
 typedef std::vector< std::shared_ptr<LayoutItem_Field> > type_vecLayoutFields;
 typedef std::vector< std::shared_ptr<const LayoutItem_Field> > type_vecConstLayoutFields;
+typedef std::vector< std::shared_ptr<Field> > type_vec_fields;
 
 //TODO: Move these to their own file:
 
@@ -230,6 +231,8 @@ LayoutGroup::type_list_const_items get_layout_items_plus_primary_key(const Layou
  * plus the primary key, if the primary key is not already present in the list
  */
 LayoutGroup::type_list_items get_layout_items_plus_primary_key(const LayoutGroup::type_list_items& items, const std::shared_ptr<const Document>& document, const Glib::ustring& table_name);
+
+type_vecConstLayoutFields get_table_fields_to_show_for_sequence(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const Document::type_list_layout_groups& mapGroupSequence);
 
 std::string get_temp_file_path(const std::string& prefix = std::string(), const std::string& extension = std::string());
 Glib::ustring get_temp_file_uri(const std::string& prefix = std::string(), const std::string& extension = std::string());

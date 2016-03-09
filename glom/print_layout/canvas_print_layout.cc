@@ -1067,7 +1067,7 @@ Base_DB::type_vecConstLayoutFields Canvas_PrintLayout::get_portal_fields_to_show
     auto relationship = portal->get_relationship();
     if(relationship)
     {
-      type_vecConstLayoutFields result = get_table_fields_to_show_for_sequence(portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);
+      auto result = Utils::get_table_fields_to_show_for_sequence(document, portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);
 
       //If the relationship does not allow editing, then mark all these fields as non-editable:
       /* TODO: Find a better way to do this.
