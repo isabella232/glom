@@ -213,6 +213,12 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
 
 std::shared_ptr<Field> Dialog_FieldDefinition::get_field() const
 {
+  if(!m_Field)
+  {
+    std::cerr << G_STRFUNC << ": m_Field is null." << std::endl;
+    return std::shared_ptr<Field>();
+  }
+
   auto field = glom_sharedptr_clone(m_Field); //Start with the old details, to preserve anything that is not in our UI.
   // const_cast is necessary and save here for the window (jhs)
   auto sharedcnc = connect_to_server(const_cast<Dialog_FieldDefinition*>(this));

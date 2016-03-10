@@ -519,6 +519,11 @@ std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::
 void Box_DB_Table_Definition::on_field_definition_apply()
 {
   auto field_New = m_dialog_field_definition->get_field();
+  if(!field_New)
+  {
+    std::cerr << G_STRFUNC << ": field_New is null." << std::endl;
+    return;
+  }
 
   if(*m_Field_BeingEdited != *field_New)
   {
