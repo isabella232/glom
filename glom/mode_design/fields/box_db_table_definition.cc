@@ -54,7 +54,7 @@ void Box_DB_Table_Definition::init()
   if(m_dialog_default_formatting)
   {
     add_view(m_dialog_default_formatting);
-    m_dialog_default_formatting->signal_apply().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_field_definition_apply));
+    m_dialog_default_formatting->signal_apply().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_default_formatting_apply));
   }
 
   pack_start(m_AddDel);
