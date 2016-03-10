@@ -7,26 +7,26 @@ msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-02-02 07:17+0000\n"
-"PO-Revision-Date: 2014-02-02 10:02+0300\n"
-"Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>\n"
+"POT-Creation-Date: 2016-03-10 11:16+0000\n"
+"PO-Revision-Date: 2016-03-10 13:39+0200\n"
+"Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
 "Language-Team: team@lists.gnome.gr\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.0\n"
+"X-Generator: Poedit 1.8.7\n"
 "X-Project-Style: gnome\n"
 
-#: ../glom/application.cc:157 ../glom/glom_create_from_example.cc:259
+#: ../glom/application.cc:160 ../glom/glom_create_from_example.cc:259
 #: ../glom/glom_export_po.cc:112 ../glom/glom_export_po_all.cc:100
 #: ../glom/glom_import_po_all.cc:101 ../glom/glom_test_connection.cc:148
 msgid "Error while parsing command-line options: "
 msgstr "Σφάλμα κατά την ανάλυση επιλογών της γραμμής εντολών: "
 
 #. TODO: How can we just print them out?
-#: ../glom/application.cc:158 ../glom/glom_create_from_example.cc:260
+#: ../glom/application.cc:161 ../glom/glom_create_from_example.cc:260
 #: ../glom/glom_export_po.cc:113 ../glom/glom_export_po_all.cc:101
 #: ../glom/glom_import_po_all.cc:102 ../glom/glom_test_connection.cc:108
 msgid "Use --help to see a list of available command-line options."
@@ -34,12 +34,12 @@ msgstr ""
 "Χρησιμοποιήστε --help για να δείτε μια λίστα των διαθέσιμων επιλογών της "
 "γραμμής εντολών."
 
-#: ../glom/application.cc:199 ../glom/glom_create_from_example.cc:294
+#: ../glom/application.cc:202 ../glom/glom_create_from_example.cc:294
 #: ../glom/glom_export_po.cc:162
 msgid "Glom: The file does not exist."
 msgstr "Glom: Το αρχείο δεν υπάρχει."
 
-#: ../glom/application.cc:209 ../glom/glom_create_from_example.cc:304
+#: ../glom/application.cc:212 ../glom/glom_create_from_example.cc:304
 #: ../glom/glom_export_po.cc:172
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: Η διαδρομή αρχείου είναι ένας κατάλογος αντί για αρχείο."
@@ -64,15 +64,15 @@ msgid "© 2000-2011 Murray Cumming, Openismus GmbH"
 msgstr "© 2000-2011 Murray Cumming, Openismus GmbH"
 
 #. TODO: Put this in the generic bakery code.
-#: ../glom/appwindow.cc:577 ../glom/appwindow.cc:586
+#: ../glom/appwindow.cc:576 ../glom/appwindow.cc:585
 msgid "Open Failed"
 msgstr "Αποτυχία ανοίγματος"
 
-#: ../glom/appwindow.cc:578
+#: ../glom/appwindow.cc:577
 msgid "The document could not be found."
 msgstr "Το έγγραφο δεν μπόρεσε να βρεθεί."
 
-#: ../glom/appwindow.cc:587
+#: ../glom/appwindow.cc:586
 msgid ""
 "The document could not be opened because it was created or modified by a "
 "newer version of Glom."
@@ -81,14 +81,15 @@ msgstr ""
 "μια νεότερη έκδοση του Glom."
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
+#. This can only happen if we couldn't connect to the server at all.
 #. Warn the user, and let him try again:
-#: ../glom/appwindow.cc:643 ../glom/frame_glom.cc:2152
-#: ../glom/frame_glom.cc:2223
+#: ../glom/appwindow.cc:642 ../glom/frame_glom.cc:2125
+#: ../glom/frame_glom.cc:2194
 msgid "Connection Failed"
 msgstr "Αποτυχία σύνδεσης"
 
-#: ../glom/appwindow.cc:643 ../glom/frame_glom.cc:2152
-#: ../glom/frame_glom.cc:2223
+#: ../glom/appwindow.cc:642 ../glom/frame_glom.cc:2125
+#: ../glom/frame_glom.cc:2194
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an "
 "incorrect user name or password, or maybe the postgres database server is "
@@ -98,7 +99,7 @@ msgstr ""
 "εισάγατε ένα εσφαλμένο όνομα χρήστη ή κωδικό πρόσβασης, ή ίσως η βάση "
 "δεδομένων postgres του εξυπηρετητή δεν εκτελείται."
 
-#: ../glom/appwindow.cc:811
+#: ../glom/appwindow.cc:809
 msgid ""
 "The file cannot be opened because this version of Glom does not support self-"
 "hosting of databases."
@@ -106,7 +107,7 @@ msgstr ""
 "Το αρχείο δεν μπορεί να ανοιχτεί, επειδή αυτή η έκδοση του Glom δεν "
 "υποστηρίζει την αυτοφιλοξενία των βάσεων δεδομένων."
 
-#: ../glom/appwindow.cc:816 ../glom/appwindow.cc:825
+#: ../glom/appwindow.cc:814 ../glom/appwindow.cc:823
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "PostgreSQL databases."
@@ -114,7 +115,7 @@ msgstr ""
 "Το αρχείο δεν μπορεί να ανοιχτεί, επειδή αυτή η έκδοση του Glom δεν "
 "υποστηρίζει την βάσεις δεδομένων PostgreSQL."
 
-#: ../glom/appwindow.cc:833
+#: ../glom/appwindow.cc:831
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "SQLite databases."
@@ -123,15 +124,15 @@ msgstr ""
 "υποστηρίζει βάσεις δεδομένων SQLite."
 
 #. Warn the user.
-#: ../glom/appwindow.cc:851
+#: ../glom/appwindow.cc:849
 msgid "File Uses Unsupported Database Backend"
 msgstr "Το αρχείο χρησιμοποιεί ανυποστήρικτη υποστήριξη βάσης δεδομένων"
 
-#: ../glom/appwindow.cc:917
+#: ../glom/appwindow.cc:915
 msgid "Creating From Example File"
 msgstr "Δημιουργία από αρχείο παραδείγματος"
 
-#: ../glom/appwindow.cc:918
+#: ../glom/appwindow.cc:916
 msgid ""
 "To use this example file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -140,11 +141,11 @@ msgstr ""
 "ένα επεξεργάσιμο αντίγραφο του αρχείου. Μια νέα βάση δεδομένων θα "
 "δημιουργηθεί επίσης στον διακομιστή."
 
-#: ../glom/appwindow.cc:922
+#: ../glom/appwindow.cc:920
 msgid "Creating From Backup File"
 msgstr "Δημιουργία από αρχείο αντιγράφου ασφαλείας"
 
-#: ../glom/appwindow.cc:923
+#: ../glom/appwindow.cc:921
 msgid ""
 "To use this backup file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -153,11 +154,11 @@ msgstr ""
 "αποθηκεύσετε ένα επεξεργάσιμο αντίγραφο του αρχείου. Μια νέα βάση δεδομένων "
 "θα δημιουργηθεί επίσης στον διακομιστή."
 
-#: ../glom/appwindow.cc:984
+#: ../glom/appwindow.cc:982
 msgid "Opening Read-Only File."
 msgstr "Άνοιγμα αρχείου μόνο για ανάγνωση."
 
-#: ../glom/appwindow.cc:985
+#: ../glom/appwindow.cc:983
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes."
@@ -165,41 +166,74 @@ msgstr ""
 "Αυτό το αρχείο είναι μόνο για ανάγνωση, έτσι δεν θα μπορέσετε να εισάγετε "
 "την κατάσταση ανάπτυξης για να σχεδιάσετε αλλαγές."
 
-#: ../glom/appwindow.cc:987 ../glom/appwindow.cc:2142
-#: ../glom/appwindow.cc:2419 ../glom/appwindow.cc:2456
-#: ../glom/appwindow.cc:2832 ../glom/base_db_table_data.cc:393
-#: ../glom/box_withbuttons.cc:36 ../glom/box_withbuttons.cc:50
-#: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:831
-#: ../glom/filechooser_export.cc:39 ../glom/frame_glom.cc:513
-#: ../glom/frame_glom.cc:737 ../glom/frame_glom.cc:824
-#: ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:485
-#: ../glom/onlineglom_strings.cc:40 ../glom/bakery/dialog_offersave.cc:56
+#: ../glom/appwindow.cc:985 ../glom/appwindow.cc:2153 ../glom/appwindow.cc:2430
+#: ../glom/appwindow.cc:2467 ../glom/appwindow.cc:2843
+#: ../glom/base_db_table_data.cc:388 ../glom/box_withbuttons.cc:36
+#: ../glom/box_withbuttons.cc:50 ../glom/box_withbuttons.cc:64
+#: ../glom/dialog_existing_or_new.cc:802 ../glom/filechooser_export.cc:39
+#: ../glom/frame_glom.cc:513 ../glom/frame_glom.cc:737
+#: ../glom/frame_glom.cc:824 ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:472
+#: ../glom/onlineglom_strings.cc:40 ../glom/bakery/dialog_offersave.cc:57
 #: ../glom/main.cc:267 ../glom/main.cc:323
-#: ../glom/mode_design/fields/box_db_table_definition.cc:293
-#: ../glom/mode_design/fields/box_db_table_definition.cc:344
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:41
-#: ../glom/mode_design/print_layouts/box_print_layouts.cc:227
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:841
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:885
+#: ../glom/mode_design/fields/box_db_table_definition.cc:291
+#: ../glom/mode_design/fields/box_db_table_definition.cc:342
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:39
+#: ../glom/mode_design/print_layouts/box_print_layouts.cc:226
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:838
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:882
 #: ../glom/mode_design/script_library/dialog_script_library.cc:131
-#: ../glom/navigation/box_tables.cc:401
-#: ../glom/mode_design/translation/window_translations.cc:362
-#: ../glom/mode_design/translation/window_translations.cc:401
-#: ../glom/utility_widgets/imageglom.cc:687
-#: ../glom/utility_widgets/imageglom.cc:774
+#: ../glom/navigation/box_tables.cc:307 ../glom/navigation/box_tables.cc:401
+#: ../glom/mode_design/translation/window_translations.cc:357
+#: ../glom/mode_design/translation/window_translations.cc:396
+#: ../glom/utility_widgets/imageglom.cc:724
+#: ../glom/utility_widgets/imageglom.cc:811
+#: ../data/ui/operator/dialog_choose_date.glade.h:3
+#: ../data/ui/operator/dialog_connection.glade.h:3
+#: ../data/ui/operator/dialog_find_id.glade.h:2
+#: ../data/ui/operator/dialog_image_load_progress.glade.h:2
+#: ../data/ui/operator/dialog_image_save_progress.glade.h:2
+#: ../data/ui/operator/dialog_import_csv.glade.h:2
+#: ../data/ui/operator/dialog_import_csv_progress.glade.h:3
+#: ../data/ui/developer/dialog_add_related_table.glade.h:2
+#: ../data/ui/developer/dialog_change_language.glade.h:3
+#: ../data/ui/developer/dialog_choose_field.glade.h:2
+#: ../data/ui/developer/dialog_choose_relationship.glade.h:2
+#: ../data/ui/developer/dialog_choose_user.glade.h:3
+#: ../data/ui/developer/dialog_database_preferences.glade.h:3
+#: ../data/ui/developer/dialog_fieldslist.glade.h:2
+#: ../data/ui/developer/dialog_field_summary.glade.h:2
+#: ../data/ui/developer/dialog_flowtable.glade.h:2
+#: ../data/ui/developer/dialog_group_by.glade.h:2
+#: ../data/ui/developer/dialog_initial_password.glade.h:3
+#: ../data/ui/developer/dialog_line.glade.h:3
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:2
+#: ../data/ui/developer/dialog_new_group.glade.h:3
+#: ../data/ui/developer/dialog_new_library_script.glade.h:3
+#: ../data/ui/developer/dialog_notebook.glade.h:3
+#: ../data/ui/developer/dialog_sort_fields.glade.h:3
+#: ../data/ui/developer/dialog_translation_copy.glade.h:3
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:3
+#: ../data/ui/developer/dialog_user.glade.h:3
+#: ../data/ui/developer/window_button_script.glade.h:3
+#: ../data/ui/developer/window_default_formatting.glade.h:2
+#: ../data/ui/developer/window_field_calculation.glade.h:3
+#: ../data/ui/developer/window_field_definition_edit.glade.h:16
+#: ../data/ui/developer/window_imageobject.glade.h:3
+#: ../data/ui/developer/window_textobject.glade.h:3
+#: ../data/ui/developer/window_translations.glade.h:10
 msgid "_Cancel"
 msgstr "Ά_κυρο"
 
-#: ../glom/appwindow.cc:988
+#: ../glom/appwindow.cc:986
 msgid "Continue without Developer Mode"
 msgstr "Συνέχεια χωρίς την κατάσταση ανάπτυξης"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/appwindow.cc:1047
+#: ../glom/appwindow.cc:1045
 msgid "Database Not Found On Server"
 msgstr "Η βάση δεδομένων δεν βρέθηκε στον διακομιστή"
 
-#: ../glom/appwindow.cc:1047
+#: ../glom/appwindow.cc:1045
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
@@ -209,24 +243,24 @@ msgstr ""
 
 #. std::cerr might show some hints, but we don't want to confront the user with them:
 #. TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
-#: ../glom/appwindow.cc:1057
+#: ../glom/appwindow.cc:1055
 msgid "Problem Loading Document"
 msgstr "Πρόβλημα κατά την φόρτωση του εγγράφου"
 
-#: ../glom/appwindow.cc:1057
+#: ../glom/appwindow.cc:1055
 msgid "Glom could not load the document."
 msgstr "Το Glom δεν μπόρεσε να φορτώσει το έγγραφο."
 
-#: ../glom/appwindow.cc:1499
+#: ../glom/appwindow.cc:1498
 msgid "Creating Glom database from example file."
 msgstr "Δημιουργία βάσης δεδομένων από το Glom από παράδειγμα αρχείου."
 
-#: ../glom/appwindow.cc:1685
+#: ../glom/appwindow.cc:1680
 msgid "Creating Glom database from backup file."
 msgstr ""
 "Δημιουργία βάσης δεδομένων από το Glom από αρχείο αντιγράφου ασφαλείας."
 
-#: ../glom/appwindow.cc:1769
+#: ../glom/appwindow.cc:1764
 msgid ""
 "Glom could not create the new database. Maybe you do not have the necessary "
 "access rights. Please contact your system administrator."
@@ -235,37 +269,39 @@ msgstr ""
 "απαραίτητα δικαιώματα πρόσβασης. Παρακαλούμε επικοινωνήστε με τον "
 "διαχειριστή του συστήματος."
 
-#: ../glom/appwindow.cc:1770
+#: ../glom/appwindow.cc:1765
 msgid "Database Creation Failed"
 msgstr "Αποτυχία δημιουργίας βάσης δεδομένων"
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/appwindow.cc:2101 ../glom/bakery/appwindow_withdoc.cc:241
-#: ../glom/bakery/appwindow_withdoc.cc:292
+#: ../glom/appwindow.cc:2124 ../glom/bakery/appwindow_withdoc.cc:230
+#: ../glom/bakery/appwindow_withdoc.cc:274
 msgid "Save failed."
 msgstr "Αποτυχία αποθήκευσης."
 
-#: ../glom/appwindow.cc:2101
+#: ../glom/appwindow.cc:2124
 msgid "There was an error while saving the example file."
 msgstr "Συνέβη ένα σφάλμα κατά την αποθήκευση του αρχείου παραδείγματος."
 
-#: ../glom/appwindow.cc:2128 ../glom/appwindow.cc:2133
+#: ../glom/appwindow.cc:2139 ../glom/appwindow.cc:2144
 msgid "Save Document"
 msgstr "Αποθήκευση εγγράφου"
 
-#: ../glom/appwindow.cc:2143 ../glom/appwindow.cc:2420
-#: ../glom/bakery/dialog_offersave.cc:57
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:42
-#: ../glom/utility_widgets/imageglom.cc:688
+#: ../glom/appwindow.cc:2154 ../glom/appwindow.cc:2431
+#: ../glom/bakery/dialog_offersave.cc:58
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:40
+#: ../glom/utility_widgets/imageglom.cc:725
+#: ../data/ui/developer/window_default_formatting.glade.h:3
+#: ../data/ui/developer/window_field_definition_edit.glade.h:17
 msgid "_Save"
 msgstr "Απο_θήκευση"
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2220
+#: ../glom/appwindow.cc:2231
 msgid "Read-only File."
 msgstr "Αρχείο μόνο για ανάγνωση."
 
-#: ../glom/appwindow.cc:2220
+#: ../glom/appwindow.cc:2231
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -274,11 +310,11 @@ msgstr ""
 "δικαιώματα πρόσβασης."
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2234
+#: ../glom/appwindow.cc:2245
 msgid "Read-only Directory."
 msgstr "Κατάλογος μόνο για ανάγνωση."
 
-#: ../glom/appwindow.cc:2234
+#: ../glom/appwindow.cc:2245
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -286,19 +322,19 @@ msgstr ""
 "Δεν μπορείτε να δημιουργήσετε ένα αρχείο σε αυτόν τον κατάλογο, γιατί δεν "
 "έχετε επαρκή δικαιώματα πρόσβασης."
 
-#: ../glom/appwindow.cc:2251
+#: ../glom/appwindow.cc:2262
 msgid "Database Title missing"
 msgstr "Λείπει ο τίτλος της βάσης δεδομένων"
 
-#: ../glom/appwindow.cc:2251
+#: ../glom/appwindow.cc:2262
 msgid "You must specify a title for the new database."
 msgstr "Πρέπει να ορίσετε έναν τίτλο για τη νέα βάση δεδομένων."
 
-#: ../glom/appwindow.cc:2285 ../glom/frame_glom.cc:1904
+#: ../glom/appwindow.cc:2296 ../glom/frame_glom.cc:1903
 msgid "Directory Already Exists"
 msgstr "Ο κατάλογος υπάρχει ήδη"
 
-#: ../glom/appwindow.cc:2285 ../glom/frame_glom.cc:1905
+#: ../glom/appwindow.cc:2296 ../glom/frame_glom.cc:1904
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -309,78 +345,78 @@ msgstr ""
 "διαφορετικό όνομα αρχείου για έναν νέο κατάλογο."
 
 #. This actually creates the directory:
-#: ../glom/appwindow.cc:2418
+#: ../glom/appwindow.cc:2429
 msgid "Save Backup"
 msgstr "Αποθήκευση αντίγραφου ασφαλείας"
 
-#: ../glom/appwindow.cc:2434
+#: ../glom/appwindow.cc:2445
 msgid "Exporting backup"
 msgstr "Εξαγωγή του αντίγραφου ασφαλείας"
 
-#: ../glom/appwindow.cc:2440
+#: ../glom/appwindow.cc:2451
 msgid "Export Backup failed."
 msgstr "Απέτυχε η εξαγωγή του αντίγραφου ασφαλείας."
 
-#: ../glom/appwindow.cc:2440
+#: ../glom/appwindow.cc:2451
 msgid "There was an error while exporting the backup."
 msgstr "Προέκυψε ένα σφάλμα κατά την εξαγωγή του αντίγραφου ασφαλείας."
 
-#: ../glom/appwindow.cc:2446
+#: ../glom/appwindow.cc:2457
 msgid "Choose a backup file"
 msgstr "Επιλέξτε ένα αρχείο αντιγράφου ασφάλειας"
 
-#: ../glom/appwindow.cc:2451
+#: ../glom/appwindow.cc:2462
 msgid ".tar.gz Backup files"
 msgstr "Αρχεία αντιγράφων ασφαλείας .tar.gz"
 
-#: ../glom/appwindow.cc:2457
+#: ../glom/appwindow.cc:2468
 msgid "Restore"
 msgstr "Επαναφορά"
 
-#: ../glom/appwindow.cc:2482
+#: ../glom/appwindow.cc:2493
 msgid "Restoring backup"
 msgstr "Επαναφορά από αντίγραφο ασφαλείας"
 
-#: ../glom/appwindow.cc:2489
+#: ../glom/appwindow.cc:2500
 msgid "Restore Backup failed."
 msgstr "Απέτυχε η επαναφορά του αντίγραφου ασφαλείας."
 
-#: ../glom/appwindow.cc:2489
+#: ../glom/appwindow.cc:2500
 msgid "There was an error while extracting the backup."
 msgstr "Προέκυψε ένα σφάλμα κατά την εξαγωγή του αντίγραφου ασφαλείας."
 
-#: ../glom/appwindow.cc:2597
+#: ../glom/appwindow.cc:2608
 msgid " (read-only)"
 msgstr " (μόνο για ανάγνωση)"
 
-#: ../glom/appwindow.cc:2645 ../data/ui/operator/window_main.glade.h:2
+#: ../glom/appwindow.cc:2656 ../data/ui/operator/window_main.glade.h:2
 msgid "Processing"
 msgstr "Γίνεται επεξεργασία"
 
-#: ../glom/appwindow.cc:2831
+#: ../glom/appwindow.cc:2842
 msgid "Open Document"
 msgstr "Άνοιγμα εγγράφου"
 
 #. Add a button for related record navigation:
-#: ../glom/appwindow.cc:2833 ../glom/dialog_existing_or_new.cc:832
+#: ../glom/appwindow.cc:2844 ../glom/dialog_existing_or_new.cc:803
 #: ../glom/frame_glom.cc:738 ../glom/onlineglom_strings.cc:32
-#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:34
-#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:44
+#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:35
+#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:45
 #: ../glom/mode_data/datawidget/datawidget.cc:222
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:32
 #: ../data/ui/operator/window_main.glade.h:5
 msgid "_Open"
 msgstr "Ά_νοιγμα"
 
-#: ../glom/base_db.cc:122 ../glom/base_db.cc:132
+#: ../glom/base_db.cc:119 ../glom/base_db.cc:132
 msgid "Internal error"
 msgstr "Εσωτερικό σφάλμα"
 
-#: ../glom/base_db.cc:1385
+#: ../glom/base_db.cc:1343
 msgid "Value Is Not Unique"
 msgstr "Η τιμή δεν είναι μοναδική"
 
-#: ../glom/base_db.cc:1385
+#: ../glom/base_db.cc:1343
 msgid ""
 "The field's value must be unique, but a record with this value already "
 "exists."
@@ -390,7 +426,7 @@ msgstr ""
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/base_db_table_data.cc:256
+#: ../glom/base_db_table_data.cc:253
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the relationship does not allow automatic creation "
@@ -400,13 +436,13 @@ msgstr ""
 "σχετική εγγραφή δεν υπάρχει ακόμα και η σχέση δεν επιτρέπει αυτόματη "
 "δημιουργία των νέων σχετικών εγγραφών."
 
-#: ../glom/base_db_table_data.cc:257
+#: ../glom/base_db_table_data.cc:254
 msgid "Related Record Does Not Exist"
 msgstr "Η σχετική εγγραφή δεν υπάρχει"
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/base_db_table_data.cc:276
+#: ../glom/base_db_table_data.cc:273
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the key in the related record is auto-generated and "
@@ -417,12 +453,12 @@ msgstr ""
 "δημιουργείται αυτόματα και συνεπώς δεν μπορεί να δημιουργηθεί με την τιμή "
 "κλειδιού σε αυτήν την εγγραφή."
 
-#: ../glom/base_db_table_data.cc:278
+#: ../glom/base_db_table_data.cc:275
 msgid "Related Record Cannot Be Created"
 msgstr "Η σχετική εγγραφή δεν μπορεί να δημιουργηθεί"
 
 #. Ask the user for confirmation:
-#: ../glom/base_db_table_data.cc:389
+#: ../glom/base_db_table_data.cc:384
 msgid ""
 "Are you sure that you would like to delete this record? The data in this "
 "record will then be permanently lost."
@@ -430,21 +466,29 @@ msgstr ""
 "Είσαστε σίγουροι ότι θα θέλατε να διαγράψετε αυτήν την εγγραφή; Τα δεδομένα "
 "σε αυτήν την εγγραφή θα χαθούν τότε μόνιμα."
 
-#: ../glom/base_db_table_data.cc:390
+#: ../glom/base_db_table_data.cc:385
 msgid "Delete record"
 msgstr "Διαγραφή εγγραφής"
 
-#: ../glom/base_db_table_data.cc:394 ../glom/mode_data/box_data_details.cc:47
+#: ../glom/base_db_table_data.cc:389 ../glom/mode_data/box_data_details.cc:47
 #: ../glom/mode_design/users/dialog_groups_list.cc:85
-#: ../glom/print_layout/canvas_print_layout.cc:294
+#: ../glom/print_layout/canvas_print_layout.cc:292
 #: ../glom/utility_widgets/adddel/adddel.cc:251
-#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:33
-#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:43
-#: ../glom/mode_data/db_adddel/db_adddel.cc:262
+#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:34
+#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:44
+#: ../glom/mode_data/db_adddel/db_adddel.cc:261
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:31
 #: ../glom/utility_widgets/layoutwidgetutils.cc:59
 #: ../glom/utility_widgets/notebooklabelglom.cc:125
+#: ../data/ui/developer/dialog_fieldslist.glade.h:7
+#: ../data/ui/developer/dialog_notebook.glade.h:7
+#: ../data/ui/developer/dialog_sort_fields.glade.h:8
+#: ../data/ui/developer/window_data_layout_export.glade.h:6
+#: ../data/ui/developer/window_data_layout.glade.h:25
+#: ../data/ui/developer/window_groups.glade.h:4
 #: ../data/ui/developer/window_print_layout_edit.glade.h:8
+#: ../data/ui/developer/window_report_layout.glade.h:18
+#: ../data/ui/developer/window_users.glade.h:6
 msgid "_Delete"
 msgstr "_Διαγραφή"
 
@@ -482,71 +526,106 @@ msgstr ""
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:50
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:99
 #: ../glom/navigation/box_tables.cc:136
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:109
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:108
 msgid "Title"
 msgstr "Τίτλος"
 
-#: ../glom/box_reports.cc:228
+#: ../glom/box_reports.cc:227
 msgid "Are you sure that you want to rename this report?"
 msgstr "Είσαστε βέβαιοι ότι θέλετε να μετονομάσετε αυτήν την αναφορά;"
 
 #. TODO: Show old and new names?
-#: ../glom/box_reports.cc:229
+#: ../glom/box_reports.cc:228
 msgid "Rename Report"
 msgstr "Μετονομασία αναφοράς"
 
 #. namespace Glom
-#: ../glom.desktop.in.in.h:1 ../data/ui/operator/window_main.glade.h:1
+#: ../glom.appdata.xml.in.h:1 ../glom.desktop.in.in.h:1
+#: ../data/ui/operator/window_main.glade.h:1
 msgid "Glom"
 msgstr "Glom"
 
-#: ../glom.desktop.in.in.h:2
-msgid "A user-friendly database environment."
-msgstr "Ένα εύχρηστο περιβάλλον βάσης δεδομένων."
+#: ../glom.appdata.xml.in.h:2
+msgid "Database user interface"
+msgstr "Διεπαφή χρήστη για βάσεις δεδομένων"
 
-#: ../glom/dialog_connection.cc:205
+#: ../glom.appdata.xml.in.h:3
+msgid ""
+"With Glom you can design database systems - the database and the user "
+"interface."
+msgstr ""
+"Με το Glom μπορείτε να σχεδιάσετε συστήματα βάσεων δεδομένων - την ίδια τη "
+"βάση καθώς και τη διεπαφή χρήστη."
+
+#: ../glom.appdata.xml.in.h:4
+msgid ""
+"Glom has high-level features such as relationships, lookups, related fields, "
+"related records, calculated fields, drop-down choices, searching, reports, "
+"users and groups. It has simple Numeric, Text, Date, Time, Boolean, and "
+"Image field types."
+msgstr ""
+
+#: ../glom.appdata.xml.in.h:5
+msgid "The details view showing the whole record"
+msgstr "Η προβολή λεπτομερειών εμφανίζει όλες τις εγγραφές"
+
+#: ../glom.appdata.xml.in.h:6
+msgid "The list view showing all records in the table"
+msgstr "Η προβολή λίστας εμφανίζει όλες τις εγγραφές του πίνακα"
+
+#: ../glom.appdata.xml.in.h:7
+msgid "The details view showing records from a related table"
+msgstr "Η προβολή λεπτομερειών εμφανίζει όλες τις εγγραφές του σχετικού πίνακα"
+
+#: ../glom.desktop.in.in.h:2
+msgid "A user-friendly database environment"
+msgstr "Ένα εύχρηστο περιβάλλον βάσεων δεδομένων."
+
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../glom.desktop.in.in.h:4
+msgid "database;ui;tables;postgresql;forms;"
+msgstr ""
+"database;ui;tables;postgresql;forms;βάση;δεδομένα;πίνακας;πίνακες;φόρμες;"
+
+#: ../glom/dialog_connection.cc:199
 msgid "Not yet created."
 msgstr "Δεν δημιουργήθηκε ακόμα."
-
-#: ../glom/dialog_existing_or_new.cc:50
-msgid "No recently used documents available."
-msgstr "Δεν υπάρχουν διαθέσιμα πρόσφατα χρησιμοποιημένα έγγραφα."
 
 #: ../glom/dialog_existing_or_new.cc:51
 msgid "No sessions found on the local network."
 msgstr "Δεν βρέθηκαν συνεδρίες στο τοπικό δίκτυο."
 
-#: ../glom/dialog_existing_or_new.cc:54
-msgid "No templates available."
-msgstr "Δεν υπάρχουν διαθέσιμα πρότυπα."
-
-#: ../glom/dialog_existing_or_new.cc:122
+#: ../glom/dialog_existing_or_new.cc:119
 msgid "Open a Document"
 msgstr "Άνοιγμα εγγράφου"
 
-#: ../glom/dialog_existing_or_new.cc:141
-#: ../glom/utility_widgets/imageglom.cc:958
+#: ../glom/dialog_existing_or_new.cc:138
+#: ../glom/utility_widgets/imageglom.cc:995
 msgid "Select File"
 msgstr "Επιλογή αρχείου"
 
-#: ../glom/dialog_existing_or_new.cc:145
+#: ../glom/dialog_existing_or_new.cc:142
 msgid "Local Network"
 msgstr "Τοπικό δίκτυο"
 
-#: ../glom/dialog_existing_or_new.cc:149
+#: ../glom/dialog_existing_or_new.cc:146
 msgid "Recently Opened"
 msgstr "Πρόσφατα ανοιγμένα"
 
-#: ../glom/dialog_existing_or_new.cc:222
+#: ../glom/dialog_existing_or_new.cc:185
+msgid "No recently used documents available."
+msgstr "Δεν υπάρχουν διαθέσιμα πρόσφατα χρησιμοποιημένα έγγραφα."
+
+#: ../glom/dialog_existing_or_new.cc:217
 msgid "New Empty Document"
 msgstr "Νέο κενό έγγραφο"
 
-#: ../glom/dialog_existing_or_new.cc:225
+#: ../glom/dialog_existing_or_new.cc:220
 msgid "New From Template"
 msgstr "Νέο από πρότυπο"
 
 #. Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
-#: ../glom/dialog_existing_or_new.cc:748
+#: ../glom/dialog_existing_or_new.cc:719
 #, c-format
 msgid "%s on %s (via %s)"
 msgstr "%s στο %s (μέσω %s)"
@@ -571,12 +650,13 @@ msgstr "Εύρεση όλων"
 msgid "No Table Selected"
 msgstr "Δεν επιλέχτηκε πίνακας"
 
-#: ../glom/frame_glom.cc:111 ../data/ui/operator/dialog_find_id.glade.h:4
+#: ../glom/frame_glom.cc:111 ../data/ui/operator/dialog_find_id.glade.h:5
 msgid "Quick _search:"
 msgstr "Γρήγορη _αναζήτηση:"
 
 #: ../glom/frame_glom.cc:122 ../glom/mode_data/box_data.cc:42
 #: ../glom/mode_data/datawidget/datawidget.cc:232
+#: ../data/ui/operator/dialog_find_id.glade.h:6
 #: ../data/ui/operator/window_main.glade.h:18
 msgid "_Find"
 msgstr "Εύ_ρεση"
@@ -713,13 +793,12 @@ msgstr ""
 msgid "_Stop Sharing"
 msgstr "_Διακοπή κοινής χρήσης"
 
-#: ../glom/frame_glom.cc:980 ../glom/frame_glom.cc:2209
+#: ../glom/frame_glom.cc:980 ../glom/frame_glom.cc:2180
 msgid "Stopping Database Server"
 msgstr "Διακόπτεται ο διακομιστής της βάσης δεδομένων"
 
-#. Do startup, such as starting the self-hosting database server
-#: ../glom/frame_glom.cc:983 ../glom/frame_glom.cc:2096
-#: ../glom/frame_glom.cc:2255
+#: ../glom/frame_glom.cc:983 ../glom/frame_glom.cc:2107
+#: ../glom/frame_glom.cc:2226
 msgid "Starting Database Server"
 msgstr "Ξεκινά ο διακομιστής της βάσης δεδομένων"
 
@@ -755,11 +834,11 @@ msgstr "Χρειάζονται περισσότερες πληροφορίες"
 msgid "You must specify a field, a table name, and a relationship name."
 msgstr "Πρέπει να ορίσετε ένα πεδίο, ένα όνομα πίνακα και ένα όνομα σχέσης."
 
-#: ../glom/frame_glom.cc:1207
+#: ../glom/frame_glom.cc:1206
 msgid "Related Table Created"
 msgstr "Ο σχετικός πίνακας δημιουργήθηκε"
 
-#: ../glom/frame_glom.cc:1207
+#: ../glom/frame_glom.cc:1206
 msgid "The new related table has been created."
 msgstr "Ο νέος σχετικός πίνακας δημιουργήθηκε."
 
@@ -782,20 +861,20 @@ msgstr ""
 msgid "No Find Criteria"
 msgstr "Χωρίς κριτηρίων εύρεσης"
 
-#: ../glom/frame_glom.cc:1710 ../glom/onlineglom_strings.cc:33
+#: ../glom/frame_glom.cc:1708 ../glom/onlineglom_strings.cc:33
 #: ../data/ui/developer/box_reports.glade.h:1
 msgid "Reports"
 msgstr "Αναφορές"
 
-#: ../glom/frame_glom.cc:1753 ../data/ui/developer/box_print_layouts.glade.h:1
+#: ../glom/frame_glom.cc:1752 ../data/ui/developer/box_print_layouts.glade.h:1
 msgid "Print Layouts"
 msgstr "Διατάξεις εκτύπωσης"
 
-#: ../glom/frame_glom.cc:1909
+#: ../glom/frame_glom.cc:1908
 msgid "Could Not Create Directory"
 msgstr "Αδύνατη η δημιουργία καταλόγου"
 
-#: ../glom/frame_glom.cc:1910
+#: ../glom/frame_glom.cc:1909
 msgid ""
 "There was an error when attempting to create the directory for the new "
 "database files."
@@ -803,58 +882,54 @@ msgstr ""
 "Υπήρξε ένα σφάλμα κατά την προσπάθεια δημιουργίας του καταλόγου για τα νέα "
 "αρχεία βάσης δεδομένων."
 
-#: ../glom/frame_glom.cc:1914
+#: ../glom/frame_glom.cc:1913
 msgid "Could Not Start Database Server"
 msgstr "Αδύνατη η έναρξη διακομιστή βάσης δεδομένων"
 
-#: ../glom/frame_glom.cc:1915
+#: ../glom/frame_glom.cc:1914
 msgid "There was an error when attempting to start the database server."
 msgstr ""
 "Υπήρξε ένα σφάλμα κατά την προσπάθεια εκκίνησης του διακομιστή βάσης "
 "δεδομένων."
 
-#: ../glom/frame_glom.cc:2028
+#: ../glom/frame_glom.cc:2037
 msgid "Initializing Database Data"
 msgstr "Αρχικοποίηση δεδομένων βάσης δεδομένων"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2583
+#: ../glom/frame_glom.cc:2562
 msgid "All"
 msgstr "Όλα"
 
-#: ../glom/utils_ui.cc:141
-msgid "No help file available"
-msgstr "Δεν υπάρχει διαθέσιμο αρχείο βοήθειας"
-
-#: ../glom/utils_ui.cc:159
+#: ../glom/utils_ui.cc:146
 msgid "Could not display help: %1"
 msgstr "Αδύνατη ή προβολή βοήθειας: %1"
 
-#: ../glom/utils_ui.cc:479
+#: ../glom/utils_ui.cc:466
 msgid "Your find criteria did not match any records in the table."
 msgstr "Τα κριτήρια εύρεσης δεν ταιριάζουν με καμία εγγραφή στον πίνακα."
 
-#: ../glom/utils_ui.cc:481
+#: ../glom/utils_ui.cc:468
 msgid "No Records Found"
 msgstr "Δε βρέθηκαν εγγραφές"
 
-#: ../glom/utils_ui.cc:486
+#: ../glom/utils_ui.cc:473
 msgid "New Find"
 msgstr "Νέα εύρεση"
 
-#: ../glom/utils_ui.cc:497
+#: ../glom/utils_ui.cc:484
 msgid "Report Finished"
 msgstr "Η αναφορά ολοκληρώθηκε"
 
-#: ../glom/utils_ui.cc:497
+#: ../glom/utils_ui.cc:484
 msgid "The report will now be opened in your web browser."
 msgstr "Η αναφορά τώρα θα ανοιχτεί στον περιηγητή ιστού."
 
-#: ../glom/utils_ui.cc:536
+#: ../glom/utils_ui.cc:528
 msgid "Script Uses PyGTK 2"
 msgstr "Το σενάριο χρησιμοποιεί PyGTK 2"
 
-#: ../glom/utils_ui.cc:537
+#: ../glom/utils_ui.cc:529
 msgid ""
 "Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, "
 "and attempting to use pygtk 2 would cause Glom to crash."
@@ -878,7 +953,7 @@ msgstr "Πίσω στη λίστα"
 
 #. Translators: This is a noun. It is a notebook tab title.
 #. Details column:
-#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1435
+#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1407
 #: ../glom/mode_data/notebook_data.cc:42
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:215
 #: ../glom/mode_find/notebook_find.cc:38
@@ -902,7 +977,7 @@ msgid "Username"
 msgstr "Όνομα χρήστη"
 
 #: ../glom/onlineglom_strings.cc:38
-#: ../data/ui/operator/dialog_connection.glade.h:4
+#: ../data/ui/operator/dialog_connection.glade.h:7
 msgid "Password"
 msgstr "Κωδικός πρόσβασης"
 
@@ -934,30 +1009,30 @@ msgstr "Εγγραφή"
 msgid "Forgot Password"
 msgstr "Ξέχασα το συνθηματικό"
 
-#: ../glom/bakery/appwindow_withdoc.cc:241
-#: ../glom/bakery/appwindow_withdoc.cc:292
+#: ../glom/bakery/appwindow_withdoc.cc:230
+#: ../glom/bakery/appwindow_withdoc.cc:274
 msgid ""
 "There was an error while saving the file. Your changes have not been saved."
 msgstr ""
 "Υπήρξε ένα σφάλμα κατά την αποθήκευση του αρχείου. Οι αλλαγές σας δεν "
 "αποθηκεύτηκαν."
 
-#: ../glom/bakery/appwindow_withdoc.cc:497
+#: ../glom/bakery/appwindow_withdoc.cc:479
 msgid "Open Failed."
 msgstr "Αποτυχία ανοίγματος."
 
-#: ../glom/bakery/appwindow_withdoc.cc:497
+#: ../glom/bakery/appwindow_withdoc.cc:479
 msgid "The document could not be opened."
 msgstr "Αδύνατο το άνοιγμα του εγγράφου."
 
-#: ../glom/bakery/dialog_offersave.cc:30
+#: ../glom/bakery/dialog_offersave.cc:31
 msgid "This document has unsaved changes. Would you like to save the document?"
 msgstr ""
 "Το έγγραφο έχει μη αποθηκευμένες αλλαγές. Θέλετε να αποθηκεύσετε το έγγραφο;"
 
 #. TODO: Can we use filename_display_basename() with a URI?
 #. No, almost certainly not. murrayc.
-#: ../glom/bakery/dialog_offersave.cc:37
+#: ../glom/bakery/dialog_offersave.cc:38
 msgid ""
 "Document:\n"
 "%1"
@@ -965,15 +1040,15 @@ msgstr ""
 "Έγγραφο:\n"
 "%1"
 
-#: ../glom/bakery/dialog_offersave.cc:49
+#: ../glom/bakery/dialog_offersave.cc:50
 msgid "Close without Saving"
 msgstr "Κλείσιμο χωρίς αποθήκευση"
 
-#: ../glom/bakery/dialog_offersave.cc:55
+#: ../glom/bakery/dialog_offersave.cc:56
 msgid "Discard"
 msgstr "Απόρριψη"
 
-#: ../glom/import_csv/dialog_import_csv.cc:99
+#: ../glom/import_csv/dialog_import_csv.cc:101
 msgid "Auto Detect"
 msgstr "Αυτόματη ανίχνευση"
 
@@ -1010,7 +1085,7 @@ msgstr "Εισαγωγή από αρχείο CSV"
 msgid "<None>"
 msgstr "<Κανένα>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:274
+#: ../glom/import_csv/dialog_import_csv.cc:273
 msgid "Error Importing CSV File"
 msgstr "Σφάλμα κατά την εισαγωγή αρχείου CSV"
 
@@ -1051,7 +1126,7 @@ msgstr "<Αποτυχία εισαγωγής>"
 msgid "<Picture>"
 msgstr "<Εικόνα>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:710
+#: ../glom/import_csv/dialog_import_csv.cc:711
 msgid ""
 "One column needs to be assigned the table's primary key (<b>%1</b>) as "
 "target field before importing"
@@ -1059,23 +1134,23 @@ msgstr ""
 "Μια στήλη χρειάζεται να εκχωρηθεί στο πρωτεύον κλειδί του πίνακα (<b>%1</b>) "
 "ως πεδίο προορισμού πριν την εισαγωγή"
 
-#: ../glom/import_csv/dialog_import_csv.cc:738
+#: ../glom/import_csv/dialog_import_csv.cc:739
 msgid "Could Not Open file"
 msgstr "Αδύνατο το άνοιγμα του αρχείου"
 
-#: ../glom/import_csv/dialog_import_csv.cc:739
+#: ../glom/import_csv/dialog_import_csv.cc:740
 msgid "The file at \"%1\" could not be opened: %2"
 msgstr "Το αρχείο στο \"%1\" δεν μπόρεσε να ανοιχθεί: %2"
 
-#: ../glom/import_csv/dialog_import_csv.cc:745
+#: ../glom/import_csv/dialog_import_csv.cc:746
 msgid "Import From CSV File: %1"
 msgstr "Εισαγωγή από αρχείο CSV: %1"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:85
+#: ../glom/import_csv/dialog_import_csv_progress.cc:87
 msgid "Parsing CSV file %1"
 msgstr "Ανάλυση αρχείου CSV %1"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:175
+#: ../glom/import_csv/dialog_import_csv_progress.cc:177
 msgid "Import complete\n"
 msgstr "Η εισαγωγή ολοκληρώθηκε\n"
 
@@ -1095,7 +1170,7 @@ msgstr ""
 "Προειδοποίηση: Εισαγωγή γραμμής %1: Η τιμή για το πεδίο %2, \"%3\" δεν "
 "μπόρεσε να μετατραπεί σε τύπο πεδίου. Η τιμή δεν θα εισαχθεί.\n"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:238
+#: ../glom/import_csv/dialog_import_csv_progress.cc:239
 msgid ""
 "Error importing row %1: Cannot import the row because the primary key is "
 "empty.\n"
@@ -1105,128 +1180,128 @@ msgstr ""
 
 #. TODO: Can we get this from anywhere else, such as iso-codes? murrayc
 #. TODO: Make this generally more efficient.
-#: ../glom/import_csv/file_encodings.cc:93
-#: ../glom/import_csv/file_encodings.cc:94
-#: ../glom/import_csv/file_encodings.cc:95
-#: ../glom/import_csv/file_encodings.cc:96
-#: ../glom/import_csv/file_encodings.cc:97
-#: ../glom/import_csv/file_encodings.cc:98
-#: ../glom/import_csv/file_encodings.cc:99
-#: ../glom/import_csv/file_encodings.cc:100
+#: ../glom/import_csv/file_encodings.cc:68
+#: ../glom/import_csv/file_encodings.cc:69
+#: ../glom/import_csv/file_encodings.cc:70
+#: ../glom/import_csv/file_encodings.cc:71
+#: ../glom/import_csv/file_encodings.cc:72
+#: ../glom/import_csv/file_encodings.cc:73
+#: ../glom/import_csv/file_encodings.cc:74
+#: ../glom/import_csv/file_encodings.cc:75
 msgid "Unicode"
 msgstr "Unicode"
 
 #. This just adds a separator in the combo box
-#: ../glom/import_csv/file_encodings.cc:102
-#: ../glom/import_csv/file_encodings.cc:115
-#: ../glom/import_csv/file_encodings.cc:120
+#: ../glom/import_csv/file_encodings.cc:77
+#: ../glom/import_csv/file_encodings.cc:90
+#: ../glom/import_csv/file_encodings.cc:95
 msgid "Western"
 msgstr "Δυτική"
 
 #. This just adds a separator in the combo box
-#: ../glom/import_csv/file_encodings.cc:103
-#: ../glom/import_csv/file_encodings.cc:118
+#: ../glom/import_csv/file_encodings.cc:78
+#: ../glom/import_csv/file_encodings.cc:93
 msgid "Central European"
 msgstr "Κεντρικής Ευρώπης"
 
-#: ../glom/import_csv/file_encodings.cc:104
+#: ../glom/import_csv/file_encodings.cc:79
 msgid "South European"
 msgstr "Νότιας Ευρώπης"
 
-#: ../glom/import_csv/file_encodings.cc:105
-#: ../glom/import_csv/file_encodings.cc:113
-#: ../glom/import_csv/file_encodings.cc:125
+#: ../glom/import_csv/file_encodings.cc:80
+#: ../glom/import_csv/file_encodings.cc:88
+#: ../glom/import_csv/file_encodings.cc:100
 msgid "Baltic"
 msgstr "Βαλτικά"
 
-#: ../glom/import_csv/file_encodings.cc:106
-#: ../glom/import_csv/file_encodings.cc:119
+#: ../glom/import_csv/file_encodings.cc:81
+#: ../glom/import_csv/file_encodings.cc:94
 msgid "Cyrillic"
 msgstr "Κυριλλικά"
 
-#: ../glom/import_csv/file_encodings.cc:107
-#: ../glom/import_csv/file_encodings.cc:124
+#: ../glom/import_csv/file_encodings.cc:82
+#: ../glom/import_csv/file_encodings.cc:99
 msgid "Arabic"
 msgstr "Αραβικά"
 
-#: ../glom/import_csv/file_encodings.cc:108
-#: ../glom/import_csv/file_encodings.cc:121
+#: ../glom/import_csv/file_encodings.cc:83
+#: ../glom/import_csv/file_encodings.cc:96
 msgid "Greek"
 msgstr "Ελληνικά"
 
-#: ../glom/import_csv/file_encodings.cc:109
+#: ../glom/import_csv/file_encodings.cc:84
 msgid "Hebrew Visual"
 msgstr "Οπτικά εβραϊκά"
 
-#: ../glom/import_csv/file_encodings.cc:110
-#: ../glom/import_csv/file_encodings.cc:123
+#: ../glom/import_csv/file_encodings.cc:85
+#: ../glom/import_csv/file_encodings.cc:98
 msgid "Hebrew"
 msgstr "Εβραϊκά"
 
-#: ../glom/import_csv/file_encodings.cc:111
-#: ../glom/import_csv/file_encodings.cc:122
+#: ../glom/import_csv/file_encodings.cc:86
+#: ../glom/import_csv/file_encodings.cc:97
 msgid "Turkish"
 msgstr "Τουρκικά"
 
-#: ../glom/import_csv/file_encodings.cc:112
+#: ../glom/import_csv/file_encodings.cc:87
 msgid "Nordic"
 msgstr "Σκανδιναβικά"
 
-#: ../glom/import_csv/file_encodings.cc:114
+#: ../glom/import_csv/file_encodings.cc:89
 msgid "Celtic"
 msgstr "Κέλτικα"
 
-#: ../glom/import_csv/file_encodings.cc:116
+#: ../glom/import_csv/file_encodings.cc:91
 msgid "Romanian"
 msgstr "Ρουμάνικα"
 
-#: ../glom/import_csv/file_encodings.cc:126
+#: ../glom/import_csv/file_encodings.cc:101
 msgid "Vietnamese"
 msgstr "Βιετναμέζικα"
 
 #. Translators: This means an unknown or unnacceptable value type in a database.
-#: ../glom/libglom/data_structure/field.cc:663
+#: ../glom/libglom/data_structure/field.cc:662
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:151
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:159
 msgid "Invalid"
 msgstr "Άκυρο"
 
 #. Translators: This means a numeric value type in a database.
-#: ../glom/libglom/data_structure/field.cc:666
+#: ../glom/libglom/data_structure/field.cc:665
 msgid "Number"
 msgstr "Αριθμός"
 
 #. Translators: This means a text/string value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:669
+#: ../glom/libglom/data_structure/field.cc:668
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
-#: ../glom/libglom/data_structure/translatable_item.cc:258
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1159
+#: ../glom/libglom/data_structure/translatable_item.cc:268
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1165
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
 msgid "Text"
 msgstr "Κείμενο"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:672
+#: ../glom/libglom/data_structure/field.cc:671
 msgid "Time"
 msgstr "Χρόνος"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:675
+#: ../glom/libglom/data_structure/field.cc:674
 msgid "Date"
 msgstr "Ημερομηνία"
 
 #. Translators: This means a true/false value type in a database.
-#: ../glom/libglom/data_structure/field.cc:678
+#: ../glom/libglom/data_structure/field.cc:677
 msgid "Boolean"
 msgstr "Τιμή Μπουλ"
 
 #. Translators: This means a picture value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:681
+#: ../glom/libglom/data_structure/field.cc:680
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
-#: ../glom/libglom/data_structure/translatable_item.cc:252
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1166
+#: ../glom/libglom/data_structure/translatable_item.cc:262
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1172
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
 #: ../glom/utility_widgets/layouttoolbar.cc:46
 msgid "Image"
@@ -1239,13 +1314,13 @@ msgstr "Εικόνα"
 #. * and default to %d/%m/%Y" if it detects a problem, but that might not be
 #. * correct for your locale.
 #. * Thanks.
-#: ../glom/libglom/data_structure/glomconversions.cc:99
+#: ../glom/libglom/data_structure/glomconversions.cc:144
 #, no-c-format
 msgid "%x"
 msgstr "%x"
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
-#: ../glom/libglom/data_structure/glomconversions.cc:147
+#: ../glom/libglom/data_structure/glomconversions.cc:208
 msgid ""
 "ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not "
 "parse a date's text representation that it generated itself, in this locale."
@@ -1255,7 +1330,7 @@ msgstr ""
 "δημιουργήθηκε αφεαυτής, σε αυτό το τοπικό."
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
-#: ../glom/libglom/data_structure/glomconversions.cc:183
+#: ../glom/libglom/data_structure/glomconversions.cc:244
 msgid ""
 "ERROR: sanity_check_date_text_representation_uses_4_digit_year(): Sanity "
 "check failed: Glom does not seem to use 4 digits to display years in a "
@@ -1271,7 +1346,7 @@ msgstr ""
 "σφάλμα - δείτε http://www.glom.org"
 
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/layout/layoutgroup.cc:422
+#: ../glom/libglom/data_structure/layout/layoutgroup.cc:413
 #: ../glom/utility_widgets/layouttoolbar.cc:34
 #: ../glom/utility_widgets/layouttoolbar.cc:44
 #: ../glom/utility_widgets/notebooklabelglom.cc:78
@@ -1280,8 +1355,8 @@ msgstr "Ομάδα"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:68
-#: ../glom/libglom/data_structure/translatable_item.cc:248
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1152
+#: ../glom/libglom/data_structure/translatable_item.cc:258
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1158
 #: ../glom/utility_widgets/layouttoolbar.cc:42
 msgid "Button"
 msgstr "Κουμπί"
@@ -1293,8 +1368,8 @@ msgstr "Πύλη ημερολογίου"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:229
-#: ../glom/libglom/data_structure/translatable_item.cc:230
-#: ../glom/mode_design/dialog_database_preferences.cc:62
+#: ../glom/libglom/data_structure/translatable_item.cc:244
+#: ../glom/mode_design/dialog_database_preferences.cc:63
 #: ../data/ui/developer/window_field_definition_edit.glade.h:8
 msgid "Field"
 msgstr "Πεδίο"
@@ -1315,10 +1390,10 @@ msgstr "Δεσμευτικό θέσης"
 #. parent table - not relevant
 #. TODO: This prevents "" as a real title.
 #. Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
-#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:414
-#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:423
-#: ../glom/mode_data/box_data_portal.cc:116
-#: ../glom/mode_data/box_data_portal.cc:128
+#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:413
+#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:422
+#: ../glom/mode_data/box_data_portal.cc:113
+#: ../glom/mode_data/box_data_portal.cc:125
 msgid "Undefined Table"
 msgstr "Αόριστος πίνακας"
 
@@ -1346,7 +1421,7 @@ msgstr "Πλήθος"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:56
-#: ../data/ui/developer/window_report_layout.glade.h:12
+#: ../data/ui/developer/window_report_layout.glade.h:13
 msgid "Footer"
 msgstr "Υποσέλιδο"
 
@@ -1358,7 +1433,7 @@ msgstr "Ομαδοποίηση κατά"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:56
-#: ../data/ui/developer/window_report_layout.glade.h:9
+#: ../data/ui/developer/window_report_layout.glade.h:10
 msgid "Header"
 msgstr "Κεφαλίδα"
 
@@ -1372,140 +1447,123 @@ msgstr "Περίληψη"
 msgid "Vertical Group"
 msgstr "Κάθετη ομάδα"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:232
+#: ../glom/libglom/data_structure/translatable_item.cc:246
 msgid "Custom Title"
 msgstr "Προσαρμοσμένος τίτλος"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:234
+#: ../glom/libglom/data_structure/translatable_item.cc:248
 msgid "Relationship"
 msgstr "Σχέση"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:236
-msgid "Layout Item"
-msgstr "Στοιχείο διάταξης"
-
-#: ../glom/libglom/data_structure/translatable_item.cc:238
+#: ../glom/libglom/data_structure/translatable_item.cc:250
 msgid "Print Layout"
 msgstr "Διάταξη εκτύπωσης"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:240
+#: ../glom/libglom/data_structure/translatable_item.cc:252
 msgid "Report"
 msgstr "Αναφορά"
 
 #. Tables:
-#: ../glom/libglom/data_structure/translatable_item.cc:242
+#: ../glom/libglom/data_structure/translatable_item.cc:254
 #: ../glom/mode_design/box_db_table_relationships.cc:53
-#: ../glom/mode_design/dialog_database_preferences.cc:61
+#: ../glom/mode_design/dialog_database_preferences.cc:62
 #: ../glom/mode_design/users/dialog_groups_list.cc:73
 #: ../glom/navigation/box_tables.cc:131
 msgid "Table"
 msgstr "Πίνακας"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:244
-msgid "Layout Group"
-msgstr "Ομάδα διάταξης"
+#: ../glom/libglom/data_structure/translatable_item.cc:256
+msgid "Layout Item"
+msgstr "Στοιχείο διάταξης"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:246
-msgid "Field Title"
-msgstr "Τίτλος πεδίου"
-
-#: ../glom/libglom/data_structure/translatable_item.cc:250
+#: ../glom/libglom/data_structure/translatable_item.cc:260
 msgid "Text Item"
 msgstr "Στοιχείο κειμένου"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:254
+#: ../glom/libglom/data_structure/translatable_item.cc:264
 msgid "Field Choice"
 msgstr "Επιλογή πεδίου"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:256
+#: ../glom/libglom/data_structure/translatable_item.cc:266
 msgid "Database Title"
 msgstr "Τίτλος βάσης δεδομένων"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:260
+#: ../glom/libglom/data_structure/translatable_item.cc:270
 #: ../glom/mode_design/translation/window_translations.cc:237
 msgid "Unknown"
 msgstr "Άγνωστο"
 
-#: ../glom/libglom/document/document.cc:519
-#: ../glom/libglom/document/document.cc:537
+#: ../glom/libglom/document/document.cc:510
+#: ../glom/libglom/document/document.cc:528
 msgid "System Preferences"
 msgstr "Προτιμήσεις συστήματος"
 
-#: ../glom/libglom/document/document.cc:550
+#: ../glom/libglom/document/document.cc:541
 msgid "System Name"
 msgstr "Όνομα συστήματος"
 
-#: ../glom/libglom/document/document.cc:556
+#: ../glom/libglom/document/document.cc:547
 msgid "Organisation Name"
 msgstr "Όνομα οργανισμού"
 
-#: ../glom/libglom/document/document.cc:562
+#: ../glom/libglom/document/document.cc:553
 msgid "Organisation Logo"
 msgstr "Λογότυπος οργανισμού"
 
-#: ../glom/libglom/document/document.cc:568
+#: ../glom/libglom/document/document.cc:559
 msgid "Street"
 msgstr "Οδός"
 
-#: ../glom/libglom/document/document.cc:574
+#: ../glom/libglom/document/document.cc:565
 msgid "Street (line 2)"
 msgstr "Οδός (γραμμή 2)"
 
-#: ../glom/libglom/document/document.cc:580
+#: ../glom/libglom/document/document.cc:571
 msgid "City"
 msgstr "Πόλη"
 
-#: ../glom/libglom/document/document.cc:586
+#: ../glom/libglom/document/document.cc:577
 msgid "State"
 msgstr "Πολιτεία"
 
-#: ../glom/libglom/document/document.cc:592
+#: ../glom/libglom/document/document.cc:583
 msgid "Country"
 msgstr "Χώρα"
 
-#: ../glom/libglom/document/document.cc:598
+#: ../glom/libglom/document/document.cc:589
 msgid "Zip Code"
 msgstr "Ταχ. κώδικας"
 
-#: ../glom/libglom/document/document.cc:1429
+#: ../glom/libglom/document/document.cc:1401
 msgid "Overview"
 msgstr "Επισκόπηση"
 
-#: ../glom/libglom/document/bakery/document.cc:424
+#: ../glom/libglom/document/bakery/document.cc:425
 msgid "Untitled"
 msgstr "Ανώνυμο"
-
-#: ../glom/libglom/gst-package.c:56
-msgid "Could not install package"
-msgstr "Αδυναμία εγκατάστασης του πακέτου"
-
-#: ../glom/libglom/gst-package.c:74
-msgid "The necessary applications to install the package could not be found."
-msgstr ""
-"Οι απαραίτητες εφαρμογές για εγκατάσταση του πακέτου δεν μπόρεσαν να βρεθούν."
 
 #. Show only debug output
 #: ../glom/libglom/translations_po.cc:70
 msgid "Gettext-Warning: "
 msgstr "Προειδοποίηση-Gettext: "
 
-#: ../glom/libglom/db_utils.cc:514
+#: ../glom/libglom/db_utils.cc:524
 msgid "System: Auto Increments"
 msgstr "Σύστημα: Αυτόματες αυξήσεις"
 
-#: ../glom/libglom/db_utils.cc:1186
+#: ../glom/libglom/db_utils.cc:1185
 #: ../glom/mode_design/users/dialog_groups_list.cc:70
 msgid "Description"
 msgstr "Περιγραφή"
 
-#: ../glom/libglom/db_utils.cc:1193
+#: ../glom/libglom/db_utils.cc:1192
 msgid "Comments"
 msgstr "Σχόλια"
 
 #. Translators: This is a noun. It is the title of a report.
 #. Add Pages:
 #. Translators: This is a noun. It is a notebook tab title.
-#: ../glom/libglom/report_builder.cc:771 ../glom/mode_data/notebook_data.cc:39
+#: ../glom/libglom/report_builder.cc:749 ../glom/mode_data/notebook_data.cc:39
 #: ../glom/mode_find/notebook_find.cc:33
 msgid "List"
 msgstr "Λίστα"
@@ -1621,11 +1679,11 @@ msgstr "Απέτυχε η δημιουργία του αρχείου Pot."
 msgid "Pot file created at: %1"
 msgstr "Δημιουργήθηκε το αρχείο Pot στο: %1"
 
-#: ../glom/glom_export_po.cc:232 ../glom/glom_export_po_all.cc:223
+#: ../glom/glom_export_po.cc:232 ../glom/glom_export_po_all.cc:221
 msgid "Po file creation failed."
 msgstr "Απέτυχε η δημιουργία του αρχείου Po."
 
-#: ../glom/glom_export_po.cc:236 ../glom/glom_export_po_all.cc:227
+#: ../glom/glom_export_po.cc:236 ../glom/glom_export_po_all.cc:225
 msgid "Po file created at: %1"
 msgstr "Δημιουργήθηκε το αρχείο Po στο: %1"
 
@@ -1679,6 +1737,12 @@ msgid "Po file import failed for locale: %1"
 msgstr "Η εισαγωγή αρχείου po απέτυχε για τοπικά: %1"
 
 #: ../glom/glom_import_po_all.cc:218
+msgid "Po file import failed during document saving for locale: %1"
+msgstr ""
+"Η εισαγωγή αρχείου po απέτυχε κατά την αποθήκευση του εγγράφου, για την "
+"γλώσσα: %1"
+
+#: ../glom/glom_import_po_all.cc:222
 msgid "Po file imported for locale: %1 for file %2"
 msgstr "Το αρχείο po που εισήχθη για τοπικά: %1 για το αρχείο %2"
 
@@ -1944,20 +2008,27 @@ msgstr ""
 "Εμφάνιση των ερωτημάτων SQL που δημιουργήθηκαν στην τυπική έξοδο, για "
 "αποσφαλμάτωση."
 
-#: ../glom/mode_data/box_data_calendar_related.cc:527
+#: ../glom/mode_data/box_data_calendar_related.cc:528
 #: ../glom/mode_design/users/dialog_groups_list.cc:79
-#: ../glom/print_layout/canvas_print_layout.cc:292
+#: ../glom/print_layout/canvas_print_layout.cc:290
 #: ../glom/utility_widgets/adddel/adddel.cc:250
-#: ../glom/mode_data/db_adddel/db_adddel.cc:228
-#: ../glom/mode_data/db_adddel/db_adddel.cc:260
+#: ../glom/mode_data/db_adddel/db_adddel.cc:227
+#: ../glom/mode_data/db_adddel/db_adddel.cc:259
 #: ../data/ui/operator/window_main.glade.h:13
+#: ../data/ui/developer/dialog_fieldslist.glade.h:10
+#: ../data/ui/developer/dialog_group_by.glade.h:8
+#: ../data/ui/developer/dialog_sort_fields.glade.h:10
+#: ../data/ui/developer/window_data_layout_export.glade.h:7
+#: ../data/ui/developer/window_data_layout.glade.h:28
 #: ../data/ui/developer/window_field_definition_edit.glade.h:13
 #: ../data/ui/developer/window_print_layout_edit.glade.h:4
+#: ../data/ui/developer/window_report_layout.glade.h:16
+#: ../data/ui/developer/window_users.glade.h:9
 msgid "_Edit"
 msgstr "_Επεξεργασία"
 
-#: ../glom/mode_data/box_data_calendar_related.cc:528
-#: ../glom/mode_data/db_adddel/db_adddel.cc:264
+#: ../glom/mode_data/box_data_calendar_related.cc:529
+#: ../glom/mode_data/db_adddel/db_adddel.cc:263
 #: ../data/ui/operator/window_main.glade.h:28
 msgid "_Layout"
 msgstr "Δ_ιάταξη"
@@ -1978,10 +2049,18 @@ msgid "No primary key value"
 msgstr "Δε βρέθηκε τιμή πρωτεύοντος κλειδιού"
 
 #: ../glom/mode_data/box_data_details.cc:46
-#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:32
-#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:42
-#: ../glom/mode_data/db_adddel/db_adddel.cc:261
+#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:33
+#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:43
+#: ../glom/mode_data/db_adddel/db_adddel.cc:260
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:33
+#: ../data/ui/developer/dialog_choose_user.glade.h:4
+#: ../data/ui/developer/dialog_fieldslist.glade.h:8
+#: ../data/ui/developer/dialog_notebook.glade.h:8
+#: ../data/ui/developer/dialog_script_library.glade.h:6
+#: ../data/ui/developer/dialog_sort_fields.glade.h:9
+#: ../data/ui/developer/window_data_layout_export.glade.h:5
+#: ../data/ui/developer/window_report_layout.glade.h:9
+#: ../data/ui/developer/window_users.glade.h:7
 msgid "_Add"
 msgstr "_Προσθήκη"
 
@@ -2048,11 +2127,11 @@ msgstr ""
 "Αυτή η εγγραφή δεν μπορεί να διαγραφεί επειδή δεν υπάρχει πρωτεύον κλειδί."
 
 #. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:855
+#: ../glom/mode_data/box_data_details.cc:848
 msgid "Primary key auto increments"
 msgstr "Αυτόματες αυξήσεις πρωτεύοντος κλειδιού"
 
-#: ../glom/mode_data/box_data_details.cc:856
+#: ../glom/mode_data/box_data_details.cc:849
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
@@ -2060,11 +2139,11 @@ msgstr ""
 "Το πρωτεύον κλειδί είναι με αυτόματη αύξηση.\n"
 "Δεν μπορείτε να εισάγετε τη δική σας πρωτεύουσα τιμή κλειδιού."
 
-#: ../glom/mode_data/box_data_portal.cc:337
+#: ../glom/mode_data/box_data_portal.cc:334
 msgid "No Corresponding Record Exists"
 msgstr "Δεν υπάρχει αντίστοιχη εγγραφή"
 
-#: ../glom/mode_data/box_data_portal.cc:337
+#: ../glom/mode_data/box_data_portal.cc:334
 msgid ""
 "No record with this value exists. Therefore navigation to the related record "
 "is not possible."
@@ -2072,53 +2151,53 @@ msgstr ""
 "Δεν υπάρχει εγγραφή με αυτήν την τιμή. Συνεπώς η περιήγηση στη σχετική "
 "εγγραφή δεν είναι δυνατή."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1167
+#: ../glom/mode_data/flowtablewithfields.cc:1105
 #: ../glom/utility_widgets/notebooklabelglom.cc:77
 #: ../glom/utility_widgets/notebooklabelglom.cc:124
 msgid "New Group"
 msgstr "Νέα ομάδα"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1173
-#: ../glom/mode_design/layout/dialog_layout_details.cc:736
+#: ../glom/mode_data/flowtablewithfields.cc:1111
+#: ../glom/mode_design/layout/dialog_layout_details.cc:729
 msgid "notebook"
 msgstr "Σημειωματάριο"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1179
+#: ../glom/mode_data/flowtablewithfields.cc:1117
 msgid "tab1"
 msgstr "καρτέλα1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1182
+#: ../glom/mode_data/flowtablewithfields.cc:1120
 msgid "Tab One"
 msgstr "Καρτέλα ένα"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1195
+#: ../glom/mode_data/flowtablewithfields.cc:1133
 msgid "button"
 msgstr "κουμπί"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1196
-#: ../glom/mode_design/layout/dialog_layout_details.cc:662
+#: ../glom/mode_data/flowtablewithfields.cc:1134
+#: ../glom/mode_design/layout/dialog_layout_details.cc:655
 msgid "New Button"
 msgstr "Νέο κουμπί"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1202
+#: ../glom/mode_data/flowtablewithfields.cc:1140
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:385
 msgid "text"
 msgstr "κείμενο"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1203
+#: ../glom/mode_data/flowtablewithfields.cc:1141
 msgid "New Text"
 msgstr "Νέο κείμενο"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1356
+#: ../glom/mode_data/flowtablewithfields.cc:1290
 msgid "Delete whole group \"%1\"?"
 msgstr "Διαγραφή όλης της ομάδας \"%1\";"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1362
+#: ../glom/mode_data/flowtablewithfields.cc:1296
 msgid "Delete whole group?"
 msgstr "Διαγραφή όλης της ομάδας;"
 
@@ -2144,7 +2223,7 @@ msgid "To Field"
 msgstr "Προς πεδίο"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:55
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:3
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:5
 msgid "Allow Editing"
 msgstr "Να επιτρέπεται η επεξεργασία"
 
@@ -2157,12 +2236,12 @@ msgstr "Αυτόματη δημιουργία"
 msgid "Title (Singular Form)"
 msgstr "Τίτλος (μοναδική μορφή)"
 
-#: ../glom/mode_design/dialog_database_preferences.cc:63
+#: ../glom/mode_design/dialog_database_preferences.cc:64
 msgid "Next Value"
 msgstr "Επόμενη τιμή"
 
 #: ../glom/mode_design/dialog_design.cc:53
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:570
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:567
 #: ../data/ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Καμία επιλογή"
@@ -2220,11 +2299,11 @@ msgid "_Default Formatting"
 msgstr "Π_ροεπιλεγμένη μορφοποίηση"
 
 #. TODO: Only show this when there are > 100 records?
-#: ../glom/mode_design/fields/box_db_table_definition.cc:288
+#: ../glom/mode_design/fields/box_db_table_definition.cc:286
 msgid "Recalculation Required"
 msgstr "Απαιτείται επανυπολογισμός"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:289
+#: ../glom/mode_design/fields/box_db_table_definition.cc:287
 msgid ""
 "You have changed the calculation used by this field so Glom must recalculate "
 "the value in all records. If the table contains many records then this could "
@@ -2234,15 +2313,15 @@ msgstr ""
 "πρέπει να επανυπολογίσει την τιμή σε όλες τις εγγραφές. Αν ο πίνακας "
 "περιέχει πολλές εγγραφές τότε αυτό μπορεί να πάρει πολύ ώρα."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:294
+#: ../glom/mode_design/fields/box_db_table_definition.cc:292
 msgid "Recalculate"
 msgstr "Επανυπολογισμός"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:303
+#: ../glom/mode_design/fields/box_db_table_definition.cc:301
 msgid "Invalid database structure"
 msgstr "Άκυρη δομή βάσης δεδομένων"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:304
+#: ../glom/mode_design/fields/box_db_table_definition.cc:302
 msgid ""
 "This database field was created or edited outside of Glom. It has a data "
 "type that is not supported by Glom. Your system administrator may be able to "
@@ -2252,11 +2331,11 @@ msgstr ""
 "έναν τύπο δεδομένων που δεν υποστηρίζεται από το Glom. Ο διαχειριστής του "
 "συστήματος ενδέχεται να μπορεί να το διορθώσει."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:312
+#: ../glom/mode_design/fields/box_db_table_definition.cc:310
 msgid "Primary key required"
 msgstr "Απαιτείται το πρωτεύον κλειδί"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:313
+#: ../glom/mode_design/fields/box_db_table_definition.cc:311
 msgid ""
 "You may not unset the primary key because the table must have a primary key. "
 "You may set another field as the primary key instead."
@@ -2265,11 +2344,11 @@ msgstr ""
 "να έχει ένα πρωτεύον κλειδί. Πρέπει να ορίσετε ένα άλλο πεδίο ως πρωτεύον "
 "κλειδί στη θέση του."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:325
+#: ../glom/mode_design/fields/box_db_table_definition.cc:323
 msgid "Field contains empty values."
 msgstr "Το πεδίο περιέχει κενές τιμές."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:325
+#: ../glom/mode_design/fields/box_db_table_definition.cc:323
 msgid ""
 "The field may not yet be used as a primary key because it contains empty "
 "values."
@@ -2277,11 +2356,11 @@ msgstr ""
 "Το πεδίο δεν μπορεί ακόμα να χρησιμοποιηθεί ως πρωτεύον κλειδί επειδή "
 "περιέχει κενές τιμές."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:334
+#: ../glom/mode_design/fields/box_db_table_definition.cc:332
 msgid "Field contains non-unique values."
 msgstr "Το πεδίο περιέχει μη μοναδικές τιμές."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:334
+#: ../glom/mode_design/fields/box_db_table_definition.cc:332
 msgid ""
 "The field may not yet be used as a primary key because it contains values "
 "that are not unique."
@@ -2290,11 +2369,11 @@ msgstr ""
 "περιέχει τιμές που δεν είναι μοναδικές."
 
 #. Ask the user to confirm this major change:
-#: ../glom/mode_design/fields/box_db_table_definition.cc:339
+#: ../glom/mode_design/fields/box_db_table_definition.cc:337
 msgid "Change primary key"
 msgstr "Αλλαγή πρωτεύοντος κλειδιού"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:340
+#: ../glom/mode_design/fields/box_db_table_definition.cc:338
 msgid ""
 "Are you sure that you wish to set this field as the primary key, instead of "
 "the existing primary key?"
@@ -2302,16 +2381,16 @@ msgstr ""
 "Είσαστε βέβαιοι ότι θέλετε να ορίσετε αυτό το πεδίο ως το πρωτεύον κλειδί, "
 "αντί για το υπάρχον πρωτεύον κλειδί;"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:345
+#: ../glom/mode_design/fields/box_db_table_definition.cc:343
 msgid "Change Primary Key"
 msgstr "Αλλαγή πρωτεύοντος κλειδιού"
 
 #. Warn the user and refuse to make the change:
-#: ../glom/mode_design/fields/box_db_table_definition.cc:357
+#: ../glom/mode_design/fields/box_db_table_definition.cc:355
 msgid "Field Name Already Exists"
 msgstr "Υπάρχει ήδη το όνομα του πεδίου"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:358
+#: ../glom/mode_design/fields/box_db_table_definition.cc:356
 msgid "This field already exists. Please choose a different field name"
 msgstr ""
 "Αυτό το πεδίο υπάρχει ήδη. Παρακαλούμε επιλέξτε ένα διαφορετικό όνομα πεδίου."
@@ -2324,11 +2403,11 @@ msgstr "Σφάλμα υπολογισμού"
 msgid "The calculation does not have a return statement."
 msgstr "Ο υπολογισμός δεν έχει δήλωση επιστροφής."
 
-#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:148
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:146
 msgid "Calculation result"
 msgstr "Αποτέλεσμα υπολογισμού"
 
-#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:148
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:146
 msgid ""
 "The result of the calculation is:\n"
 "%1"
@@ -2336,12 +2415,12 @@ msgstr ""
 "To αποτέλεσμα του υπολογισμού είναι:\n"
 "%1"
 
-#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:150
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:140
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:148
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:139
 msgid "Calculation failed"
 msgstr "Ο υπολογισμός απέτυχε"
 
-#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:150
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:148
 #, c-format
 msgid ""
 "The calculation failed with this error:\n"
@@ -2350,7 +2429,7 @@ msgstr ""
 "Ο υπολογισμός απέτυχε με αυτό το σφάλμα:\n"
 "%s"
 
-#: ../glom/mode_design/fields/dialog_fielddefinition.cc:147
+#: ../glom/mode_design/fields/dialog_fielddefinition.cc:150
 msgid "Default Value"
 msgstr "Προεπιλεγμένη τιμή"
 
@@ -2360,20 +2439,20 @@ msgstr "Προεπιλεγμένη τιμή"
 #. otherwise we get this warning:
 #. " unable to set property `text' of type `gchararray' from value of type `glibmm__CustomPointer_Pc' "
 #. TODO: Add a template specialization to Glib::ObjectBase::set_property() to allow this?
-#: ../glom/mode_design/layout/combobox_fields.cc:216
+#: ../glom/mode_design/layout/combobox_fields.cc:210
 msgid "(None)"
 msgstr "(Κανένα)"
 
-#: ../glom/mode_design/layout/combobox_relationship.cc:268
+#: ../glom/mode_design/layout/combobox_relationship.cc:289
 msgid " Via: %1::%2"
 msgstr " Μέσω: %1::%2"
 
-#: ../glom/mode_design/layout/combobox_relationship.cc:272
+#: ../glom/mode_design/layout/combobox_relationship.cc:295
 msgid " Via: %1"
 msgstr " Μέσω: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:249
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:313
+#: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:247
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:311
 msgid "None: No visible tables are specified by the fields."
 msgstr "Κανένας: Δεν ορίζονται ορατοί πίνακες από τα πεδία."
 
@@ -2389,41 +2468,41 @@ msgstr "Στήλες ομάδων"
 msgid "Display Width"
 msgstr "Πλάτος προβολής"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:687
+#: ../glom/mode_design/layout/dialog_layout_details.cc:680
 msgid "Text Title"
 msgstr "Τίτλος κειμένου"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:712
+#: ../glom/mode_design/layout/dialog_layout_details.cc:705
 msgid "Image Title"
 msgstr "Τίτλος εικόνας"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:867
+#: ../glom/mode_design/layout/dialog_layout_details.cc:860
 msgid "group"
 msgstr "ομάδα"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:959
+#: ../glom/mode_design/layout/dialog_layout_details.cc:952
 #: ../data/ui/developer/dialog_notebook.glade.h:1
 msgid "Notebook Tabs"
 msgstr "Καρτέλες σημειωματαρίου"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:959
+#: ../glom/mode_design/layout/dialog_layout_details.cc:952
 msgid "Add child groups to the notebook to add tabs."
 msgstr ""
 "Προσθήκη θυγατρικών ομάδων στο σημειωματάριο για να προστεθούν καρτέλες."
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1122
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1128
 msgid "Related Calendar: %1"
 msgstr "Σχετικό ημερολόγιο: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1124
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1130
 msgid "Related List: %1"
 msgstr "Σχετική λίστα: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1141
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1147
 msgid "Field: %1"
 msgstr "Πεδίο: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1200
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1206
 msgid "(Notebook)"
 msgstr "(Σημειωματάριο)"
 
@@ -2432,11 +2511,11 @@ msgstr "(Σημειωματάριο)"
 msgid "Fields"
 msgstr "Πεδία"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:425
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:421
 msgid "Invalid Relationship"
 msgstr "Άκυρη σχέση"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:426
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:422
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship does not specify a field in the related table."
@@ -2444,11 +2523,11 @@ msgstr ""
 "Η σχέση δεν μπορεί να χρησιμοποιηθεί για την εμφάνιση σχετικών εγγραφών, "
 "επειδή η σχέση δεν ορίζει ένα πεδίο στον σχετικό πίνακα."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:432
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:428
 msgid "Relationship Uses a Related Primary Key"
 msgstr "Η σχέση χρησιμοποιεί ένα σχετικό πρωτεύον κλειδί"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:433
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:429
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship uses a primary key field in the related table, which must "
@@ -2460,11 +2539,11 @@ msgstr ""
 "που πρέπει να περιέχει μοναδικές τιμές. Αυτό μπορεί να αποτρέψει τη σχέση "
 "από τον ορισμό πολλαπλών σχετικών εγγραφών."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:439
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:435
 msgid "Relationship Uses a Related Unique Field"
 msgstr "Η σχέση χρησιμοποιεί ένα σχετικό πρωτεύον πεδίο"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:440
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:436
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship uses a unique-values field in the related table. This would "
@@ -2512,7 +2591,7 @@ msgstr "Χρώμα προσκηνίου"
 msgid "Background Color"
 msgstr "Χρώμα παρασκηνίου"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:140
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:139
 msgid ""
 "The calculation failed with this error:\n"
 "%1"
@@ -2521,9 +2600,9 @@ msgstr ""
 "%1"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:32
-#: ../data/ui/developer/dialog_fieldslist.glade.h:2
-#: ../data/ui/developer/dialog_group_by.glade.h:3
-#: ../data/ui/developer/window_data_layout.glade.h:23
+#: ../data/ui/developer/dialog_fieldslist.glade.h:9
+#: ../data/ui/developer/dialog_group_by.glade.h:5
+#: ../data/ui/developer/window_data_layout.glade.h:27
 msgid "Formatting"
 msgstr "Μορφοποίηση"
 
@@ -2551,16 +2630,16 @@ msgstr ""
 "Αυτό το στοιχείο υπάρχει ήδη. Παρακαλούμε επιλέξτε ένα διαφορετικό όνομα "
 "στοιχείου."
 
-#: ../glom/mode_design/print_layouts/box_print_layouts.cc:225
+#: ../glom/mode_design/print_layouts/box_print_layouts.cc:224
 msgid "Are you sure that you want to rename this print layout?"
 msgstr "Είσαστε βέβαιοι ότι θέλετε να μετονομάσετε αυτήν τη διάταξη εκτύπωσης;"
 
 #. TODO: Show old and new names?
-#: ../glom/mode_design/print_layouts/box_print_layouts.cc:226
+#: ../glom/mode_design/print_layouts/box_print_layouts.cc:225
 msgid "<b>Rename Print Layout</b>"
 msgstr "<b>Μετονομασία διάταξης εκτύπωσης</b>"
 
-#: ../glom/mode_design/print_layouts/box_print_layouts.cc:228
+#: ../glom/mode_design/print_layouts/box_print_layouts.cc:227
 #: ../glom/navigation/box_tables.cc:402
 msgid "Rename"
 msgstr "Μετονομασία"
@@ -2627,11 +2706,11 @@ msgstr ""
 "Μετακινήστε αυτό στη διάταξη για να προσθέσετε μια νέα σχετική πύλη εγγραφών."
 
 #. Ask for confirmation:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:838
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:835
 msgid "Create Standard Layout"
 msgstr "Δημιουργία τυπικής διάταξης"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:839
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:836
 msgid ""
 "This is an experimental feature. It will remove all items from the print "
 "layout and then try to create a layout similar to the layout of the detail "
@@ -2641,17 +2720,17 @@ msgstr ""
 "διάταξη εκτύπωσης και έπειτα θα προσπαθήσει να δημιουργήσει μια διάταξη "
 "παρόμοια με τη διάταξη της προβολής λεπτομερειών."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:842
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:839
 #: ../glom/mode_design/users/dialog_groups_list.cc:82
 msgid "Create"
 msgstr "Δημιουργία"
 
 #. Ask the user to confirm:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:882
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:879
 msgid "Remove page"
 msgstr "Αφαίρεση σελίδας"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:883
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:880
 msgid ""
 "Are you sure that you wish to remove the last page and any items on that "
 "page?"
@@ -2659,7 +2738,7 @@ msgstr ""
 "Είσαστε βέβαιοι ότι θέλετε να αφαιρέσετε την τελευταία σελίδα και "
 "οποιαδήποτε στοιχείο σε αυτή τη σελίδα;"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:886
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:883
 msgid "Remove Page"
 msgstr "Αφαίρεση σελίδας"
 
@@ -2675,6 +2754,8 @@ msgstr ""
 "μπορούν να ανακτηθούν."
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:132
+#: ../data/ui/developer/dialog_script_library.glade.h:7
+#: ../data/ui/developer/window_users.glade.h:8
 msgid "_Remove"
 msgstr "Α_φαίρεση"
 
@@ -2683,15 +2764,15 @@ msgid "View"
 msgstr "Προβολή"
 
 #. TODO: Prevent deletion of standard groups
-#: ../glom/mode_design/users/dialog_groups_list.cc:218
+#: ../glom/mode_design/users/dialog_groups_list.cc:216
 msgid "Delete Group"
 msgstr "Διαγραφή ομάδας"
 
-#: ../glom/mode_design/users/dialog_groups_list.cc:219
+#: ../glom/mode_design/users/dialog_groups_list.cc:217
 msgid "Are your sure that you wish to delete this group?"
 msgstr "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή την ομάδα;"
 
-#: ../glom/mode_design/users/dialog_groups_list.cc:361
+#: ../glom/mode_design/users/dialog_groups_list.cc:358
 msgid "Full access."
 msgstr "Πλήρης πρόσβαση."
 
@@ -2722,11 +2803,11 @@ msgstr ""
 "βάσης δεδομένων. Προφανώς δεν έχετε επαρκή δικαιώματα. Θα πρέπει να είσαστε "
 "υπερχρήστης."
 
-#: ../glom/mode_design/users/dialog_users_list.cc:414
+#: ../glom/mode_design/users/dialog_users_list.cc:415
 msgid "Developer group may not be empty."
 msgstr "Η ομάδα ανάπτυξης δεν μπορεί να είναι κενή."
 
-#: ../glom/mode_design/users/dialog_users_list.cc:415
+#: ../glom/mode_design/users/dialog_users_list.cc:416
 msgid "The developer group must contain at least one user."
 msgstr "Η ομάδα ανάπτυξης πρέπει να περιέχει τουλάχιστον έναν χρήστη."
 
@@ -2747,11 +2828,11 @@ msgid "Default"
 msgstr "Προεπιλογή"
 
 #. Ask the user if they want us to try to cope with this:
-#: ../glom/navigation/box_tables.cc:235
+#: ../glom/navigation/box_tables.cc:233
 msgid "Table Already Exists"
 msgstr "Ο πίνακας υπάρχει ήδη"
 
-#: ../glom/navigation/box_tables.cc:236
+#: ../glom/navigation/box_tables.cc:234
 msgid ""
 "This table already exists on the database server, though it is not mentioned "
 "in the .glom file. This should not happen. Would you like Glom to attempt to "
@@ -2762,7 +2843,7 @@ msgstr ""
 "Glom να προσπαθήσει να χρησιμοποιήσει τον υπάρχοντα πίνακα;"
 
 #. TODO: Do not show tables that are not in the document.
-#: ../glom/navigation/box_tables.cc:296
+#: ../glom/navigation/box_tables.cc:294
 msgid ""
 "You cannot delete this table, because there is no information about this "
 "table in the document."
@@ -2771,7 +2852,7 @@ msgstr ""
 "για αυτόν τον πίνακα στο έγγραφο."
 
 #. Ask the user to confirm:
-#: ../glom/navigation/box_tables.cc:303
+#: ../glom/navigation/box_tables.cc:301
 msgid ""
 "Are you sure that you want to delete this table?\n"
 "Table name: %1"
@@ -2779,7 +2860,7 @@ msgstr ""
 "Είσαστε βέβαιοι ότι θέλετε να διαγράψετε αυτόν τον πίνακα;\n"
 "Όνομα πίνακα: %1"
 
-#: ../glom/navigation/box_tables.cc:304
+#: ../glom/navigation/box_tables.cc:302 ../glom/navigation/box_tables.cc:308
 msgid "Delete Table"
 msgstr "Διαγραφή πίνακα"
 
@@ -2809,7 +2890,8 @@ msgstr ""
 msgid "Choose Field"
 msgstr "Επιλογή πεδίου"
 
-#: ../glom/print_layout/canvas_print_layout.cc:293
+#: ../glom/print_layout/canvas_print_layout.cc:291
+#: ../data/ui/developer/window_report_layout.glade.h:17
 msgid "_Formatting"
 msgstr "Μο_ρφοποίηση"
 
@@ -2828,23 +2910,23 @@ msgid "Item"
 msgstr "Στοιχείο"
 
 #. Show the file-chooser dialog, to select an output .po file:
-#: ../glom/mode_design/translation/window_translations.cc:352
-#: ../glom/mode_design/translation/window_translations.cc:392
+#: ../glom/mode_design/translation/window_translations.cc:347
+#: ../glom/mode_design/translation/window_translations.cc:387
 msgid "Choose .po File Name"
 msgstr "Επιλέξτε όνομα αρχείου .po"
 
-#: ../glom/mode_design/translation/window_translations.cc:358
-#: ../glom/mode_design/translation/window_translations.cc:397
+#: ../glom/mode_design/translation/window_translations.cc:353
+#: ../glom/mode_design/translation/window_translations.cc:392
 msgid "Po files"
 msgstr "Αρχεία po"
 
-#: ../glom/mode_design/translation/window_translations.cc:363
+#: ../glom/mode_design/translation/window_translations.cc:358
 #: ../data/ui/developer/window_translations.glade.h:7
 msgid "Export"
 msgstr "Εξαγωγή"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
-#: ../glom/mode_design/translation/window_translations.cc:404
+#: ../glom/mode_design/translation/window_translations.cc:399
 #: ../data/ui/developer/window_translations.glade.h:6
 msgid "Import"
 msgstr "Εισαγωγή"
@@ -2859,7 +2941,7 @@ msgid "Duplicate"
 msgstr "Διπλασιασμός"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:476
+#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:472
 msgid "Example"
 msgstr "Παράδειγμα"
 
@@ -2895,6 +2977,8 @@ msgstr ""
 
 #: ../glom/mode_data/datawidget/datawidget.cc:237
 #: ../data/ui/operator/window_main.glade.h:4
+#: ../data/ui/developer/window_groups.glade.h:5
+#: ../data/ui/developer/window_users.glade.h:5
 msgid "_New"
 msgstr "_Νέο"
 
@@ -2911,20 +2995,20 @@ msgid "Table Content"
 msgstr "Περιεχόμενο πίνακα"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/db_adddel/db_adddel.cc:539
+#: ../glom/mode_data/db_adddel/db_adddel.cc:538
 msgid "ExampleEg"
 msgstr "ExampleEg"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2067
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2065
 msgid "Right-click to layout, to specify the related fields."
 msgstr "Δεξιοπατήστε στη διάταξη, για τον ορισμό των σχετικών πεδίων."
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2284
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2281
 msgid "Extra Related Records Not Possible"
 msgstr "Δεν είναι δυνατές πρόσθετες σχετικές εγγραφές"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2285
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2282
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
@@ -2933,10 +3017,9 @@ msgstr ""
 "μόνο μία σχετική εγγραφή, επειδή η σχέση χρησιμοποιεί μοναδικό κλειδί."
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:86
-#: ../glom/utility_widgets/imageglom.cc:775
-#: ../data/ui/developer/dialog_choose_relationship.glade.h:2
-#: ../data/ui/developer/dialog_field_summary.glade.h:3
-#: ../data/ui/developer/dialog_group_by.glade.h:4
+#: ../glom/utility_widgets/imageglom.cc:812
+#: ../data/ui/developer/dialog_field_summary.glade.h:5
+#: ../data/ui/developer/dialog_group_by.glade.h:6
 msgid "Select"
 msgstr "Επιλογή"
 
@@ -2944,32 +3027,32 @@ msgstr "Επιλογή"
 msgid "You have not entered any quick find criteria."
 msgstr "Δεν εισάγατε οποιαδήποτε γρήγορα κριτήρια εύρεσης."
 
-#: ../glom/utility_widgets/dialog_image_load_progress.cc:105
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:108
 msgid "Not enough memory available to load the image"
 msgstr "Ανεπαρκής διαθέσιμη μνήμη για φόρτωση της εικόνας"
 
-#: ../glom/utility_widgets/dialog_image_load_progress.cc:157
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:160
 msgid "Error loading %1"
 msgstr "Σφάλμα κατά τη φόρτωση του %1"
 
-#: ../glom/utility_widgets/dialog_image_load_progress.cc:158
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:161
 msgid "Error loading image"
 msgstr "Σφάλμα κατά τη φόρτωση της εικόνας"
 
-#: ../glom/utility_widgets/dialog_image_save_progress.cc:135
+#: ../glom/utility_widgets/dialog_image_save_progress.cc:137
 msgid "Error Saving"
 msgstr "Σφάλμα κατά την αποθήκευση"
 
-#: ../glom/utility_widgets/dialog_image_save_progress.cc:136
+#: ../glom/utility_widgets/dialog_image_save_progress.cc:138
 msgid "Error saving image"
 msgstr "Σφάλμα κατά την αποθήκευση της εικόνας"
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:82
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:83
 msgid "New Database"
 msgstr "Νέα βάση δεδομένων"
 
 #. For instance, an extra hint when saving from an example, saying that a new file must be saved.
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:99
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:97
 msgid ""
 "Please choose a human-readable title for the new database. You can change "
 "this later in the database properties. It may contain any characters."
@@ -2978,21 +3061,21 @@ msgstr ""
 "δεδομένων. Μπορείτε να το αλλάξετε αργότερα στις ιδιότητες της βάσης "
 "δεδομένων. Μπορεί να περιέχει οποιουσδήποτε χαρακτήρες."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:105
-#: ../data/ui/developer/window_field_definition_edit.glade.h:4
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:104
+#: ../data/ui/developer/window_field_definition_edit.glade.h:3
 #: ../data/ui/developer/window_report_layout.glade.h:7
 msgid "_Title:"
 msgstr "_Τίτλος:"
 
 #. Use titles that show the distinction between PostgreSQL and the alternatives:
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:120
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:119
 msgid ""
 "Create PostgreSQL database in its own folder, to be hosted by this computer."
 msgstr ""
 "Δημιουργία βάσης δεδομένων PostgreSQL στον δικό της φάκελο, για να "
 "φιλοξενηθεί από αυτόν τον υπολογιστή."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:121
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:120
 msgid ""
 "Create database on an external PostgreSQL database server, to be specified "
 "in the next step."
@@ -3000,13 +3083,13 @@ msgstr ""
 "Δημιουργία βάσης δεδομένων στον εξωτερικό διακομιστή βάσης δεδομένων "
 "PostgreSQL, για να οριστεί στο επόμενο βήμα."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:123
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:122
 msgid "Create database in its own folder, to be hosted by this computer."
 msgstr ""
 "Δημιουργία βάσης δεδομένων στον δικό της φάκελο, για να φιλοξενηθεί από "
 "αυτόν τον υπολογιστή."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:124
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:123
 msgid ""
 "Create database on an external database server, to be specified in the next "
 "step."
@@ -3014,14 +3097,14 @@ msgstr ""
 "Δημιουργία βάσης δεδομένων στον εξωτερικό διακομιστή βάσης δεδομένων, για να "
 "οριστεί στο επόμενο βήμα."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:141
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:140
 msgid ""
 "Create SQLite database in its own folder, to be hosted by this computer."
 msgstr ""
 "Δημιουργία βάσης δεδομένων SQLite στον δικό της φάκελο, για να φιλοξενηθεί "
 "από αυτόν τον υπολογιστή."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:142
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:141
 msgid ""
 "SQLite does not support authentication or remote access but is suitable for "
 "embedded devices."
@@ -3029,20 +3112,20 @@ msgstr ""
 "Το SQLite δεν υποστηρίζει αυθεντικοποίηση ή απομακρυσμένη πρόσβαση, αλλά "
 "είναι κατάλληλο για ενσωματωμένες συσκευές."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:149
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:148
 msgid "Create MySQL database in its own folder, to be hosted by this computer."
 msgstr ""
 "Δημιουργία βάσης δεδομένων MySQL στον δικό της φάκελο, για να φιλοξενηθεί "
 "από αυτόν τον υπολογιστή."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:150
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:156
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:149
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:155
 msgid "MySQL support in Glom is experimental and unlikely to work properly."
 msgstr ""
 "Η υποστήριξη του MySQL στο Glom είναι πειραματική και είναι απίθανο να "
 "δουλέψει σωστά."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:155
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:154
 msgid ""
 "Create database on an external MySQL database server, to be specified in the "
 "next step."
@@ -3050,39 +3133,40 @@ msgstr ""
 "Δημιουργία βάσης δεδομένων στον εξωτερικό διακομιστή βάσης δεδομένων MySQL, "
 "για να οριστεί στο επόμενο βήμα."
 
-#: ../glom/utility_widgets/imageglom.cc:660
+#: ../glom/utility_widgets/imageglom.cc:697
 msgid "Images"
 msgstr "Εικόνες"
 
-#: ../glom/utility_widgets/imageglom.cc:681
+#: ../glom/utility_widgets/imageglom.cc:718
 msgid "Save Image"
 msgstr "Αποθήκευση εικόνας"
 
-#: ../glom/utility_widgets/imageglom.cc:768
+#: ../glom/utility_widgets/imageglom.cc:805
+#: ../data/ui/developer/dialog_database_preferences.glade.h:15
 msgid "Choose Image"
 msgstr "Επιλογή εικόνας"
 
-#: ../glom/utility_widgets/imageglom.cc:956
+#: ../glom/utility_widgets/imageglom.cc:993
 msgid "_Open File"
 msgstr "Ά_νοιγμα Αρχείου"
 
-#: ../glom/utility_widgets/imageglom.cc:957
+#: ../glom/utility_widgets/imageglom.cc:994
 msgid "Open File With"
 msgstr "Άνοιγμα αρχείου με"
 
-#: ../glom/utility_widgets/imageglom.cc:959
+#: ../glom/utility_widgets/imageglom.cc:996
 #: ../data/ui/operator/window_main.glade.h:15
 #: ../data/ui/developer/window_print_layout_edit.glade.h:6
 msgid "_Copy"
 msgstr "_Αντιγραφή"
 
-#: ../glom/utility_widgets/imageglom.cc:960
+#: ../glom/utility_widgets/imageglom.cc:997
 #: ../data/ui/operator/window_main.glade.h:16
 #: ../data/ui/developer/window_print_layout_edit.glade.h:7
 msgid "_Paste"
 msgstr "_Επικόλληση"
 
-#: ../glom/utility_widgets/imageglom.cc:961
+#: ../glom/utility_widgets/imageglom.cc:998
 #: ../data/ui/operator/window_main.glade.h:17
 msgid "_Clear"
 msgstr "Κα_θαρισμός"
@@ -3123,6 +3207,7 @@ msgid "Add Notebook"
 msgstr "Προσθήκη σημειωματαρίου"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:123
+#: ../data/ui/developer/window_data_layout.glade.h:15
 msgid "Add Group"
 msgstr "Προσθήκη ομάδας"
 
@@ -3132,7 +3217,7 @@ msgid "Add Button"
 msgstr "Προσθήκη κουμπιού"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:125
-#: ../data/ui/developer/window_data_layout.glade.h:10
+#: ../data/ui/developer/window_data_layout.glade.h:9
 msgid "Add Text"
 msgstr "Προσθήκη κειμένου"
 
@@ -3156,11 +3241,79 @@ msgstr "Διαγραφή ολόκληρου του σημειωματάριου;
 msgid "_Show hidden tables"
 msgstr "Π_ροβολή κρυφών πινάκων"
 
+#: ../data/ui/operator/box_navigation_tables.glade.h:3
+#: ../data/ui/operator/dialog_new_record.glade.h:2
+#: ../data/ui/operator/window_main.glade.h:12
+#: ../data/ui/developer/window_data_layout_export.glade.h:8
+#: ../data/ui/developer/window_data_layout.glade.h:34
+#: ../data/ui/developer/window_design.glade.h:4
+#: ../data/ui/developer/window_groups.glade.h:3
+#: ../data/ui/developer/window_print_layout_edit.glade.h:47
+#: ../data/ui/developer/box_print_layouts.glade.h:2
+#: ../data/ui/developer/window_relationships_overview.glade.h:9
+#: ../data/ui/developer/window_report_layout.glade.h:20
+#: ../data/ui/developer/box_reports.glade.h:2
+#: ../data/ui/developer/window_text_format.glade.h:2
+#: ../data/ui/developer/window_users.glade.h:3
+msgid "_Close"
+msgstr "Κλεί_σιμο"
+
 #: ../data/ui/operator/dialog_choose_date.glade.h:1
 msgid "Choose Date"
 msgstr "Επιλέξτε ημερομηνία"
 
 #: ../data/ui/operator/dialog_choose_date.glade.h:2
+#: ../data/ui/operator/dialog_connection.glade.h:2
+#: ../data/ui/operator/dialog_data_invalid_format.glade.h:1
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:2
+#: ../data/ui/operator/dialog_import_csv.glade.h:4
+#: ../data/ui/operator/window_main.glade.h:42
+#: ../data/ui/developer/dialog_change_language.glade.h:2
+#: ../data/ui/developer/dialog_choose_user.glade.h:2
+#: ../data/ui/developer/dialog_database_preferences.glade.h:2
+#: ../data/ui/developer/dialog_fieldslist.glade.h:1
+#: ../data/ui/developer/dialog_initial_password.glade.h:2
+#: ../data/ui/developer/dialog_line.glade.h:2
+#: ../data/ui/developer/dialog_new_group.glade.h:2
+#: ../data/ui/developer/dialog_new_library_script.glade.h:2
+#: ../data/ui/developer/dialog_notebook.glade.h:2
+#: ../data/ui/developer/dialog_script_library.glade.h:2
+#: ../data/ui/developer/dialog_sort_fields.glade.h:2
+#: ../data/ui/developer/dialog_translation_copy.glade.h:2
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:2
+#: ../data/ui/developer/dialog_user.glade.h:2
+#: ../data/ui/developer/window_button_script.glade.h:2
+#: ../data/ui/developer/window_field_calculation.glade.h:2
+#: ../data/ui/developer/window_groups.glade.h:2
+#: ../data/ui/developer/window_imageobject.glade.h:2
+#: ../data/ui/developer/window_textobject.glade.h:2
+#: ../data/ui/developer/window_users.glade.h:2
+msgid "_Help"
+msgstr "_Βοήθεια"
+
+#: ../data/ui/operator/dialog_choose_date.glade.h:4
+#: ../data/ui/operator/dialog_data_invalid_format.glade.h:3
+#: ../data/ui/operator/dialog_import_csv_progress.glade.h:4
+#: ../data/ui/developer/dialog_database_preferences.glade.h:4
+#: ../data/ui/developer/dialog_fieldslist.glade.h:3
+#: ../data/ui/developer/dialog_field_summary.glade.h:3
+#: ../data/ui/developer/dialog_flowtable.glade.h:3
+#: ../data/ui/developer/dialog_group_by.glade.h:3
+#: ../data/ui/developer/dialog_line.glade.h:4
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:3
+#: ../data/ui/developer/dialog_notebook.glade.h:4
+#: ../data/ui/developer/dialog_script_library.glade.h:3
+#: ../data/ui/developer/dialog_sort_fields.glade.h:4
+#: ../data/ui/developer/dialog_user.glade.h:4
+#: ../data/ui/developer/window_button_script.glade.h:4
+#: ../data/ui/developer/window_field_calculation.glade.h:4
+#: ../data/ui/developer/window_imageobject.glade.h:4
+#: ../data/ui/developer/window_textobject.glade.h:4
+#: ../data/ui/developer/window_translations.glade.h:11
+msgid "_OK"
+msgstr "Ε_ντάξει"
+
+#: ../data/ui/operator/dialog_choose_date.glade.h:5
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Choose Date</span>\n"
 "\n"
@@ -3174,45 +3327,53 @@ msgstr ""
 msgid "Connect to Server"
 msgstr "Σύνδεση σε διακομιστή"
 
-#: ../data/ui/operator/dialog_connection.glade.h:2
+#: ../data/ui/operator/dialog_connection.glade.h:4
+msgid "C_onnect"
+msgstr "_Σύνδεση"
+
+#: ../data/ui/operator/dialog_connection.glade.h:5
 msgid "Please enter the connection details for your database server."
 msgstr ""
 "Παρακαλούμε εισάγετε τις λεπτομέρειες σύνδεσης για τον διακομιστή της βάσης "
 "δεδομένων σας."
 
-#: ../data/ui/operator/dialog_connection.glade.h:3
+#: ../data/ui/operator/dialog_connection.glade.h:6
 msgid "Host"
 msgstr "Σύστημα"
 
-#: ../data/ui/operator/dialog_connection.glade.h:5
-#: ../data/ui/developer/dialog_choose_user.glade.h:5
+#: ../data/ui/operator/dialog_connection.glade.h:8
+#: ../data/ui/developer/dialog_choose_user.glade.h:8
 #: ../data/ui/developer/dialog_user.glade.h:1
 msgid "User"
 msgstr "Χρήστης"
 
-#: ../data/ui/operator/dialog_connection.glade.h:6
+#: ../data/ui/operator/dialog_connection.glade.h:9
 msgid "_Host:"
 msgstr "_Σύστημα:"
 
-#: ../data/ui/operator/dialog_connection.glade.h:7
+#: ../data/ui/operator/dialog_connection.glade.h:10
 msgid "Database:"
 msgstr "Βάση δεδομένων:"
 
-#: ../data/ui/operator/dialog_connection.glade.h:8
-#: ../data/ui/developer/dialog_initial_password.glade.h:3
+#: ../data/ui/operator/dialog_connection.glade.h:11
+#: ../data/ui/developer/dialog_initial_password.glade.h:6
 msgid "_User:"
 msgstr "Χ_ρήστης:"
 
-#: ../data/ui/operator/dialog_connection.glade.h:9
-#: ../data/ui/developer/dialog_initial_password.glade.h:4
+#: ../data/ui/operator/dialog_connection.glade.h:12
+#: ../data/ui/developer/dialog_initial_password.glade.h:7
 msgid "_Password:"
 msgstr "Συν_θηματικό:"
 
-#: ../data/ui/operator/dialog_connection.glade.h:10
+#: ../data/ui/operator/dialog_connection.glade.h:13
 msgid "Database"
 msgstr "Βάση δεδομένων"
 
-#: ../data/ui/operator/dialog_data_invalid_format.glade.h:1
+#: ../data/ui/operator/dialog_data_invalid_format.glade.h:2
+msgid "_Revert"
+msgstr "Επανα_φορά"
+
+#: ../data/ui/operator/dialog_data_invalid_format.glade.h:4
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid Format</span>\n"
 "\n"
@@ -3226,7 +3387,7 @@ msgstr ""
 "διορθώσετε τα δεδομένα ή αντιστρέψτε την προηγούμενη τιμή. Εδώ είναι ένα "
 "παράδειγμα σωστά μορφοποιημένων δεδομένων για αυτό το πεδίο.\n"
 
-#: ../data/ui/operator/dialog_data_invalid_format.glade.h:5
+#: ../data/ui/operator/dialog_data_invalid_format.glade.h:8
 msgid "example data format"
 msgstr "παράδειγμα μορφοποίησης δεδομένων"
 
@@ -3234,25 +3395,30 @@ msgstr "παράδειγμα μορφοποίησης δεδομένων"
 msgid "Welcome to Glom"
 msgstr "Καλωσορίσατε στο Glom"
 
-#: ../data/ui/operator/dialog_existing_or_new.glade.h:2
-#: ../data/ui/developer/dialog_choose_field.glade.h:2
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:3
+msgid "_Quit"
+msgstr "Έ_ξοδος"
+
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:4
+#: ../data/ui/developer/dialog_choose_field.glade.h:3
+#: ../data/ui/developer/dialog_choose_relationship.glade.h:3
 msgid "_Select"
 msgstr "_Επιλογή"
 
-#: ../data/ui/operator/dialog_existing_or_new.glade.h:3
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:5
 msgid "<span weight=\"bold\" size=\"larger\">Open or Create a Document</span>"
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Άνοιγμα ή δημιουργία εγγράφου</span>"
 
-#: ../data/ui/operator/dialog_existing_or_new.glade.h:4
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:6
 msgid "Open or create Document"
 msgstr "Άνοιγμα ή δημιουργία εγγράφου"
 
-#: ../data/ui/operator/dialog_existing_or_new.glade.h:5
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:7
 msgid "Open Existing Document"
 msgstr "Άνοιγμα υπάρχοντος εγγράφου"
 
-#: ../data/ui/operator/dialog_existing_or_new.glade.h:6
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:8
 msgid "Create New Document"
 msgstr "Δημιουργία νέου εγγράφου"
 
@@ -3260,8 +3426,8 @@ msgstr "Δημιουργία νέου εγγράφου"
 msgid "Find Related Record"
 msgstr "Εύρεση σχετικής εγγραφής"
 
-#: ../data/ui/operator/dialog_find_id.glade.h:2
-#: ../data/ui/operator/dialog_new_record.glade.h:2
+#: ../data/ui/operator/dialog_find_id.glade.h:3
+#: ../data/ui/operator/dialog_new_record.glade.h:3
 #: ../data/ui/developer/window_data_layout_export.glade.h:2
 #: ../data/ui/developer/window_data_layout.glade.h:2
 #: ../data/ui/developer/window_design.glade.h:2
@@ -3269,8 +3435,8 @@ msgstr "Εύρεση σχετικής εγγραφής"
 msgid "<b>Table:</b>"
 msgstr "<b>Πίνακας:</b>"
 
-#: ../data/ui/operator/dialog_find_id.glade.h:3
-#: ../data/ui/operator/dialog_new_record.glade.h:3
+#: ../data/ui/operator/dialog_find_id.glade.h:4
+#: ../data/ui/operator/dialog_new_record.glade.h:4
 msgid "table_name"
 msgstr "όνομα_πίνακα"
 
@@ -3290,43 +3456,47 @@ msgstr "Αποθηκεύεται η εικόνα"
 msgid "bla.blub - Import from CSV"
 msgstr "bla.blub - Εισαγωγή από CSV"
 
-#: ../data/ui/operator/dialog_import_csv.glade.h:2
+#: ../data/ui/operator/dialog_import_csv.glade.h:3
 #: ../data/ui/operator/window_main.glade.h:8
 msgid "I_mport"
 msgstr "Ει_σαγωγή"
 
-#: ../data/ui/operator/dialog_import_csv.glade.h:3
+#: ../data/ui/operator/dialog_import_csv.glade.h:5
 #: ../data/ui/developer/box_formatting.glade.h:23
 msgid "label"
 msgstr "ετικέτα"
 
-#: ../data/ui/operator/dialog_import_csv.glade.h:4
+#: ../data/ui/operator/dialog_import_csv.glade.h:6
 msgid "_First line as title"
 msgstr "Π_ρώτη γραμμή ως τίτλος"
 
-#: ../data/ui/operator/dialog_import_csv.glade.h:5
+#: ../data/ui/operator/dialog_import_csv.glade.h:7
 msgid "_Encoding:"
 msgstr "_Κωδικοποίηση:"
 
-#: ../data/ui/operator/dialog_import_csv.glade.h:6
+#: ../data/ui/operator/dialog_import_csv.glade.h:8
 msgid "Import Into _Table:"
 msgstr "Εισαγωγή στον _πίνακα:"
 
-#: ../data/ui/operator/dialog_import_csv.glade.h:7
+#: ../data/ui/operator/dialog_import_csv.glade.h:9
 msgid "Encoding detected as: UTF-8"
 msgstr "Η κωδικοποίηση ανιχνεύτηκε ως: UTF-8"
 
 #. Import is a noun here. This is the title for a window showing options for an import operation.
-#: ../data/ui/operator/dialog_import_csv.glade.h:9
+#: ../data/ui/operator/dialog_import_csv.glade.h:11
 msgid "<b>Import Options</b>"
 msgstr "<b>Ιδιότητες εισαγωγής</b>"
 
-#: ../data/ui/operator/dialog_import_csv.glade.h:10
+#: ../data/ui/operator/dialog_import_csv.glade.h:12
 msgid "_Number of sample rows:"
 msgstr "_Αριθμός γραμμών δείγματος:"
 
+#: ../data/ui/operator/dialog_import_csv.glade.h:13
+msgid "0"
+msgstr "0"
+
 #. Import is a noun here. This is the title for a list of fields to import.
-#: ../data/ui/operator/dialog_import_csv.glade.h:12
+#: ../data/ui/operator/dialog_import_csv.glade.h:15
 msgid "<b>Import Fields</b>"
 msgstr "<b>Πεδία εισαγωγής</b>"
 
@@ -3335,7 +3505,7 @@ msgstr "<b>Πεδία εισαγωγής</b>"
 msgid "Importing Data"
 msgstr "Εισάγονται δεδομένα"
 
-#: ../data/ui/operator/dialog_import_csv_progress.glade.h:3
+#: ../data/ui/operator/dialog_import_csv_progress.glade.h:5
 msgid "Please wait while your data is imported."
 msgstr "Παρακαλούμε περιμένετε όσο τα δεδομένα σας εισάγονται."
 
@@ -3361,10 +3531,6 @@ msgstr "Ε_κτύπωση"
 #: ../data/ui/operator/window_main.glade.h:11
 msgid "_Edit Print Layouts"
 msgstr "_Επεξεργασία διατάξεων εκτύπωσης"
-
-#: ../data/ui/operator/window_main.glade.h:12
-msgid "_Close"
-msgstr "Κλεί_σιμο"
 
 #: ../data/ui/operator/window_main.glade.h:14
 #: ../data/ui/developer/window_print_layout_edit.glade.h:5
@@ -3459,10 +3625,6 @@ msgstr "_Εξαγωγή αντίγραφου ασφαλείας"
 msgid "_Restore Backup"
 msgstr "_Επαναφορά αντίγραφου ασφαλείας"
 
-#: ../data/ui/operator/window_main.glade.h:42
-msgid "_Help"
-msgstr "_Βοήθεια"
-
 #: ../data/ui/operator/window_main.glade.h:43
 msgid "_About"
 msgstr "Πε_ρί"
@@ -3475,7 +3637,11 @@ msgstr "Περιε_χόμενα"
 msgid "Add Related Table"
 msgstr "Προσθήκη σχετικού πίνακα"
 
-#: ../data/ui/developer/dialog_add_related_table.glade.h:2
+#: ../data/ui/developer/dialog_add_related_table.glade.h:3
+msgid "C_reate Table"
+msgstr "Δ_ημιουργία πίνακα"
+
+#: ../data/ui/developer/dialog_add_related_table.glade.h:4
 msgid ""
 "This will add a new table and add a relationship that refers to the new  "
 "table, as a convenient alternative to doing this in separate steps.\n"
@@ -3489,16 +3655,20 @@ msgstr ""
 "Αν ένας κατάλληλος σχετικός πίνακας υπάρχει ήδη, τότε θα πρέπει αντί για "
 "ακύρωση, να προσθέσετε απλά μια σχέση."
 
-#. Translators: FROM as in SQL's FROM
-#: ../data/ui/developer/dialog_add_related_table.glade.h:6
+#. Translators: FROM as in SQL
+#: ../data/ui/developer/dialog_add_related_table.glade.h:8
 msgid "From field:"
 msgstr "Από το πεδίο:"
 
-#: ../data/ui/developer/dialog_add_related_table.glade.h:7
+#: ../data/ui/developer/dialog_add_related_table.glade.h:9
+msgid "_Edit Fields"
+msgstr "Επεξεργασία πε_δίων"
+
+#: ../data/ui/developer/dialog_add_related_table.glade.h:10
 msgid "Name of new related table:"
 msgstr "Όνομα του νέου σχετικού πίνακα:"
 
-#: ../data/ui/developer/dialog_add_related_table.glade.h:8
+#: ../data/ui/developer/dialog_add_related_table.glade.h:11
 msgid "Name of new relationship:"
 msgstr "Όνομα της νέας σχέσης:"
 
@@ -3506,7 +3676,11 @@ msgstr "Όνομα της νέας σχέσης:"
 msgid "Test Translation"
 msgstr "Δοκιμή μετάφρασης"
 
-#: ../data/ui/developer/dialog_change_language.glade.h:2
+#: ../data/ui/developer/dialog_change_language.glade.h:4
+msgid "Change Language"
+msgstr "Αλλαγή γλώσσας"
+
+#: ../data/ui/developer/dialog_change_language.glade.h:5
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Test Translation</span>\n"
 "\n"
@@ -3528,7 +3702,7 @@ msgstr ""
 "παράθυρα διαλόγων, θα μεταφραστούν μόνο όταν ξεκινάτε το Glom σε έναν "
 "υπολογιστή που χρησιμοποιεί αυτήν την γλώσσα."
 
-#: ../data/ui/developer/dialog_change_language.glade.h:7
+#: ../data/ui/developer/dialog_change_language.glade.h:10
 msgid "Locale:"
 msgstr "Τοπικά:"
 
@@ -3536,11 +3710,11 @@ msgstr "Τοπικά:"
 msgid "Select Field"
 msgstr "Επιλογή πεδίου"
 
-#: ../data/ui/developer/dialog_choose_field.glade.h:3
+#: ../data/ui/developer/dialog_choose_field.glade.h:4
 msgid "Show _Related Relationships"
 msgstr "Εμφάνιση _σχετικών σχέσεων"
 
-#: ../data/ui/developer/dialog_choose_field.glade.h:4
+#: ../data/ui/developer/dialog_choose_field.glade.h:5
 msgid "_Table:"
 msgstr "_Πίνακας:"
 
@@ -3548,7 +3722,7 @@ msgstr "_Πίνακας:"
 msgid "Select Relationship"
 msgstr "Επιλογή σχέσης"
 
-#: ../data/ui/developer/dialog_choose_relationship.glade.h:3
+#: ../data/ui/developer/dialog_choose_relationship.glade.h:4
 msgid "Table:"
 msgstr "Πίνακας:"
 
@@ -3556,7 +3730,7 @@ msgstr "Πίνακας:"
 msgid "Choose User"
 msgstr "Επιλέξτε χρήστη"
 
-#: ../data/ui/developer/dialog_choose_user.glade.h:2
+#: ../data/ui/developer/dialog_choose_user.glade.h:5
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
 "\n"
@@ -3570,88 +3744,106 @@ msgstr ""
 msgid "Database Preferences"
 msgstr "Προτιμήσεις βάσης δεδομένων"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:2
+#: ../data/ui/developer/dialog_database_preferences.glade.h:5
 msgid "System Name:"
 msgstr "Όνομα συστήματος:"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:3
+#: ../data/ui/developer/dialog_database_preferences.glade.h:6
 msgid "Name:"
 msgstr "Όνομα:"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:4
+#: ../data/ui/developer/dialog_database_preferences.glade.h:7
 msgid "Country:"
 msgstr "Χώρα:"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:5
+#: ../data/ui/developer/dialog_database_preferences.glade.h:8
 msgid "Zip/Postal Code:"
 msgstr "Ταχ. κώδικας:"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:6
+#: ../data/ui/developer/dialog_database_preferences.glade.h:9
 msgid "State/County:"
 msgstr "Πολιτεία/Επαρχία:"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:7
+#: ../data/ui/developer/dialog_database_preferences.glade.h:10
 msgid "Town:"
 msgstr "Πόλη:"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:8
+#: ../data/ui/developer/dialog_database_preferences.glade.h:11
 msgid "Street (Line 2):"
 msgstr "Οδός (γραμμή 2):"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:9
+#: ../data/ui/developer/dialog_database_preferences.glade.h:12
 msgid "Street:"
 msgstr "Οδός:"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:10
+#: ../data/ui/developer/dialog_database_preferences.glade.h:13
 msgid "<b>Address</b>"
 msgstr "<b>Διεύθυνση</b>"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:11
+#: ../data/ui/developer/dialog_database_preferences.glade.h:14
 msgid "Organisation"
 msgstr "Οργανισμός"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:12
+#: ../data/ui/developer/dialog_database_preferences.glade.h:16
 msgid "Logo"
 msgstr "Λογότυπος"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:13
+#: ../data/ui/developer/dialog_database_preferences.glade.h:17
 msgid "Auto-increment values"
 msgstr "Τιμές αυτόματης αύξησης"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:14
+#: ../data/ui/developer/dialog_database_preferences.glade.h:18
 msgid ""
 "When the database is opened the python function implemented here will run."
 msgstr ""
 "Όταν η βάση δεδομένων ανοίγεται η εφαρμοσμένη συνάρτηση python εδώ θα "
 "εκτελεστεί."
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:15
-#: ../data/ui/developer/window_button_script.glade.h:4
-#: ../data/ui/developer/window_field_calculation.glade.h:3
+#: ../data/ui/developer/dialog_database_preferences.glade.h:19
+#: ../data/ui/developer/window_button_script.glade.h:7
+#: ../data/ui/developer/window_field_calculation.glade.h:6
 msgid "Test"
 msgstr "Δοκιμή"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:16
+#: ../data/ui/developer/dialog_database_preferences.glade.h:20
 msgid "Startup Script"
 msgstr "Σενάριο εκκίνησης"
 
-#: ../data/ui/developer/dialog_fieldslist.glade.h:1
-#: ../data/ui/developer/dialog_sort_fields.glade.h:2
+#: ../data/ui/developer/dialog_fieldslist.glade.h:4
+#: ../data/ui/developer/dialog_sort_fields.glade.h:5
 msgid "Table: "
 msgstr "Πίνακας: "
 
-#: ../data/ui/developer/dialog_fieldslist.glade.h:3
+#: ../data/ui/developer/dialog_fieldslist.glade.h:5
+#: ../data/ui/developer/dialog_notebook.glade.h:5
+#: ../data/ui/developer/dialog_sort_fields.glade.h:6
+#: ../data/ui/developer/window_data_layout_export.glade.h:3
+#: ../data/ui/developer/window_data_layout.glade.h:23
+#: ../data/ui/developer/window_report_layout.glade.h:14
+msgid "_Up"
+msgstr "Πά_νω"
+
+#: ../data/ui/developer/dialog_fieldslist.glade.h:6
+#: ../data/ui/developer/dialog_notebook.glade.h:6
+#: ../data/ui/developer/dialog_sort_fields.glade.h:7
+#: ../data/ui/developer/window_data_layout_export.glade.h:4
 #: ../data/ui/developer/window_data_layout.glade.h:24
+#: ../data/ui/developer/window_report_layout.glade.h:15
+msgid "_Down"
+msgstr "_Κάτω"
+
+#: ../data/ui/developer/dialog_fieldslist.glade.h:11
+#: ../data/ui/developer/window_data_layout.glade.h:29
 msgid "<b>Fields</b>"
 msgstr "<b>Πεδία:</b>"
 
-#: ../data/ui/developer/dialog_field_summary.glade.h:2
-#: ../data/ui/developer/dialog_group_by.glade.h:2
+#: ../data/ui/developer/dialog_field_summary.glade.h:4
+#: ../data/ui/developer/dialog_group_by.glade.h:4
 #: ../data/ui/developer/box_formatting.glade.h:21
 msgid "Field:"
 msgstr "Πεδίο:"
 
-#: ../data/ui/developer/dialog_field_summary.glade.h:4
+#: ../data/ui/developer/dialog_field_summary.glade.h:6
 msgid "Summary Type:"
 msgstr "Τύπος περίληψης:"
 
@@ -3659,24 +3851,24 @@ msgstr "Τύπος περίληψης:"
 msgid "Group Properties"
 msgstr "Ιδιότητες ομάδας"
 
-#: ../data/ui/developer/dialog_flowtable.glade.h:2
+#: ../data/ui/developer/dialog_flowtable.glade.h:4
 msgid "Columns:"
 msgstr "Στήλες:"
 
-#: ../data/ui/developer/dialog_flowtable.glade.h:3
+#: ../data/ui/developer/dialog_flowtable.glade.h:5
 #: ../data/ui/developer/window_print_layout_edit.glade.h:42
 msgid "Title:"
 msgstr "Τίτλος:"
 
-#: ../data/ui/developer/dialog_group_by.glade.h:5
+#: ../data/ui/developer/dialog_group_by.glade.h:7
 msgid "Sort Fields:"
 msgstr "Ταξινόμηση πεδίων:"
 
-#: ../data/ui/developer/dialog_group_by.glade.h:6
+#: ../data/ui/developer/dialog_group_by.glade.h:9
 msgid "Secondary Fields:"
 msgstr "Δευτερεύοντα πεδία:"
 
-#: ../data/ui/developer/dialog_group_by.glade.h:7
+#: ../data/ui/developer/dialog_group_by.glade.h:10
 msgid "Border Width (ems):"
 msgstr "Πλάτος περιγράμματος (ems):"
 
@@ -3684,7 +3876,13 @@ msgstr "Πλάτος περιγράμματος (ems):"
 msgid "Database User"
 msgstr "Χρήστης βάσης δεδομένων"
 
-#: ../data/ui/developer/dialog_initial_password.glade.h:2
+#: ../data/ui/developer/dialog_initial_password.glade.h:4
+#: ../data/ui/developer/dialog_new_group.glade.h:4
+#: ../data/ui/developer/dialog_new_library_script.glade.h:4
+msgid "C_reate"
+msgstr "Δ_ημιουργία"
+
+#: ../data/ui/developer/dialog_initial_password.glade.h:5
 msgid ""
 "Please enter the initial connection details for your database. You may add "
 "additional users later. Remember to keep this password secret because it "
@@ -3695,26 +3893,20 @@ msgstr ""
 "κρατήσετε αυτόν τον κωδικό πρόσβασης μυστικό, επειδή επιτρέπει την πρόσβαση "
 "στα δεδομένα σας από άλλους υπολογιστές στο δίκτυο."
 
-#: ../data/ui/developer/dialog_initial_password.glade.h:5
+#: ../data/ui/developer/dialog_initial_password.glade.h:8
 msgid "_Confirm Password:"
 msgstr "_Επιβεβαίωση συνθηματικού:"
-
-#: ../data/ui/developer/dialog_initial_password.glade.h:6
-#: ../data/ui/developer/dialog_new_group.glade.h:2
-#: ../data/ui/developer/dialog_new_library_script.glade.h:2
-msgid "C_reate"
-msgstr "Δ_ημιουργία"
 
 #: ../data/ui/developer/dialog_line.glade.h:1
 #: ../data/ui/developer/window_textobject.glade.h:1
 msgid "Text Object"
 msgstr "Αντικείμενο κειμένου"
 
-#: ../data/ui/developer/dialog_line.glade.h:2
+#: ../data/ui/developer/dialog_line.glade.h:5
 msgid "Line Width:"
 msgstr "Πλάτος γραμμής:"
 
-#: ../data/ui/developer/dialog_line.glade.h:3
+#: ../data/ui/developer/dialog_line.glade.h:6
 msgid "Color:"
 msgstr "Χρώμα:"
 
@@ -3722,31 +3914,31 @@ msgstr "Χρώμα:"
 msgid "Field Layout"
 msgstr "Διάταξη πεδίου"
 
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:2
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:4
 msgid "<b>Field:</b>"
 msgstr "<b>Πεδίο:</b>"
 
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:4
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:6
 msgid "Use default field title: "
 msgstr "Χρήση προεπιλεγμένου πεδίου τίτλου: "
 
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:5
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:7
 msgid "Use custom title:"
 msgstr "Χρήση προσαρμοσμένου τίτλου:"
 
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:6
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:8
 msgid "<b>Title</b>"
 msgstr "<b>Τίτλος</b>"
 
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:7
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:9
 msgid "Use default formatting"
 msgstr "Χρήση προεπιλεγμένης μορφοποίησης"
 
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:8
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:10
 msgid "Use custom formatting"
 msgstr "Χρήση προσαρμοσμένης μορφοποίησης"
 
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:9
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:11
 msgid "<b>Formatting</b>"
 msgstr "<b>Μορφοποίηση</b>"
 
@@ -3755,7 +3947,7 @@ msgstr "<b>Μορφοποίηση</b>"
 msgid "Create Group"
 msgstr "Δημιουργία ομάδας"
 
-#: ../data/ui/developer/dialog_new_group.glade.h:3
+#: ../data/ui/developer/dialog_new_group.glade.h:5
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
 "\n"
@@ -3765,11 +3957,11 @@ msgstr ""
 "\n"
 "Ποιο όνομα πρέπει αυτή η ομάδα να έχει;"
 
-#: ../data/ui/developer/dialog_new_group.glade.h:6
+#: ../data/ui/developer/dialog_new_group.glade.h:8
 msgid "Group name:"
 msgstr "Όνομα ομάδας:"
 
-#: ../data/ui/developer/dialog_new_library_script.glade.h:3
+#: ../data/ui/developer/dialog_new_library_script.glade.h:5
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Add Module</span>\n"
 "\n"
@@ -3779,11 +3971,11 @@ msgstr ""
 "\n"
 "Ποιο όνομα πρέπει αυτή η ενότητα να έχει;"
 
-#: ../data/ui/developer/dialog_new_library_script.glade.h:6
+#: ../data/ui/developer/dialog_new_library_script.glade.h:8
 msgid "Script name:"
 msgstr "Όνομα σεναρίου:"
 
-#: ../data/ui/developer/dialog_notebook.glade.h:2
+#: ../data/ui/developer/dialog_notebook.glade.h:9
 msgid "<b>Notebook Tabs</b>"
 msgstr "<b>Καρτέλες σημειωματαρίου</b>"
 
@@ -3791,7 +3983,7 @@ msgstr "<b>Καρτέλες σημειωματαρίου</b>"
 msgid "Script Library"
 msgstr "Βιβλιοθήκη σεναρίων"
 
-#: ../data/ui/developer/dialog_script_library.glade.h:2
+#: ../data/ui/developer/dialog_script_library.glade.h:4
 msgid ""
 "These modules will be available to your button scripts and field "
 "calculations via the python import keyword."
@@ -3799,12 +3991,12 @@ msgstr ""
 "Αυτές οι ενότητες θα είναι διαθέσιμες στα σενάρια κουμπιού και τους "
 "υπολογισμούς πεδίου μέσα από τη λέξη-κλειδί εισαγωγής python."
 
-#: ../data/ui/developer/dialog_script_library.glade.h:3
+#: ../data/ui/developer/dialog_script_library.glade.h:5
 msgid "Module name:"
 msgstr "Όνομα ενότητας:"
 
 #. Translators: This is the verb. It is for checking that a Python script works.
-#: ../data/ui/developer/dialog_script_library.glade.h:5
+#: ../data/ui/developer/dialog_script_library.glade.h:9
 msgid "_Check"
 msgstr "Έ_λεγχος"
 
@@ -3812,7 +4004,7 @@ msgstr "Έ_λεγχος"
 msgid "Group By - Sort Fields"
 msgstr "Ομαδοποίηση κατά - Ταξινόμηση πεδίων"
 
-#: ../data/ui/developer/dialog_sort_fields.glade.h:3
+#: ../data/ui/developer/dialog_sort_fields.glade.h:11
 msgid "<b>Sort Fields</b>"
 msgstr "<b>Ταξινόμηση πεδίων</b>"
 
@@ -3821,7 +4013,11 @@ msgstr "<b>Ταξινόμηση πεδίων</b>"
 msgid "Identify Original"
 msgstr "Ταυτοποίηση αρχικού"
 
-#: ../data/ui/developer/dialog_translation_copy.glade.h:2
+#: ../data/ui/developer/dialog_translation_copy.glade.h:4
+msgid "Copy Translation"
+msgstr "Αντιγραφή μετάφρασης"
+
+#: ../data/ui/developer/dialog_translation_copy.glade.h:5
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Copy Translation</span>\n"
 "\n"
@@ -3833,12 +4029,12 @@ msgstr ""
 "Από ποια γλώσσα Θα θέλατε να αντιγράψετε τις μεταφράσεις για να "
 "χρησιμοποιήσετε ως έναρξη της τρέχουσας μετάφρασης;"
 
-#: ../data/ui/developer/dialog_translation_copy.glade.h:5
-#: ../data/ui/developer/dialog_translation_identify_original.glade.h:7
+#: ../data/ui/developer/dialog_translation_copy.glade.h:8
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:9
 msgid "Language:"
 msgstr "Γλώσσα:"
 
-#: ../data/ui/developer/dialog_translation_identify_original.glade.h:2
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:4
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Identify Original</span>\n"
 "\n"
@@ -3848,11 +4044,11 @@ msgstr ""
 "\n"
 "Η γλώσσα του αρχικού κειμένου ταυτοποιείται προς το παρόν ως:"
 
-#: ../data/ui/developer/dialog_translation_identify_original.glade.h:5
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:7
 msgid "<b>English</b>"
 msgstr "<b>Αγγλικά</b>"
 
-#: ../data/ui/developer/dialog_translation_identify_original.glade.h:6
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:8
 msgid ""
 "If the text is not actually in this language, please choose the correct "
 "language."
@@ -3860,19 +4056,19 @@ msgstr ""
 "Αν το κείμενο δεν είναι πράγματι σε αυτήν τη γλώσσα, παρακαλούμε επιλέξτε τη "
 "σωστή γλώσσα."
 
-#: ../data/ui/developer/dialog_user.glade.h:2
+#: ../data/ui/developer/dialog_user.glade.h:5
 msgid "Group:"
 msgstr "Ομάδα:"
 
-#: ../data/ui/developer/dialog_user.glade.h:3
+#: ../data/ui/developer/dialog_user.glade.h:6
 msgid "Password:"
 msgstr "Κωδικός πρόσβασης:"
 
-#: ../data/ui/developer/dialog_user.glade.h:4
+#: ../data/ui/developer/dialog_user.glade.h:7
 msgid "Confirm Password:"
 msgstr "Επιβεβαίωση κωδικού πρόσβασης:"
 
-#: ../data/ui/developer/dialog_user.glade.h:5
+#: ../data/ui/developer/dialog_user.glade.h:8
 msgid "User:"
 msgstr "Χρήστης:"
 
@@ -3880,14 +4076,14 @@ msgstr "Χρήστης:"
 msgid "Button Script"
 msgstr "Σενάριο κουμπιού"
 
-#: ../data/ui/developer/window_button_script.glade.h:2
+#: ../data/ui/developer/window_button_script.glade.h:5
 #: ../data/ui/developer/window_data_layout.glade.h:6
-#: ../data/ui/developer/window_imageobject.glade.h:2
-#: ../data/ui/developer/window_textobject.glade.h:2
+#: ../data/ui/developer/window_imageobject.glade.h:5
+#: ../data/ui/developer/window_textobject.glade.h:5
 msgid "<b>Title:</b>"
 msgstr "<b>Τίτλος:</b>"
 
-#: ../data/ui/developer/window_button_script.glade.h:3
+#: ../data/ui/developer/window_button_script.glade.h:6
 msgid ""
 "When the button is clicked it will run the python function which you "
 "implement here."
@@ -3916,6 +4112,10 @@ msgid "Show child relationships"
 msgstr "Εμφάνιση θυγατρικών σχέσεων"
 
 #: ../data/ui/developer/window_data_layout.glade.h:7
+msgid "Add Field"
+msgstr "Προσθήκη πεδίου"
+
+#: ../data/ui/developer/window_data_layout.glade.h:8
 msgid ""
 "Add a layout item that shows the data from a field in the record, and allows "
 "the user to edit that value."
@@ -3923,11 +4123,7 @@ msgstr ""
 "Προσθήκη στοιχείου διάταξης που εμφανίζει τα δεδομένα από ένα πεδίο στην "
 "εγγραφή και επιτρέπει στον χρήστη να επεξεργαστεί αυτήν την τιμή."
 
-#: ../data/ui/developer/window_data_layout.glade.h:8
-msgid "Add Field"
-msgstr "Προσθήκη πεδίου"
-
-#: ../data/ui/developer/window_data_layout.glade.h:9
+#: ../data/ui/developer/window_data_layout.glade.h:10
 msgid ""
 "Add text to a layout, such as an explanation or a warning. The text will be "
 "the same for every record viewed."
@@ -3936,6 +4132,10 @@ msgstr ""
 "θα είναι το ίδιο για κάθε προβαλλόμενη εγγραφή."
 
 #: ../data/ui/developer/window_data_layout.glade.h:11
+msgid "Add Image"
+msgstr "Προσθήκη εικόνας"
+
+#: ../data/ui/developer/window_data_layout.glade.h:12
 msgid ""
 "Add an image to the layout, such as a logo. The image will be the same for "
 "every record viewed. To show an image field from a record, to show different "
@@ -3946,7 +4146,7 @@ msgstr ""
 "μια εγγραφή, για την προβολή διαφορετικών εικόνων για κάθε πεδίο, "
 "χρησιμοποιήστε το στοιχείο διάταξης πεδίου."
 
-#: ../data/ui/developer/window_data_layout.glade.h:12
+#: ../data/ui/developer/window_data_layout.glade.h:14
 msgid ""
 "Add a button. Edit the button to define the script that will be run when the "
 "button is clicked."
@@ -3954,7 +4154,7 @@ msgstr ""
 "Προσθήκη κουμπιού. Επεξεργαστείτε το κουμπί που θα ορίσει το σενάριο που θα "
 "εκτελεστεί όταν πατιέται το κουμπί."
 
-#: ../data/ui/developer/window_data_layout.glade.h:14
+#: ../data/ui/developer/window_data_layout.glade.h:16
 msgid ""
 "Add a group which can contain other layout items. Use this to group items "
 "together, such as fields."
@@ -3962,11 +4162,7 @@ msgstr ""
 "Προσθήκη μιας ομάδας που μπορεί να περιέχει άλλα στοιχεία διάταξης. "
 "Χρησιμοποιήστε αυτό για ομαδοποίηση στοιχείων μαζί, όπως πεδία."
 
-#: ../data/ui/developer/window_data_layout.glade.h:15
-msgid "Add _Group"
-msgstr "Προσθήκη ομά_δας"
-
-#: ../data/ui/developer/window_data_layout.glade.h:16
+#: ../data/ui/developer/window_data_layout.glade.h:18
 msgid ""
 "Add a tabbed notebook. Each page of the notebook may contain several other "
 "layout items, but only one page will be visible at one time."
@@ -3975,7 +4171,7 @@ msgstr ""
 "να περιέχει αρκετά άλλα στοιχεία διάταξης, αλλά μόνο μια σελίδα θα είναι "
 "ορατή τη φορά."
 
-#: ../data/ui/developer/window_data_layout.glade.h:18
+#: ../data/ui/developer/window_data_layout.glade.h:20
 msgid ""
 "Add a related records portal. This is a list of records in a related table. "
 "Remember to edit this layout item to specify the relationship to use, and "
@@ -3986,7 +4182,11 @@ msgstr ""
 "να ορίσετε τη σχέση που θα χρησιμοποιήσετε και τα πεδία που θα εμφανιστούν "
 "από τον σχετικό πίνακα."
 
-#: ../data/ui/developer/window_data_layout.glade.h:20
+#: ../data/ui/developer/window_data_layout.glade.h:21
+msgid "Add Related Calendar"
+msgstr "Προσθήκη σχετικού ημερολογίου"
+
+#: ../data/ui/developer/window_data_layout.glade.h:22
 msgid ""
 "Add a related records calendar portal. This is a calendar showing records "
 "from a related table. Remember to edit this layout item to specify the "
@@ -3997,11 +4197,7 @@ msgstr ""
 "αυτό το στοιχείο διάταξης για να ορίσετε τη σχέση που θα χρησιμοποιήσετε και "
 "τα πεδία που θα εμφανιστούν από τον σχετικό πίνακα."
 
-#: ../data/ui/developer/window_data_layout.glade.h:21
-msgid "Add Related Calendar"
-msgstr "Προσθήκη σχετικού ημερολογίου"
-
-#: ../data/ui/developer/window_data_layout.glade.h:22
+#: ../data/ui/developer/window_data_layout.glade.h:26
 msgid ""
 "Remove the item from the layout. If you remove a field layout item, it will "
 "not remove the field from the table itself. It just will not be seen on the "
@@ -4011,7 +4207,7 @@ msgstr ""
 "πεδίου, δεν θα αφαιρέσει το πεδίο από τον ίδιο τον πίνακα. Απλά, δεν θα "
 "φαίνεται στη διάταξη."
 
-#: ../data/ui/developer/window_data_layout.glade.h:25
+#: ../data/ui/developer/window_data_layout.glade.h:30
 msgid ""
 "Clicking the row button takes the user to the table specified by this "
 "relationship:"
@@ -4019,55 +4215,59 @@ msgstr ""
 "Πατώντας το κουμπί γραμμής μεταφέρει τον χρήστη στον πίνακα που ορίζεται από "
 "αυτή τη σχέση:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:26
+#: ../data/ui/developer/window_data_layout.glade.h:31
 msgid "Automatic:"
 msgstr "Αυτόματο:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:27
+#: ../data/ui/developer/window_data_layout.glade.h:32
 msgid "None"
 msgstr "Κανένα"
 
-#: ../data/ui/developer/window_data_layout.glade.h:28
+#: ../data/ui/developer/window_data_layout.glade.h:33
 msgid "<b>Navigation</b>"
 msgstr "<b>Περιήγηση</b>"
 
-#: ../data/ui/developer/window_data_layout.glade.h:29
+#: ../data/ui/developer/window_data_layout.glade.h:35
 msgid "Date Field:"
 msgstr "Πεδίο ημερομηνίας:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:30
+#: ../data/ui/developer/window_data_layout.glade.h:36
 msgid "<b>Dates</b>"
 msgstr "<b>Ημερομηνίες</b>"
 
-#: ../data/ui/developer/window_data_layout.glade.h:31
+#: ../data/ui/developer/window_data_layout.glade.h:37
 msgid "Minimum number of rows:"
 msgstr "Ελάχιστος αριθμός γραμμών:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:32
+#: ../data/ui/developer/window_data_layout.glade.h:38
 msgid "Show at least this many rows."
 msgstr "Εμφάνιση τουλάχιστον των ελάχιστων γραμμών."
 
-#: ../data/ui/developer/window_data_layout.glade.h:33
+#: ../data/ui/developer/window_data_layout.glade.h:39
 msgid "Maximum number of rows:"
 msgstr "Μέγιστος αριθμός γραμμών:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:34
+#: ../data/ui/developer/window_data_layout.glade.h:40
 msgid "Show no more than this many rows."
 msgstr "Να μην εμφανίζονται περισσότερες από τις μέγιστες γραμμές."
 
-#: ../data/ui/developer/window_data_layout.glade.h:35
+#: ../data/ui/developer/window_data_layout.glade.h:41
 msgid "Row Line Width:"
 msgstr "Πλάτος γραμμής γραμμής:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:36
+#: ../data/ui/developer/window_data_layout.glade.h:42
+msgid "0.000"
+msgstr "0.000"
+
+#: ../data/ui/developer/window_data_layout.glade.h:43
 msgid "Column Line Width:"
 msgstr "Πλάτος γραμμής στήλης:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:37
+#: ../data/ui/developer/window_data_layout.glade.h:44
 msgid "Line Color:"
 msgstr "Χρώμα γραμμής:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:38
+#: ../data/ui/developer/window_data_layout.glade.h:45
 msgid "<b>Lines</b>"
 msgstr "<b>Γραμμές</b>"
 
@@ -4083,7 +4283,7 @@ msgstr "Ορισμοί πεδίου"
 msgid "Field Calculation"
 msgstr "Υπολογισμός πεδίου"
 
-#: ../data/ui/developer/window_field_calculation.glade.h:2
+#: ../data/ui/developer/window_field_calculation.glade.h:5
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
@@ -4091,7 +4291,7 @@ msgstr ""
 "Η τιμή πεδίου θα είναι η τιμή επιστροφής της συνάρτησης python, που "
 "εφαρμόσετε εδώ."
 
-#: ../data/ui/developer/window_field_calculation.glade.h:4
+#: ../data/ui/developer/window_field_calculation.glade.h:7
 msgid "Triggered by:"
 msgstr "Έναυσμα από:"
 
@@ -4100,12 +4300,12 @@ msgid "Field Definition"
 msgstr "Ορισμός πεδίου"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:2
-msgid "_Name:"
-msgstr "Ό_νομα:"
-
-#: ../data/ui/developer/window_field_definition_edit.glade.h:3
 msgid "Typ_e:"
 msgstr "Τύ_πος:"
+
+#: ../data/ui/developer/window_field_definition_edit.glade.h:4
+msgid "_Name:"
+msgstr "Ό_νομα:"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:5
 msgid "_Primary Key"
@@ -4249,14 +4449,18 @@ msgid "Also show:"
 msgstr "Να εμφανίζονται επίσης:"
 
 #: ../data/ui/developer/box_formatting.glade.h:24
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+#: ../data/ui/developer/box_formatting.glade.h:25
 msgid "Sort Order:"
 msgstr "Σειρά ταξινόμησης:"
 
-#: ../data/ui/developer/box_formatting.glade.h:25
+#: ../data/ui/developer/box_formatting.glade.h:26
 msgid "Show all records"
 msgstr "Εμφάνιση όλων των εγγραφών"
 
-#: ../data/ui/developer/box_formatting.glade.h:26
+#: ../data/ui/developer/box_formatting.glade.h:27
 msgid ""
 "If this option is selected then the choices will list values from all "
 "records in the related table. If this option is not selected then the "
@@ -4266,23 +4470,23 @@ msgstr ""
 "όλες τις εγγραφές στον σχετικό πίνακα. Αν αυτή η επιλογή δεν επιλεγεί, τότε "
 "οι επιλογές θα εμφανίσουν μόνο τις τιμές από σχετικές εγγραφές."
 
-#: ../data/ui/developer/box_formatting.glade.h:27
+#: ../data/ui/developer/box_formatting.glade.h:28
 msgid "Choices From Related Records"
 msgstr "Επιλογές από σχετικές εγγραφές"
 
-#: ../data/ui/developer/box_formatting.glade.h:28
+#: ../data/ui/developer/box_formatting.glade.h:29
 msgid "Custom Choice List"
 msgstr "Προσαρμοσμένη λίστα επιλογών"
 
-#: ../data/ui/developer/box_formatting.glade.h:29
+#: ../data/ui/developer/box_formatting.glade.h:30
 msgid "Restrict data to these choices"
 msgstr "Περιορισμός δεδομένων σε αυτές τις επιλογές"
 
-#: ../data/ui/developer/box_formatting.glade.h:30
+#: ../data/ui/developer/box_formatting.glade.h:31
 msgid "Display as radio buttons"
 msgstr "Προβολή ως επιλέξιμα κουμπιά"
 
-#: ../data/ui/developer/box_formatting.glade.h:31
+#: ../data/ui/developer/box_formatting.glade.h:32
 msgid "Choices"
 msgstr "Επιλογές"
 
@@ -4290,16 +4494,16 @@ msgstr "Επιλογές"
 msgid "Groups"
 msgstr "Ομάδες"
 
-#: ../data/ui/developer/window_groups.glade.h:2
+#: ../data/ui/developer/window_groups.glade.h:6
 #: ../data/ui/developer/window_users.glade.h:1
 msgid "Users"
 msgstr "Χρήστες"
 
-#: ../data/ui/developer/window_groups.glade.h:3
+#: ../data/ui/developer/window_groups.glade.h:7
 msgid "<b>Groups</b>"
 msgstr "<b>Ομάδες</b>"
 
-#: ../data/ui/developer/window_groups.glade.h:4
+#: ../data/ui/developer/window_groups.glade.h:8
 msgid "<b>Tables</b>"
 msgstr "<b>Πίνακες</b>"
 
@@ -4307,9 +4511,13 @@ msgstr "<b>Πίνακες</b>"
 msgid "Image Object"
 msgstr "Αντικείμενο εικόνας"
 
-#: ../data/ui/developer/window_imageobject.glade.h:3
+#: ../data/ui/developer/window_imageobject.glade.h:6
 msgid "<b>Image:</b>"
 msgstr "<b>Εικόνα:</b>"
+
+#: ../data/ui/developer/window_imageobject.glade.h:7
+msgid "C_hoose Image"
+msgstr "Ε_πιλογή εικόνας"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:2
 msgid "Page Set_up"
@@ -4498,11 +4706,11 @@ msgid "<b>Available Parts</b>"
 msgstr "<b>Διαθέσιμα μέρη</b>"
 
 #. Translators: The Main part of the report (not the footer or header)
-#: ../data/ui/developer/window_report_layout.glade.h:11
+#: ../data/ui/developer/window_report_layout.glade.h:12
 msgid "Main"
 msgstr "Κύριο"
 
-#: ../data/ui/developer/window_report_layout.glade.h:13
+#: ../data/ui/developer/window_report_layout.glade.h:19
 msgid "<b>Parts</b>"
 msgstr "<b>Μέρη</b>"
 
@@ -4510,7 +4718,7 @@ msgstr "<b>Μέρη</b>"
 msgid "Text Format"
 msgstr "Μορφή κειμένου"
 
-#: ../data/ui/developer/window_textobject.glade.h:3
+#: ../data/ui/developer/window_textobject.glade.h:6
 msgid "<b>Text:</b>"
 msgstr "<b>Κείμενο:</b>"
 
@@ -4546,13 +4754,37 @@ msgstr ""
 "Έναρξη μετάφρασης για αυτά τα τοπικά προορισμού αντιγράφοντας τις "
 "συμβολοσειρές από άλλα τοπικά προορισμού."
 
-#: ../data/ui/developer/window_users.glade.h:2
+#: ../data/ui/developer/window_users.glade.h:4
 msgid "<b>Group:</b>"
 msgstr "<b>Ομάδα:</b>"
 
-#: ../data/ui/developer/window_users.glade.h:3
+#: ../data/ui/developer/window_users.glade.h:10
 msgid "<b>Users</b>"
 msgstr "<b>Χρήστες</b>"
+
+#~ msgid "No help file available"
+#~ msgstr "Δεν υπάρχει διαθέσιμο αρχείο βοήθειας"
+
+#~ msgid "No templates available."
+#~ msgstr "Δεν υπάρχουν διαθέσιμα πρότυπα."
+
+#~ msgid "Layout Group"
+#~ msgstr "Ομάδα διάταξης"
+
+#~ msgid "Field Title"
+#~ msgstr "Τίτλος πεδίου"
+
+#~ msgid "Could not install package"
+#~ msgstr "Αδυναμία εγκατάστασης του πακέτου"
+
+#~ msgid ""
+#~ "The necessary applications to install the package could not be found."
+#~ msgstr ""
+#~ "Οι απαραίτητες εφαρμογές για εγκατάσταση του πακέτου δεν μπόρεσαν να "
+#~ "βρεθούν."
+
+#~ msgid "Add _Group"
+#~ msgstr "Προσθήκη ομά_δας"
 
 #~ msgid "_Recent Files"
 #~ msgstr "Πρόσ_φατα αρχεία"
@@ -4595,9 +4827,6 @@ msgstr "<b>Χρήστες</b>"
 
 #~ msgid "Insert"
 #~ msgstr "Εισαγωγή"
-
-#~ msgid "Edit"
-#~ msgstr "Επεξεργασία"
 
 #~ msgid "Choose File"
 #~ msgstr "Επιλογή αρχείου"
