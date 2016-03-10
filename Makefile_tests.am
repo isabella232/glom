@@ -41,8 +41,6 @@ check_PROGRAMS =						\
 	tests/test_selfhosting_new_from_example_float \
 	tests/test_selfhosting_new_from_example_operator \
 	tests/test_selfhosting_new_from_example_strangepath \
-	tests/test_selfhosting_new_then_export \
-	tests/test_selfhosting_new_then_export_with_big_num \
 	tests/test_selfhosting_new_then_report \
 	tests/test_selfhosting_new_then_report_summary \
 	tests/test_selfhosting_new_then_image \
@@ -56,6 +54,8 @@ check_PROGRAMS =						\
 	tests/test_selfhosting_sqlinjection \
 	tests/test_conversions \
 	tests/test_xml_utils \
+	tests/export/test_selfhosting_new_then_export \
+	tests/export/test_selfhosting_new_then_export_with_big_num \
 	tests/import/test_parsing \
 	tests/import/test_signals \
 	tests/translations_po/test_document_export_po \
@@ -89,8 +89,6 @@ TESTS =	tests/test_document_load	\
 	tests/test_selfhosting_new_from_example_operator \
 	tests/test_selfhosting_new_from_example_in_locales.sh \
 	tests/test_selfhosting_new_from_example_strangepath \
-	tests/test_selfhosting_new_then_export \
-	tests/test_selfhosting_new_then_export_with_big_num \
 	tests/test_selfhosting_new_then_report \
 	tests/test_selfhosting_new_then_report_summary \
 	tests/test_selfhosting_new_then_backup_restore \
@@ -104,6 +102,8 @@ TESTS =	tests/test_document_load	\
 	tests/test_selfhosting_sqlinjection \
 	tests/test_conversions \
 	tests/test_xml_utils \
+	tests/export/test_selfhosting_new_then_export \
+	tests/export/test_selfhosting_new_then_export_with_big_num \
 	tests/import/test_parsing \
 	tests/import/test_signals \
 	tests/translations_po/test_document_export_po \
@@ -217,14 +217,15 @@ tests_python_test_python_module_CPPFLAGS = $(tests_cppflags)
 
 # Distribute the tests data:
 dist_noinst_DATA = \
+	tests/export/test_example_music_collection_with_big_num.glom \
 	tests/import/data/albums.csv \
 	tests/translations_po/data/test.po \
 	tests/test_image.jpg \
 	tests/test_image2.jpg \
 	tests/test_image.pdf \
 	tests/test_image2.pdf \
-	tests/test_example_music_collection_text_pk_fields.glom \
-	tests/test_example_music_collection_with_big_num.glom
+	tests/test_example_music_collection_text_pk_fields.glom
+
 
 # Let the .cc source code know about this path:
 glom_test_import_defines = -DGLOM_TESTS_IMPORT_DATA_NOTINSTALLED=\""$(abs_top_srcdir)/tests/import/data/"\"
@@ -309,13 +310,13 @@ tests_test_selfhosting_new_from_example_strangepath_SOURCES = tests/test_selfhos
 tests_test_selfhosting_new_from_example_strangepath_LDADD = $(tests_ldadd)
 tests_test_selfhosting_new_from_example_strangepath_CPPFLAGS = $(tests_cppflags)
 
-tests_test_selfhosting_new_then_export_SOURCES = tests/test_selfhosting_new_then_export.cc $(sources_test_selfhosting_utils)
-tests_test_selfhosting_new_then_export_LDADD = $(tests_ldadd)
-tests_test_selfhosting_new_then_export_CPPFLAGS = $(tests_cppflags)
+tests_export_test_selfhosting_new_then_export_SOURCES = tests/export/test_selfhosting_new_then_export.cc $(sources_test_selfhosting_utils)
+tests_export_test_selfhosting_new_then_export_LDADD = $(tests_ldadd)
+tests_export_test_selfhosting_new_then_export_CPPFLAGS = $(tests_cppflags)
 
-tests_test_selfhosting_new_then_export_with_big_num_SOURCES = tests/test_selfhosting_new_then_export_with_big_num.cc $(sources_test_selfhosting_utils)
-tests_test_selfhosting_new_then_export_with_big_num_LDADD = $(tests_ldadd)
-tests_test_selfhosting_new_then_export_with_big_num_CPPFLAGS = $(tests_cppflags)
+tests_export_test_selfhosting_new_then_export_with_big_num_SOURCES = tests/export/test_selfhosting_new_then_export_with_big_num.cc $(sources_test_selfhosting_utils)
+tests_export_test_selfhosting_new_then_export_with_big_num_LDADD = $(tests_ldadd)
+tests_export_test_selfhosting_new_then_export_with_big_num_CPPFLAGS = $(tests_cppflags)
 
 tests_test_selfhosting_new_then_report_SOURCES = tests/test_selfhosting_new_then_report.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_then_report_LDADD = $(tests_ldadd)

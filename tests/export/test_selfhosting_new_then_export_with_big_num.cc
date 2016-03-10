@@ -30,7 +30,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 {
   auto document = std::make_shared<Glom::Document>();
   const bool recreated = 
-    test_create_and_selfhost_from_test_example("test_example_music_collection_with_big_num.glom", document, hosting_mode);
+    test_create_and_selfhost_from_test_example("export/test_example_music_collection_with_big_num.glom", document, hosting_mode);
   if(!recreated)
   {
     std::cerr << G_STRFUNC << ": Recreation failed.\n";
