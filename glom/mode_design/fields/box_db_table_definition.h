@@ -57,6 +57,7 @@ private:
   void on_adddel_extra(const Gtk::TreeModel::iterator& row);
 
   void on_field_definition_apply();
+  void on_default_formatting_apply();
 
   bool check_field_change(const std::shared_ptr<const Field>& field_old, const std::shared_ptr<const Field>& field_new);
 
