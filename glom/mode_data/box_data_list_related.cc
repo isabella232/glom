@@ -442,7 +442,7 @@ void Box_Data_List_Related::create_layout()
     for(const auto& child_item : child_items)
     {
       //TODO: Set the whole thing as read-only instead:
-      if(m_read_only)
+      if(m_read_only) //TODO: Valgrind says "Conditional jump or move depends on uninitialised value(s)"
         child_item->set_editable(false);
 
       auto child_field = std::dynamic_pointer_cast<const LayoutItem_Field>(child_item);
