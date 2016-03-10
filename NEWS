@@ -1,3 +1,16 @@
+1.28.7 (stable):
+
+* Show the translated UI in non-English locales,
+  even on newer Linux distros.
+  (Murray Cumming) Bug #761372 (m.rick.mac)
+* Default Field Formatting: Let people actually change this again,
+  fixing a regression in (approx) Glom 1.25.4.
+  (Murray Cumming) Bug #763348 (m.rick.mac)
+* Help menu item: Make this work again with recent GNOME systems.
+  (Murray Cumming) Bug #763250 (m.rick.mac)
+* Export: Don't lose precision when exporting large numeric values.
+  (Murray Cumming) Bug #763229 (m.rick.mac)
+
 1.28.6 (stable):
 
 * Fix crash when loading TIFF or PDF files into an image field,
