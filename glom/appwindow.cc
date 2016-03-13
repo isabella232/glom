@@ -1778,6 +1778,27 @@ void AppWindow::remove_developer_action(const Glib::RefPtr<Gio::SimpleAction>& r
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+namespace
+{
+
+static Glib::ustring escape_for_action_name(const Glib::ustring& str)
+{
+  //TODO: This is incredibly inefficient:
+  //TODO: Check this with g_action_parse_detailed_name().
+  //See https://developer.gnome.org/gio/stable/GAction.html#g-action-parse-detailed-name
+  Glib::ustring result = str;
+  result = Utils::string_replace(result, "\n", "newline");
+  result = Utils::string_replace(result, " ", "space");
+  result = Utils::string_replace(result, "\t", "space");
+  result = Utils::string_replace(result, ":", "double-colon");
+  result = Utils::string_replace(result, "(", "open-parentheses");
+  result = Utils::string_replace(result, "(", "close-parentheses");
+
+  return result;
+}
+
+} //anonymous namespace
+
 void AppWindow::fill_menu_tables()
 {
   m_listNavTableActions.clear();
@@ -1819,7 +1840,7 @@ void AppWindow::fill_menu_tables()
     if(!table_info->get_hidden())
     {
       const auto title = Utils::string_escape_underscores(item_get_title_or_name(table_info));
-      const auto action_name = table_info->get_name();
+      const auto action_name = escape_for_action_name(table_info->get_name());
   
       menu->append(title, ACTION_GROUP_NAME_TABLES + "." + action_name);
 
