@@ -20,6 +20,9 @@
 /test_fake_connection
 /ui/test_glade_derived_instantiation
 /ui/test_imageglom_widget
+/export/test_selfhosting_new_then_export
+/export/test_selfhosting_new_then_export_with_big_num
+/test_glom_date_in_locales_lc_time.sh
 /test_glom_date_in_locales.sh
 /test_layout_item_field
 /test_script_check_for_problems
@@ -30,6 +33,7 @@
 /test_selfhosting_new_from_example_defaultvalues
 /test_selfhosting_new_from_example_float
 /test_selfhosting_new_from_example_operator
+/test_selfhosting_new_from_example_table_name_with_space
 /test_selfhosting_new_then_alter_table
 /test_selfhosting_new_then_backup_restore
 /test_selfhosting_new_then_get_privs
