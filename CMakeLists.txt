@@ -961,6 +961,11 @@ include_directories(${Boost_INCLUDE_DIR})
 target_link_libraries(glom ${Boost_PYTHON-PY34_LIBRARY})
 
 
+include(CMakeScripts/GlomFindGettextPO.cmake)
+include_directories(${GETTEXTPO_INCLUDE_DIR})
+target_link_libraries(glom ${GETTEXTPO_LIBRARY})
+
+
 # Let the C++ compiler find the #include files for our own source code:
 include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}
