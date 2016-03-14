@@ -981,8 +981,12 @@ link_directories(${DEPS_LIBRARY_DIRS})
 
 # Locate the directory containing the PostgreSQL utilities, such as the
 # postmaster executable, so we can self-host PostgreSQL databases.
-# TODO: Do this properly.
-set(POSTGRES_UTILS_PATH "/usr/bin")
+# Note: This is a particularly shocking example of cmake's quoting problem.
+# Note: OUTPUT_STRIP_TRAILING_WHITESPACE is not documented other than being
+# mentioned as a possible option: https://cmake.org/cmake/help/v3.4/command/execute_process.html
+execute_process(COMMAND pg_config --bindir
+        OUTPUT_VARIABLE POSTGRES_UTILS_PATH
+        OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 
 # Locate the directory containing the MySQL utilities, such as the
