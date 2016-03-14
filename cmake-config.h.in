@@ -1,0 +1,62 @@
+/* Define to 1 if translation of program messages to the user's native
+   language is requested. */
+#cmakedefine ENABLE_NLS
+
+/* Define to the file extension of executables on the target.
+ * Note: We use define instead of cmakedefine, to let this be an empty string. */
+#define EXEEXT "@EXEEXT@"
+
+/* Define to the gettext package name. */
+#cmakedefine GETTEXT_PACKAGE "@GETTEXT_PACKAGE@"
+
+/* Define to the Glom ABI version string. */
+#cmakedefine GLOM_ABI_VERSION "@GLOM_ABI_VERSION@"
+
+/* Define to the Glom ABI version with '.' replaced by '_'. */
+#cmakedefine GLOM_ABI_VERSION_UNDERLINED "@GLOM_ABI_VERSION_UNDERLINED@"
+
+/* Define to disable support for self-hosting and developer mode. */
+#cmakedefine GLOM_ENABLE_CLIENT_ONLY
+
+/* Whether to enable support for MySQL databases. */
+#cmakedefine GLOM_ENABLE_MYSQL
+
+/* Whether to enable support for PostgreSQL databases. */
+#cmakedefine GLOM_ENABLE_POSTGRESQL @GLOM_ENABLE_POSTGRESQL@
+
+/* Whether to enable support for SQLite databases. */
+#cmakedefine GLOM_ENABLE_SQLITE
+
+/* Define to the location of the msgfmt gettext utility. */
+#cmakedefine GLOM_MSGFMT
+
+/* Define if libgettextpo provides the new po_xerror_handler struct. */
+#cmakedefine HAVE_GETTEXTPO_XERROR
+
+/* Define to the installation prefix of the iso-codes module. */
+/* TODO: Avoid duplication with libglom-config.h */
+#cmakedefine ISO_CODES_PREFIX "@ISO_CODES_PREFIX@"
+
+/* Define to the location of the MySQL utilities. */
+#cmakedefine MYSQL_UTILS_PATH "@MYSQL_UTILS_PATH@"
+
+/* Define to the full name of this package. */
+#cmakedefine PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#cmakedefine PACKAGE_STRING "@PACKAGE_STRING@"
+
+/* Define to the one symbol short name of this package. */
+#cmakedefine PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#cmakedefine PACKAGE_URL
+
+/* Define to the version of this package. */
+#cmakedefine PACKAGE_VERSION "@PACKAGE_VERSION@"
+
+/* Define to the location of the PostgreSQL utilities. */
+#cmakedefine POSTGRES_UTILS_PATH "@POSTGRES_UTILS_PATH@"
+
+#define GLOM_LOCALEDIR "@GLOM_LOCALEDIR@"
+

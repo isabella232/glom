@@ -26,7 +26,6 @@ Makefile.in
 /config.status
 /config.log
 /config.h
-/config.h.in
 /config.guess
 /autom4te.cache
 /aclocal.m4
