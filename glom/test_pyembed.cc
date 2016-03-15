@@ -16,9 +16,9 @@ std::list<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::
 
   while(str.find(separators) != Glib::ustring::npos && (nocount? true : count!=maxParts))
   {
-    unsigned int pos = str.find(separators);
-    Glib::ustring tmp = str.substr(0,pos);
-    str=str.erase(0, pos+separators.size());
+    auto pos = str.find(separators);
+    Glib::ustring tmp = str.substr(0, pos);
+    str=str.erase(0, pos + separators.size());
     result.emplace_back(tmp);
     count++;
   }
