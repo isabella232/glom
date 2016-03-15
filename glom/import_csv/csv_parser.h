@@ -157,8 +157,6 @@ private:
   // on chunk at a time in the idle handler.
   bool on_idle_parse();
 
-  void begin_parse();
-
   static const gunichar DELIMITER = ',';
   static const gunichar QUOTE = '\"';
 

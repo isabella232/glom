@@ -36,11 +36,6 @@ public:
 
   void refresh_data_from_database_blank();
 
-  bool get_showing_multiple_records() const;
-
-  //For instance, change "Open" to "Select" when used to select an ID.
-  void set_open_button_title(const Glib::ustring& title);
-
   ///Highlight and scroll to the specified record, with primary key value @primary_key_value.
   virtual void set_primary_key_value_selected(const Gnome::Gda::Value& primary_key_value);
 
@@ -50,13 +45,7 @@ public:
   
   typedef sigc::signal<void> type_signal_record_selection_changed;
   type_signal_record_selection_changed signal_record_selection_changed();
-
-  void get_record_counts(gulong& total, gulong& found) const;
-
 protected:
-  //virtual Document::type_list_layout_groups create_layout_get_layout() ; //overriden in Box_Data_ManyRecords_Related.
-  void create_layout_add_group(const std::shared_ptr<LayoutGroup>& layout_group);
-
   void print_layout() override;
   void print_layout_group(xmlpp::Element* node_parent, const std::shared_ptr<const LayoutGroup>& group);
 

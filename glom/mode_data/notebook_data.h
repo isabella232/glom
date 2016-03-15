@@ -87,9 +87,6 @@ public:
 
 protected:
 
-  ///Show the counts of all records and found records.
-  void update_records_count();
-
   //Signal handlers:
   void on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value);
 

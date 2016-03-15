@@ -50,7 +50,6 @@ protected:
   //Signal handlers:
   void on_adddel_record_changed();
   void on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row);
-  void on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
 
   void on_adddel_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row);
   bool on_script_button_idle(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key);

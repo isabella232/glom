@@ -378,8 +378,6 @@ private:
 
   void refresh_cell_choices_data_from_database_with_foreign_key(guint model_index, const Gnome::Gda::Value& foreign_key_value);
 
-  static void apply_formatting(Gtk::CellRenderer* renderer, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item);
-
   typedef Gtk::Box type_base;
 
   //Member widgets:

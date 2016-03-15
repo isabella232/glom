@@ -83,8 +83,6 @@ private:
   void on_calendar_button_press_event(GdkEventButton *event);
  
   void on_MenuPopup_activate_Edit();
-  void on_MenuPopup_activate_Add();
-  void on_MenuPopup_activate_Delete();
     
   #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_MenuPopup_activate_layout();

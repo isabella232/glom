@@ -113,13 +113,6 @@ private:
   //Signal handlers:
   void on_Button_Find(); //only used by _Find sub-classes. Should be MI.
 
-  //Signal handlers for the PyGlomUI callbacks:
-  void on_python_requested_show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value);
-  void on_python_requested_show_table_list(const Glib::ustring& table_name);
-  void on_python_requested_print_report(const Glib::ustring& report_name);
-  void on_python_requested_print_layout();
-  void on_python_requested_start_new_record();
-
 protected:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

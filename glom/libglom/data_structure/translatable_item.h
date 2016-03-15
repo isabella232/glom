@@ -129,11 +129,6 @@ public:
 
 private:
 
-  /** Get the locale used as the source language.
-   * This is the language of the title that is used when there are no translations.
-   */
-  static Glib::ustring get_original_locale() noexcept;
-
   void set_title_translation(const Glib::ustring& locale, const Glib::ustring& translation) noexcept;
 
 
