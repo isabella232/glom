@@ -293,7 +293,7 @@ const GdaBinary* ImageGlom::get_binary() const
   else if(m_original_data.get_value_type() == GDA_TYPE_BLOB)
   {
     const auto gda_blob = gda_value_get_blob(m_original_data.gobj());
-    if(gda_blob && gda_blob_op_read_all(const_cast<GdaBlobOp*>(gda_blob->op), const_cast<GdaBlob*>(gda_blob)))
+    if(gda_blob && gda_blob_op_read_all(gda_blob->op, const_cast<GdaBlob*>(gda_blob)))
       gda_binary = &(gda_blob->data);
   }
   

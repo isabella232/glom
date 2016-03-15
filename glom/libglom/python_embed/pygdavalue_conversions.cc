@@ -208,7 +208,7 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
         const auto gdablob = gda_value_get_blob (boxed);
         if(gdablob && gdablob->op)
         {
-          if(gda_blob_op_read_all(const_cast<GdaBlobOp*>(gdablob->op), const_cast<GdaBlob*>(gdablob)))
+          if(gda_blob_op_read_all(gdablob->op, const_cast<GdaBlob*>(gdablob)))
           {
             ret = boost::python::object((const char*)gdablob->data.data); /* TODO: Use the size. TODO: Check for null GdaBinary. */
           }

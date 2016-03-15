@@ -300,7 +300,7 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
         return Glib::ustring();
       else
       {
-        if(!gda_blob_op_read_all(const_cast<GdaBlobOp*>(gdablob->op), const_cast<GdaBlob*>(gdablob)))
+        if(!gda_blob_op_read_all(gdablob->op, const_cast<GdaBlob*>(gdablob)))
         {
           return Glib::ustring();
         }
