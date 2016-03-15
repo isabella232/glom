@@ -1906,10 +1906,17 @@ Glib::ustring get_unused_database_name(const Glib::ustring& base_name)
   if(!connection_pool)
     return Glib::ustring();
 
-  bool keep_trying = true;
+  int count_tries = 0;
   size_t extra_num = 0;
-  while(keep_trying)
+  while(true)
   {
+    if (count_tries > 200) {
+      std::cerr << G_STRFUNC << ": Too many attempts failed.\n";
+      return Glib::ustring();
+    }
+
+    count_tries++;
+
     Glib::ustring database_name_possible;
     if(extra_num == 0)
     {
@@ -1934,6 +1941,8 @@ Glib::ustring get_unused_database_name(const Glib::ustring& base_name)
 
     std::shared_ptr<Glom::SharedConnection> connection;
 
+    //We try this until it fails,
+    //knowing that it will fail eventually.
     try
     {
       connection = ConnectionPool::get_and_connect();
