@@ -28,7 +28,7 @@ namespace Glom
 {
 
 ShowProgressMessage::ShowProgressMessage(const Glib::ustring& message)
-: m_app(dynamic_cast<AppWindow*>(AppWindow::get_appwindow())),
+: m_app(AppWindow::get_appwindow()),
   m_message(message)
 {
   g_return_if_fail(m_app);
