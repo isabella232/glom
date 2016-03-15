@@ -64,9 +64,6 @@ public:
 
   void set_outline_visible(bool visible = true);
 
-  static double get_outline_stroke_width();
-  static Glib::ustring get_outline_stroke_color();
-
   typedef sigc::signal<void> type_signal_resized;
 
   /// This signal is emitted when the canvas item is resized by the user.

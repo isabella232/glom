@@ -47,8 +47,6 @@ public:
 
   Dialog_Database_Preferences(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
-  std::shared_ptr<SharedConnection> connect_to_server_with_connection_settings() const;
-
   void load_from_document() override;
   void save_to_document() override;
 

@@ -51,10 +51,6 @@ public:
 
   static Glib::RefPtr<CanvasLayoutItem> create();
 
-  //Creates a new canvas item, with an appropriate child canvas item,
-  //and sets the position and size of this canvas item to the position in the LayoutItem.
-  static Glib::RefPtr<CanvasLayoutItem> create(const std::shared_ptr<LayoutItem>& layout_item);
-
   std::shared_ptr<LayoutItem> get_layout_item();
 
   //Create an appropriate child canvas item,

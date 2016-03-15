@@ -257,11 +257,6 @@ private:
 
   void on_treeview_button_press_event(GdkEventButton* button_event);
 
-  /** Set the menu to popup when the user right-clicks on the column titles.
-   * This method does not take ownership of the Gtk::Menu.
-   */
-  void set_column_header_popup(Gtk::Menu& popup);
-
   bool row_has_duplicates(const Gtk::TreeModel::iterator& iter) const;
   void warn_about_duplicate();
 

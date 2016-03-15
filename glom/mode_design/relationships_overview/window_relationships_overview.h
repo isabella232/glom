@@ -59,7 +59,6 @@ private:
   void draw_tables();
   void draw_lines();
   void setup_context_menu();
-  void update_relationships(TableView* table_from);
   void print_or_preview(Gtk::PrintOperationAction print_action);
   void on_button_close();
 
