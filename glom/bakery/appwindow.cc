@@ -23,9 +23,6 @@
 namespace GlomBakery
 {
 
-//Initialize static member data:
-Glib::ustring AppWindow::m_strVersion;
-
 bool AppWindow::m_bOperationCancelled = false;
 Glib::ustring AppWindow::m_strCommandLine_0;
 Glib::ustring AppWindow::m_strAppName;

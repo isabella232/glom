@@ -110,7 +110,6 @@ protected:
   
   //'About Box'/WM Class information:
   static Glib::ustring m_strAppName;
-  static Glib::ustring m_strVersion;
 
   //Instances
 

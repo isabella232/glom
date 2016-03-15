@@ -460,7 +460,6 @@ void AppWindow::on_menu_help_about()
     m_pAbout = new Gtk::AboutDialog;
 
     m_pAbout->set_program_name(m_strAppName);
-    m_pAbout->set_version(m_strVersion);
     m_pAbout->set_comments(_("A Database GUI"));
     m_pAbout->set_version(PACKAGE_VERSION);
     m_pAbout->set_copyright(_("© 2000-2011 Murray Cumming, Openismus GmbH"));
