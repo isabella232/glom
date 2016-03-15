@@ -3,6 +3,7 @@
 #include <glibmm/convert.h>
 #include <glibmm/fileutils.h>
 #include <glibmm/main.h>
+#include <iostream>
 
 namespace ImportTests
 {
