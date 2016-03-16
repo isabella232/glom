@@ -6,7 +6,7 @@
 
 #include <glibmm/value.h>
 #include <libgda/libgda.h>
-#include <boost/python.hpp>
+#include <boost/python/object_fwd.hpp>
 
 
 bool glom_pygda_value_from_pyobject(GValue *boxed, const boost::python::object& input);

@@ -23,6 +23,7 @@
 
 #include <libglom/python_embed/py_glom_record.h>
 #include <libglom/data_structure/relationship.h>
+#include <boost/python/object_fwd.hpp>
 
 namespace Glom
 {

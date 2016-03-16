@@ -1,5 +1,6 @@
 #include <glom/libglom/init.h>
 #include <glom/python_embed/glom_python.h>
+#include <boost/python.hpp>
 #include <iostream>
 
 //Store results from the callbacks and check them later:

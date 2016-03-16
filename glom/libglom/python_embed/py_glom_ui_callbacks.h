@@ -21,8 +21,6 @@
 #ifndef GLOM_PYTHON_GLOM_UI_CALLBACKS_H
 #define GLOM_PYTHON_GLOM_UI_CALLBACKS_H
 
-#include <boost/python.hpp>
-
 #include <libglom/document/document.h>
 #include <libglom/data_structure/field.h>
 #include <glibmm/ustring.h>

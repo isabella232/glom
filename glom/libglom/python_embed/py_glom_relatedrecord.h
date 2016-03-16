@@ -21,7 +21,7 @@
 #ifndef GLOM_PYTHON_GLOM_RELATEDRECORD_H
 #define GLOM_PYTHON_GLOM_RELATEDRECORD_H
 
-#include <boost/python.hpp>
+#include <boost/python/object_fwd.hpp>
 
 #include <libglom/document/document.h>
 #include <libglom/data_structure/field.h>
