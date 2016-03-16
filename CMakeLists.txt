@@ -205,9 +205,7 @@ set(SOURCE_FILES
         glom/libglom/data_structure/tableinfo.h
         glom/libglom/data_structure/translatable_item.cc
         glom/libglom/data_structure/translatable_item.h
-        glom/libglom/document/bakery/view/view.cc
         glom/libglom/document/bakery/view/view.h
-        glom/libglom/document/bakery/view/view_composite.cc
         glom/libglom/document/bakery/view/view_composite.h
         glom/libglom/document/bakery/view/viewbase.cc
         glom/libglom/document/bakery/view/viewbase.h
@@ -579,7 +577,6 @@ set(SOURCE_FILES
         glom/filechooser_export.h
         glom/frame_glom.cc
         glom/frame_glom.h
-        glom/glade_utils.cc
         glom/glade_utils.h
         glom/infobar_progress_creating.cc
         glom/infobar_progress_creating.h

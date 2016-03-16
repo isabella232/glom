@@ -14,7 +14,6 @@ glom/dialog_connection.cc
 glom/dialog_existing_or_new.cc
 glom/filechooser_export.cc
 glom/frame_glom.cc
-glom/glade_utils.cc
 glom/utils_ui.cc
 glom/onlineglom_strings.cc
 glom/bakery/appwindow.cc
@@ -51,8 +50,6 @@ glom/libglom/document/document.cc
 glom/libglom/document/bakery/document.cc
 glom/libglom/document/bakery/document_xml.cc
 glom/libglom/document/bakery/view/viewbase.cc
-glom/libglom/document/bakery/view/view.cc
-glom/libglom/document/bakery/view/view_composite.cc
 glom/libglom/spawn_with_feedback.cc
 glom/libglom/translations_po.cc
 glom/libglom/utils.cc

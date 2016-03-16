@@ -112,7 +112,6 @@ glom_source_files = \
 	glom/filechooser_export.h					\
 	glom/frame_glom.cc						\
 	glom/frame_glom.h						\
-	glom/glade_utils.cc						\
 	glom/glade_utils.h						\
 	glom/infobar_progress_creating.cc				\
 	glom/infobar_progress_creating.h				\

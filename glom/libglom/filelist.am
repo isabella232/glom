@@ -168,8 +168,6 @@ libglom_sources =							\
 	glom/libglom/document/document.cc				\
 	glom/libglom/document/bakery/document.cc			\
 	glom/libglom/document/bakery/document_xml.cc			\
-	glom/libglom/document/bakery/view/view.cc			\
-	glom/libglom/document/bakery/view/view_composite.cc		\
 	glom/libglom/document/bakery/view/viewbase.cc			\
 	glom/libglom/python_embed/py_glom_record.cc			\
 	glom/libglom/python_embed/py_glom_record.h			\
