@@ -1,5 +1,5 @@
 #include <tests/import/utils.h>
-#include <libglom/utils.h>
+#include <libglom/file_utils.h>
 #include <glibmm/convert.h>
 #include <glibmm/fileutils.h>
 #include <glibmm/main.h>

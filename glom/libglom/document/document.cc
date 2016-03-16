@@ -22,6 +22,7 @@
 #include <libglom/xml_utils.h>
 #include <libglom/algorithms_utils.h>
 #include <libglom/utils.h>
+#include <libglom/file_utils.h>
 #include <libglom/string_utils.h>
 //#include <libglom/data_structure/glomconversions.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>

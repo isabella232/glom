@@ -31,8 +31,7 @@
 #include <glom/libglom/init.h>
 #include <glom/libglom/connectionpool.h>
 #include <glom/libglom/utils.h>
-
-#include <giomm/file.h>
+#include <libglom/file_utils.h>
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
 

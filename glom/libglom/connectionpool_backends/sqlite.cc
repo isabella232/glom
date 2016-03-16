@@ -22,6 +22,7 @@
 #include <libglom/libglom_config.h>
 #include <libglom/connectionpool_backends/sqlite.h>
 #include <libglom/utils.h>
+#include <libglom/file_utils.h>
 #include <libglom/algorithms_utils.h>
 #include <libglom/db_utils.h>
 #include <giomm/file.h>

@@ -28,6 +28,7 @@
 #include <glom/utility_widgets/dialog_image_load_progress.h>
 #include <glom/utility_widgets/dialog_image_save_progress.h>
 #include <libglom/utils.h>
+#include <libglom/file_utils.h>
 #include <gtkmm/appchooserdialog.h>
 #include <gtkmm/filechooserdialog.h>
 #include <giomm/file.h>

@@ -21,6 +21,7 @@
 #include <libglom/connectionpool_backends/postgres_self.h>
 #include <libglom/utils.h>
 #include <libglom/db_utils.h>
+#include <libglom/file_utils.h>
 #include <libglom/spawn_with_feedback.h>
 #include <giomm/file.h>
 #include <glib/gstdio.h> // For g_remove

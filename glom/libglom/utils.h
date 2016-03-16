@@ -145,38 +145,6 @@ Glib::ustring locale_simplify(const Glib::ustring& locale_id);
  */
 Glib::ustring locale_language_id(const Glib::ustring& locale_id);
 
-Glib::ustring create_local_image_uri(const Gnome::Gda::Value& value);
-
-bool file_exists(const Glib::ustring& uri);
-bool file_exists(const Glib::RefPtr<Gio::File>& file);
-
-/** Delete a directory, if it exists, and its contents.
- * Unlike g_file_delete(), this does not fail if the directory is not empty.
- */
-bool delete_directory(const Glib::RefPtr<Gio::File>& directory);
-
-/** Delete a directory, if it exists, and its contents.
- * Unlike g_file_delete(), this does not fail if the directory is not empty.
- * See also delete_file().
- */
-bool delete_directory(const std::string& uri);
-
-/** Delete a file, if it exists.
- * See also delete_directory().
- */
-bool delete_file(const std::string& uri);
-
-/** For instance, to find the first file in the directory with a .glom extension.
- */
-Glib::ustring get_directory_child_with_suffix(const Glib::ustring& uri_directory, const std::string& suffix, bool recursive);
-
-/** Get a URI with the extension (any extension, not just .glom) removed.
- */
-Glib::ustring get_file_uri_without_extension(const Glib::ustring& uri);
-
-/** Get a filepath with the extension (any extension, not just .glom) removed.
- */
-std::string get_file_path_without_extension(const std::string& filepath);
 
 /** Get a string to display to the user, as a representation of a list of layout items.
  */
@@ -203,16 +171,6 @@ LayoutGroup::type_list_items get_layout_items_plus_primary_key(const LayoutGroup
 
 type_vecConstLayoutFields get_table_fields_to_show_for_sequence(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const Document::type_list_layout_groups& mapGroupSequence);
 
-std::string get_temp_file_path(const std::string& prefix = std::string(), const std::string& extension = std::string());
-Glib::ustring get_temp_file_uri(const std::string& prefix = std::string(), const std::string& extension = std::string());
-
-/** This actually creates the directory.
- */
-std::string get_temp_directory_path(const std::string& prefix = std::string());
-
-/** This actually creates the directory.
- */
-Glib::ustring get_temp_directory_uri(const std::string& prefix = std::string());
 
 /** @returns true if the script is OK, or 
  * false if the script uses pygtk2, which would cause a crash,

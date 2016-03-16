@@ -32,6 +32,7 @@
 #include <libglom/init.h>
 #include <libglom/privs.h>
 #include <libglom/db_utils.h>
+#include <libglom/file_utils.h>
 #include <libglom/utils.h>
 #include <giomm/file.h>
 #include <glibmm/optioncontext.h>

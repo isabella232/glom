@@ -20,7 +20,7 @@
 
 #include "tests/test_selfhosting_utils.h"
 #include <libglom/init.h> 
-#include <libglom/utils.h>  
+#include <libglom/file_utils.h>
 #include <glib.h> //For g_assert()
 #include <iostream>
 #include <cstdlib> //For EXIT_SUCCESS and EXIT_FAILURE

@@ -108,6 +108,8 @@ libglom_sources =							\
 	glom/libglom/db_utils.h						\
 	glom/libglom/db_utils_export.cc					\
 	glom/libglom/db_utils_export.h						\
+	glom/libglom/file_utils.cc \
+	glom/libglom/file_utils.h \
 	glom/libglom/glom_postgres.cc					\
 	glom/libglom/glom_postgres.h					\
 	glom/libglom/init.cc						\

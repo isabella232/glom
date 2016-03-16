@@ -24,6 +24,7 @@
 #include <glom/dialog_existing_or_new.h>
 #include <glom/bakery/dialog_offersave.h>
 #include <libglom/string_utils.h>
+#include <libglom/file_utils.h>
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/mode_design/translation/dialog_change_language.h>

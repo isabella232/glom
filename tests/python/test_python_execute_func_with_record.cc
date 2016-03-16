@@ -2,6 +2,7 @@
 #include <glom/libglom/connectionpool.h>
 #include <glom/python_embed/glom_python.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/file_utils.h>
 #include <libglom/utils.h>
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
