@@ -1,6 +1,5 @@
 #include <glom/bakery/busy_cursor.h>
 #include <gtkmm/main.h>
-#include <gtk/gtk.h>
 
 namespace Glom
 {

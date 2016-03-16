@@ -17,7 +17,6 @@
  */
 
 #include <glom/bakery/appwindow.h>
-#include <algorithm>
 
 
 namespace GlomBakery
