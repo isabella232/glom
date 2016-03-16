@@ -27,6 +27,7 @@
 #include <glom/import_csv/dialog_import_csv_progress.h>
 #include <libglom/appstate.h>
 #include <libglom/db_utils_export.h>
+#include <libglom/string_utils.h>
 
 #include <libglom/connectionpool.h>
 

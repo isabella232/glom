@@ -26,6 +26,7 @@
 #include <libglom/init.h>
 #include <libglom/translations_po.h>
 #include <libglom/utils.h>
+#include <libglom/string_utils.h>
 #include <giomm/file.h>
 #include <glibmm/optioncontext.h>
 #include <glibmm/convert.h>

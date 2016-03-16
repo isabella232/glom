@@ -22,6 +22,7 @@
 #include <glom/frame_glom.h> //For show_ok_dialog.h
 #include <libglom/db_utils.h>
 #include <libglom/utils.h>
+#include <libglom/string_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

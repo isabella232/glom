@@ -29,6 +29,7 @@
 #include <glom/dialog_invalid_data.h>
 #include <glom/utils_ui.h>
 #include <libglom/utils.h>
+#include <libglom/string_utils.h>
 #include <gtkmm/builder.h>
 #include <giomm/menu.h>
 //#include <glom/bakery/app_gtk.h>

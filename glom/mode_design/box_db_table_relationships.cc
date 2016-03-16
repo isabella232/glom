@@ -23,6 +23,7 @@
 #include <glom/appwindow.h>
 #include <libglom/db_utils.h>
 #include <libglom/utils.h>
+#include <libglom/string_utils.h>
 #include <algorithm>
 #include <glibmm/i18n.h>
 

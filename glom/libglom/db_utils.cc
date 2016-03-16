@@ -30,6 +30,7 @@
 #include <libgdamm/metastore.h>
 #include <glibmm/timer.h>
 #include <libgda/libgda.h> // For gda_g_type_from_string
+#include "string_utils.h"
 #include <glibmm/i18n.h>
 
 

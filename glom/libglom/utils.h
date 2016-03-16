@@ -40,14 +40,6 @@ typedef std::vector<type_pair_sort_field> type_sort_clause;
 namespace Utils
 {
 
-Glib::ustring trim_whitespace(const Glib::ustring& text);
-
-Glib::ustring string_replace(const Glib::ustring& src, const Glib::ustring& search_for, const Glib::ustring& replace_with);
-
-/** Remove any characters that may not be in XML even when escaped.
- */
-Glib::ustring string_clean_for_xml(const Glib::ustring& src);
-
 //typedef Base_DB::type_vecLayoutFields type_vecLayoutFields;
 typedef std::vector< std::shared_ptr<LayoutItem_Field> > type_vecLayoutFields;
 typedef std::vector< std::shared_ptr<const LayoutItem_Field> > type_vecConstLayoutFields;
@@ -144,12 +136,6 @@ type_list_values_with_second get_choice_values(const std::shared_ptr<const Docum
 std::string sqlbuilder_get_full_query(
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder);
 
-/** Guess an appropriate identifier name based on a human-readable title
- */
-Glib::ustring create_name_from_title(const Glib::ustring& title);
-
-Glib::ustring string_escape_underscores(const Glib::ustring& text);
-
 /** Get just the first part of a locale, such as de_DE,
  * ignoring, for instance, .UTF-8 or \@euro at the end.
  */
@@ -160,23 +146,6 @@ Glib::ustring locale_simplify(const Glib::ustring& locale_id);
 Glib::ustring locale_language_id(const Glib::ustring& locale_id);
 
 Glib::ustring create_local_image_uri(const Gnome::Gda::Value& value);
-
-/** Get a decimal text representation of the number,
- * in the current locale.
- */
-Glib::ustring string_from_decimal(guint decimal);
-
-/** Create an appropriate title for an ID string.
- * For instance, date_of_birth would become Date Of Birth.
- */
-Glib::ustring title_from_string(const Glib::ustring& text);
-
-typedef std::vector<Glib::ustring> type_vec_strings;
-type_vec_strings string_separate(const Glib::ustring& str, const Glib::ustring& separator, bool ignore_quoted_separator = false);
-
-Glib::ustring string_trim(const Glib::ustring& str, const Glib::ustring& to_remove);
-
-Glib::ustring string_remove_suffix(const Glib::ustring& str, const Glib::ustring& suffix, bool case_sensitive = true);
 
 bool file_exists(const Glib::ustring& uri);
 bool file_exists(const Glib::RefPtr<Gio::File>& file);

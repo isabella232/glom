@@ -26,6 +26,7 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glom/utils_ui.h> //For bold_message()).
 #include <libglom/utils.h>
+#include <libglom/string_utils.h>
 #include <glom/appwindow.h>
 #include <glibmm/i18n.h>
 #include <sstream> //For stringstream

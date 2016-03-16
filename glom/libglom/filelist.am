@@ -117,6 +117,8 @@ libglom_sources =							\
 	glom/libglom/report_builder.h					\
 	glom/libglom/spawn_with_feedback.cc				\
 	glom/libglom/spawn_with_feedback.h				\
+	glom/libglom/string_utils.cc \
+	glom/libglom/string_utils.h \
 	glom/libglom/translations_po.cc				\
 	glom/libglom/translations_po.h				\
 	glom/libglom/utils.cc						\

@@ -20,6 +20,7 @@
 
 #include "glom_postgres.h"
 #include <libglom/utils.h>
+#include <libglom/string_utils.h>
 
 namespace Glom
 {

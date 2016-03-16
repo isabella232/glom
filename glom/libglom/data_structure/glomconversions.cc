@@ -24,6 +24,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/connectionpool.h>
 #include <libglom/utils.h>
+#include <libglom/string_utils.h>
 
 #include <glibmm/convert.h>
 #include <sstream> //For stringstream
@@ -33,7 +34,6 @@
 #include <iostream>   // for cout, endl
 #include <iomanip>
 #include <string.h> // for strlen, memset, strcmp
-#include <stdexcept>
 
 #include <glibmm/i18n.h>
 

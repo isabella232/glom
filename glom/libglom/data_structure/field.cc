@@ -23,6 +23,7 @@
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/utils.h>
+#include <libglom/string_utils.h>
 #include <libgda/gda-blob-op.h>
 #include <glibmm/i18n.h>
 
