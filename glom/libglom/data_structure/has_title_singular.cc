@@ -19,7 +19,6 @@
  */
 
 #include <libglom/data_structure/has_title_singular.h>
-#include <glibmm/i18n.h>
 
 namespace Glom
 {

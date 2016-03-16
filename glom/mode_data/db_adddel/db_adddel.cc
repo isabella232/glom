@@ -19,7 +19,6 @@
  */
 
 #include "db_adddel.h"
-#include <algorithm> //For std::find.
 #include <glibmm/i18n.h>
 #include <glom/utility_widgets/cellrendererlist.h>
 #include <glom/mode_data/datawidget/cellrenderer_buttonimage.h>

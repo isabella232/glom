@@ -19,7 +19,6 @@
  */
 
 #include <glom/mode_design/layout/dialog_layout_calendar_related.h>
-#include <glom/mode_design/layout/dialog_choose_field.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h>
 #include <libglom/utils.h> //For bold_message()).
 

@@ -19,7 +19,6 @@
  */
 
 #include "dialog_copy_translation.h"
-#include <libglom/utils.h> //For bold_message()).
 #include <glom/appwindow.h>
 #include <glibmm/i18n.h>
 

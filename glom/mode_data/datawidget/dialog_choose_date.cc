@@ -19,7 +19,6 @@
  */
 
 #include "dialog_choose_date.h"
-#include <libglom/utils.h> //For bold_message()).
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 

@@ -19,7 +19,6 @@
  */
 
 #include "dialog_formatting.h"
-#include <libglom/data_structure/glomconversions.h>
 #include <glom/glade_utils.h>
 #include <glibmm/i18n.h>
 

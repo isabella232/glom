@@ -19,8 +19,6 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
-
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"

@@ -19,7 +19,6 @@
  */
 
 #include "combo_summarytype.h"
-#include <glibmm/i18n.h>
 
 #include <iostream>
 

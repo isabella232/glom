@@ -19,7 +19,6 @@
  */
 
 #include "layoutwidgetbase.h"
-#include <glibmm/i18n.h>
 #include <glom/appwindow.h>
 #include <glom/mode_data/datawidget/textview.h>
 #include <glom/mode_data/datawidget/label.h>

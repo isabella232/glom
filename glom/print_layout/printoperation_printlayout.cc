@@ -15,7 +15,6 @@
  */
 
 #include <glom/print_layout/printoperation_printlayout.h>
-#include <iostream>
 
 namespace Glom
 {

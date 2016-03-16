@@ -19,7 +19,6 @@
  */
 
 #include "dialog_import_csv_progress.h"
-#include <libglom/libglom_config.h>
 #include <libglom/db_utils.h>
 #include <gtkmm/main.h>
 

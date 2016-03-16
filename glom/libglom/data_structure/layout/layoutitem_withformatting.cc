@@ -19,7 +19,6 @@
  */
 
 #include "layoutitem_withformatting.h"
-#include <glibmm/i18n.h>
 
 namespace Glom
 {

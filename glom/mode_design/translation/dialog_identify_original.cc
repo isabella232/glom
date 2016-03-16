@@ -19,7 +19,6 @@
  */
 
 #include "dialog_identify_original.h"
-#include <glom/mode_design/iso_codes.h>
 #include <glom/utils_ui.h> //For bold_message()).
 #include <glom/appwindow.h>
 #include <glibmm/i18n.h>

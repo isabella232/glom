@@ -19,7 +19,6 @@
  */
 
 #include "privs.h"
-#include <libglom/algorithms_utils.h>
 #include <libglom/standard_table_prefs_fields.h>
 #include <libglom/db_utils.h>
 #include <libglom/utils.h>

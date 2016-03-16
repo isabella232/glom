@@ -19,7 +19,6 @@
  */
 
 #include "flowtable.h"
-#include "layoutwidgetbase.h"
 #include <libglom/algorithms_utils.h>
 #include <iostream>
 #include <gtkmm/eventbox.h>

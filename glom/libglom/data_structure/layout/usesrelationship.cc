@@ -19,7 +19,6 @@
  */
 
 #include <libglom/data_structure/layout/formatting.h>
-#include <glibmm/i18n.h>
 
 namespace Glom
 {

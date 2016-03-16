@@ -19,7 +19,6 @@
  */
  
 #include <libglom/data_structure/layout/static_text.h>
-#include <glibmm/i18n.h>
 
 namespace Glom
 {

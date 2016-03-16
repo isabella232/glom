@@ -19,7 +19,6 @@
  */
 
 #include <libglom/data_structure/choicevalue.h>
-#include <glibmm/i18n.h>
 
 #include <iostream>
 

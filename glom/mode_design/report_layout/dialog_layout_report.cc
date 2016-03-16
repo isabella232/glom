@@ -19,7 +19,6 @@
  */
 
 #include <glom/mode_design/report_layout/dialog_layout_report.h>
-#include <libglom/data_structure/layout/report_parts/layoutitem_groupby.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>

@@ -19,7 +19,6 @@
  */
 
 #include "dialog_fields.h"
-#include "../box_db_table.h"
 //#include <libgnome/gnome-i18n.h>
 #include <glom/utils_ui.h> //For bold_message()).
 #include <glibmm/i18n.h>

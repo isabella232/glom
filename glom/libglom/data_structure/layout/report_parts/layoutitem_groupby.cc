@@ -19,7 +19,6 @@
  */
  
 #include <libglom/data_structure/layout/report_parts/layoutitem_groupby.h>
-#include <libglom/data_structure/layout/layoutitem_field.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

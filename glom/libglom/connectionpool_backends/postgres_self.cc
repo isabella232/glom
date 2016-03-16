@@ -19,7 +19,6 @@
  */
 
 #include <libglom/connectionpool_backends/postgres_self.h>
-#include <libglom/connectionpool.h>
 #include <libglom/utils.h>
 #include <libglom/db_utils.h>
 #include <libglom/spawn_with_feedback.h>
