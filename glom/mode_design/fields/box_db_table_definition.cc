@@ -25,6 +25,7 @@
 #include <glom/appwindow.h>
 #include <libglom/libglom_config.h>
 #include <libglom/db_utils.h>
+#include <libglom/utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

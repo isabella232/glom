@@ -29,7 +29,6 @@
 #include <libglom/data_structure/foundset.h>
 #include <libglom/data_structure/privileges.h>
 #include <libglom/data_structure/system_prefs.h>
-#include <libglom/utils.h>
 #include <libglom/calcinprogress.h>
 #include <libglom/document/bakery/view/view.h>
 #include <glom/bakery/busy_cursor.h>

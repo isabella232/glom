@@ -24,6 +24,7 @@
 #include <glom/glade_utils.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.h>
+#include <libglom/utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

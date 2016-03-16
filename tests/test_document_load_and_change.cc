@@ -21,6 +21,7 @@
 #include "tests/test_utils.h"
 #include <libglom/document/document.h>
 #include <libglom/init.h>
+#include <libglom/utils.h>
 #include <giomm/file.h>
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>

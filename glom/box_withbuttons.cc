@@ -21,6 +21,7 @@
 #include <glom/box_withbuttons.h>
 #include <glom/appwindow.h> //AppWindow.
 #include <glom/utils_ui.h>
+#include <libglom/utils.h>
 #include <libglom/appstate.h>
 
 #include <sstream> //For stringstream

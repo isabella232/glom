@@ -30,6 +30,7 @@
 #include <glom/appwindow.h>
 #include <gtkmm/checkbutton.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/utils.h>
 #include <glom/glade_utils.h>
 #include <glom/mode_data/box_data_list_related.h>
 #include <glom/mode_design/layout/dialog_choose_relationship.h>

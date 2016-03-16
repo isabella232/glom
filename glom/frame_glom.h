@@ -43,7 +43,6 @@
 
 #include "dialog_connection.h"
 #include <gtkmm/applicationwindow.h>
-#include <libglom/utils.h>
 
 #include "mode_data/box_data_list_related.h" //only for m_HackToFixLinkerError.
 

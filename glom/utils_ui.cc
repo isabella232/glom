@@ -22,6 +22,7 @@
 
 #include <glom/utils_ui.h>
 #include <glom/appwindow.h>
+#include <libglom/utils.h>
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <libglom/data_structure/glomconversions.h>

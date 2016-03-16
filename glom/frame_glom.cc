@@ -64,6 +64,7 @@
 
 #include <glom/filechooser_export.h>
 #include <libglom/privs.h>
+#include <libglom/utils.h>
 #include <libglom/db_utils.h>
 #include <libglom/db_utils_export.h>
 #include <sstream> //For stringstream.

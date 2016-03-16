@@ -26,6 +26,7 @@
 #include <glom/mode_data/datawidget/cellrenderer_dblist.h>
 #include "db_treeviewcolumn_glom.h"
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/utils.h>
 #include <glom/dialog_invalid_data.h>
 #include <glom/appwindow.h>
 #include <glom/utils_ui.h> //For UiUtils::image_scale_keeping_ratio().

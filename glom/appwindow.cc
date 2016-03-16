@@ -37,6 +37,7 @@
 #include <libglom/db_utils.h>
 #include <libglom/db_utils_export.h>
 #include <libglom/privs.h>
+#include <libglom/utils.h>
 #include <glom/python_embed/python_ui_callbacks.h>
 #include <glom/python_embed/glom_python.h>
 #include <libglom/spawn_with_feedback.h>

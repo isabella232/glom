@@ -22,6 +22,7 @@
 #include "box_db_table_relationships.h"
 #include <glom/appwindow.h>
 #include <libglom/db_utils.h>
+#include <libglom/utils.h>
 #include <algorithm>
 #include <glibmm/i18n.h>
 

@@ -21,6 +21,7 @@
 #include "dialog_add_related_table.h"
 #include <glom/frame_glom.h> //For show_ok_dialog.h
 #include <libglom/db_utils.h>
+#include <libglom/utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

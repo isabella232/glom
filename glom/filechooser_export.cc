@@ -22,6 +22,7 @@
 #include <glom/mode_design/layout/dialog_layout_export.h>
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
+#include <libglom/utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

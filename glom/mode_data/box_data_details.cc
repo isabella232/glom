@@ -26,6 +26,7 @@
 #include <libglom/data_structure/relationship.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
+#include <libglom/utils.h>
 #include <glom/mode_design/layout/dialog_layout_details.h>
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h>
@@ -306,7 +307,7 @@ bool Box_Data_Details::fill_from_database()
         bool index_primary_key_found = false;
         unsigned int index_primary_key = 0; //Arbitrary default.
         //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
-        if(!find_if_layout_item_field_is_same_field_exists(fieldsToGet, layout_item_pk))
+        if(!Utils::find_if_layout_item_field_is_same_field_exists(fieldsToGet, layout_item_pk))
         {
           fieldsToGet.emplace_back(layout_item_pk);
           index_primary_key = fieldsToGet.size() - 1;

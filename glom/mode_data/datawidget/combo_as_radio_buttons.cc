@@ -24,6 +24,7 @@
 #include <glom/dialog_invalid_data.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/appwindow.h>
+#include <libglom/utils.h>
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 

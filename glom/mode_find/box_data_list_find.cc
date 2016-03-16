@@ -20,6 +20,7 @@
 
 #include <glom/mode_find/box_data_list_find.h>
 #include <glom/utils_ui.h>
+#include <libglom/utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

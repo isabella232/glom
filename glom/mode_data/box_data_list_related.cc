@@ -24,6 +24,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
 #include <libglom/privs.h>
+#include <libglom/utils.h>
 #include <glom/glade_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <glom/utils_ui.h> //For bold_message()).

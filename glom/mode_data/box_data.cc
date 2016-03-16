@@ -30,6 +30,7 @@
 #include <glom/python_embed/python_ui_callbacks.h>
 #include <glom/appwindow.h>
 #include <libglom/libglom_config.h>
+#include <libglom/utils.h>
 #include <iostream>
 #include <glibmm/i18n.h>
 

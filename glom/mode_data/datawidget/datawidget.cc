@@ -37,6 +37,7 @@
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
 #include <libglom/db_utils.h>
+#include <libglom/utils.h>
 
 #include <glibmm/i18n.h>
 

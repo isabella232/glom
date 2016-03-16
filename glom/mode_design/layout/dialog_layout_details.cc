@@ -25,6 +25,7 @@
 #include <glom/frame_glom.h> //For show_ok_dialog()
 //#include <libgnome/gnome-i18n.h>
 #include <glom/utils_ui.h> //For bold_message()).
+#include <libglom/utils.h>
 #include <glom/appwindow.h>
 #include <glibmm/i18n.h>
 #include <sstream> //For stringstream

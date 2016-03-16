@@ -20,6 +20,7 @@
  
 #include <glom/window_boxholder.h>
 #include <glom/utils_ui.h>
+#include <libglom/utils.h>
 
 namespace Glom
 {

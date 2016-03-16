@@ -27,7 +27,6 @@
 #include <libglom/data_structure/numeric_format.h>
 #include <libglom/data_structure/relationship.h>
 #include <libglom/data_structure/layout/custom_title.h>
-#include <libglom/algorithms_utils.h>
 
 namespace Glom
 {
@@ -158,34 +157,6 @@ private:
   bool m_formatting_use_default;
   std::shared_ptr<CustomTitle> m_title_custom; //translatable.
 };
-
-/**
- * Find the element in the container which is a LayoutItem_Field which refers 
- * to the same field, without comparing irrelevant stuff such as formatting.
- * This assumes that the element is a shared_ptr<>.
- */
-template
-<typename T_Container>
-bool find_if_layout_item_field_is_same_field_exists(T_Container& container, const std::shared_ptr<const LayoutItem_Field>& layout_item)
-{
-  return Utils::find_if_exists(container,
-    [&layout_item](const typename T_Container::value_type& element)
-    {
-      //Assume that element is a shared_ptr<>.
-
-      if(!layout_item && !element)
-        return true;
-
-      //Allow this to be used on a container of LayoutItems,
-      //as well as just of LayoutItem_Fields.
-      const auto element_field = std::dynamic_pointer_cast<const LayoutItem_Field>(element);
-      if(!element_field)
-        return false;
-
-      return layout_item && layout_item->is_same_field(element_field);
-    }
-  );
-}
 
 } //namespace Glom
 
