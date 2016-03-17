@@ -21,7 +21,6 @@
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/utility_widgets/adddel/adddel.h>
-#include <algorithm> //For std::find.
 #include <glibmm/i18n.h>
 #include <glom/utility_widgets/cellrendererlist.h>
 #include <glom/utility_widgets/adddel/treeviewcolumn_glom.h>

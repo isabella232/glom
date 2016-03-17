@@ -36,7 +36,6 @@
 #include <libglom/data_structure/layout/layoutitem_calendarportal.h>
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/standard_table_prefs_fields.h>
-#include <libglom/spawn_with_feedback.h>
 #include <libglom/translations_po.h>
 #include <giomm/file.h>
 #include <glibmm/miscutils.h>

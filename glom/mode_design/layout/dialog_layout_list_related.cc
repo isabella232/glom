@@ -20,7 +20,6 @@
 
 #include <glom/mode_design/layout/dialog_layout_list_related.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h>
-#include <libglom/utils.h> //For bold_message().
 #include <libglom/db_utils.h>
 #include <glom/utils_ui.h> //For show_ok_dialog().
 

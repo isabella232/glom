@@ -21,7 +21,6 @@
 #include <libglom/libglom_config.h>
 
 #include <libglom/utils.h>
-#include <libglom/db_utils.h>
 #include <libglom/privs.h>
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/glomconversions.h>
@@ -32,17 +31,11 @@
 #include <glibmm/convert.h>
 #include <glibmm/fileutils.h>
 #include <glibmm/miscutils.h>
-#include <glibmm/i18n.h>
-
-
-#include <string.h> // for strchr
-#include <sstream> //For stringstream
 
 #include <iostream>
 #include <fstream>
 
 #include <locale>     // for locale, time_put
-#include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
 #include <iomanip>
 

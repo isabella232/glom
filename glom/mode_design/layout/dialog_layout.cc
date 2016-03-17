@@ -20,7 +20,6 @@
 
 #include <glom/mode_design/layout/dialog_layout.h>
 //#include <libgnome/gnome-i18n.h>
-#include <glibmm/i18n.h>
 
 namespace Glom
 {

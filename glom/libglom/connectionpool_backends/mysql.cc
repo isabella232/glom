@@ -19,7 +19,6 @@
  */
 
 #include "config.h" // For MYSQL_UTILS_PATH
-#include <libglom/libglom_config.h>
 
 #include <libglom/connectionpool_backends/mysql.h>
 #include <libglom/spawn_with_feedback.h>
@@ -32,7 +31,6 @@
 #include <glibmm/miscutils.h>
 #include <glibmm/shell.h>
 #include <glib/gstdio.h> /* For g_rename(). TODO: Wrap this in glibmm? */
-#include <glibmm/i18n.h>
 
 #include <iostream>
 

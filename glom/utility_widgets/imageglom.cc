@@ -31,7 +31,6 @@
 #include <libglom/file_utils.h>
 #include <gtkmm/appchooserdialog.h>
 #include <gtkmm/filechooserdialog.h>
-#include <giomm/file.h>
 #include <giomm/contenttype.h>
 #include <giomm/menu.h>
 #include <libgda/gda-blob-op.h>

@@ -45,7 +45,6 @@
 
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
-#include <glibmm/i18n.h>
 
 #include <iostream>
 

@@ -20,7 +20,6 @@
 
 #include "dialog_change_language.h"
 #include <glom/appwindow.h>
-#include <glibmm/i18n.h>
 
 namespace Glom
 {

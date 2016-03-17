@@ -20,7 +20,6 @@
 
 
 #include "dialog_line.h"
-#include <libglom/data_structure/glomconversions.h>
 #include <iostream>
 
 //#include <libgnome/gnome-i18n.h>

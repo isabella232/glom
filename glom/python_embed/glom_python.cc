@@ -33,9 +33,6 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <list>
 #include <glib.h> //For g_warning().
-#include <glibmm/i18n.h>
-
-#include <gtkmm/messagedialog.h>
 
 #include <iostream>
 

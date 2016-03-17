@@ -21,7 +21,6 @@
 #include "label.h"
 #include <gtkmm/messagedialog.h>
 #include <glom/appwindow.h>
-#include <glibmm/i18n.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_textobject.h>
 #include <glom/glade_utils.h>
 #include <glom/mode_data/flowtablewithfields.h>

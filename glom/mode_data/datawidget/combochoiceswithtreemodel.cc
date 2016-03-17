@@ -32,7 +32,6 @@
 //#include <sstream> //For stringstream
 
 #include <locale>     // for locale, time_put
-#include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
 
 namespace Glom

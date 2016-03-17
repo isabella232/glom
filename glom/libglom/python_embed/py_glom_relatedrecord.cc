@@ -25,11 +25,7 @@
 #include <libglom/python_embed/pygdavalue_conversions.h> //For pygda_value_as_pyobject().
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/glomconversions.h>
-
 #include <libglom/data_structure/field.h>
-#include <glibmm/ustring.h>
-
-//#include "glom/appwindow.h"
 
 namespace Glom
 {

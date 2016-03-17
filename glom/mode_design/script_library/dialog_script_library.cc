@@ -21,7 +21,6 @@
 
 #include "dialog_script_library.h"
 #include <glom/python_embed/glom_python.h>
-#include <libglom/data_structure/glomconversions.h>
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h>
 #include <glom/mode_design/script_library/dialog_new_script.h>

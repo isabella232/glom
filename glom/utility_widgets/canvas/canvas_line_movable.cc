@@ -20,8 +20,6 @@
 
 #include "canvas_line_movable.h"
 #include <goocanvasmm/canvas.h>
-#include <gdkmm/cursor.h>
-#include <iostream>
 
 namespace Glom
 {

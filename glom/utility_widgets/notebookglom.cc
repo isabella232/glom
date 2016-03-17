@@ -21,7 +21,6 @@
 #include "notebookglom.h"
 #include <gtkmm/messagedialog.h>
 #include <glom/appwindow.h>
-#include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 
 namespace Glom

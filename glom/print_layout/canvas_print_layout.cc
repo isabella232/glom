@@ -38,7 +38,6 @@
 #include <libglom/utils.h>
 
 #include <glom/glade_utils.h>
-#include <gtkmm/builder.h>
 #include <giomm/menu.h>
 #include <glibmm/i18n.h>
 

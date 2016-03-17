@@ -21,7 +21,6 @@
 #include "notebook_noframe.h"
 #include <glom/utils_ui.h>
 #include <libglom/utils.h>
-#include <gtkmm/label.h>
 #include <gtkmm/togglebutton.h>
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream

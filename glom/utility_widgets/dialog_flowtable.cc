@@ -21,7 +21,6 @@
 
 #include "dialog_flowtable.h"
 #include <glom/appwindow.h>
-#include <glibmm/i18n.h>
 
 namespace Glom
 {

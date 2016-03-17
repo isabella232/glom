@@ -35,21 +35,9 @@
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/fileutils.h>
-
-#include <giomm/file.h>
 #include <glibmm/main.h>
 #include <glibmm/i18n.h>
-
-#include <string.h> // for strchr
-#include <sstream> //For stringstream
-
-#include <iostream>
-#include <fstream>
-
-#include <locale>     // for locale, time_put
-#include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
-#include <iomanip>
 
 #include <stack>
 

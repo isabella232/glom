@@ -20,8 +20,6 @@
 
 #include <libglom/data_structure/choicevalue.h>
 
-#include <iostream>
-
 namespace Glom
 {
 

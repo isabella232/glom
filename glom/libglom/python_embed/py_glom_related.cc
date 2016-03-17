@@ -24,7 +24,6 @@
 
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/glomconversions.h>
-#include <glibmm/ustring.h>
 
 
 namespace Glom

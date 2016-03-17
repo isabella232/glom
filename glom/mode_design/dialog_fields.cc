@@ -21,7 +21,6 @@
 #include "dialog_fields.h"
 //#include <libgnome/gnome-i18n.h>
 #include <glom/utils_ui.h> //For bold_message()).
-#include <glibmm/i18n.h>
 
 namespace Glom
 {

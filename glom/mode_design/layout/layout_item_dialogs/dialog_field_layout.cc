@@ -21,7 +21,6 @@
 #include "dialog_field_layout.h"
 #include <glom/glade_utils.h>
 #include <glom/appwindow.h>
-#include <glibmm/i18n.h>
 
 namespace Glom
 {

@@ -21,7 +21,6 @@
 #include <libglom/xml_utils.h>
 #include <libglom/utils.h>
 #include <libglom/string_utils.h>
-#include <limits> // for numeric_limits
 
 static const char GLOM_ATTRIBUTE_IMAGE_DATA_FORMAT[] = "format";
 static const char GLOM_ATTRIBUTE_IMAGE_DATA_FORMAT_BASE64[] = "base64"; //No attribute here means the old GDA format.

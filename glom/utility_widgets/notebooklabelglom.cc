@@ -20,8 +20,6 @@
 
 #include "notebooklabelglom.h"
 #include <glom/appwindow.h>
-#include <gtkmm/menu.h>
-#include <giomm/menu.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>

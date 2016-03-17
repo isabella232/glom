@@ -20,7 +20,6 @@
 
 #include "dialog_choose_date.h"
 //#include <libgnome/gnome-i18n.h>
-#include <glibmm/i18n.h>
 
 namespace Glom
 {

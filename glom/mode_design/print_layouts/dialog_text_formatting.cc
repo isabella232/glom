@@ -20,7 +20,6 @@
 
 #include "dialog_text_formatting.h"
 #include <glom/glade_utils.h>
-#include <glibmm/i18n.h>
 
 namespace Glom
 {

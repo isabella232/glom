@@ -47,8 +47,6 @@
 
 #include <gtkmm/main.h>
 
-#include <cstdio>
-#include <memory> //For std::shared_ptr<>
 #include <giomm/file.h>
 #include <glibmm/spawn.h>
 #include <glibmm/convert.h>

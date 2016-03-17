@@ -37,7 +37,6 @@
 #include <glom/print_layout/print_layout_utils.h>
 #include <glom/appwindow.h>
 #include <gtkmm/viewport.h>
-#include <sstream> //For stringstream
 #include <glibmm/i18n.h>
 
 namespace Glom

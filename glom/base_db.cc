@@ -43,14 +43,10 @@
 #include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
-#include <libglom/data_structure/layout/report_parts/layoutitem_header.h>
-#include <libglom/data_structure/layout/report_parts/layoutitem_footer.h>
 #include <glom/python_embed/glom_python.h>
 #include <libglom/privs.h>
 #include <libglom/db_utils.h>
 #include <glibmm/i18n.h>
-
-#include <sstream> //For stringstream
 
 #include <libgda/libgda.h> // gda_g_type_from_string
 

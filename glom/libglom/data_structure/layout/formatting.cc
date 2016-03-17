@@ -21,7 +21,6 @@
 #include <libglom/data_structure/layout/formatting.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/document/document.h>
-#include <glibmm/i18n.h>
 
 const guint MULTILINE_TEXT_DEFAULT_HEIGHT_LINES = 6;
 //const char* MULTILINE_TEXT_DEFAULT_WIDTH_EXAMPLE = "abcdefghijklmnopqrstuvwxyz"

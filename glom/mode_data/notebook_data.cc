@@ -21,7 +21,6 @@
 #include <glom/mode_data/notebook_data.h>
 #include <glom/signal_reemitter.h>
 #include <libglom/data_structure/glomconversions.h>
-#include <libglom/utils.h>
 #include <libglom/sql_utils.h>
 #include <glibmm/main.h>
 #include <glibmm/i18n.h>

@@ -20,7 +20,6 @@
 
 #include "dialog_copy_translation.h"
 #include <glom/appwindow.h>
-#include <glibmm/i18n.h>
 
 namespace Glom
 {

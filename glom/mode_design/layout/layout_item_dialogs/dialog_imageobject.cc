@@ -20,8 +20,6 @@
 
 
 #include "dialog_imageobject.h"
-#include <glom/python_embed/glom_python.h>
-#include <libglom/data_structure/glomconversions.h>
 #include <glom/appwindow.h>
 
 //#include <libgnome/gnome-i18n.h>

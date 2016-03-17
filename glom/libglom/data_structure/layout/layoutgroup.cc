@@ -19,7 +19,6 @@
  */
 
 #include <libglom/data_structure/layout/layoutgroup.h>
-#include <libglom/data_structure/layout/layoutitem_portal.h>
 #include <libglom/algorithms_utils.h>
 #include <glibmm/i18n.h>
 #include <iostream> 

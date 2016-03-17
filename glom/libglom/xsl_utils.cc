@@ -30,15 +30,11 @@
 //#include <libexslt/exslt.h> //For exsltRegisterAll().
 #include <giomm/file.h>
 #include <glibmm/miscutils.h>
-#include <glibmm/i18n.h>
-
-#include <sstream> //For stringstream
 
 #include <iostream>
 #include <fstream>
 
 #include <locale>     // for locale, time_put
-#include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
 #include <iomanip>
 

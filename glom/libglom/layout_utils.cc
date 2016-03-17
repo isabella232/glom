@@ -20,26 +20,16 @@
 
 #include <libglom/layout_utils.h>
 #include <libglom/db_utils.h>
-#include <libglom/layout_utils.h>
-#include <libglom/privs.h>
 #include <libglom/connectionpool.h>
-#include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
-#include <libglom/data_structure/glomconversions.h>
 #include <libglom/string_utils.h>
+#include "privs.h"
 
 #include <giomm/file.h>
 #include <giomm/resource.h>
 #include <glibmm/convert.h>
 #include <glibmm/fileutils.h>
 #include <glibmm/miscutils.h>
-#include <glibmm/i18n.h>
-
-
-#include <string.h> // for strchr
-#include <sstream> //For stringstream
-
 #include <iostream>
-#include "utils.h"
 
 
 namespace Glom

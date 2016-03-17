@@ -21,7 +21,6 @@
 #include <glom/mode_design/layout/dialog_layout_export.h>
 #include <glom/mode_design/layout/dialog_choose_field.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h>
-#include <libglom/utils.h> //For bold_message()).
 
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>

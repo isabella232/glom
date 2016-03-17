@@ -19,9 +19,6 @@
  */
 
 #include "box_db_table.h"
-#include <libglom/data_structure/glomconversions.h>
-#include <glom/python_embed/glom_python.h>
-#include <sstream>
 
 namespace Glom
 {

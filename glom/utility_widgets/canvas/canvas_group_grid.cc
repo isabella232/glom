@@ -21,7 +21,6 @@
 #include "canvas_group_grid.h"
 #include "canvas_line_movable.h"
 #include <goocanvasmm/canvas.h>
-#include <goocanvasgroup.h>
 #include <math.h>
 #include <iostream>
 

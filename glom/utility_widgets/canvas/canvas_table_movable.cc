@@ -21,7 +21,6 @@
 #include "canvas_table_movable.h"
 #include <libglom/utils.h>
 #include <goocanvasmm/canvas.h>
-#include <gdkmm/cursor.h>
 #include <iostream>
 
 namespace Glom

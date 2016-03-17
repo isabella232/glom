@@ -20,7 +20,6 @@
 
 #include <libglom/connectionpool_backends/mysql_self.h>
 #include <libglom/utils.h>
-#include <libglom/db_utils.h>
 #include <libglom/spawn_with_feedback.h>
 #include <giomm/file.h>
 #include <glib/gstdio.h> // For g_remove
@@ -33,8 +32,6 @@
 #include <glibmm/main.h>
 #include <glibmm/shell.h>
 #include <glibmm/i18n.h>
-
-#include <sstream> //For stringstream
 #include <iostream>
 
 #ifdef G_OS_WIN32
@@ -46,8 +43,6 @@
 # include <errno.h>
 # include <netinet/in.h> //For sockaddr_in
 #endif
-
-#include <signal.h> //To catch segfaults
 
 // Uncomment to see debug messages
 //#define GLOM_CONNECTION_DEBUG

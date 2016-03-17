@@ -21,7 +21,6 @@
 #include <libglom/libglom_config.h>
 
 #include <libglom/connectionpool_backends/postgres_central.h>
-#include <glibmm/i18n.h>
 
 // Uncomment to see debug messages
 //#define GLOM_CONNECTION_DEBUG

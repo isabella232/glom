@@ -21,7 +21,6 @@
 #include "db_adddel_withbuttons.h"
 #include <glom/utils_ui.h>
 #include <libglom/utils.h>
-#include <gtkmm/buttonbox.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

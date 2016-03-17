@@ -20,7 +20,6 @@
 
 #include "dialog_import_csv.h"
 #include <glom/import_csv/file_encodings.h>
-#include <libglom/libglom_config.h>
 #include <libglom/utils.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <gtkmm/messagedialog.h>

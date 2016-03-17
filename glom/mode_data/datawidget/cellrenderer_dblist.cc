@@ -21,7 +21,6 @@
 #include "cellrenderer_dblist.h"
 #include <glom/mode_data/datawidget/cellcreation.h>
 #include <glom/mode_data/datawidget/treemodel_db_withextratext.h>
-#include <gtkmm/cellrenderertext.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <iostream>
 

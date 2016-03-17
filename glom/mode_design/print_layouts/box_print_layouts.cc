@@ -20,8 +20,6 @@
 
 #include "box_print_layouts.h"
 #include <glom/appwindow.h>
-#include <gtkmm/alignment.h>
-#include <gtkmm/messagedialog.h>
 #include <libglom/algorithms_utils.h>
 #include <libglom/utils.h> //For bold_message()).
 #include <libglom/string_utils.h>

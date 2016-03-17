@@ -21,7 +21,6 @@
 
 #include "dialog_textobject.h"
 #include <glom/appwindow.h>
-#include <libglom/data_structure/glomconversions.h>
 
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
