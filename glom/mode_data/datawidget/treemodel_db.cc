@@ -369,7 +369,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 
       //This doesn't work with cursor-based models: const int count = m_gda_datamodel->get_n_rows();
       //because rows count is -1 until we have iterated to the last row.
-      auto sql_query_without_sort = SqlUtils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, SqlUtils::type_sort_clause());
+      auto sql_query_without_sort = SqlUtils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join);
       const int count = DbUtils::count_rows_returned_by(sql_query_without_sort);
       if(count < 0)
       {

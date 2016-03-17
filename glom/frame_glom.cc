@@ -391,7 +391,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
           layout_item_temp->set_full_field_details(field_primary_key);
           type_vecLayoutFields layout_fields;
           layout_fields.emplace_back(layout_item_temp);
-          auto sql_query_without_sort = SqlUtils::build_sql_select_with_where_clause(found_set.m_table_name, layout_fields, found_set.m_where_clause, found_set.m_extra_join, SqlUtils::type_sort_clause());
+          auto sql_query_without_sort = SqlUtils::build_sql_select_with_where_clause(found_set.m_table_name, layout_fields, found_set.m_where_clause, found_set.m_extra_join);
 
           const Privileges table_privs = Privs::get_current_privs(found_set.m_table_name);
           int count = 0;
