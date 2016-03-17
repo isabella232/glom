@@ -71,6 +71,10 @@ AM_GNU_GETTEXT_VERSION([0.17])
 AC_SUBST([GETTEXT_PACKAGE], [glom])
 AC_DEFINE([GETTEXT_PACKAGE], [PACKAGE_TARNAME], [Define to the gettext package name.])
 
+# TODO: Make this work, so we have GLOM_LOCALEDIR in config.h,
+# instead of defining it via -D in the Makefile.am:
+# AC_DEFINE([GLOM_LOCALEDIR], [$localedir], [The location of the gettext catalogs as defined by intltool.])
+
 # Linking with libdl isn't needed on various non-Linux platforms,
 # eventhough they do provide dlopen(3).
 AC_CHECK_LIB([dl], [dlopen], AC_SUBST([DL_LIB], ["-ldl"]))
