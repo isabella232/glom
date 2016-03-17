@@ -22,7 +22,7 @@ bool check(const std::string& name, bool test, std::stringstream& report)
 // Returns the file URI of the temporary created file, which will contain the buffer's contents.
 static Glib::ustring create_file_from_buffer(const char* input, guint input_size)
 {
-  const auto file_uri = Glom::Utils::get_temp_file_uri("glom_import_testdata");
+  const auto file_uri = Glom::FileUtils::get_temp_file_uri("glom_import_testdata");
   if(file_uri.empty())
   {
     std::cerr << G_STRFUNC << ": file_uri was empty.\n";

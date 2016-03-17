@@ -485,7 +485,7 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
 
   //Handle the value:
   if(field_type == Field::glom_field_type::IMAGE)
-     nodeField->set_attribute("image_uri", Utils::create_local_image_uri(value));
+     nodeField->set_attribute("image_uri", FileUtils::create_local_image_uri(value));
   else
   {
     Glib::ustring text_value = Conversions::get_text_for_gda_value(field_type, value, m_locale, field->get_formatting_used().m_numeric_format);
@@ -580,7 +580,7 @@ std::string ReportBuilder::report_build_and_save(const FoundSet& found_set, cons
   const auto contents = report_build(found_set, report);
 
  //Save it to a temporary file and show it in a browser:
-  const auto temp_uri = Utils::get_temp_file_uri("glom_printout", "html");
+  const auto temp_uri = FileUtils::get_temp_file_uri("glom_printout", "html");
   std::cout << G_STRFUNC << ": temp_uri=" << temp_uri << std::endl;
 
   auto file = Gio::File::create_for_uri(temp_uri);

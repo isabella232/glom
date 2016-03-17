@@ -377,7 +377,7 @@ int main(int argc, char* argv[])
 
   //Save a copy, specifying the path to file in a directory:
   filepath_dir = 
-    Glom::Utils::get_file_path_without_extension(
+    Glom::FileUtils::get_file_path_without_extension(
       Glib::build_filename(
         group.m_arg_filepath_dir_output,
         group.m_arg_filepath_name_output));

@@ -49,7 +49,7 @@ int main()
     return EXIT_FAILURE;
   }
 
-  g_assert( Glom::Utils::file_exists(uri) );
+  g_assert( Glom::FileUtils::file_exists(uri) );
   //std::cout << "URI=" << uri << std::endl;
 
 

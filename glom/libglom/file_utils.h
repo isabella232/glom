@@ -27,7 +27,7 @@
 namespace Glom
 {
 
-namespace Utils
+namespace FileUtils
 {
 
 bool file_exists(const Glib::ustring& uri);
@@ -62,7 +62,7 @@ std::string get_temp_directory_path(const std::string& prefix = std::string());
  */
 Glib::ustring get_temp_directory_uri(const std::string& prefix = std::string());
 
-} //namespace Utils
+} //namespace FileUtils
 
 } //namespace Glom
 

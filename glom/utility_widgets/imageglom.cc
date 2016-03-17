@@ -618,7 +618,7 @@ static void make_file_read_only(const Glib::ustring& uri)
 
 Glib::ustring ImageGlom::save_to_temp_file(bool show_progress)
 {
-  Glib::ustring uri = Utils::get_temp_file_uri("glom_image");
+  Glib::ustring uri = FileUtils::get_temp_file_uri("glom_image");
   if(uri.empty())
   {
     std::cerr << G_STRFUNC << ": : uri is empty.\n";

@@ -187,7 +187,7 @@ bool test_create_and_selfhost_new_empty(const std::shared_ptr<Glom::Document>& d
   //For instance, /tmp/testglom/testglom.glom");
   const std::string temp_filename = "testglom";
   temp_filepath_dir = 
-    Glom::Utils::get_temp_directory_path(temp_filename);
+    Glom::FileUtils::get_temp_directory_path(temp_filename);
   if(!subdirectory_path.empty())
     temp_filepath_dir = Glib::build_filename(temp_filepath_dir, subdirectory_path);
   const auto temp_filepath = Glib::build_filename(temp_filepath_dir, temp_filename);

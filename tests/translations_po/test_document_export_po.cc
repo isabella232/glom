@@ -100,7 +100,7 @@ int main()
     return EXIT_FAILURE;
   }
 
-  const auto po_file_uri = Glom::Utils::get_temp_file_uri("glom_export.po");
+  const auto po_file_uri = Glom::FileUtils::get_temp_file_uri("glom_export.po");
   if(po_file_uri.empty())
   {
     std::cerr << G_STRFUNC << ": Could not generate a temporary file URI=\n";
@@ -154,7 +154,7 @@ int main()
   //Check that the .po file is valid:
   check_po_file(po_file_path);
 
-  Glom::Utils::delete_file(po_file_uri);
+  Glom::FileUtils::delete_file(po_file_uri);
 
   Glom::libglom_deinit();
 

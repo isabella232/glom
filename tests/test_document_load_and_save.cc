@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
   // Save the document:
   document->set_allow_autosave(false);
   const Glib::ustring temp_uri = 
-    Glom::Utils::get_temp_file_uri("testglom_document", ".glom");
+    Glom::FileUtils::get_temp_file_uri("testglom_document", ".glom");
   document->set_file_uri(temp_uri);
   document->set_modified(); //TODO: Let save() succeed without this.
   const auto saved = document->save();

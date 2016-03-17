@@ -52,7 +52,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
   auto db_dir = Gio::File::create_for_uri(m_database_directory_uri);
   auto db_file = db_dir->get_child(database + ".db");
 
-  const auto file_exists = Glom::Utils::file_exists(db_file);
+  const auto file_exists = Glom::FileUtils::file_exists(db_file);
   if(!file_exists)
   {
     //We don't warn here because the caller gets an exception anyway,
@@ -96,7 +96,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
   {
     // If the database directory is valid, then only the database (file) is
     // missing, otherwise we pretend the "server" is not running.
-    if(Glom::Utils::file_exists(db_dir) &&
+    if(Glom::FileUtils::file_exists(db_dir) &&
       (db_dir->query_file_type() == Gio::FILE_TYPE_DIRECTORY))
     {
       throw ExceptionConnection(ExceptionConnection::failure_type::NO_DATABASE);

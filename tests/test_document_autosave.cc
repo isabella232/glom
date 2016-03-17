@@ -59,7 +59,7 @@ int main()
 {
   Glom::libglom_init();
 
-  file_uri = Glom::Utils::get_temp_file_uri("testglom_document_autosave", ".glom");
+  file_uri = Glom::FileUtils::get_temp_file_uri("testglom_document_autosave", ".glom");
   
   //Make sure that the file does not exist yet:
   cleanup();

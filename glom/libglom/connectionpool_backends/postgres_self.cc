@@ -213,7 +213,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   // initdb creates a new postgres database cluster:
 
   //Get file:// URI for the tmp/ directory:
-  const auto temp_pwfile = Utils::get_temp_file_path("glom_initdb_pwfile");
+  const auto temp_pwfile = FileUtils::get_temp_file_path("glom_initdb_pwfile");
   const auto temp_pwfile_uri = Glib::filename_to_uri(temp_pwfile);
   const auto pwfile_creation_succeeded = create_text_file(temp_pwfile_uri, password);
   g_assert(pwfile_creation_succeeded);

@@ -253,7 +253,7 @@ bool check_postgres_is_available_with_warning()
   if(!binpath.empty())
   {
     const auto uri_binpath = Glib::filename_to_uri(binpath);
-    if(Utils::file_exists(uri_binpath))
+    if(FileUtils::file_exists(uri_binpath))
       return true;
   }
 
@@ -308,7 +308,7 @@ bool check_mysql_is_available_with_warning()
   if(!binpath.empty())
   {
     const auto uri_binpath = Glib::filename_to_uri(binpath);
-    if(Utils::file_exists(uri_binpath))
+    if(FileUtils::file_exists(uri_binpath))
       return true;
   }
 

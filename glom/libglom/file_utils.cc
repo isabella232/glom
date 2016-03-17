@@ -31,7 +31,7 @@
 namespace Glom
 {
 
-namespace Utils
+namespace FileUtils
 {
 
 bool file_exists(const Glib::ustring& uri)
@@ -97,7 +97,7 @@ static Glib::ustring get_directory_child_with_suffix(const Glib::ustring& uri_di
     {
       //Check the filename:
       const std::string basename = child->get_basename();
-      if(string_remove_suffix(basename, suffix) != basename)
+      if(Utils::string_remove_suffix(basename, suffix) != basename)
         return child->get_uri();
     }
     else if(recursive && file_type == Gio::FILE_TYPE_DIRECTORY)
@@ -275,6 +275,6 @@ Glib::ustring create_local_image_uri(const Gnome::Gda::Value& value)
 }
 
 
-} //namespace Utils
+} //namespace FileUtils
 
 } //namespace Glom

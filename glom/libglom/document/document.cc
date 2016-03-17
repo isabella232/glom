@@ -5065,7 +5065,7 @@ Glib::ustring Document::extract_backup_file(const Glib::ustring& backup_uri, std
       std::string contents_backup_file;
       read_archive_entry_file_contents(a, entry, contents_backup_file);
 
-      backup_path = Utils::get_temp_file_path("glom_backup");
+      backup_path = FileUtils::get_temp_file_path("glom_backup");
       Glib::file_set_contents(backup_path, contents_backup_file);
       //std::cout << "debug: backup data path: " << backup_path << std::endl;
     }

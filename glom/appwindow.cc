@@ -2171,7 +2171,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
       const auto uri_chosen = fileChooser_Save->get_uri();
 
       //Change the URI, to put the file (and its data folder) in a folder:
-      const auto uri = Utils::get_file_uri_without_extension(uri_chosen);
+      const auto uri = FileUtils::get_file_uri_without_extension(uri_chosen);
 
       //Check whether the file exists, and that we have rights to it:
       auto file = Gio::File::create_for_uri(uri);
@@ -2377,7 +2377,7 @@ void AppWindow::on_menu_developer_export_backup()
   // Start with a name based on the existing name.
   const auto fileuri_old = document->get_file_uri();
   const Glib::RefPtr<const Gio::File> file_old =
-    Gio::File::create_for_uri( Utils::get_file_uri_without_extension(fileuri_old) );
+    Gio::File::create_for_uri( FileUtils::get_file_uri_without_extension(fileuri_old) );
   const auto old_basename = file_old->get_basename();
   Glib::TimeVal timeval;
   timeval.assign_current_time();
