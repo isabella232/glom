@@ -60,10 +60,7 @@ glom_includes = -I$(top_builddir)/glom -I$(top_srcdir)/glom -I$(top_builddir) -I
 include Makefile_libglom.am
 
 glom_defines = \
--DGLOM_DATADIR=\""$(datadir)"\" \
--DGLOM_LOCALEDIR=\""$(glom_localedir)"\" \
--DGLOM_PKGDATADIR=\""$(pkgdatadir)"\" \
--DGLOM_PKGDATADIR_NOTINSTALLED=\""$(top_srcdir)/ui"\"
+-DGLOM_LOCALEDIR=\""$(glom_localedir)"\"
 
 # We use these instead of individual variables,
 # to avoid repetition, becase we really want to use 
