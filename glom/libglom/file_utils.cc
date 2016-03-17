@@ -57,52 +57,6 @@ bool file_exists(const Glib::RefPtr<Gio::File>& file)
   }
 }
 
-bool delete_directory(const Glib::RefPtr<Gio::File>& directory)
-{
-  try
-  {
-    if(!(directory->query_exists()))
-      return true;
-
-    //(Recursively) Delete any child files and directories,
-    //so we can delete this directory.
-    auto enumerator = directory->enumerate_children();
-
-    auto info = enumerator->next_file();
-    while(info)
-    {
-      auto child = directory->get_child(info->get_name());
-      bool removed_child = false;
-      if(child->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
-        removed_child = delete_directory(child);
-      else
-        removed_child = child->remove();
-
-      if(!removed_child)
-        return false;
-
-      info = enumerator->next_file();
-    }
-
-    //Delete the actual directory:
-    if(!directory->remove())
-      return false;
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": Exception from Gio::File: " << ex.what() << std::endl;
-    return false;
-  }
-
-  return true;
-}
-
-bool delete_directory(const std::string& uri)
-{
-  auto file = Gio::File::create_for_uri(uri);
-  return delete_directory(file);
-}
-
 bool delete_file(const std::string& uri)
 {
   auto file = Gio::File::create_for_uri(uri);

@@ -37,17 +37,6 @@ bool file_exists(const Glib::RefPtr <Gio::File>& file);
 
 Glib::ustring create_local_image_uri(const Gnome::Gda::Value& value);
 
-/** Delete a directory, if it exists, and its contents.
- * Unlike g_file_delete(), this does not fail if the directory is not empty.
- */
-bool delete_directory(const Glib::RefPtr<Gio::File>& directory);
-
-/** Delete a directory, if it exists, and its contents.
- * Unlike g_file_delete(), this does not fail if the directory is not empty.
- * See also delete_file().
- */
-bool delete_directory(const std::string& uri);
-
 /** Delete a file, if it exists.
  * See also delete_directory().
  */
