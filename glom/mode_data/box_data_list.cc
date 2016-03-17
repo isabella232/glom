@@ -24,6 +24,7 @@
 #include <glom/mode_design/layout/dialog_layout_list.h>
 #include <libglom/privs.h>
 #include <libglom/db_utils.h>
+#include <libglom/layout_utils.h>
 #include <libglom/utils.h> //For bold_message()).
 #include <sstream> //For stringstream
 #include <glibmm/main.h>

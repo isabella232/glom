@@ -23,6 +23,7 @@
 #include <libglom/db_utils.h>
 #include <libglom/sql_utils.h>
 #include <libglom/utils.h>
+#include <libglom/layout_utils.h>
 #include <glom/glade_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <glom/utils_ui.h> //For bold_message()).

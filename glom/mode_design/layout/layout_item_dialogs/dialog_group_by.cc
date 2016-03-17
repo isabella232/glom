@@ -21,7 +21,7 @@
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_group_by.h>
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
-#include <libglom/utils.h>
+#include <libglom/layout_utils.h>
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>
 

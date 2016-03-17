@@ -21,6 +21,7 @@
 
 #include <libglom/db_utils_export.h>
 #include <libglom/db_utils.h>
+#include <libglom/layout_utils.h>
 #include <libglom/utils.h>
 #include <libglom/sql_utils.h>
 #include <libglom/algorithms_utils.h>

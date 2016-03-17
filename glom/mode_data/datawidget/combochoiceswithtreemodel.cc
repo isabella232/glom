@@ -22,6 +22,7 @@
 #include <glom/mode_data/datawidget/treemodel_db_withextratext.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/privs.h>
+#include <libglom/layout_utils.h>
 #include <libglom/sql_utils.h>
 #include <libglom/utils.h>
 #include <glom/utils_ui.h>
@@ -33,7 +34,6 @@
 #include <locale>     // for locale, time_put
 #include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
-
 
 namespace Glom
 {

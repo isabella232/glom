@@ -27,6 +27,7 @@ libglom_toplevel_headers =				\
 	glom/libglom/utils.h				\
 	glom/libglom/db_utils.h \
 	glom/libglom/db_utils_export.h \
+	glom/libglom/layout_utils.h \
 	glom/libglom/sql_utils.h \
 	glom/libglom/report_builder.h \
 	glom/libglom/translations_po.h
@@ -111,6 +112,8 @@ libglom_sources =							\
 	glom/libglom/db_utils_export.h						\
 	glom/libglom/file_utils.cc \
 	glom/libglom/file_utils.h \
+	glom/libglom/layout_utils.cc \
+	glom/libglom/layout_utils.h \
 	glom/libglom/glom_postgres.cc					\
 	glom/libglom/glom_postgres.h					\
 	glom/libglom/init.cc						\
