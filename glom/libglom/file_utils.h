@@ -53,10 +53,6 @@ bool delete_directory(const std::string& uri);
  */
 bool delete_file(const std::string& uri);
 
-/** For instance, to find the first file in the directory with a .glom extension.
- */
-Glib::ustring get_directory_child_with_suffix(const Glib::ustring& uri_directory, const std::string& suffix, bool recursive);
-
 /** Get a URI with the extension (any extension, not just .glom) removed.
  */
 Glib::ustring get_file_uri_without_extension(const Glib::ustring& uri);

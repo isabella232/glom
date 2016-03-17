@@ -128,7 +128,7 @@ bool delete_file(const std::string& uri)
 
 /** For instance, to find the first file in the directory with a .glom extension.
  */
-Glib::ustring get_directory_child_with_suffix(const Glib::ustring& uri_directory, const std::string& suffix, bool recursive)
+static Glib::ustring get_directory_child_with_suffix(const Glib::ustring& uri_directory, const std::string& suffix, bool recursive)
 {
   auto directory = Gio::File::create_for_uri(uri_directory);
   auto enumerator = directory->enumerate_children();
