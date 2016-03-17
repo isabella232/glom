@@ -35,7 +35,7 @@
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   auto document = std::make_shared<Glom::Document>();
-  const bool recreated = 
+  const bool recreated =
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
@@ -45,7 +45,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   
   const Glib::ustring table_name = "invoice_lines";
  
-  const auto field_with_choice = 
+  const auto field_with_choice =
     get_field_on_layout(document, table_name, table_name, "product_id");
   if(!field_with_choice)
   {
@@ -53,15 +53,15 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  const Glom::Utils::type_list_values_with_second values_with_second = 
-    Glom::Utils::get_choice_values_all(document, field_with_choice);
+  const auto values_with_second =
+    Glom::DbUtils::get_choice_values_all(document, field_with_choice);
   if(values_with_second.size() != 3)
   {
     std::cerr << G_STRFUNC << ": Failure: There were an unexpected number of choices.\n";
     return false;
   }
   
-  const std::pair<Gnome::Gda::Value, Glom::Utils::type_list_values> pair_values 
+  const auto pair_values
     = *(values_with_second.begin());
   if(pair_values.second.size() != 1)
   {

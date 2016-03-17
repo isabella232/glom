@@ -27,6 +27,7 @@
 #include <libglom/document/document.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/utils.h>
+#include <libglom/sql_utils.h>
 #include <glom/mode_design/layout/dialog_choose_field.h>
 
 //#ifndef GLOM_ENABLE_CLIENT_ONLY

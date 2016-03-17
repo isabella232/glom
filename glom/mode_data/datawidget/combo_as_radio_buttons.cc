@@ -24,7 +24,7 @@
 #include <glom/dialog_invalid_data.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/appwindow.h>
-#include <libglom/utils.h>
+#include <libglom/db_utils.h>
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 
@@ -148,8 +148,8 @@ void ComboAsRadioButtons::set_choices_fixed(const Formatting::type_list_values& 
 
 void ComboAsRadioButtons::set_choices_related(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
 {
-  const Utils::type_list_values_with_second list_values =
-    Utils::get_choice_values(document, layout_field, foreign_key_value);
+  const auto list_values =
+    DbUtils::get_choice_values(document, layout_field, foreign_key_value);
   set_choices_with_second(list_values);
 }
 

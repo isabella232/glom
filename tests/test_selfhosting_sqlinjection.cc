@@ -20,7 +20,7 @@
 
 #include "tests/test_selfhosting_utils.h"
 #include <libglom/init.h>
-#include <libglom/utils.h>
+#include <libglom/sql_utils.h>
 #include <libglom/db_utils.h>
 #include <libglom/connectionpool.h>
 #include <glib.h> //For g_assert()

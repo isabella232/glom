@@ -22,7 +22,7 @@
 #include "tests/test_utils.h"
 #include "tests/test_utils_images.h"
 #include <libglom/init.h>
-#include <libglom/utils.h>
+#include <libglom/sql_utils.h>
 #include <libglom/db_utils.h>
 #include <glibmm/fileutils.h>
 #include <glibmm/miscutils.h>

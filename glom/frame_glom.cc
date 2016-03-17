@@ -28,7 +28,7 @@
 #include <libglom/appstate.h>
 #include <libglom/db_utils_export.h>
 #include <libglom/string_utils.h>
-
+#include <libglom/sql_utils.h>
 #include <libglom/connectionpool.h>
 
 #ifdef GLOM_ENABLE_POSTGRESQL

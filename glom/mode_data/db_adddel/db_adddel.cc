@@ -1594,7 +1594,7 @@ void DbAddDel::on_treeview_column_clicked(int model_column_index)
 
     //Set the sort clause to be used by refresh_from_database():
     m_found_set.m_sort_clause.clear();
-    m_found_set.m_sort_clause.emplace_back( type_pair_sort_field(layout_item, ascending) );
+    m_found_set.m_sort_clause.emplace_back( Formatting::type_pair_sort_field(layout_item, ascending) );
   }
 
   refresh_from_database();

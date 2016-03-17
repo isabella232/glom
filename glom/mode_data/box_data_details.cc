@@ -26,6 +26,7 @@
 #include <libglom/data_structure/relationship.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
+#include <libglom/sql_utils.h>
 #include <libglom/utils.h>
 #include <glom/mode_design/layout/dialog_layout_details.h>
 #include <glom/glade_utils.h>

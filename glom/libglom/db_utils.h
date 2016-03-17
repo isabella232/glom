@@ -228,6 +228,12 @@ type_map_fields get_record_field_values(const std::shared_ptr<const Document>& d
  */
 void set_fake_connection();
 
+typedef std::vector<Gnome::Gda::Value> type_list_values;
+typedef std::vector< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second; //TODO: Rename this now that we have more than just 1 extra field.
+type_list_values_with_second get_choice_values_all(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& field);
+
+type_list_values_with_second get_choice_values(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value);
+
 } //namespace DbUtils
 
 } //namespace Glom

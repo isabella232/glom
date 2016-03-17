@@ -21,6 +21,7 @@
 #include <glom/mode_data/box_data_portal.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
+#include <libglom/sql_utils.h>
 #include <libglom/utils.h>
 #include <glom/glade_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()

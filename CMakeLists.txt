@@ -254,6 +254,8 @@ set(SOURCE_FILES
         glom/libglom/translations_po.h
         glom/libglom/file_utils.cc
         glom/libglom/file_utils.h
+        glom/libglom/sql_utils.cc
+        glom/libglom/sql_utils.h
         glom/libglom/string_utils.cc
         glom/libglom/string_utils.h
         glom/libglom/utils.cc

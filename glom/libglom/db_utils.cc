@@ -20,6 +20,7 @@
 
 #include <libglom/algorithms_utils.h>
 #include <libglom/db_utils.h>
+#include <libglom/sql_utils.h>
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/connectionpool_backends/postgres_central.h>
@@ -2371,6 +2372,133 @@ type_map_fields get_record_field_values(const std::shared_ptr<const Document>& d
   }
 
   return field_values;
+}
+
+
+type_list_values_with_second get_choice_values_all(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& field)
+{
+  return get_choice_values(document, field,
+                           Gnome::Gda::Value() /* means get all with no WHERE clause */);
+}
+
+type_list_values_with_second get_choice_values(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value)
+{
+  //TODO: Reduce duplication between this and get_choice_values(field).
+
+  type_list_values_with_second result;
+
+  //We allows this, so this method can be used to get all records in a related table:
+  /*
+  if(Conversions::value_is_empty(foreign_key_value))
+  {
+    std::cout << G_STRFUNC << "debug: foreign_key_value is empty.\n";
+    return result;
+  }
+  */
+
+  const Formatting& format = field->get_formatting_used();
+  std::shared_ptr<const Relationship> choice_relationship;
+  std::shared_ptr<const LayoutItem_Field> layout_choice_first;
+  std::shared_ptr<const LayoutGroup> layout_choice_extra;
+  Formatting::type_list_sort_fields choice_sort_fields;
+  bool choice_show_all = false;
+  format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_sort_fields, choice_show_all);
+
+  if(!choice_relationship)
+  {
+    std::cerr << G_STRFUNC << ": !choice_relationship.\n";
+    return result;
+  }
+
+  Utils::type_vecConstLayoutFields fields;
+  fields.emplace_back(layout_choice_first);
+
+  if(layout_choice_extra)
+  {
+    for(const auto& item : layout_choice_extra->get_items_recursive())
+    {
+      const auto& item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
+      if(item_field)
+        fields.emplace_back(item_field); //TODO: Don't ignore other usable items such as static text.
+    }
+  }
+
+  const Glib::ustring to_table = choice_relationship->get_to_table();
+  const auto to_field = document->get_field(to_table, choice_relationship->get_to_field());
+
+  if(!to_field)
+  {
+    std::cerr << G_STRFUNC << ": to_field is null.\n";
+  }
+
+  //Default to some sort order rather than none:
+  if(choice_sort_fields.empty())
+  {
+    choice_sort_fields.emplace_back( Formatting::type_pair_sort_field(layout_choice_first, true /* ascending */));
+  }
+
+  //TODO: Support related relationships (in the UI too):
+  auto builder = Utils::build_sql_select_with_key(
+          to_table,
+          fields,
+          to_field,
+          foreign_key_value,
+          choice_sort_fields);
+
+  if(!builder)
+  {
+    std::cerr << G_STRFUNC << ": builder is null.\n";
+    return result;
+  }
+
+  //TODO: builder->select_order_by(choice_field_id);
+
+  //Connect to database and get the related values:
+  auto connection = ConnectionPool::get_instance()->connect();
+
+  if(!connection)
+  {
+    std::cerr << G_STRFUNC << ": connection is null.\n";
+    return result;
+  }
+
+  const std::string sql_query =
+          Utils::sqlbuilder_get_full_query(builder);
+  //std::cout << "debug: sql_query=" << sql_query << std::endl;
+  auto datamodel = connection->get_gda_connection()->statement_execute_select(sql_query);
+
+  if(datamodel)
+  {
+    const guint count = datamodel->get_n_rows();
+    const guint cols_count = datamodel->get_n_columns();
+    for(guint row = 0; row < count; ++row)
+    {
+
+      std::pair<Gnome::Gda::Value, type_list_values> itempair;
+      itempair.first = datamodel->get_value_at(0, row);
+
+      if(layout_choice_extra && (cols_count > 1))
+      {
+        type_list_values list_values;
+        for(guint i = 1; i < cols_count; ++i)
+        {
+          list_values.emplace_back(datamodel->get_value_at(i, row));
+        }
+
+        itempair.second = list_values;
+      }
+
+      result.emplace_back(itempair);
+    }
+  }
+  else
+  {
+    std::cerr << G_STRFUNC << ": Error while executing SQL\n" <<
+    "  " <<  sql_query << std::endl;
+    return result;
+  }
+
+  return result;
 }
 
 } //namespace DbUtils

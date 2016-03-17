@@ -25,6 +25,7 @@
 #include <glom/python_embed/glom_python.h>
 #include <glom/utils_ui.h>
 #include <libglom/db_utils.h>
+#include <libglom/sql_utils.h>
 #include <libglom/utils.h>
 #include <sstream>
 #include <iostream>

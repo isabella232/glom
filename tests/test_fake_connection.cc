@@ -20,7 +20,7 @@
 
 #include <libglom/document/document.h>
 #include <libglom/init.h>
-#include <libglom/utils.h>
+#include <libglom/sql_utils.h>
 #include <libglom/db_utils.h>
 #include <giomm/file.h>
 #include <glibmm/convert.h>
