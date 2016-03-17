@@ -37,7 +37,7 @@
  * - The layout of reports.
  *
  * libglom also contains utility functions, such as
- * Glom::Utils::build_sql_select_with_where_clause(), to build the complicated SQL queries
+ * Glom::SqlUtils::build_sql_select_with_where_clause(), to build the complicated SQL queries
  * used by Glom to retrieve information from the database.
  *
  * See http://git.gnome.org/browse/glom/tree/glom/libglom/example_document_load.cc

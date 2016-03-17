@@ -745,7 +745,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
   type_map_layout_fields_index map_fields_index;
 
   //Get list of fields to get from the database.
-  Utils::type_vecLayoutFields fieldsToGet;
+  SqlUtils::type_vecLayoutFields fieldsToGet;
   const int count = canvas_group->get_n_children();
   guint field_i = 0;
   for(int i = 0; i < count; ++i)
@@ -791,7 +791,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
   if(fieldsToGet.empty())
     return;
 
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> sql_query = SqlUtils::build_sql_select_with_where_clause(found_set.m_table_name,
     fieldsToGet,
     found_set.m_where_clause, std::shared_ptr<const Relationship>() /* extra_join */, found_set.m_sort_clause,
     1);
@@ -907,7 +907,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   found_set.m_table_name = portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
   set_found_set_where_clause_for_portal(found_set, portal, foreign_key_value);
 
-  const Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fields_shown, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
+  const Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = SqlUtils::build_sql_select_with_where_clause(found_set.m_table_name, fields_shown, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
   //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
   const auto datamodel = DbUtils::query_execute_select(sql_query);
   if(!(datamodel))

@@ -337,7 +337,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 
   if(m_connection && !m_found_set.m_table_name.empty() && m_get_records)
   {
-    auto sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause);
+    auto sql_query = SqlUtils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause);
     //std::cout << "debug: " << G_STRFUNC << ":  " << sql_query << std::endl;
 
     m_gda_datamodel = DbUtils::query_execute_select(sql_query, true /* use_cursor */);
@@ -348,7 +348,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       m_data_model_columns_count = m_columns_count;
 
       std::cerr << G_STRFUNC << ": error executing SQL. SQL query: \n";
-      std::cerr << G_STRFUNC << ":   " << Utils::sqlbuilder_get_full_query(sql_query) << std::endl;
+      std::cerr << G_STRFUNC << ":   " << SqlUtils::sqlbuilder_get_full_query(sql_query) << std::endl;
       ConnectionPool::handle_error_cerr_only();
       return false; //No records were found.
     }
@@ -369,7 +369,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 
       //This doesn't work with cursor-based models: const int count = m_gda_datamodel->get_n_rows();
       //because rows count is -1 until we have iterated to the last row.
-      auto sql_query_without_sort = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, type_sort_clause());
+      auto sql_query_without_sort = SqlUtils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, SqlUtils::type_sort_clause());
       const int count = DbUtils::count_rows_returned_by(sql_query_without_sort);
       if(count < 0)
       {

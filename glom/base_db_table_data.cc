@@ -494,7 +494,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
 
   if(!fieldsToGet.empty())
   {
-    auto query = Utils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
+    auto query = SqlUtils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
     //std::cout << "debug: " << G_STRFUNC << ": query=" << query << std::endl;
 
     auto result = DbUtils::query_execute_select(query);

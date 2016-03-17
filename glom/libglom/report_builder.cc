@@ -258,11 +258,11 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
 
         //TODO: Use a SQL parameter instead of using sql().
         Gnome::Gda::SqlExpr where_clause =
-          Utils::build_simple_where_expression(group_field_table_name, field_group_by->get_full_field_details(), group_value);
+          SqlUtils::build_simple_where_expression(group_field_table_name, field_group_by->get_full_field_details(), group_value);
 
         if(!found_set_parent.m_where_clause.empty())
         {
-          where_clause = Utils::build_combined_where_expression(where_clause, found_set_parent.m_where_clause,
+          where_clause = SqlUtils::build_combined_where_expression(where_clause, found_set_parent.m_where_clause,
             Gnome::Gda::SQL_OPERATOR_TYPE_AND);
         }
 
@@ -351,7 +351,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
     }
 
     //Get list of fields to get from the database.
-    Utils::type_vecLayoutFields fieldsToGet;
+    SqlUtils::type_vecLayoutFields fieldsToGet;
     for(const auto& layout_item : items)
     {
       auto layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
@@ -377,7 +377,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
     if(one_record_only)
       limit = 1;
 
-    auto sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
+    auto sql_query = SqlUtils::build_sql_select_with_where_clause(found_set.m_table_name,
       fieldsToGet,
       found_set.m_where_clause, std::shared_ptr<const Relationship>() /* extra_join */, found_set.m_sort_clause,
       limit);

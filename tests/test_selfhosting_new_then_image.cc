@@ -58,13 +58,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   const Gnome::Gda::SqlExpr where_clause = 
-    Glom::Utils::build_simple_where_expression(table_name, key_field, Gnome::Gda::Value(1));
+    Glom::SqlUtils::build_simple_where_expression(table_name, key_field, Gnome::Gda::Value(1));
 
   //Set the value, from an image file:
   const auto value_set = get_value_for_image();
   g_assert(check_value_is_an_image(value_set));
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder_set = 
-    Glom::Utils::build_sql_update_with_where_clause(table_name,
+    Glom::SqlUtils::build_sql_update_with_where_clause(table_name,
       field, value_set, where_clause);
   const auto rows_affected = Glom::DbUtils::query_execute(builder_set);
   if(!rows_affected)
@@ -75,13 +75,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
 
   //Get the value:
-  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder_get = 
-    Glom::Utils::build_sql_select_with_where_clause(table_name,
+    Glom::SqlUtils::build_sql_select_with_where_clause(table_name,
       fieldsToGet, where_clause);
   auto data_model = 
     Glom::DbUtils::query_execute_select(builder_get);

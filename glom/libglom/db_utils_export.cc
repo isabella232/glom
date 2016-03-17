@@ -46,7 +46,7 @@ void export_data_to_vector(const std::shared_ptr<Document>& document, Document::
     return;
   }
 
-  auto query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
+  auto query = SqlUtils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
 
   //TODO: Lock the database (prevent changes) during export.
   auto result = DbUtils::query_execute_select(query);
@@ -96,7 +96,7 @@ void export_data_to_stream(const std::shared_ptr<Document>& document, std::ostre
     return;
   }
 
-  auto query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
+  auto query = SqlUtils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
 
   //TODO: Lock the database (prevent changes) during export.
   auto result = DbUtils::query_execute_select(query);

@@ -420,7 +420,7 @@ bool test_model_expected_size(const Glib::RefPtr<const Gnome::Gda::DataModel>& d
 bool test_table_exists(const Glib::ustring& table_name, const std::shared_ptr<Glom::Document>& document)
 {
   //Try to get more rows than intended:
-  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto field = document->get_field_primary_key(table_name); //To to get some field.
   if(!field)
   {
@@ -433,7 +433,7 @@ bool test_table_exists(const Glib::ustring& table_name, const std::shared_ptr<Gl
   fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
-    Glom::Utils::build_sql_select_with_where_clause(table_name,
+    Glom::SqlUtils::build_sql_select_with_where_clause(table_name,
       fieldsToGet);
   const Glib::RefPtr<const Gnome::Gda::DataModel> data_model = 
     Glom::DbUtils::query_execute_select(builder);
@@ -454,7 +454,7 @@ static bool test_example_musiccollection_data_related(const std::shared_ptr<cons
     return false;
   }
 
-  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
 
   //Normal fields:
   auto field_album_id = document->get_field("albums", "album_id");
@@ -490,13 +490,13 @@ static bool test_example_musiccollection_data_related(const std::shared_ptr<cons
   fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =
-    Glom::Utils::build_sql_select_with_key("albums", fieldsToGet, field_album_id, album_id);
+    Glom::SqlUtils::build_sql_select_with_key("albums", fieldsToGet, field_album_id, album_id);
   const Glib::RefPtr<const Gnome::Gda::DataModel> data_model = 
     Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 3, 1))
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected data model size with query: " << 
-      Glom::Utils::sqlbuilder_get_full_query(builder) << std::endl;
+      Glom::SqlUtils::sqlbuilder_get_full_query(builder) << std::endl;
     return false;
   }
   
@@ -514,9 +514,9 @@ bool test_example_musiccollection_data(const std::shared_ptr<const Glom::Documen
   //Check that some data is as expected:
   const Gnome::Gda::Value value("Born To Run");
   const Gnome::Gda::SqlExpr where_clause = 
-    Glom::Utils::get_find_where_clause_quick(document, "albums", value);
+    Glom::SqlUtils::get_find_where_clause_quick(document, "albums", value);
   
-  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto field = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
@@ -533,14 +533,14 @@ bool test_example_musiccollection_data(const std::shared_ptr<const Glom::Documen
   fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
-    Glom::Utils::build_sql_select_with_where_clause("albums",
+    Glom::SqlUtils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
   const Glib::RefPtr<const Gnome::Gda::DataModel> data_model = 
     Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 2, 1))
   {
     std::cerr << G_STRFUNC << "Failure: Unexpected data model size with query: " << 
-      Glom::Utils::sqlbuilder_get_full_query(builder) << std::endl;
+      Glom::SqlUtils::sqlbuilder_get_full_query(builder) << std::endl;
     return false;
   }
 

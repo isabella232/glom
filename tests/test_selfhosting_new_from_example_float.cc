@@ -52,23 +52,23 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //Check that some data is as expected:
   const auto pk_value = Gnome::Gda::Value::create_as_double(2.0l);
   const Gnome::Gda::SqlExpr where_clause = 
-    Glom::Utils::build_simple_where_expression(table_name, primary_key_field, pk_value);
+    Glom::SqlUtils::build_simple_where_expression(table_name, primary_key_field, pk_value);
   
-  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto field = document->get_field(table_name, "price");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
-    Glom::Utils::build_sql_select_with_where_clause(table_name,
+    Glom::SqlUtils::build_sql_select_with_where_clause(table_name,
       fieldsToGet, where_clause);
   const Glib::RefPtr<const Gnome::Gda::DataModel> data_model = 
     Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 1, 1))
   {
     std::cerr << G_STRFUNC << "Failure: Unexpected data model size with query: " << 
-      Glom::Utils::sqlbuilder_get_full_query(builder) << std::endl;
+      Glom::SqlUtils::sqlbuilder_get_full_query(builder) << std::endl;
     return false;
   }
 

@@ -348,7 +348,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
   args.emplace_back(builder->add_expr("DELETE"));
   builder->add_field_value_id(builder->add_function(function_name, args));
 
-  //const Glib::ustring sql_debug = Utils::sqlbuilder_get_full_query(builder);
+  //const Glib::ustring sql_debug = SqlUtils::sqlbuilder_get_full_query(builder);
   //std::cout << "DEBUG: " << sql_debug << std::endl;
 
   auto data_model = DbUtils::query_execute_select(builder);

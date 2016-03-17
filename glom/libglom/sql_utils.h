@@ -30,12 +30,12 @@
 namespace Glom
 {
 
+namespace SqlUtils
+{
+
 ///field, ascending
 typedef std::pair< std::shared_ptr<const LayoutItem_Field>, bool> type_pair_sort_field;
 typedef std::vector<type_pair_sort_field> type_sort_clause;
-
-namespace Utils
-{
 
 typedef std::vector< std::shared_ptr<const LayoutItem_Field> > type_vecConstLayoutFields;
 
@@ -125,7 +125,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_update_with_where_clause(
 std::string sqlbuilder_get_full_query(
         const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder);
 
-} //namespace Utils
+} //namespace SqlUtils
 
 } //namespace Glom
 

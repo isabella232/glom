@@ -175,7 +175,7 @@ void Box_Data_Details::set_found_set_from_primary_key_value()
 
   if(!Conversions::value_is_empty(m_primary_key_value))
   {
-    m_found_set.m_where_clause = Utils::build_simple_where_expression(
+    m_found_set.m_where_clause = SqlUtils::build_simple_where_expression(
        m_table_name, m_field_primary_key, m_primary_key_value);
     //std::cout << "debug: " << G_STRFUNC << ": m_found_set.m_where_clause = " << m_found_set.m_where_clause << std::endl;
   }
@@ -346,7 +346,7 @@ bool Box_Data_Details::fill_from_database()
           std::cerr << G_STRFUNC << ": index_primary_key not found and not added. Something went wrong. fieldsToGet.size()=" << fieldsToGet.size() << std::endl;
         }
 
-        auto query = Utils::build_sql_select_with_key(m_table_name, fieldsToGet, m_field_primary_key, m_primary_key_value);
+        auto query = SqlUtils::build_sql_select_with_key(m_table_name, fieldsToGet, m_field_primary_key, m_primary_key_value);
         Glib::RefPtr<Gnome::Gda::DataModel> result;
 
         if(!primary_key_is_empty)

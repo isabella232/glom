@@ -275,7 +275,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const std::shared_ptr<const 
   {
     const auto to_field = document->get_field(to_table, choice_relationship->get_to_field());
 
-    found_set.m_where_clause = Utils::build_simple_where_expression(
+    found_set.m_where_clause = SqlUtils::build_simple_where_expression(
       to_table, to_field, foreign_key_value);
   }
 

@@ -204,7 +204,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
     }
     else
     {
-      where_clause = Utils::build_combined_where_expression(
+      where_clause = SqlUtils::build_combined_where_expression(
         m_found_set.m_where_clause, extra_where_clause,
         Gnome::Gda::SQL_OPERATOR_TYPE_AND);
     }
@@ -212,7 +212,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
     //Do one SQL query for the whole month and store the cached values here:
     clear_cached_database_values();
 
-    auto sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_FieldsShown, where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause);
+    auto sql_query = SqlUtils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_FieldsShown, where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause);
     //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
     auto datamodel = DbUtils::query_execute_select(sql_query);
     if(!(datamodel))

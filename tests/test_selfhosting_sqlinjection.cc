@@ -35,9 +35,9 @@ static bool check_get_extra_rows(const Glib::ustring& quote_char)
   const Gnome::Gda::Value value("Born To Run" + quote_char + " OR " + quote_char + "x" + quote_char + "=" + quote_char + "x");
   auto where_field = document->get_field("albums", "name");
   const Gnome::Gda::SqlExpr where_clause = 
-    Glom::Utils::build_simple_where_expression("albums", where_field, value);
+    Glom::SqlUtils::build_simple_where_expression("albums", where_field, value);
   
-  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto field = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
@@ -48,7 +48,7 @@ static bool check_get_extra_rows(const Glib::ustring& quote_char)
   fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
-    Glom::Utils::build_sql_select_with_where_clause("albums",
+    Glom::SqlUtils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
   auto data_model = 
     Glom::DbUtils::query_execute_select(builder);
@@ -68,9 +68,9 @@ static bool check_drop_table(const Glib::ustring& quote_char)
   auto where_field = 
     document->get_field("albums", "name");
   const Gnome::Gda::SqlExpr where_clause = 
-    Glom::Utils::build_simple_where_expression("albums", where_field, value);
+    Glom::SqlUtils::build_simple_where_expression("albums", where_field, value);
   
-  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto field = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
@@ -81,7 +81,7 @@ static bool check_drop_table(const Glib::ustring& quote_char)
   fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
-    Glom::Utils::build_sql_select_with_where_clause("albums",
+    Glom::SqlUtils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
   auto data_model = 
     Glom::DbUtils::query_execute_select(builder);
@@ -108,9 +108,9 @@ static bool check_avoid_quotes_and_drop_table_with_false_value_type()
   auto where_field = 
     document->get_field("albums", "album_id");
   const Gnome::Gda::SqlExpr where_clause = 
-    Glom::Utils::build_simple_where_expression("albums", where_field, value);
+    Glom::SqlUtils::build_simple_where_expression("albums", where_field, value);
   
-  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto field = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
@@ -121,7 +121,7 @@ static bool check_avoid_quotes_and_drop_table_with_false_value_type()
   fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
-    Glom::Utils::build_sql_select_with_where_clause("albums",
+    Glom::SqlUtils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
 
   std::cout << "This test expects some std::cerr output about exceptions now:\n";
@@ -168,9 +168,9 @@ static bool check_avoid_quotes_and_drop_table_with_false_field_type()
   //const GType gda_type = Glom::Field::get_gda_type_for_glom_type(Glom::TYPE_NUMERIC); 
 
   const Gnome::Gda::SqlExpr where_clause = 
-    Glom::Utils::build_simple_where_expression("albums", where_field, value);
+    Glom::SqlUtils::build_simple_where_expression("albums", where_field, value);
  
-  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto field = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
@@ -181,7 +181,7 @@ static bool check_avoid_quotes_and_drop_table_with_false_field_type()
   fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
-    Glom::Utils::build_sql_select_with_where_clause("albums",
+    Glom::SqlUtils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
 
   Glib::RefPtr<Gnome::Gda::DataModel> data_model

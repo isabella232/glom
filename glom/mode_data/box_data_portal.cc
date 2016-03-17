@@ -289,7 +289,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   auto key_field = get_field_primary_key_for_table(related_table);
   //std::cout << "DEBUG: related table=" << related_table << ", whose primary_key=" << key_field->get_name() << ", with value=" << primary_key_value.to_string() << "getting value for: " << layout_item->get_layout_display_name() << std::endl;
 
-  auto query = Utils::build_sql_select_with_key(related_table, fieldsToGet, key_field, primary_key_value);
+  auto query = SqlUtils::build_sql_select_with_key(related_table, fieldsToGet, key_field, primary_key_value);
   auto data_model = DbUtils::query_execute_select(query);
 
 

@@ -134,7 +134,7 @@ public:
 
   /** Do not actually connect to the database,
    * but create a Gnome::Gda::Connection object
-   * just so that utility functions such as Utils::sqlbuilder_get_full_query()
+   * just so that utility functions such as SqlUtils::sqlbuilder_get_full_query()
    * and DbUtils::escape_sql_id() can work.
    */
   void set_fake_connection();

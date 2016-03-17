@@ -747,10 +747,10 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   if(!field_name.empty()) //This should not happen.
   {
     const Gnome::Gda::SqlExpr where_clause = 
-      Utils::build_simple_where_expression(field_in_record.m_table_name,
+      SqlUtils::build_simple_where_expression(field_in_record.m_table_name,
         field_in_record.m_key, field_in_record.m_key_value);
     const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
-      Utils::build_sql_update_with_where_clause(field_in_record.m_table_name,
+      SqlUtils::build_sql_update_with_where_clause(field_in_record.m_table_name,
         field_in_record.m_field, field_value, where_clause);
 
     try //TODO: The exceptions are probably already handled by query_execute(
@@ -826,8 +826,8 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
   type_vecConstLayoutFields list_fields;
   auto layout_item = field_in_record.m_field;
   list_fields.emplace_back(layout_item);
-  auto sql_query = Utils::build_sql_select_with_key(field_in_record.m_table_name,
-    list_fields, field_in_record.m_key, field_in_record.m_key_value, type_sort_clause(), 1);
+  auto sql_query = SqlUtils::build_sql_select_with_key(field_in_record.m_table_name,
+    list_fields, field_in_record.m_key, field_in_record.m_key_value, SqlUtils::type_sort_clause(), 1);
 
   auto data_model = DbUtils::query_execute_select(sql_query);
   if(data_model)
@@ -866,10 +866,10 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const std::shared_ptr<Fie
   auto layout_item = std::make_shared<LayoutItem_Field>();
   layout_item->set_full_field_details(field);
   list_fields.emplace_back(layout_item);
-  auto sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
+  auto sql_query = SqlUtils::build_sql_select_with_where_clause(found_set.m_table_name,
     list_fields,
     found_set.m_where_clause,
-    std::shared_ptr<const Relationship>() /* extra_join */, type_sort_clause(),
+    std::shared_ptr<const Relationship>() /* extra_join */, SqlUtils::type_sort_clause(),
     1 /* limit */);
 
   auto data_model = DbUtils::query_execute_select(sql_query);
@@ -1190,7 +1190,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
     cond_id = eq_id;
 
   auto query =
-    Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsToGet,
+    SqlUtils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsToGet,
       builder->export_expression(cond_id));
   auto data_model = DbUtils::query_execute_select(query);
 
@@ -1250,7 +1250,7 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
   if(where_clause_to_key_field)
   {
     found_set.m_where_clause =
-      Utils::build_simple_where_expression(where_clause_to_table_name, where_clause_to_key_field, foreign_key_value);
+      SqlUtils::build_simple_where_expression(where_clause_to_table_name, where_clause_to_key_field, foreign_key_value);
   }
 }
 

@@ -261,7 +261,7 @@ FoundSet Notebook_Data::get_found_set_selected() const
     
     auto primary_key_field =
       document->get_field_primary_key(m_table_name);
-    found_set.m_where_clause = Utils::build_simple_where_expression(
+    found_set.m_where_clause = SqlUtils::build_simple_where_expression(
       m_table_name, primary_key_field,
       primary_key_value_selected);
     return found_set;

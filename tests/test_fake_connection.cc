@@ -68,9 +68,9 @@ int main()
   const Gnome::Gda::Value value("Born To Run");
   auto where_field = document->get_field("albums", "name");
   const Gnome::Gda::SqlExpr where_clause = 
-    Glom::Utils::build_simple_where_expression("albums", where_field, value);
+    Glom::SqlUtils::build_simple_where_expression("albums", where_field, value);
   
-  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto field = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
@@ -81,9 +81,9 @@ int main()
   fieldsToGet.emplace_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
-    Glom::Utils::build_sql_select_with_where_clause("albums",
+    Glom::SqlUtils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
-  const auto query = Glom::Utils::sqlbuilder_get_full_query(builder);
+  const auto query = Glom::SqlUtils::sqlbuilder_get_full_query(builder);
   g_assert(!query.empty());
   if(query.find("album_id") == Glib::ustring::npos)
   {

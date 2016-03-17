@@ -388,7 +388,7 @@ SystemPrefs get_database_preferences(const std::shared_ptr<const Document>& docu
     bool succeeded = true;
     try
     {
-      //const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
+      //const std::string full_query = SqlUtils::sqlbuilder_get_full_query(builder);
       auto datamodel = query_execute_select(builder);
       if(datamodel && (datamodel->get_n_rows() != 0))
       {
@@ -1520,7 +1520,7 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
     if(Glom::Conversions::value_is_empty(value_max))
     {
       std::cerr << G_STRFUNC << ": The MAX() value is null for query: " <<
-        Utils::sqlbuilder_get_full_query(builder) << std::endl;
+        SqlUtils::sqlbuilder_get_full_query(builder) << std::endl;
     }
 
     double num_max = Conversions::get_double_for_gda_value_numeric(value_max);
@@ -1641,13 +1641,13 @@ bool insert_example_data(const std::shared_ptr<const Document>& document, const 
     //the query, and allow us to set their values.
 
     //std::cout << G_STRFUNC << ": debug: INSERT query: \n"
-    //  << "    " << Utils::sqlbuilder_get_full_query(builder) << std::endl;
+    //  << "    " << SqlUtils::sqlbuilder_get_full_query(builder) << std::endl;
 
     insert_succeeded = query_execute(builder);
     if(!insert_succeeded)
     {
       std::cerr << G_STRFUNC << ": The INSERT query failed: " <<
-        Utils::sqlbuilder_get_full_query(builder) << std::endl;
+        SqlUtils::sqlbuilder_get_full_query(builder) << std::endl;
       break;
     }
   }
@@ -1678,7 +1678,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
   //Debug output:
   if(builder && ConnectionPool::get_instance()->get_show_debug_output())
   {
-    const auto full_query = Utils::sqlbuilder_get_full_query(builder);
+    const auto full_query = SqlUtils::sqlbuilder_get_full_query(builder);
     std::cout << "debug: " << G_STRFUNC << ":  " << full_query << std::endl;
   }
 
@@ -1720,7 +1720,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
 
   if(!result)
   {
-    const auto full_query = Utils::sqlbuilder_get_full_query(builder);
+    const auto full_query = SqlUtils::sqlbuilder_get_full_query(builder);
     std::cerr << G_STRFUNC << ": Error while executing SQL: "
       << std::endl << "  " << full_query << std::endl << std::endl;
     handle_error();
@@ -1805,7 +1805,7 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
   //Debug output:
   if(builder && ConnectionPool::get_instance()->get_show_debug_output())
   {
-    const auto full_query = Utils::sqlbuilder_get_full_query(builder);
+    const auto full_query = SqlUtils::sqlbuilder_get_full_query(builder);
     std::cerr << G_STRFUNC << ": " << full_query << std::endl;
   }
 
@@ -1818,21 +1818,21 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
   catch(const Gnome::Gda::ConnectionError& ex)
   {
     std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
-    const auto full_query = Utils::sqlbuilder_get_full_query(builder);
+    const auto full_query = SqlUtils::sqlbuilder_get_full_query(builder);
     std::cerr << G_STRFUNC << ":   full_query: " << full_query << std::endl;
     return false;
   }
   catch(const Gnome::Gda::ServerProviderError& ex)
   {
     std::cerr << G_STRFUNC << ": code=" << ex.code() << "message=" << ex.what() << std::endl;
-    const auto full_query = Utils::sqlbuilder_get_full_query(builder);
+    const auto full_query = SqlUtils::sqlbuilder_get_full_query(builder);
     std::cerr << G_STRFUNC << ":   full_query: " << full_query << std::endl;
     return false;
   }
   catch(const Gnome::Gda::SqlError& ex) //TODO: Make sure that statement_execute_non_select_builder() is documented as throwing this.
   {
     std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
-    const auto full_query = Utils::sqlbuilder_get_full_query(builder);
+    const auto full_query = SqlUtils::sqlbuilder_get_full_query(builder);
     std::cerr << G_STRFUNC << ":   full_query: " << full_query << std::endl;
     return false;
   }
@@ -1979,7 +1979,7 @@ int count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql
   }
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =
-    Utils::build_sql_select_count_rows(sql_query);
+    SqlUtils::build_sql_select_count_rows(sql_query);
 
   int result = 0;
 
@@ -2324,7 +2324,7 @@ type_map_fields get_record_field_values(const std::shared_ptr<const Document>& d
   {
     //sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
-    auto query = Utils::build_sql_select_with_key(table_name, fieldsToGet, primary_key, primary_key_value);
+    auto query = SqlUtils::build_sql_select_with_key(table_name, fieldsToGet, primary_key, primary_key_value);
 
     Glib::RefPtr<const Gnome::Gda::DataModel> data_model;
     try
@@ -2410,7 +2410,7 @@ type_list_values_with_second get_choice_values(const std::shared_ptr<const Docum
     return result;
   }
 
-  Utils::type_vecConstLayoutFields fields;
+  SqlUtils::type_vecConstLayoutFields fields;
   fields.emplace_back(layout_choice_first);
 
   if(layout_choice_extra)
@@ -2438,7 +2438,7 @@ type_list_values_with_second get_choice_values(const std::shared_ptr<const Docum
   }
 
   //TODO: Support related relationships (in the UI too):
-  auto builder = Utils::build_sql_select_with_key(
+  auto builder = SqlUtils::build_sql_select_with_key(
           to_table,
           fields,
           to_field,
@@ -2463,7 +2463,7 @@ type_list_values_with_second get_choice_values(const std::shared_ptr<const Docum
   }
 
   const std::string sql_query =
-          Utils::sqlbuilder_get_full_query(builder);
+          SqlUtils::sqlbuilder_get_full_query(builder);
   //std::cout << "debug: sql_query=" << sql_query << std::endl;
   auto datamodel = connection->get_gda_connection()->statement_execute_select(sql_query);
 

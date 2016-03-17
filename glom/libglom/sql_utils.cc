@@ -28,11 +28,10 @@
 namespace Glom
 {
 
-namespace Utils
+namespace SqlUtils
 {
 
-template
-        <typename T_Container>
+template<typename T_Container>
 auto find_if_uses_relationship_has_relationship(T_Container& container, const std::shared_ptr<const UsesRelationship> uses_relationship_name, bool first_level_only = false) -> decltype(container.begin())
 {
   const Glib::ustring relationship_name(uses_relationship_name->get_relationship_name());
@@ -42,7 +41,7 @@ auto find_if_uses_relationship_has_relationship(T_Container& container, const st
   if(first_level_only)
     related_relationship_name = Glib::ustring();
 
-  return find_if(container,
+  return Utils::find_if(container,
                         [&relationship_name, &related_relationship_name](const typename T_Container::value_type& element)
                         {
                           //Assume that element is a shared_ptr<>.
@@ -56,7 +55,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_where_clause(const Gl
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
-  copy(fieldsToGet, constFieldsToGet);
+  Utils::copy(fieldsToGet, constFieldsToGet);
 
   return build_sql_select_with_where_clause(table_name, constFieldsToGet, where_clause, extra_join, sort_clause, limit);
 }
@@ -311,7 +310,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_key(const Glib::ustri
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
-  copy(fieldsToGet, constFieldsToGet);
+  Utils::copy(fieldsToGet, constFieldsToGet);
 
   return build_sql_select_with_key(table_name, constFieldsToGet, key_field, key_value, sort_clause, limit);
 }
@@ -568,7 +567,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_update_with_where_clause(
   return builder;
 }
 
-} //namespace Utils
+} //namespace SqlUtils
 
 } //namespace Glom
 
