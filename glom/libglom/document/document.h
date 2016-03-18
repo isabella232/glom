@@ -230,6 +230,7 @@ public:
 
 
   typedef std::vector< std::shared_ptr<LayoutGroup> > type_list_layout_groups;
+  typedef std::vector< std::shared_ptr<const LayoutGroup> > type_list_const_layout_groups;
 
   /** Get the layout groups for a layout.
    * @param layout_name The name of the layout, such as list or details.

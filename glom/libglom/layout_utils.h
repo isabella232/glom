@@ -57,7 +57,8 @@ LayoutGroup::type_list_const_items get_layout_items_plus_primary_key(const Layou
  */
 LayoutGroup::type_list_items get_layout_items_plus_primary_key(const LayoutGroup::type_list_items& items, const std::shared_ptr<const Document>& document, const Glib::ustring& table_name);
 
-type_vecConstLayoutFields get_table_fields_to_show_for_sequence(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const Document::type_list_layout_groups& mapGroupSequence);
+
+type_vecConstLayoutFields get_table_fields_to_show_for_sequence(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const Document::type_list_const_layout_groups& mapGroupSequence);
 
 
 /**

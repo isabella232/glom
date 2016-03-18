@@ -72,7 +72,7 @@ FileChooser_Export::~FileChooser_Export()
 #endif //GLOM_ENABLE_CLIENT_ONLY
 }
 
-void FileChooser_Export::set_export_layout(const Document::type_list_layout_groups& layout_groups, const Glib::ustring& table_name, const std::shared_ptr<Document>& document)
+void FileChooser_Export::set_export_layout(const Document::type_list_const_layout_groups& layout_groups, const Glib::ustring& table_name, const std::shared_ptr<Document>& document)
 {
   m_layout_groups = layout_groups;
   m_table_name = table_name;
@@ -103,7 +103,7 @@ void FileChooser_Export::on_dialog_layout_hide()
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
-void FileChooser_Export::get_layout_groups(Document::type_list_layout_groups& layout_groups) const
+void FileChooser_Export::get_layout_groups(Document::type_list_const_layout_groups& layout_groups) const
 {
   layout_groups = m_layout_groups;
 }

@@ -36,9 +36,9 @@ public:
   FileChooser_Export();
   virtual ~FileChooser_Export();
 
-  void set_export_layout(const Document::type_list_layout_groups& layout_groups, const Glib::ustring& table_name, const std::shared_ptr<Document>& document);
+  void set_export_layout(const Document::type_list_const_layout_groups& layout_groups, const Glib::ustring& table_name, const std::shared_ptr<Document>& document);
 
-  void get_layout_groups(Document::type_list_layout_groups& layout_groups) const;
+  void get_layout_groups(Document::type_list_const_layout_groups& layout_groups) const;
 
 private:
 
@@ -57,7 +57,7 @@ private:
 
   Glib::ustring m_table_name;
 
-  Document::type_list_layout_groups m_layout_groups;
+  Document::type_list_const_layout_groups m_layout_groups;
   std::shared_ptr<Document> m_document;
 };
 

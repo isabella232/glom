@@ -558,7 +558,9 @@ void Frame_Glom::on_menu_file_export()
   FileChooser_Export dialog;
   dialog.set_transient_for(*get_app_window());
   dialog.set_do_overwrite_confirmation();
-  dialog.set_export_layout(mapGroupSequence, m_table_name, get_document());
+
+  auto const_sequence = Utils::const_list(mapGroupSequence);
+  dialog.set_export_layout(const_sequence, m_table_name, get_document());
   const int response = dialog.run();
   dialog.hide();
 
@@ -571,8 +573,8 @@ void Frame_Glom::on_menu_file_export()
 
   filepath = UiUtils::get_filepath_with_extension(filepath, "csv");
 
-  dialog.get_layout_groups(mapGroupSequence);
-  //std::cout << "DEBUG 0: mapGroupSequence.size()=" << mapGroupSequence.size() << std::endl;
+  dialog.get_layout_groups(const_sequence);
+  //std::cout << "DEBUG 0: const_sequence.size()=" << const_sequence.size() << std::endl;
 
   //const int index_primary_key = fieldsSequence.size() - 1;
 
@@ -585,7 +587,7 @@ void Frame_Glom::on_menu_file_export()
     return;
   }
 
-  DbUtils::export_data_to_stream(document, the_stream, found_set, mapGroupSequence);
+  DbUtils::export_data_to_stream(document, the_stream, found_set, const_sequence);
 }
 
 void Frame_Glom::on_menu_file_import()

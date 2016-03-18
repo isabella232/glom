@@ -187,7 +187,7 @@ Box_Data_Portal::type_vecConstLayoutFields Box_Data_Portal::get_fields_to_show()
   const auto document = get_document();
   if(document && m_portal)
   {
-    Document::type_list_layout_groups mapGroups;
+    Document::type_list_const_layout_groups mapGroups;
     mapGroups.emplace_back(m_portal);
 
     auto relationship = m_portal->get_relationship();

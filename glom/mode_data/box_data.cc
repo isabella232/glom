@@ -243,8 +243,11 @@ Box_Data::type_vecConstLayoutFields Box_Data::get_table_fields_to_show(const Gli
   const auto pDoc = std::dynamic_pointer_cast<const Document>(get_document());
   if(pDoc)
   {
-    Document::type_list_layout_groups mapGroupSequence = pDoc->get_data_layout_groups_plus_new_fields(m_layout_name, table_name, m_layout_platform);
-    return Utils::get_table_fields_to_show_for_sequence(pDoc, table_name, mapGroupSequence);
+    const auto mapGroupSequence = pDoc->get_data_layout_groups_plus_new_fields(m_layout_name, table_name, m_layout_platform);
+
+    //TODO: Avoid the copy just for the constness.
+    const auto const_sequence = Utils::const_list(mapGroupSequence);
+    return Utils::get_table_fields_to_show_for_sequence(pDoc, table_name, const_sequence);
   }
   else
     return type_vecConstLayoutFields();

@@ -36,7 +36,7 @@ namespace DbUtils
 
 
 //TODO: Reduce copy/pasting in these export_data_to_*() methods:
-void export_data_to_vector(const std::shared_ptr<Document>& document, Document::type_example_rows& the_vector, const FoundSet& found_set, const Document::type_list_layout_groups& sequence)
+void export_data_to_vector(const std::shared_ptr<Document>& document, Document::type_example_rows& the_vector, const FoundSet& found_set, const Document::type_list_const_layout_groups& sequence)
 {
   auto fieldsSequence = Utils::get_table_fields_to_show_for_sequence(document, found_set.m_table_name, sequence);
 
@@ -86,7 +86,7 @@ void export_data_to_vector(const std::shared_ptr<Document>& document, Document::
   }
 }
 
-void export_data_to_stream(const std::shared_ptr<Document>& document, std::ostream& the_stream, const FoundSet& found_set, const Document::type_list_layout_groups& sequence)
+void export_data_to_stream(const std::shared_ptr<Document>& document, std::ostream& the_stream, const FoundSet& found_set, const Document::type_list_const_layout_groups& sequence)
 {
   auto fieldsSequence = Utils::get_table_fields_to_show_for_sequence(document, found_set.m_table_name, sequence);
 

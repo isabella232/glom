@@ -1055,7 +1055,7 @@ void Canvas_PrintLayout::set_grid_gap(double gap)
     m_bounds_group->lower();
 }
 
-Base_DB::type_vecConstLayoutFields Canvas_PrintLayout::get_portal_fields_to_show(const std::shared_ptr<LayoutItem_Portal>& portal)
+Base_DB::type_vecConstLayoutFields Canvas_PrintLayout::get_portal_fields_to_show(const std::shared_ptr<const LayoutItem_Portal>& portal)
 {
   const auto document = get_document();
   if(!document)
@@ -1063,7 +1063,7 @@ Base_DB::type_vecConstLayoutFields Canvas_PrintLayout::get_portal_fields_to_show
 
   if(document && portal)
   {
-    Document::type_list_layout_groups mapGroups;
+    Document::type_list_const_layout_groups mapGroups;
     mapGroups.emplace_back(portal);
 
     auto relationship = portal->get_relationship();

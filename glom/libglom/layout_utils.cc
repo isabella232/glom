@@ -160,13 +160,13 @@ static bool get_field_primary_key_index_for_fields(const Utils::type_vec_fields&
   return false; //Not found.
 }
 
-static void get_table_fields_to_show_for_sequence_add_group(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const Privileges& table_privs, const Utils::type_vec_fields& all_db_fields, const std::shared_ptr<LayoutGroup>& group, Utils::type_vecConstLayoutFields& vecFields)
+static void get_table_fields_to_show_for_sequence_add_group(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const Privileges& table_privs, const Utils::type_vec_fields& all_db_fields, const std::shared_ptr<const LayoutGroup>& group, Utils::type_vecConstLayoutFields& vecFields)
 {
   //g_warning("Box_Data::get_table_fields_to_show_for_sequence_add_group(): table_name=%s, all_db_fields.size()=%d, group->name=%s", table_name.c_str(), all_db_fields.size(), group->get_name().c_str());
 
   for(const auto& item : group->get_items())
   {
-    auto item_field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
+    auto item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
     if(item_field)
     {
       //Get the field info:
@@ -178,9 +178,9 @@ static void get_table_fields_to_show_for_sequence_add_group(const std::shared_pt
         auto field = DbUtils::get_fields_for_table_one_field(document, item_field->get_table_used(table_name), item->get_name());
         if(field)
         {
-          auto layout_item = item_field;
+          //TODO: Avoid the clone just to remove the constness?
+          auto layout_item = glom_sharedptr_clone(item_field);
           layout_item->set_full_field_details(field); //Fill in the full field information for later.
-
 
           //TODO_Performance: We do this once for each related field, even if there are 2 from the same table:
           const auto privs_related = Privs::get_current_privs(item_field->get_table_used(table_name));
@@ -201,7 +201,8 @@ static void get_table_fields_to_show_for_sequence_add_group(const std::shared_pt
         //If the field does not exist anymore then we won't try to show it:
         if(iterFind != all_db_fields.end() )
         {
-          auto layout_item = item_field;
+          //TODO: Avoid the clone just to remove the constness?
+          auto layout_item = glom_sharedptr_clone(item_field);
           layout_item->set_full_field_details(*iterFind); //Fill the LayoutItem with the full field information.
 
           //std::cout << "debug: " << G_STRFUNC << ": name=" << layout_item->get_name() << std::endl;
@@ -216,10 +217,10 @@ static void get_table_fields_to_show_for_sequence_add_group(const std::shared_pt
     }
     else
     {
-      auto item_group = std::dynamic_pointer_cast<LayoutGroup>(item);
+      auto item_group = std::dynamic_pointer_cast<const LayoutGroup>(item);
       if(item_group)
       {
-        auto item_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(item);
+        auto item_portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(item);
         if(!item_portal) //Do not recurse into portals. They are filled by means of a separate SQL query.
         {
           //Recurse:
@@ -237,7 +238,7 @@ static void get_table_fields_to_show_for_sequence_add_group(const std::shared_pt
 
 } //anonymous namespace
 
-Utils::type_vecConstLayoutFields Utils::get_table_fields_to_show_for_sequence(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const Document::type_list_layout_groups& mapGroupSequence)
+Utils::type_vecConstLayoutFields Utils::get_table_fields_to_show_for_sequence(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const Document::type_list_const_layout_groups& mapGroupSequence)
 {
   //Get field definitions from the database, with corrections from the document:
   auto all_fields = DbUtils::get_fields_for_table(document, table_name);

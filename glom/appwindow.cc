@@ -2049,7 +2049,8 @@ void AppWindow::on_menu_file_save_as_example()
         Document::type_example_rows example_rows;
         FoundSet found_set;
         found_set.m_table_name = table_name;
-        DbUtils::export_data_to_vector(document, example_rows, found_set, sequence);
+        auto const_sequence = Utils::const_list(sequence);
+        DbUtils::export_data_to_vector(document, example_rows, found_set, const_sequence);
         //std::cout << "  debug after row_text=" << row_text << std::endl;
 
         document->set_table_example_data(table_name, example_rows);

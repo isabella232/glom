@@ -110,7 +110,7 @@ private:
   void fill_with_data_portal(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, const Gnome::Gda::Value& foreign_key_value);
   static void set_canvas_item_field_value(const Glib::RefPtr<Goocanvas::Item>& canvas_item, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   
-  type_vecConstLayoutFields get_portal_fields_to_show(const std::shared_ptr<LayoutItem_Portal>& portal);
+  type_vecConstLayoutFields get_portal_fields_to_show(const std::shared_ptr<const LayoutItem_Portal>& portal);
 
   void create_canvas_layout_item_and_add(const std::shared_ptr<LayoutItem>& layout_item);
 

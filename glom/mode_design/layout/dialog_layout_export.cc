@@ -92,7 +92,7 @@ Dialog_Layout_Export::Dialog_Layout_Export(BaseObjectType* cobject, const Glib::
   show_all_children();
 }
 
-void Dialog_Layout_Export::set_layout_groups(Document::type_list_layout_groups& mapGroups, const std::shared_ptr<Document>& document, const Glib::ustring& table_name)
+void Dialog_Layout_Export::set_layout_groups(Document::type_list_const_layout_groups& mapGroups, const std::shared_ptr<Document>& document, const Glib::ustring& table_name)
 {
   Base_DB::set_document(document);
 
@@ -214,12 +214,12 @@ void Dialog_Layout_Export::on_button_down()
   move_treeview_selection_down(m_treeview_fields, m_ColumnsFields.m_col_sequence);
 }
 
-void Dialog_Layout_Export::get_layout_groups(Document::type_list_layout_groups& layout_groups) const
+void Dialog_Layout_Export::get_layout_groups(Document::type_list_const_layout_groups& layout_groups) const
 {
   //Get the data from the TreeView and store it in the document:
 
   //Get the groups and their fields:
-  Document::type_list_layout_groups groups;
+  Document::type_list_const_layout_groups groups;
 
   //Add the fields to the one group:
   auto others = std::make_shared<LayoutGroup>();
