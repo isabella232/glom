@@ -60,9 +60,11 @@ Box_Data_List_Related::Box_Data_List_Related()
 
 void Box_Data_List_Related::enable_buttons()
 {
+  const auto portal = get_portal();
   const bool view_details_possible =
     get_has_suitable_record_to_view_details() &&
-    (m_portal->get_navigation_type() != LayoutItem_Portal::navigation_type::NONE);
+    portal &&
+    (portal->get_navigation_type() != LayoutItem_Portal::navigation_type::NONE);
 
   // Don't allow the user to go to a record in a hidden table.
   // Unless we are on Maemo - then we want to allow editing in a separate window only.
@@ -79,8 +81,9 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
 {
   m_parent_table = parent_table;
 
-  if(m_portal)
-    LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
+  const auto portal = get_portal();
+  if(portal)
+    LayoutWidgetBase::m_table_name = portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
   else
     LayoutWidgetBase::m_table_name = Glib::ustring();
 
@@ -94,8 +97,9 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
   if(show_title)
   {
     Glib::ustring title;
-    if(m_portal)
-      title = item_get_title(m_portal);
+    const auto portal = get_portal();
+    if(portal)
+      title = item_get_title(portal);
 
     m_Label.set_markup(UiUtils::bold_message(title));
     m_Label.show();
@@ -119,10 +123,10 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
     m_AddDel.set_margin_top(0);
   }
 
-  if(m_portal)
+  if(portal)
   {
     m_key_field = DbUtils::get_fields_for_table_one_field(get_document(),
-      LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
+      LayoutWidgetBase::m_table_name, portal->get_to_field_used());
   }
   else
     m_key_field.reset();
@@ -175,8 +179,9 @@ bool Box_Data_List_Related::fill_from_database()
   }
 
   //Prevent addition of new records if that is what the relationship specifies:
-  if(allow_add && m_portal && m_portal->get_relationship())
-    allow_add = m_portal->get_relationship()->get_auto_create();
+  const auto portal = get_portal();
+  if(allow_add && portal && portal->get_relationship())
+    allow_add = portal->get_relationship()->get_auto_create();
 
   m_AddDel.set_allow_add(allow_add);
 
@@ -209,8 +214,15 @@ void Box_Data_List_Related::on_adddel_user_requested_edit(const Gtk::TreeModel::
 
 void Box_Data_List_Related::on_adddel_record_changed()
 {
+  const auto portal = get_portal();
+  if(!portal)
+  {
+    std::cerr << G_STRFUNC << ": portal is null.\n";
+    return;
+  }
+
   //Let parent respond:
-  signal_portal_record_changed().emit(m_portal->get_relationship_name());
+  signal_portal_record_changed().emit(portal->get_relationship_name());
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -303,7 +315,8 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
     auto field_primary_key = m_AddDel.get_key_field();
 
     //Create the link by setting the foreign key
-    if(m_key_field && m_portal)
+    const auto portal = get_portal();
+    if(m_key_field && portal)
     {
       make_record_related(primary_key_value);
 
@@ -360,7 +373,14 @@ void Box_Data_List_Related::prepare_layout_dialog(Dialog_Layout* dialog)
   auto related_dialog = dynamic_cast<Dialog_Layout_List_Related*>(dialog);
   g_assert(related_dialog);
 
-  related_dialog->init_with_portal(m_layout_name, m_layout_platform, get_document(), m_portal, m_parent_table);
+  const auto portal = get_portal();
+  if(!portal)
+  {
+    std::cerr << G_STRFUNC << ": portal is null.\n";
+    return;
+  }
+
+  related_dialog->init_with_portal(m_layout_name, m_layout_platform, get_document(), portal, m_parent_table);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -386,8 +406,9 @@ Document::type_list_layout_groups Box_Data_List_Related::create_layout_get_layou
 
   //Do not use get_data_layout_groups(m_layout_name).
   //instead do this:
-  if(m_portal)
-    result.emplace_back(m_portal);
+  const auto portal = get_portal();
+  if(portal)
+    result.emplace_back(portal);
 
   return result;
 }
@@ -409,12 +430,13 @@ void Box_Data_List_Related::create_layout()
   //m_AddDel.set_columns_count(m_Fields.size());
 
   m_AddDel.set_table_name(Base_DB_Table::m_table_name);
-  
-  if(m_portal)
+
+  const auto portal = get_portal();
+  if(portal)
   {
     gulong rows_count_min = 0;
     gulong rows_count_max = 0;
-    m_portal->get_rows_count(rows_count_min, rows_count_max);
+    portal->get_rows_count(rows_count_min, rows_count_max);
     if(rows_count_min) //0 is a silly value.
       m_AddDel.set_height_rows(rows_count_min, rows_count_max);
   }

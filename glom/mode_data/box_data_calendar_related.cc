@@ -85,8 +85,9 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
 
   m_parent_table = parent_table;
 
-  if(m_portal)
-    LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
+  const auto portal = get_portal();
+  if(portal)
+    LayoutWidgetBase::m_table_name = portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
   else
     LayoutWidgetBase::m_table_name = Glib::ustring();
 
@@ -96,8 +97,8 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
   if(show_title)
   {
     Glib::ustring title;
-    if(m_portal)
-      title = item_get_title(m_portal);
+    if(portal)
+      title = item_get_title(portal);
 
     m_Label.set_markup(UiUtils::bold_message(title));
     m_Label.show();
@@ -115,11 +116,11 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
     m_calendar.set_margin_top(0);
   }
 
-  if(m_portal)
+  if(portal)
   {
     auto document = get_document();    
     m_key_field = DbUtils::get_fields_for_table_one_field(document,
-      LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
+      LayoutWidgetBase::m_table_name, portal->get_to_field_used());
   }
   else
     m_key_field.reset();
@@ -141,7 +142,8 @@ void Box_Data_Calendar_Related::create_layout()
 
 bool Box_Data_Calendar_Related::fill_from_database()
 {
-  if(!m_portal)
+  const auto portal = get_portal();
+  if(!portal)
     return false;
 
   bool result = false;
@@ -170,13 +172,13 @@ bool Box_Data_Calendar_Related::fill_from_database()
     Gnome::Gda::Value date_end_value(date_end);
 
     //Add a WHERE clause for this date range:
-    auto relationship = m_portal->get_relationship();
+    auto relationship = portal->get_relationship();
     Glib::ustring where_clause_to_table_name = relationship->get_to_table();
 
-    auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
+    auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(portal);
     const auto date_field_name = derived_portal->get_date_field()->get_name();
 
-    auto relationship_related = m_portal->get_related_relationship();
+    auto relationship_related = portal->get_related_relationship();
     if(relationship_related)
     {
       //Adjust the WHERE clause appropriately for the extra JOIN:
@@ -297,11 +299,13 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
   {
     std::shared_ptr<Field> field_primary_key; //TODO: = m_calendar.get_key_field();
 
+    const auto portal = get_portal();
+
     //Create the link by setting the foreign key
-    if(m_key_field && m_portal)
+    if(m_key_field && portal)
     {
       auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
-      const auto target_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
+      const auto target_table = portal->get_table_used(Glib::ustring() /* not relevant */);
       builder->set_table(target_table);
       builder->add_field_value_as_value(m_key_field->get_name(), m_key_value);
       builder->set_where(
@@ -328,7 +332,8 @@ Box_Data_Calendar_Related::type_vecConstLayoutFields Box_Data_Calendar_Related::
 {
   type_vecConstLayoutFields layout_fields = Box_Data_Portal::get_fields_to_show();
 
-  auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
+  const auto portal = get_portal();
+  const auto derived_portal = std::dynamic_pointer_cast<const LayoutItem_CalendarPortal>(portal);
   if(!derived_portal)
   {
     std::cerr << G_STRFUNC << ": The portal is not a LayoutItem_CalendarPortal.\n";
@@ -388,7 +393,8 @@ void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)
   auto related_dialog = dynamic_cast<Dialog_Layout_Calendar_Related*>(dialog);
   g_assert(related_dialog);
 
-  auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
+  const auto portal = get_portal();
+  const auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(portal);
   if(derived_portal && derived_portal->get_has_relationship_name())
   {
     related_dialog->init_with_portal(m_layout_name, m_layout_platform, get_document(), derived_portal);
@@ -408,7 +414,8 @@ void Box_Data_Calendar_Related::on_calendar_month_changed()
 
 Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint month, guint day)
 {
-  auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
+  const auto portal = get_portal();
+  const auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(portal);
   if(!derived_portal)
   {
     //std::cout << "debug: " << G_STRFUNC << ": date_field is NULL\n";
@@ -453,7 +460,7 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
     //We iterate over the original list of items from the portal,
     //instead of the ones used by the query (m_FieldsShown),
     //because we really don't want to show the extra fields (at the end) to the user:
-    LayoutGroup::type_list_items items = m_portal->get_items();
+    LayoutGroup::type_list_items items = portal->get_items();
     for(const auto& layout_item : items)
     {
       if(!layout_item)

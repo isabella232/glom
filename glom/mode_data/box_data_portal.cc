@@ -68,13 +68,14 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
     std::cerr << G_STRFUNC << ": m_key_value was empty.\n";
   }
 
-
-  if(!m_portal)
+  const auto portal = get_portal();
+  if (!portal)
   {
-    std::cerr << G_STRFUNC << ": m_portal was null.\n";
+    std::cerr << G_STRFUNC << ": portal is null\n";
+    return;
   }
 
-  const auto target_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
+  const auto target_table = portal->get_table_used(Glib::ustring() /* not relevant */);
   auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
     builder->set_table(target_table);
     builder->add_field_value_as_value(m_key_field->get_name(), m_key_value);
@@ -104,8 +105,9 @@ bool Box_Data_Portal::init_db_details(const std::shared_ptr<const LayoutItem_Por
 
 Glib::ustring Box_Data_Portal::get_title(const Glib::ustring& locale) const
 {
-  if(m_portal)
-    return m_portal->get_title_or_name(locale);
+  auto portal = get_portal();
+  if(portal)
+    return portal->get_title_or_name(locale);
   else
   {
     //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
@@ -116,8 +118,9 @@ Glib::ustring Box_Data_Portal::get_title(const Glib::ustring& locale) const
 Glib::ustring Box_Data_Portal::get_title_singular(const Glib::ustring& locale) const
 {
   Glib::ustring relationship_title;
-  if(m_portal && m_portal->get_has_relationship_name())
-    relationship_title = m_portal->get_title_singular_used(Glib::ustring() /* parent title - not relevant */, locale);
+  const auto portal = get_portal();
+  if(portal && portal->get_has_relationship_name())
+    relationship_title = portal->get_title_singular_used(Glib::ustring() /* parent title - not relevant */, locale);
   else
   {
     //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
@@ -132,13 +135,13 @@ bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::G
   m_key_value = foreign_key_value;
   //std::cout << "debug: " << G_STRFUNC << ": m_key_value=" << m_key_value.to_string() << std::endl;
 
-
-  if(m_key_field && m_portal)
+  const auto portal = get_portal();
+  if(m_key_field && portal)
   {
     if(!Conversions::value_is_empty(m_key_value))
     {
       FoundSet found_set;
-      set_found_set_where_clause_for_portal(found_set, m_portal, m_key_value);
+      set_found_set_where_clause_for_portal(found_set, portal, m_key_value);
 
       //std::cout << "debug: " << G_STRFUNC << ": where_clause=" << found_set.m_where_clause << std::endl;
       return Box_Data::refresh_data_from_database_with_where_clause(found_set);
@@ -177,33 +180,48 @@ std::shared_ptr<const Field> Box_Data_Portal::get_key_field() const
 //TODO: refactor: Remove this because it is never called?
 void Box_Data_Portal::on_record_deleted(const Gnome::Gda::Value& /* primary_key_value */)
 {
+  const auto portal = get_portal();
+  if (!portal)
+  {
+    std::cerr << G_STRFUNC << ": portal is null\n";
+    return;
+  }
+
   //Allow the parent record (Details view) to recalculate aggregations:
-  signal_portal_record_changed().emit(m_portal->get_relationship_name());
+  signal_portal_record_changed().emit(portal->get_relationship_name());
 }
 
 void Box_Data_Portal::on_record_added(const Gnome::Gda::Value& /* primary_key_value */, const Gtk::TreeModel::iterator& /* row */)
 {
+  const auto portal = get_portal();
+  if (!portal)
+  {
+    std::cerr << G_STRFUNC << ": portal is null\n";
+    return;
+  }
+
   //Allow the parent record (Details view) to recalculate aggregations:
-  signal_portal_record_changed().emit(m_portal->get_relationship_name());
+  signal_portal_record_changed().emit(portal->get_relationship_name());
 }
 
 Box_Data_Portal::type_vecConstLayoutFields Box_Data_Portal::get_fields_to_show() const
 {
   const auto document = get_document();
-  if(document && m_portal)
+  const auto portal = get_portal();
+  if(document && portal)
   {
     Document::type_list_const_layout_groups mapGroups;
-    mapGroups.emplace_back(m_portal);
+    mapGroups.emplace_back(portal);
 
-    auto relationship = m_portal->get_relationship();
+    auto relationship = portal->get_relationship();
     if(relationship)
     {
-      auto result = Utils::get_table_fields_to_show_for_sequence(document, m_portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);
+      auto result = Utils::get_table_fields_to_show_for_sequence(document, portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);
 
       //If the relationship does not allow editing, then mark all these fields as non-editable:
       //TODO: Prevent this in some other way:
       /*
-      if(!(m_portal->get_relationship_used_allows_edit()))
+      if(!(portal->get_relationship_used_allows_edit()))
       {
         for(const auto& item : result)
         {
@@ -232,8 +250,11 @@ void Box_Data_Portal::on_dialog_layout_hide()
 
 bool Box_Data_Portal::get_has_suitable_record_to_view_details() const
 {
-  if(!m_portal)
+  const auto portal = get_portal();
+  if (!portal)
+  {
     return false;
+  }
 
   const auto document = get_document();
   if(!document)
@@ -241,7 +262,7 @@ bool Box_Data_Portal::get_has_suitable_record_to_view_details() const
     
   Glib::ustring navigation_table_name;
   std::shared_ptr<const UsesRelationship> navigation_relationship; //Ignored.
-  m_portal->get_suitable_table_to_view_details(navigation_table_name, navigation_relationship, document);
+  portal->get_suitable_table_to_view_details(navigation_table_name, navigation_relationship, document);
 
   return !(navigation_table_name.empty());
 }
@@ -252,7 +273,8 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   table_name = Glib::ustring();
   table_primary_key_value = Gnome::Gda::Value();
 
-  if(!m_portal)
+  const auto portal = get_portal();
+  if(!portal)
     return;
 
   const auto document = get_document();
@@ -261,7 +283,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
     
   Glib::ustring navigation_table_name;
   std::shared_ptr<const UsesRelationship> navigation_relationship;
-  m_portal->get_suitable_table_to_view_details(navigation_table_name, navigation_relationship, document);
+  portal->get_suitable_table_to_view_details(navigation_table_name, navigation_relationship, document);
   
   //if(navigation_relationship && navigation_relationship->get_relationship())
   //  std::cout << "debug: navigation_relationship=" << navigation_relationship->get_relationship()->get_name() << std::endl;
@@ -290,7 +312,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   fieldsToGet.emplace_back(layout_item);
 
   //For instance "invoice_line_id" if this is a portal to an "invoice_lines" table:
-  const auto related_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
+  const auto related_table = portal->get_table_used(Glib::ustring() /* not relevant */);
   auto key_field = get_field_primary_key_for_table(related_table);
   //std::cout << "DEBUG: related table=" << related_table << ", whose primary_key=" << key_field->get_name() << ", with value=" << primary_key_value.to_string() << "getting value for: " << layout_item->get_layout_display_name() << std::endl;
 
@@ -343,8 +365,9 @@ Document::type_list_layout_groups Box_Data_Portal::create_layout_get_layout()
 {
   Document::type_list_layout_groups result;
 
-  if(m_portal)
-    result.emplace_back(m_portal);
+  const auto portal = get_portal();
+  if(portal)
+    result.emplace_back(portal);
 
   return result;
 }
