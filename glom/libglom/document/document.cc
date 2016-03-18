@@ -1317,18 +1317,48 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
 
   for(const auto& layout_item : layout_group->m_list_items)
   {
-    //Check custom Field Formatting:
-    auto layout_withformatting = 
+    fill_layout_field_details_item(parent_table_name, layout_item);
+  }
+}
+
+void Document::fill_layout_field_details_item(const Glib::ustring& parent_table_name,
+                                              const std::shared_ptr<LayoutItem>& layout_item) const
+{
+  //Check custom Field Formatting:
+  auto layout_withformatting =
       std::dynamic_pointer_cast<LayoutItem_WithFormatting>(layout_item);
-    if(layout_withformatting)
+  if(layout_withformatting)
+  {
+    std::shared_ptr<const Relationship> choice_relationship;
+    std::shared_ptr<LayoutItem_Field> choice_layout_first;
+    std::shared_ptr<LayoutGroup> choice_extra_layouts;
+    Formatting::type_list_sort_fields choice_sort_fields;
+    bool choice_show_all = false;
+    layout_withformatting->m_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_sort_fields, choice_show_all);
+
+    const auto table_name = (choice_relationship ? choice_relationship->get_to_table() : Glib::ustring());
+    if(choice_layout_first)
+      choice_layout_first->set_full_field_details( get_field(table_name, choice_layout_first->get_name()) );
+    fill_layout_field_details(parent_table_name, choice_extra_layouts); //recurse
+
+    fill_sort_field_details(table_name, choice_sort_fields);
+  }
+
+  auto layout_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
+  if(layout_field)
+  {
+    const auto field = get_field(layout_field->get_table_used(parent_table_name), layout_field->get_name());
+    layout_field->set_full_field_details(field);
+    if(field)
     {
+      //Check default Field Formatting:
       std::shared_ptr<const Relationship> choice_relationship;
       std::shared_ptr<LayoutItem_Field> choice_layout_first;
       std::shared_ptr<LayoutGroup> choice_extra_layouts;
       Formatting::type_list_sort_fields choice_sort_fields;
       bool choice_show_all = false;
-      layout_withformatting->m_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_sort_fields, choice_show_all);
-      
+      field->m_default_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_sort_fields, choice_show_all);
+
       const auto table_name = (choice_relationship ? choice_relationship->get_to_table() : Glib::ustring());
       if(choice_layout_first)
         choice_layout_first->set_full_field_details( get_field(table_name, choice_layout_first->get_name()) );
@@ -1336,41 +1366,17 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
 
       fill_sort_field_details(table_name, choice_sort_fields);
     }
-
-    auto layout_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
-    if(layout_field)
-    {
-      const auto field = get_field(layout_field->get_table_used(parent_table_name), layout_field->get_name());
-      layout_field->set_full_field_details(field);
-      if(field)
-      {
-        //Check default Field Formatting:
-        std::shared_ptr<const Relationship> choice_relationship;
-        std::shared_ptr<LayoutItem_Field> choice_layout_first;
-        std::shared_ptr<LayoutGroup> choice_extra_layouts;
-        Formatting::type_list_sort_fields choice_sort_fields;
-        bool choice_show_all = false;
-        field->m_default_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_sort_fields, choice_show_all);
-        
-        const auto table_name = (choice_relationship ? choice_relationship->get_to_table() : Glib::ustring());
-        if(choice_layout_first)
-          choice_layout_first->set_full_field_details( get_field(table_name, choice_layout_first->get_name()) );
-        fill_layout_field_details(parent_table_name, choice_extra_layouts); //recurse
-
-        fill_sort_field_details(table_name, choice_sort_fields);
-      }
-    }
+  }
+  else
+  {
+    auto layout_portal_child = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+    if(layout_portal_child)
+      fill_layout_field_details(layout_portal_child->get_table_used(parent_table_name), layout_portal_child); //recurse
     else
     {
-      auto layout_portal_child = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
-      if(layout_portal_child)
-        fill_layout_field_details(layout_portal_child->get_table_used(parent_table_name), layout_portal_child); //recurse
-      else
-      {
-        auto layout_group_child = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
-        if(layout_group_child)
-          fill_layout_field_details(parent_table_name, layout_group_child); //recurse
-      }
+      auto layout_group_child = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+      if(layout_group_child)
+        fill_layout_field_details(parent_table_name, layout_group_child); //recurse
     }
   }
 }

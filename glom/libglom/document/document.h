@@ -276,6 +276,8 @@ public:
   void fill_layout_field_details(const Glib::ustring& parent_table_name, const std::shared_ptr<LayoutGroup>& layout_group) const;
   void fill_layout_field_details(const Glib::ustring& parent_table_name, type_list_layout_groups& groups) const;
 
+  void fill_layout_field_details_item(const Glib::ustring& parent_table_name, const std::shared_ptr<LayoutItem>& layout_item) const;
+
   ///When a field name is changed, change it in the relationships, layouts, reports, and fields data:
   void change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew);
 
