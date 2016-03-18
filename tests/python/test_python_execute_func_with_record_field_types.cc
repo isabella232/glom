@@ -124,7 +124,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   const Gnome::Gda::Value primary_key_value(2);
 
-  const Glom::type_map_fields field_values =
+  const auto field_values =
     Glom::DbUtils::get_record_field_values(document,
       table_name,
       primary_key_field,

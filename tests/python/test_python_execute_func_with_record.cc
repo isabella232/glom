@@ -72,7 +72,7 @@ int main()
   connection_pool->setup_from_document(document);
 
   //This is not really necessary for sqlite-based databases.
-  const Glom::ConnectionPool::StartupErrors started =
+  const auto started =
     connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
   if(started != Glom::ConnectionPool::Backend::StartupErrors::NONE)
   {

@@ -25,7 +25,7 @@
 
 static bool test_string_value(const Glib::ustring& str)
 {
-  const Glom::Field::glom_field_type field_type = Glom::Field::glom_field_type::TEXT;
+  const auto field_type = Glom::Field::glom_field_type::TEXT;
 
   bool success = false;
   const Gnome::Gda::Value value =

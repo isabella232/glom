@@ -207,16 +207,16 @@ int main()
 
 
   //Check a layout:
-  const Glom::Document::type_list_layout_groups groups = 
+  const auto groups = 
     document->get_data_layout_groups("details", "scenes");
   g_assert(groups.size() == 3);
   const auto group =
     groups[1];
-  const Glom::LayoutGroup::type_list_const_items items = 
+  const auto items = 
     group->get_items_recursive();
   //std::cout << "size: " << items.size() << std::endl;
   g_assert(items.size() == 13);
-  const Glom::LayoutGroup::type_list_const_items items_with_groups = 
+  const auto items_with_groups = 
     group->get_items_recursive_with_groups();
   //std::cout << "size: " << items_with_groups.size() << std::endl;
   g_assert(items_with_groups.size() == 15);
@@ -233,7 +233,7 @@ int main()
   field = document->get_field("contacts", "name_title");  
   g_assert(field);
   g_assert(field->get_glom_type() == Glom::Field::glom_field_type::TEXT);
-  const Glom::Formatting& formatting = field->m_default_formatting;
+  const auto& formatting = field->m_default_formatting;
   g_assert(formatting.get_horizontal_alignment() == Glom::Formatting::HorizontalAlignment::AUTO);
   
   g_assert(formatting.get_has_choices());
@@ -346,7 +346,7 @@ int main()
     group_info_accounts.m_map_privileges.find("scenes");
   const bool privileges_found = (iterFind != group_info_accounts.m_map_privileges.end());
   g_assert(privileges_found);
-  const Glom::Privileges privs = iterFind->second;
+  const auto privs = iterFind->second;
   g_assert(privs.m_view == true);
   g_assert(privs.m_edit == true);
   g_assert(privs.m_create == false);

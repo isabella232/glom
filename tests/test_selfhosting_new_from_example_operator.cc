@@ -77,7 +77,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
     //Add an operator user:
     const Glib::ustring operator_group_name = "personnel_department";
-    const Glom::DbUtils::type_vec_strings group_list = 
+    const auto group_list = 
       Glom::Privs::get_database_groups();
     if(!contains(group_list, operator_group_name))
     {
@@ -93,7 +93,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     }
 
     //Check that the developer user has access to database metadata:
-    const Glom::DbUtils::type_vec_strings tables = 
+    const auto tables = 
       Glom::DbUtils::get_table_names_from_database(true /* ignore system tables */);
     if(tables.empty())
     {
@@ -142,7 +142,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
     //std::cout << "field_types count=" << field_types->get_types_count() << std::endl;
 
-    const Glom::DbUtils::type_vec_strings tables = 
+    const auto tables = 
       Glom::DbUtils::get_table_names_from_database(true /* ignore system tables */);
     if(tables.empty())
     {

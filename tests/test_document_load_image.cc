@@ -69,7 +69,7 @@ int main()
   g_assert(document->get_database_title_original() == "Project Manager Example");
 
   //Check a layout:
-  const Glom::Document::type_list_layout_groups groups = 
+  const auto groups = 
     document->get_data_layout_groups("details", "projects");
   g_assert(groups.size() == 3);
   const auto group =
@@ -77,11 +77,11 @@ int main()
   g_assert(group);
   g_assert(group->get_name() == "overview");
 
-  const Glom::LayoutGroup::type_list_const_items items = 
+  const auto items = 
     group->get_items();
   //std::cout << "size: " << items.size() << std::endl;
   g_assert(items.size() == 3);
-  std::shared_ptr<const Glom::LayoutItem> item = items[2];
+  auto item = items[2];
   g_assert(item);
   auto image_item =
     std::dynamic_pointer_cast<const Glom::LayoutItem_Image>(item);

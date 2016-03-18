@@ -497,7 +497,7 @@ int main(int argc, char* argv[])
   }
         
   //Startup. For instance, create the self-hosting files if necessary:
-  const Glom::ConnectionPool::InitErrors initialized_errors =
+  const auto initialized_errors =
     connection_pool->initialize( sigc::ptr_fun(&on_initialize_progress) );
   g_assert(initialized_errors == Glom::ConnectionPool::Backend::InitErrors::NONE);
 

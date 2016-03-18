@@ -57,7 +57,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //TODO: We should store this only in the document anyway,
   //and make it translatable:
   /* TODO: This is not stored in the examples. Should it be?
-  const Glom::SystemPrefs prefs = 
+  const auto prefs = 
     Glom::DbUtils::get_database_preferences(document);
   g_return_val_if_fail(prefs.m_name == "Music Collection", false);
   g_return_val_if_fail(prefs.m_org_name == "SomeOrganization Incorporated", false);

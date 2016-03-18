@@ -220,7 +220,7 @@ bool test_create_and_selfhost_new_empty(const std::shared_ptr<Glom::Document>& d
   connection_pool->set_password(password);
 
   //Create the self-hosting files:
-  const Glom::ConnectionPool::InitErrors initialized_errors =
+  const auto initialized_errors =
     connection_pool->initialize( sigc::ptr_fun(&on_initialize_progress) );
   g_assert(initialized_errors == Glom::ConnectionPool::Backend::InitErrors::NONE);
   

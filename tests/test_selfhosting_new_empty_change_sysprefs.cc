@@ -48,7 +48,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     prefs_in.m_org_address_country = "test country";
     Glom::DbUtils::set_database_preferences(document, prefs_in);
 
-    const Glom::SystemPrefs prefs_out = 
+    const auto prefs_out = 
       Glom::DbUtils::get_database_preferences(document);
     if(prefs_out != prefs_in)
     {
