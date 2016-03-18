@@ -38,7 +38,7 @@ int main()
 
   try
   {
-    const std::string path =
+    const auto path =
        Glib::build_filename(GLOM_DOCDIR_EXAMPLES_NOTINSTALLED,
          "sqlite", "test_sqlite_music", "test_sqlite_music.glom");
     uri = Glib::filename_to_uri(path);

@@ -224,7 +224,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   // from being based on the current environment, because we want the database to be
   // as portable as possible.
   // See http://www.postgresql.org/docs/current/static/app-initdb.html
-  const std::string command_initdb = get_path_to_postgres_executable("initdb") +
+  const auto command_initdb = get_path_to_postgres_executable("initdb") +
     " -D " + Glib::shell_quote(dbdir_data) +
     " -U " + initial_username +
     " --pwfile=" + Glib::shell_quote(temp_pwfile) +

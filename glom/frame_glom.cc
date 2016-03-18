@@ -2264,7 +2264,7 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
   //TODO: Find a way to get a full locale name from the simplified locale name from AppWindow::get_current_locale():
   ReportBuilder report_builder(std::locale("") /* the user's current locale */);
   report_builder.set_document(document);
-  const std::string filepath = 
+  const auto filepath = 
     report_builder.report_build_and_save(found_set, report); //TODO: Use found set's where_clause.
   UiUtils::show_report_in_browser(filepath, get_app_window());
 }

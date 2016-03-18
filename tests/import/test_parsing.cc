@@ -210,7 +210,7 @@ int main()
   // test_import_csv_file
   {
     // filename_to_uri expects absolute filenames
-    const std::string filename =
+    const auto filename =
        Glib::build_filename(GLOM_TESTS_IMPORT_DATA_NOTINSTALLED,
          "albums.csv");
     const auto finished_parsing = ImportTests::run_parser_on_file(&connect_signals, Glib::filename_to_uri(filename));

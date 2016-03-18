@@ -96,7 +96,7 @@ static Glib::ustring get_directory_child_with_suffix(const Glib::ustring& uri_di
     if(file_type == Gio::FILE_TYPE_REGULAR)
     {
       //Check the filename:
-      const std::string basename = child->get_basename();
+      const auto basename = child->get_basename();
       if(Utils::string_remove_suffix(basename, suffix) != basename)
         return child->get_uri();
     }
@@ -194,7 +194,7 @@ Glib::ustring get_temp_file_uri(const std::string& prefix, const std::string& ex
 {
   try
   {
-    const std::string filepath = get_temp_file_path(prefix, extension);
+    const auto filepath = get_temp_file_path(prefix, extension);
     return Glib::filename_to_uri(filepath);
   }
   catch(const Glib::Error& ex)
@@ -208,7 +208,7 @@ std::string get_temp_directory_path(const std::string& prefix)
 {
   std::string result;
 
-  const std::string pattern = Glib::build_filename(
+  const auto pattern = Glib::build_filename(
           Glib::get_tmp_dir(), prefix + "XXXXXX");
 
   //We must copy the pattern, because mkdtemp() modifies it:
@@ -225,7 +225,7 @@ Glib::ustring get_temp_directory_uri(const std::string& prefix)
 {
   try
   {
-    const std::string filepath = get_temp_directory_path(prefix);
+    const auto filepath = get_temp_directory_path(prefix);
     return Glib::filename_to_uri(filepath);
   }
   catch(const Glib::Error& ex)

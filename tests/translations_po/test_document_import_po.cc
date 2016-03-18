@@ -38,7 +38,7 @@ int main()
 
   try
   {
-    const std::string path =
+    const auto path =
        Glib::build_filename(GLOM_DOCDIR_EXAMPLES_NOTINSTALLED,
          "example_film_manager.glom");
     uri = Glib::filename_to_uri(path);
@@ -70,7 +70,7 @@ int main()
   Glib::ustring po_file_uri;
   try
   {
-    const std::string path =
+    const auto path =
       Glib::build_filename(GLOM_TESTS_TRANSLATIONS_PO_DATA_NOTINSTALLED,
         "test.po");
     po_file_uri = Glib::filename_to_uri(path);

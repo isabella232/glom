@@ -2158,7 +2158,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
       //Update the field in the record (the record with this primary key):
       const auto field_value = get_value(row, layout_field);
       //std::cout << "debug: " << G_STRFUNC << ": field_value = " << field_value.to_string() << std::endl;
-      //const std::shared_ptr<const Field>& field = layout_field->m_field;
+      //const auto field = layout_field->m_field;
       //const Glib::ustring strFieldName = layout_field->get_name();
 
       LayoutFieldInRecord field_in_record(layout_field, m_found_set.m_table_name /* parent */, primary_key_field, primary_key_value);

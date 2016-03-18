@@ -75,7 +75,7 @@ Gnome::Gda::Value get_value_for_image_from_file(const std::string& filename)
 Gnome::Gda::Value get_value_for_image()
 {
   //Fill a value from a file:
-  const std::string filename =
+  const auto filename =
     Glib::build_filename(GLOM_TESTS_IMAGE_DATA_NOTINSTALLED, "test_image.jpg");
   return get_value_for_image_from_file(filename);
 }

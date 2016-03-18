@@ -1115,7 +1115,7 @@ bool Base_DB::check_entered_value_for_uniqueness(const Glib::ustring& table_name
 bool Base_DB::check_entered_value_for_uniqueness(const Glib::ustring& table_name, const Gtk::TreeModel::iterator& /* row */,  const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value, Gtk::Window* parent_window)
 {
   //Check whether the value meets uniqueness constraints, if any:
-  const std::shared_ptr<const Field>& field = layout_field->get_full_field_details();
+  const auto field = layout_field->get_full_field_details();
   if(field && (field->get_primary_key() || field->get_unique_key()))
   {
     if(!get_field_value_is_unique(table_name, layout_field, field_value))

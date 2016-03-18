@@ -32,7 +32,7 @@ const std::string IMAGE_FILE_PDF2 = "test_image2.pdf";
 
 auto get_image(const std::string& name)
 {
-  const std::string filename =
+  const auto filename =
     Glib::build_filename(GLOM_TESTS_IMAGE_DATA_NOTINSTALLED, name);
   return get_value_for_image_from_file(filename);
 }

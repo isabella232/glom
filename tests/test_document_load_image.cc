@@ -37,7 +37,7 @@ int main()
 
   try
   {
-    const std::string path =
+    const auto path =
        Glib::build_filename(GLOM_DOCDIR_EXAMPLES_NOTINSTALLED,
    "example_project_manager.glom");
     uri = Glib::filename_to_uri(path);
@@ -72,7 +72,7 @@ int main()
   const Glom::Document::type_list_layout_groups groups = 
     document->get_data_layout_groups("details", "projects");
   g_assert(groups.size() == 3);
-  const std::shared_ptr<const Glom::LayoutGroup> group =
+  const auto group =
     groups[0];
   g_assert(group);
   g_assert(group->get_name() == "overview");

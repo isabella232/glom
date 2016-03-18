@@ -570,7 +570,7 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
 
   if(row == -1)
   {
-    std::shared_ptr<Field> field = m_fields[column_number];
+    const auto field = m_fields[column_number];
     if(field)
       text = field->get_name();
     else
@@ -585,7 +585,7 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
 
     if(column_number < m_fields.size())
     {
-      std::shared_ptr<Field> field = m_fields[column_number];
+      const auto field = m_fields[column_number];
 
       if(row != -1) // && static_cast<unsigned int>(row) < m_parser->get_rows_count())
       {
@@ -648,7 +648,7 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
   {
     if( (elem)[m_field_columns.m_col_field_name] == new_text)
     {
-      std::shared_ptr<Field> field = (elem)[m_field_columns.m_col_field];
+      const std::shared_ptr<Field> field = (elem)[m_field_columns.m_col_field];
       // Check whether another column is already using that field
       auto vec_field_iter = Utils::find(m_fields, field);
       // Reset the old column since two different columns cannot be imported into the same field

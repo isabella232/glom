@@ -102,7 +102,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
       {
         Gnome::Gda::Value value;
 
-        const std::shared_ptr<const Field>& field = layout_item->get_full_field_details();
+        const auto field = layout_item->get_full_field_details();
         if(!field)
           continue;
         

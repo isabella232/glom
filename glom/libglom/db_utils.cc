@@ -2462,7 +2462,7 @@ type_list_values_with_second get_choice_values(const std::shared_ptr<const Docum
     return result;
   }
 
-  const std::string sql_query =
+  const auto sql_query =
           SqlUtils::sqlbuilder_get_full_query(builder);
   //std::cout << "debug: sql_query=" << sql_query << std::endl;
   auto datamodel = connection->get_gda_connection()->statement_execute_select(sql_query);

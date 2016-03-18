@@ -126,7 +126,7 @@ int main()
 
   try
   {
-    const std::string path =
+    const auto path =
        Glib::build_filename(GLOM_DOCDIR_EXAMPLES_NOTINSTALLED,
          "example_film_manager.glom");
     uri = Glib::filename_to_uri(path);
@@ -210,7 +210,7 @@ int main()
   const Glom::Document::type_list_layout_groups groups = 
     document->get_data_layout_groups("details", "scenes");
   g_assert(groups.size() == 3);
-  const std::shared_ptr<const Glom::LayoutGroup> group =
+  const auto group =
     groups[1];
   const Glom::LayoutGroup::type_list_const_items items = 
     group->get_items_recursive();
@@ -267,7 +267,7 @@ int main()
 
 
   //Test print layouts:  
-  const std::vector<Glib::ustring> print_layout_names = 
+  const auto print_layout_names = 
     document->get_print_layout_names("contacts");
   if(print_layout_names.size() != 1)
   {
@@ -301,7 +301,7 @@ int main()
   }
 
 
-  const std::vector<Glib::ustring> report_names = 
+  const auto report_names = 
     document->get_report_names("contacts");
   if(report_names.size() != 2)
   {

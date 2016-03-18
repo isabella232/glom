@@ -93,8 +93,8 @@ Glib::ustring string_replace(const Glib::ustring& src, const Glib::ustring& sear
   std::string result = src;
 
   std::string::size_type pos = 0;
-  const std::string::size_type len_search = search_for.size();
-  const std::string::size_type len_replace = replace_with.size();
+  const auto len_search = search_for.size();
+  const auto len_replace = replace_with.size();
 
   std::string::size_type pos_after_prev = 0;
   while((pos = result.find(search_for, pos_after_prev)) != std::string::npos)

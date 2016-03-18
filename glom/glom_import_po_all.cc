@@ -201,7 +201,7 @@ int main(int argc, char* argv[])
 
     //Check that it has the .po file extension:
     const auto basename = child->get_basename();
-    const std::string locale_id = 
+    const auto locale_id = 
       Glom::Utils::string_remove_suffix(basename, ".po");
     if(locale_id == basename)
       continue;

@@ -381,7 +381,7 @@ int main(int argc, char* argv[])
       Glib::build_filename(
         group.m_arg_filepath_dir_output,
         group.m_arg_filepath_name_output));
-  const std::string filepath =
+  const auto filepath =
     Glib::build_filename(filepath_dir, group.m_arg_filepath_name_output);
 
   //Make sure that the file does not exist yet:
