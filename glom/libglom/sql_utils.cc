@@ -54,8 +54,7 @@ auto find_if_uses_relationship_has_relationship(T_Container& container, const st
 Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Gnome::Gda::SqlExpr& where_clause, const std::shared_ptr<const Relationship>& extra_join, const type_sort_clause& sort_clause, guint limit)
 {
   //TODO_Performance:
-  type_vecConstLayoutFields constFieldsToGet;
-  Utils::copy(fieldsToGet, constFieldsToGet);
+  const auto constFieldsToGet = Utils::const_list(fieldsToGet);
 
   return build_sql_select_with_where_clause(table_name, constFieldsToGet, where_clause, extra_join, sort_clause, limit);
 }
@@ -309,8 +308,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_where_clause(const Gl
 Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const std::shared_ptr<const Field>& key_field, const Gnome::Gda::Value& key_value, const type_sort_clause& sort_clause, guint limit)
 {
   //TODO_Performance:
-  type_vecConstLayoutFields constFieldsToGet;
-  Utils::copy(fieldsToGet, constFieldsToGet);
+  const auto constFieldsToGet = Utils::const_list(fieldsToGet);
 
   return build_sql_select_with_key(table_name, constFieldsToGet, key_field, key_value, sort_clause, limit);
 }

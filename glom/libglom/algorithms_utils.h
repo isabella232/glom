@@ -22,6 +22,9 @@
 #define GLOM_ALGORITHMS_UTILS_H
 
 #include <algorithm>
+#include <vector>
+#include <memory>
+
 
 namespace Glom
 {
@@ -91,6 +94,16 @@ copy(T_container_input input, T_container_output& output)
     std::begin(input), std::end(input),
     std::back_inserter(output));
 }
+
+template<typename T_element>
+decltype(auto)
+const_list(const std::vector<std::shared_ptr<T_element>>& input)
+{
+  std::vector<std::shared_ptr<const T_element>> result; //This should use RVO.
+  Utils::copy(input, result);
+  return result;
+}
+
 
 } //namespace Utils
 

@@ -163,9 +163,7 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items() const
 {
   //Get a const map from the non-const map:
   //TODO_Performance: Surely we should not need to copy the structure just to constize it?
-  type_list_const_items result;
-  Utils::copy(m_list_items, result);
-  return result;
+  return Utils::const_list(m_list_items);
 }
 
 LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive() const
