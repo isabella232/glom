@@ -122,8 +122,7 @@ protected:
   Gtk::Frame m_Frame;
   Gtk::Label m_Label;
 
-  std::shared_ptr<LayoutItem_Portal> m_portal;
-  Glib::ustring m_parent_table; //A duplicate of the from_table in m_portal, but only when m_portal is not null.
+  Glib::ustring m_parent_table; //A duplicate of the from_table in the poral, but only when get_portal() is not null.
   
   // m_key_field and m_key_value are the field and its value in this table that 
   // must match another field in the parent table.

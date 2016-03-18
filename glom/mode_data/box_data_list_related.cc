@@ -343,18 +343,20 @@ void Box_Data_List_Related::on_dialog_layout_hide()
 {
   auto dialog_related = dynamic_cast<Dialog_Layout_List_Related*>(m_pDialogLayout);
   g_assert(dialog_related);
-  m_portal = dialog_related->get_portal_layout();
+
+  const auto portal = dialog_related->get_portal_layout();
+  set_layout_item(portal, "" /* TODO */);
 
 
   //Update the UI:
-  init_db_details(m_portal);
+  init_db_details(portal);
 
   Box_Data::on_dialog_layout_hide();
 
   auto pLayoutItem = std::dynamic_pointer_cast<LayoutItem_Portal>(get_layout_item());
   if(pLayoutItem)
   {
-    *pLayoutItem = *m_portal;
+    *pLayoutItem = *portal;
     signal_layout_changed().emit(); //TODO: Check whether it has really changed.
   }
 }

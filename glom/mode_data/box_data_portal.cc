@@ -94,11 +94,12 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
 
 bool Box_Data_Portal::init_db_details(const std::shared_ptr<const LayoutItem_Portal>& portal, bool show_title)
 {
-  m_portal = glom_sharedptr_clone(portal);
+  auto portal_stored = glom_sharedptr_clone(portal);
+  set_layout_item(portal_stored, "" /* TODO */);
 
   Glib::ustring parent_table;
-  if(m_portal)
-    parent_table = m_portal->get_from_table();
+  if(portal_stored)
+    parent_table = portal_stored->get_from_table();
 
   return init_db_details(parent_table, show_title);
 }
@@ -164,12 +165,12 @@ bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::G
 
 std::shared_ptr<LayoutItem_Portal> Box_Data_Portal::get_portal()
 {
-  return m_portal;
+  return std::dynamic_pointer_cast<LayoutItem_Portal>(get_layout_item());
 }
 
 std::shared_ptr<const LayoutItem_Portal> Box_Data_Portal::get_portal() const
 {
-  return m_portal;
+  return std::dynamic_pointer_cast<const LayoutItem_Portal>(get_layout_item());
 }
 
 std::shared_ptr<const Field> Box_Data_Portal::get_key_field() const

@@ -360,11 +360,11 @@ void Box_Data_Calendar_Related::on_dialog_layout_hide()
 {
   auto dialog_related = dynamic_cast<Dialog_Layout_Calendar_Related*>(m_pDialogLayout);
   g_assert(dialog_related);
-  m_portal = dialog_related->get_portal_layout();
-
+  const auto portal = dialog_related->get_portal_layout();
+  set_layout_item(portal, "" /* TODO */);
 
   //Update the UI:
-  auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(m_portal);
+  auto derived_portal = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(portal);
   init_db_details(derived_portal);
 
   Box_Data::on_dialog_layout_hide();
