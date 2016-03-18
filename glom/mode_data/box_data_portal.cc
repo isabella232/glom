@@ -159,7 +159,12 @@ bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::G
   }
 }
 
-std::shared_ptr<LayoutItem_Portal> Box_Data_Portal::get_portal() const
+std::shared_ptr<LayoutItem_Portal> Box_Data_Portal::get_portal()
+{
+  return m_portal;
+}
+
+std::shared_ptr<const LayoutItem_Portal> Box_Data_Portal::get_portal() const
 {
   return m_portal;
 }

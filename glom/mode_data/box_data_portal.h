@@ -58,7 +58,8 @@ public:
    */
   bool refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value);
 
-  std::shared_ptr<LayoutItem_Portal> get_portal() const;
+  std::shared_ptr<LayoutItem_Portal> get_portal();
+  std::shared_ptr<const LayoutItem_Portal> get_portal() const;
   std::shared_ptr<const Field> get_key_field() const;
 
   sigc::signal<void, Gnome::Gda::Value> signal_record_added;
