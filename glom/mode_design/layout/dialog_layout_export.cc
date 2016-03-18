@@ -107,9 +107,6 @@ void Dialog_Layout_Export::set_layout_groups(Document::type_list_layout_groups& 
     //Set the table name and title:
     m_label_table_name->set_text(table_name);
 
-    if(document)
-      document->fill_layout_field_details(m_table_name, mapGroups); //Update with full field information.
-
     //If we have not layout information, then start with something:
     /*
     if(mapGroups.empty())
@@ -148,7 +145,11 @@ void Dialog_Layout_Export::set_layout_groups(Document::type_list_layout_groups& 
           auto iterTree = m_model_fields->append();
           Gtk::TreeModel::Row row = *iterTree;
 
-          row[m_ColumnsFields.m_col_layout_item] = glom_sharedptr_clone(item);
+          auto layout_item = glom_sharedptr_clone(item);
+          if(document)
+            document->fill_layout_field_details_item(m_table_name, layout_item); //Update with full field information.
+
+          row[m_ColumnsFields.m_col_layout_item] = layout_item;
           row[m_ColumnsFields.m_col_sequence] = field_sequence;
           ++field_sequence;
         }
