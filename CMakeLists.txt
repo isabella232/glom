@@ -95,24 +95,7 @@ add_custom_command(
         COMMAND ${glib_compile_resources_executable} --internal --target=${resource_file_generated_source} --sourcedir=${CMAKE_CURRENT_SOURCE_DIR} --generate-source ${resource_file}
 )
 
-
-set(SOURCE_FILES
-        glom/bakery/appwindow.cc
-        glom/bakery/appwindow.h
-        glom/bakery/appwindow_withdoc.cc
-        glom/bakery/appwindow_withdoc.h
-        glom/bakery/busy_cursor.cc
-        glom/bakery/busy_cursor.h
-        glom/bakery/dialog_offersave.cc
-        glom/bakery/dialog_offersave.h
-        glom/import_csv/csv_parser.cc
-        glom/import_csv/csv_parser.h
-        glom/import_csv/dialog_import_csv.cc
-        glom/import_csv/dialog_import_csv.h
-        glom/import_csv/dialog_import_csv_progress.cc
-        glom/import_csv/dialog_import_csv_progress.h
-        glom/import_csv/file_encodings.cc
-        glom/import_csv/file_encodings.h
+set(LIBGLOM_SOURCE_FILES
         glom/libglom/connectionpool_backends/backend.cc
         glom/libglom/connectionpool_backends/backend.h
         glom/libglom/connectionpool_backends/mysql.cc
@@ -265,7 +248,28 @@ set(SOURCE_FILES
         glom/libglom/xml_utils.cc
         glom/libglom/xml_utils.h
         glom/libglom/xsl_utils.cc
-        glom/libglom/xsl_utils.h
+        glom/libglom/xsl_utils.h)
+
+add_library(libglom-1.32
+        ${LIBGLOM_SOURCE_FILES})
+
+set(GLOM_SOURCE_FILES
+        glom/bakery/appwindow.cc
+        glom/bakery/appwindow.h
+        glom/bakery/appwindow_withdoc.cc
+        glom/bakery/appwindow_withdoc.h
+        glom/bakery/busy_cursor.cc
+        glom/bakery/busy_cursor.h
+        glom/bakery/dialog_offersave.cc
+        glom/bakery/dialog_offersave.h
+        glom/import_csv/csv_parser.cc
+        glom/import_csv/csv_parser.h
+        glom/import_csv/dialog_import_csv.cc
+        glom/import_csv/dialog_import_csv.h
+        glom/import_csv/dialog_import_csv_progress.cc
+        glom/import_csv/dialog_import_csv_progress.h
+        glom/import_csv/file_encodings.cc
+        glom/import_csv/file_encodings.h
         glom/mode_data/datawidget/cellcreation.cc
         glom/mode_data/datawidget/cellcreation.h
         glom/mode_data/datawidget/cellrenderer_buttonimage.cc
@@ -611,18 +615,12 @@ set(SOURCE_FILES
 #glom/python_embed/python_module/py_glom_module.cc
 #glom/python_embed/python_module/py_glom_module.h
 
-# TODO: Utilities:
-#glom/glom_create_from_example.cc
-#glom/glom_export_po.cc
-#glom/glom_export_po_all.cc
-#glom/glom_import_po_all.cc
 
 # TODO: Tests
 #glom/libglom/example_document_load.cc
 #glom/utility_widgets/eggspreadtablemm/test_spreadtablednd.cc
 #glom/test_pyembed.cc
 #glom/test_pyembed_singleline.cc
-#glom/glom_test_connection.cc
 #glom/utility_widgets/test_flowtable.cc
 #glom/utility_widgets/test_flowtable_dnd.cc
 #glom/utility_widgets/canvas/test_canvas_editable.cc
@@ -901,7 +899,9 @@ set(SOURCE_FILES
 #examples/glom-examples.gresource.xml
 #examples/README
 
-add_executable(glom ${SOURCE_FILES})
+add_executable(glom ${GLOM_SOURCE_FILES})
+target_link_libraries(glom libglom-1.32)
+
 
 # By default, cmake builds the executable at the top-level,
 # but our source directory has the same name,
@@ -938,9 +938,13 @@ set(REQUIRED_GLOM_LIBS
         iso-codes)
 
 include(FindPkgConfig)
-pkg_check_modules(DEPS REQUIRED ${REQUIRED_GLOM_LIBS})
-include_directories(${DEPS_INCLUDE_DIRS})
-target_link_libraries(glom ${DEPS_LIBRARIES})
+pkg_check_modules(DEPS_LIBGLOM REQUIRED ${REQUIRED_LIBGLOM_LIBS})
+include_directories(${DEPS_LIBGLOM_INCLUDE_DIRS})
+target_link_libraries(libglom-1.32 ${DEPS_LIBGLOM_LIBRARIES})
+
+pkg_check_modules(DEPS_GLOM REQUIRED ${REQUIRED_GLOM_LIBS})
+include_directories(${DEPS_GLOM_INCLUDE_DIRS})
+target_link_libraries(glom ${DEPS_GLOM_LIBRARIES})
 
 # Note: We have to call target_link_libraries() after add_executable(),
 # which we have to do after listing all the source files.
@@ -949,7 +953,7 @@ target_link_libraries(glom ${DEPS_LIBRARIES})
 # This is awkward with autotools too.
 find_package(PythonLibs 3 REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIR})
-target_link_libraries(glom ${PYTHON_LIBRARY})
+target_link_libraries(libglom-1.32 ${PYTHON_LIBRARY})
 
 
 # Boost::Python has no pkg-config file.
@@ -963,12 +967,12 @@ target_link_libraries(glom ${PYTHON_LIBRARY})
 # PythonLibs.
 find_package(Boost COMPONENTS python-py34)
 include_directories(${Boost_INCLUDE_DIR})
-target_link_libraries(glom ${Boost_PYTHON-PY34_LIBRARY})
+target_link_libraries(libglom-1.32 ${Boost_PYTHON-PY34_LIBRARY})
 
 
 include(CMakeScripts/GlomFindGettextPO.cmake)
 include_directories(${GETTEXTPO_INCLUDE_DIR})
-target_link_libraries(glom ${GETTEXTPO_LIBRARY})
+target_link_libraries(libglom-1.32 ${GETTEXTPO_LIBRARY})
 
 
 # Let the C++ compiler find the #include files for our own source code:
@@ -986,7 +990,9 @@ include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/glom/utility_widgets/gimpruler)
 
 
-link_directories(${DEPS_LIBRARY_DIRS})
+# TODO: Set these per-target: https://cmake.org/Bug/view.php?id=14791
+link_directories(${DEPS_LIBGLOM_LIBRARY_DIRS})
+link_directories(${DEPS_GLOM_LIBRARY_DIRS})
 
 
 # Locate the directory containing the PostgreSQL utilities, such as the
@@ -1035,5 +1041,46 @@ configure_file(
 configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/glom/libglom/cmake-libglom_config.h.in
         ${CMAKE_CURRENT_BINARY_DIR}/glom/libglom/libglom_config.h)
+
+
+# glom_create_from_example:
+add_executable(glom_create_from_example
+        glom/glom_create_from_example.cc)
+target_link_libraries(glom_create_from_example libglom-1.32)
+target_link_libraries(glom_create_from_example ${DEPS_LIBRARIES})
+set_target_properties(glom_create_from_example
+        PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
+
+# glom_test_connection:
+add_executable(glom_test_connection
+        glom/glom_test_connection.cc)
+target_link_libraries(glom_test_connection libglom-1.32)
+target_link_libraries(glom_test_connection ${DEPS_LIBRARIES})
+set_target_properties(glom_test_connection
+        PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
+
+# glom_export_po:
+add_executable(glom_export_po
+        glom/glom_export_po.cc)
+target_link_libraries(glom_export_po libglom-1.32)
+target_link_libraries(glom_export_po ${DEPS_LIBRARIES})
+set_target_properties(glom_export_po
+        PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
+
+# glom_export_po_all:
+add_executable(glom_export_po_all
+        glom/glom_export_po_all.cc)
+target_link_libraries(glom_export_po_all libglom-1.32)
+target_link_libraries(glom_export_po_all ${DEPS_LIBRARIES})
+set_target_properties(glom_export_po_all
+        PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
+
+# glom_import_po_all:
+add_executable(glom_import_po_all
+        glom/glom_import_po_all.cc)
+target_link_libraries(glom_import_po_all libglom-1.32)
+target_link_libraries(glom_import_po_all ${DEPS_LIBRARIES})
+set_target_properties(glom_import_po_all
+        PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
 
