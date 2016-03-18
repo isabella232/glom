@@ -64,7 +64,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 
   const Glib::ustring primary_key_name = fieldPrimaryKey->get_name();
 
-  type_vecConstLayoutFields fieldsToAdd = m_FieldsShown;
+  auto fieldsToAdd = m_FieldsShown;
   if(m_TableFields.empty())
     m_TableFields = DbUtils::get_fields_for_table(document, m_table_name);
 
@@ -490,7 +490,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
   //Get values for lookup fields, if this field triggers those relationships:
   //TODO_performance: There is a LOT of iterating and copying here.
   //const Glib::ustring strFieldName = field_in_record_changed.m_field->get_name();
-  type_vecConstLayoutFields fieldsToGet = get_related_fields(field_in_record_changed.m_field);
+  const auto fieldsToGet = get_related_fields(field_in_record_changed.m_field);
 
   if(!fieldsToGet.empty())
   {

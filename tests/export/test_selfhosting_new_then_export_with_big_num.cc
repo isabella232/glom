@@ -39,7 +39,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   
   Glom::FoundSet found_set; //TODO: Test a where clause.
   found_set.m_table_name = "artists";
-  Glom::Document::type_list_layout_groups layout_groups;
+  Glom::Document::type_list_const_layout_groups layout_groups;
   auto group = std::make_shared<Glom::LayoutGroup>();
   layout_groups.emplace_back(group);
   auto field = std::make_shared<Glom::LayoutItem_Field>();

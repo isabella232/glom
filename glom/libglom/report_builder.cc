@@ -274,7 +274,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
         {
           auto nodeSecondaryFields = nodeGroupBy->add_child_element("secondary_fields");
 
-          type_vecLayoutItems itemsToGet =
+          const auto itemsToGet =
             copy_with_cloned_items(group_by->get_secondary_fields()->m_list_items);
 
           if(!itemsToGet.empty())

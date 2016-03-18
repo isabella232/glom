@@ -762,7 +762,7 @@ Field::type_map_type_names Field::get_usable_type_names()
 {
   init_map();
 
-  type_map_type_names result =  m_map_type_names_ui;
+  auto result =  m_map_type_names_ui;
 
   //Remove INVALID, because it's not something that a user can use for a field type.
   auto iter = result.find(glom_field_type::INVALID);

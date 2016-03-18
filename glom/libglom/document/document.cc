@@ -939,7 +939,7 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
   if(info)
   {
     //Fields:
-    type_vec_fields& vecFields = info->m_fields;
+    auto& vecFields = info->m_fields;
     auto iterFind = find_if_same_name(vecFields, strFieldNameOld);
     if(iterFind != vecFields.end()) //If it was found:
     {
@@ -1082,7 +1082,7 @@ void Document::change_relationship_name(const Glib::ustring& table_name, const G
   const auto doctableinfo = get_table_info(table_name);
   if(doctableinfo)
   {
-    type_vec_relationships relationships = doctableinfo->m_relationships;
+    const auto relationships = doctableinfo->m_relationships;
       
     //Change the relationship name:
     auto iterRelFind = find_if_same_name(relationships, name);
@@ -4399,7 +4399,7 @@ Document::type_list_translatables Document::get_translatable_items()
     }
 
     //The table's relationships:
-    type_vec_relationships relationships = get_relationships(table_name);
+    const auto relationships = get_relationships(table_name);
     translatable_items_append_with_hint(result, relationships, hint);
 
     //The table's report titles:
@@ -4413,7 +4413,7 @@ Document::type_list_translatables Document::get_translatable_items()
       
       //Translatable report items:
       const auto this_hint = hint + ", Parent Report: " + report->get_name();
-      type_list_translatables list_layout_items = get_translatable_report_items(table_name, report_name, this_hint);
+      const auto list_layout_items = get_translatable_report_items(table_name, report_name, this_hint);
       add_to_translatable_list(result, list_layout_items);
     }
 
@@ -4428,12 +4428,12 @@ Document::type_list_translatables Document::get_translatable_items()
       
       //Translatable print layout items:
       const auto this_hint = hint + ", Print Layout: " + print_layout->get_name();
-      type_list_translatables list_layout_items = get_translatable_print_layout_items(table_name, print_layout_name, this_hint);
+      const auto list_layout_items = get_translatable_print_layout_items(table_name, print_layout_name, this_hint);
       add_to_translatable_list(result, list_layout_items);
     }
 
     //The table's translatable layout items:
-    type_list_translatables list_layout_items = get_translatable_layout_items(table_name, hint);
+    const auto list_layout_items = get_translatable_layout_items(table_name, hint);
     add_to_translatable_list(result, list_layout_items);
   } //for
 

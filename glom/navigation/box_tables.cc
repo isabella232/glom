@@ -257,7 +257,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
       //Save the field information directly into the database, because we cannot get all the correct information from the database.
       //Otherwise some information would be forgotten:
 
-      type_vec_fields fields = document->get_table_fields(table_name);
+      const auto fields = document->get_table_fields(table_name);
       document->set_table_fields(table_name, fields);
 
       //TODO: Just let create_table_with_default_fields() update the document, and then reload the row.

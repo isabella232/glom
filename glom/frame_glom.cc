@@ -1305,7 +1305,7 @@ void Frame_Glom::update_table_in_document_from_database()
 
     //Get the fields information from the document.
     //and add to, or update Document's list of fields:
-    type_vec_fields fieldsDocument = pDoc->get_table_fields(m_table_name);
+    auto fieldsDocument = pDoc->get_table_fields(m_table_name);
 
     for(const auto& field_database : fieldsDatabase)
     {

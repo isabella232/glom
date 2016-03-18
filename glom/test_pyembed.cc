@@ -31,8 +31,7 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
 {
   Glib::ustring func_def;
 
-  typedef std::list<Glib::ustring> type_listStrings;
-  type_listStrings listStrings = ustring_tokenize(func_impl, "\n", -1);
+  const auto listStrings = ustring_tokenize(func_impl, "\n", -1);
   for(const auto& item : listStrings)
   {
     func_def += "  " + item + '\n';

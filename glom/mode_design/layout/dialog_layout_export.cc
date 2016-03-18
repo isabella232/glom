@@ -250,7 +250,7 @@ void Dialog_Layout_Export::on_treeview_fields_selection_changed()
 void Dialog_Layout_Export::on_button_add_field()
 {
   //Get the chosen fields:
-  type_list_field_items fields_list = offer_field_list(m_table_name, this);
+  const auto fields_list = offer_field_list(m_table_name, this);
   for(const auto& field : fields_list) 
   {
     if(!field)

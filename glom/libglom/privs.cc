@@ -156,7 +156,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
         if(!value_group.is_null())
           group_list = value_group.get_string();
 
-        type_vec_strings vecUserIds = pg_list_separate(group_list);
+        const auto vecUserIds = pg_list_separate(group_list);
         for(const auto& userId: vecUserIds)
         {
           //TODO_Performance: Can we do this in one SQL SELECT?
@@ -397,7 +397,7 @@ Privs::type_vec_strings Privs::get_groups_of_user(const Glib::ustring& user)
   type_vec_strings result;
 
   //Look at each group:
-  type_vec_strings groups = get_database_groups();
+  const auto groups = get_database_groups();
   for(const auto& group : groups)
   {
     //See whether the user is in this group:
@@ -475,7 +475,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   if(sharedconnection && sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
   {
     //Get the "true" rights for any groups that the user is in:
-    const type_vec_strings groups = get_groups_of_user(current_user);
+    const auto groups = get_groups_of_user(current_user);
     for(const auto& group : groups)
     {
       const auto privs = get_table_privileges(group, table_name);

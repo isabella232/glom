@@ -292,7 +292,7 @@ void Dialog_UsersList::on_button_user_edit()
       //Fill groups:
       dialog->m_combo_group->remove_all();
 
-      type_vec_strings group_list = Privs::get_database_groups();
+      const auto group_list = Privs::get_database_groups();
       for(const auto& group : group_list)
       {
          dialog->m_combo_group->append(group);
@@ -387,7 +387,7 @@ void Dialog_UsersList::set_group(const Glib::ustring& group_name)
   //Fill the list of groups:
   m_combo_group->remove_all();
 
-  type_vec_strings group_list = Privs::get_database_groups();
+  const auto group_list = Privs::get_database_groups();
   for(const auto& group : group_list)
   {
     m_combo_group->append(group);

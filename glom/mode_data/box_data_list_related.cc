@@ -97,7 +97,6 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
   if(show_title)
   {
     Glib::ustring title;
-    const auto portal = get_portal();
     if(portal)
       title = item_get_title(portal);
 

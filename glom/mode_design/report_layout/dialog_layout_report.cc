@@ -723,8 +723,7 @@ Gtk::TreeModel::iterator Dialog_Layout_Report::get_selected_group_parent() const
   if(!treeview)
     return parent;
 
-  Glib::RefPtr<const type_model> model = get_selected_model();
-
+  auto model = get_selected_model();
 
   auto refTreeSelection = treeview->get_selection();
   if(refTreeSelection)

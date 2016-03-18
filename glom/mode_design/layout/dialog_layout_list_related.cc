@@ -491,7 +491,7 @@ void Dialog_Layout_List_Related::on_button_add_field()
   //std::cout << "debug: related relationship=" << glom_get_sharedptr_name(m_portal->get_related_relationship()) << std::endl;
   //std::cout << "debug table used =" << m_portal->get_table_used(m_table_name) << std::endl;
 
-  type_list_field_items fields_list = offer_field_list(m_portal->get_table_used(m_table_name), this);
+  const auto fields_list = offer_field_list(m_portal->get_table_used(m_table_name), this);
   for(const auto& field : fields_list)
   {
     if(!field)

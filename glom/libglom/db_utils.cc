@@ -984,7 +984,7 @@ type_vec_fields get_fields_for_table(const std::shared_ptr<const Document>& docu
     return type_vec_fields(); //This should never happen.
   }
 
-  type_vec_fields result = document->get_table_fields(table_name);
+  const auto result = document->get_table_fields(table_name);
 
   //Look at each field in the database:
   /*
@@ -1042,7 +1042,7 @@ std::shared_ptr<Field> get_fields_for_table_one_field(const std::shared_ptr<cons
   if(field_name.empty() || table_name.empty())
     return result;
 
-  type_vec_fields fields = get_fields_for_table(document, table_name); //TODO_Performance
+  const auto fields = get_fields_for_table(document, table_name); //TODO_Performance
   auto iter = find_if_same_name(fields, field_name);
   if(iter != fields.end()) //TODO: Handle error?
   {
@@ -2194,7 +2194,7 @@ bool add_group(const std::shared_ptr<const Document>& document, const Glib::ustr
   priv.m_view = true;
   priv.m_edit = true;
 
-  const type_vec_strings table_list =
+  const auto table_list =
     get_table_names_from_database(true /* plus system prefs */);
   for(const auto& table : table_list)
   {

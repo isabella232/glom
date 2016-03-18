@@ -1277,7 +1277,7 @@ bool Base_DB::disable_user(const Glib::ustring& user)
   if(user.empty())
     return false;
 
-  type_vec_strings vecGroups = Privs::get_groups_of_user(user);
+  const auto vecGroups = Privs::get_groups_of_user(user);
   for(const auto& group : vecGroups)
   {
     DbUtils::remove_user_from_group(user, group);

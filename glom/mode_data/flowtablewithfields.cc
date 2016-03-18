@@ -717,7 +717,7 @@ void FlowTableWithFields::set_other_field_value(const std::shared_ptr<const Layo
 
 Gnome::Gda::Value FlowTableWithFields::get_field_value(const std::shared_ptr<const LayoutItem_Field>& field) const
 {
-  const type_list_const_widgets list_widgets = get_field(field, true);
+  const auto list_widgets = get_field(field, true);
   for(const auto& list_widget : list_widgets)
   {
     const auto datawidget = dynamic_cast<const DataWidget*>(list_widget);
@@ -803,7 +803,7 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const std::sh
   {
     if(subtable)
     {
-      type_portals sub_list = subtable->get_portals(from_key);
+      const auto sub_list = subtable->get_portals(from_key);
       if(!sub_list.empty())
       {
         //Add to the main result:
@@ -927,7 +927,7 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const std:
   {
     if(subtable)
     {
-      type_list_widgets sub_list = subtable->get_field(layout_item, include_item);
+      const auto sub_list = subtable->get_field(layout_item, include_item);
       if(!sub_list.empty())
       {
         //Add to the main result:

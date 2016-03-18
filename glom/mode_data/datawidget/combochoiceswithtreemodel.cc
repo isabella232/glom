@@ -109,7 +109,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
     type_list_values_with_second::const_iterator iter= list_values.begin();
     if(iter != list_values.end())
     {
-      const type_list_values& second = iter->second;
+      const auto& second = iter->second;
       columns_count += second.size();
     }
   }
@@ -147,7 +147,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
         Conversions::get_text_for_gda_value(layout_choice_first->get_glom_type(), the_pair->first, layout_choice_first->get_formatting_used().m_numeric_format);
       row.set_value(0, text);
 
-      const type_list_values extra_values = the_pair->second;
+      const auto& extra_values = the_pair->second;
       if(layout_choice_extra && !extra_values.empty())
       {
         guint model_index = 1; //0 is for the main field.

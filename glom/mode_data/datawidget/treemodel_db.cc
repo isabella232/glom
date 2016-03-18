@@ -436,14 +436,14 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
       //Glib::Value< DbValue > value_specific;
       //value_specific.init( Glib::Value< DbValue >::value_type() ); //TODO: Is there any way to avoid this step?
 
-      type_datamodel_row_index datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
+      const auto datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
       //g_warning("DbTreeModel::get_value_vfunc(): datamodel_row=%d, get_internal_rows_count=%d", datamodel_row, get_internal_rows_count());
       const unsigned int internal_rows_count = get_internal_rows_count();
       if( datamodel_row < internal_rows_count) //!= m_rows.end())
       {
          //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1.2\n";
 
-        //const typeRow& dataRow = *datamodel_row;
+        //const auto& dataRow = *datamodel_row;
 
         //g_warning("DbTreeModel::get_value_vfunc 1: column=%d, row=%d", column, datamodel_row);
 
@@ -515,7 +515,7 @@ bool DbTreeModel::iter_next_vfunc(const iterator& iter, iterator& iter_next) con
   if( check_treeiter_validity(iter) )
   {
     //Get the current row:
-    type_datamodel_row_index datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
+    auto datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
     //std::cout << "debug: " << G_STRFUNC << ":" << datamodel_row << std::endl;
 
     //Make the iter_next GtkTreeIter represent the next row:
@@ -623,7 +623,7 @@ bool DbTreeModel::iter_parent_vfunc(const iterator& child, iterator& iter) const
 
 Gtk::TreeModel::Path DbTreeModel::get_path_vfunc(const iterator& iter) const
 {
-  type_datamodel_row_index datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
+  const auto datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
 
   //TODO_Performance:
   //Get the number of non-removed items before this iter, because the path index doesn't care about removed internal stuff.
@@ -730,7 +730,7 @@ DbTreeModel::iterator DbTreeModel::append()
   //m_rows.resize(existing_size + 1);
 
   //Get aniterator to the last element:
-  type_datamodel_row_index datamodel_row = get_internal_rows_count();
+  const auto datamodel_row = get_internal_rows_count();
   //std::cerr << G_STRFUNC << ": new row number=" << datamodel_row << std::endl;
   ++m_count_extra_rows; //So that create_iterator() can succeed.
 
@@ -766,7 +766,7 @@ void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::Va
   if(iter_is_valid(row))
   {
     //Get the index from the user_data:
-    type_datamodel_row_index datamodel_row = get_datamodel_row_index_from_tree_row_iter(row);
+    const auto datamodel_row = get_datamodel_row_index_from_tree_row_iter(row);
 
     //TODO: Check column against get_n_columns() too, though it could hurt performance.
 
@@ -806,7 +806,7 @@ DbTreeModel::iterator DbTreeModel::erase(const iterator& iter)
   if(iter_is_valid(iter))
   {
     //Get the index from the user_data:
-    type_datamodel_row_index datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
+    auto datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
 
     //Remove the row.
     Gtk::TreeModel::Path path_deleted = get_path(iter);
@@ -836,7 +836,7 @@ void DbTreeModel::set_key_value(const TreeModel::iterator& iter, const DbValue& 
   //g_warning("DbTreeModel::set_is_placeholder(): val=%d", val);
   if(check_treeiter_validity(iter))
   {
-    type_datamodel_row_index datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
+    const auto datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
     m_map_rows[datamodel_row].m_key = value;
   }
 }
@@ -845,7 +845,7 @@ DbTreeModel::DbValue DbTreeModel::get_key_value(const TreeModel::iterator& iter)
 {
   if(check_treeiter_validity(iter))
   {
-    type_datamodel_row_index datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
+    const auto datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
     auto iterFind = m_map_rows.find(datamodel_row);
     if(iterFind != m_map_rows.end())
       return iterFind->second.m_key;
@@ -865,7 +865,7 @@ bool DbTreeModel::get_is_placeholder(const TreeModel::iterator& iter) const
   //g_warning("DbTreeModel::g et_is_placeholder()");
   if(check_treeiter_validity(iter))
   {
-    type_datamodel_row_index datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
+    const auto datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
     return (datamodel_row == ((type_datamodel_row_index)get_internal_rows_count() -1));
   }
 
@@ -905,7 +905,7 @@ Gtk::TreeModel::iterator DbTreeModel::get_last_row()
   const int rows_count = get_internal_rows_count();
   if(rows_count)
   {
-    type_datamodel_row_index row = rows_count - 1;
+    auto row = rows_count - 1;
     
     if(row > 0) //This should always be true, because there is always a placeholder.
       --row; //Ignore the placeholder.
@@ -934,7 +934,7 @@ Gtk::TreeModel::iterator DbTreeModel::get_placeholder_row()
   const int rows_count = get_internal_rows_count();
   if(rows_count)
   {
-    type_datamodel_row_index row = rows_count - 1;
+    auto row = rows_count - 1;
 
     //Step backwards until we find one that is not removed:
     while((m_map_rows.find(row) != m_map_rows.end()) && m_map_rows[row].m_removed)

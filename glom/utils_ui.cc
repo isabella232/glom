@@ -223,7 +223,7 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::get_pixbuf_for_gda_value(const Gnome::Gda::Va
     if(buffer_binary && buffer_binary_length)
     {
       //typedef std::list<Gdk::PixbufFormat> type_list_formats;
-      //const type_list_formats formats = Gdk::Pixbuf::get_formats();
+      //const auto formats = Gdk::Pixbuf::get_formats();
       //std::cout << "Debug: Supported pixbuf formats:\n";
       //for(const auto& item : formats)
       //{

@@ -521,7 +521,7 @@ void Dialog_Layout_Details::on_button_down()
 
 void Dialog_Layout_Details::on_button_add_field()
 {
-  type_list_field_items fields_list = offer_field_list(m_table_name, this);
+  const auto fields_list = offer_field_list(m_table_name, this);
   for(const auto& layout_item : fields_list)
   {
     if(!layout_item)

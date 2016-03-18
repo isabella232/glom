@@ -75,8 +75,7 @@ void FlowTable::delete_and_forget_hbox(Gtk::Box* hbox)
 {
   //Remove its children because the API hides the fact that they are inside the Box.
   //Otherwise they could even be deleted by the Box.
-  typedef std::vector<Widget*> type_children;
-  type_children children = hbox->get_children();
+  auto children = hbox->get_children();
   while(!children.empty())
   {
     auto widget = children[0];

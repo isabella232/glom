@@ -254,7 +254,7 @@ void Box_Data_Calendar_Related::clear_cached_database_values()
 {
   for(const auto& the_pair : m_map_values)
   {
-    type_list_vectors vec = the_pair.second;
+    const auto& vec = the_pair.second;
     for(const auto& pValues : vec)
     {
       delete pValues;
@@ -330,7 +330,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
 
 Box_Data_Calendar_Related::type_vecConstLayoutFields Box_Data_Calendar_Related::get_fields_to_show() const
 {
-  type_vecConstLayoutFields layout_fields = Box_Data_Portal::get_fields_to_show();
+  auto layout_fields = Box_Data_Portal::get_fields_to_show();
 
   const auto portal = get_portal();
   const auto derived_portal = std::dynamic_pointer_cast<const LayoutItem_CalendarPortal>(portal);
@@ -447,7 +447,7 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
   Glib::ustring result;
 
   //Look at each row for this date:
-  const type_list_vectors& rows = iter_find->second;
+  const auto& rows = iter_find->second;
   for(const auto& pRow : rows)
   {
     if(!pRow)

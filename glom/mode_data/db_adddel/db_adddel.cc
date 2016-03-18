@@ -336,7 +336,7 @@ Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, cons
 
     if(treerow)
     {
-      type_list_indexes list_indexes = get_data_model_column_index(layout_item);
+      const auto list_indexes = get_data_model_column_index(layout_item);
       if(!list_indexes.empty())
       {
         const auto iter_begin = list_indexes.begin(); //Just get the first displayed instance of this field->
@@ -441,7 +441,7 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const std::shar
   {
     //Get the model column:
     guint treemodel_col = 0;
-    type_list_indexes list_indexes = get_column_index(layout_item);
+    const auto list_indexes = get_column_index(layout_item);
     if(list_indexes.empty())
       return false;
     else

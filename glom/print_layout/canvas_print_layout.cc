@@ -900,7 +900,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   const LayoutGroup::type_list_items child_layout_items = portal->get_items();
 
   //Build and run the SQL query for this portal:
-  const type_vecConstLayoutFields fields_shown = get_portal_fields_to_show(portal);
+  const auto fields_shown = get_portal_fields_to_show(portal);
 
   FoundSet found_set;
   found_set.m_table_name = portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);

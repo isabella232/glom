@@ -198,7 +198,7 @@ std::shared_ptr<LayoutItem_Field> Dialog_ChooseField::get_field_chosen() const
 {
   std::shared_ptr<LayoutItem_Field> field;
 
-  type_list_field_items list_fields = get_fields_chosen();
+  const auto list_fields = get_fields_chosen();
   if(!(list_fields.empty()))
   {
     field = *(list_fields.begin()); 

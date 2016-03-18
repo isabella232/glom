@@ -286,7 +286,7 @@ bool Box_Data_Details::fill_from_database()
     bResult = Box_Data::fill_from_database();
 
     m_FieldsShown = get_fields_to_show();
-    type_vecConstLayoutFields fieldsToGet = m_FieldsShown;
+    auto fieldsToGet = m_FieldsShown;
 
     if(!fieldsToGet.empty())
     {
