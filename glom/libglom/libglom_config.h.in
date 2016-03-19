@@ -14,7 +14,4 @@
 /* Define to 1 if you have the `strptime' function. */
 #undef HAVE_STRPTIME
 
-/* Define to the installation prefix of the iso-codes module. */
-#undef ISO_CODES_PREFIX
-
 #endif /* GLOM_LIBGLOM_CONFIG_H */
