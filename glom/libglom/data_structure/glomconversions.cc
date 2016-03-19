@@ -22,7 +22,6 @@
 #include <libglom/libglom_config.h> // For HAVE_STRPTIME
 
 #include <libglom/data_structure/glomconversions.h>
-#include <libglom/connectionpool.h>
 #include <libglom/utils.h>
 #include <libglom/string_utils.h>
 

@@ -26,8 +26,6 @@
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.h>
 #endif
-#include <glibmm/i18n.h>
-//#include <sstream> //For stringstream
 
 namespace Glom
 {

@@ -22,7 +22,6 @@
 #include <libglom/data_structure/field.h>
 #include <libglom/document/document.h>
 #include <giomm/file.h>
-#include <libglom/utils.h>
 #include <giomm/resource.h>
 #include <glibmm/convert.h>
 #include <glibmm/fileutils.h>

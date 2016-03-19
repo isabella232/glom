@@ -22,18 +22,10 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <gtkmm/messagedialog.h>
 #include <glom/mode_data/datawidget/cellcreation.h>
-#include <glom/dialog_invalid_data.h>
 #include <glom/mode_data/datawidget/treemodel_db_withextratext.h>
-#include <libglom/data_structure/glomconversions.h>
-#include <libglom/db_utils.h>
 #include <glom/appwindow.h>
 #include <glom/utils_ui.h>
 #include <gtkmm/cellareabox.h>
-#include <glibmm/i18n.h>
-//#include <sstream> //For stringstream
-
-#include <locale>     // for locale, time_put
-#include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
 
 namespace Glom

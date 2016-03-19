@@ -22,9 +22,6 @@
 #include <gtkmm/messagedialog.h>
 #include <glom/dialog_invalid_data.h>
 #include <glom/appwindow.h>
-#include <glibmm/i18n.h>
-
-#include <iostream>   // for cout, endl
 
 namespace Glom
 {

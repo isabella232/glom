@@ -22,12 +22,9 @@
 #include <libglom/spawn_with_feedback.h>
 #include <glibmm/main.h>
 #include <glibmm/spawn.h>
-#include <glibmm/iochannel.h>
 #include <glibmm/shell.h>
 #include <glibmm/fileutils.h>
 #include <glibmm/miscutils.h>
-#include <glibmm/i18n.h>
-#include <memory> //For shared_ptr.
 #include <stdexcept>
 #include <iostream>
 

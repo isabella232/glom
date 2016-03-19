@@ -22,10 +22,6 @@
 //#include <libglom/python_embed/py_glom_record.h>
 #include <libglom/python_embed/py_glom_relatedrecord.h>
 
-#include <libglom/data_structure/field.h>
-#include <libglom/data_structure/glomconversions.h>
-
-
 namespace Glom
 {
 

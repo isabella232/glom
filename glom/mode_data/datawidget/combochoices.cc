@@ -22,12 +22,6 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/document/document.h>
 #include <libglom/connectionpool.h>
-#include <libglom/utils.h>
-#include <glibmm/i18n.h>
-//#include <sstream> //For stringstream
-
-#include <locale>     // for locale, time_put
-#include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
 
 

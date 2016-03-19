@@ -21,11 +21,6 @@
 #include "dialog_defaultformatting.h"
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h>
-#include <glom/appwindow.h>
-#include "../../box_db_table.h"
-#include <libglom/db_utils.h>
-//#include <libgnome/gnome-i18n.h>
-#include <glibmm/i18n.h>
 
 namespace Glom
 {

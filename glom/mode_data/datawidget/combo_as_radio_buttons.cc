@@ -22,12 +22,8 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <gtkmm/messagedialog.h>
 #include <glom/dialog_invalid_data.h>
-#include <libglom/data_structure/glomconversions.h>
 #include <glom/appwindow.h>
 #include <libglom/db_utils.h>
-#include <glibmm/i18n.h>
-//#include <sstream> //For stringstream
-
 #include <iostream>   // for cout, endl
 
 namespace Glom

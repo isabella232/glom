@@ -18,7 +18,6 @@
  * Boston, MA 02110-1301 USA.
  */
 
-#include <libglom/libglom_config.h>
 #include <libglom/document/document.h>
 #include <libglom/xml_utils.h>
 #include <libglom/algorithms_utils.h>
@@ -50,8 +49,6 @@
 #include <archive_entry.h>
 
 #include <glibmm/i18n.h>
-#include <algorithm> //For std::find_if().
-#include <sstream> //For stringstream
 #include <iostream>
 
 namespace Glom

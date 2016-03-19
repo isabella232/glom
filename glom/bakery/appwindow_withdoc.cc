@@ -21,9 +21,7 @@
 #include <glom/bakery/dialog_offersave.h>
 #include <libglom/algorithms_utils.h>
 #include <libglom/utils.h>
-#include <libglom/algorithms_utils.h>
 #include <giomm/file.h>
-#include <algorithm>
 #include <glibmm/i18n-lib.h>
 
 namespace GlomBakery

@@ -22,7 +22,6 @@
 #include <libglom/utils.h>
 #include <libglom/spawn_with_feedback.h>
 #include <giomm/file.h>
-#include <glib/gstdio.h> // For g_remove
 
 #include <glibmm/convert.h>
 #include <glibmm/fileutils.h>

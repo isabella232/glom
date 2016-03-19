@@ -18,24 +18,15 @@
  * Boston, MA 02110-1301 USA.
  */
 
-#include <libglom/libglom_config.h>
-
 #include <libglom/xsl_utils.h>
 #include <libglom/connectionpool.h>
-#include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
-#include <libglom/data_structure/glomconversions.h>
 #include <libglom/utils.h>
-#include <libxml++/libxml++.h>
 #include <libxslt/transform.h>
 //#include <libexslt/exslt.h> //For exsltRegisterAll().
 #include <giomm/file.h>
 #include <glibmm/miscutils.h>
-
 #include <iostream>
 #include <fstream>
-
-#include <locale>     // for locale, time_put
-#include <iostream>   // for cout, endl
 #include <iomanip>
 
 

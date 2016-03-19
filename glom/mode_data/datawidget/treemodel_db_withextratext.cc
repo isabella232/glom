@@ -20,13 +20,7 @@
 
 #include <iostream>
 #include "treemodel_db_withextratext.h"
-
-#include <libglom/connectionpool.h>
 #include <libglom/data_structure/glomconversions.h> //For util_build_sql
-#include <libglom/utils.h>
-#include <libglom/db_utils.h>
-
-#include "glom/appwindow.h"
 
 namespace Glom
 {

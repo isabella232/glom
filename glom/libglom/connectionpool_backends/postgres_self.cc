@@ -31,9 +31,6 @@
 #include <glibmm/stringutils.h>
 #include <glibmm/main.h>
 #include <glibmm/shell.h>
-#include <glibmm/i18n.h>
-
-#include <sstream> //For stringstream
 #include <iostream>
 #include <regex>
 

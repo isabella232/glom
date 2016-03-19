@@ -26,7 +26,6 @@
 #include <libglom/sql_utils.h>
 #include <libglom/db_utils.h>
 #include <libglom/utils.h>
-#include <glom/frame_glom.h> //For show_ok_dialog()
 #include <glom/glade_utils.h>
 #include <giomm/menu.h>
 #include <glibmm/i18n.h>

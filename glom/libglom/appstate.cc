@@ -18,7 +18,6 @@
  * Boston, MA 02110-1301 USA.
  */
 
-#include <libglom/libglom_config.h>
 #include <libglom/appstate.h>
 
 

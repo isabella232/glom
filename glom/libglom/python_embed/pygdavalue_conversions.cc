@@ -6,7 +6,6 @@
 
 #include <boost/python.hpp>
 
-#include "pygdavalue_conversions.h"
 #include <libgdamm/numeric.h>
 #include <libgda/gda-blob-op.h>
 #include <iostream>

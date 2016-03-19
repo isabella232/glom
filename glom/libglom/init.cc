@@ -25,7 +25,6 @@
 
 #include <glom/libglom/connectionpool.h>
 #include <giomm/init.h>
-#include <libgdamm/connection.h>
 #include <libgdamm/init.h>
 #include <iostream>
 

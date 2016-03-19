@@ -18,15 +18,7 @@
  * Boston, MA 02110-1301 USA.
  */
 
-#include <libglom/libglom_config.h>
-
 #include <libglom/utils.h>
-#include <libglom/privs.h>
-#include <libglom/connectionpool.h>
-#include <libglom/data_structure/glomconversions.h>
-#include <libglom/string_utils.h>
-
-#include <giomm/file.h>
 #include <giomm/resource.h>
 #include <glibmm/convert.h>
 #include <glibmm/fileutils.h>
@@ -34,9 +26,6 @@
 
 #include <iostream>
 #include <fstream>
-
-#include <locale>     // for locale, time_put
-#include <iostream>   // for cout, endl
 #include <iomanip>
 
 #include <stack>

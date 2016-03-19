@@ -25,7 +25,6 @@
 #include <libglom/data_structure/glomconversions.h> //For util_build_sql
 #include <libglom/sql_utils.h>
 #include <libglom/db_utils.h>
-#include <libgdamm/datamodel.h>
 #include <libgdamm/dataaccesswrapper.h>
 #include <libgdamm/datamodelarray.h>
 

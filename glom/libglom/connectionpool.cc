@@ -18,14 +18,10 @@
  * Boston, MA 02110-1301 USA.
  */
 
-#include <libglom/libglom_config.h>
-
 #include <libglom/connectionpool.h>
 #include <libglom/document/document.h>
 #include <libglom/utils.h>
 #include <libglom/db_utils.h>
-//#include <libgdamm/connectionevent.h>
-
 #include <libglom/connectionpool_backends/postgres_central.h>
 #include <libglom/connectionpool_backends/postgres_self.h>
 #include <libglom/connectionpool_backends/sqlite.h>

@@ -30,7 +30,6 @@
 #include <glibmm/fileutils.h> //For Glib::file_test().
 #include <glibmm/miscutils.h>
 #include <glibmm/shell.h>
-#include <glib/gstdio.h> /* For g_rename(). TODO: Wrap this in glibmm? */
 
 #include <iostream>
 

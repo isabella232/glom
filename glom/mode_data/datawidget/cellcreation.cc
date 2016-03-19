@@ -20,15 +20,10 @@
 
 #include <glom/utility_widgets/cellrendererlist.h>
 #include <glom/mode_data/datawidget/cellrenderer_dblist.h>
-#include <glom/mode_data/datawidget/cellrenderer_buttonimage.h>
 #include <glom/mode_data/datawidget/cellrenderer_buttontext.h>
 #include <glom/utils_ui.h>
 #include <glom/appwindow.h>
 #include <gtkmm/cellrenderertext.h>
-#include <libglom/data_structure/layout/layoutitem_field.h>
-#include <libglom/data_structure/layout/layoutitem_image.h>
-#include <libglom/utils.h>
-#include <libglom/db_utils.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <iostream>
 
