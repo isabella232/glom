@@ -48,7 +48,7 @@
 #include <archive.h>
 #include <archive_entry.h>
 
-#include <glibmm/i18n.h>
+#include <glibmm/i18n-lib.h>
 #include <iostream>
 
 namespace Glom

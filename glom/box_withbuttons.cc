@@ -26,7 +26,7 @@
 
 #include <sstream> //For stringstream
 
-#include <glibmm/i18n-lib.h>
+#include <glibmm/i18n.h>
 
 namespace Glom
 {

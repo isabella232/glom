@@ -21,7 +21,7 @@
 #include <libglom/data_structure/layout/layoutitem_image.h>
 #include <libglom/utils.h>
 #include <libglom/file_utils.h>
-#include <glibmm/i18n.h>
+#include <glibmm/i18n-lib.h>
 
 namespace Glom
 {

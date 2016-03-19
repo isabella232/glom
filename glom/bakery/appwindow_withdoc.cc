@@ -22,7 +22,7 @@
 #include <libglom/algorithms_utils.h>
 #include <libglom/utils.h>
 #include <giomm/file.h>
-#include <glibmm/i18n-lib.h>
+#include <glibmm/i18n.h>
 
 namespace GlomBakery
 {

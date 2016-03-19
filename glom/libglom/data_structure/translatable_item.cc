@@ -20,7 +20,7 @@
 
 #include <libglom/data_structure/translatable_item.h>
 #include <libglom/utils.h>
-#include <glibmm/i18n.h>
+#include <glibmm/i18n-lib.h>
 #include <iostream>
 
 namespace Glom

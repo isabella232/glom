@@ -28,7 +28,7 @@
 #include <libglom/xml_utils.h>
 #include <iostream>
 #include <glibmm/miscutils.h>
-#include <glibmm/i18n.h>
+#include <glibmm/i18n-lib.h>
 
 namespace Glom
 {

@@ -20,7 +20,7 @@
 
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/utils.h>
-#include <glibmm/i18n.h>
+#include <glibmm/i18n-lib.h>
 
 namespace Glom
 {

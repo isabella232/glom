@@ -17,9 +17,10 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
+#include <libglom/libglom_config.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
-#include <glibmm/i18n.h>
+#include <glibmm/i18n-lib.h>
 
 namespace Glom
 {

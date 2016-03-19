@@ -34,7 +34,7 @@
 #include <iomanip>
 #include <string.h> // for strlen, memset, strcmp
 
-#include <glibmm/i18n.h>
+#include <glibmm/i18n-lib.h>
 
 namespace Glom
 {

@@ -25,7 +25,7 @@
 #include <libglom/utils.h>
 #include <libglom/string_utils.h>
 #include <libgda/gda-blob-op.h>
-#include <glibmm/i18n.h>
+#include <glibmm/i18n-lib.h>
 
 #include <iostream>
 

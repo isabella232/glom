@@ -22,7 +22,7 @@
 #include <glom/appwindow.h>
 #include <libglom/utils.h>
 #include <glibmm/convert.h> 
-#include <glibmm/i18n-lib.h>
+#include <glibmm/i18n.h>
 
 namespace
 {

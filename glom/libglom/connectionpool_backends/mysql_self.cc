@@ -30,7 +30,7 @@
 #include <glibmm/timer.h>
 #include <glibmm/main.h>
 #include <glibmm/shell.h>
-#include <glibmm/i18n.h>
+#include <glibmm/i18n-lib.h>
 #include <iostream>
 
 #ifdef G_OS_WIN32

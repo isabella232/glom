@@ -27,7 +27,7 @@
 #include <glibmm/convert.h>
 #include <glibmm/fileutils.h>
 #include <glibmm/datetime.h>
-#include <glibmm/i18n.h>
+#include <glibmm/i18n-lib.h>
 
 #include <iostream>
 

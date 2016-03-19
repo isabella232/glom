@@ -21,7 +21,7 @@
 #include <libglom/data_structure/layout/layoutitem_portal.h>
 #include <libglom/document/document.h> //For the utility functions.
 #include <iostream>
-#include <glibmm/i18n.h>
+#include <glibmm/i18n-lib.h>
 
 namespace Glom
 {
