@@ -122,6 +122,12 @@ protected:
   Gtk::Frame m_Frame;
   Gtk::Label m_Label;
 
+public:
+  const Glib::ustring &get_parent() const {
+    return m_parent_table;
+  }
+
+protected:
   Glib::ustring m_parent_table; //A duplicate of the from_table in the poral, but only when get_portal() is not null.
   
   // m_key_field and m_key_value are the field and its value in this table that 
@@ -129,6 +135,7 @@ protected:
   std::shared_ptr<Field> m_key_field;
   Gnome::Gda::Value m_key_value;
 
+private:
   bool m_find_mode;
     
   type_signal_portal_record_changed m_signal_portal_record_changed;
