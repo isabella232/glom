@@ -388,5 +388,15 @@ void Box_Data_Portal::set_find_mode(bool val)
   m_find_mode = val;
 }
 
+Glib::ustring Box_Data_Portal::get_parent_table() const
+{
+  return m_parent_table;
+}
+
+void Box_Data_Portal::set_parent_table(const Glib::ustring& parent_table)
+{
+  m_parent_table = parent_table;
+}
+
 
 } //namespace Glom

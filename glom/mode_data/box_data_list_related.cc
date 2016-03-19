@@ -79,7 +79,7 @@ bool Box_Data_List_Related::init_db_details(const std::shared_ptr<const LayoutIt
 
 bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, bool show_title)
 {
-  m_parent_table = parent_table;
+  set_parent_table(parent_table);
 
   const auto portal = get_portal();
   if(portal)
@@ -381,7 +381,7 @@ void Box_Data_List_Related::prepare_layout_dialog(Dialog_Layout* dialog)
     return;
   }
 
-  related_dialog->init_with_portal(m_layout_name, m_layout_platform, get_document(), portal, m_parent_table);
+  related_dialog->init_with_portal(m_layout_name, m_layout_platform, get_document(), portal, get_parent_table());
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

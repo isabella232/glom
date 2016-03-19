@@ -92,6 +92,9 @@ public:
    */
   virtual void set_find_mode(bool val = true);
 
+  Glib::ustring get_parent_table() const;
+  void set_parent_table(const Glib::ustring& parent_table);
+
 protected:
   type_vecConstLayoutFields get_fields_to_show() const override;
     
@@ -122,16 +125,13 @@ protected:
   Gtk::Frame m_Frame;
   Gtk::Label m_Label;
 
-public:
-  const Glib::ustring &get_parent() const {
-    return m_parent_table;
-  }
-
-protected:
+private:
   Glib::ustring m_parent_table; //A duplicate of the from_table in the poral, but only when get_portal() is not null.
   
   // m_key_field and m_key_value are the field and its value in this table that 
   // must match another field in the parent table.
+
+public:
   std::shared_ptr<Field> m_key_field;
   Gnome::Gda::Value m_key_value;
 

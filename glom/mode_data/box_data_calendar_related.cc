@@ -83,7 +83,7 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
 {
   //std::cout << "debug: " << G_STRFUNC << ": " << parent_table << std::endl;
 
-  m_parent_table = parent_table;
+  set_parent_table(parent_table);
 
   const auto portal = get_portal();
   if(portal)
@@ -401,7 +401,7 @@ void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)
   }
   else
   {
-    related_dialog->init_with_tablename(m_layout_name, m_layout_platform, get_document(), m_parent_table);
+    related_dialog->init_with_tablename(m_layout_name, m_layout_platform, get_document(), get_parent_table());
   }
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
