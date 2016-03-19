@@ -2,10 +2,6 @@
    language is requested. */
 #cmakedefine ENABLE_NLS
 
-/* Define to the file extension of executables on the target.
- * Note: We use define instead of cmakedefine, to let this be an empty string. */
-#define EXEEXT "@EXEEXT@"
-
 /* Define to the gettext package name. */
 #cmakedefine GETTEXT_PACKAGE "@GETTEXT_PACKAGE@"
 
@@ -30,15 +26,9 @@
 /* Define to the location of the msgfmt gettext utility. */
 #cmakedefine GLOM_MSGFMT
 
-/* Define if libgettextpo provides the new po_xerror_handler struct. */
-#cmakedefine HAVE_GETTEXTPO_XERROR
-
 /* Define to the installation prefix of the iso-codes module. */
 /* TODO: Avoid duplication with libglom-config.h */
 #cmakedefine ISO_CODES_PREFIX "@ISO_CODES_PREFIX@"
-
-/* Define to the location of the MySQL utilities. */
-#cmakedefine MYSQL_UTILS_PATH "@MYSQL_UTILS_PATH@"
 
 /* Define to the full name of this package. */
 #cmakedefine PACKAGE_NAME
@@ -54,9 +44,6 @@
 
 /* Define to the version of this package. */
 #cmakedefine PACKAGE_VERSION "@PACKAGE_VERSION@"
-
-/* Define to the location of the PostgreSQL utilities. */
-#cmakedefine POSTGRES_UTILS_PATH "@POSTGRES_UTILS_PATH@"
 
 #define GLOM_LOCALEDIR "@GLOM_LOCALEDIR@"
 

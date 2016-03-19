@@ -16,7 +16,7 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include "config.h"
+#include <libglom/libglom_config.h>
 #include <libglom/document/bakery/document.h>
 #include <libglom/utils.h>
 #include <giomm/file.h>

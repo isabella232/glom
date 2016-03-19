@@ -18,6 +18,7 @@
  * Boston, MA 02110-1301 USA.
  */
 
+#include <libglom/libglom_config.h>
 #include <libglom/document/document.h>
 #include <libglom/xml_utils.h>
 #include <libglom/algorithms_utils.h>
@@ -49,7 +50,6 @@
 #include <archive_entry.h>
 
 #include <glibmm/i18n.h>
-//#include <libglom/libglom_config.h> //To get GLOM_DTD_INSTALL_DIR - dependent on configure prefix.
 #include <algorithm> //For std::find_if().
 #include <sstream> //For stringstream
 #include <iostream>

@@ -14,4 +14,20 @@
 /* Define to 1 if you have the `strptime' function. */
 #cmakedefine HAVE_STRPTIME
 
+/* Define to the gettext package name. */
+#cmakedefine GETTEXT_PACKAGE "@GETTEXT_PACKAGE@"
+
+/* Define if libgettextpo provides the new po_xerror_handler struct. */
+#cmakedefine HAVE_GETTEXTPO_XERROR
+
+/* Define to the location of the MySQL utilities. */
+#cmakedefine MYSQL_UTILS_PATH "@MYSQL_UTILS_PATH@"
+
+/* Define to the location of the PostgreSQL utilities. */
+#cmakedefine POSTGRES_UTILS_PATH "@POSTGRES_UTILS_PATH@"
+
+/* Define to the file extension of executables on the target.
+ * Note: We use define instead of cmakedefine, to let this be an empty string. */
+#define EXEEXT "@EXEEXT@"
+
 #endif /* GLOM_LIBGLOM_CONFIG_H */

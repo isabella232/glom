@@ -18,7 +18,7 @@
  * Boston, MA 02110-1301 USA.
  */
 
-#include "config.h" // For MYSQL_UTILS_PATH
+#include <libglom/libglom_config.h> // For MYSQL_UTILS_PATH
 
 #include <libglom/connectionpool_backends/mysql.h>
 #include <libglom/spawn_with_feedback.h>
@@ -511,7 +511,7 @@ std::string MySQL::get_path_to_mysql_executable(const std::string& program, bool
     path = Glib::shell_quote(path);
   return path;
 #else // G_OS_WIN32
-  // MYSQL_UTILS_PATH is defined in config.h, based on the configure.
+  // MYSQL_UTILS_PATH is defined in libglom_config.h, based on the configure.
   try
   {
     auto path = Glib::build_filename(MYSQL_UTILS_PATH, program + EXEEXT);

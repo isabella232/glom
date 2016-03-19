@@ -22,7 +22,7 @@
 
 // To read the .po files
 #include <gettext-po.h>
-#include "config.h" //For HAVE_GETTEXTPO_XERROR
+#include "libglom/libglom_config.h" //For HAVE_GETTEXTPO_XERROR
 
 #include <glibmm/convert.h>
 #include <glibmm/fileutils.h>

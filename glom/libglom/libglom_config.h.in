@@ -14,4 +14,22 @@
 /* Define to 1 if you have the `strptime' function. */
 #undef HAVE_STRPTIME
 
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
+
+/* Define to the gettext package name. */
+#undef GETTEXT_PACKAGE
+
+/* Define if libgettextpo provides the new po_xerror_handler struct. */
+#undef HAVE_GETTEXTPO_XERROR
+
+/* Define to the location of the MySQL utilities. */
+#undef MYSQL_UTILS_PATH
+
+/* Define to the location of the PostgreSQL utilities. */
+#undef POSTGRES_UTILS_PATH
+
+/* Define to the file extension of executables on the target. */
+#undef EXEEXT
+
 #endif /* GLOM_LIBGLOM_CONFIG_H */
