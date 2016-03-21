@@ -101,6 +101,12 @@ bool Box_Data_Portal::init_db_details(const std::shared_ptr<const LayoutItem_Por
   if(portal_stored)
     parent_table = portal_stored->get_from_table();
 
+  Glib::ustring title;
+  if(show_title && portal_stored) {
+    title = item_get_title(portal_stored);
+  }
+  show_title_in_ui(title);
+
   return init_db_details(parent_table, show_title);
 }
 

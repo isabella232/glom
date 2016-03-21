@@ -94,12 +94,6 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
 
   Base_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
 
-  Glib::ustring title;
-  if(show_title && portal) {
-    title = item_get_title(portal);
-  }
-  show_title_in_ui(title);
-
   if(portal)
   {
     m_key_field = DbUtils::get_fields_for_table_one_field(get_document(),

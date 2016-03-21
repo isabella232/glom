@@ -92,13 +92,6 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
 
   Base_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
 
-  //TODO: This is duplicated in box_data_related_list.cc and box_data_portal.cc. Just use code from the base class?
-  Glib::ustring title;
-  if(show_title && portal) {
-    title = item_get_title(portal);
-  }
-  show_title_in_ui(title);
-
   if(portal)
   {
     auto document = get_document();    
