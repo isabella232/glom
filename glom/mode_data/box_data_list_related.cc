@@ -91,36 +91,14 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
   {
     std::cerr << G_STRFUNC << ": LayoutWidgetBase::m_table_name is null\n";
   }
-  
+
   Base_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
 
-  if(show_title)
-  {
-    Glib::ustring title;
-    if(portal)
-      title = item_get_title(portal);
-
-    m_Label.set_markup(UiUtils::bold_message(title));
-    m_Label.show();
-
-    if(!(m_Frame.get_label_widget()))
-      m_Frame.set_label_widget(m_Label);
-
-    m_AddDel.set_margin_start(Utils::to_utype(UiUtils::DefaultSpacings::LARGE));
-    m_AddDel.set_margin_top(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
-
+  Glib::ustring title;
+  if(show_title && portal) {
+    title = item_get_title(portal);
   }
-  else
-  {
-    m_Label.set_markup(Glib::ustring());
-    m_Label.hide();
-    if(m_Frame.get_label_widget())
-      m_Frame.unset_label(); //Otherwise the allocation is calculated wrong due to GtkFrame bug: https://bugzilla.gnome.org/show_bug.cgi?id=662915
-
-    //The box itself has padding of 6:
-    m_AddDel.set_margin_start(0);
-    m_AddDel.set_margin_top(0);
-  }
+  show_title_in_ui(title);
 
   if(portal)
   {
@@ -146,6 +124,32 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
 
   m_AddDel.set_found_set(found_set);
   return Box_Data_ManyRecords::init_db_details(found_set, "" /* layout_platform */); //Calls create_layout() and fill_from_database().
+}
+
+void Box_Data_List_Related::show_title_in_ui(const Glib::ustring& title)
+{
+  if(!title.empty())
+  {
+    m_Label.set_markup(UiUtils::bold_message(title));
+    m_Label.show();
+
+    if(!(m_Frame.get_label_widget()))
+      m_Frame.set_label_widget(m_Label);
+
+    m_AddDel.set_margin_start(Utils::to_utype(UiUtils::DefaultSpacings::LARGE));
+    m_AddDel.set_margin_top(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
+  }
+  else
+  {
+    m_Label.set_markup(Glib::ustring());
+    m_Label.hide();
+    if(m_Frame.get_label_widget())
+      m_Frame.unset_label(); //Otherwise the allocation is calculated wrong due to GtkFrame bug: https://bugzilla.gnome.org/show_bug.cgi?id=662915
+
+    //The box itself has padding of 6:
+    m_AddDel.set_margin_start(0);
+    m_AddDel.set_margin_top(0);
+  }
 }
 
 bool Box_Data_List_Related::fill_from_database()

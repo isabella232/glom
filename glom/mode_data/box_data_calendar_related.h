@@ -53,8 +53,9 @@ private:
   bool fill_from_database() override;
   type_vecConstLayoutFields get_fields_to_show() const override;
   void create_layout() override;
-    
-    
+  void show_title_in_ui(const Glib::ustring& title) override;
+
+
   //Implementations of pure virtual methods from Base_DB_Table_Data:
   void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) override;
     

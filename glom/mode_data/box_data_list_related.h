@@ -47,6 +47,8 @@ public:
 protected:
   bool fill_from_database() override;
 
+  void show_title_in_ui(const Glib::ustring& title) override;
+
   //Signal handlers:
   void on_adddel_record_changed();
   void on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row);

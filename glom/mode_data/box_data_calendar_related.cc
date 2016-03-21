@@ -93,27 +93,11 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
   Base_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
 
   //TODO: This is duplicated in box_data_related_list.cc and box_data_portal.cc. Just use code from the base class?
-  if(show_title)
-  {
-    Glib::ustring title;
-    if(portal)
-      title = item_get_title(portal);
-
-    m_Label.set_markup(UiUtils::bold_message(title));
-    m_Label.show();
-
-    m_calendar.set_margin_start(Utils::to_utype(UiUtils::DefaultSpacings::LARGE));
-    m_calendar.set_margin_top(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
+  Glib::ustring title;
+  if(show_title && portal) {
+    title = item_get_title(portal);
   }
-  else
-  {
-    m_Label.set_markup(Glib::ustring());
-    m_Label.hide();
-
-    //The box itself has padding of 6.
-    m_calendar.set_margin_start(0);
-    m_calendar.set_margin_top(0);
-  }
+  show_title_in_ui(title);
 
   if(portal)
   {
@@ -131,6 +115,25 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
   return Box_Data::init_db_details(found_set, "" /* layout_platform */); //Calls create_layout() and fill_from_database().
 }
 
+
+void Box_Data_Calendar_Related::show_title_in_ui(const Glib::ustring& title)
+{
+  if (!title.empty()) {
+    m_Label.set_markup(UiUtils::bold_message(title));
+    m_Label.show();
+
+    m_calendar.set_margin_start(Utils::to_utype(UiUtils::DefaultSpacings::LARGE));
+    m_calendar.set_margin_top(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
+  }
+  else {
+    m_Label.set_markup(Glib::ustring());
+    m_Label.hide();
+
+    //The box itself has padding of 6.
+    m_calendar.set_margin_start(0);
+    m_calendar.set_margin_top(0);
+  }
+}
 
 void Box_Data_Calendar_Related::create_layout()
 {

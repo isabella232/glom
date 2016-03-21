@@ -109,10 +109,11 @@ protected:
   void on_dialog_layout_hide() override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-protected:
   virtual Document::type_list_layout_groups create_layout_get_layout();
 
   void make_record_related(const Gnome::Gda::Value& related_record_primary_key_value);
+
+  virtual void show_title_in_ui(const Glib::ustring& title) = 0;
 
   /** Get the title of the relationship used by the portal.
    */
