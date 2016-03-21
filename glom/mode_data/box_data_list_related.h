@@ -33,14 +33,9 @@ class Box_Data_List_Related : public Box_Data_Portal
 public:
   Box_Data_List_Related();
 
-  /**
-   * @param portal: The full portal details
-   */
-  bool init_db_details(const std::shared_ptr<const LayoutItem_Portal>& portal, bool show_title = true) override;
-
   /** Use this if no portal is yet defined, so the user can use the context menu to define a portal.
    */
-  bool init_db_details(const Glib::ustring& parent_table) override;
+  bool init_db_details_without_portal(const Glib::ustring &parent_table) override;
 
   void set_find_mode(bool val = true) override;
 

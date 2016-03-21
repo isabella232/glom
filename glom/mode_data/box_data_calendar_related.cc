@@ -72,13 +72,7 @@ void Box_Data_Calendar_Related::enable_buttons()
   //m_calendar.set_allow_view_details(view_details_possible); //Don't allow the user to go to a record in a hidden table.
 }
 
-bool Box_Data_Calendar_Related::init_db_details(const std::shared_ptr<const LayoutItem_Portal>& portal, bool show_title)
-{
-  //This calls the other method overload:
-  return Box_Data_Portal::init_db_details(portal, show_title);
-}
-
-bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_table)
+bool Box_Data_Calendar_Related::init_db_details_without_portal(const Glib::ustring &parent_table)
 {
   //std::cout << "debug: " << G_STRFUNC << ": " << parent_table << std::endl;
 

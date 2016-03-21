@@ -107,7 +107,7 @@ bool Box_Data_Portal::init_db_details(const std::shared_ptr<const LayoutItem_Por
   }
   show_title_in_ui(title);
 
-  return init_db_details(parent_table);
+  return init_db_details_without_portal(parent_table);
 }
 
 Glib::ustring Box_Data_Portal::get_title(const Glib::ustring& locale) const
