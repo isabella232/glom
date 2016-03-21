@@ -40,7 +40,7 @@ public:
 
   /** Use this if no portal is yet defined, so the user can use the context menu to define a portal.
    */
-  bool init_db_details(const Glib::ustring& parent_table, bool show_title = true) override;
+  bool init_db_details(const Glib::ustring& parent_table) override;
 
   void set_find_mode(bool val = true) override;
 

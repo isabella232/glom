@@ -50,7 +50,7 @@ public:
 
   /** Use this if no portal is yet defined, so the user can use the context menu to define a portal.
    */
-  virtual bool init_db_details(const Glib::ustring& parent_table, bool show_title = true) = 0;
+  virtual bool init_db_details(const Glib::ustring& parent_table) = 0;
 
   /** Update a portal if a relevant value in its parent table has changed.
    *

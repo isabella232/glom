@@ -268,7 +268,7 @@ Box_Data_List_Related* FlowTableWithFields::create_related(const std::shared_ptr
     if(portal && portal->get_has_relationship_name())
       portal_box->init_db_details(portal, show_title);
     else
-      portal_box->init_db_details(m_table_name, show_title);
+      portal_box->init_db_details(m_table_name);
 
     Glib::ustring to_table;
     auto relationship = document->get_relationship(m_table_name, portal->get_relationship_name());
@@ -308,7 +308,7 @@ Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const st
     if(portal && portal->get_has_relationship_name())
       portal_box->init_db_details(portal, show_title);
     else
-      portal_box->init_db_details(m_table_name, show_title);
+      portal_box->init_db_details(m_table_name);
 
     Glib::ustring to_table;
     auto relationship = document->get_relationship(m_table_name, portal->get_relationship_name());

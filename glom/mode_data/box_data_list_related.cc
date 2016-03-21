@@ -77,7 +77,7 @@ bool Box_Data_List_Related::init_db_details(const std::shared_ptr<const LayoutIt
   return Box_Data_Portal::init_db_details(portal, show_title);
 }
 
-bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, bool show_title)
+bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table)
 {
   set_parent_table(parent_table);
 

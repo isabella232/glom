@@ -78,7 +78,7 @@ bool Box_Data_Calendar_Related::init_db_details(const std::shared_ptr<const Layo
   return Box_Data_Portal::init_db_details(portal, show_title);
 }
 
-bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_table, bool show_title)
+bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_table)
 {
   //std::cout << "debug: " << G_STRFUNC << ": " << parent_table << std::endl;
 
