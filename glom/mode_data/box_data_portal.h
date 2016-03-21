@@ -46,11 +46,12 @@ public:
   /**
    * @param portal: The full portal details
    */
-  bool init_db_details(const std::shared_ptr<const LayoutItem_Portal>& portal, bool show_title = true);
+  virtual bool init_db_details(const std::shared_ptr<const LayoutItem_Portal>& portal, bool show_title = true);
 
+  //TODO: Remove this? It might only be called when portal is unexectedly null.
   /** Use this if no portal is yet defined, so the user can use the context menu to define a portal.
    */
-  virtual bool init_db_details_without_portal(const Glib::ustring& parent_table) = 0;
+  virtual bool init_db_details_without_portal(const Glib::ustring& parent_table);
 
   /** Update a portal if a relevant value in its parent table has changed.
    *

@@ -21,6 +21,7 @@
 #include <glom/mode_data/box_data_portal.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
+#include <libglom/privs.h>
 #include <libglom/sql_utils.h>
 #include <libglom/utils.h>
 #include <libglom/layout_utils.h>
@@ -97,9 +98,12 @@ bool Box_Data_Portal::init_db_details(const std::shared_ptr<const LayoutItem_Por
   auto portal_stored = glom_sharedptr_clone(portal);
   set_layout_item(portal_stored, "" /* TODO */);
 
-  Glib::ustring parent_table;
-  if(portal_stored)
-    parent_table = portal_stored->get_from_table();
+  const auto table_name = portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
+  LayoutWidgetBase::m_table_name = table_name;
+  Base_DB_Table::m_table_name = table_name;
+
+  m_key_field = DbUtils::get_fields_for_table_one_field(get_document(),
+    table_name, portal->get_to_field_used());
 
   Glib::ustring title;
   if(show_title && portal_stored) {
@@ -107,7 +111,24 @@ bool Box_Data_Portal::init_db_details(const std::shared_ptr<const LayoutItem_Por
   }
   show_title_in_ui(title);
 
-  return init_db_details_without_portal(parent_table);
+  //TODO: Use m_found_set?
+  FoundSet found_set;
+  found_set.m_table_name = table_name;
+  return Box_Data_ManyRecords::init_db_details(found_set, "" /* layout_platform */); //Calls create_layout() and fill_from_database().
+}
+
+bool Box_Data_Portal::init_db_details_without_portal(const Glib::ustring& parent_table)
+{
+  set_layout_item(std::shared_ptr<LayoutItem_Portal>(), "" /* TODO */);
+  set_parent_table(parent_table);
+
+  LayoutWidgetBase::m_table_name = Glib::ustring();
+  Base_DB_Table::m_table_name = Glib::ustring();
+  m_key_field.reset();
+
+  //TODO: Use m_found_set?
+  FoundSet found_set;
+  return Box_Data_ManyRecords::init_db_details(found_set, "" /* layout_platform */); //Calls create_layout() and fill_from_database().
 }
 
 Glib::ustring Box_Data_Portal::get_title(const Glib::ustring& locale) const

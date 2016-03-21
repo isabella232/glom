@@ -71,47 +71,39 @@ void Box_Data_List_Related::enable_buttons()
   m_AddDel.set_allow_view_details(view_details_possible);
 }
 
-bool Box_Data_List_Related::init_db_details_without_portal(const Glib::ustring &parent_table)
+bool Box_Data_List_Related::init_db_details(const std::shared_ptr<const LayoutItem_Portal>& portal, bool show_title = true)
 {
-  set_parent_table(parent_table);
-
-  const auto portal = get_portal();
-  if(portal)
-    LayoutWidgetBase::m_table_name = portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
-  else
-    LayoutWidgetBase::m_table_name = Glib::ustring();
-
-  if(LayoutWidgetBase::m_table_name.empty())
-  {
-    std::cerr << G_STRFUNC << ": LayoutWidgetBase::m_table_name is null\n";
-  }
-
-  Base_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
-
-  if(portal)
-  {
-    m_key_field = DbUtils::get_fields_for_table_one_field(get_document(),
-      LayoutWidgetBase::m_table_name, portal->get_to_field_used());
-  }
-  else
-    m_key_field.reset();
-
-
   //Prevent impossible multiple related records:
   const bool single_related = (m_key_field && (m_key_field->get_unique_key() || m_key_field->get_primary_key()));
   m_AddDel.set_allow_only_one_related_record(single_related);
 
-  enable_buttons();
+  const auto table_name = portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
+  const auto table_privs = Privs::get_current_privs(table_name);
+  m_AddDel.set_allow_view(table_privs.m_view);
 
   //TODO: Use m_found_set?
   FoundSet found_set;
-  found_set.m_table_name = LayoutWidgetBase::m_table_name;
-
-  const auto table_privs = Privs::get_current_privs(found_set.m_table_name);
-  m_AddDel.set_allow_view(table_privs.m_view);
-
+  found_set.m_table_name = table_name;
   m_AddDel.set_found_set(found_set);
-  return Box_Data_ManyRecords::init_db_details(found_set, "" /* layout_platform */); //Calls create_layout() and fill_from_database().
+
+  const auto result = Box_Data_Portal::init_db_details(portal, show_title);
+  enable_buttons();
+  return result;
+}
+
+bool Box_Data_List_Related::init_db_details_without_portal(const Glib::ustring& parent_table)
+{
+  //Prevent impossible multiple related records:
+  m_AddDel.set_allow_only_one_related_record(false);
+  m_AddDel.set_allow_view(false);
+
+  //TODO: Use m_found_set?
+  FoundSet found_set;
+  m_AddDel.set_found_set(found_set);
+
+  enable_buttons();
+
+  return Box_Data_Portal::init_db_details_without_portal(parent_table);
 }
 
 void Box_Data_List_Related::show_title_in_ui(const Glib::ustring& title)

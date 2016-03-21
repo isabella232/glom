@@ -72,37 +72,6 @@ void Box_Data_Calendar_Related::enable_buttons()
   //m_calendar.set_allow_view_details(view_details_possible); //Don't allow the user to go to a record in a hidden table.
 }
 
-bool Box_Data_Calendar_Related::init_db_details_without_portal(const Glib::ustring &parent_table)
-{
-  //std::cout << "debug: " << G_STRFUNC << ": " << parent_table << std::endl;
-
-  set_parent_table(parent_table);
-
-  const auto portal = get_portal();
-  if(portal)
-    LayoutWidgetBase::m_table_name = portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
-  else
-    LayoutWidgetBase::m_table_name = Glib::ustring();
-
-  Base_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
-
-  if(portal)
-  {
-    auto document = get_document();    
-    m_key_field = DbUtils::get_fields_for_table_one_field(document,
-      LayoutWidgetBase::m_table_name, portal->get_to_field_used());
-  }
-  else
-    m_key_field.reset();
-
-  enable_buttons();
-
-  FoundSet found_set;
-  found_set.m_table_name = LayoutWidgetBase::m_table_name;
-  return Box_Data::init_db_details(found_set, "" /* layout_platform */); //Calls create_layout() and fill_from_database().
-}
-
-
 void Box_Data_Calendar_Related::show_title_in_ui(const Glib::ustring& title)
 {
   if (!title.empty()) {
