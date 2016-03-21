@@ -1,0 +1,216 @@
+# Occitan translation for video-subtitles.
+# Copyright (C) 2014 video-subtitles's COPYRIGHT HOLDER
+# This file is distributed under the same license as the video-subtitles package.
+# Cédric Valmary (totenoc.eu) <cvalmary@yahoo.fr>, 2016.
+#. extracted from ../documentation-video.srt
+msgid ""
+msgstr ""
+"Project-Id-Version: video-subtitles master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-09-22 14:18+0000\n"
+"PO-Revision-Date: 2016-03-21 18:53+0200\n"
+"Last-Translator: Cédric Valmary (totenoc.eu) <cvalmary@yahoo.fr>\n"
+"Language-Team: Tot En Òc\n"
+"Language: oc\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+
+#. visible for 2 seconds
+#: 00:00:02.500-->00:00:04.500
+msgid "GNOME Delivers a full desktop experience"
+msgstr "GNOME prepausa una experiéncia de burèu completa"
+
+#. visible for 1 seconds
+#: 00:00:06.800-->00:00:08.000
+msgid "Part of this means making it easy for users.."
+msgstr "Aquò significa en partida facilitar son utilizacion per l'utilizaire.."
+
+#. visible for 1 seconds
+#: 00:00:08.200-->00:00:10.000
+msgid "..to explore new features and workflows."
+msgstr "..per explorar de novèls concèptes e metòdes de trabalh."
+
+#. visible for 3 seconds
+#: 00:00:11.800-->00:00:14.800
+msgid "This is where GNOME Help comes into the picture."
+msgstr "Es aquí que l'ajuda de GNOME entre en scèna."
+
+#. visible for 1 seconds
+#: 00:00:16.000-->00:00:17.900
+msgid "Need to know the keyboard shortcuts of gedit?"
+msgstr "Besonh de conéisser los acorchis de clavièr de gedit ?"
+
+#. visible for 3 seconds
+#: 00:00:19.000-->00:00:22.300
+msgid "GNOME Help lets you explore them easily through its interface."
+msgstr ""
+"L'Ajuda de GNOME vos permet de los descobrir aisidament a travèrs son "
+"interfàcia."
+
+#. visible for 1 seconds
+#: 00:00:22.800-->00:00:24.600
+msgid "Want to know what documents have to offer?"
+msgstr "Enveja de saber çò que Documents a a ofrir ?"
+
+#. visible for 2 seconds
+#: 00:00:25.000-->00:00:27.700
+msgid "Press F1 and you can get an overview of.."
+msgstr "Quichatz sus F1 e n'auretz una vista d’ensemble de las.."
+
+#. visible for 1 seconds
+#: 00:00:27.700-->00:00:29.200
+msgid "..Documents' features at a glance."
+msgstr "..possibilitats de Documents."
+
+#. visible for 2 seconds
+#: 00:00:30.200-->00:00:32.200
+msgid "GNOME Help is your offline assistent.."
+msgstr "L'Ajuda de GNOME es vòstre assistent autonòm.."
+
+#. visible for 2 seconds
+#: 00:00:32.300-->00:00:35.200
+msgid "..ready to lend a hand with any application adventure you may take."
+msgstr ""
+"..prèst a vos donar un còp de poce dins tota mena d'exploracion d'aplicacion "
+"que poiriatz temptar."
+
+#. visible for 1 seconds
+#: 00:00:36.300-->00:00:38.200
+msgid "The documentation is there to help you speed up.."
+msgstr "La documentacion es aquí per vos ajudar a anar pus viste.."
+
+#. visible for 1 seconds
+#: 00:00:39.100-->00:00:40.700
+msgid "..and get work done."
+msgstr "..per completar vòstre prètzfach."
+
+#. visible for 2 seconds
+#: 00:00:41.600-->00:00:44.200
+msgid "Similarly, the GNOME project aims to provide good documentation.."
+msgstr "Amai, lo projècte GNOME visa a prepausar un bona documentacion.."
+
+#. visible for 2 seconds
+#: 00:00:44.200-->00:00:46.700
+msgid "..for developers and administrators."
+msgstr "..pels desvolopaires e administrators."
+
+#. visible for 3 seconds
+#: 00:00:47.000-->00:00:50.100
+msgid "For developers, help is provided through Devhelp.."
+msgstr "Pels desvolopaires, l'ajuda es prepausada a travèrs Devhelp.."
+
+# Traduccion incertaine per "GNOME Developer Center"
+#. visible for 2 seconds
+#: 00:00:50.100-->00:00:52.600
+msgid "..and online at the GNOME Developer Center."
+msgstr "..e en linha sul Centre de desvolopament GNOME."
+
+#. visible for 2 seconds
+#: 00:00:53.000-->00:00:55.900
+msgid "Combined you have a library of knowledge and tools.."
+msgstr ""
+"La combinason dels dos vos dona una bibliotèca de coneissenças e d'aisinas.."
+
+#. visible for 2 seconds
+#: 00:00:55.900-->00:00:57.900
+msgid "..to get you up to date with the latest happenings.."
+msgstr "..per demorar al corrent dels darrièrs eveniments.."
+
+#. visible for 2 seconds
+#: 00:00:57.900-->00:01:00.000
+msgid "..in everything from glib to gnome-shell.."
+msgstr "..per tot çò que va de glib a gnome-shell.."
+
+#. visible for 3 seconds
+#: 00:01:00.000-->00:01:03.000
+msgid "..in terms of source code, API and plug-in development."
+msgstr "..en tèrme de còde font, API e desvolopament d'empeutons."
+
+#. visible for 2 seconds
+#: 00:01:05.000-->00:01:07.200
+msgid "For system administrators and tinkerers.."
+msgstr "Pels administrators e bricolejaires.."
+
+#. visible for 2 seconds
+#: 00:01:07.200-->00:01:10.000
+msgid "..we provide the System Administration Guide online.."
+msgstr "..prepausam un Guida d’administracion sistèma en linha.."
+
+#. visible for 2 seconds
+#: 00:01:10.000-->00:01:12.000
+msgid "at help.gnome.org."
+msgstr "sus help.gnome.org."
+
+#. visible for 1 seconds
+#: 00:01:13.400-->00:01:14.800
+msgid "This guide aims at addressing your needs.."
+msgstr "Aqueste guida visa a respondre a vòstres besonhs.."
+
+#. visible for 3 seconds
+#: 00:01:14.800-->00:01:18.000
+msgid ""
+"..whether it be managing the configuration of several computers from one "
+"place.."
+msgstr ""
+"..que siá per administrar la configuracion de mantun ordenador dempuèi un "
+"unic endrech.."
+
+#. visible for 3 seconds
+#: 00:01:18.000-->00:01:21.200
+msgid "..or playing with the logo on the login screen."
+msgstr "..o jogar amb lo lògo de l'ecran d'autentificacion."
+
+#. visible for 4 seconds
+#: 00:01:22.100-->00:01:26.200
+msgid "Together, Help, Developer Center and the Sysadmin Guide.."
+msgstr ""
+"Ensemble, l'Ajuda, lo Centre de desvolopament e lo Guida de l'administrator "
+"sistèma.."
+
+#. visible for 1 seconds
+#: 00:01:26.100-->00:01:27.500
+msgid "..makes up GNOMEs documentation."
+msgstr "..constituisson la documentacion GNOME."
+
+#. visible for 4 seconds
+#: 00:01:27.500-->00:01:31.500
+msgid "Of course, we are always looking to make the documentation better."
+msgstr "Solide, ensajam totjorn de melhorar la documentacion."
+
+#. visible for 1 seconds
+#: 00:01:32.500-->00:01:33.500
+msgid "Got an idea, found a typo.."
+msgstr "Avètz una idèa, trobat un problèma.."
+
+#. visible for 1 seconds
+#: 00:01:33.500-->00:01:35.000
+msgid "..or just want to find a way to help?"
+msgstr "..o volètz juste saber cossí ajudar ?"
+
+#. visible for 2 seconds
+#: 00:01:36.000-->00:01:38.500
+msgid "File a bug at bugzilla.gnome.org.."
+msgstr "Dobrissètz un rapòrt de bug sus bugzilla.gnome.org.."
+
+#. visible for 2 seconds
+#: 00:01:38.500-->00:01:40.500
+msgid "..against \"gnome-user-docs\"."
+msgstr "..a prepaus de « gnome-user-docs »."
+
+#. visible for 2 seconds
+#: 00:01:42.000-->00:01:44.500
+msgid "Or come hangout at in the #docs channel.."
+msgstr "O venètz nos rejónher sul canal #docs.."
+
+#. visible for 2 seconds
+#: 00:01:44.500-->00:01:46.800
+msgid "..at irc.gnome.org"
+msgstr "..sus irc.gnome.org"
+
+#. visible for 3 seconds
+#: 00:01:48.500-->00:01:51.800
+msgid "This is Karen Sandler, thank you for using GNOME."
+msgstr "Soi Karen Sandler, mercé a vos d'utilizar GNOME."
