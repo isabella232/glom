@@ -49,38 +49,48 @@ void export_data_to_vector(const std::shared_ptr<Document>& document, Document::
   //TODO: Lock the database (prevent changes) during export.
   auto result = DbUtils::query_execute_select(query);
 
-  guint rows_count = 0;
+  int rows_count = 0;
   if(result)
     rows_count = result->get_n_rows();
 
-  if(rows_count)
+  //-1 means unknown number of rows.
+  //Let's treat that as 0 rows.
+  if(rows_count <= 0)
   {
-    const guint columns_count = result->get_n_columns();
+    std::cerr << G_STRFUNC << ": rows_count: " << rows_count << std::endl;
+    return;
+  }
 
-    for(guint row_index = 0; row_index < rows_count; ++row_index)
-    {
-        Document::type_row_data row_data;
+  const int columns_count = result->get_n_columns();
+  if(columns_count <= 0)
+  {
+    std::cerr << G_STRFUNC << ": columns_count: " << columns_count << std::endl;
+    return;
+  }
 
-        for(guint col_index = 0; col_index < columns_count; ++col_index)
-        {
-          const auto value = result->get_value_at(col_index, row_index);
+  for(int row_index = 0; row_index < rows_count; ++row_index)
+  {
+      Document::type_row_data row_data;
 
-          auto layout_item = fieldsSequence[col_index];
-          //if(layout_item->m_field.get_glom_type() != Field::glom_field_type::IMAGE) //This is too much data.
+      for(int col_index = 0; col_index < columns_count; ++col_index)
+      {
+        const auto value = result->get_value_at(col_index, row_index);
+
+        auto layout_item = fieldsSequence[col_index];
+        //if(layout_item->m_field.get_glom_type() != Field::glom_field_type::IMAGE) //This is too much data.
+        //{
+
+          //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
+          row_data.emplace_back(value);  //TODO_Performance: reserve the size.
+
+          //if(layout_item->m_field.get_glom_type() == Field::glom_field_type::IMAGE) //This is too much data.
           //{
+           //std::cout << "  field name=" << layout_item->get_name() << ", value=" << layout_item->m_field.sql(value) << std::endl;
+          //}
+      }
 
-            //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
-            row_data.emplace_back(value);  //TODO_Performance: reserve the size.
-
-            //if(layout_item->m_field.get_glom_type() == Field::glom_field_type::IMAGE) //This is too much data.
-            //{
-             //std::cout << "  field name=" << layout_item->get_name() << ", value=" << layout_item->m_field.sql(value) << std::endl;
-            //}
-        }
-
-        //std::cout << " row_string=" << row_string << std::endl;
-        the_vector.emplace_back(row_data); //TODO_Performance: Reserve the size.
-    }
+      //std::cout << " row_string=" << row_string << std::endl;
+      the_vector.emplace_back(row_data); //TODO_Performance: Reserve the size.
   }
 }
 
