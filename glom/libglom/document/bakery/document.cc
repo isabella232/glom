@@ -235,7 +235,6 @@ bool Document::read_from_disk(int& failure_code)
 
   // Read data from the input uri:
   guint buffer[BYTES_TO_PROCESS] = {0, }; // For each chunk.
-  gsize bytes_read = 0;
   std::string data; //We use a std::string because we might not get whole UTF8 characters at a time. This might not be necessary.
 
   try
@@ -243,13 +242,14 @@ bool Document::read_from_disk(int& failure_code)
     bool bContinue = true;
     while(bContinue)
     {
-      bytes_read = stream->read(buffer, BYTES_TO_PROCESS);
+      auto bytes_read = stream->read(buffer, BYTES_TO_PROCESS);
 
       if(bytes_read == 0)
         bContinue = false; //stop because we reached the end.
       else
       {
         // Add the text to the string:
+        // TODO_Performance: Avoid reallocations.
         data += std::string((char*)buffer, bytes_read);
       }
     }
