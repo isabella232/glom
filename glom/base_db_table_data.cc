@@ -510,13 +510,13 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
       {
         auto iterFields = fieldsToGet.begin();
 
-        const guint cols_count = result->get_n_columns();
+        const auto cols_count = result->get_n_columns(); // -1 means unknown
         if(cols_count <= 0)
         {
           std::cerr << G_STRFUNC << ": The result had 0 columns\n";
         }
 
-        for(guint uiCol = 0; uiCol < cols_count; ++uiCol)
+        for(int uiCol = 0; uiCol < cols_count; ++uiCol)
         {
           const auto value = result->get_value_at(uiCol, 0 /* row */);
           auto layout_item = *iterFields;
