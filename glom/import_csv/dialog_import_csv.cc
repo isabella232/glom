@@ -68,7 +68,7 @@ const bool Dialog_Import_CSV::glade_developer(false);
 Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_auto_detect_encoding(),
-  m_cols_count(-1)
+  m_cols_count(0)
 {
   builder->get_widget("import_csv_fields", m_sample_view);
   builder->get_widget("import_csv_target_table", m_target_table);
@@ -377,8 +377,8 @@ void Dialog_Import_CSV::on_sample_rows_changed()
     return;
 
   const auto children_size = m_sample_model->children().size();
-  const guint current_sample_rows = (children_size == 0 ? 0 : children_size - 1);
-  const guint new_sample_rows = m_sample_rows->get_value_as_int();
+  const auto current_sample_rows = (children_size == 0 ? 0 : children_size - 1);
+  const guint new_sample_rows = std::max(0, m_sample_rows->get_value_as_int());
 
   if(current_sample_rows > new_sample_rows)
   {
@@ -393,7 +393,7 @@ void Dialog_Import_CSV::on_sample_rows_changed()
   else
   {
     // Find index of first row to add
-    guint row_index = current_sample_rows;
+    auto row_index = current_sample_rows;
     if(m_first_line_as_title->get_active())
       ++row_index;
 
