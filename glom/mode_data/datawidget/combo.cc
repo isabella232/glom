@@ -104,7 +104,7 @@ void ComboGlom::set_choices_fixed(const Formatting::type_list_values& list_value
     return;
   }
   
-  guint columns_count = model->get_n_columns();
+  int columns_count = model->get_n_columns();
   if(columns_count)
     columns_count -= 1; //The last one is the just the extra text-equivalent of the first one, for GtkComboBox with has-entry=true, or for translations.
 
@@ -113,7 +113,7 @@ void ComboGlom::set_choices_fixed(const Formatting::type_list_values& list_value
 
   //For fixed (custom) choices, this will always be 1 column anyway,
   //so the for() loop here is excessive.
-  for(guint i = 0; i < columns_count; ++i)
+  for(auto i = 0; i < columns_count; ++i)
   {
     //set_entry_text_column() adds its own CellRenderer,
     //which we cannot replace without confusing (and crashing) GtkComboBox.
