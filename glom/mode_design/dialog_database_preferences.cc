@@ -188,8 +188,8 @@ void Dialog_Database_Preferences::load_from_document()
     return;
   }
 
-  const guint count = datamodel->get_n_rows();
-  for(guint i = 0; i < count; ++i)
+  const auto count = datamodel->get_n_rows(); // -1 means unknown.
+  for(int i = 0; i < count; ++i)
   {
     auto iter = m_model_autoincrements->append();
     Gtk::TreeModel::Row row = *iter;
