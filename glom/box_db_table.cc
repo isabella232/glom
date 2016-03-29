@@ -32,17 +32,6 @@ Box_DB_Table::Box_DB_Table(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 {
 }
 
-const Gtk::Window* Box_DB_Table::get_app_window() const
-{
-  auto nonconst = const_cast<Box_DB_Table*>(this);
-  return nonconst->get_app_window();
-}
-  
-Gtk::Window* Box_DB_Table::get_app_window()
-{
-  return dynamic_cast<Gtk::Window*>(get_toplevel());
-}
-
 void Box_DB_Table::handle_error(const Glib::Exception& ex)
 {
   Base_DB::handle_error(ex, get_app_window());

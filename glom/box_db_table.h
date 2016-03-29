@@ -43,9 +43,6 @@ public:
 protected:
   void handle_error(const Glib::Exception& ex);
   void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
-
-  Gtk::Window* get_app_window();
-  const Gtk::Window* get_app_window() const;
 };
 
 } //namespace Glom
