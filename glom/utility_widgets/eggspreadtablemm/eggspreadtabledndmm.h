@@ -44,6 +44,9 @@ class SpreadTableDnd
   typedef EggSpreadTableDndClass BaseClassType;
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
+  SpreadTableDnd(const SpreadTableDnd&) = delete;
+  SpreadTableDnd& operator=(const SpreadTableDnd&) = delete;
+
   virtual ~SpreadTableDnd();
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -51,10 +54,6 @@ class SpreadTableDnd
 private:
   friend class SpreadTableDnd_Class;
   static CppClassType spreadtable_class_;
-
-  // noncopyable
-  SpreadTableDnd(const SpreadTableDnd&);
-  SpreadTableDnd& operator=(const SpreadTableDnd&);
 
 protected:
   explicit SpreadTableDnd(const Glib::ConstructParams& construct_params);
