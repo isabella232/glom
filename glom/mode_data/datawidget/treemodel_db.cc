@@ -382,7 +382,15 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 
       //std::cout << "  rows count=" << m_data_model_rows_count << std::endl;
 
-      m_data_model_columns_count = m_gda_datamodel->get_n_columns();
+      const auto cols_count =  m_gda_datamodel->get_n_columns();
+      if (cols_count < 0)
+      {
+        m_data_model_columns_count = 0; // -1 means unknown, but treat that like 0.
+      }
+      else
+      {
+        m_data_model_columns_count = cols_count;
+      }
 
       return (m_data_model_rows_count > 0); //false is not really a failure, but the caller needs to know whether the foundset found any records.
     }
@@ -437,8 +445,9 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
 
       const auto datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
       //g_warning("DbTreeModel::get_value_vfunc(): datamodel_row=%d, get_internal_rows_count=%d", datamodel_row, get_internal_rows_count());
-      const unsigned int internal_rows_count = get_internal_rows_count();
-      if( datamodel_row < internal_rows_count) //!= m_rows.end())
+      const guint internal_rows_count = std::max(0, get_internal_rows_count());
+
+      if( datamodel_row < (guint)internal_rows_count) //!= m_rows.end())
       {
          //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1.2\n";
 
@@ -653,7 +662,7 @@ bool DbTreeModel::create_iterator(const type_datamodel_row_index& datamodel_row,
 
   iter.set_model_refptr(refModel);
 
-  const guint count_all_rows = get_internal_rows_count();
+  const guint count_all_rows = std::max(0, get_internal_rows_count());
   //g_warning("DbTreeModel::create_iterator(): datamodel_row=%d, count=%d", datamodel_row, count_all_rows);
   if(datamodel_row >= (count_all_rows)) //datamodel_row == m_rows.end()) //1 for the placeholder.
   {
