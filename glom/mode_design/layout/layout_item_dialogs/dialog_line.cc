@@ -51,6 +51,7 @@ void Dialog_Line::set_line(const std::shared_ptr<const LayoutItem_Line>& line)
   if(!line)
   {
     std::cerr << G_STRFUNC << ": line is null\n";
+    return;
   }
 
   //set_blocked();
