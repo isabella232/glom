@@ -242,8 +242,8 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
     }
     else
     {
-      const guint rows_count = datamodel->get_n_rows();
-      for(guint row = 0; row < rows_count; ++row)
+      const auto rows_count = datamodel->get_n_rows(); // -1 means unknown.
+      for(int row = 0; row < rows_count; ++row)
       {
         const auto group_value = datamodel->get_value_at(0 /* col*/, row); //TODO: Catch exceptions.
 
@@ -390,9 +390,9 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
     }
     else
     {
-      const guint rows_count = datamodel->get_n_rows();
+      const auto rows_count = datamodel->get_n_rows();
 
-      for(guint row = 0; row < rows_count; ++row)
+      for(int row = 0; row < rows_count; ++row)
       {
         auto nodeRow = parent_node.add_child_element("row");
 
