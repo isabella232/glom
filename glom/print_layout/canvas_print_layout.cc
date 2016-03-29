@@ -812,7 +812,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
 
   if(datamodel)
   {
-    const guint rows_count = datamodel->get_n_rows();
+    const auto rows_count = datamodel->get_n_rows(); // -1 means unknown.
     if(rows_count > 0)
       records_found = true;
   }
@@ -912,16 +912,17 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   if(!(datamodel))
     return;
 
-  const int db_rows_count = datamodel->get_n_rows(); //TODO: Performance? COUNT them instead?
-  const int db_columns_count = datamodel->get_n_columns();
+  // -1 means unknown, but we treat that like 0.
+  const guint db_rows_count = std::max(0, datamodel->get_n_rows()); //TODO: Performance? COUNT them instead?
+  const guint db_columns_count = std::max(0, datamodel->get_n_columns());
 
   //Show as many rows as needed, but not more than the maximum:
   gulong rows_count_min = 0;
   gulong rows_count_max = 0;
   portal->get_rows_count(rows_count_min, rows_count_max);
-  int rows_count = std::min((int)rows_count_max, db_rows_count);
+  auto rows_count = std::min(rows_count_max, (gulong)db_rows_count);
   //Do not use less than the minimum:
-  rows_count = std::max(rows_count, (int)rows_count_min);
+  rows_count = std::max(rows_count, rows_count_min);
 
   const double portal_height = rows_count * portal->get_print_layout_row_height();
 
@@ -940,14 +941,14 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   canvas_item->add_portal_rows_if_necessary(rows_count);
   //TODO: Move everything else down.
 
-  const int cols_count = child_layout_items.size();
+  const auto cols_count = child_layout_items.size();
 
   //Set the DB value for each cell:
-  for(int row = 0; row < rows_count; ++row)
+  for(guint row = 0; row < rows_count; ++row)
   {
-    int db_col = 0;
+    guint db_col = 0;
     auto iter_child_layout_items = child_layout_items.begin();
-    for(int col = 0; col < cols_count; ++col)
+    for(guint col = 0; col < cols_count; ++col)
     {
       //Glib::RefPtr<Goocanvas::Item> canvas_child = base_item->get_cell_child(row, col); //TODO: Add this to Goocanvas::Table.
       auto canvas_child = 
