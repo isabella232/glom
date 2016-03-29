@@ -109,19 +109,19 @@ void export_data_to_stream(const std::shared_ptr<Document>& document, std::ostre
   //TODO: Lock the database (prevent changes) during export.
   auto result = DbUtils::query_execute_select(query);
 
-  guint rows_count = 0;
+  int rows_count = 0;
   if(result)
-    rows_count = result->get_n_rows();
+    rows_count = result->get_n_rows(); // -1 means unknown.
 
-  if(rows_count)
+  if(rows_count > 0)
   {
-    const guint columns_count = result->get_n_columns();
+    const auto columns_count = result->get_n_columns(); // -1 means unknown.
 
-    for(guint row_index = 0; row_index < rows_count; ++row_index)
+    for(int row_index = 0; row_index < rows_count; ++row_index)
     {
         std::string row_string;
 
-        for(guint col_index = 0; col_index < columns_count; ++col_index)
+        for(int col_index = 0; col_index < columns_count; ++col_index)
         {
           const auto value = result->get_value_at(col_index, row_index);
 
