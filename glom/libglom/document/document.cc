@@ -4820,7 +4820,7 @@ bool add_file_to_archive(archive* a, const std::string& parent_dir_path, const s
       else
       {
         // Add the data to the archive:
-        ssize_t check = archive_write_data(a, buffer, bytes_read);
+        const auto check = archive_write_data(a, buffer, bytes_read);
         if(check != bytes_read)
         {
           std::cerr << G_STRFUNC << ": archive_write_data() wrote an unexpected number of bytes. \n";

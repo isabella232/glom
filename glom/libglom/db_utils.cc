@@ -2469,9 +2469,9 @@ type_list_values_with_second get_choice_values(const std::shared_ptr<const Docum
 
   if(datamodel)
   {
-    const guint count = datamodel->get_n_rows();
-    const guint cols_count = datamodel->get_n_columns();
-    for(guint row = 0; row < count; ++row)
+    const auto count = datamodel->get_n_rows(); // -1 means unknown
+    const auto cols_count = datamodel->get_n_columns(); // -1 means unknown
+    for(int row = 0; row < count; ++row)
     {
 
       std::pair<Gnome::Gda::Value, type_list_values> itempair;
@@ -2480,7 +2480,7 @@ type_list_values_with_second get_choice_values(const std::shared_ptr<const Docum
       if(layout_choice_extra && (cols_count > 1))
       {
         type_list_values list_values;
-        for(guint i = 1; i < cols_count; ++i)
+        for(int i = 1; i < cols_count; ++i)
         {
           list_values.emplace_back(datamodel->get_value_at(i, row));
         }
