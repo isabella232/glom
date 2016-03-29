@@ -268,7 +268,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_where_clause(const Gl
     //Add the WHERE clause:
     if(!where_clause.empty())
     {
-      const int id = builder->import_expression(where_clause);
+      const auto id = builder->import_expression(where_clause);
       builder->set_where(id);
     }
 
@@ -553,7 +553,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_update_with_where_clause(
     //Add the WHERE clause:
     if(!where_clause.empty())
     {
-      const int id = builder->import_expression(where_clause);
+      const auto id = builder->import_expression(where_clause);
       builder->set_where(id);
     }
   }

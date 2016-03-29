@@ -1302,7 +1302,7 @@ guint AddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRender
 {
   auto pViewColumn = Gtk::manage( new TreeViewColumnGlom(title, cellrenderer) );
   pViewColumn->set_renderer(cellrenderer, model_column); //render it via the default "text" property.
-  guint cols_count = m_TreeView.append_column(*pViewColumn);
+  auto cols_count = m_TreeView.append_column(*pViewColumn);
 
   //Allow the column to be reordered by dragging and dropping the column header:
   pViewColumn->set_reorderable();

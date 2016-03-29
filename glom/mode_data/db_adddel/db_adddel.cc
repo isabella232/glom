@@ -1669,7 +1669,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   //But we must call set_fixed_width() later or we will have a zero-width column.
   pViewColumn->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
 
-  guint cols_count = m_TreeView.append_column(*pViewColumn);
+  auto cols_count = m_TreeView.append_column(*pViewColumn);
 
   auto layout_item = m_column_items[model_column_index];
   auto layout_item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
