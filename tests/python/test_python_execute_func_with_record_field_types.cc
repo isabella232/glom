@@ -35,7 +35,7 @@ static bool get_field_result(const std::shared_ptr<Glom::Document>& document,
   const Glib::ustring& table_name,
   const std::shared_ptr<const Glom::Field>& primary_key_field,
   const Gnome::Gda::Value& primary_key_value,
-  const Glom::type_map_fields field_values,
+  const Glom::type_map_fields& field_values,
   const Glib::ustring& field_name, const Gnome::Gda::Value& expected_value)
 {
   const Glib::ustring calculation = "return record[\"" + field_name + "\"]";
