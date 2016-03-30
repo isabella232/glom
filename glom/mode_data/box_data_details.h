@@ -158,7 +158,7 @@ protected:
   Gtk::Button m_Button_Nav_Next;
   Gtk::Button m_Button_Nav_Last;
 
-  bool m_bDoNotRefreshRelated; //Stops us from refreshing related records in response to an addition of a related record.
+  bool m_do_not_refresh_related; //Stops us from refreshing related records in response to an addition of a related record.
   bool m_ignore_signals;
 
   type_signal_void m_signal_nav_first;

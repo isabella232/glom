@@ -166,7 +166,7 @@ protected:
 
   //Document:
   std::shared_ptr<Document> m_document; //An instance of a derived type.
-  bool m_bCloseAfterSave;
+  bool m_close_after_save;
 
   //Mime types which this application can load and save:
   typedef std::list<Glib::ustring> type_list_strings;

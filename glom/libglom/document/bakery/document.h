@@ -133,9 +133,9 @@ protected:
 
   type_signal_modified signal_modified_;
 
-  bool m_bModified;
-  bool m_bIsNew; //see get_is_new().
-  bool m_bReadOnly;
+  bool m_modified;
+  bool m_is_new; //see get_is_new().
+  bool m_read_only;
 };
 
 } //namespace

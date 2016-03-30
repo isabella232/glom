@@ -100,7 +100,7 @@ void AddDel::init()
 
   set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
-  m_bAllowUserActions = true;
+  m_allow_user_actions = true;
 
   //Start with a useful default TreeModel:
   //set_columns_count(1);
@@ -891,12 +891,12 @@ Glib::ustring AddDel::get_column_field(guint column_index) const
 
 bool AddDel::get_prevent_user_signals() const
 {
-  return m_bPreventUserSignals;
+  return m_prevent_user_signals;
 }
 
 void AddDel::set_prevent_user_signals(bool value)
 {
-  m_bPreventUserSignals = value;
+  m_prevent_user_signals = value;
 }
 
 void AddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
@@ -940,12 +940,12 @@ void AddDel::set_allow_delete(bool val)
 
 void AddDel::set_allow_user_actions(bool value)
 {
-  m_bAllowUserActions = value;
+  m_allow_user_actions = value;
 }
 
 bool AddDel::get_allow_user_actions() const
 {
-  return m_bAllowUserActions;
+  return m_allow_user_actions;
 }
 
 
@@ -970,12 +970,12 @@ void AddDel::finish_editing()
 
 void AddDel::set_ignore_treeview_signals(bool value)
 {
-  m_bIgnoreSheetSignals = value;
+  m_ignore_sheet_signals = value;
 }
 
 bool AddDel::get_ignore_treeview_signals() const
 {
-  return m_bIgnoreSheetSignals;
+  return m_ignore_sheet_signals;
 }
 
 /*

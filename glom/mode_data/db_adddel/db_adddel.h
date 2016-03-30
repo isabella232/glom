@@ -408,10 +408,10 @@ private:
   Glib::RefPtr<Gio::SimpleAction> m_refContextLayout;
 #endif
 
-  bool m_bAllowUserActions;
+  bool m_allow_user_actions;
 
-  bool m_bPreventUserSignals;
-  bool m_bIgnoreTreeViewSignals;
+  bool m_prevent_user_signals;
+  bool m_ignore_tree_view_signals;
 
   type_vec_strings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
 

@@ -291,10 +291,10 @@ private:
   typedef std::vector<AddDelColumnInfo> type_ColumnTypes;
   type_ColumnTypes m_ColumnTypes;
 
-  bool m_bAllowUserActions;
+  bool m_allow_user_actions;
 
-  bool m_bPreventUserSignals;
-  bool m_bIgnoreSheetSignals;
+  bool m_prevent_user_signals;
+  bool m_ignore_sheet_signals;
 
   type_vec_strings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
 

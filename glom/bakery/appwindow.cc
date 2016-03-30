@@ -22,7 +22,7 @@
 namespace GlomBakery
 {
 
-bool AppWindow::m_bOperationCancelled = false;
+bool AppWindow::m_operation_cancelled = false;
 Glib::ustring AppWindow::m_strCommandLine_0;
 Glib::ustring AppWindow::m_strAppName;
 
@@ -90,12 +90,12 @@ void AppWindow::on_menu_edit_clear()
 
 void AppWindow::set_operation_cancelled(bool value /* = true */)
 {
-  m_bOperationCancelled = value;
+  m_operation_cancelled = value;
 }
 
 bool AppWindow::get_operation_cancelled()
 {
-  return m_bOperationCancelled;
+  return m_operation_cancelled;
 }
 
 void AppWindow::set_command_line_args(int argc, char **&argv)

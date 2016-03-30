@@ -47,9 +47,9 @@ DbAddDel::DbAddDel()
   m_column_is_sorted(false),
   m_column_sorted_direction(false),
   m_column_sorted(0),
-  m_bAllowUserActions(true),
-  m_bPreventUserSignals(false),
-  m_bIgnoreTreeViewSignals(false),
+  m_allow_user_actions(true),
+  m_prevent_user_signals(false),
+  m_ignore_tree_view_signals(false),
   m_allow_add(true),
   m_allow_delete(true),
   m_find_mode(false),
@@ -1049,12 +1049,12 @@ std::shared_ptr<const LayoutItem_Field> DbAddDel::get_column_field(guint column_
 
 bool DbAddDel::get_prevent_user_signals() const
 {
-  return m_bPreventUserSignals;
+  return m_prevent_user_signals;
 }
 
 void DbAddDel::set_prevent_user_signals(bool value)
 {
-  m_bPreventUserSignals = value;
+  m_prevent_user_signals = value;
 }
 
 /*
@@ -1104,12 +1104,12 @@ void DbAddDel::set_allow_delete(bool val)
 
 void DbAddDel::set_allow_user_actions(bool value)
 {
-  m_bAllowUserActions = value;
+  m_allow_user_actions = value;
 }
 
 bool DbAddDel::get_allow_user_actions() const
 {
-  return m_bAllowUserActions;
+  return m_allow_user_actions;
 }
 
 void DbAddDel::set_find_mode(bool val)
@@ -1171,12 +1171,12 @@ void DbAddDel::remove_item(const Gtk::TreeModel::iterator& iter)
 
 bool DbAddDel::get_ignore_treeview_signals() const
 {
-  return m_bIgnoreTreeViewSignals;
+  return m_ignore_tree_view_signals;
 }
 
 void DbAddDel::set_ignore_treeview_signals(bool ignore)
 {
-  m_bIgnoreTreeViewSignals = ignore;
+  m_ignore_tree_view_signals = ignore;
 }
 
 DbAddDel::InnerIgnore::InnerIgnore(DbAddDel* pOuter)
@@ -1546,7 +1546,7 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
     return;
 
   //Ignore this property change signal handler if we are setting the size in code:
-  if(m_bIgnoreTreeViewSignals)
+  if(m_ignore_tree_view_signals)
     return;
 
   //We do not save the column width if this is the last column,
@@ -1604,7 +1604,7 @@ void DbAddDel::on_treeview_column_clicked(int model_column_index)
 
 void DbAddDel::on_treeview_columns_changed()
 {
-  if(!m_bIgnoreTreeViewSignals)
+  if(!m_ignore_tree_view_signals)
   {
     //Get the new column order, and save it in m_vecColumnIDs:
     m_vecColumnIDs.clear();

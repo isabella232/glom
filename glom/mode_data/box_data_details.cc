@@ -51,7 +51,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_Button_Nav_Prev(_("_Back"), true),
   m_Button_Nav_Next(_("_Forward"), true),
   m_Button_Nav_Last(_("_Last"), true),
-  m_bDoNotRefreshRelated(false),
+  m_do_not_refresh_related(false),
   m_ignore_signals(true)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   , m_design_mode(false)
@@ -550,8 +550,8 @@ void Box_Data_Details::on_related_record_added(Gnome::Gda::Value /* strKeyValue 
   //Prevent deletion of Related boxes.
   //One of them emitted this signal, and is probably still being edited.
   //This prevents a crash.
-  bool bDoNotRefreshRelated = m_bDoNotRefreshRelated;
-  m_bDoNotRefreshRelated = true;
+  bool do_not_refresh_related = m_do_not_refresh_related;
+  m_do_not_refresh_related = true;
 
   //std::cout << "debug: " << G_STRFUNC << ": " << strKeyValue << ", " << strFromKeyName << std::endl;
   //Get current FromKey value:
@@ -572,7 +572,7 @@ void Box_Data_Details::on_related_record_added(Gnome::Gda::Value /* strKeyValue 
 
 
   //Restore value:
-  m_bDoNotRefreshRelated = bDoNotRefreshRelated;
+  m_do_not_refresh_related = do_not_refresh_related;
 }
 
 Box_Data_Details::type_signal_void Box_Data_Details::signal_nav_first()

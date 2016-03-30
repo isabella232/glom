@@ -113,7 +113,7 @@ protected:
 
   //Instances
 
-  static bool m_bOperationCancelled; //see set/get_operation_cancelled().
+  static bool m_operation_cancelled; //see set/get_operation_cancelled().
 
   //Command line args:
   static Glib::ustring m_strCommandLine_0;

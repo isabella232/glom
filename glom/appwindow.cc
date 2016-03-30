@@ -90,7 +90,7 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
   m_VBox_PlaceHolder(Gtk::ORIENTATION_VERTICAL),
   m_pBoxTop(nullptr),
   m_pFrame(nullptr),
-  m_bAboutShown(false),
+  m_about_shown(false),
   m_pAbout(nullptr),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_window_translations(nullptr),
@@ -446,7 +446,7 @@ void AppWindow::init_menus()
 
 void AppWindow::on_menu_help_about()
 {
-  if(m_pAbout && m_bAboutShown) // "About" box hasn't been closed, so just raise it
+  if(m_pAbout && m_about_shown) // "About" box hasn't been closed, so just raise it
   {
     m_pAbout->set_transient_for(*this);
 
@@ -491,7 +491,7 @@ void AppWindow::on_menu_help_about()
       std::cout << G_STRFUNC << ": Could not load icon from resource path=" << glom_icon_path << std::endl;
 
     m_pAbout->signal_hide().connect( sigc::mem_fun(*this, &AppWindow::on_about_close) );
-    m_bAboutShown = true;
+    m_about_shown = true;
     static_cast<Gtk::Dialog*>(m_pAbout)->run(); //show() would be better. see below:
     m_pAbout->hide();
     //m_pAbout->show(); //TODO: respond to the OK button.
@@ -500,7 +500,7 @@ void AppWindow::on_menu_help_about()
 
 void AppWindow::on_about_close()
 {
-  m_bAboutShown = false;
+  m_about_shown = false;
 }
 
 void AppWindow::on_menu_file_toggle_share()

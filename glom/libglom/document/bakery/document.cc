@@ -30,9 +30,9 @@ const guint BYTES_TO_PROCESS = 256;
 
 Document::Document()
 {
-  m_bIsNew = true;
-  m_bModified = false;
-  m_bReadOnly = false;
+  m_is_new = true;
+  m_modified = false;
+  m_read_only = false;
   m_pView = nullptr;
 }
 
@@ -95,20 +95,20 @@ Glib::ustring Document::get_contents() const
 
 void Document::set_modified(bool value /* = true */)
 {
-  m_bModified = value;
+  m_modified = value;
 
-  if(m_bModified)
+  if(m_modified)
   {
-    m_bIsNew = false; //Can't be new if it's been modified.
+    m_is_new = false; //Can't be new if it's been modified.
   }
 
   //Allow the application or view to update it's UI accordingly:
-  signal_modified().emit(m_bModified);
+  signal_modified().emit(m_modified);
 }
 
 bool Document::get_modified() const
 {
-  return m_bModified;
+  return m_modified;
 }
 
 bool Document::load(int& failure_code)
@@ -437,7 +437,7 @@ ViewBase* Document::get_view()
 
 bool Document::get_read_only() const
 {
-  if(m_bReadOnly)
+  if(m_read_only)
   {
     //An application might have used set_read_only() to make this document explicitly read_only, regardless of the positions of the storage location.
     return true;
@@ -470,12 +470,12 @@ bool Document::get_read_only() const
 
 void Document::set_read_only(bool value)
 {
-  m_bReadOnly = value;
+  m_read_only = value;
 }
 
 bool Document::get_is_new() const
 {
-  return m_bIsNew;
+  return m_is_new;
 }
 
 void Document::set_is_new(bool value)
@@ -483,7 +483,7 @@ void Document::set_is_new(bool value)
   if(value)
     set_modified(false); //can't be modified if it is new.
 
-  m_bIsNew = value;
+  m_is_new = value;
 }
 
 void Document::set_file_extension(const Glib::ustring& strVal)

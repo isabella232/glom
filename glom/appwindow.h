@@ -309,7 +309,7 @@ private:
   Gtk::Box* m_pBoxTop;
   Frame_Glom* m_pFrame;
   
-  bool m_bAboutShown;
+  bool m_about_shown;
   Gtk::AboutDialog* m_pAbout; //About box.
 
   Infobar_ProgressCreating* m_infobar_progress;

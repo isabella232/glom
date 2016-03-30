@@ -32,7 +32,7 @@ AppWindow_WithDoc::type_list_strings AppWindow_WithDoc::m_mime_types;
 AppWindow_WithDoc::AppWindow_WithDoc(const Glib::ustring& appname)
 : AppWindow(appname),
   m_document(nullptr),
-  m_bCloseAfterSave(false)
+  m_close_after_save(false)
 {
 }
 
@@ -52,7 +52,7 @@ void AppWindow_WithDoc::on_menu_file_close()
   if(m_document->get_modified())
   {
     //Offer to save changes:
-    m_bCloseAfterSave = true; //Checked in FileChooser signal handler.
+    m_close_after_save = true; //Checked in FileChooser signal handler.
     offer_to_save_changes(); //If a File|Exit is in progress, this could cancel it.
   }
 
@@ -235,7 +235,7 @@ void AppWindow_WithDoc::on_menu_file_saveas()
 
 
     //Close if this save was a result of a File|Close or File|Exit:.
-    //if(bTest && m_bCloseAfterSave) //Don't close if the save failed.
+    //if(bTest && m_close_after_save) //Don't close if the save failed.
     //{
     //  on_menu_file_close(); //This could be the second time, but now there are no unsaved changes.
     //}
@@ -261,7 +261,7 @@ void AppWindow_WithDoc::on_menu_file_save()
         after_successful_save();
 
         //Close the document if this save was in response to a 'Do you want to save before closing?':
-        //if(m_bCloseAfterSave) // || m_bExiting
+        //if(m_close_after_save) // || m_bExiting
         //  close_mark_or_destroy();
       }
       else
@@ -279,7 +279,7 @@ void AppWindow_WithDoc::on_menu_file_save()
     }
   }
 
-  if(!m_bCloseAfterSave) //Don't try to do anything after closing - this instance would not exist anymore.
+  if(!m_close_after_save) //Don't try to do anything after closing - this instance would not exist anymore.
   {
     update_window_title();
   }
@@ -371,7 +371,7 @@ void AppWindow_WithDoc::offer_to_save_changes()
 void AppWindow_WithDoc::cancel_close_or_exit()
 {
   set_operation_cancelled();
-  m_bCloseAfterSave = false;
+  m_close_after_save = false;
 
   //exit_destroy_marked_instances(); //Clean up after an exit.
 }
