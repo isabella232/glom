@@ -61,9 +61,7 @@ Notebook_Find::~Notebook_Find()
 
 bool Notebook_Find::init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform)
 {
-  bool result = true;
-
-  result = m_Box_List.init_db_details(table_name, layout_platform);
+  const auto result = m_Box_List.init_db_details(table_name, layout_platform);
 
   m_Box_Details.init_db_details(table_name, layout_platform);
 
