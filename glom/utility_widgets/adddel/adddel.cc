@@ -1077,8 +1077,8 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
 
     //Is this an add or a change?:
 
-    bool bIsAdd = false;
-    bool bIsChange = false;
+    bool is_add = false;
+    bool is_change = false;
 
     int iCount = m_list_store->children().size();
     if(iCount)
@@ -1099,17 +1099,17 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
             set_prevent_user_signals(bPreventUserSignals);
          */
 
-          bIsAdd = true; //Signal that a new key was added.
+          is_add = true; //Signal that a new key was added.
           //}
         }
       }
 
-      if(!bIsAdd)
-        bIsChange = true;
+      if(!is_add)
+        is_change = true;
     }
 
     //Fire appropriate signal:
-    if(bIsAdd)
+    if(is_add)
     {
       //Change it back, so that we ignore it:
       row.set_value(model_column_index, value_old);
@@ -1118,7 +1118,7 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
       //We will ignore editing of bool values in the blank row. It seems like a bad way to start a new record.
       //m_signal_user_added.emit(row);
     }
-    else if(bIsChange)
+    else if(is_change)
     {
       //Existing item changed:
 
@@ -1151,8 +1151,8 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
       return; //This is not actually an edit.
 
     //Is it an add or a change?:
-    bool bIsAdd = false;
-    bool bIsChange = false;
+    bool is_add = false;
+    bool is_change = false;
 
     if(get_allow_user_actions()) //If add is possible:
     {
@@ -1176,20 +1176,20 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
         }
         set_prevent_user_signals(bPreventUserSignals);
 
-        bIsAdd = true; //Signal that a new key was added.
+        is_add = true; //Signal that a new key was added.
       }
     }
 
-    if(!bIsAdd)
-      bIsChange = true;
+    if(!is_add)
+      is_change = true;
 
     //Fire appropriate signal:
-    if(bIsAdd)
+    if(is_add)
     {
         //Signal that a new key was added"
         m_signal_user_added.emit(row);
     }
-    else if(bIsChange)
+    else if(is_change)
     {
       //Existing item changed:
       //Check that it has really changed - get the last value.

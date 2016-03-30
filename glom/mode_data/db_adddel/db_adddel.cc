@@ -1303,8 +1303,8 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
 
     //Is this an add or a change?:
 
-    bool bIsAdd = false;
-    bool bIsChange = false;
+    bool is_add = false;
+    bool is_change = false;
 
     const auto iCount = m_list_store->children().size();
     if(iCount)
@@ -1325,17 +1325,17 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
             set_prevent_user_signals(bPreventUserSignals);
          */
 
-          bIsAdd = true; //Signal that a new key was added.
+          is_add = true; //Signal that a new key was added.
           //}
         }
       }
 
-      if(!bIsAdd)
-        bIsChange = true;
+      if(!is_add)
+        is_change = true;
     }
 
     //Fire appropriate signal:
-    if(bIsAdd)
+    if(is_add)
     {
       //Change it back, so that we ignore it:
       row.set_value(tree_model_column_index, value_old);
@@ -1344,7 +1344,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
       //We will ignore editing of bool values in the blank row. It seems like a bad way to start a new record.
       //user_added(row);
     }
-    else if(bIsChange)
+    else if(is_change)
     {
       //Existing item changed:
 
@@ -1416,8 +1416,8 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
     //row.set_value(treemodel_column_index, new_text);
 
     //Is it an add or a change?:
-    bool bIsAdd = false;
-    bool bIsChange = false;
+    bool is_add = false;
+    bool is_change = false;
     bool do_change = true;
 
     if(get_allow_user_actions()) //If add is possible:
@@ -1437,7 +1437,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
 
         set_prevent_user_signals(bPreventUserSignals);
 
-        bIsAdd = true; //Signal that a new key was added.
+        is_add = true; //Signal that a new key was added.
       }
     }
 
@@ -1504,17 +1504,17 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
         //std::cout << "debug: after setting value\n";
       }
 
-      if(!bIsAdd)
-        bIsChange = true;
+      if(!is_add)
+        is_change = true;
 
       //Fire appropriate signal:
-      if(bIsAdd)
+      if(is_add)
       {
         //Signal that a new key was added:
         if(m_allow_add)
           user_added(row);
       }
-      else if(bIsChange)
+      else if(is_change)
       {
         //Existing item changed:
         //Check that it has really changed - get the last value.
