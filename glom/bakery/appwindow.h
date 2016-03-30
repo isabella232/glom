@@ -103,7 +103,7 @@ protected:
   //operation_cancelled:
   //e.g. A File|Open tries to save existing data,
   //but this needs to be cancelled if the save failed. 
-  static void set_operation_cancelled(bool bVal = true);
+  static void set_operation_cancelled(bool value = true);
   static bool get_operation_cancelled();
 
   //Member data:

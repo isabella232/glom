@@ -55,7 +55,7 @@ public:
   DbAddDel();
   virtual ~DbAddDel();
 
-  virtual void set_allow_user_actions(bool bVal = true);
+  virtual void set_allow_user_actions(bool value = true);
   bool get_allow_user_actions() const;
 
   virtual void set_allow_add(bool val = true);
@@ -188,7 +188,7 @@ public:
 
   void finish_editing(); //Closes active edit controls and commits the data to the cell.
   //void reactivate(); //Sheet doesn't seem to update unless a cell is active.
-  void set_prevent_user_signals(bool bVal = true);
+  void set_prevent_user_signals(bool value = true);
 
   //TODO_refactor: make private.
 

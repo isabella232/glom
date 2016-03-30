@@ -156,9 +156,9 @@ void Box_Data::on_Button_Find()
   signal_find_criteria.emit(where_clause);
 }
 
-void Box_Data::set_unstored_data(bool bVal)
+void Box_Data::set_unstored_data(bool value)
 {
-  m_bUnstoredData = bVal;
+  m_bUnstoredData = value;
 }
 
 bool Box_Data::get_unstored_data() const

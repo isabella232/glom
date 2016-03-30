@@ -81,7 +81,7 @@ public:
   // Set the accessible name for the TreeView widget
   void set_treeview_accessible_name(const Glib::ustring& name);
 
-  virtual void set_allow_user_actions(bool bVal = true);
+  virtual void set_allow_user_actions(bool value = true);
   bool get_allow_user_actions() const;
 
   virtual void set_allow_add(bool val = true);
@@ -126,7 +126,7 @@ public:
   //void set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gnome::Gda::Value& value);
   void set_value(const Gtk::TreeModel::iterator& iter, guint col, const Glib::ustring& strValue);
   void set_value(const Gtk::TreeModel::iterator& iter, guint col, unsigned long ulValue);
-  void set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVal);
+  void set_value(const Gtk::TreeModel::iterator& iter, guint col, bool value);
 
   //void set_value_selected(guint col, const Gnome::Gda::Value& value);
 
@@ -167,7 +167,7 @@ public:
 
   void finish_editing(); //Closes active edit controls and commits the data to the cell.
   //void reactivate(); //Sheet doesn't seem to update unless a cell is active.
-  void set_prevent_user_signals(bool bVal = true);
+  void set_prevent_user_signals(bool value = true);
 
   /** When this is set to true, a new row will be added automatically, and the cursor will be placed in the first column of the new row.
    * Use set_auto_add(false) if you want to provide default values for columns in the new row, or if you want to place the cursor in a different column.
@@ -263,7 +263,7 @@ private:
   bool get_prevent_user_signals() const;
 
   //Sometimes the sheet sends signals when it shouldn't:
-  void set_ignore_treeview_signals(bool bVal = true);
+  void set_ignore_treeview_signals(bool value = true);
   bool get_ignore_treeview_signals() const;
 
   bool get_view_column_index(guint model_column_index, guint& view_column_index);

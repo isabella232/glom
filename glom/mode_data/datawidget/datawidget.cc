@@ -286,11 +286,11 @@ void DataWidget::set_value(const Gnome::Gda::Value& value)
     auto checkbutton = dynamic_cast<Gtk::CheckButton*>(widget);
     if(checkbutton)
     {
-      bool bValue = false;
+      bool bool_value = false;
       if(!value.is_null() && value.get_value_type() == G_TYPE_BOOLEAN)
-        bValue = value.get_boolean();
+        bool_value = value.get_boolean();
 
-      checkbutton->set_active( bValue );
+      checkbutton->set_active( bool_value );
     }
   }
 

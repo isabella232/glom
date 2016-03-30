@@ -69,12 +69,12 @@ public:
 
 
   bool get_modified() const;
-  virtual void set_modified(bool bVal = true);
+  virtual void set_modified(bool value = true);
 
   ///Whether this just a default document.
   bool get_is_new() const;
   ///Called by AppWindow_WithDoc::init_create_document().
-  void set_is_new(bool bVal);
+  void set_is_new(bool value);
 
   Glib::ustring get_contents() const;
 
@@ -88,7 +88,7 @@ public:
   static Glib::ustring util_file_uri_get_name(const Glib::ustring& file_uri, const Glib::ustring& file_extension);
 
   bool get_read_only() const;
-  void set_read_only(bool bVal);
+  void set_read_only(bool value);
 
   ///If you don't want to use a View, then don't use set_view().
   void set_view(ViewBase* pView);

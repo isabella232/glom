@@ -1052,9 +1052,9 @@ bool DbAddDel::get_prevent_user_signals() const
   return m_bPreventUserSignals;
 }
 
-void DbAddDel::set_prevent_user_signals(bool bVal)
+void DbAddDel::set_prevent_user_signals(bool value)
 {
-  m_bPreventUserSignals = bVal;
+  m_bPreventUserSignals = value;
 }
 
 /*
@@ -1102,9 +1102,9 @@ void DbAddDel::set_allow_delete(bool val)
   m_allow_delete = val;
 }
 
-void DbAddDel::set_allow_user_actions(bool bVal)
+void DbAddDel::set_allow_user_actions(bool value)
 {
-  m_bAllowUserActions = bVal;
+  m_bAllowUserActions = value;
 }
 
 bool DbAddDel::get_allow_user_actions() const

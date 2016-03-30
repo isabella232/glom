@@ -34,7 +34,7 @@ public:
 
   void set_allow_add(bool val = true) override;
   void set_allow_delete(bool val = true) override;
-  void set_allow_user_actions(bool bVal = true) override;
+  void set_allow_user_actions(bool value = true) override;
 
   ///Whether each row should have a button, to request edit.
   void set_allow_view_details(bool val = true) override;

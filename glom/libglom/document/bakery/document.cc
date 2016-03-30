@@ -93,9 +93,9 @@ Glib::ustring Document::get_contents() const
   return m_strContents;
 }
 
-void Document::set_modified(bool bVal /* = true */)
+void Document::set_modified(bool value /* = true */)
 {
-  m_bModified = bVal;
+  m_bModified = value;
 
   if(m_bModified)
   {
@@ -468,9 +468,9 @@ bool Document::get_read_only() const
   }
 }
 
-void Document::set_read_only(bool bVal)
+void Document::set_read_only(bool value)
 {
-  m_bReadOnly = bVal;
+  m_bReadOnly = value;
 }
 
 bool Document::get_is_new() const
@@ -478,12 +478,12 @@ bool Document::get_is_new() const
   return m_bIsNew;
 }
 
-void Document::set_is_new(bool bVal)
+void Document::set_is_new(bool value)
 {
-  if(bVal)
+  if(value)
     set_modified(false); //can't be modified if it is new.
 
-  m_bIsNew = bVal;
+  m_bIsNew = value;
 }
 
 void Document::set_file_extension(const Glib::ustring& strVal)

@@ -125,12 +125,12 @@ void AddDel_WithButtons::set_allow_delete(bool val)
   m_Button_Del.set_sensitive(val);
 }
 
-void AddDel_WithButtons::set_allow_user_actions(bool bVal)
+void AddDel_WithButtons::set_allow_user_actions(bool value)
 {
-  AddDel::set_allow_user_actions(bVal);
+  AddDel::set_allow_user_actions(value);
 
   //add or remove buttons:
-  if(bVal)
+  if(value)
   {
     set_allow_user_actions(false); //Remove them first (Don't want to add them twice).
 

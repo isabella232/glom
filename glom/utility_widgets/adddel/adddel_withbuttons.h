@@ -35,7 +35,7 @@ public:
 
   void set_allow_add(bool val = true) override;
   void set_allow_delete(bool val = true) override;
-  void set_allow_user_actions(bool bVal = true) override;
+  void set_allow_user_actions(bool value = true) override;
 
   /**
    * @param label The button label text, including the mnemonic underline.

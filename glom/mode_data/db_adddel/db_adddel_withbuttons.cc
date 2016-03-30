@@ -81,9 +81,9 @@ void DbAddDel_WithButtons::set_allow_delete(bool val)
   setup_buttons();
 }
 
-void DbAddDel_WithButtons::set_allow_user_actions(bool bVal)
+void DbAddDel_WithButtons::set_allow_user_actions(bool value)
 {
-  DbAddDel::set_allow_user_actions(bVal);
+  DbAddDel::set_allow_user_actions(value);
 
   setup_buttons();
 

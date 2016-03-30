@@ -339,11 +339,11 @@ Glib::ustring AddDel::get_value(const Gtk::TreeModel::iterator& iter, guint col)
       //Get different types of data, depending on the column:
       if(m_ColumnTypes[col_real].m_style == AddDelColumnInfo::enumStyles::Boolean)
       {
-        bool bValue = false;
-        treerow.get_value(col_real, bValue);
+        bool bool_value = false;
+        treerow.get_value(col_real, bool_value);
 
         //Create a string representation of the value:
-        value = bValue  ? "true" : "false";
+        value = bool_value  ? "true" : "false";
       }
       else
       {
@@ -763,8 +763,8 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gl
       {
         case(AddDelColumnInfo::enumStyles::Boolean):
         {
-          bool bValue = (strValue == "true");
-          treerow.set_value(col, bValue);
+          const bool bool_value = (strValue == "true");
+          treerow.set_value(col, bool_value);
           break;
         }
         default:
@@ -797,7 +797,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, unsigned
   set_value(iter, col, Glib::ustring(pchValue));
 }
 
-void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVal)
+void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, bool value)
 {
   InnerIgnore innerIgnore(this);
 
@@ -813,12 +813,12 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVa
       {
         case(AddDelColumnInfo::enumStyles::Boolean):
         {
-          treerow.set_value(col, bVal);
+          treerow.set_value(col, value);
           break;
         }
         default:
         {
-          Glib::ustring strValue = (bVal ? "true" : "false");
+          Glib::ustring strValue = (value ? "true" : "false");
           treerow.set_value(col, strValue);
           break;
         }
@@ -894,9 +894,9 @@ bool AddDel::get_prevent_user_signals() const
   return m_bPreventUserSignals;
 }
 
-void AddDel::set_prevent_user_signals(bool bVal)
+void AddDel::set_prevent_user_signals(bool value)
 {
-  m_bPreventUserSignals = bVal;
+  m_bPreventUserSignals = value;
 }
 
 void AddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
@@ -938,9 +938,9 @@ void AddDel::set_allow_delete(bool val)
 }
 
 
-void AddDel::set_allow_user_actions(bool bVal)
+void AddDel::set_allow_user_actions(bool value)
 {
-  m_bAllowUserActions = bVal;
+  m_bAllowUserActions = value;
 }
 
 bool AddDel::get_allow_user_actions() const
@@ -968,9 +968,9 @@ void AddDel::finish_editing()
 //  set_ignore_treeview_signals(bIgnoreSheetSignals);
 }
 
-void AddDel::set_ignore_treeview_signals(bool bVal)
+void AddDel::set_ignore_treeview_signals(bool value)
 {
-  m_bIgnoreSheetSignals = bVal;
+  m_bIgnoreSheetSignals = value;
 }
 
 bool AddDel::get_ignore_treeview_signals() const

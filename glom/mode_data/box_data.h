@@ -60,7 +60,7 @@ public:
 
   Gnome::Gda::SqlExpr get_find_where_clause() const;
 
-  void set_unstored_data(bool bVal);
+  void set_unstored_data(bool value);
   bool get_unstored_data() const;
 
   bool confirm_discard_unstored_data() const;

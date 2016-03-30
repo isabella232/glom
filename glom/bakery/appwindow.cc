@@ -88,9 +88,9 @@ void AppWindow::on_menu_edit_clear()
   
 }
 
-void AppWindow::set_operation_cancelled(bool bVal /* = true */)
+void AppWindow::set_operation_cancelled(bool value /* = true */)
 {
-  m_bOperationCancelled = bVal;
+  m_bOperationCancelled = value;
 }
 
 bool AppWindow::get_operation_cancelled()
