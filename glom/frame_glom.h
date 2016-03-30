@@ -255,45 +255,45 @@ private:
   Glib::ustring m_table_name;
 
   //Child widgets:
-  Gtk::Label* m_pLabel_Table_DataMode;
-  Gtk::Label* m_pLabel_Table_FindMode;
+  Gtk::Label* m_label_table_data_mode;
+  Gtk::Label* m_label_table_find_mode;
 
-  Gtk::Box m_Box_RecordsCount; //Only show this when in Data mode.
-  Gtk::Label m_Label_RecordsCount;
-  Gtk::Label m_Label_FoundCount;
-  Gtk::Button m_Button_FindAll;
+  Gtk::Box m_box_records_count; //Only show this when in Data mode.
+  Gtk::Label m_label_records_count;
+  Gtk::Label m_label_found_count;
+  Gtk::Button m_button_find_all;
 
   Gtk::Stack* m_stack_mode; //Contains e.g. data or find mode notebook.
 
   //Navigation:
-  Box_Tables* m_pBox_Tables;
-  Window_BoxHolder* m_pDialog_Tables;
+  Box_Tables* m_box_tables;
+  Window_BoxHolder* m_dialog_tables;
 
-  Notebook_Data m_Notebook_Data;
+  Notebook_Data m_notebook_data;
 
-  Gtk::Box* m_pBox_QuickFind; //Only show this when in Find mode.
-  Gtk::Entry* m_pEntry_QuickFind;
-  Gtk::Button* m_pButton_QuickFind;
-  Notebook_Find m_Notebook_Find;
+  Gtk::Box* m_box_quick_find; //Only show this when in Find mode.
+  Gtk::Entry* m_entry_quick_find;
+  Gtk::Button* m_button_quick_find;
+  Notebook_Find m_notebook_find;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Developer:
-  std::unique_ptr<Window_BoxHolder> m_pDialog_Reports;
-  Dialog_Layout_Report* m_pDialogLayoutReport;
-  Box_Reports* m_pBox_Reports;
+  std::unique_ptr<Window_BoxHolder> m_dialog_reports;
+  Dialog_Layout_Report* m_dialog_layout_report;
+  Box_Reports* m_box_reports;
 
-  std::unique_ptr<Window_BoxHolder> m_pDialog_PrintLayouts;
-  Window_PrintLayout_Edit* m_pDialogLayoutPrint;
-  Box_Print_Layouts* m_pBox_PrintLayouts;
+  std::unique_ptr<Window_BoxHolder> m_dialog_print_layouts;
+  Window_PrintLayout_Edit* m_dialog_layout_print;
+  Box_Print_Layouts* m_box_print_layouts;
 
-  Dialog_Fields* m_pDialog_Fields;
-  Dialog_Relationships* m_pDialog_Relationships;
+  Dialog_Fields* m_dialog_fields;
+  Dialog_Relationships* m_dialog_relationships;
   Dialog_AddRelatedTable* m_dialog_addrelatedtable;
   Window_RelationshipsOverview* m_window_relationships_overview;
 
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
-  Dialog_Connection* m_pDialogConnection;
+  Dialog_Connection* m_dialog_connection;
 };
 
 } //namespace Glom

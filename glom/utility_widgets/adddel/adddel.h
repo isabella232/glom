@@ -296,12 +296,12 @@ private:
   bool m_prevent_user_signals;
   bool m_ignore_sheet_signals;
 
-  type_vec_strings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
+  type_vec_strings m_column_ids; //We give each ViewColumn a special ID, so we know where they are after a reorder.
 
-  Glib::ustring m_strTextActiveCell; //value before the change
-  std::unique_ptr<Gtk::Menu> m_pMenuPopup;
-  Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup;
-  Glib::RefPtr<Gio::SimpleAction> m_refContextEdit, m_refContextDelete;
+  Glib::ustring m_text_active_cell; //value before the change
+  std::unique_ptr<Gtk::Menu> m_menu_popup;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_action_Group;
+  Glib::RefPtr<Gio::SimpleAction> m_context_edit, m_context_delete;
 
 protected:
   bool m_auto_add;
@@ -329,7 +329,7 @@ private:
     ~InnerIgnore();
 
   protected:
-    AddDel* m_pOuter;
+    AddDel* m_outer;
     bool m_bPreventUserSignals, m_bIgnoreSheetSignals;
   };
 

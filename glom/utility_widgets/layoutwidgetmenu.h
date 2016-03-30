@@ -49,15 +49,15 @@ public:
     
 protected:
 #ifndef GLOM_ENABLE_CLIENT_ONLY    
-  std::unique_ptr<Gtk::Menu> m_pMenuPopup;
+  std::unique_ptr<Gtk::Menu> m_menu_popup;
 
   //TODO_Performance: //Presumably we waste lots of memory by having this in each layout widget. Maybe we can use one shared menu.
-  Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_action_group;
 
-  Glib::RefPtr<Gio::SimpleAction> m_refContextLayout, m_refContextLayoutProperties;
-  Glib::RefPtr<Gio::SimpleAction> m_refContextAddField, m_refContextAddRelatedRecords, 
-    m_refContextAddGroup, m_refContextAddNotebook, m_refContextAddButton, m_refContextAddText;
-  Glib::RefPtr<Gio::SimpleAction> m_refContextDelete;
+  Glib::RefPtr<Gio::SimpleAction> m_context_layout, m_context_layout_properties;
+  Glib::RefPtr<Gio::SimpleAction> m_context_add_field, m_context_add_related_records,
+    m_context_add_group, m_context_add_notebook, m_context_add_button, m_context_add_text;
+  Glib::RefPtr<Gio::SimpleAction> m_context_delete;
 #endif // GLOM_ENABLE_CLIENT_ONLY
 
 private:

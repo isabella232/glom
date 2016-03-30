@@ -86,12 +86,12 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 : GlomBakery::AppWindow_WithDoc("Glom"),
   Gtk::ApplicationWindow(cobject),
   m_builder(builder),
-  m_pVBox(nullptr),
-  m_VBox_PlaceHolder(Gtk::ORIENTATION_VERTICAL),
-  m_pBoxTop(nullptr),
-  m_pFrame(nullptr),
+  m_vbox(nullptr),
+  m_vbox_placeHolder(Gtk::ORIENTATION_VERTICAL),
+  m_box_top(nullptr),
+  m_frame(nullptr),
   m_about_shown(false),
-  m_pAbout(nullptr),
+  m_about(nullptr),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_window_translations(nullptr),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -107,8 +107,8 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
   Gtk::Window::set_default_icon_name("glom");
 
   //Load widgets from glade file:
-  builder->get_widget("bakery_vbox", m_pBoxTop);
-  builder->get_widget_derived("vbox_frame", m_pFrame); //This one is derived. There's a lot happening here.
+  builder->get_widget("bakery_vbox", m_box_top);
+  builder->get_widget_derived("vbox_frame", m_frame); //This one is derived. There's a lot happening here.
   builder->get_widget_derived("infobar_progress", m_infobar_progress);
 
   //Add menu bar at the top:
@@ -121,7 +121,7 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 
   m_menubar = std::make_unique<Gtk::MenuBar>(gmenu);
   m_menubar->show();
-  m_pBoxTop->pack_start(*m_menubar, Gtk::PACK_SHRINK);
+  m_box_top->pack_start(*m_menubar, Gtk::PACK_SHRINK);
 
   //TODO: Remove our use of add_accelerator() in application.cc,
   //if there is ever an easier way to make the 'accel's from the .glade file just work.
@@ -151,7 +151,7 @@ AppWindow::~AppWindow()
   #ifndef GLOM_ENABLE_CLIENT_ONLY
   if(m_window_translations)
   {
-    m_pFrame->remove_view(m_window_translations);
+    m_frame->remove_view(m_window_translations);
     delete m_window_translations;
   }
 
@@ -160,8 +160,8 @@ AppWindow::~AppWindow()
 
   #endif // !GLOM_ENABLE_CLIENT_ONLY
   
-  delete m_pAbout;
-  m_pAbout = nullptr;
+  delete m_about;
+  m_about = nullptr;
 
   //This was set in the constructor:
   global_appwindow = nullptr;
@@ -205,7 +205,7 @@ bool AppWindow::init_with_document(const Glib::ustring& document_uri, bool resto
 {
   init(); //calls init_menus()
 
-  //m_pFrame->set_shadow_type(Gtk::SHADOW_IN);
+  //m_frame->set_shadow_type(Gtk::SHADOW_IN);
 
   if(document_uri.empty())
   {
@@ -259,42 +259,42 @@ void AppWindow::init_menus_file()
   // File menu
 
   //Build actions:
-  m_refActionGroup_File = Gio::SimpleActionGroup::create();
+  m_action_group_file = Gio::SimpleActionGroup::create();
 
   //File actions
-  m_refActionGroup_File->add_action("new",
+  m_action_group_file->add_action("new",
     sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_file_new));
-  m_refActionGroup_File->add_action("open",
+  m_action_group_file->add_action("open",
     sigc::mem_fun((GlomBakery::AppWindow_WithDoc&)*this, &GlomBakery::AppWindow_WithDoc::on_menu_file_open));
 
   Glib::RefPtr<Gio::SimpleAction> action;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  action = m_refActionGroup_File->add_action("save-as-example",
+  action = m_action_group_file->add_action("save-as-example",
     sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_file_save_as_example));
   add_developer_action(action);
 
-  action = m_refActionGroup_File->add_action("export",
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
+  action = m_action_group_file->add_action("export",
+    sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_file_export));
   m_listTableSensitiveActions.emplace_back(action);
 
-  action = m_refActionGroup_File->add_action("import",
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_import));
+  action = m_action_group_file->add_action("import",
+    sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_file_import));
   m_listTableSensitiveActions.emplace_back(action);
 
-  m_toggleaction_network_shared = m_refActionGroup_File->add_action_bool("share",
+  m_toggleaction_network_shared = m_action_group_file->add_action_bool("share",
     sigc::mem_fun(*this, &AppWindow::on_menu_file_toggle_share) );
   m_listTableSensitiveActions.emplace_back(m_toggleaction_network_shared);
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
-  action = m_refActionGroup_File->add_action("print",
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print) );
+  action = m_action_group_file->add_action("print",
+    sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_file_print) );
   m_listTableSensitiveActions.emplace_back(action);
 
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   auto action_print_edit =
-    m_refActionGroup_File->add_action("edit-print-layouts",
-      sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print_edit_layouts));
+    m_action_group_file->add_action("edit-print-layouts",
+      sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_file_print_edit_layouts));
   m_listDeveloperActions.emplace_back(action_print_edit);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -302,7 +302,7 @@ void AppWindow::init_menus_file()
   add_action("close",
     sigc::mem_fun((GlomBakery::AppWindow_WithDoc&)*this, &GlomBakery::AppWindow_WithDoc::on_menu_file_close));
 
-  insert_action_group("file", m_refActionGroup_File);
+  insert_action_group("file", m_action_group_file);
 }
 
 void AppWindow::init_menus()
@@ -312,107 +312,107 @@ void AppWindow::init_menus()
 
 
   //Build actions:
-  m_refActionGroup_Tables = Gio::SimpleActionGroup::create();
+  m_action_group_tables = Gio::SimpleActionGroup::create();
 
   Glib::RefPtr<Gio::SimpleAction> action;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  action = m_refActionGroup_Tables->add_action("edit-tables",
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_EditTables) );
+  action = m_action_group_tables->add_action("edit-tables",
+    sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_Tables_EditTables) );
   m_listDeveloperActions.emplace_back(action);
 
 /* Commented out because it is useful but confusing to new users:
-  action = m_refActionGroup_Tables->add_action("GlomAction_Menu_AddRelatedTable", //_("Add _Related Table"));
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_AddRelatedTable) );
+  action = m_action_group_tables->add_action("GlomAction_Menu_AddRelatedTable", //_("Add _Related Table"));
+    sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_Tables_AddRelatedTable) );
   m_listDeveloperActions.emplace_back(action);
 */
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  insert_action_group("tables", m_refActionGroup_Tables);
+  insert_action_group("tables", m_action_group_tables);
 
 
   //"Reports" menu:
-  m_refActionGroup_Reports = Gio::SimpleActionGroup::create();
+  m_action_group_reports = Gio::SimpleActionGroup::create();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_refActionGroup_Reports->add_action("edit-reports",
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Reports_EditReports) );
+  m_action_group_reports->add_action("edit-reports",
+    sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_Reports_EditReports) );
   m_listDeveloperActions.emplace_back(action);
   m_listTableSensitiveActions.emplace_back(action);
 #endif
 
-  insert_action_group("reports", m_refActionGroup_Developer);
+  insert_action_group("reports", m_action_group_developer);
 
   //Developer menu:
-  m_refActionGroup_Developer = Gio::SimpleActionGroup::create();
+  m_action_group_developer = Gio::SimpleActionGroup::create();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_action_menu_developer_usermode =
-    m_refActionGroup_Developer->add_action_radio_integer("usermode",
+    m_action_group_developer->add_action_radio_integer("usermode",
       sigc::mem_fun(*this, &AppWindow::on_menu_developer_usermode),
       Utils::to_utype(AppState::userlevels::OPERATOR) );
 
-  action = m_refActionGroup_Developer->add_action("database-preferences",
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_database_preferences) );
+  action = m_action_group_developer->add_action("database-preferences",
+    sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_developer_database_preferences) );
   m_listDeveloperActions.emplace_back(action);
 
-  action = m_refActionGroup_Developer->add_action("fields",
-   sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_fields) );
-  m_listDeveloperActions.emplace_back(action);
-  m_listTableSensitiveActions.emplace_back(action);
-
-  action = m_refActionGroup_Developer->add_action("relationships-overview",
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships_overview) );
+  action = m_action_group_developer->add_action("fields",
+   sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_developer_fields) );
   m_listDeveloperActions.emplace_back(action);
   m_listTableSensitiveActions.emplace_back(action);
 
-  action = m_refActionGroup_Developer->add_action("relationships",
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships) );
+  action = m_action_group_developer->add_action("relationships-overview",
+    sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_developer_relationships_overview) );
   m_listDeveloperActions.emplace_back(action);
   m_listTableSensitiveActions.emplace_back(action);
 
-  m_action_developer_users = m_refActionGroup_Developer->add_action("users",
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_users));
+  action = m_action_group_developer->add_action("relationships",
+    sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_developer_relationships) );
+  m_listDeveloperActions.emplace_back(action);
+  m_listTableSensitiveActions.emplace_back(action);
+
+  m_action_developer_users = m_action_group_developer->add_action("users",
+    sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_developer_users));
   m_listDeveloperActions.emplace_back(m_action_developer_users);
 
-  action = m_refActionGroup_Developer->add_action("print-layouts",
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_print_layouts));
+  action = m_action_group_developer->add_action("print-layouts",
+    sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_developer_print_layouts));
   m_listDeveloperActions.emplace_back(action);
   m_listTableSensitiveActions.emplace_back(action);
 
-  action = m_refActionGroup_Developer->add_action("reports",
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_reports));
+  action = m_action_group_developer->add_action("reports",
+    sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_developer_reports));
   m_listDeveloperActions.emplace_back(action);
   m_listTableSensitiveActions.emplace_back(action);
 
-  action = m_refActionGroup_Developer->add_action("script-library",
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_script_library));
+  action = m_action_group_developer->add_action("script-library",
+    sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_developer_script_library));
   m_listDeveloperActions.emplace_back(action);
 
-  action = m_refActionGroup_Developer->add_action("layout",
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_layout));
+  action = m_action_group_developer->add_action("layout",
+    sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_developer_layout));
   m_listDeveloperActions.emplace_back(action);
   m_listTableSensitiveActions.emplace_back(action);
 
-  action = m_refActionGroup_Developer->add_action("change-language",
+  action = m_action_group_developer->add_action("change-language",
     sigc::mem_fun(*this, &AppWindow::on_menu_developer_changelanguage));
   m_listDeveloperActions.emplace_back(action);
 
-  action = m_refActionGroup_Developer->add_action("translations",
+  action = m_action_group_developer->add_action("translations",
     sigc::mem_fun(*this, &AppWindow::on_menu_developer_translations));
   m_listDeveloperActions.emplace_back(action);
 
   //"Active Platform" menu:
-  m_action_menu_developer_active_platform = m_refActionGroup_Developer->add_action_radio_string("active-platform",
+  m_action_menu_developer_active_platform = m_action_group_developer->add_action_radio_string("active-platform",
     sigc::mem_fun(*this, &AppWindow::on_menu_developer_active_platform),
     "");
   m_listDeveloperActions.emplace_back(m_action_menu_developer_active_platform);
 
-  action = m_refActionGroup_Developer->add_action("export-backup",
+  action = m_action_group_developer->add_action("export-backup",
     sigc::mem_fun(*this, &AppWindow::on_menu_developer_export_backup));
   m_listDeveloperActions.emplace_back(action);
 
-  action = m_refActionGroup_Developer->add_action("restore-backup",
+  action = m_action_group_developer->add_action("restore-backup",
     sigc::mem_fun(*this, &AppWindow::on_menu_developer_restore_backup));
   m_listDeveloperActions.emplace_back(action);
 
@@ -420,22 +420,22 @@ void AppWindow::init_menus()
   //though it mostly only exists because it is not quite ready to be on by default:
   //Note to translators: Drag and Drop is part of the name, not a verb or action:
   m_action_enable_layout_drag_and_drop =
-    m_refActionGroup_Developer->add_action_bool("drag-and-drop-layout",
+    m_action_group_developer->add_action_bool("drag-and-drop-layout",
       sigc::mem_fun(*this, &AppWindow::on_menu_developer_enable_layout_drag_and_drop));
   m_listDeveloperActions.emplace_back(m_action_enable_layout_drag_and_drop);
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  insert_action_group("developer", m_refActionGroup_Developer);
+  insert_action_group("developer", m_action_group_developer);
 
   
-  m_refHelpActionGroup = Gio::SimpleActionGroup::create();
+  m_help_action_group = Gio::SimpleActionGroup::create();
  
-  m_refHelpActionGroup->add_action("about",
+  m_help_action_group->add_action("about",
     sigc::mem_fun(*this, &AppWindow::on_menu_help_about) );
-  m_refHelpActionGroup->add_action("contents",
+  m_help_action_group->add_action("contents",
     sigc::mem_fun(*this, &AppWindow::on_menu_help_contents) );
-  insert_action_group("help", m_refHelpActionGroup);                       
+  insert_action_group("help", m_help_action_group);
 
   update_table_sensitive_ui();
 
@@ -446,26 +446,26 @@ void AppWindow::init_menus()
 
 void AppWindow::on_menu_help_about()
 {
-  if(m_pAbout && m_about_shown) // "About" box hasn't been closed, so just raise it
+  if(m_about && m_about_shown) // "About" box hasn't been closed, so just raise it
   {
-    m_pAbout->set_transient_for(*this);
+    m_about->set_transient_for(*this);
 
-    auto about_win = m_pAbout->get_window();
+    auto about_win = m_about->get_window();
     about_win->show();
     about_win->raise();
   }
   else
   {
     //Re-create About box:
-    delete m_pAbout;
-    m_pAbout = new Gtk::AboutDialog;
+    delete m_about;
+    m_about = new Gtk::AboutDialog;
 
-    m_pAbout->set_program_name(m_strAppName);
-    m_pAbout->set_comments(_("A Database GUI"));
-    m_pAbout->set_version(PACKAGE_VERSION);
-    m_pAbout->set_copyright(_("© 2000-2011 Murray Cumming, Openismus GmbH"));
+    m_about->set_program_name(m_strAppName);
+    m_about->set_comments(_("A Database GUI"));
+    m_about->set_version(PACKAGE_VERSION);
+    m_about->set_copyright(_("© 2000-2011 Murray Cumming, Openismus GmbH"));
     const std::vector<Glib::ustring> vecAuthors({"Murray Cumming <murrayc@murrayc.com>"});
-    m_pAbout->set_authors(vecAuthors);
+    m_about->set_authors(vecAuthors);
     
     //For some reason this use of the resource:// syntax does not work:
     const char* about_icon_name = "48x48/glom.png";
@@ -486,15 +486,15 @@ void AppWindow::on_menu_help_about()
     }
 
     if(logo)
-      m_pAbout->set_logo(logo);
+      m_about->set_logo(logo);
     else
       std::cout << G_STRFUNC << ": Could not load icon from resource path=" << glom_icon_path << std::endl;
 
-    m_pAbout->signal_hide().connect( sigc::mem_fun(*this, &AppWindow::on_about_close) );
+    m_about->signal_hide().connect( sigc::mem_fun(*this, &AppWindow::on_about_close) );
     m_about_shown = true;
-    static_cast<Gtk::Dialog*>(m_pAbout)->run(); //show() would be better. see below:
-    m_pAbout->hide();
-    //m_pAbout->show(); //TODO: respond to the OK button.
+    static_cast<Gtk::Dialog*>(m_about)->run(); //show() would be better. see below:
+    m_about->hide();
+    //m_about->show(); //TODO: respond to the OK button.
   }
 }
 
@@ -505,14 +505,14 @@ void AppWindow::on_about_close()
 
 void AppWindow::on_menu_file_toggle_share()
 {
-  if(!m_pFrame)
+  if(!m_frame)
     return;
 
   //The state is not changed automatically:
   bool active = false;
   m_toggleaction_network_shared->get_state(active);
 
-  const auto changed = m_pFrame->attempt_toggle_shared(!active);
+  const auto changed = m_frame->attempt_toggle_shared(!active);
 
   if(changed)
     m_toggleaction_network_shared->change_state(!active);
@@ -520,22 +520,22 @@ void AppWindow::on_menu_file_toggle_share()
 
 void AppWindow::on_menu_developer_usermode(int parameter)
 {
-  if(!m_pFrame)
+  if(!m_frame)
     return;
 
   const bool developer = parameter == Utils::to_utype(AppState::userlevels::DEVELOPER);
 
   bool changed = false;
   if(developer)
-    changed = m_pFrame->attempt_change_usermode_to_developer();
+    changed = m_frame->attempt_change_usermode_to_developer();
   else
-    changed = m_pFrame->attempt_change_usermode_to_operator();
+    changed = m_frame->attempt_change_usermode_to_operator();
 
   //Change the menu's state:
   if(changed)
     m_action_menu_developer_usermode->change_state(parameter);
 
-  m_pFrame->set_enable_layout_drag_and_drop(false);
+  m_frame->set_enable_layout_drag_and_drop(false);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -781,11 +781,11 @@ void AppWindow::init_create_document()
 
 
     //Tell document about view:
-    m_document->set_view(m_pFrame);
+    m_document->set_view(m_frame);
 
     //Tell view about document:
     //(This calls set_document() in the child views too.)
-    m_pFrame->set_document(std::static_pointer_cast<Document>(m_document));
+    m_frame->set_document(std::static_pointer_cast<Document>(m_document));
   }
 
   GlomBakery::AppWindow_WithDoc::init_create_document(); //Sets window title. Doesn't recreate doc.
@@ -853,7 +853,7 @@ bool AppWindow::on_document_load()
 {
   //Link to the database described in the document.
   //Need to ask user for user/password:
-  //m_pFrame->load_from_document();
+  //m_frame->load_from_document();
   auto document = std::static_pointer_cast<Document>(get_document());
   if(!document)
     return false;
@@ -1010,7 +1010,7 @@ bool AppWindow::on_document_load()
       if(is_example || is_backup)
       {
         //The user has already had the chance to specify a new filename and database name.
-        test = m_pFrame->connection_request_password_and_choose_new_database_name();
+        test = m_frame->connection_request_password_and_choose_new_database_name();
       }
       else
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -1031,7 +1031,7 @@ bool AppWindow::on_document_load()
         }
 
         bool database_not_found = false;
-        test = m_pFrame->connection_request_password_and_attempt(database_not_found, m_temp_username, m_temp_password);
+        test = m_frame->connection_request_password_and_attempt(database_not_found, m_temp_username, m_temp_password);
         m_temp_username = Glib::ustring();
         m_temp_password = Glib::ustring();
 
@@ -1103,7 +1103,7 @@ bool AppWindow::on_document_load()
       document_history_add(document->get_file_uri());
 
       //Open default table, or show list of tables instead:
-      m_pFrame->do_menu_Navigate_Table(true /* open the default if there is one */);
+      m_frame->do_menu_Navigate_Table(true /* open the default if there is one */);
     }
   }
 
@@ -1227,8 +1227,8 @@ void AppWindow::update_table_sensitive_ui()
 
   bool has_table = false;
 
-  if(m_pFrame)
-    has_table = !m_pFrame->get_shown_table_name().empty();
+  if(m_frame)
+    has_table = !m_frame->get_shown_table_name().empty();
 
   for(const auto& action : m_listTableSensitiveActions)
   { 
@@ -1418,7 +1418,7 @@ void AppWindow::existing_or_new_new()
    if(connection_pool)
      connection_pool->set_get_document_func( std::bind(&AppWindow::on_connection_pool_get_document, this) );
 
-    const auto connected = m_pFrame->connection_request_password_and_choose_new_database_name();
+    const auto connected = m_frame->connection_request_password_and_choose_new_database_name();
     if(!connected)
     {
       // Unset URI so that the offer_new_or_existing does not disappear
@@ -1428,13 +1428,13 @@ void AppWindow::existing_or_new_new()
     }
     else
     {
-      const auto db_created = m_pFrame->create_database(document->get_connection_database(), db_title);
+      const auto db_created = m_frame->create_database(document->get_connection_database(), db_title);
       if(db_created)
       {
         const auto database_name_used = document->get_connection_database();
         ConnectionPool::get_instance()->set_database(database_name_used);
         document->set_database_title_original(db_title);
-        m_pFrame->set_databases_selected(database_name_used);
+        m_frame->set_databases_selected(database_name_used);
 
         // Add the document to recent files
 	    document_history_add(document->get_file_uri());
@@ -1453,26 +1453,26 @@ void AppWindow::existing_or_new_new()
 
 void AppWindow::set_mode_data()
 {
-  if(!m_pFrame)
+  if(!m_frame)
     return;
 
   //Update the visual feedback in the menu.
   //This doesn't trigger the activate signal:
   m_action_mode_find->change_state(false);
 
-  m_pFrame->set_mode_data();
+  m_frame->set_mode_data();
 }
 
 void AppWindow::set_mode_find()
 {
-  if(!m_pFrame)
+  if(!m_frame)
     return;
 
   //Update the visual feedback in the menu.
   //This doesn't trigger the activate signal:
   m_action_mode_find->change_state(true);
 
-  m_pFrame->set_mode_find();
+  m_frame->set_mode_find();
 }
 
 void AppWindow::on_menu_help_contents()
@@ -1540,7 +1540,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
 
   //Create the database: (This will show a connection dialog)
   connection_pool->set_database( Glib::ustring() );
-  const auto db_created = m_pFrame->create_database(db_name, document->get_database_title_original());
+  const auto db_created = m_frame->create_database(db_name, document->get_database_title_original());
 
   if(!db_created)
   {
@@ -1718,7 +1718,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
     return false;
   }
 
-  //m_pFrame->add_standard_tables(); //Add internal, hidden, tables.
+  //m_frame->add_standard_tables(); //Add internal, hidden, tables.
 
   //Add any extra groups from the example file.
   //The backup file refers to these,
@@ -1801,16 +1801,16 @@ static Glib::ustring escape_for_action_name(const Glib::ustring& str)
 
 void AppWindow::fill_menu_tables()
 {
-  m_listNavTableActions.clear();
+  m_nav_table_actions.clear();
   //TODO: Clear existing items
 
-  if(m_refNavTablesActionGroup)
+  if(m_nav_tables_action_group)
   {
     remove_action_group(ACTION_GROUP_NAME_TABLES);
-    m_refNavTablesActionGroup.reset();
+    m_nav_tables_action_group.reset();
   }
 
-  m_refNavTablesActionGroup = Gio::SimpleActionGroup::create();
+  m_nav_tables_action_group = Gio::SimpleActionGroup::create();
 
   auto object =
     m_builder->get_object("tables-list");
@@ -1844,18 +1844,18 @@ void AppWindow::fill_menu_tables()
   
       menu->append(title, ACTION_GROUP_NAME_TABLES + "." + action_name);
 
-      auto action = m_refNavTablesActionGroup->add_action(action_name,
-        sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_box_tables_selected), table_info->get_name()) );
-      m_listNavTableActions.emplace_back(action);
+      auto action = m_nav_tables_action_group->add_action(action_name,
+        sigc::bind( sigc::mem_fun(*m_frame, &Frame_Glom::on_box_tables_selected), table_info->get_name()) );
+      m_nav_table_actions.emplace_back(action);
     }
   }
 
-  insert_action_group(ACTION_GROUP_NAME_TABLES, m_refNavTablesActionGroup);
+  insert_action_group(ACTION_GROUP_NAME_TABLES, m_nav_tables_action_group);
 }
 
 void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
 {
-  m_listNavReportActions.clear();
+  m_nav_report_actions.clear();
 
   //Remove existing items.
   auto object =
@@ -1874,13 +1874,13 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
     menu->remove(0);
   }
 
-  if(m_refNavReportsActionGroup)
+  if(m_nav_reports_action_group)
   {
     remove_action_group(ACTION_GROUP_NAME_REPORTS);
-    m_refNavReportsActionGroup.reset();
+    m_nav_reports_action_group.reset();
   }
 
-  m_refNavReportsActionGroup = Gio::SimpleActionGroup::create();
+  m_nav_reports_action_group = Gio::SimpleActionGroup::create();
 
   const auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
@@ -1902,30 +1902,30 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
   
         menu->append(title, ACTION_GROUP_NAME_REPORTS + "." + report_name);
 
-        auto action = m_refNavReportsActionGroup->add_action(action_name,
-          sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_report_selected), report->get_name()) );
-        m_listNavReportActions.emplace_back(action);
+        auto action = m_nav_reports_action_group->add_action(action_name,
+          sigc::bind( sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_report_selected), report->get_name()) );
+        m_nav_report_actions.emplace_back(action);
      }
     }
   }
 
-  insert_action_group(ACTION_GROUP_NAME_REPORTS, m_refNavReportsActionGroup);
+  insert_action_group(ACTION_GROUP_NAME_REPORTS, m_nav_reports_action_group);
 }
 
 void AppWindow::enable_menu_print_layouts_details(bool enable)
 {
-  if(!m_refNavPrintLayoutsActionGroup)
+  if(!m_nav_print_layouts_action_group)
     return;
 
   //TODO: See https://bugzilla.gnome.org/show_bug.cgi?id=708149 about having this API in GSimpleActionGroup:
-  //m_refNavPrintLayoutsActionGroup->set_enabled(enable);
+  //m_nav_print_layouts_action_group->set_enabled(enable);
 
   //Enable/Disable each action in the group:
   //TODO: Suggest a simpler get_actions() method?
-  for(const auto& name : m_refNavPrintLayoutsActionGroup->list_actions())
+  for(const auto& name : m_nav_print_layouts_action_group->list_actions())
   {
     auto action = 
-      Glib::RefPtr<Gio::SimpleAction>::cast_dynamic(m_refNavPrintLayoutsActionGroup->lookup_action(name));
+      Glib::RefPtr<Gio::SimpleAction>::cast_dynamic(m_nav_print_layouts_action_group->lookup_action(name));
     if(action)
       action->set_enabled(enable);
   }
@@ -1935,7 +1935,7 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
 {
   //TODO: This is copy/pasted from fill_menu_reports(). Can we generalize it?
 
-  m_listNavPrintLayoutActions.clear();
+  m_nav_print_layout_actions.clear();
 
   //Remove existing items.
   auto object =
@@ -1954,13 +1954,13 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
     menu->remove(0);
   }
 
-  if(m_refNavPrintLayoutsActionGroup)
+  if(m_nav_print_layouts_action_group)
   {
     remove_action_group(ACTION_GROUP_NAME_PRINT_LAYOUTS);
-    m_refNavPrintLayoutsActionGroup.reset();
+    m_nav_print_layouts_action_group.reset();
   }
 
-  m_refNavPrintLayoutsActionGroup = Gio::SimpleActionGroup::create();
+  m_nav_print_layouts_action_group = Gio::SimpleActionGroup::create();
 
   auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
@@ -1985,16 +1985,16 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
 
         menu->append(title, ACTION_GROUP_NAME_PRINT_LAYOUTS + "." + action_name);
 
-        auto action = m_refNavPrintLayoutsActionGroup->add_action(action_name,
-          sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_print_layout_selected), name) );
+        auto action = m_nav_print_layouts_action_group->add_action(action_name,
+          sigc::bind( sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_print_layout_selected), name) );
 
-        m_listNavPrintLayoutActions.emplace_back(action);
+        m_nav_print_layout_actions.emplace_back(action);
       }
     }
   }
 #endif
 
-  insert_action_group(ACTION_GROUP_NAME_PRINT_LAYOUTS, m_refNavPrintLayoutsActionGroup);
+  insert_action_group(ACTION_GROUP_NAME_PRINT_LAYOUTS, m_nav_print_layouts_action_group);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -2325,7 +2325,7 @@ void AppWindow::on_menu_developer_changelanguage()
     int failure_code = 0;
     get_document()->load(failure_code);
 
-    m_pFrame->show_table_refresh(); //load() doesn't seem to refresh the view.
+    m_frame->show_table_refresh(); //load() doesn't seem to refresh the view.
   }
 
   delete dialog;
@@ -2338,7 +2338,7 @@ void AppWindow::on_menu_developer_translations()
     Utils::get_glade_widget_derived_with_warning(m_window_translations);
     if(m_window_translations)
     {
-      m_pFrame->add_view(m_window_translations);
+      m_frame->add_view(m_window_translations);
       m_window_translations->set_transient_for(*this);
       m_window_translations->set_document(std::static_pointer_cast<Document>(m_document));
       m_window_translations->load_from_document();
@@ -2363,7 +2363,7 @@ void AppWindow::on_menu_developer_active_platform(const Glib::ustring& parameter
   if(document)
    document->set_active_layout_platform(parameter);
 
-  m_pFrame->show_table_refresh();
+  m_frame->show_table_refresh();
 }
 
 void AppWindow::on_menu_developer_export_backup()
@@ -2441,7 +2441,7 @@ void AppWindow::on_menu_developer_restore_backup()
 
 void AppWindow::do_print_layout(const Glib::ustring& print_layout_name, bool preview, Gtk::Window* transient_for)
 {
-  m_pFrame->do_print_layout(print_layout_name, preview, transient_for);
+  m_frame->do_print_layout(print_layout_name, preview, transient_for);
 }
 
 bool AppWindow::do_restore_backup(const Glib::ustring& backup_uri)
@@ -2469,7 +2469,7 @@ void AppWindow::on_menu_developer_enable_layout_drag_and_drop()
   bool state = false;
   m_action_enable_layout_drag_and_drop->get_state(state);
 
-  m_pFrame->set_enable_layout_drag_and_drop(state); //TODO: Change the menu's state.
+  m_frame->set_enable_layout_drag_and_drop(state); //TODO: Change the menu's state.
 }
 
 
@@ -2477,7 +2477,7 @@ void AppWindow::on_window_translations_hide()
 {
   if(m_window_translations)
   {
-    m_pFrame->on_developer_dialog_hide();
+    m_frame->on_developer_dialog_hide();
   }
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -2514,12 +2514,12 @@ void AppWindow::document_history_add(const Glib::ustring& file_uri)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void AppWindow::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name)
 {
-  m_pFrame->do_menu_developer_fields(parent, table_name);
+  m_frame->do_menu_developer_fields(parent, table_name);
 }
 
 void AppWindow::do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name)
 {
-  m_pFrame->do_menu_developer_relationships(parent, table_name);
+  m_frame->do_menu_developer_relationships(parent, table_name);
 }
 
 std::shared_ptr<Document> AppWindow::on_connection_pool_get_document()
@@ -2537,11 +2537,11 @@ void AppWindow::update_window_title()
   if(!document)
     return;
 
-  if(!m_pFrame)
+  if(!m_frame)
     return;
 
   //Show the table title:
-  const auto table_name = m_pFrame->get_shown_table_name();
+  const auto table_name = m_frame->get_shown_table_name();
   Glib::ustring table_label = document->get_table_title(table_name, AppWindow::get_current_locale());
   if(!table_label.empty())
   {
@@ -2574,40 +2574,40 @@ void AppWindow::update_window_title()
 
 void AppWindow::show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value)
 {
-  if(!m_pFrame)
+  if(!m_frame)
     return;
 
-  m_pFrame->show_table(table_name, primary_key_value);
+  m_frame->show_table(table_name, primary_key_value);
 }
 
 void AppWindow::show_table_list(const Glib::ustring& table_name)
 {
-  if(!m_pFrame)
+  if(!m_frame)
     return;
 
-  m_pFrame->show_table(table_name);
+  m_frame->show_table(table_name);
 }
 
 
 void AppWindow::print_report(const Glib::ustring& report_name)
 {
-  if(!m_pFrame)
+  if(!m_frame)
     return;
 
-  m_pFrame->on_menu_report_selected(report_name);
+  m_frame->on_menu_report_selected(report_name);
 }
 
 void AppWindow::print_layout()
 {
-  if(!m_pFrame)
+  if(!m_frame)
     return;
 
-  m_pFrame->on_menu_file_print();
+  m_frame->on_menu_file_print();
 }
 
 void AppWindow::start_new_record()
 {
-  m_pFrame->on_menu_add_record();
+  m_frame->on_menu_add_record();
 }
 
 void AppWindow::set_progress_message(const Glib::ustring& message)
@@ -2630,7 +2630,7 @@ void AppWindow::set_progress_message(const Glib::ustring& message)
   if(m_menubar)
     m_menubar->set_sensitive(false);
 
-  m_pFrame->set_sensitive(false);
+  m_frame->set_sensitive(false);
 }
 
 void AppWindow::pulse_progress_message()
@@ -2646,7 +2646,7 @@ void AppWindow::clear_progress_message()
   if(m_menubar)
     m_menubar->set_sensitive();
 
-  m_pFrame->set_sensitive();
+  m_frame->set_sensitive();
 }
 
 void AppWindow::set_current_locale(const Glib::ustring& locale)
@@ -2740,7 +2740,7 @@ void AppWindow::init_menus_edit()
   //Edit menu
   
   //Build actions:
-  m_refActionGroup_Edit = Gio::SimpleActionGroup::create();
+  m_action_group_edit = Gio::SimpleActionGroup::create();
 
   add_action("cut",
     sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_cut_activate));
@@ -2752,17 +2752,17 @@ void AppWindow::init_menus_edit()
     //TODO? sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_clear_activate));
 
   //We remember this action, so that it can be explicitly activated later.
-  m_action_mode_find = m_refActionGroup_Edit->add_action_bool("find",
+  m_action_mode_find = m_action_group_edit->add_action_bool("find",
     sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_find),
     false);
   m_listTableSensitiveActions.emplace_back(m_action_mode_find);
 
-  insert_action_group("edit", m_refActionGroup_Edit);
+  insert_action_group("edit", m_action_group_edit);
 }
 
 void AppWindow::add(Gtk::Widget& child)
 {
-  m_VBox_PlaceHolder.pack_start(child);
+  m_vbox_placeHolder.pack_start(child);
 }
 
 bool AppWindow::on_delete_event(GdkEventAny* /* event */)
@@ -2958,9 +2958,9 @@ void AppWindow::on_menu_edit_find()
   m_action_mode_find->change_state(active);
 
   if(active)
-    m_pFrame->set_mode_find();
+    m_frame->set_mode_find();
   else
-    m_pFrame->set_mode_data();
+    m_frame->set_mode_data();
 }
 
 } //namespace Glom

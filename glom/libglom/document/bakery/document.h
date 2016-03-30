@@ -129,7 +129,7 @@ protected:
   Glib::ustring m_file_uri;
   Glib::ustring m_file_extension;
 
-  ViewBase* m_pView;
+  ViewBase* m_view;
 
   type_signal_modified signal_modified_;
 

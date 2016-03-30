@@ -52,7 +52,7 @@ private:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Gtk::Button m_button_format;
-  Dialog_Layout_Export* m_pDialogLayout;
+  Dialog_Layout_Export* m_dialog_layout;
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
   Glib::ustring m_table_name;

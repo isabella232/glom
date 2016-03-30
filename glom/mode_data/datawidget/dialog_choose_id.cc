@@ -36,9 +36,9 @@ const bool Dialog_ChooseID::glade_developer(false);
 
 Dialog_ChooseID::Dialog_ChooseID()
 : m_label_table_name(nullptr),
-  m_pBox_QuickFind(nullptr),
-  m_pEntry_QuickFind(nullptr),
-  m_pButton_QuickFind(nullptr),
+  m_box_quick_find(nullptr),
+  m_entry_quick_find(nullptr),
+  m_button_quick_find(nullptr),
   m_vbox_parent(nullptr),
   m_document(nullptr),
   m_stage(enumStage::INVALID)
@@ -48,9 +48,9 @@ Dialog_ChooseID::Dialog_ChooseID()
 Dialog_ChooseID::Dialog_ChooseID(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_label_table_name(nullptr),
-  m_pBox_QuickFind(nullptr),
-  m_pEntry_QuickFind(nullptr),
-  m_pButton_QuickFind(nullptr),
+  m_box_quick_find(nullptr),
+  m_entry_quick_find(nullptr),
+  m_button_quick_find(nullptr),
   m_vbox_parent(nullptr),
   m_document(nullptr),
   m_stage(enumStage::INVALID)
@@ -58,11 +58,11 @@ Dialog_ChooseID::Dialog_ChooseID(BaseObjectType* cobject, const Glib::RefPtr<Gtk
   builder->get_widget("label_table_name", m_label_table_name);
   builder->get_widget("vbox_parent", m_vbox_parent);
 
-  builder->get_widget("hbox_quickfind", m_pBox_QuickFind);
-  builder->get_widget("entry_quickfind", m_pEntry_QuickFind);
-  builder->get_widget("button_quickfind", m_pButton_QuickFind);
+  builder->get_widget("hbox_quickfind", m_box_quick_find);
+  builder->get_widget("entry_quickfind", m_entry_quick_find);
+  builder->get_widget("button_quickfind", m_button_quick_find);
 
-  m_pButton_QuickFind->signal_clicked().connect(
+  m_button_quick_find->signal_clicked().connect(
     sigc::mem_fun(*this, &Dialog_ChooseID::on_button_quickfind) );
 
   setup();
@@ -98,7 +98,7 @@ bool Dialog_ChooseID::get_id_chosen(Gnome::Gda::Value& chosen_id) const
 
 void Dialog_ChooseID::on_button_quickfind()
 {
-  const auto criteria = m_pEntry_QuickFind->get_text();
+  const auto criteria = m_entry_quick_find->get_text();
   if(criteria.empty())
   {
     Glib::ustring message = _("You have not entered any quick find criteria.");
@@ -153,14 +153,14 @@ void Dialog_ChooseID::update_ui_for_stage()
 
   if(m_stage == enumStage::FIND)
   {
-    m_pBox_QuickFind->show();
+    m_box_quick_find->show();
 
     m_box_find.show();
     m_vbox_parent->pack_start(m_box_find);
   }
   else if(m_stage == enumStage::SELECT)
   {
-    m_pBox_QuickFind->hide();
+    m_box_quick_find->hide();
 
     m_box_select.show();
     m_vbox_parent->pack_start(m_box_select);

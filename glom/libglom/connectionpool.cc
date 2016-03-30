@@ -289,9 +289,9 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
       return connection_cached;
     }
     //If the connection is already open (because it is being used by somebody):
-    else if(m_refGdaConnection)
+    else if(m_gda_connection)
     {
-      std::shared_ptr<SharedConnection> sharedConnection( new SharedConnection(m_refGdaConnection) );
+      std::shared_ptr<SharedConnection> sharedConnection( new SharedConnection(m_gda_connection) );
 
       //Ask for notification when the SharedConnection has been finished with:
       //TODO: Note that we are overwriting the connection to a signal of a
@@ -315,7 +315,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
     }
     else
     {
-      m_refGdaConnection = m_backend->connect(m_database, get_user(), get_password(), m_fake_connection);
+      m_gda_connection = m_backend->connect(m_database, get_user(), get_password(), m_fake_connection);
 
       {
         //Allow get_meta_store_data() to succeed:
@@ -323,7 +323,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
         //std::cout << "DEBUG: Calling update_meta_store_data_types() ...\n";
         try
         {
-          m_refGdaConnection->update_meta_store_data_types();
+          m_gda_connection->update_meta_store_data_types();
         }
         catch(const Glib::Error& ex)
         {
@@ -347,7 +347,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
         // Connection succeeded
         // Create the fieldtypes member if it has not already been done:
         if(!m_field_types)
-          m_field_types = std::make_shared<FieldTypes>(m_refGdaConnection);
+          m_field_types = std::make_shared<FieldTypes>(m_gda_connection);
 
 #ifndef G_OS_WIN32
         //Let other clients discover this server via avahi:
@@ -360,7 +360,7 @@ std::shared_ptr<SharedConnection> ConnectionPool::connect()
           avahi_start_publishing(); //Stopped in the signal_finished handler.
 #endif // !G_OS_WIN32
 
-        return connect(); //Call this method recursively. This time m_refGdaConnection exists.
+        return connect(); //Call this method recursively. This time m_gda_connection exists.
       }
     }
   }
@@ -431,7 +431,7 @@ bool ConnectionPool::convert_backup(const SlotProgress& slot_progress, const std
   {
     //update_meta_store_table_names() has been known to throw an exception.
     //Glom is mostly unusable when it fails, but that's still better than a crash.
-    m_refGdaConnection->update_meta_store_table_names(m_backend->get_public_schema_name());
+    m_gda_connection->update_meta_store_table_names(m_backend->get_public_schema_name());
   }
   catch(const Glib::Error& ex)
   {
@@ -500,10 +500,10 @@ void ConnectionPool::invalidate_connection()
   connection_cached_timeout_connection.disconnect();
   connection_cached_finished_connection.disconnect();
 
-  if(m_refGdaConnection)
-    m_refGdaConnection->close();
+  if(m_gda_connection)
+    m_gda_connection->close();
     
-  m_refGdaConnection.reset();
+  m_gda_connection.reset();
   m_sharedconnection_refcount = 0;
 
   m_field_types.reset();
@@ -522,9 +522,9 @@ void ConnectionPool::on_sharedconnection_finished()
     //There should be no copies of the m_refConnection, so the Gnome::Gda::Connection destructor should
     //run when we clear this last RefPtr of it, but we will explicitly close it just in case.
     //std::cerr << G_STRFUNC << ": closing GdaConnection\n";
-    m_refGdaConnection->close();
+    m_gda_connection->close();
 
-    m_refGdaConnection.reset();
+    m_gda_connection.reset();
 
 #ifndef G_OS_WIN32
     //TODO: this should only even be started if we are the first to open the .glom file:
@@ -667,7 +667,7 @@ bool ConnectionPool::set_network_shared(const SlotProgress& slot_progress, bool 
 
 bool ConnectionPool::connect_nothrow()
 {
-  if(!m_refGdaConnection)
+  if(!m_gda_connection)
   {
     try
     {
@@ -680,7 +680,7 @@ bool ConnectionPool::connect_nothrow()
     }
   }
 
-  return (m_refGdaConnection != 0);
+  return (m_gda_connection != 0);
 }
 
 //TODO: Why do we use noexcept here and on change_columns()?
@@ -691,8 +691,8 @@ bool ConnectionPool::add_column(const Glib::ustring& table_name, const std::shar
 
   try
   {
-    const auto result = m_backend->add_column(m_refGdaConnection, table_name, field);
-    m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
+    const auto result = m_backend->add_column(m_gda_connection, table_name, field);
+    m_gda_connection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
     return result;
   }
   catch(const Glib::Error& ex)
@@ -710,8 +710,8 @@ bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::us
 
   try
   {
-    const auto result = m_backend->drop_column(m_refGdaConnection, table_name, field_name);
-    m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
+    const auto result = m_backend->drop_column(m_gda_connection, table_name, field_name);
+    m_gda_connection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
     return result;
   }
   catch(const Glib::Error& ex)
@@ -735,11 +735,11 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
   if(!connect_nothrow())
     return false;
 
-  const auto result = m_backend->change_columns(m_refGdaConnection, table_name, old_fields, new_fields);
+  const auto result = m_backend->change_columns(m_gda_connection, table_name, old_fields, new_fields);
 
   try
   {
-    m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
+    m_gda_connection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
   }
   catch(const Glib::Error& ex)
   {
@@ -996,7 +996,7 @@ bool ConnectionPool::update_meta_store_for_table_names()
     //update_meta_store_table_names() has been known to throw an exception.
     //Glom is mostly unusable when it fails, but that's still better than a crash.
     //std::cout << G_STRFUNC << ": Before update_meta_store_table_name()\n";
-    const auto test = m_refGdaConnection->update_meta_store_table_names(m_backend->get_public_schema_name());
+    const auto test = m_gda_connection->update_meta_store_table_names(m_backend->get_public_schema_name());
     if(!test && !m_fake_connection)
     {
       std::cerr << G_STRFUNC << ": update_meta_store_table_names() failed without an exception.\n";

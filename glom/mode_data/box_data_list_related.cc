@@ -324,7 +324,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Box_Data_List_Related::on_dialog_layout_hide()
 {
-  auto dialog_related = dynamic_cast<Dialog_Layout_List_Related*>(m_pDialogLayout);
+  auto dialog_related = dynamic_cast<Dialog_Layout_List_Related*>(m_dialog_layout);
   g_assert(dialog_related);
 
   const auto portal = dialog_related->get_portal_layout();

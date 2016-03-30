@@ -32,16 +32,16 @@ Dialog_Properties::Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr
   m_block(false),
   m_modified(false)
 {
-  builder->get_widget("button_cancel", m_pButton_Cancel);
-  builder->get_widget("button_save", m_pButton_Save);
+  builder->get_widget("button_cancel", m_button_cancel);
+  builder->get_widget("button_save", m_button_save);
 
   //In general, we don't want to allow changes to windows underneath while editing properties.
   //Also, if we don't set this then seconday windows (from a modal dialog) will be on top but unusable.
   set_modal();
 
   //Connect signal handlers:
-  m_pButton_Cancel->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Properties::on_button_cancel) );
-  m_pButton_Save->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Properties::on_button_save) );
+  m_button_cancel->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Properties::on_button_cancel) );
+  m_button_save->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Properties::on_button_save) );
 
   show_all_children();
 }
@@ -164,8 +164,8 @@ void Dialog_Properties::set_modified(bool modified)
 {
   m_modified = true;
 
-  m_pButton_Save->set_sensitive(modified);
-  m_pButton_Cancel->set_sensitive(true);
+  m_button_save->set_sensitive(modified);
+  m_button_cancel->set_sensitive(true);
 }
 
 void Dialog_Properties::enforce_constraints()

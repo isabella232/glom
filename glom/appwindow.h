@@ -210,14 +210,14 @@ protected:
   //Menu Builder and Actions
   Glib::RefPtr<Gtk::Builder> m_builder;
   std::unique_ptr<Gtk::MenuBar> m_menubar;
-  Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup_File,
-     m_refActionGroup_Edit, m_refActionGroup_Tables,
-     m_refActionGroup_Developer, m_refActionGroup_Reports;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_action_group_file,
+     m_action_group_edit, m_action_group_tables,
+     m_action_group_developer, m_action_group_reports;
 
 
   //Member widgets:
-  Gtk::Box* m_pVBox;
-  Gtk::Box m_VBox_PlaceHolder;
+  Gtk::Box* m_vbox;
+  Gtk::Box m_vbox_placeHolder;
 
   //Menu stuff:
   Glib::RefPtr<Gio::SimpleAction> m_action_save, m_action_saveas;
@@ -306,11 +306,11 @@ private:
   Glib::RefPtr<Gio::SimpleAction> m_toggleaction_network_shared;
   sigc::connection m_connection_toggleaction_network_shared;
 
-  Gtk::Box* m_pBoxTop;
-  Frame_Glom* m_pFrame;
+  Gtk::Box* m_box_top;
+  Frame_Glom* m_frame;
   
   bool m_about_shown;
-  Gtk::AboutDialog* m_pAbout; //About box.
+  Gtk::AboutDialog* m_about; //About box.
 
   Infobar_ProgressCreating* m_infobar_progress;
   std::string m_progress_collate_key;
@@ -320,9 +320,9 @@ private:
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  Glib::RefPtr<Gio::SimpleActionGroup> m_refHelpActionGroup;
-  Glib::RefPtr<Gio::SimpleActionGroup> m_refNavTablesActionGroup, m_refNavReportsActionGroup, m_refNavPrintLayoutsActionGroup;
-  type_listActions m_listNavTableActions, m_listNavReportActions, m_listNavPrintLayoutActions;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_help_action_group;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_nav_tables_action_group, m_nav_reports_action_group, m_nav_print_layouts_action_group;
+  type_listActions m_nav_table_actions, m_nav_report_actions, m_nav_print_layout_actions;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Set these before calling offer_saveas() (which uses ui_file_select_save()), and clear it afterwards.

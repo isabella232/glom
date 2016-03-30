@@ -41,7 +41,7 @@ namespace Glom
 Box_Data::Box_Data()
 : m_Button_Find(_("_Find"), true)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  ,m_pDialogLayout(nullptr)
+  ,m_dialog_layout(nullptr)
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 {
   m_bUnstoredData = false;
@@ -53,10 +53,10 @@ Box_Data::Box_Data()
 Box_Data::~Box_Data()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  if(m_pDialogLayout)
+  if(m_dialog_layout)
   {
-    remove_view(m_pDialogLayout);
-    delete m_pDialogLayout;
+    remove_view(m_dialog_layout);
+    delete m_dialog_layout;
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
@@ -204,15 +204,15 @@ bool Box_Data::confirm_discard_unstored_data() const
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Box_Data::show_layout_dialog()
 {
-  if(!m_pDialogLayout)
+  if(!m_dialog_layout)
   {
-    m_pDialogLayout = create_layout_dialog();
-    add_view(m_pDialogLayout); //Give it access to the document.
-    m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
+    m_dialog_layout = create_layout_dialog();
+    add_view(m_dialog_layout); //Give it access to the document.
+    m_dialog_layout->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
   }
 
-  prepare_layout_dialog(m_pDialogLayout);
-  m_pDialogLayout->show();
+  prepare_layout_dialog(m_dialog_layout);
+  m_dialog_layout->show();
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

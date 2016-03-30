@@ -39,7 +39,7 @@ public:
 protected:
   void setup_util_menu(Gtk::Widget* widget);
 
-  std::unique_ptr<Gtk::Menu> m_pPopupMenuUtils;
+  std::unique_ptr<Gtk::Menu> m_popup_menu_utils;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_menu_properties_activate();
 
@@ -48,9 +48,9 @@ protected:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 private:  
-  Glib::RefPtr<Gio::SimpleAction> m_refUtilProperties;
-  Glib::RefPtr<Gio::SimpleAction> m_refUtilDelete;  
-  Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup;
+  Glib::RefPtr<Gio::SimpleAction> m_util_properties;
+  Glib::RefPtr<Gio::SimpleAction> m_util_delete;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_action_group;
 };
 
 } // namespace Glom

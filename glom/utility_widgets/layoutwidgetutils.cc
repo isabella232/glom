@@ -39,21 +39,21 @@ LayoutWidgetUtils::LayoutWidgetUtils()
 void LayoutWidgetUtils::setup_util_menu(Gtk::Widget* widget)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_refActionGroup = Gio::SimpleActionGroup::create();
+  m_action_group = Gio::SimpleActionGroup::create();
 
-  m_refUtilProperties = m_refActionGroup->add_action("properties",
+  m_util_properties = m_action_group->add_action("properties",
     sigc::mem_fun(*this, &LayoutWidgetUtils::on_menu_properties_activate) );
-  m_refUtilDelete = m_refActionGroup->add_action("delete",
+  m_util_delete = m_action_group->add_action("delete",
     sigc::mem_fun(*this, &LayoutWidgetUtils::on_menu_delete_activate) );
   
-  widget->insert_action_group("utility", m_refActionGroup);
+  widget->insert_action_group("utility", m_action_group);
 
   auto menu = Gio::Menu::create();
   menu->append(_("Properties"), "context.properties");
   menu->append(_("_Delete"), "context.delete");
 
-  m_pPopupMenuUtils = std::make_unique<Gtk::Menu>(menu);
-  m_pPopupMenuUtils->attach_to_widget(*widget);
+  m_popup_menu_utils = std::make_unique<Gtk::Menu>(menu);
+  m_popup_menu_utils->attach_to_widget(*widget);
 #endif
 }
 

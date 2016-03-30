@@ -84,7 +84,7 @@ protected:
   static void apply_formatting(Gtk::Widget& widget, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item);
 
 protected: //TODO: Add accessor?
-  std::shared_ptr<LayoutItem> m_pLayoutItem;
+  std::shared_ptr<LayoutItem> m_layout_item;
 
 protected: //TODO: Add accessor?
   Glib::ustring m_table_name;

@@ -125,7 +125,7 @@ DbAddDel::~DbAddDel()
   auto pApp = get_appwindow();
   if(pApp)
   {
-    pApp->remove_developer_action(m_refContextLayout);
+    pApp->remove_developer_action(m_context_layout);
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
@@ -218,37 +218,37 @@ void DbAddDel::on_MenuPopup_activate_layout()
 
 void DbAddDel::setup_menu(Gtk::Widget* /* widget */)
 {
-  m_refActionGroup = Gio::SimpleActionGroup::create();
+  m_action_group = Gio::SimpleActionGroup::create();
 
   const Glib::ustring edit_title =
     (m_open_button_title.empty() ? _("_Edit") : m_open_button_title); //TODO: Use this?
 
-  m_refContextEdit = m_refActionGroup->add_action("edit",
+  m_context_edit = m_action_group->add_action("edit",
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Edit) );
 
-  m_refContextDelete = m_refActionGroup->add_action("delete",
+  m_context_delete = m_action_group->add_action("delete",
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Delete) );
 
-  m_refContextAdd = m_refActionGroup->add_action("add",
+  m_context_add = m_action_group->add_action("add",
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Add) );
-  m_refContextAdd->set_enabled(m_allow_add);
+  m_context_add->set_enabled(m_allow_add);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   // Don't add ContextLayout in client only mode because it would never
   // be sensitive anyway
-  m_refContextLayout =  m_refActionGroup->add_action("layout",
+  m_context_layout =  m_action_group->add_action("layout",
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_layout) );
 
   //TODO: This does not work until this widget is in a container in the window:
   auto pApp = get_appwindow();
   if(pApp)
   {
-    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_context_layout); //So that it can be disabled when not in developer mode.
     pApp->update_userlevel_ui(); //Update our action's sensitivity.
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  insert_action_group("context", m_refActionGroup);
+  insert_action_group("context", m_action_group);
 
   //TODO: add_accel_group(builder->get_accel_group());
 
@@ -260,23 +260,23 @@ void DbAddDel::setup_menu(Gtk::Widget* /* widget */)
   menu->append(_("_Layout"), "context.layout");
 #endif
 
-  m_pMenuPopup = std::make_unique<Gtk::Menu>(menu);
-  m_pMenuPopup->attach_to_widget(*this);
+  m_menu_popup = std::make_unique<Gtk::Menu>(menu);
+  m_menu_popup->attach_to_widget(*this);
 
   if(get_allow_user_actions())
   {
-    m_refContextEdit->set_enabled();
-    m_refContextDelete->set_enabled();
+    m_context_edit->set_enabled();
+    m_context_delete->set_enabled();
   }
   else
   {
-    m_refContextEdit->set_enabled(false);
-    m_refContextDelete->set_enabled(false);
+    m_context_edit->set_enabled(false);
+    m_context_delete->set_enabled(false);
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   if(pApp)
-    m_refContextLayout->set_enabled(pApp->get_userlevel() == AppState::userlevels::DEVELOPER);
+    m_context_layout->set_enabled(pApp->get_userlevel() == AppState::userlevels::DEVELOPER);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
@@ -288,7 +288,7 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *button_event)
   auto pApp = get_appwindow();
   if(pApp)
   {
-    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_context_layout); //So that it can be disabled when not in developer mode.
     pApp->update_userlevel_ui(); //Update our action's sensitivity.
   }
 #endif
@@ -298,7 +298,7 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *button_event)
   if(mods & GDK_BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
-    m_pMenuPopup->popup(button_event->button, button_event->time);
+    m_menu_popup->popup(button_event->button, button_event->time);
     return true; //handled.
   }
   else
@@ -1094,7 +1094,7 @@ void DbAddDel::set_allow_add(bool val)
 {
   m_allow_add = val;
 
-  m_refContextAdd->set_enabled(val);
+  m_context_add->set_enabled(val);
 }
 
 void DbAddDel::set_allow_delete(bool val)
@@ -1606,8 +1606,8 @@ void DbAddDel::on_treeview_columns_changed()
 {
   if(!m_ignore_tree_view_signals)
   {
-    //Get the new column order, and save it in m_vecColumnIDs:
-    m_vecColumnIDs.clear();
+    //Get the new column order, and save it in m_column_ids:
+    m_column_ids.clear();
 
     for(const auto& vecViewColumn : m_TreeView.get_columns())
     {
@@ -1616,7 +1616,7 @@ void DbAddDel::on_treeview_columns_changed()
         continue;
 
       const auto column_id = view_column->get_column_id();
-      m_vecColumnIDs.emplace_back(column_id);
+      m_column_ids.emplace_back(column_id);
     }
 
     //Tell other code that something has changed, so the new column order can be serialized.
@@ -2403,8 +2403,8 @@ void DbAddDel::on_treeview_selection_changed()
 
 void DbAddDel::on_selection_changed(bool selection)
 {
-  m_refContextDelete->set_enabled(selection);
-  m_refContextAdd->set_enabled(selection);
+  m_context_delete->set_enabled(selection);
+  m_context_add->set_enabled(selection);
   
   m_signal_record_selection_changed.emit();
 }

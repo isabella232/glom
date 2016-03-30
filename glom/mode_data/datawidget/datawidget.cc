@@ -427,10 +427,10 @@ bool DataWidget::on_button_press_event(GdkEventButton *button_event)
   if(pApp)
   {
     //TODO: Avoid doing this multiple times:
-    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
-    pApp->add_developer_action(m_refContextAddField);
-    pApp->add_developer_action(m_refContextAddRelatedRecords);
-    pApp->add_developer_action(m_refContextAddGroup);
+    pApp->add_developer_action(m_context_layout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_context_add_field);
+    pApp->add_developer_action(m_context_add_related_records);
+    pApp->add_developer_action(m_context_add_group);
 
     pApp->update_userlevel_ui(); //Update our action's sensitivity.
 
@@ -443,7 +443,7 @@ bool DataWidget::on_button_press_event(GdkEventButton *button_event)
       if(mods & GDK_BUTTON3_MASK)
       {
         //Give user choices of actions on this item:
-        m_pMenuPopup->popup(button_event->button, button_event->time);
+        m_menu_popup->popup(button_event->button, button_event->time);
         return true; //We handled this event.
       }
     }

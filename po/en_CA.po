@@ -764,7 +764,7 @@ msgstr "_Tables"
 #. Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_Navigate_Database", _("_Database"));
 #. m_listDeveloperActions.push_back(action);
 #. m_refActionGroup_Others->add(action,
-#. sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Database) );
+#. sigc::mem_fun(*m_frame, &Frame_Glom::on_menu_Navigate_Database) );
 #: ../glom/application.cc:222
 msgid "_Edit Tables"
 msgstr "_Edit Tables"

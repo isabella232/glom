@@ -33,7 +33,7 @@ Document::Document()
   m_is_new = true;
   m_modified = false;
   m_read_only = false;
-  m_pView = nullptr;
+  m_view = nullptr;
 }
 
 Document::~Document()
@@ -123,8 +123,8 @@ bool Document::load(int& failure_code)
     if(bTest)
     {
       //Tell the View to show the new data:
-      if(m_pView)
-        m_pView->load_from_document();
+      if(m_view)
+        m_view->load_from_document();
     }
   }
 
@@ -157,8 +157,8 @@ bool Document::load_from_data(const guchar* data, std::size_t length, int& failu
   if(bTest)
   {
     //Tell the View to show the new data:
-    if(m_pView)
-      m_pView->load_from_document();
+    if(m_view)
+      m_view->load_from_document();
   }
 
   set_is_new(false);
@@ -181,8 +181,8 @@ bool Document::load_after(int& failure_code)
 bool Document::save()
 {
   //Tell the view to update the data in this document.
-  if(m_pView)
-    m_pView->save_to_document();
+  if(m_view)
+    m_view->save_to_document();
 
   const auto bTest = save_before(); //This could be overridden.
   if(bTest)
@@ -427,12 +427,12 @@ Glib::ustring Document::util_file_uri_get_name(const Glib::ustring& file_uri, co
 
 void Document::set_view(ViewBase* pView)
 {
-  m_pView = pView;
+  m_view = pView;
 }
 
 ViewBase* Document::get_view()
 {
-  return m_pView;
+  return m_view;
 }
 
 bool Document::get_read_only() const

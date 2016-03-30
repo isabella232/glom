@@ -256,10 +256,10 @@ void ComboAsRadioButtons::show_context_menu(GdkEventButton *button_event)
   {
     //Enable/Disable items.
     //We did this earlier, but get_appwindow is more likely to work now:
-    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
-    pApp->add_developer_action(m_refContextAddField);
-    pApp->add_developer_action(m_refContextAddRelatedRecords);
-    pApp->add_developer_action(m_refContextAddGroup);
+    pApp->add_developer_action(m_context_layout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_context_add_field);
+    pApp->add_developer_action(m_context_add_related_records);
+    pApp->add_developer_action(m_context_add_group);
 
     pApp->update_userlevel_ui(); //Update our action's sensitivity.
 
@@ -272,7 +272,7 @@ void ComboAsRadioButtons::show_context_menu(GdkEventButton *button_event)
       if(mods & GDK_BUTTON3_MASK)
       {
         //Give user choices of actions on this item:
-        m_pMenuPopup->popup(button_event->button, button_event->time);
+        m_menu_popup->popup(button_event->button, button_event->time);
       }
     }
   }

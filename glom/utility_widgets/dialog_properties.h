@@ -72,8 +72,8 @@ protected:
   //Child widgets:
 
   //PlaceHolder m_Frame; //For the top-half. See add().
-  Gtk::Button* m_pButton_Save;
-  Gtk::Button* m_pButton_Cancel;
+  Gtk::Button* m_button_save;
+  Gtk::Button* m_button_cancel;
 
   bool m_block;
 

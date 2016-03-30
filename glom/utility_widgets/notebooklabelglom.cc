@@ -29,7 +29,7 @@ namespace Glom
 
 NotebookLabel::NotebookLabel(NotebookGlom* notebook) 
 : m_notebook(notebook),
-  m_pPopupMenu(nullptr)
+  m_popup_menu(nullptr)
 {
   init();
 }
@@ -37,7 +37,7 @@ NotebookLabel::NotebookLabel(NotebookGlom* notebook)
 NotebookLabel::NotebookLabel(const Glib::ustring& label, NotebookGlom* notebook)
 : m_label(label),
   m_notebook (notebook),
-  m_pPopupMenu(nullptr)
+  m_popup_menu(nullptr)
 {
   init();
 }
@@ -104,21 +104,21 @@ void NotebookLabel::on_menu_delete_activate()
 
 void NotebookLabel::setup_menu(Gtk::Widget* /* widget */)
 {
-  m_refActionGroup = Gio::SimpleActionGroup::create();
+  m_action_group = Gio::SimpleActionGroup::create();
 
-  m_refNewGroup = m_refActionGroup->add_action("new-group",
+  m_new_group = m_action_group->add_action("new-group",
     sigc::mem_fun(*this, &NotebookLabel::on_menu_new_group_activate) );
-  m_refDelete = m_refActionGroup->add_action("delete",
+  m_deelete = m_action_group->add_action("delete",
     sigc::mem_fun(*this, &NotebookLabel::on_menu_delete_activate) );
  
-  insert_action_group("context", m_refActionGroup);
+  insert_action_group("context", m_action_group);
 
   auto menu = Gio::Menu::create();
   menu->append(_("New Group"), "context.new-group");
   menu->append(_("_Delete"), "context.delete");
 
-  m_pPopupMenu = std::make_unique<Gtk::Menu>(menu);
-  m_pPopupMenu->attach_to_widget(*this);
+  m_popup_menu = std::make_unique<Gtk::Menu>(menu);
+  m_popup_menu->attach_to_widget(*this);
 }
 
 bool NotebookLabel::on_button_press_event(GdkEventButton *button_event)
@@ -131,7 +131,7 @@ bool NotebookLabel::on_button_press_event(GdkEventButton *button_event)
     if(mods & GDK_BUTTON3_MASK)
     {
       //Give user choices of actions on this item:
-      m_pPopupMenu->popup(button_event->button, button_event->time);
+      m_popup_menu->popup(button_event->button, button_event->time);
       return true; //We handled this event.
     }
   }

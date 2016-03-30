@@ -122,15 +122,15 @@ private:
   Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_clipboard; //When copy is used, store it here until it is pasted.
 
 
-  std::unique_ptr<Gtk::Menu> m_pMenuPopup_UserMode;
+  std::unique_ptr<Gtk::Menu> m_menu_popup_user_mode;
 
   //TODO: Use just the Gio::ActionGroup type when it derives from Gio::ActionMap. 
-  Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup_UserModePopup;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_action_group_user_mode_popup;
 
   //We use Gio::SimpleAction rather than Gio::Action
   //because Gio::Action has no way to enable/disable it.
-  Glib::RefPtr<Gio::SimpleAction> m_refActionOpenFile, m_refActionOpenFileWith, 
-    m_refActionSaveFile, m_refActionSelectFile, m_refActionCopy, m_refActionPaste, m_refActionClear;
+  Glib::RefPtr<Gio::SimpleAction> m_action_open_file, m_action_open_file_with,
+    m_action_save_file, m_action_select_file, m_action_copy, m_action_paste, m_action_clear;
 
   bool m_read_only;
   

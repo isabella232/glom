@@ -208,7 +208,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
     if(bTest)
     {
       //Store the generated title in the document:
-      //on_adddel_changed(row, m_colTitle);
+      //on_adddel_changed(row, m_col_title);
 
       // Don't call on_adddel_changed for this, since this does a lot of
       // unnecessary extra stuff just to get the field added into the
@@ -238,7 +238,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
 
       m_AddDel.select_item(field->get_name(), m_colName, false);
 
-      //m_AddDel.select_item(row, m_colTitle, true); //Start editing the title
+      //m_AddDel.select_item(row, m_col_title, true); //Start editing the title
     }
   }
 }

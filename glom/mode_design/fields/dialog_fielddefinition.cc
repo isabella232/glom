@@ -36,52 +36,52 @@ const bool Dialog_FieldDefinition::glade_developer(true);
 
 Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Properties(cobject, builder),
-  m_pDataWidget_DefaultValueSimple(nullptr)
+  m_data_idget_default_value_simple(nullptr)
 {
-  builder->get_widget_derived("combobox_type", m_pCombo_Type);
+  builder->get_widget_derived("combobox_type", m_combo_type);
 
-  builder->get_widget("entry_name", m_pEntry_Name);
-  builder->get_widget("entry_title", m_pEntry_Title);
+  builder->get_widget("entry_name", m_entry_name);
+  builder->get_widget("entry_title", m_entry_title);
 
-  builder->get_widget("checkbutton_unique",  m_pCheck_Unique);
-  builder->get_widget("checkbutton_primarykey",  m_pCheck_PrimaryKey);
-  builder->get_widget("checkbutton_autoincrement",  m_pCheck_AutoIncrement);
+  builder->get_widget("checkbutton_unique",  m_check_unique);
+  builder->get_widget("checkbutton_primarykey",  m_check_primary_key);
+  builder->get_widget("checkbutton_autoincrement",  m_check_auto_increment);
 
-  builder->get_widget("hbox_default_value_simple",  m_pBox_DefaultValueSimple);
+  builder->get_widget("hbox_default_value_simple",  m_box_default_value_simple);
 
-  builder->get_widget("box_default_value",  m_pBox_ValueTab);
+  builder->get_widget("box_default_value",  m_box_value_tab);
 
-  builder->get_widget("radiobutton_userentry",  m_pRadio_UserEntry);
-  builder->get_widget("alignment_userentry",  m_pAlignment_UserEntry);
+  builder->get_widget("radiobutton_userentry",  m_radio_user_entry);
+  builder->get_widget("alignment_userentry",  m_alignment_user_entry);
 
-  builder->get_widget("checkbutton_lookup",  m_pCheck_Lookup);
-  builder->get_widget("table_lookup",  m_pTable_Lookup);
-  builder->get_widget_derived("combobox_lookup_relationship",  m_pCombo_LookupRelationship);
-  builder->get_widget("combobox_lookup_field",  m_pCombo_LookupField);
+  builder->get_widget("checkbutton_lookup",  m_check_lookup);
+  builder->get_widget("table_lookup",  m_table_lookup);
+  builder->get_widget_derived("combobox_lookup_relationship",  m_combo_lookup_relationship);
+  builder->get_widget("combobox_lookup_field",  m_combo_lookup_field);
 
-  builder->get_widget("radiobutton_calculate",  m_pRadio_Calculate);
-  builder->get_widget("alignment_calculate",  m_pAlignment_Calculate);
-  builder->get_widget("textview_calculate",  m_pTextView_Calculation);
-  builder->get_widget("button_edit_calculation",  m_pButton_EditCalculation);
+  builder->get_widget("radiobutton_calculate",  m_radio_calculate);
+  builder->get_widget("alignment_calculate",  m_alignment_calculate);
+  builder->get_widget("textview_calculate",  m_textView_calculation);
+  builder->get_widget("button_edit_calculation",  m_button_edit_calculation);
 
   //Connect signals:
-  if(m_pCombo_Type)
-  m_pCombo_Type->signal_changed().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_combo_type_changed) );
+  if(m_combo_type)
+  m_combo_type->signal_changed().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_combo_type_changed) );
 
-  if(m_pCombo_LookupRelationship)
-    m_pCombo_LookupRelationship->signal_changed().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_combo_lookup_relationship_changed) );
+  if(m_combo_lookup_relationship)
+    m_combo_lookup_relationship->signal_changed().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_combo_lookup_relationship_changed) );
 
-  if(m_pCheck_Lookup)
-    m_pCheck_Lookup->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_check_lookup_toggled) );
+  if(m_check_lookup)
+    m_check_lookup->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_check_lookup_toggled) );
 
-  if(m_pRadio_Calculate)
-    m_pRadio_Calculate->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_radio_calculate_toggled) );
+  if(m_radio_calculate)
+    m_radio_calculate->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_radio_calculate_toggled) );
 
-  if(m_pRadio_UserEntry)
-    m_pRadio_UserEntry->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_radio_userentry_toggled) );
+  if(m_radio_user_entry)
+    m_radio_user_entry->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_radio_userentry_toggled) );
 
-  if(m_pButton_EditCalculation)
-    m_pButton_EditCalculation->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_button_edit_calculation) );
+  if(m_button_edit_calculation)
+    m_button_edit_calculation->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_button_edit_calculation) );
 
   //TODO:
   //Connect every widget to on_anything_changed():
@@ -94,8 +94,8 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
 
 
   connect_each_widget(this);
-  connect_each_widget(m_pBox_DefaultValueSimple);
-  connect_each_widget(m_pBox_ValueTab);
+  connect_each_widget(m_box_default_value_simple);
+  connect_each_widget(m_box_value_tab);
 
   Dialog_Properties::set_modified(false);
 
@@ -115,12 +115,12 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
   //Set the Widgets from the field info:
   //const Glib::RefPtr<Gnome::Gda::Column>& fieldInfo = field->get_field_info();
 
-  m_pEntry_Name->set_text(field->get_name());
-  m_pCombo_Type->set_field_type( field->get_glom_type() );
+  m_entry_name->set_text(field->get_name());
+  m_combo_type->set_field_type( field->get_glom_type() );
 
-  m_pCheck_Unique->set_active(field->get_unique_key());
-  m_pCheck_PrimaryKey->set_active(field->get_primary_key());
-  m_pCheck_AutoIncrement->set_active(field->get_auto_increment());
+  m_check_unique->set_active(field->get_unique_key());
+  m_check_primary_key->set_active(field->get_primary_key());
+  m_check_auto_increment->set_active(field->get_auto_increment());
 
   //Glom-specific details:
 
@@ -135,8 +135,8 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
     default_value = m_Field->get_default_value();
 
   //Create an appropriate DataWidget for the default value:
-  delete m_pDataWidget_DefaultValueSimple;
-  m_pDataWidget_DefaultValueSimple = nullptr;
+  delete m_data_idget_default_value_simple;
+  m_data_idget_default_value_simple = nullptr;
 
   //We use a regular DataWidget for the default value, so we can reuse its functionality,
   //but it's not a real field - hence the special title.
@@ -145,26 +145,26 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
   field_default_value->set_name("glom_temp_default_value");
   field_default_value->set_title_original(_("Default Value"));
   layout_item->set_full_field_details(field_default_value);
-  m_pDataWidget_DefaultValueSimple = Gtk::manage( new DataWidget(layout_item, "", get_document()) );
-  if(!m_pDataWidget_DefaultValueSimple->get_data_child_widget())
+  m_data_idget_default_value_simple = Gtk::manage( new DataWidget(layout_item, "", get_document()) );
+  if(!m_data_idget_default_value_simple->get_data_child_widget())
     std::cerr << G_STRFUNC << ": The DataWidget did not create a child widget.\n";
 
-  connect_each_widget(m_pDataWidget_DefaultValueSimple);
+  connect_each_widget(m_data_idget_default_value_simple);
 
-  auto pLabel = m_pDataWidget_DefaultValueSimple->get_label();
+  auto pLabel = m_data_idget_default_value_simple->get_label();
   if(!pLabel->get_text().empty())
   {
     pLabel->set_valign(Gtk::ALIGN_START); //Because the widget might be multiline.
-    m_pBox_DefaultValueSimple->pack_start(*pLabel, Gtk::PACK_SHRINK);
+    m_box_default_value_simple->pack_start(*pLabel, Gtk::PACK_SHRINK);
   }
 
-  m_pBox_DefaultValueSimple->pack_end(*m_pDataWidget_DefaultValueSimple, Gtk::PACK_EXPAND_WIDGET);
-  m_pDataWidget_DefaultValueSimple->set_value(default_value);
-  m_pDataWidget_DefaultValueSimple->show();
+  m_box_default_value_simple->pack_end(*m_data_idget_default_value_simple, Gtk::PACK_EXPAND_WIDGET);
+  m_data_idget_default_value_simple->set_value(default_value);
+  m_data_idget_default_value_simple->show();
 
   //Default value: lookup:
 
-  m_pCheck_Lookup->set_active(m_Field->get_is_lookup());
+  m_check_lookup->set_active(m_Field->get_is_lookup());
   on_check_lookup_toggled();
 
   //Fill the lookup relationships combo:
@@ -174,36 +174,36 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
     //Get the relationships used by this table, excluding relationships triggered
     //by this field itself (to avoid circular self-lookups):
     const auto vecRelationships = document->get_relationships(table_name);
-    m_pCombo_LookupRelationship->set_relationships_excluding_triggered_by(vecRelationships, m_Field->get_name());
+    m_combo_lookup_relationship->set_relationships_excluding_triggered_by(vecRelationships, m_Field->get_name());
   }
 
   std::shared_ptr<Relationship> lookup_relationship;
   if(!disable_default_value)
     lookup_relationship = m_Field->get_lookup_relationship();
 
-  m_pCombo_LookupRelationship->set_selected_relationship(lookup_relationship);
+  m_combo_lookup_relationship->set_selected_relationship(lookup_relationship);
   on_combo_lookup_relationship_changed(); //Put the correct list of fields in the fields combo.
 
   Glib::ustring lookup_field_name;
   if(!disable_default_value)
     lookup_field_name = m_Field->get_lookup_field();
-  m_pCombo_LookupField->set_active_text(lookup_field_name);
+  m_combo_lookup_field->set_active_text(lookup_field_name);
 
 
   //Calculation:
   const auto calculation = field->get_calculation();
   if(calculation.empty())
-   m_pRadio_UserEntry->set_active();
+   m_radio_user_entry->set_active();
   else
-    m_pRadio_Calculate->set_active();
+    m_radio_calculate->set_active();
 
   on_check_lookup_toggled();
 
-  //std::cout << "debug: dialog_fielddefinition.c:: m_pTextView_Calculation.gobj() gtype = " << G_OBJECT_TYPE_NAME(m_pTextView_Calculation->gobj()) << std::endl;
-  m_pTextView_Calculation->get_buffer()->set_text(calculation);
+  //std::cout << "debug: dialog_fielddefinition.c:: m_textView_calculation.gobj() gtype = " << G_OBJECT_TYPE_NAME(m_textView_calculation->gobj()) << std::endl;
+  m_textView_calculation->get_buffer()->set_text(calculation);
   //std::cout << "  debug: dialog_fielddefinition.c:: after get_buffer()\n";
 
-  m_pEntry_Title->set_text(item_get_title(field));
+  m_entry_title->set_text(item_get_title(field));
 
   set_blocked(false);
 
@@ -228,34 +228,34 @@ std::shared_ptr<Field> Dialog_FieldDefinition::get_field() const
 
   auto fieldInfo = field->get_field_info(); //Preserve previous information.
 
-  fieldInfo->set_name(m_pEntry_Name->get_text());
+  fieldInfo->set_name(m_entry_name->get_text());
 
-  fieldInfo->set_g_type( Field::get_gda_type_for_glom_type( m_pCombo_Type->get_field_type() ) );
+  fieldInfo->set_g_type( Field::get_gda_type_for_glom_type( m_combo_type->get_field_type() ) );
 
-  fieldInfo->set_auto_increment(m_pCheck_AutoIncrement->get_active());
+  fieldInfo->set_auto_increment(m_check_auto_increment->get_active());
 
   if(!fieldInfo->get_auto_increment()) //Ignore default_values for auto_increment fields - it's just some obscure postgres code.
   {
     //Simple default value:
-    fieldInfo->set_default_value( m_pDataWidget_DefaultValueSimple->get_value() );
+    fieldInfo->set_default_value( m_data_idget_default_value_simple->get_value() );
   }
 
   //Lookup:
-  const auto is_lookup = m_pCheck_Lookup->get_active();
+  const auto is_lookup = m_check_lookup->get_active();
   std::shared_ptr<Relationship> relationship;
   if(is_lookup)
-    relationship = m_pCombo_LookupRelationship->get_selected_relationship();
+    relationship = m_combo_lookup_relationship->get_selected_relationship();
   field->set_lookup_relationship(relationship);
 
   Glib::ustring lookup_field;
   if(is_lookup)
-    lookup_field = m_pCombo_LookupField->get_active_text();
+    lookup_field = m_combo_lookup_field->get_active_text();
   field->set_lookup_field(lookup_field);
 
 
   //Calculation:
-  if(m_pRadio_Calculate)
-    field->set_calculation(m_pTextView_Calculation->get_buffer()->get_text());
+  if(m_radio_calculate)
+    field->set_calculation(m_textView_calculation->get_buffer()->get_text());
 
   auto field_info_copy = fieldInfo;
 
@@ -263,10 +263,10 @@ std::shared_ptr<Field> Dialog_FieldDefinition::get_field() const
 
   //Glom-specific details:
 
-  field->set_unique_key(m_pCheck_Unique->get_active());
-  field->set_primary_key(m_pCheck_PrimaryKey->get_active());
+  field->set_unique_key(m_check_unique->get_active());
+  field->set_primary_key(m_check_primary_key->get_active());
 
-  field->set_title(m_pEntry_Title->get_text(), AppWindow::get_current_locale());
+  field->set_title(m_entry_title->get_text(), AppWindow::get_current_locale());
 
   return field;
 }
@@ -279,41 +279,41 @@ void Dialog_FieldDefinition::on_combo_type_changed()
   //m_Frame_TypeDetails.remove();
 
   //Use FieldType static method to categorise field type:
- // glom_field_type fieldType = m_pCombo_Type->get_field_type();
+ // glom_field_type fieldType = m_combo_type->get_field_type();
 
 }
 
 void Dialog_FieldDefinition::enforce_constraints()
 {
-  if(m_pCheck_PrimaryKey->get_active())
+  if(m_check_primary_key->get_active())
   {
-    m_pCheck_Unique->set_active(true); //Primary keys must be unique.
-    m_pCheck_Unique->set_sensitive(false); //Stop the user from disagreeing with that.
+    m_check_unique->set_active(true); //Primary keys must be unique.
+    m_check_unique->set_sensitive(false); //Stop the user from disagreeing with that.
   }
   else
-    m_pCheck_Unique->set_sensitive(true);
+    m_check_unique->set_sensitive(true);
 
-  if(m_pCheck_Unique->get_active() || m_pCheck_AutoIncrement->get_active())
+  if(m_check_unique->get_active() || m_check_auto_increment->get_active())
   {
-    m_pBox_ValueTab->set_sensitive(false); //Disable all controls on the Notebook page.
-    m_pDataWidget_DefaultValueSimple->set_value( Gnome::Gda::Value() ); //Unique fields cannot have default values. //TODO: People will be surprised when they lose information here. We should probably read the text as "" if the widget is disabled.
+    m_box_value_tab->set_sensitive(false); //Disable all controls on the Notebook page.
+    m_data_idget_default_value_simple->set_value( Gnome::Gda::Value() ); //Unique fields cannot have default values. //TODO: People will be surprised when they lose information here. We should probably read the text as "" if the widget is disabled.
   }
   else
   {
-    m_pBox_ValueTab->set_sensitive(true);
+    m_box_value_tab->set_sensitive(true);
   }
 
-  const auto enable_calc = m_pRadio_Calculate->get_active();
-  m_pAlignment_Calculate->set_sensitive(enable_calc);
+  const auto enable_calc = m_radio_calculate->get_active();
+  m_alignment_calculate->set_sensitive(enable_calc);
 
-  const auto enable_userentry = m_pRadio_UserEntry->get_active();
-  m_pAlignment_UserEntry->set_sensitive(enable_userentry);
+  const auto enable_userentry = m_radio_user_entry->get_active();
+  m_alignment_user_entry->set_sensitive(enable_userentry);
 }
 
 void Dialog_FieldDefinition::on_check_lookup_toggled()
 {
-  bool enable = m_pCheck_Lookup->get_active();
-  m_pTable_Lookup->set_sensitive(enable);
+  bool enable = m_check_lookup->get_active();
+  m_table_lookup->set_sensitive(enable);
 
   //re-disable it if it was not meant to be enabled:
   enforce_constraints();
@@ -321,8 +321,8 @@ void Dialog_FieldDefinition::on_check_lookup_toggled()
 
 void Dialog_FieldDefinition::on_radio_calculate_toggled()
 {
-  bool enable = m_pRadio_Calculate->get_active();
-  m_pAlignment_Calculate->set_sensitive(enable);
+  bool enable = m_radio_calculate->get_active();
+  m_alignment_calculate->set_sensitive(enable);
 
   //re-disable it if it was not meant to be enabled:
   enforce_constraints();
@@ -330,8 +330,8 @@ void Dialog_FieldDefinition::on_radio_calculate_toggled()
 
 void Dialog_FieldDefinition::on_radio_userentry_toggled()
 {
-  bool enable = m_pRadio_UserEntry->get_active();
-  m_pAlignment_UserEntry->set_sensitive(enable);
+  bool enable = m_radio_user_entry->get_active();
+  m_alignment_user_entry->set_sensitive(enable);
 
   //re-disable it if it was not meant to be enabled:
   enforce_constraints();
@@ -342,10 +342,10 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
 {
   //Get the fields that are avaiable from the new relationship:
 
-  m_pCombo_LookupField->remove_all();
+  m_combo_lookup_field->remove_all();
 
   //Get the relationship name:
-  auto relationship = m_pCombo_LookupRelationship->get_selected_relationship();
+  auto relationship = m_combo_lookup_relationship->get_selected_relationship();
   if(relationship)
   {
     //Get the relationship details:
@@ -359,7 +359,7 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
         const auto fields_in_to_table = DbUtils::get_fields_for_table(document, to_table);
         for(const auto& field : fields_in_to_table)
         {
-          m_pCombo_LookupField->append(field->get_name());
+          m_combo_lookup_field->append(field->get_name());
         }
       }
     }
@@ -377,13 +377,13 @@ void Dialog_FieldDefinition::on_button_edit_calculation()
 
   add_view(dialog); //Give it access to the document.
 
-  m_Field->set_calculation( m_pTextView_Calculation->get_buffer()->get_text() );
+  m_Field->set_calculation( m_textView_calculation->get_buffer()->get_text() );
   dialog->set_field(m_Field, m_table_name);
   //TODO: dialog.set_transient_for(*get_app_window());
   const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   if(response == Gtk::RESPONSE_OK)
   {
-    m_pTextView_Calculation->get_buffer()->set_text( dialog->get_field()->get_calculation() );
+    m_textView_calculation->get_buffer()->set_text( dialog->get_field()->get_calculation() );
   }
 
   remove_view(dialog);

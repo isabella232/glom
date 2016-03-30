@@ -67,30 +67,30 @@ private:
   //Disable/enable other controls when a control is selected.
   void enforce_constraints() override;
 
-  Gtk::Entry* m_pEntry_Name;
-  Combo_FieldType* m_pCombo_Type;
-  Gtk::CheckButton* m_pCheck_Unique;
-  Gtk::Box* m_pBox_DefaultValueSimple;
-  Gtk::CheckButton* m_pCheck_PrimaryKey;
-  Gtk::CheckButton* m_pCheck_AutoIncrement;
+  Gtk::Entry* m_entry_name;
+  Combo_FieldType* m_combo_type;
+  Gtk::CheckButton* m_check_unique;
+  Gtk::Box* m_box_default_value_simple;
+  Gtk::CheckButton* m_check_primary_key;
+  Gtk::CheckButton* m_check_auto_increment;
 
-  Gtk::Box* m_pBox_ValueTab;
+  Gtk::Box* m_box_value_tab;
 
-  Gtk::RadioButton* m_pRadio_UserEntry;
-  Gtk::Box* m_pAlignment_UserEntry;
-  Gtk::CheckButton* m_pCheck_Lookup;
-  Gtk::Widget* m_pTable_Lookup; //So we can make it insensitive.
-  ComboBox_Relationship* m_pCombo_LookupRelationship;
-  Gtk::ComboBoxText* m_pCombo_LookupField;
+  Gtk::RadioButton* m_radio_user_entry;
+  Gtk::Box* m_alignment_user_entry;
+  Gtk::CheckButton* m_check_lookup;
+  Gtk::Widget* m_table_lookup; //So we can make it insensitive.
+  ComboBox_Relationship* m_combo_lookup_relationship;
+  Gtk::ComboBoxText* m_combo_lookup_field;
 
-  Gtk::RadioButton* m_pRadio_Calculate;
-  Gtk::Box* m_pAlignment_Calculate;
-  Gsv::View* m_pTextView_Calculation;
-  Gtk::Button* m_pButton_EditCalculation;
+  Gtk::RadioButton* m_radio_calculate;
+  Gtk::Box* m_alignment_calculate;
+  Gsv::View* m_textView_calculation;
+  Gtk::Button* m_button_edit_calculation;
 
-  Gtk::Entry* m_pEntry_Title;
+  Gtk::Entry* m_entry_title;
 
-  DataWidget* m_pDataWidget_DefaultValueSimple;
+  DataWidget* m_data_idget_default_value_simple;
 
   std::shared_ptr<Field> m_Field;
   Glib::ustring m_table_name;

@@ -77,158 +77,158 @@ namespace Glom
 
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : PlaceHolder(cobject, builder),
-  m_pLabel_Table_DataMode(nullptr),
-  m_pLabel_Table_FindMode(nullptr),
-  m_Box_RecordsCount(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
-  m_Button_FindAll(_("Find All")),
+  m_label_table_data_mode(nullptr),
+  m_label_table_find_mode(nullptr),
+  m_box_records_count(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
+  m_button_find_all(_("Find All")),
   m_stack_mode(nullptr),
-  m_pBox_Tables(nullptr),
-  m_pDialog_Tables(nullptr),
-  m_pBox_QuickFind(nullptr),
-  m_pEntry_QuickFind(nullptr),
-  m_pButton_QuickFind(nullptr),
+  m_box_tables(nullptr),
+  m_dialog_tables(nullptr),
+  m_box_quick_find(nullptr),
+  m_entry_quick_find(nullptr),
+  m_button_quick_find(nullptr),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_pDialog_Reports(nullptr),
-  m_pDialogLayoutReport(nullptr),
-  m_pBox_Reports(nullptr),
-  m_pDialogLayoutPrint(nullptr),
-  m_pBox_PrintLayouts(nullptr),
-  m_pDialog_Fields(nullptr),
-  m_pDialog_Relationships(nullptr),
+  m_dialog_reports(nullptr),
+  m_dialog_layout_report(nullptr),
+  m_box_reports(nullptr),
+  m_dialog_layout_print(nullptr),
+  m_box_print_layouts(nullptr),
+  m_dialog_fields(nullptr),
+  m_dialog_relationships(nullptr),
   m_dialog_addrelatedtable(nullptr),
   m_window_relationships_overview(nullptr),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  m_pDialogConnection(nullptr)
+  m_dialog_connection(nullptr)
 {
-  m_pLabel_Table_DataMode = Gtk::manage(new Gtk::Label(_("No Table Selected")));
-  m_pLabel_Table_DataMode->show();
-  m_Notebook_Data.set_action_widget(m_pLabel_Table_DataMode, Gtk::PACK_START);
+  m_label_table_data_mode = Gtk::manage(new Gtk::Label(_("No Table Selected")));
+  m_label_table_data_mode->show();
+  m_notebook_data.set_action_widget(m_label_table_data_mode, Gtk::PACK_START);
 
-  m_pLabel_Table_FindMode = Gtk::manage(new Gtk::Label(_("No Table Selected")));
-  m_pLabel_Table_FindMode->show();
-  m_Notebook_Find.set_action_widget(m_pLabel_Table_FindMode, Gtk::PACK_START);
+  m_label_table_find_mode = Gtk::manage(new Gtk::Label(_("No Table Selected")));
+  m_label_table_find_mode->show();
+  m_notebook_find.set_action_widget(m_label_table_find_mode, Gtk::PACK_START);
 
   //QuickFind widgets:
   //We don't use Glade for these, so it easier to modify them for the Maemo port.
-  m_pBox_QuickFind = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)));
+  m_box_quick_find = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)));
   auto label = Gtk::manage(new Gtk::Label(_("Quick _search:"), true));
-  m_pBox_QuickFind->pack_start(*label, Gtk::PACK_SHRINK);
+  m_box_quick_find->pack_start(*label, Gtk::PACK_SHRINK);
 
-  m_pEntry_QuickFind = Gtk::manage(new Gtk::Entry());
+  m_entry_quick_find = Gtk::manage(new Gtk::Entry());
 
   //Pressing Enter here is like pressing Find:
-  m_pEntry_QuickFind->set_activates_default();
+  m_entry_quick_find->set_activates_default();
 
-  label->set_mnemonic_widget(*m_pEntry_QuickFind);
+  label->set_mnemonic_widget(*m_entry_quick_find);
 
-  m_pBox_QuickFind->pack_start(*m_pEntry_QuickFind, Gtk::PACK_EXPAND_WIDGET);
-  m_pButton_QuickFind = Gtk::manage(new Gtk::Button(_("_Find"), true));
-  m_pButton_QuickFind->signal_clicked().connect(
+  m_box_quick_find->pack_start(*m_entry_quick_find, Gtk::PACK_EXPAND_WIDGET);
+  m_button_quick_find = Gtk::manage(new Gtk::Button(_("_Find"), true));
+  m_button_quick_find->signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) );
-  m_pBox_QuickFind->pack_start(*m_pButton_QuickFind, Gtk::PACK_SHRINK);
+  m_box_quick_find->pack_start(*m_button_quick_find, Gtk::PACK_SHRINK);
 
-  m_pBox_QuickFind->show_all_children();
-  m_pBox_QuickFind->hide();
+  m_box_quick_find->show_all_children();
+  m_box_quick_find->hide();
 
   PlaceHolder* placeholder_quickfind = nullptr;
   builder->get_widget_derived("vbox_quickfind", placeholder_quickfind);
   if(placeholder_quickfind)
-    placeholder_quickfind->add(*m_pBox_QuickFind);
+    placeholder_quickfind->add(*m_box_quick_find);
 
   //Add the Records/Found widgets at the right of the notebook tabs:
-  m_Box_RecordsCount.pack_start(
+  m_box_records_count.pack_start(
     *Gtk::manage(new Gtk::Label(_("Records:"))), Gtk::PACK_SHRINK);
-  m_Box_RecordsCount.pack_start(m_Label_RecordsCount, Gtk::PACK_SHRINK);
-  m_Box_RecordsCount.pack_start(
+  m_box_records_count.pack_start(m_label_records_count, Gtk::PACK_SHRINK);
+  m_box_records_count.pack_start(
     *Gtk::manage(new Gtk::Label(_("Found:"))), Gtk::PACK_SHRINK);
-  m_Box_RecordsCount.pack_start(m_Label_FoundCount, Gtk::PACK_SHRINK);
-  m_Box_RecordsCount.pack_start(m_Button_FindAll, Gtk::PACK_SHRINK);
-  m_Box_RecordsCount.show_all();
-  m_Notebook_Data.set_action_widget(&m_Box_RecordsCount, Gtk::PACK_END);
-  m_Button_FindAll.signal_clicked().connect(
+  m_box_records_count.pack_start(m_label_found_count, Gtk::PACK_SHRINK);
+  m_box_records_count.pack_start(m_button_find_all, Gtk::PACK_SHRINK);
+  m_box_records_count.show_all();
+  m_notebook_data.set_action_widget(&m_box_records_count, Gtk::PACK_END);
+  m_button_find_all.signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_find_all) );
 
   builder->get_widget("stack_mode", m_stack_mode);
   if(m_stack_mode)
   {
-    m_stack_mode->add(m_Notebook_Data, "data");
-    m_stack_mode->add(m_Notebook_Find, "find");
-    m_stack_mode->set_visible_child(m_Notebook_Data);
-    m_Notebook_Data.set_enable_layout_drag_and_drop(false);
+    m_stack_mode->add(m_notebook_data, "data");
+    m_stack_mode->add(m_notebook_find, "find");
+    m_stack_mode->set_visible_child(m_notebook_data);
+    m_notebook_data.set_enable_layout_drag_and_drop(false);
   }
 
   m_Mode = enumModes::NONE;
   m_Mode_Previous = enumModes::NONE;
 
 
-  m_Notebook_Find.signal_find_criteria.connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_find_criteria));
-  m_Notebook_Find.show();
-  m_Notebook_Data.signal_record_details_requested().connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_data_record_details_requested));
-  m_Notebook_Data.signal_record_selection_changed().connect(sigc::mem_fun(*this,
+  m_notebook_find.signal_find_criteria.connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_find_criteria));
+  m_notebook_find.show();
+  m_notebook_data.signal_record_details_requested().connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_data_record_details_requested));
+  m_notebook_data.signal_record_selection_changed().connect(sigc::mem_fun(*this,
     &Frame_Glom::on_notebook_data_record_selection_changed));
-  m_Notebook_Data.signal_switch_page().connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_data_switch_page));
-  m_Notebook_Data.show();
+  m_notebook_data.signal_switch_page().connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_data_switch_page));
+  m_notebook_data.show();
 
   //Fill Composite View:
   //This means that set_document and load/save are delegated to these children:
-  add_view(&m_Notebook_Data); //Also a composite view.
-  add_view(&m_Notebook_Find); //Also a composite view.
+  add_view(&m_notebook_data); //Also a composite view.
+  add_view(&m_notebook_find); //Also a composite view.
 
   on_userlevel_changed(AppState::userlevels::OPERATOR); //A default to show before a document is created or loaded.
 }
 
 Frame_Glom::~Frame_Glom()
 {
-  if(m_pBox_Tables)
-    remove_view(m_pBox_Tables);
+  if(m_box_tables)
+    remove_view(m_box_tables);
 
-  delete m_pDialog_Tables;
-  m_pDialog_Tables = nullptr;
+  delete m_dialog_tables;
+  m_dialog_tables = nullptr;
 
-  remove_view(&m_Notebook_Data); //Also a composite view.
-  remove_view(&m_Notebook_Find); //Also a composite view.
+  remove_view(&m_notebook_data); //Also a composite view.
+  remove_view(&m_notebook_find); //Also a composite view.
 
 
-  if(m_pDialogConnection)
+  if(m_dialog_connection)
   {
-    remove_view(m_pDialogConnection);
-    delete m_pDialogConnection;
-    m_pDialogConnection = nullptr;
+    remove_view(m_dialog_connection);
+    delete m_dialog_connection;
+    m_dialog_connection = nullptr;
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  if(m_pBox_Reports)
-    remove_view(m_pBox_Reports);
+  if(m_box_reports)
+    remove_view(m_box_reports);
 
-  if(m_pBox_PrintLayouts)
-    remove_view(m_pBox_PrintLayouts);
+  if(m_box_print_layouts)
+    remove_view(m_box_print_layouts);
 
-  if(m_pDialog_Relationships)
+  if(m_dialog_relationships)
   {
-    remove_view(m_pDialog_Relationships);
-    delete m_pDialog_Relationships;
-    m_pDialog_Relationships = nullptr;
+    remove_view(m_dialog_relationships);
+    delete m_dialog_relationships;
+    m_dialog_relationships = nullptr;
   }
 
-  if(m_pDialogLayoutReport)
+  if(m_dialog_layout_report)
   {
-    remove_view(m_pDialogLayoutReport);
-    delete m_pDialogLayoutReport;
-    m_pDialogLayoutReport = nullptr;
+    remove_view(m_dialog_layout_report);
+    delete m_dialog_layout_report;
+    m_dialog_layout_report = nullptr;
   }
 
-  if(m_pDialogLayoutPrint)
+  if(m_dialog_layout_print)
   {
-    remove_view(m_pDialogLayoutPrint);
-    delete m_pDialogLayoutPrint;
-    m_pDialogLayoutPrint = nullptr;
+    remove_view(m_dialog_layout_print);
+    delete m_dialog_layout_print;
+    m_dialog_layout_print = nullptr;
   }
 
-  if(m_pDialog_Fields)
+  if(m_dialog_fields)
   {
-    remove_view(m_pDialog_Fields);
-    delete m_pDialog_Fields;
-    m_pDialog_Fields = nullptr;
+    remove_view(m_dialog_fields);
+    delete m_dialog_fields;
+    m_dialog_fields = nullptr;
   }
 
   if(m_dialog_addrelatedtable)
@@ -260,8 +260,8 @@ void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
 
 void Frame_Glom::on_box_tables_selected(const Glib::ustring& strName)
 {
-  if(m_pDialog_Tables)
-    m_pDialog_Tables->hide();
+  if(m_dialog_tables)
+    m_dialog_tables->hide();
 
   show_table(strName);
 }
@@ -287,28 +287,28 @@ bool Frame_Glom::set_mode(enumModes mode)
   const bool show_quickfind = (m_Mode == enumModes::FIND);
   if(show_quickfind)
   {
-    m_pBox_QuickFind->show();
+    m_box_quick_find->show();
 
     //Clear the quick-find entry, ready for a new Find.
     if(changed)
     {
-      m_pEntry_QuickFind->set_text(Glib::ustring());
+      m_entry_quick_find->set_text(Glib::ustring());
 
       //Put the cursor in the quick find entry:
-      m_pEntry_QuickFind->grab_focus();
+      m_entry_quick_find->grab_focus();
     }
   }
   else
   {
-    m_pBox_QuickFind->hide();
+    m_box_quick_find->hide();
   }
 
 
   //Show the main part of the UI:
   if(m_Mode == enumModes::FIND)
-    set_mode_widget(m_Notebook_Find);
+    set_mode_widget(m_notebook_find);
   else
-    set_mode_widget(m_Notebook_Data);
+    set_mode_widget(m_notebook_data);
 
   return changed;
 }
@@ -404,8 +404,8 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
       }
 
       //Show the wanted records in the notebook, showing details for a particular record if wanted:
-      m_Notebook_Data.init_db_details(found_set, primary_key_value_for_details);
-      set_mode_widget(m_Notebook_Data);
+      m_notebook_data.init_db_details(found_set, primary_key_value_for_details);
+      set_mode_widget(m_notebook_data);
 
       //Show how many records were found:
       update_records_count();
@@ -414,8 +414,8 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
     }
     case(enumModes::FIND):
     {
-      m_Notebook_Find.init_db_details(m_table_name, get_active_layout_platform(get_document()));
-      set_mode_widget(m_Notebook_Find);
+      m_notebook_find.init_db_details(m_table_name, get_active_layout_platform(get_document()));
+      set_mode_widget(m_notebook_find);
       break;
     }
     default:
@@ -578,7 +578,7 @@ void Frame_Glom::on_menu_file_export()
 
   //const int index_primary_key = fieldsSequence.size() - 1;
 
-  const auto found_set = m_Notebook_Data.get_found_set();
+  const auto found_set = m_notebook_data.get_found_set();
 
   std::fstream the_stream(filepath, std::ios_base::out | std::ios_base::trunc);
   if(!the_stream)
@@ -886,7 +886,7 @@ void Frame_Glom::on_menu_file_print_edit_layouts()
 
 void Frame_Glom::set_enable_layout_drag_and_drop(bool enable)
 {
-  m_Notebook_Data.set_enable_layout_drag_and_drop(enable);
+  m_notebook_data.set_enable_layout_drag_and_drop(enable);
 }
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -900,13 +900,13 @@ void Frame_Glom::set_mode_find()
 
   const bool previously_in_data_mode = (m_Mode == enumModes::DATA);
 
-  const auto list_or_details = m_Notebook_Data.get_current_view();
+  const auto list_or_details = m_notebook_data.get_current_view();
 
   //A workaround hack to make sure that the list view will be active when the results are shown.
   //Because the list doesn't refresh properly (to give the first result) when the Details view was active first.
   //murrayc.
   if(previously_in_data_mode && (list_or_details == Notebook_Data::dataview::DETAILS))
-    m_Notebook_Data.set_current_view(Notebook_Data::dataview::LIST);
+    m_notebook_data.set_current_view(Notebook_Data::dataview::LIST);
 
   if(!set_mode(enumModes::FIND))
     return;
@@ -916,7 +916,7 @@ void Frame_Glom::set_mode_find()
   if(previously_in_data_mode)
   {
     //Show the same layout in Find mode as was just being viewed in Data mode:
-    m_Notebook_Find.set_current_view(list_or_details);
+    m_notebook_find.set_current_view(list_or_details);
   }
 }
 
@@ -936,7 +936,7 @@ void Frame_Glom::on_menu_add_record()
   BusyCursor busy_cursor(get_app_window());
 
   //Note: This should only be called in Data mode.
-  m_Notebook_Data.do_menu_file_add_record();
+  m_notebook_data.do_menu_file_add_record();
 }
 
 
@@ -1095,33 +1095,33 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
     default_table_name = get_document()->get_default_table();
 
   //Create the dialog, if it has not already been created:
-  if(!m_pBox_Tables)
+  if(!m_box_tables)
   {
     const Glib::RefPtr<Gtk::Builder> builderToKeepWidgetAlive =
-      Utils::get_glade_child_widget_derived_with_warning(m_pBox_Tables);
-    m_pDialog_Tables = new Window_BoxHolder(m_pBox_Tables, _("Edit Tables"));
-    m_pDialog_Tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
+      Utils::get_glade_child_widget_derived_with_warning(m_box_tables);
+    m_dialog_tables = new Window_BoxHolder(m_box_tables, _("Edit Tables"));
+    m_dialog_tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
 
     auto pWindow = get_app_window();
     if(pWindow)
-      m_pDialog_Tables->set_transient_for(*pWindow);
+      m_dialog_tables->set_transient_for(*pWindow);
 
-    m_pDialog_Tables->set_default_size(300, 400);
-    m_pBox_Tables->show_all();
-    add_view(m_pBox_Tables);
+    m_dialog_tables->set_default_size(300, 400);
+    m_box_tables->show_all();
+    add_view(m_box_tables);
 
     //Connect signals:
-    m_pBox_Tables->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_tables_selected));
+    m_box_tables->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_tables_selected));
   }
 
   {
     BusyCursor busy_cursor(get_app_window());
-    m_pBox_Tables->init_db_details();
+    m_box_tables->init_db_details();
   }
 
   //Let the user choose a table:
-  //m_pDialog_Tables->set_policy(false, true, false); //TODO_port
-  //m_pDialog_Tables->load_from_document(); //Refresh
+  //m_dialog_tables->set_policy(false, true, false); //TODO_port
+  //m_dialog_tables->load_from_document(); //Refresh
   if(!default_table_name.empty())
   {
     //Show the default table, and let the user navigate to another table manually if he wants:
@@ -1129,7 +1129,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   }
   else
   {
-    m_pDialog_Tables->show();
+    m_dialog_tables->show();
   }
 }
 
@@ -1186,7 +1186,7 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
   Gnome::Gda::SqlExpr where_clause_to_use = where_clause;
 
   //Prefer the quick find text if any was entered:
-  const auto quickfind_criteria = m_pEntry_QuickFind->get_text();
+  const auto quickfind_criteria = m_entry_quick_find->get_text();
   if(!quickfind_criteria.empty())
   {
     where_clause_to_use = 
@@ -1218,9 +1218,9 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
     FoundSet found_set;
     found_set.m_table_name = m_table_name;
     found_set.m_where_clause = where_clause_to_use;
-    const auto inited = m_Notebook_Data.init_db_details(found_set);
+    const auto inited = m_notebook_data.init_db_details(found_set);
 
-    m_Notebook_Data.select_page_for_find_results();
+    m_notebook_data.select_page_for_find_results();
 
     //Show how many records were found:
     records_found = (update_records_count() > 0);
@@ -1274,8 +1274,8 @@ void Frame_Glom::show_table_title()
 
   //Show the table title in bold text, because it's important to the user.
   const auto title = UiUtils::bold_message(table_label);
-  m_pLabel_Table_DataMode->set_markup(title);
-  m_pLabel_Table_FindMode->set_markup(title);
+  m_label_table_data_mode->set_markup(title);
+  m_label_table_find_mode->set_markup(title);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -1428,16 +1428,16 @@ void Frame_Glom::on_menu_developer_fields()
 
 void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name)
 {
-  if(!m_pDialog_Fields)
+  if(!m_dialog_fields)
   {
-    Utils::get_glade_widget_derived_with_warning(m_pDialog_Fields);
-    if (!m_pDialog_Fields) {
-      std::cerr << G_STRFUNC << ": m_pDialog_Fields is null." << std::endl;
+    Utils::get_glade_widget_derived_with_warning(m_dialog_fields);
+    if (!m_dialog_fields) {
+      std::cerr << G_STRFUNC << ": m_dialog_fields is null." << std::endl;
       return;
     }
 
-    m_pDialog_Fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
-    add_view(m_pDialog_Fields);
+    m_dialog_fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
+    add_view(m_dialog_fields);
   }
 
   // Some database backends (SQLite) require the table to change to no longer
@@ -1451,9 +1451,9 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustri
   // soon as the dialog has been closed.
   m_table_name = table_name;
 
-  m_pDialog_Fields->set_transient_for(parent);
-  m_pDialog_Fields->init_db_details(table_name);
-  m_pDialog_Fields->show();
+  m_dialog_fields->set_transient_for(parent);
+  m_dialog_fields->init_db_details(table_name);
+  m_dialog_fields->show();
 }
 
 void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent)
@@ -1492,23 +1492,23 @@ void Frame_Glom::on_menu_developer_relationships_overview()
 void Frame_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name)
 {
   //Create the widget if necessary:
-  if(!m_pDialog_Relationships)
+  if(!m_dialog_relationships)
   {
-    Utils::get_glade_widget_derived_with_warning(m_pDialog_Relationships);
-    if(!m_pDialog_Relationships)
+    Utils::get_glade_widget_derived_with_warning(m_dialog_relationships);
+    if(!m_dialog_relationships)
     {
-      std::cerr << G_STRFUNC << ": m_pDialog_Relationships is null.\n";
+      std::cerr << G_STRFUNC << ": m_dialog_relationships is null.\n";
       return;
     }
     
-    m_pDialog_Relationships->set_title("Relationships");
-    m_pDialog_Relationships->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
-    add_view(m_pDialog_Relationships); //Also a composite view.
+    m_dialog_relationships->set_title("Relationships");
+    m_dialog_relationships->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
+    add_view(m_dialog_relationships); //Also a composite view.
   }
 
-  m_pDialog_Relationships->set_transient_for(parent);
-  m_pDialog_Relationships->init_db_details(table_name);
-  m_pDialog_Relationships->show();
+  m_dialog_relationships->set_transient_for(parent);
+  m_dialog_relationships->init_db_details(table_name);
+  m_dialog_relationships->show();
 }
 
 void Frame_Glom::on_menu_developer_relationships()
@@ -1562,40 +1562,40 @@ void Frame_Glom::on_menu_developer_reports()
     return;
 
   //Create the widget if necessary:
-  if(!m_pBox_Reports)
+  if(!m_box_reports)
   {
     const Glib::RefPtr<Gtk::Builder> builderToKeepWidgetAlive =
-      Utils::get_glade_child_widget_derived_with_warning(m_pBox_Reports);
-    if(!m_pBox_Reports)
+      Utils::get_glade_child_widget_derived_with_warning(m_box_reports);
+    if(!m_box_reports)
     {
-      std::cerr << G_STRFUNC << ": m_pBox_Reports is null.\n";
+      std::cerr << G_STRFUNC << ": m_box_reports is null.\n";
       return;
     }
 
-    m_pDialog_Reports = std::make_unique<Window_BoxHolder>(m_pBox_Reports);
-    m_pDialog_Reports->set_transient_for(*(get_app_window()));
-    m_pDialog_Reports->set_title(_("Reports"));
+    m_dialog_reports = std::make_unique<Window_BoxHolder>(m_box_reports);
+    m_dialog_reports->set_transient_for(*(get_app_window()));
+    m_dialog_reports->set_title(_("Reports"));
 
-    Utils::get_glade_widget_derived_with_warning(m_pDialogLayoutReport);
-    if(!m_pDialogLayoutReport)
+    Utils::get_glade_widget_derived_with_warning(m_dialog_layout_report);
+    if(!m_dialog_layout_report)
     {
-      std::cerr << G_STRFUNC << ": m_pDialogLayoutReport is null.\n";
+      std::cerr << G_STRFUNC << ": m_dialog_layout_report is null.\n";
       return;
     }
 
-    add_view(m_pDialogLayoutReport);
-    m_pDialogLayoutReport->set_transient_for(*(get_app_window()));
-    m_pDialogLayoutReport->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_report_hide) );
+    add_view(m_dialog_layout_report);
+    m_dialog_layout_report->set_transient_for(*(get_app_window()));
+    m_dialog_layout_report->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_report_hide) );
 
-    m_pDialog_Reports->set_default_size(300, 400);
-    m_pBox_Reports->show_all();
+    m_dialog_reports->set_default_size(300, 400);
+    m_box_reports->show_all();
 
-    m_pBox_Reports->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_reports_selected));
-    add_view(m_pBox_Reports);
+    m_box_reports->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_reports_selected));
+    add_view(m_box_reports);
   }
 
-  m_pBox_Reports->init_db_details(m_table_name);
-  m_pDialog_Reports->show();
+  m_box_reports->init_db_details(m_table_name);
+  m_dialog_reports->show();
 }
 
 void Frame_Glom::on_menu_developer_print_layouts()
@@ -1605,29 +1605,29 @@ void Frame_Glom::on_menu_developer_print_layouts()
     return;
 
   //Create the widget if necessary:
-  if(!m_pBox_PrintLayouts)
+  if(!m_box_print_layouts)
   {
     const Glib::RefPtr<Gtk::Builder> builderToKeepWidgetAlive =
-      Utils::get_glade_child_widget_derived_with_warning(m_pBox_PrintLayouts);
-    if(!m_pBox_PrintLayouts)
+      Utils::get_glade_child_widget_derived_with_warning(m_box_print_layouts);
+    if(!m_box_print_layouts)
     {
-      std::cerr << G_STRFUNC << ": m_pBox_PrintLayouts is null.\n";
+      std::cerr << G_STRFUNC << ": m_box_print_layouts is null.\n";
       return;
     }
 
-    m_pDialog_PrintLayouts = std::make_unique<Window_BoxHolder>(m_pBox_PrintLayouts);
+    m_dialog_print_layouts = std::make_unique<Window_BoxHolder>(m_box_print_layouts);
 
-    m_pDialog_PrintLayouts->set_transient_for(*get_app_window());
-    m_pDialog_PrintLayouts->set_title(_("Print Layouts"));
-    m_pDialog_PrintLayouts->set_default_size(300, 400);
-    m_pBox_PrintLayouts->show_all();
-    add_view(m_pBox_PrintLayouts);
+    m_dialog_print_layouts->set_transient_for(*get_app_window());
+    m_dialog_print_layouts->set_title(_("Print Layouts"));
+    m_dialog_print_layouts->set_default_size(300, 400);
+    m_box_print_layouts->show_all();
+    add_view(m_box_print_layouts);
 
-    m_pBox_PrintLayouts->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_print_layouts_selected));
+    m_box_print_layouts->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_print_layouts_selected));
   }
 
-  m_pBox_PrintLayouts->init_db_details(m_table_name);
-  m_pDialog_PrintLayouts->show();
+  m_box_print_layouts->init_db_details(m_table_name);
+  m_dialog_print_layouts->show();
 }
 
 void Frame_Glom::on_menu_developer_script_library()
@@ -1648,14 +1648,14 @@ void Frame_Glom::on_menu_developer_script_library()
 
 void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
 {
-  m_pDialog_Reports->hide();
+  m_dialog_reports->hide();
 
   auto report = get_document()->get_report(m_table_name, report_name);
   if(report)
   {
-    m_pDialogLayoutReport->set_transient_for(*get_app_window());
-    m_pDialogLayoutReport->set_report(m_table_name, report);
-    m_pDialogLayoutReport->show();
+    m_dialog_layout_report->set_transient_for(*get_app_window());
+    m_dialog_layout_report->set_report(m_table_name, report);
+    m_dialog_layout_report->show();
   }
 }
 
@@ -1694,31 +1694,31 @@ void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout
   }
 
   //Create the dialog if necessary:
-  if(!m_pDialogLayoutPrint)
+  if(!m_dialog_layout_print)
   {
-    Utils::get_glade_widget_derived_with_warning(m_pDialogLayoutPrint);
-    if(!m_pDialogLayoutPrint)
+    Utils::get_glade_widget_derived_with_warning(m_dialog_layout_print);
+    if(!m_dialog_layout_print)
     {
-      std::cerr << G_STRFUNC << ": m_pDialogLayoutPrint is null\n";
+      std::cerr << G_STRFUNC << ": m_dialog_layout_print is null\n";
       return;
     }
 
-    add_view(m_pDialogLayoutPrint);
-    m_pDialogLayoutPrint->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_print_hide) );
+    add_view(m_dialog_layout_print);
+    m_dialog_layout_print->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_print_hide) );
 
-    add_window_to_app(m_pDialogLayoutPrint);
+    add_window_to_app(m_dialog_layout_print);
   }
 
-  m_pDialog_PrintLayouts->hide();
+  m_dialog_print_layouts->hide();
 
   auto print_layout = get_document()->get_print_layout(m_table_name, print_layout_name);
   if(print_layout)
   {
-    m_pDialogLayoutPrint->set_transient_for(*app_window);
+    m_dialog_layout_print->set_transient_for(*app_window);
 
-    m_pDialogLayoutPrint->set_print_layout(m_table_name, print_layout);
+    m_dialog_layout_print->set_print_layout(m_table_name, print_layout);
 
-    m_pDialogLayoutPrint->show();
+    m_dialog_layout_print->show();
   }
 }
 
@@ -1847,20 +1847,20 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
 
 void Frame_Glom::instantiate_dialog_connection()
 {
-  if(m_pDialogConnection)
+  if(m_dialog_connection)
     return;
 
-  Utils::get_glade_widget_derived_with_warning(m_pDialogConnection);
-  if(!m_pDialogConnection)
+  Utils::get_glade_widget_derived_with_warning(m_dialog_connection);
+  if(!m_dialog_connection)
   {
-    std::cerr << G_STRFUNC << ": m_pDialogConnection is null.\n";
+    std::cerr << G_STRFUNC << ": m_dialog_connection is null.\n";
   }
 
-  add_view(m_pDialogConnection); //Also a composite view.
+  add_view(m_dialog_connection); //Also a composite view.
 
   auto window = get_app_window();
   if (window)
-    m_pDialogConnection->set_transient_for(*window);
+    m_dialog_connection->set_transient_for(*window);
 }
 
 bool Frame_Glom::connection_request_password_and_choose_new_database_name()
@@ -1922,11 +1922,11 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         instantiate_dialog_connection();
 
         //Ask for connection details:
-        m_pDialogConnection->load_from_document(); //Get good defaults.
-        m_pDialogConnection->set_transient_for(*get_app_window());
+        m_dialog_connection->load_from_document(); //Get good defaults.
+        m_dialog_connection->set_transient_for(*get_app_window());
 
-        const auto response = Glom::UiUtils::dialog_run_with_help(m_pDialogConnection);
-        m_pDialogConnection->hide();
+        const auto response = Glom::UiUtils::dialog_run_with_help(m_dialog_connection);
+        m_dialog_connection->hide();
         password_requested = true; //So we can ask again if it didn't work.
 
         if(response == Gtk::RESPONSE_OK)
@@ -1938,7 +1938,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
             return false;
 
           Glib::ustring username, password;
-          m_pDialogConnection->get_username_and_password(username, password);
+          m_dialog_connection->get_username_and_password(username, password);
           connection_pool->set_user(username);
           connection_pool->set_password(password);
 
@@ -1961,7 +1961,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         if(!handle_connection_initialize_errors( connection_pool->initialize(slot_ignored)) )
           return false;
 
-        //m_pDialogConnection->load_from_document(); //Get good defaults.
+        //m_dialog_connection->load_from_document(); //Get good defaults.
         // No authentication required
         
         break;
@@ -2120,27 +2120,27 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     || document->get_hosting_mode() == Document::HostingMode::POSTGRES_CENTRAL)
   {
     //We recreate the dialog each time to make sure it is clean of any changes:
-    delete m_pDialogConnection;
-    m_pDialogConnection = nullptr;
+    delete m_dialog_connection;
+    m_dialog_connection = nullptr;
     instantiate_dialog_connection();
 
-    m_pDialogConnection->load_from_document(); //Get good defaults.
+    m_dialog_connection->load_from_document(); //Get good defaults.
 
     //Show alternative text if necessary:
     if(confirm_known_user)
-      m_pDialogConnection->set_confirm_existing_user_note();
+      m_dialog_connection->set_confirm_existing_user_note();
 
     if(!known_username.empty())
-      m_pDialogConnection->set_username(known_username);
+      m_dialog_connection->set_username(known_username);
 
     if(!known_password.empty())
-      m_pDialogConnection->set_password(known_password);
+      m_dialog_connection->set_password(known_password);
   }
   else
   {
-    //Later, if m_pDialogConnection is null then we assume we should use the known user/password:
-    delete m_pDialogConnection;
-    m_pDialogConnection = nullptr;
+    //Later, if m_dialog_connection is null then we assume we should use the known user/password:
+    delete m_dialog_connection;
+    m_dialog_connection = nullptr;
   }
 
 
@@ -2150,10 +2150,10 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     //Only show the dialog if we don't know the correct username/password yet:
     int response = Gtk::RESPONSE_OK;
 
-    if(m_pDialogConnection)
+    if(m_dialog_connection)
     {
-      response = Glom::UiUtils::dialog_run_with_help(m_pDialogConnection);
-      m_pDialogConnection->hide();
+      response = Glom::UiUtils::dialog_run_with_help(m_dialog_connection);
+      m_dialog_connection->hide();
     }
 
     //Try to use the entered username/password:
@@ -2163,11 +2163,11 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
 
       //Ask for the user/password if necessary:
       //TODO: Remove any previous database setting?
-      if(m_pDialogConnection)
+      if(m_dialog_connection)
       {
         try
         {
-          sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
+          sharedconnection = m_dialog_connection->connect_to_server_with_connection_settings();
           // TODO: Save username in document?
           return true; //Succeeded, because no exception was thrown.
         }
@@ -2259,7 +2259,7 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
   if(!report)
     return;
 
-  FoundSet found_set = m_Notebook_Data.get_found_set();
+  FoundSet found_set = m_notebook_data.get_found_set();
 
   //TODO: Find a way to get a full locale name from the simplified locale name from AppWindow::get_current_locale():
   ReportBuilder report_builder(std::locale("") /* the user's current locale */);
@@ -2292,7 +2292,7 @@ void Frame_Glom::do_print_layout(const Glib::ustring& print_layout_name, bool pr
   
   //TODO: When expanding items, avoid the page gaps that the print layout's design
   //has added.  
-  const auto found_set = m_Notebook_Data.get_found_set_selected();
+  const auto found_set = m_notebook_data.get_found_set_selected();
   //Note that found_set.m_where_clause could be empty if there are no records yet,
   //and that is acceptable if this is for a print preview while designing the print layout. 
   
@@ -2307,10 +2307,10 @@ void Frame_Glom::on_dialog_layout_report_hide()
 {
   auto document = get_document();
 
-  if(document && true) //m_pDialogLayoutReport->get_modified())
+  if(document && true) //m_dialog_layout_report->get_modified())
   {
-    const auto original_name = m_pDialogLayoutReport->get_original_report_name();
-    auto report = m_pDialogLayoutReport->get_report();
+    const auto original_name = m_dialog_layout_report->get_original_report_name();
+    auto report = m_dialog_layout_report->get_report();
     if(report && (original_name != report->get_name()))
       document->remove_report(m_table_name, original_name);
 
@@ -2327,10 +2327,10 @@ void Frame_Glom::on_dialog_layout_print_hide()
 {
   auto document = get_document();
 
-  if(document && true) //m_pDialogLayoutReport->get_modified())
+  if(document && true) //m_dialog_layout_report->get_modified())
   {
-    const auto original_name = m_pDialogLayoutPrint->get_original_name();
-    auto print_layout = m_pDialogLayoutPrint->get_print_layout();
+    const auto original_name = m_dialog_layout_print->get_original_name();
+    auto print_layout = m_dialog_layout_print->get_print_layout();
     if(print_layout && (original_name != print_layout->get_name()))
       document->remove_report(m_table_name, original_name);
 
@@ -2391,7 +2391,7 @@ void Frame_Glom::on_notebook_data_record_details_requested(const Glib::ustring& 
 void Frame_Glom::on_notebook_data_record_selection_changed()
 {
   bool something_selected = false;
-  const auto found_set = m_Notebook_Data.get_found_set_selected();
+  const auto found_set = m_notebook_data.get_found_set_selected();
   if(!found_set.m_where_clause.empty())
     something_selected = true;
   
@@ -2421,7 +2421,7 @@ gulong Frame_Glom::update_records_count()
 
   gulong count_all = 0;
   gulong count_found = 0;
-  m_Notebook_Data.get_record_counts(count_all, count_found);
+  m_notebook_data.get_record_counts(count_all, count_found);
   //std::cout << G_STRFUNC << ": count_all=" << count_all << ", count_found=" << count_found << std::endl;
 
   std::string str_count_all, str_count_found;
@@ -2434,17 +2434,17 @@ gulong Frame_Glom::update_records_count()
     else
       str_count_found = str_count_all;
 
-    m_Button_FindAll.hide();
+    m_button_find_all.hide();
   }
   else
   {
     str_count_found = ulong_as_string(count_found);
 
-    m_Button_FindAll.show();
+    m_button_find_all.show();
   }
 
-  m_Label_RecordsCount.set_text(str_count_all);
-  m_Label_FoundCount.set_text(str_count_found);
+  m_label_records_count.set_text(str_count_all);
+  m_label_found_count.set_text(str_count_found);
 
   return count_found;
 }

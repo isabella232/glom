@@ -72,7 +72,7 @@ AppWindow* Label::get_appwindow() const
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Label::on_menu_properties_activate()
 {
-  auto textobject = std::dynamic_pointer_cast<LayoutItem_Text>(m_pLayoutItem);
+  auto textobject = std::dynamic_pointer_cast<LayoutItem_Text>(m_layout_item);
   if(!textobject)
     return;
 
@@ -105,7 +105,7 @@ bool Label::on_button_press_event(GdkEventButton *button_event)
     if(mods & GDK_BUTTON3_MASK)
     {
       //Give user choices of actions on this item:
-      m_pPopupMenuUtils->popup(button_event->button, button_event->time);
+      m_popup_menu_utils->popup(button_event->button, button_event->time);
       return true; //We handled this event.
     }
   }

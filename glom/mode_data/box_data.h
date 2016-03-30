@@ -129,7 +129,7 @@ protected:
   bool m_bUnstoredData;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Dialog_Layout* m_pDialogLayout;
+  Dialog_Layout* m_dialog_layout;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   /// "details" or "list", as specified in the Document's XML.

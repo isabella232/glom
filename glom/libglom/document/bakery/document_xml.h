@@ -70,11 +70,11 @@ protected:
   typedef GlomBakery::Document type_base;
 
   //XML Parsing bits:
-  xmlpp::DomParser m_DOM_Parser; //Could be mutable to allow us to guarantee a root node.
-  xmlpp::Document* m_pDOM_Document; //1-to-1 with the m_DOM_Parser.
+  xmlpp::DomParser m_dom_parser; //Could be mutable to allow us to guarantee a root node.
+  xmlpp::Document* m_dom_document; //1-to-1 with the m_dom_parser.
   
-  std::string m_strDTD_Name;
-  Glib::ustring m_strRootNodeName, m_root_xmlns;
+  std::string m_dtd_name;
+  Glib::ustring m_root_node_name, m_root_xmlns;
   bool m_write_formatted;
 };
 

@@ -316,7 +316,7 @@ Box_Data_Calendar_Related::type_vecConstLayoutFields Box_Data_Calendar_Related::
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Box_Data_Calendar_Related::on_dialog_layout_hide()
 {
-  auto dialog_related = dynamic_cast<Dialog_Layout_Calendar_Related*>(m_pDialogLayout);
+  auto dialog_related = dynamic_cast<Dialog_Layout_Calendar_Related*>(m_dialog_layout);
   g_assert(dialog_related);
   const auto portal = dialog_related->get_portal_layout();
   set_layout_item(portal, "" /* TODO */);
@@ -466,27 +466,27 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
 
 void Box_Data_Calendar_Related::setup_menu(Gtk::Widget* /* this */)
 {
-  m_refActionGroup = Gio::SimpleActionGroup::create();
+  m_action_group = Gio::SimpleActionGroup::create();
 
-  m_refContextEdit = m_refActionGroup->add_action("edit",
+  m_context_edit = m_action_group->add_action("edit",
     sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_MenuPopup_activate_Edit) );
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   // Don't add ContextLayout in client only mode because it would never
   // be sensitive anyway
-  m_refContextLayout =  m_refActionGroup->add_action("layout",
+  m_context_layout =  m_action_group->add_action("layout",
     sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_MenuPopup_activate_layout) );
 
   //TODO: This does not work until this widget is in a container in the window:
   auto pApp = get_appwindow();
   if(pApp)
   {
-    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_context_layout); //So that it can be disabled when not in developer mode.
     pApp->update_userlevel_ui(); //Update our action's sensitivity.
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  insert_action_group("context", m_refActionGroup);
+  insert_action_group("context", m_action_group);
 
   //TODO: add_accel_group(m_refUIManager->get_accel_group());
 
@@ -494,12 +494,12 @@ void Box_Data_Calendar_Related::setup_menu(Gtk::Widget* /* this */)
   menu->append(_("_Edit"), "context.edit");
   menu->append(_("_Layout"), "context.layout");
 
-  m_pMenuPopup = std::make_unique<Gtk::Menu>(menu);
-  m_pMenuPopup->attach_to_widget(*this);
+  m_menu_popup = std::make_unique<Gtk::Menu>(menu);
+  m_menu_popup->attach_to_widget(*this);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   if(pApp)
-    m_refContextLayout->set_enabled(pApp->get_userlevel() == AppState::userlevels::DEVELOPER);
+    m_context_layout->set_enabled(pApp->get_userlevel() == AppState::userlevels::DEVELOPER);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
@@ -511,7 +511,7 @@ void Box_Data_Calendar_Related::on_calendar_button_press_event(GdkEventButton *b
   auto pApp = get_appwindow();
   if(pApp)
   {
-    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_context_layout); //So that it can be disabled when not in developer mode.
     pApp->update_userlevel_ui(); //Update our action's sensitivity.
   }
 #endif
@@ -521,7 +521,7 @@ void Box_Data_Calendar_Related::on_calendar_button_press_event(GdkEventButton *b
   if(mods & GDK_BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
-    m_pMenuPopup->popup(button_event->button, button_event->time);
+    m_menu_popup->popup(button_event->button, button_event->time);
     return; //handled.
   }
   else

@@ -63,12 +63,12 @@ private:
 
   void on_userlevel_changed(AppState::userlevels userlevel) override;
       
-  Gtk::CheckButton* m_pCheckButtonShowHidden;
-  guint m_colTableName;
-  guint m_colHidden;
-  guint m_colTitle;
-  guint m_colDefault;
-  guint m_colTitleSingular;
+  Gtk::CheckButton* m_check_button_show_hidden;
+  guint m_col_table_name;
+  guint m_col_hidden;
+  guint m_col_title;
+  guint m_col_default;
+  guint m_col_title_singular;
 
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 };

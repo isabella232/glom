@@ -39,7 +39,7 @@ Box_Data_ManyRecords::Box_Data_ManyRecords()
   m_layout_name = "manyrecords"; //Set by derived classes.
 
   //Groups are not very helpful for a list view:
-  //m_pDialogLayout->set_show_groups(false);
+  //m_dialog_layout->set_show_groups(false);
 
 }
 

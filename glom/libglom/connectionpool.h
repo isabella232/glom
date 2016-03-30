@@ -339,7 +339,7 @@ private:
   Gtk::Dialog* m_dialog_epc_progress; //For progress while generating certificates.
 
   std::shared_ptr<Backend> m_backend;
-  Glib::RefPtr<Gnome::Gda::Connection> m_refGdaConnection;
+  Glib::RefPtr<Gnome::Gda::Connection> m_gda_connection;
   guint m_sharedconnection_refcount;
   bool m_ready_to_connect;
   Glib::ustring m_user, m_password, m_database;

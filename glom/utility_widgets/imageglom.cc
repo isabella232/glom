@@ -167,10 +167,10 @@ bool ImageGlom::on_button_press_event(GdkEventButton *button_event)
   if(pApp)
   {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
-    pApp->add_developer_action(m_refContextAddField);
-    pApp->add_developer_action(m_refContextAddRelatedRecords);
-    pApp->add_developer_action(m_refContextAddGroup);
+    pApp->add_developer_action(m_context_layout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_context_add_field);
+    pApp->add_developer_action(m_context_add_related_records);
+    pApp->add_developer_action(m_context_add_group);
 
     pApp->update_userlevel_ui(); //Update our action's sensitivity.
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -941,30 +941,30 @@ void ImageGlom::on_menupopup_activate_clear()
 void ImageGlom::setup_menu_usermode()
 {
   //Create the Gio::ActionGroup and associate it with this widget:
-  m_refActionGroup_UserModePopup = Gio::SimpleActionGroup::create();
+  m_action_group_user_mode_popup = Gio::SimpleActionGroup::create();
 
-  m_refActionOpenFile = m_refActionGroup_UserModePopup->add_action("open-file",
+  m_action_open_file = m_action_group_user_mode_popup->add_action("open-file",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_open_file) );
 
-  m_refActionOpenFileWith = m_refActionGroup_UserModePopup->add_action("open-fil-ewith",
+  m_action_open_file_with = m_action_group_user_mode_popup->add_action("open-fil-ewith",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_open_file_with) );
     
-  m_refActionSaveFile = m_refActionGroup_UserModePopup->add_action("save-file",
+  m_action_save_file = m_action_group_user_mode_popup->add_action("save-file",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_save_file) );
     
-  m_refActionSelectFile = m_refActionGroup_UserModePopup->add_action("select-file",
+  m_action_select_file = m_action_group_user_mode_popup->add_action("select-file",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_select_file) );
 
-  m_refActionCopy = m_refActionGroup_UserModePopup->add_action("copy",
+  m_action_copy = m_action_group_user_mode_popup->add_action("copy",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_copy) );
 
-  m_refActionPaste = m_refActionGroup_UserModePopup->add_action("paste",
+  m_action_paste = m_action_group_user_mode_popup->add_action("paste",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_paste) );
 
-  m_refActionClear = m_refActionGroup_UserModePopup->add_action("clear",
+  m_action_clear = m_action_group_user_mode_popup->add_action("clear",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_clear) );
 
-  insert_action_group("imagecontext", m_refActionGroup_UserModePopup);
+  insert_action_group("imagecontext", m_action_group_user_mode_popup);
 
 
   //Create the UI for the menu whose items will activate the actions,
@@ -978,8 +978,8 @@ void ImageGlom::setup_menu_usermode()
   menu->append(_("_Paste"), "context.paste");
   menu->append(_("_Clear"), "context.clear");
 
-  m_pMenuPopup_UserMode = std::make_unique<Gtk::Menu>(menu);
-  m_pMenuPopup_UserMode->attach_to_widget(*this);
+  m_menu_popup_user_mode = std::make_unique<Gtk::Menu>(menu);
+  m_menu_popup_user_mode->attach_to_widget(*this);
 }
 
 void ImageGlom::do_choose_image()
@@ -994,15 +994,15 @@ void ImageGlom::set_read_only(bool read_only)
 
 void ImageGlom::popup_menu(guint button, guint32 activate_time)
 {
-  if(!m_pMenuPopup_UserMode)
+  if(!m_menu_popup_user_mode)
   {
-    std::cerr << G_STRFUNC << ": m_pMenuPopup_UserMode is null\n";
+    std::cerr << G_STRFUNC << ": m_menu_popup_user_mode is null\n";
     return;
   }
 
-  m_pMenuPopup_UserMode->popup(button, activate_time);
+  m_menu_popup_user_mode->popup(button, activate_time);
 
-  m_refActionSelectFile->set_enabled();
+  m_action_select_file->set_enabled();
 }
 
 

@@ -1313,7 +1313,7 @@ bool FlowTableWithFields::on_button_press_event(GdkEventButton *button_event)
     if(mods & GDK_BUTTON3_MASK)
     {
       //Give user choices of actions on this item:
-      m_pPopupMenuUtils->popup(button_event->button, button_event->time);
+      m_popup_menu_utils->popup(button_event->button, button_event->time);
       return true; //We handled this event.
     }
   }

@@ -29,24 +29,24 @@ namespace Glom
 {
 
 LayoutWidgetBase::LayoutWidgetBase()
-: m_pLayoutItem(nullptr)
+: m_layout_item(nullptr)
 {
 }
 
 void LayoutWidgetBase::set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
 {
-  m_pLayoutItem = layout_item;
+  m_layout_item = layout_item;
   m_table_name = table_name;
 }
 
 std::shared_ptr<const LayoutItem> LayoutWidgetBase::get_layout_item() const
 {
-  return m_pLayoutItem;
+  return m_layout_item;
 }
 
 std::shared_ptr<LayoutItem> LayoutWidgetBase::get_layout_item()
 {
-  return m_pLayoutItem;
+  return m_layout_item;
 }
 
 AppWindow* LayoutWidgetBase::get_appwindow() const

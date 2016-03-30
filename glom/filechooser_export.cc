@@ -33,7 +33,7 @@ FileChooser_Export::FileChooser_Export()
   m_extra_widget(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_button_format(_("Define Data _Format"), true /* use mnenomic */),
-  m_pDialogLayout(nullptr),
+  m_dialog_layout(nullptr),
 #endif //GLOM_ENABLE_CLIENT_ONLY
   m_document(nullptr)
 {
@@ -58,17 +58,17 @@ FileChooser_Export::FileChooser_Export()
   if(!dialog)
     return;
   
-  m_pDialogLayout = dialog;
-  //add_view(m_pDialogLayout); //Give it access to the document.
-  m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &FileChooser_Export::on_dialog_layout_hide) );
+  m_dialog_layout = dialog;
+  //add_view(m_dialog_layout); //Give it access to the document.
+  m_dialog_layout->signal_hide().connect( sigc::mem_fun(*this, &FileChooser_Export::on_dialog_layout_hide) );
 #endif //GLOM_ENABLE_CLIENT_ONLY
 }
 
 FileChooser_Export::~FileChooser_Export()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  delete m_pDialogLayout;
-  m_pDialogLayout = nullptr;
+  delete m_dialog_layout;
+  m_dialog_layout = nullptr;
 #endif //GLOM_ENABLE_CLIENT_ONLY
 }
 
@@ -86,20 +86,20 @@ void FileChooser_Export::set_export_layout(const Document::type_list_const_layou
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void FileChooser_Export::on_button_define_layout()
 {
-  if(!m_pDialogLayout)
+  if(!m_dialog_layout)
     return;
 
-  m_pDialogLayout->set_layout_groups(m_layout_groups, m_document, m_table_name); //TODO: Use m_TableFields?
-  m_pDialogLayout->set_transient_for(*this);
+  m_dialog_layout->set_layout_groups(m_layout_groups, m_document, m_table_name); //TODO: Use m_TableFields?
+  m_dialog_layout->set_transient_for(*this);
   set_modal(false);
-  m_pDialogLayout->set_modal();
-  m_pDialogLayout->show();
+  m_dialog_layout->set_modal();
+  m_dialog_layout->show();
 }
 
 void FileChooser_Export::on_dialog_layout_hide()
 {
-  if(m_pDialogLayout)
-    m_pDialogLayout->get_layout_groups(m_layout_groups);
+  if(m_dialog_layout)
+    m_dialog_layout->get_layout_groups(m_layout_groups);
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 

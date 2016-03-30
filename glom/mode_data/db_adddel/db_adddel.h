@@ -400,12 +400,12 @@ protected:
 
 private:
   //TODO: Avoid repeating these in so many widgets:
-  std::unique_ptr<Gtk::Menu> m_pMenuPopup;
-  Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup;
-  Glib::RefPtr<Gio::SimpleAction> m_refContextEdit, m_refContextAdd, m_refContextDelete;
+  std::unique_ptr<Gtk::Menu> m_menu_popup;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_action_group;
+  Glib::RefPtr<Gio::SimpleAction> m_context_edit, m_context_add, m_context_delete;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Glib::RefPtr<Gio::SimpleAction> m_refContextLayout;
+  Glib::RefPtr<Gio::SimpleAction> m_context_layout;
 #endif
 
   bool m_allow_user_actions;
@@ -413,7 +413,7 @@ private:
   bool m_prevent_user_signals;
   bool m_ignore_tree_view_signals;
 
-  type_vec_strings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
+  type_vec_strings m_column_ids; //We give each ViewColumn a special ID, so we know where they are after a reorder.
 
 protected:
   bool m_allow_add;

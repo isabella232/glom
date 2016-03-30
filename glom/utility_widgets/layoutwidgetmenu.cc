@@ -31,17 +31,17 @@ namespace Glom
 LayoutWidgetMenu::LayoutWidgetMenu()
 {
   #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_refActionGroup = Gio::SimpleActionGroup::create();
+  m_action_group = Gio::SimpleActionGroup::create();
 
-  m_refContextLayout = Gio::SimpleAction::create("choose-field");
-  m_refContextLayoutProperties = Gio::SimpleAction::create("field-layout-properties");
-  m_refContextAddField = Gio::SimpleAction::create("add-field");
-  m_refContextAddRelatedRecords = Gio::SimpleAction::create("add-related-records");
-  m_refContextAddNotebook = Gio::SimpleAction::create("add-notebook");
-  m_refContextAddGroup = Gio::SimpleAction::create("add-group");
-  m_refContextAddButton = Gio::SimpleAction::create("add-button");
-  m_refContextAddText = Gio::SimpleAction::create("add-text");
-  m_refContextDelete = Gio::SimpleAction::create("delete");
+  m_context_layout = Gio::SimpleAction::create("choose-field");
+  m_context_layout_properties = Gio::SimpleAction::create("field-layout-properties");
+  m_context_add_field = Gio::SimpleAction::create("add-field");
+  m_context_add_related_records = Gio::SimpleAction::create("add-related-records");
+  m_context_add_notebook = Gio::SimpleAction::create("add-notebook");
+  m_context_add_group = Gio::SimpleAction::create("add-group");
+  m_context_add_button = Gio::SimpleAction::create("add-button");
+  m_context_add_text = Gio::SimpleAction::create("add-text");
+  m_context_delete = Gio::SimpleAction::create("delete");
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
@@ -52,7 +52,7 @@ void LayoutWidgetMenu::add_action(const Glib::RefPtr<Gio::SimpleAction>& action,
   if(!action)
     return;
 
-  m_refActionGroup->add_action(m_refContextLayout);
+  m_action_group->add_action(m_context_layout);
   action->signal_activate().connect(
     sigc::hide(slot));
 }
@@ -65,45 +65,45 @@ void LayoutWidgetMenu::setup_menu(Gtk::Widget* widget)
     return;
   }
 
-  add_action(m_refContextLayout,
+  add_action(m_context_layout,
     sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_activate_layout) );
 
-  add_action(m_refContextLayoutProperties,
+  add_action(m_context_layout_properties,
     sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_activate_layout_properties) );
 
-  add_action(m_refContextAddField,
+  add_action(m_context_add_field,
     sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), enumType::FIELD ) );
 
-  add_action(m_refContextAddRelatedRecords,
+  add_action(m_context_add_related_records,
     sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), enumType::PORTAL ) );
 
-  add_action(m_refContextAddGroup,
+  add_action(m_context_add_group,
     sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), enumType::GROUP ) );
 
-  add_action(m_refContextAddNotebook,
+  add_action(m_context_add_notebook,
     sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), enumType::NOTEBOOK ) );
 
-  add_action(m_refContextAddButton,
+  add_action(m_context_add_button,
     sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), enumType::BUTTON ) );
 
-  add_action(m_refContextAddText,
+  add_action(m_context_add_text,
     sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), enumType::TEXT ) );
   
-  add_action(m_refContextDelete,
+  add_action(m_context_delete,
     sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_activate_delete) );
 
   //TODO: This does not work until this widget is in a container in the window:s
   auto pApp = get_appwindow();
   if(pApp)
   {
-    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
-    pApp->add_developer_action(m_refContextLayoutProperties); //So that it can be disabled when not in developer mode.
-    pApp->add_developer_action(m_refContextAddField);
-    pApp->add_developer_action(m_refContextAddRelatedRecords);
-    pApp->add_developer_action(m_refContextAddNotebook);
-    pApp->add_developer_action(m_refContextAddGroup);
-    pApp->add_developer_action(m_refContextAddButton);
-    pApp->add_developer_action(m_refContextAddText);
+    pApp->add_developer_action(m_context_layout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_context_layout_properties); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_context_add_field);
+    pApp->add_developer_action(m_context_add_related_records);
+    pApp->add_developer_action(m_context_add_notebook);
+    pApp->add_developer_action(m_context_add_group);
+    pApp->add_developer_action(m_context_add_button);
+    pApp->add_developer_action(m_context_add_text);
 
     pApp->update_userlevel_ui(); //Update our action's sensitivity. 
   }
@@ -119,14 +119,14 @@ void LayoutWidgetMenu::setup_menu(Gtk::Widget* widget)
   menu->append(_("Delete"), "context.delete");
 
 
-  m_pMenuPopup = std::make_unique<Gtk::Menu>(menu);
-  m_pMenuPopup->attach_to_widget(*widget);
+  m_menu_popup = std::make_unique<Gtk::Menu>(menu);
+  m_menu_popup->attach_to_widget(*widget);
 
   if(pApp)
-    m_refContextLayout->set_enabled(pApp->get_userlevel() == AppState::userlevels::DEVELOPER);
+    m_context_layout->set_enabled(pApp->get_userlevel() == AppState::userlevels::DEVELOPER);
 
   //Make our popup menu work:
-  widget->insert_action_group("context", m_refActionGroup);
+  widget->insert_action_group("context", m_action_group);
 }
 
 void LayoutWidgetMenu::on_menupopup_add_item(enumType item)

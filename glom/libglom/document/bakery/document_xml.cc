@@ -25,14 +25,14 @@ namespace GlomBakery
 
 
 Document_XML::Document_XML()
-: m_pDOM_Document(nullptr),
+: m_dom_document(nullptr),
   m_write_formatted(false)
 {
 }
 
 Document_XML::~Document_XML()
 {
-  //m_pDOM_Document is owned by m_DOM_Document;
+  //m_dom_document is owned by m_DOM_Document;
 }
 
 bool Document_XML::load_after(int& failure_code)
@@ -47,14 +47,14 @@ bool Document_XML::load_after(int& failure_code)
   try
   {
     //Link the parser to the XML text that was loaded:
-    //m_DOM_Parser.setDoValidation(true);
+    //m_dom_parser.setDoValidation(true);
 
     if(m_strContents.empty())
       std::cerr << G_STRFUNC << ": parsing empty document.\n";
 
-    m_DOM_Parser.parse_memory(m_strContents);
-    m_pDOM_Document = m_DOM_Parser.get_document();
-    if(!m_pDOM_Document) return false;
+    m_dom_parser.parse_memory(m_strContents);
+    m_dom_document = m_dom_parser.get_document();
+    if(!m_dom_document) return false;
 
     return true; //Success.
   }
@@ -98,9 +98,9 @@ void Document_XML::Util_DOM_Write(Glib::ustring& refstrXML) const
   try
   {
     if(m_write_formatted)
-      refstrXML = m_pDOM_Document->write_to_string_formatted();
+      refstrXML = m_dom_document->write_to_string_formatted();
     else
-      refstrXML = m_pDOM_Document->write_to_string();
+      refstrXML = m_dom_document->write_to_string();
   }
   catch(xmlpp::exception& ex)
   {
@@ -110,23 +110,23 @@ void Document_XML::Util_DOM_Write(Glib::ustring& refstrXML) const
 
 void Document_XML::set_dtd_name(const std::string& strVal)
 {
-  m_strDTD_Name = strVal;
+  m_dtd_name = strVal;
 }
 
 std::string Document_XML::get_dtd_name() const
 {
-  return m_strDTD_Name;
+  return m_dtd_name;
 }
 
 void Document_XML::set_dtd_root_node_name(const Glib::ustring& strVal, const Glib::ustring& xmlns)
 {
-  m_strRootNodeName = strVal;
+  m_root_node_name = strVal;
   m_root_xmlns = xmlns;
 }
 
 Glib::ustring Document_XML::get_dtd_root_node_name() const
 {
-  return m_strRootNodeName;
+  return m_root_node_name;
 }
 
 
@@ -138,21 +138,21 @@ const xmlpp::Element* Document_XML::get_node_document() const
 
 xmlpp::Element* Document_XML::get_node_document()
 {
-  if(!m_pDOM_Document)
-    m_pDOM_Document = m_DOM_Parser.get_document();
+  if(!m_dom_document)
+    m_dom_document = m_dom_parser.get_document();
   
   //Make sure that it has the DTD declaration:
   //TODO: Put this in a better place, where it's more guaranteed to always be set?
   //TODO: Add API to specify the PUBLIC URI, if the document should write this:
   //SYSTEM (local) DTDs do not seem very useful.
   //- means non-registered, which is commonly used.
-  //m_pDOM_Document->set_internal_subset(m_strRootNodeName, "-//glom/" + m_strDTD_Name, m_strDTD_Name);
+  //m_dom_document->set_internal_subset(m_root_node_name, "-//glom/" + m_dtd_name, m_dtd_name);
 
-  auto nodeRoot = m_pDOM_Document->get_root_node();
+  auto nodeRoot = m_dom_document->get_root_node();
   if(!nodeRoot)
   {
     //Add it if it isn't there already:
-    nodeRoot = m_pDOM_Document->create_root_node(m_strRootNodeName, m_root_xmlns);
+    nodeRoot = m_dom_document->create_root_node(m_root_node_name, m_root_xmlns);
   }
   
   //Make sure that it has the root name name and xmlns:

@@ -53,7 +53,7 @@ Box_Data_List::Box_Data_List()
 
 
   //Groups are not very helpful for a list view:
-  //m_pDialogLayout->set_show_groups(false);
+  //m_dialog_layout->set_show_groups(false);
 
   m_AddDel.show();
 }

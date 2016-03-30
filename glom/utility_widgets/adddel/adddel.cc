@@ -219,18 +219,18 @@ void AddDel::on_MenuPopup_activate_Delete()
 
 void AddDel::setup_menu(Gtk::Widget* /* widget */)
 {
-  m_refActionGroup = Gio::SimpleActionGroup::create();
+  m_action_Group = Gio::SimpleActionGroup::create();
 
-  m_refContextEdit = m_refActionGroup->add_action("edit",
+  m_context_edit = m_action_Group->add_action("edit",
    sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_Edit) );
 
   if(get_allow_user_actions())
   {
-    m_refContextDelete = m_refActionGroup->add_action("delete",
+    m_context_delete = m_action_Group->add_action("delete",
       sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_Delete) );
   }
 
-  insert_action_group("context", m_refActionGroup);
+  insert_action_group("context", m_action_Group);
 
 
   //TODO: add_accel_group(builder->get_accel_group());
@@ -239,8 +239,8 @@ void AddDel::setup_menu(Gtk::Widget* /* widget */)
   menu->append(_("_Edit"), "context.edit");
   menu->append(_("_Delete"), "context.delete");
 
-  m_pMenuPopup = std::make_unique<Gtk::Menu>(menu);
-  m_pMenuPopup->attach_to_widget(*this);
+  m_menu_popup = std::make_unique<Gtk::Menu>(menu);
+  m_menu_popup->attach_to_widget(*this);
 }
 
 bool AddDel::on_button_press_event_Popup(GdkEventButton *button_event)
@@ -250,7 +250,7 @@ bool AddDel::on_button_press_event_Popup(GdkEventButton *button_event)
   if(mods & GDK_BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
-    m_pMenuPopup->popup(button_event->button, button_event->time);
+    m_menu_popup->popup(button_event->button, button_event->time);
   }
   else
   {
@@ -1011,17 +1011,17 @@ void AddDel::remove_item_by_key(const Glib::ustring& strKey)
 }
 
 AddDel::InnerIgnore::InnerIgnore(AddDel* pOuter)
-: m_pOuter(pOuter),
+: m_outer(pOuter),
   m_bPreventUserSignals(false),
   m_bIgnoreSheetSignals(false)
 {
-  if(m_pOuter)
+  if(m_outer)
   {
-    m_bPreventUserSignals = m_pOuter->get_prevent_user_signals();
-    m_pOuter->set_prevent_user_signals();
+    m_bPreventUserSignals = m_outer->get_prevent_user_signals();
+    m_outer->set_prevent_user_signals();
 
-    m_bIgnoreSheetSignals = m_pOuter->get_ignore_treeview_signals();
-    m_pOuter->set_ignore_treeview_signals();
+    m_bIgnoreSheetSignals = m_outer->get_ignore_treeview_signals();
+    m_outer->set_ignore_treeview_signals();
   }
 }
 
@@ -1029,13 +1029,13 @@ AddDel::InnerIgnore::InnerIgnore(AddDel* pOuter)
 AddDel::InnerIgnore::~InnerIgnore()
 {
   //Restore values:
-  if(m_pOuter)
+  if(m_outer)
   {
-    m_pOuter->set_prevent_user_signals(m_bPreventUserSignals);
-    m_pOuter->set_ignore_treeview_signals(m_bIgnoreSheetSignals);
+    m_outer->set_prevent_user_signals(m_bPreventUserSignals);
+    m_outer->set_ignore_treeview_signals(m_bIgnoreSheetSignals);
   }
 
-  m_pOuter = 0;
+  m_outer = 0;
 }
 
 Glib::ustring AddDel::treeview_get_key(const Gtk::TreeModel::iterator& row)
@@ -1324,8 +1324,8 @@ void AddDel::on_treeview_columns_changed()
 {
   if(!get_ignore_treeview_signals())
   {
-    //Get the new column order, and save it in m_vecColumnIDs:
-    m_vecColumnIDs.clear();
+    //Get the new column order, and save it in m_column_ids:
+    m_column_ids.clear();
 
     for(const auto& item : m_TreeView.get_columns())
     {
@@ -1333,7 +1333,7 @@ void AddDel::on_treeview_columns_changed()
       if(pViewColumn)
       {
         const auto column_id = pViewColumn->get_column_id();
-        m_vecColumnIDs.emplace_back(column_id);
+        m_column_ids.emplace_back(column_id);
 
       }
     }

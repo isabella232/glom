@@ -34,12 +34,12 @@ const bool Box_Tables::glade_developer(false);
 
 Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Box_WithButtons(cobject, builder),
-  m_pCheckButtonShowHidden(nullptr),
-  m_colTableName(0),
-  m_colHidden(0),
-  m_colTitle(0),
-  m_colDefault(0),
-  m_colTitleSingular(0)
+  m_check_button_show_hidden(nullptr),
+  m_col_table_name(0),
+  m_col_hidden(0),
+  m_col_title(0),
+  m_col_default(0),
+  m_col_title_singular(0)
 {
   //Get the Glade-instantiated widgets, and connect signal handlers:
   Gtk::Button* pButtonCancel = nullptr;
@@ -53,8 +53,8 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   builder->get_widget("vbox_adddel_parent", pAddDelParent);
   pAddDelParent->pack_start(m_AddDel);
 
-  builder->get_widget("checkbutton_show_hidden", m_pCheckButtonShowHidden);
-  m_pCheckButtonShowHidden->signal_toggled().connect(sigc::mem_fun(*this, &Box_Tables::on_show_hidden_toggled));
+  builder->get_widget("checkbutton_show_hidden", m_check_button_show_hidden);
+  m_check_button_show_hidden->signal_toggled().connect(sigc::mem_fun(*this, &Box_Tables::on_show_hidden_toggled));
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_Add));
@@ -79,22 +79,22 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const std:
     const auto developer_mode = (get_userlevel() == AppState::userlevels::DEVELOPER);
 
     m_AddDel.set_value_key(iter, table_info->get_name());
-    m_AddDel.set_value(iter, m_colTableName, table_info->get_name());
-    m_AddDel.set_value(iter, m_colHidden, table_info->get_hidden());
+    m_AddDel.set_value(iter, m_col_table_name, table_info->get_name());
+    m_AddDel.set_value(iter, m_col_hidden, table_info->get_hidden());
 
     if(developer_mode)
     {
       //std::cout << "debug: " << G_STRFUNC << ": dev title=" << table_info->get_title(AppWindow::get_current_locale()) << std::endl;
-      m_AddDel.set_value(iter, m_colTitle, item_get_title(table_info));
-      m_AddDel.set_value(iter, m_colTitleSingular, table_info->get_title_singular(AppWindow::get_current_locale()));
+      m_AddDel.set_value(iter, m_col_title, item_get_title(table_info));
+      m_AddDel.set_value(iter, m_col_title_singular, table_info->get_title_singular(AppWindow::get_current_locale()));
     }
     else
     {
       //std::cout << "debug: " << G_STRFUNC << ": op get_title_or_name=" << table_info->get_title_or_name(AppWindow::get_current_locale()) << std::endl;
-      m_AddDel.set_value(iter, m_colTitle, item_get_title_or_name(table_info));
+      m_AddDel.set_value(iter, m_col_title, item_get_title_or_name(table_info));
     }
 
-    m_AddDel.set_value(iter, m_colDefault, table_info->get_default());
+    m_AddDel.set_value(iter, m_col_default, table_info->get_default());
   }
 }
 
@@ -113,9 +113,9 @@ bool Box_Tables::fill_from_database()
   else
     set_size_request(-1, -1);
 
-  m_pCheckButtonShowHidden->set_sensitive(developer_mode); //Operators have no choice - they can't see hidden tables ever.
+  m_check_button_show_hidden->set_sensitive(developer_mode); //Operators have no choice - they can't see hidden tables ever.
   if(!developer_mode)
-    m_pCheckButtonShowHidden->set_active(false); //Operators have no choice - they can't see hidden tables ever.
+    m_check_button_show_hidden->set_active(false); //Operators have no choice - they can't see hidden tables ever.
 
   m_AddDel.remove_all();
 
@@ -124,18 +124,18 @@ bool Box_Tables::fill_from_database()
 
   const bool editable = developer_mode;
   const bool visible_extras = developer_mode;
-  m_colTableName = m_AddDel.add_column(_("Table"), AddDelColumnInfo::enumStyles::Text, editable, visible_extras);
-  m_AddDel.prevent_duplicates(m_colTableName); //Prevent two tables with the same name from being added.
+  m_col_table_name = m_AddDel.add_column(_("Table"), AddDelColumnInfo::enumStyles::Text, editable, visible_extras);
+  m_AddDel.prevent_duplicates(m_col_table_name); //Prevent two tables with the same name from being added.
   m_AddDel.set_prevent_duplicates_warning(_("This table already exists. Please choose a different table name"));
 
-  m_colHidden = m_AddDel.add_column(_("Hidden"), AddDelColumnInfo::enumStyles::Boolean, editable, visible_extras);
-  m_colTitle =  m_AddDel.add_column(_("Title"), AddDelColumnInfo::enumStyles::Text, editable, true);
+  m_col_hidden = m_AddDel.add_column(_("Hidden"), AddDelColumnInfo::enumStyles::Boolean, editable, visible_extras);
+  m_col_title =  m_AddDel.add_column(_("Title"), AddDelColumnInfo::enumStyles::Text, editable, true);
 
   //TODO: This should really be a radio, but the use of AddDel makes it awkward to change that CellRenderer property.
-  m_colDefault = m_AddDel.add_column(_("Default"), AddDelColumnInfo::enumStyles::Boolean, editable, visible_extras);
+  m_col_default = m_AddDel.add_column(_("Default"), AddDelColumnInfo::enumStyles::Boolean, editable, visible_extras);
 
   if(developer_mode)
-    m_colTitleSingular = m_AddDel.add_column(_("Title (Singular Form)"), AddDelColumnInfo::enumStyles::Text, editable, true);
+    m_col_title_singular = m_AddDel.add_column(_("Title (Singular Form)"), AddDelColumnInfo::enumStyles::Text, editable, true);
 
   //Get the list of hidden tables:
 
@@ -185,7 +185,7 @@ bool Box_Tables::fill_from_database()
       if(hidden && !developer_mode) //Don't add hidden tables unless we are in developer mode:
         bAddIt = false;
 
-      if(hidden && !m_pCheckButtonShowHidden->get_active()) //Don't add hidden tables if that checkbox is unset.
+      if(hidden && !m_check_button_show_hidden->get_active()) //Don't add hidden tables if that checkbox is unset.
       {
         bAddIt = false;
       }
@@ -215,7 +215,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 {
   //TODO: Handle cell renderer changes to prevent illegal table names (e.g. starting with numbers.).
 
-  const auto table_name = m_AddDel.get_value(row, m_colTableName);
+  const auto table_name = m_AddDel.get_value(row, m_col_table_name);
   if(table_name.empty())
     return;
 
@@ -356,39 +356,39 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
 {
   if(get_userlevel() == AppState::userlevels::DEVELOPER)
   {
-    if(column == m_colHidden)
+    if(column == m_col_hidden)
     {
       save_to_document();
       //TODO: This causes a crash. fill_from_database(); //Hide/show the table.
     }
-    else if(column == m_colTitle)
+    else if(column == m_col_title)
     {
       save_to_document();
     }
-    else if(column == m_colTitleSingular)
+    else if(column == m_col_title_singular)
     {
       save_to_document();
     }
-    else if(column == m_colDefault)
+    else if(column == m_col_default)
     {
       //Only one table can be the default, so ensure that:
-      const auto is_default = m_AddDel.get_value_as_bool(row, m_colDefault);
+      const auto is_default = m_AddDel.get_value_as_bool(row, m_col_default);
       if(is_default)
       {
         //Set all the other rows to false:
         auto model = m_AddDel.get_model();
         for(const auto& child_row : model->children())
         {
-          m_AddDel.set_value(child_row, m_colDefault, false);
+          m_AddDel.set_value(child_row, m_col_default, false);
         }
       }
 
       save_to_document();
     }
-    else if(column == m_colTableName)
+    else if(column == m_col_table_name)
     {
       Glib::ustring table_name = m_AddDel.get_value_key(row);
-      Glib::ustring table_name_new = m_AddDel.get_value(row, m_colTableName);
+      Glib::ustring table_name_new = m_AddDel.get_value(row, m_col_table_name);
       if(!table_name.empty() && !table_name_new.empty())
       {
         Glib::ustring strMsg = _("Are you sure that you want to rename this table?");  //TODO: Show old and new names?
@@ -463,19 +463,19 @@ void Box_Tables::save_to_document()
 
     for(const auto& row : m_AddDel.get_model()->children())
     {
-      const auto table_name = m_AddDel.get_value(row, m_colTableName); //The name has already been changed in the document.
+      const auto table_name = m_AddDel.get_value(row, m_col_table_name); //The name has already been changed in the document.
       auto table_info = document->get_table(table_name); //Start with the existing table_info, to preserve extra information, such as translations.
       if(table_info)
       {
-        table_info->set_name( m_AddDel.get_value(row, m_colTableName) );
+        table_info->set_name( m_AddDel.get_value(row, m_col_table_name) );
 
         if(!table_info->get_name().empty())
         {
-          table_info->set_hidden( m_AddDel.get_value_as_bool(row, m_colHidden) );
-          table_info->set_title( m_AddDel.get_value(row, m_colTitle) , AppWindow::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
-          table_info->set_title_singular( m_AddDel.get_value(row, m_colTitleSingular), AppWindow::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
+          table_info->set_hidden( m_AddDel.get_value_as_bool(row, m_col_hidden) );
+          table_info->set_title( m_AddDel.get_value(row, m_col_title) , AppWindow::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
+          table_info->set_title_singular( m_AddDel.get_value(row, m_col_title_singular), AppWindow::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
           //std::cout << "debug: " << G_STRFUNC << ": title=" << item_get_title(table_info) << std::endl;
-          table_info->set_default( m_AddDel.get_value_as_bool(row, m_colDefault) );
+          table_info->set_default( m_AddDel.get_value_as_bool(row, m_col_default) );
 
           listTables.emplace_back(table_info);
         }
