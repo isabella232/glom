@@ -221,11 +221,6 @@ AppWindow* ImageGlom::get_appwindow() const
   return dynamic_cast<AppWindow*>(pWindow);
 }
 
-bool ImageGlom::get_has_original_data() const
-{
-  return true; //TODO.
-}
-
 /*
 void ImageGlom::set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
 {

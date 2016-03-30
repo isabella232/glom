@@ -35,11 +35,6 @@ public:
 
   virtual Gnome::Gda::Value get_value() const = 0;
 
-  /** Whether this widget still has the original entered data, instead of just a representation.
-   * For instance, an image widget might only store a preview.
-   */
-  virtual bool get_has_original_data() const;
-
   typedef sigc::signal<void> type_signal_edited;
   type_signal_edited signal_edited();
 

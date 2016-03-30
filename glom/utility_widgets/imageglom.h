@@ -53,7 +53,6 @@ public:
 
   void set_value(const Gnome::Gda::Value& value) override;
   Gnome::Gda::Value get_value() const override;
-  bool get_has_original_data() const override;
 
   //Optionally use this instead of set_value(), to avoid creating an unnecessary Value.
   //void set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf);
