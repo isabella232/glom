@@ -55,7 +55,7 @@ private:
 
   ModelColumns m_model_columns;
 
-  Glib::RefPtr<Gtk::ListStore> m_refModel;
+  Glib::RefPtr<Gtk::ListStore> m_model;
 };
 
 } //namespace Glom

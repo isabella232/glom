@@ -106,19 +106,19 @@ void AddDel::init()
   //set_columns_count(1);
   //construct_specified_columns();
 
-  m_ScrolledWindow.add(m_TreeView);
-  m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_IN);
-  m_TreeView.show();
-  pack_start(m_ScrolledWindow);
+  m_scrolled_window.add(m_tree_view);
+  m_scrolled_window.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  m_scrolled_window.set_shadow_type(Gtk::SHADOW_IN);
+  m_tree_view.show();
+  pack_start(m_scrolled_window);
 
   //Make sure that the TreeView doesn't start out only big enough for zero items.
-  m_TreeView.set_size_request(-1, 150);
+  m_tree_view.set_size_request(-1, 150);
 
-  //m_TreeView.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
-  m_TreeView.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &AddDel::on_treeview_button_press_event) );
+  //m_tree_view.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
+  m_tree_view.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &AddDel::on_treeview_button_press_event) );
 
-  m_TreeView.signal_columns_changed().connect( sigc::mem_fun(*this, &AddDel::on_treeview_columns_changed) );
+  m_tree_view.signal_columns_changed().connect( sigc::mem_fun(*this, &AddDel::on_treeview_columns_changed) );
   //add_blank();
 
   setup_menu(this);
@@ -135,7 +135,7 @@ void AddDel::init()
 void AddDel::set_treeview_accessible_name(const Glib::ustring& name)
 {
 #ifdef GTKMM_ATKMM_ENABLED
-  m_TreeView.get_accessible()->set_name(name);
+  m_tree_view.get_accessible()->set_name(name);
 #endif
 }
 
@@ -159,7 +159,7 @@ void AddDel::warn_about_duplicate()
 void
 AddDel::on_MenuPopup_activate_Edit()
 {
-  auto refSelection = m_TreeView.get_selection();
+  auto refSelection = m_tree_view.get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -205,7 +205,7 @@ void AddDel::on_MenuPopup_activate_Delete()
 {
   finish_editing();
 
-  auto refSelection = m_TreeView.get_selection();
+  auto refSelection = m_tree_view.get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -280,7 +280,7 @@ Gtk::TreeModel::iterator AddDel::get_item_placeholder()
 
 Gtk::TreeModel::iterator AddDel::add_item_placeholder()
 {
-  auto iter = m_refListStore->append();
+  auto iter = m_list_store->append();
   if(iter)
   {
     iter->set_value(m_col_key, Glib::ustring("")); //Remove temporary key value.
@@ -313,13 +313,13 @@ void AddDel::remove_all()
 {
   InnerIgnore innerIgnore(this); //see comments for InnerIgnore class.
 
-  if(m_refListStore)
+  if(m_list_store)
   {
-    auto iter = m_refListStore->children().begin();
+    auto iter = m_list_store->children().begin();
     while(iter)
     {
-      m_refListStore->erase(iter);
-      iter = m_refListStore->children().begin();
+      m_list_store->erase(iter);
+      iter = m_list_store->children().begin();
     }
   }
 }
@@ -329,7 +329,7 @@ Glib::ustring AddDel::get_value(const Gtk::TreeModel::iterator& iter, guint col)
 {
   Glib::ustring value;
 
-  if(m_refListStore)
+  if(m_list_store)
   {
     Gtk::TreeModel::Row treerow = *iter;
 
@@ -337,7 +337,7 @@ Glib::ustring AddDel::get_value(const Gtk::TreeModel::iterator& iter, guint col)
     {
       const guint col_real = col;
       //Get different types of data, depending on the column:
-      if(m_ColumnTypes[col_real].m_style == AddDelColumnInfo::enumStyles::Boolean)
+      if(m_column_types[col_real].m_style == AddDelColumnInfo::enumStyles::Boolean)
       {
         bool bool_value = false;
         treerow.get_value(col_real, bool_value);
@@ -376,18 +376,18 @@ Glib::ustring AddDel::get_value_selected(guint col)
 
 Gtk::TreeModel::iterator AddDel::get_item_selected()
 {
-  auto refTreeSelection = m_TreeView.get_selection();
+  auto refTreeSelection = m_tree_view.get_selection();
   if(refTreeSelection)
   {
      return refTreeSelection->get_selected();
   }
 
-  return m_refListStore->children().end();
+  return m_list_store->children().end();
 }
 
 Gtk::TreeModel::iterator AddDel::get_row(const Glib::ustring& key)
 {
-  for(auto iter = m_refListStore->children().begin(); iter != m_refListStore->children().end(); ++iter)
+  for(auto iter = m_list_store->children().begin(); iter != m_list_store->children().end(); ++iter)
   {
     const auto strTemp = get_value(iter, m_col_key);
     if(strTemp == key)
@@ -396,7 +396,7 @@ Gtk::TreeModel::iterator AddDel::get_row(const Glib::ustring& key)
     }
   }
 
-  return  m_refListStore->children().end();
+  return  m_list_store->children().end();
 }
 
 bool AddDel::select_item(const Gtk::TreeModel::iterator& iter)
@@ -408,7 +408,7 @@ bool AddDel::select_item(const Gtk::TreeModel::iterator& iter)
 
 bool AddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, bool start_editing)
 {
-  if(!m_refListStore)
+  if(!m_list_store)
     return false;
 
   InnerIgnore innerIgnore(this); //see comments for InnerIgnore class
@@ -417,20 +417,20 @@ bool AddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, boo
 
   if(iter)
   {
-    auto refTreeSelection = m_TreeView.get_selection();
+    auto refTreeSelection = m_tree_view.get_selection();
     if(refTreeSelection)
     {
       refTreeSelection->select(iter);
 
-      Gtk::TreeModel::Path path = m_refListStore->get_path(iter);
+      Gtk::TreeModel::Path path = m_list_store->get_path(iter);
 
       guint view_column_index = 0;
       bool test = get_view_column_index(column, view_column_index);
       if(test)
       {
-        auto pColumn = m_TreeView.get_column(view_column_index);
+        auto pColumn = m_tree_view.get_column(view_column_index);
         if(pColumn)
-          m_TreeView.set_cursor(path, *pColumn, start_editing);
+          m_tree_view.set_cursor(path, *pColumn, start_editing);
         else
            g_warning("AddDel::select_item:TreeViewColumn not found.");
       }
@@ -457,10 +457,10 @@ bool AddDel::select_item(const Glib::ustring& strItemText, guint column, bool st
 
 guint AddDel::get_count() const
 {
-  if(!m_refListStore)
+  if(!m_list_store)
     return 0;
 
-  guint iCount = m_refListStore->children().size();
+  guint iCount = m_list_store->children().size();
 
   //Take account of the extra blank for new entries:
   if(get_allow_user_actions()) //If it has the extra row.
@@ -501,13 +501,13 @@ void AddDel::add_blank()
 
 guint AddDel::get_columns_count() const
 {
-  return m_TreeView.get_columns().size();
+  return m_tree_view.get_columns().size();
 }
 
 /*
 void AddDel::set_columns_count(guint count)
 {
-  m_ColumnTypes.resize(count, enumStyles::Text);
+  m_column_types.resize(count, enumStyles::Text);
   m_vecColumnNames.resize(count);
 }
 */
@@ -518,7 +518,7 @@ void AddDel::set_column_title(guint col, const Glib::ustring& strText)
   bool bPreventUserSignals = get_prevent_user_signals();
   set_prevent_user_signals(true);
 
-  auto pColumn = m_TreeView.get_column(col);
+  auto pColumn = m_tree_view.get_column(col);
   if(pColumn)
     pColumn->set_title(strText);
 
@@ -533,18 +533,18 @@ void AddDel::construct_specified_columns()
 
   //Delay actual use of set_column_*() stuff until this method is called.
 
-  if(m_ColumnTypes.empty())
+  if(m_column_types.empty())
     return;
 
   typedef std::vector< Gtk::TreeModelColumnBase* > type_vecModelColumns;
-  type_vecModelColumns vecModelColumns(m_ColumnTypes.size(), 0);
+  type_vecModelColumns vecModelColumns(m_column_types.size(), 0);
 
   //Create the Gtk ColumnRecord:
 
   Gtk::TreeModel::ColumnRecord record;
   {
     type_vecModelColumns::size_type i = 0;
-    for(const auto& column_info : m_ColumnTypes)
+    for(const auto& column_info : m_column_types)
     {
       Gtk::TreeModelColumnBase* pModelColumn = nullptr;
 
@@ -577,23 +577,23 @@ void AddDel::construct_specified_columns()
   }
 
   //Create the model from the ColumnRecord:
-  m_refListStore = Gtk::ListStore::create(record);
-  m_TreeView.set_model(m_refListStore);
+  m_list_store = Gtk::ListStore::create(record);
+  m_tree_view.set_model(m_list_store);
 
   //Remove all View columns:
-  UiUtils::treeview_delete_all_columns(&m_TreeView);
+  UiUtils::treeview_delete_all_columns(&m_tree_view);
 
   //Add new View Colums:
   int model_column_index = 0;
   int view_column_index = 0;
   for(const auto& pModelColumn : vecModelColumns)
   {
-    if(m_ColumnTypes[model_column_index].m_visible)
+    if(m_column_types[model_column_index].m_visible)
     {
-      const Glib::ustring column_name = m_ColumnTypes[model_column_index].m_name;
-      const Glib::ustring column_id = m_ColumnTypes[model_column_index].m_id;
+      const Glib::ustring column_name = m_column_types[model_column_index].m_name;
+      const Glib::ustring column_id = m_column_types[model_column_index].m_id;
 
-      switch(m_ColumnTypes[model_column_index].m_style)
+      switch(m_column_types[model_column_index].m_style)
       {
         case(AddDelColumnInfo::enumStyles::Choices):
         {
@@ -601,7 +601,7 @@ void AddDel::construct_specified_columns()
           auto pCellRendererList = Gtk::manage( new CellRendererList() );
 
           //Add the choices:
-          for(const auto& item : m_ColumnTypes[model_column_index].m_choices)
+          for(const auto& item : m_column_types[model_column_index].m_choices)
           {
             pCellRendererList->append_list_item(item);
           }
@@ -640,9 +640,9 @@ void AddDel::construct_specified_columns()
         }
       } //switch
 
-      if(m_ColumnTypes[model_column_index].m_editable)
+      if(m_column_types[model_column_index].m_editable)
       {
-        auto pCellRendererText = dynamic_cast<Gtk::CellRendererText*>(m_TreeView.get_column_cell_renderer(view_column_index));
+        auto pCellRendererText = dynamic_cast<Gtk::CellRendererText*>(m_tree_view.get_column_cell_renderer(view_column_index));
         if(pCellRendererText)
         {
           //Connect a signal handler:
@@ -658,7 +658,7 @@ void AddDel::construct_specified_columns()
         }
         else
         {
-           auto pCellRendererToggle = dynamic_cast<Gtk::CellRendererToggle*>(m_TreeView.get_column_cell_renderer(view_column_index));
+           auto pCellRendererToggle = dynamic_cast<Gtk::CellRendererToggle*>(m_tree_view.get_column_cell_renderer(view_column_index));
            if(pCellRendererToggle)
            {
              pCellRendererToggle->property_activatable() = true;
@@ -671,7 +671,7 @@ void AddDel::construct_specified_columns()
       }
 
       //Connect other signals:
-      auto pCellRenderer = m_TreeView.get_column_cell_renderer(view_column_index);
+      auto pCellRenderer = m_tree_view.get_column_cell_renderer(view_column_index);
       if(pCellRenderer)
         pCellRenderer->signal_editing_started().connect(
           sigc::bind( sigc::mem_fun(*this, &AddDel::on_treeview_cell_editing_started), model_column_index) );
@@ -686,9 +686,9 @@ void AddDel::construct_specified_columns()
   model_column_index = 0;
   for(auto& pModelColumn : vecModelColumns)
   {
-    if(model_column_index < (int)m_ColumnTypes.size())
+    if(model_column_index < (int)m_column_types.size())
     {
-      AddDelColumnInfo::enumStyles style = m_ColumnTypes[model_column_index].m_style;
+      AddDelColumnInfo::enumStyles style = m_column_types[model_column_index].m_style;
       switch(style)
       {
         //Cast it to the derived type, so we can delete it properly.
@@ -723,14 +723,14 @@ void AddDel::construct_specified_columns()
     ++model_column_index;
   }
 
-  m_TreeView.columns_autosize();
+  m_tree_view.columns_autosize();
 }
 
 /*
 void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gnome::Gda::Value& value)
 {
   //Different model columns have different types of data:
-  switch(m_ColumnTypes[col].m_style)
+  switch(m_column_types[col].m_style)
   {
     case(AddDelColumnInfo::enumStyles::Boolean):
     {
@@ -740,7 +740,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gn
     }
     default:
     {
-      set_value( iter, col, Conversions::get_text_for_gda_value(m_ColumnTypes[col].m_field_type, value) );
+      set_value( iter, col, Conversions::get_text_for_gda_value(m_column_types[col].m_field_type, value) );
       break;
     }
   }
@@ -751,7 +751,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gl
 {
   InnerIgnore innerIgnore(this);
 
-  if(!m_refListStore)
+  if(!m_list_store)
     std::cerr << G_STRFUNC << ": No model.\n";
   else
   {
@@ -759,7 +759,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gl
     if(treerow)
     {
       //Different model columns have different types of data:
-      switch(m_ColumnTypes[col].m_style)
+      switch(m_column_types[col].m_style)
       {
         case(AddDelColumnInfo::enumStyles::Boolean):
         {
@@ -801,7 +801,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, bool val
 {
   InnerIgnore innerIgnore(this);
 
-  if(!m_refListStore)
+  if(!m_list_store)
     std::cerr << G_STRFUNC << ": No model.\n";
   else
   {
@@ -809,7 +809,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, bool val
     if(treerow)
     {
       //Different model columns have different types of data:
-      switch(m_ColumnTypes[col].m_style)
+      switch(m_column_types[col].m_style)
       {
         case(AddDelColumnInfo::enumStyles::Boolean):
         {
@@ -839,7 +839,7 @@ void AddDel::set_value_selected(guint col, const Gnome::Gda::Value& value)
 
 void AddDel::remove_all_columns()
 {
-  m_ColumnTypes.clear();
+  m_column_types.clear();
 
   //Add the hidden key.ID columns
   //Make these visible (with true) if you want to debug problems.
@@ -849,15 +849,15 @@ void AddDel::remove_all_columns()
 
 guint AddDel::add_column(const AddDelColumnInfo& column_info)
 {
-  m_ColumnTypes.emplace_back(column_info);
+  m_column_types.emplace_back(column_info);
 
   //Generate appropriate model columns:
   construct_specified_columns();
 
   //Tell the View to use the model:
-  //m_TreeView.set_model(m_refListStore);
+  //m_tree_view.set_model(m_list_store);
 
-  return m_ColumnTypes.size()-1;
+  return m_column_types.size()-1;
 }
 
 guint AddDel::add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style, bool editable, bool visible)
@@ -883,8 +883,8 @@ guint AddDel::add_column(const Glib::ustring& strTitle, const Glib::ustring& col
 Glib::ustring AddDel::get_column_field(guint column_index) const
 {
   Glib::ustring result;
-  if(column_index < m_ColumnTypes.size())
-    result = m_ColumnTypes[column_index].m_id;
+  if(column_index < m_column_types.size())
+    result = m_column_types[column_index].m_id;
 
   return result;
 }
@@ -903,13 +903,13 @@ void AddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
 {
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add new columns.
 
-  m_ColumnTypes[col].m_choices = vecStrings;
+  m_column_types[col].m_choices = vecStrings;
 
   guint view_column_index = 0;
   bool test = get_view_column_index(col, view_column_index);
   if(test)
   {
-    auto pCellRenderer = dynamic_cast<CellRendererList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
+    auto pCellRenderer = dynamic_cast<CellRendererList*>( m_tree_view.get_column_cell_renderer(view_column_index) );
     if(pCellRenderer)
     {
       //Add the choices:
@@ -1001,7 +1001,7 @@ void AddDel::reactivate()
 void AddDel::remove_item(const Gtk::TreeModel::iterator& iter)
 {
   if(iter)
-    m_refListStore->erase(iter);
+    m_list_store->erase(iter);
 }
 
 void AddDel::remove_item_by_key(const Glib::ustring& strKey)
@@ -1042,7 +1042,7 @@ Glib::ustring AddDel::treeview_get_key(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring value;
 
-  if(m_refListStore)
+  if(m_list_store)
   {
     Gtk::TreeModel::Row treerow = *row;
 
@@ -1061,7 +1061,7 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
   Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
-  auto iter = m_refListStore->get_iter(path);
+  auto iter = m_list_store->get_iter(path);
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
@@ -1080,7 +1080,7 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
     bool bIsAdd = false;
     bool bIsChange = false;
 
-    int iCount = m_refListStore->children().size();
+    int iCount = m_list_store->children().size();
     if(iCount)
     {
       if(get_allow_user_actions()) //If add is possible:
@@ -1136,7 +1136,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
   Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
-  auto iter = m_refListStore->get_iter(path);
+  auto iter = m_list_store->get_iter(path);
   if(iter != get_model()->children().end())
   {
     Gtk::TreeModel::Row row = *iter;
@@ -1197,7 +1197,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
       {
         bool do_signal = true;
 
-        const Field::glom_field_type field_type = m_ColumnTypes[model_column_index].m_field_type;
+        const Field::glom_field_type field_type = m_column_types[model_column_index].m_field_type;
         if(field_type != Field::glom_field_type::INVALID) //If a field type was specified for this column.
         {
           //Make sure that the entered data is suitable for this field type:
@@ -1217,14 +1217,14 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
              {
                //Reactivate the cell so that the data can be corrected.
 
-                auto refTreeSelection = m_TreeView.get_selection();
+                auto refTreeSelection = m_tree_view.get_selection();
                 if(refTreeSelection)
                 {
                   refTreeSelection->select(row); //TODO: This does not seem to work.
 
-                 Gtk::TreeModel::Path path_to_activate = m_refListStore->get_path(row);
-                 auto pColumn = m_TreeView.get_column(model_column_index); //TODO: This might the the view column index, not the model column index.
-                 m_TreeView.set_cursor(path_to_activate, *pColumn, true /* start_editing */); //This highlights the cell, but does not seem to actually start the editing.
+                 Gtk::TreeModel::Path path_to_activate = m_list_store->get_path(row);
+                 auto pColumn = m_tree_view.get_column(model_column_index); //TODO: This might the the view column index, not the model column index.
+                 m_tree_view.set_cursor(path_to_activate, *pColumn, true /* start_editing */); //This highlights the cell, but does not seem to actually start the editing.
                }
              }
 
@@ -1250,10 +1250,10 @@ void AddDel::on_treeview_cell_editing_started(Gtk::CellEditable* /* editable */,
 {
   Gtk::TreeModel::Path path(path_string);
 
-  if(!m_refListStore)
+  if(!m_list_store)
     return;
 
-  auto iterRow = m_refListStore->get_iter(path);
+  auto iterRow = m_list_store->get_iter(path);
   if(iterRow)
     signal_user_activated().emit(iterRow, model_column_index);
 }
@@ -1302,7 +1302,7 @@ guint AddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRender
 {
   auto pViewColumn = Gtk::manage( new TreeViewColumnGlom(title, cellrenderer) );
   pViewColumn->set_renderer(cellrenderer, model_column); //render it via the default "text" property.
-  auto cols_count = m_TreeView.append_column(*pViewColumn);
+  auto cols_count = m_tree_view.append_column(*pViewColumn);
 
   //Allow the column to be reordered by dragging and dropping the column header:
   pViewColumn->set_reorderable();
@@ -1327,7 +1327,7 @@ void AddDel::on_treeview_columns_changed()
     //Get the new column order, and save it in m_column_ids:
     m_column_ids.clear();
 
-    for(const auto& item : m_TreeView.get_columns())
+    for(const auto& item : m_tree_view.get_columns())
     {
       auto pViewColumn = dynamic_cast<TreeViewColumnGlom*>(item);
       if(pViewColumn)
@@ -1350,11 +1350,11 @@ void AddDel::set_auto_add(bool value)
 
 Glib::RefPtr<Gtk::TreeModel> AddDel::get_model()
 {
-  return m_refListStore;
+  return m_list_store;
 }
 Glib::RefPtr<const Gtk::TreeModel> AddDel::get_model() const
 {
-  return m_refListStore;
+  return m_list_store;
 }
 
 bool AddDel::get_is_first_row(const Gtk::TreeModel::iterator& iter) const
@@ -1371,7 +1371,7 @@ Gtk::TreeModel::iterator AddDel::get_next_available_row_with_add_if_necessary()
 {
   Gtk::TreeModel::iterator result;
 
-  if(!m_refListStore)
+  if(!m_list_store)
     return result;
 
   bool bPreventUserSignals = get_prevent_user_signals();
@@ -1391,18 +1391,18 @@ Gtk::TreeModel::iterator AddDel::get_next_available_row_with_add_if_necessary()
       else
       {
         // The last line isn't blank, so we cannot use it. Add another one.
-        result = m_refListStore->append();
+        result = m_list_store->append();
       }
     }
     else
     {
        // This is the first line.
-       result = m_refListStore->append();
+       result = m_list_store->append();
     }
   }
   else
   {
-     result = m_refListStore->append(); //Add a new blank line. There are no blank lines.
+     result = m_list_store->append(); //Add a new blank line. There are no blank lines.
   }
 
   set_prevent_user_signals(bPreventUserSignals);
@@ -1467,7 +1467,7 @@ bool AddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const
   if(!get_is_last_row(iter))
     return false;
 
-  if(iter == m_refListStore->children().end())
+  if(iter == m_list_store->children().end())
     return false;
 
   bool val = false;
@@ -1482,7 +1482,7 @@ bool AddDel::get_model_column_index(guint view_column_index, guint& model_column
   model_column_index = 0;
 
   const auto hidden = get_count_hidden_system_columns();
-  const auto count = m_ColumnTypes.size();
+  const auto count = m_column_types.size();
   if(hidden > count)
     return false; //This should never happen.
 
@@ -1499,10 +1499,10 @@ bool AddDel::get_view_column_index(guint model_column_index, guint& view_column_
   //Initialize output parameter:
   view_column_index = 0;
 
-  if(model_column_index >=  m_ColumnTypes.size())
+  if(model_column_index >=  m_column_types.size())
     return false;
 
-  if( !(m_ColumnTypes[model_column_index].m_visible) )
+  if( !(m_column_types[model_column_index].m_visible) )
     return false;
 
   view_column_index = model_column_index - get_count_hidden_system_columns(); //There are 2 hidden columns at the start.
@@ -1513,10 +1513,10 @@ bool AddDel::get_view_column_index(guint model_column_index, guint& view_column_
 guint AddDel::get_count_hidden_system_columns()
 {
  guint hidden_count = 0;
-  if(!(m_ColumnTypes[m_col_key].m_visible))
+  if(!(m_column_types[m_col_key].m_visible))
     ++hidden_count;
 
-  if(!(m_ColumnTypes[m_col_placeholder].m_visible))
+  if(!(m_column_types[m_col_placeholder].m_visible))
     ++hidden_count;
 
   return hidden_count;
@@ -1524,8 +1524,8 @@ guint AddDel::get_count_hidden_system_columns()
 
 void AddDel::prevent_duplicates(guint column_number)
 {
-  if(column_number < m_ColumnTypes.size())
-    m_ColumnTypes[column_number].m_prevent_duplicates = true;
+  if(column_number < m_column_types.size())
+    m_column_types[column_number].m_prevent_duplicates = true;
 }
 
 void AddDel::set_prevent_duplicates_warning(const Glib::ustring& warning_text)
@@ -1535,10 +1535,10 @@ void AddDel::set_prevent_duplicates_warning(const Glib::ustring& warning_text)
 
 bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
 {
-  const auto cols_count = m_ColumnTypes.size();
+  const auto cols_count = m_column_types.size();
   for(type_ColumnTypes::size_type col = 0; col < cols_count; ++col)
   {
-    if(m_ColumnTypes[col].m_prevent_duplicates)
+    if(m_column_types[col].m_prevent_duplicates)
     {
       Gtk::TreeModel::Row row = *iter;
 
@@ -1551,17 +1551,17 @@ bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
       bool value_bool = false;
       int value_int = 0;
 
-      if(m_ColumnTypes[col].m_style == AddDelColumnInfo::enumStyles::Text)
+      if(m_column_types[col].m_style == AddDelColumnInfo::enumStyles::Text)
         row.get_value(col, value_text);
-      else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::enumStyles::Boolean)
+      else if(m_column_types[col].m_style == AddDelColumnInfo::enumStyles::Boolean)
          row.get_value(col, value_bool);
-      else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::enumStyles::Numerical)
+      else if(m_column_types[col].m_style == AddDelColumnInfo::enumStyles::Numerical)
          row.get_value(col, value_int);
 
       //std::cout << "value_text=" << value_text << std::endl;
 
       //Look at each other row to see whether the value exists there already:
-      for(auto iterCheck = m_refListStore->children().begin(); iterCheck != m_refListStore->children().end(); ++iterCheck)
+      for(auto iterCheck = m_list_store->children().begin(); iterCheck != m_list_store->children().end(); ++iterCheck)
       {
         if(iterCheck != iter) //Don't compare the row with itself
         {
@@ -1578,7 +1578,7 @@ bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
           bool check_value_bool = false;
           int check_value_int = 0;
 
-          if(m_ColumnTypes[col].m_style == AddDelColumnInfo::enumStyles::Text)
+          if(m_column_types[col].m_style == AddDelColumnInfo::enumStyles::Text)
           {
             check_row.get_value(col, check_value_text);
 
@@ -1587,13 +1587,13 @@ bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
             if(check_value_text == value_text)
               return true;
           }
-          else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::enumStyles::Boolean)
+          else if(m_column_types[col].m_style == AddDelColumnInfo::enumStyles::Boolean)
           {
             check_row.get_value(col, check_value_bool);
             if(check_value_text == value_text)
               return true;
           }
-          else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::enumStyles::Numerical)
+          else if(m_column_types[col].m_style == AddDelColumnInfo::enumStyles::Numerical)
           {
             check_row.get_value(col, check_value_int);
             if(check_value_text == value_text)

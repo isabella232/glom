@@ -97,7 +97,7 @@ void AddDel_WithButtons::on_button_edit()
 
 void AddDel_WithButtons::on_button_extra()
 {
-  auto refSelection = m_TreeView.get_selection();
+  auto refSelection = m_tree_view.get_selection();
   if(!refSelection)
     return;
 

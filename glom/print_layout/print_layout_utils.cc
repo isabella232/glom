@@ -417,7 +417,7 @@ void do_print_layout(const std::shared_ptr<const PrintLayout>& print_layout, con
 
   print->set_default_page_setup(page_setup);
 
-  //print->set_print_settings(m_refSettings);
+  //print->set_print_settings(m_settings);
 
   //print->signal_done().connect(sigc::bind(sigc::mem_fun(*this,
   //                &ExampleWindow::on_printoperation_done), print));

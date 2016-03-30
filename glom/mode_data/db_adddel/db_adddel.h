@@ -381,10 +381,10 @@ private:
   typedef Gtk::Box type_base;
 
   //Member widgets:
-  Gtk::ScrolledWindow m_ScrolledWindow;
-  Gtk::TreeView m_TreeView;
+  Gtk::ScrolledWindow m_scrolled_window;
+  Gtk::TreeView m_tree_view;
 
-  Glib::RefPtr<DbTreeModel> m_refListStore;
+  Glib::RefPtr<DbTreeModel> m_list_store;
 
   //Columns, not including the hidden internal columns:
   typedef LayoutGroup::type_list_items type_column_items;

@@ -52,7 +52,7 @@ ComboChoicesWithTreeModel::~ComboChoicesWithTreeModel()
 
 int ComboChoicesWithTreeModel::get_fixed_model_text_column() const
 {
-  const auto count = m_refModel->get_n_columns();
+  const auto count = m_model->get_n_columns();
   if(count > 0)
     return count -1;
   else
@@ -92,7 +92,7 @@ void ComboChoicesWithTreeModel::create_model_non_db(guint columns_count)
   }
 
   //Create the model:
-  m_refModel = Gtk::ListStore::create(record);
+  m_model = Gtk::ListStore::create(record);
 }
 
 void ComboChoicesWithTreeModel::delete_model()
@@ -129,7 +129,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
   if(layout_choice_extra)
     extra_fields = layout_choice_extra->get_items_recursive();
 
-  auto list_store = Glib::RefPtr<Gtk::ListStore>::cast_dynamic(m_refModel);
+  auto list_store = Glib::RefPtr<Gtk::ListStore>::cast_dynamic(m_model);
   if(!list_store)
   {
     std::cerr << G_STRFUNC << ": list_store is null.\n";
@@ -184,7 +184,7 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const Formatting::type_list_va
 {
   create_model_non_db(1); //Use a regular ListStore without a dynamic column?
 
-  auto list_store = Glib::RefPtr<Gtk::ListStore>::cast_dynamic(m_refModel);
+  auto list_store = Glib::RefPtr<Gtk::ListStore>::cast_dynamic(m_model);
   if(!list_store)
   {
     std::cerr << G_STRFUNC << ": list_store is null.\n";
@@ -291,8 +291,8 @@ void ComboChoicesWithTreeModel::set_choices_related(const std::shared_ptr<const 
   //because Combo(has_entry) needs it.
   //TODO: Avoid getting the actual data if the user does not have view rights.
   const auto table_privs = Privs::get_current_privs(found_set.m_table_name);
-  m_refModel = DbTreeModelWithExtraText::create(found_set, layout_items, table_privs.m_view, false /* find mode */, m_db_layout_items);
-  if(!m_refModel)
+  m_model = DbTreeModelWithExtraText::create(found_set, layout_items, table_privs.m_view, false /* find mode */, m_db_layout_items);
+  if(!m_model)
   {
     std::cerr << G_STRFUNC << ": DbTreeModel::create() returned a null model.\n";
   }
@@ -303,7 +303,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const std::shared_ptr<const 
 
 Glib::RefPtr<Gtk::TreeModel> ComboChoicesWithTreeModel::get_choices_model()
 {
-  return m_refModel;
+  return m_model;
 }
 
 void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)

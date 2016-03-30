@@ -42,7 +42,7 @@ void CellRendererDbList::set_choices_fixed(const Formatting::type_list_values& l
 
   //Show model in the view:
   property_model() = model;
-  property_text_column() = get_fixed_model_text_column(); //This must be a text column, in m_refModel.
+  property_text_column() = get_fixed_model_text_column(); //This must be a text column, in m_model.
   property_editable() = true; //It would be useless if we couldn't edit it.
 
   //The other cells are added in on_editing_started().

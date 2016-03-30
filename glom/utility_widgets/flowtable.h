@@ -68,7 +68,7 @@ private:
   bool m_design_mode;
 
   //For drawing:
-  Glib::RefPtr<Gdk::Window> m_refGdkWindow;
+  Glib::RefPtr<Gdk::Window> m_gdk_window;
 
   //We remember the Boxes so we can delete them when the are no longer used.
   typedef std::list<Gtk::Box*> type_list_hboxes;

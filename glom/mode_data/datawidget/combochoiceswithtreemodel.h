@@ -88,7 +88,7 @@ private:
   /// Render the model data to the cells in the view.
   void on_cell_data(const Gtk::TreeModel::iterator& iter, Gtk::CellRenderer* cell, guint model_column_index);
 
-  Glib::RefPtr<Gtk::TreeModel> m_refModel;
+  Glib::RefPtr<Gtk::TreeModel> m_model;
 
   void delete_model();
   

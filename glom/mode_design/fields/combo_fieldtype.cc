@@ -38,24 +38,24 @@ Combo_FieldType::Combo_FieldType()
 
 void Combo_FieldType::init()
 {
-  m_refTreeModel = Gtk::ListStore::create(m_Columns);
-  set_model(m_refTreeModel);
+  m_tree_model = Gtk::ListStore::create(m_columns);
+  set_model(m_tree_model);
 
   //Set Type choices:
   for(const auto& the_pair : Field::get_usable_type_names())
   {
-    auto iterModel = m_refTreeModel->append();
+    auto iterModel = m_tree_model->append();
     if(iterModel)
     {
       Gtk::TreeModel::Row row = *iterModel;
-      row[m_Columns.m_col_name] = the_pair.second;
-      row[m_Columns.m_col_type] = the_pair.first;
+      row[m_columns.m_col_name] = the_pair.second;
+      row[m_columns.m_col_type] = the_pair.first;
 
-      //std::cout << "adding combo row: " << row[m_Columns.m_col_name] << ", " << row[m_Columns.m_col_type] << std::endl;
+      //std::cout << "adding combo row: " << row[m_columns.m_col_name] << ", " << row[m_columns.m_col_type] << std::endl;
     }
   }
 
-  pack_start(m_Columns.m_col_name);  //Show the name, but hide the ID.
+  pack_start(m_columns.m_col_name);  //Show the name, but hide the ID.
 
 
   //The value must be from the list, and it can't be empty:
@@ -64,14 +64,14 @@ void Combo_FieldType::init()
 
 void Combo_FieldType::set_field_type(Field::glom_field_type fieldType)
 {
-   for(const auto& row : m_refTreeModel->children())
+   for(const auto& row : m_tree_model->children())
    {
-     if( row[m_Columns.m_col_type] == fieldType )
+     if( row[m_columns.m_col_type] == fieldType )
      {
        set_active(row);
 
        //TODO: What was this?
-       //Glib::ustring temp = row[m_Columns.m_col_name];
+       //Glib::ustring temp = row[m_columns.m_col_name];
        //iter
      }
    }
@@ -86,9 +86,9 @@ Field::glom_field_type Combo_FieldType::get_field_type() const
   if(active_row)
   {
     Gtk::TreeModel::Row row = *active_row;
-    result = row[m_Columns.m_col_type];
+    result = row[m_columns.m_col_type];
 
-    Glib::ustring temp = row[m_Columns.m_col_name];
+    Glib::ustring temp = row[m_columns.m_col_name];
   }
 
   return result;

@@ -28,21 +28,21 @@ CellRendererList::CellRendererList()
 :  Glib::ObjectBase(nullptr) //Mark this class as gtkmmproc-generated, rather than a custom class, to allow vfunc optimisations.
    //TODO: This should not be necessary - our gtkmm callbacks are somehow preventing the popup from appearing.
 {
-  m_refModel = Gtk::ListStore::create(m_model_columns);
-  property_model() = m_refModel;
-  property_text_column() = 0; //This must be a text column, in m_refModel.
+  m_model = Gtk::ListStore::create(m_model_columns);
+  property_model() = m_model;
+  property_text_column() = 0; //This must be a text column, in m_model.
   property_editable() = true; //It would be useless if we couldn't edit it.
 }
 
 void CellRendererList::remove_all_list_items()
 {
-  if(m_refModel)
-    m_refModel->clear();
+  if(m_model)
+    m_model->clear();
 }
 
 void CellRendererList::append_list_item(const Glib::ustring& text)
 {
-  Gtk::TreeModel::Row row = *(m_refModel->append());
+  Gtk::TreeModel::Row row = *(m_model->append());
   row[m_model_columns.m_col_choice] = text;
 }
 

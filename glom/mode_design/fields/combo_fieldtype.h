@@ -55,9 +55,9 @@ private:
     Gtk::TreeModelColumn<Field::glom_field_type> m_col_type;
   };
 
-  ModelColumns m_Columns;
+  ModelColumns m_columns;
 
-  Glib::RefPtr<Gtk::ListStore> m_refTreeModel;
+  Glib::RefPtr<Gtk::ListStore> m_tree_model;
 };
 
 } //namespace Glom

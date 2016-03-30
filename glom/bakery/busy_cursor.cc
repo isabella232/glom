@@ -13,29 +13,29 @@ BusyCursor::BusyCursor(Gtk::Window& window, Gdk::CursorType cursor_type)
 }
 
 BusyCursor::BusyCursor(Gtk::Window* window, Gdk::CursorType cursor_type)
-: m_pWindow(window) //If this is a nested cursor then remember the previously-set cursor, so we can restore it.
+: m_window(window) //If this is a nested cursor then remember the previously-set cursor, so we can restore it.
 {
-  if(!m_pWindow)
+  if(!m_window)
     return;
 
-  m_Cursor = Gdk::Cursor::create(m_pWindow->get_display(), cursor_type);
+  m_cursor = Gdk::Cursor::create(m_window->get_display(), cursor_type);
 
-  m_refWindow = m_pWindow->get_window();
-  if(!m_refWindow)
+  m_gdk_window = m_window->get_window();
+  if(!m_gdk_window)
     return;
 
-  auto iter = m_map_cursors.find(m_pWindow);
+  auto iter = m_map_cursors.find(m_window);
   if(iter != m_map_cursors.end())
   {
     m_old_cursor = iter->second; //Remember the existing cursor.
   }
 
-  m_map_cursors[m_pWindow] = m_Cursor; //Let a further nested cursor know about the new cursor in use.
+  m_map_cursors[m_window] = m_cursor; //Let a further nested cursor know about the new cursor in use.
 
 
   //Change the cursor:
-  if(m_refWindow)
-    m_refWindow->set_cursor(m_Cursor);
+  if(m_gdk_window)
+    m_gdk_window->set_cursor(m_cursor);
 
   force_gui_update();
 }
@@ -45,15 +45,15 @@ BusyCursor::~BusyCursor()
   //Restore the old cursor:
   if(m_old_cursor)
   {
-    if(m_refWindow)
-      m_refWindow->set_cursor(m_old_cursor);
+    if(m_gdk_window)
+      m_gdk_window->set_cursor(m_old_cursor);
   }
   else
   {
-    if(m_refWindow)
-      m_refWindow->set_cursor();
+    if(m_gdk_window)
+      m_gdk_window->set_cursor();
 
-    auto iter = m_map_cursors.find(m_pWindow);
+    auto iter = m_map_cursors.find(m_window);
     if(iter != m_map_cursors.end())
       m_map_cursors.erase(iter);
   }
@@ -64,7 +64,7 @@ BusyCursor::~BusyCursor()
 
 void BusyCursor::force_gui_update()
 {
-  if(m_refWindow)
+  if(m_gdk_window)
   {
     //Force the GUI to update:
     //TODO: Make sure that gtkmm has some non-Gtk::Main API for this:

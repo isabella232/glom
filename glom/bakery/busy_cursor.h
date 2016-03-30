@@ -46,9 +46,9 @@ private:
 
   void force_gui_update();
 
-  Glib::RefPtr<Gdk::Cursor> m_Cursor;
-  Gtk::Window* m_pWindow;
-  Glib::RefPtr<Gdk::Window> m_refWindow;
+  Glib::RefPtr<Gdk::Cursor> m_cursor;
+  Gtk::Window* m_window;
+  Glib::RefPtr<Gdk::Window> m_gdk_window;
 
   typedef std::map<Gtk::Window*, Glib::RefPtr<Gdk::Cursor> > type_map_cursors;
   static type_map_cursors m_map_cursors;

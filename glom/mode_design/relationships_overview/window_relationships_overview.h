@@ -101,8 +101,8 @@ private:
   sigc::connection m_connection_edit_fields, m_connection_edit_relationships;
 
   //Printing:
-  Glib::RefPtr<Gtk::PrintSettings> m_refSettings;
-  Glib::RefPtr<Gtk::PageSetup> m_refPageSetup;
+  Glib::RefPtr<Gtk::PrintSettings> m_settings;
+  Glib::RefPtr<Gtk::PageSetup> m_page_setup;
 };
 
 } //namespace Glom

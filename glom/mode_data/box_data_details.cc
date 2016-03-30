@@ -72,7 +72,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   //m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [New] to add a new record.\n Leave automatic ID fields empty - they will be filled for you.");
 
 
-  //m_ScrolledWindow.set_border_width(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
+  //m_scrolled_window.set_border_width(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   // Allow vertical scrolling, but never scroll horizontally:
   m_ScrolledWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);

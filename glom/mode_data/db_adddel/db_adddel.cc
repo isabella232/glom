@@ -75,23 +75,23 @@ DbAddDel::DbAddDel()
   // TODO: Maybe this should be a constructor parameter, so that multiple
   // DbAddDels in a single Window can be addressed separately.
 #ifdef GTKMM_ATKMM_ENABLED
-  m_TreeView.get_accessible()->set_name(_("Table Content"));
+  m_tree_view.get_accessible()->set_name(_("Table Content"));
 #endif
 
-  m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_IN);
-  m_TreeView.set_fixed_height_mode(); //This allows some optimizations.
-  m_ScrolledWindow.add(m_TreeView);
-  pack_start(m_ScrolledWindow);
+  m_scrolled_window.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  m_scrolled_window.set_shadow_type(Gtk::SHADOW_IN);
+  m_tree_view.set_fixed_height_mode(); //This allows some optimizations.
+  m_scrolled_window.add(m_tree_view);
+  pack_start(m_scrolled_window);
 
-  m_TreeView.show();
+  m_tree_view.show();
 
   //Make sure that the TreeView doesn't start out only big enough for zero items.
   set_height_rows(6, 6);
 
-  m_TreeView.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
-  m_TreeView.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &DbAddDel::on_treeview_button_press_event) );
-  m_TreeView.signal_columns_changed().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columns_changed) );
+  m_tree_view.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
+  m_tree_view.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &DbAddDel::on_treeview_button_press_event) );
+  m_tree_view.signal_columns_changed().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columns_changed) );
   //signal_button_press_event().connect(sigc::mem_fun(*this, &DbAddDel::on_button_press_event_Popup));
   //add_blank();
 
@@ -111,7 +111,7 @@ DbAddDel::DbAddDel()
   signal_style_changed().connect(sigc::mem_fun(*this, &DbAddDel::on_self_style_changed));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  auto refSelection = m_TreeView.get_selection();
+  auto refSelection = m_tree_view.get_selection();
   if(refSelection)
   {
     refSelection->signal_changed().connect(
@@ -144,7 +144,7 @@ void DbAddDel::set_height_rows_actual(gulong rows_count)
   const guint height_for_rows = rows_count * get_fixed_cell_height();
   //std::cout << "debug: height_for_rows = " << height_for_rows << std::endl;
   const guint extra_for_treeview = 50; //TODO: Find some way to guess this.
-  m_ScrolledWindow.set_min_content_height(height_for_rows + extra_for_treeview);
+  m_scrolled_window.set_min_content_height(height_for_rows + extra_for_treeview);
 }
 
 void DbAddDel::do_user_requested_edit()
@@ -165,10 +165,10 @@ void DbAddDel::on_idle_row_edit()
 
 void DbAddDel::on_cell_button_clicked(const Gtk::TreeModel::Path& path)
 {
-  if(!m_refListStore)
+  if(!m_list_store)
     return;
 
-  auto iter = m_refListStore->get_iter(path);
+  auto iter = m_list_store->get_iter(path);
   if(iter)
   {
     select_item(iter, false /* start_editing */);
@@ -198,7 +198,7 @@ void DbAddDel::on_MenuPopup_activate_Delete()
 {
   finish_editing();
 
-  auto refSelection = m_TreeView.get_selection();
+  auto refSelection = m_tree_view.get_selection();
   if(refSelection)
   {
     auto iter = refSelection->get_selected();
@@ -320,8 +320,8 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *button_event)
 Gtk::TreeModel::iterator DbAddDel::get_item_placeholder()
 {
   //Get the existing placeholder row, or add one if necessary:
-  if(m_refListStore)
-    return m_refListStore->get_placeholder_row();
+  if(m_list_store)
+    return m_list_store->get_placeholder_row();
   else
    return Gtk::TreeModel::iterator();
 }
@@ -330,7 +330,7 @@ Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, cons
 {
   Gnome::Gda::Value value;
 
-  if(m_refListStore)
+  if(m_list_store)
   {
     Gtk::TreeModel::Row treerow = *iter;
 
@@ -368,29 +368,29 @@ Gnome::Gda::Value DbAddDel::get_value_selected(const std::shared_ptr<const Layou
 
 Gtk::TreeModel::iterator DbAddDel::get_item_selected()
 {
-  auto refTreeSelection = m_TreeView.get_selection();
+  auto refTreeSelection = m_tree_view.get_selection();
   if(refTreeSelection)
   {
      return refTreeSelection->get_selected();
   }
 
-  if(m_refListStore)
-    return m_refListStore->children().end();
+  if(m_list_store)
+    return m_list_store->children().end();
   else
     return Gtk::TreeModel::iterator();
 }
 
 Gtk::TreeModel::iterator DbAddDel::get_item_selected() const
 {
-  Glib::RefPtr<const Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
+  Glib::RefPtr<const Gtk::TreeSelection> refTreeSelection = m_tree_view.get_selection();
   if(refTreeSelection)
   {
      auto unconst = Glib::RefPtr<Gtk::TreeSelection>::cast_const(refTreeSelection);
      return unconst->get_selected();
   }
 
-  if(m_refListStore)
-    return m_refListStore->children().end();
+  if(m_list_store)
+    return m_list_store->children().end();
   else
     return Gtk::TreeModel::iterator();
 }
@@ -398,10 +398,10 @@ Gtk::TreeModel::iterator DbAddDel::get_item_selected() const
 
 Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
 {
-  if(!m_refListStore)
+  if(!m_list_store)
     return Gtk::TreeModel::iterator();
 
-  for(auto iter = m_refListStore->children().begin(); iter != m_refListStore->children().end(); ++iter)
+  for(auto iter = m_list_store->children().begin(); iter != m_list_store->children().end(); ++iter)
   {
     //Gtk::TreeModel::Row row = *iter;
     const auto valTemp = get_value_key(iter);
@@ -411,7 +411,7 @@ Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
     }
   }
 
-  return  m_refListStore->children().end();
+  return  m_list_store->children().end();
 }
 
 bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, bool start_editing)
@@ -430,7 +430,7 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, bool start_edit
 
 bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const LayoutItem>& layout_item, bool start_editing)
 {
-  if(!m_refListStore)
+  if(!m_list_store)
     return false;
 
   InnerIgnore innerIgnore(this); //see comments for InnerIgnore class
@@ -449,22 +449,22 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const std::shar
 
     treemodel_col += get_count_hidden_system_columns();
 
-    auto refTreeSelection = m_TreeView.get_selection();
+    auto refTreeSelection = m_tree_view.get_selection();
     g_assert(refTreeSelection);
     refTreeSelection->select(iter);
 
-    Gtk::TreeModel::Path path = m_refListStore->get_path(iter);
+    Gtk::TreeModel::Path path = m_list_store->get_path(iter);
 
     guint view_column_index = 0;
     const auto test = get_view_column_index(treemodel_col, view_column_index);
     if(test)
     {
-      auto pColumn = m_TreeView.get_column(view_column_index);
+      auto pColumn = m_tree_view.get_column(view_column_index);
       if(pColumn)
       {
         if(pColumn != m_treeviewcolumn_button) //This would activate the button. Let's avoid this, though it should never happen.
         {
-          m_TreeView.set_cursor(path, *pColumn, start_editing);
+          m_tree_view.set_cursor(path, *pColumn, start_editing);
         }
       }
       else
@@ -481,10 +481,10 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const std::shar
 
 guint DbAddDel::get_count() const
 {
-  if(!m_refListStore)
+  if(!m_list_store)
     return 0;
 
-  guint iCount = m_refListStore->children().size();
+  guint iCount = m_list_store->children().size();
 
   //Take account of the extra blank for new entries:
   if(get_allow_user_actions()) //If it has the extra row.
@@ -497,7 +497,7 @@ guint DbAddDel::get_count() const
 
 guint DbAddDel::get_columns_count() const
 {
-  return m_TreeView.get_columns().size();
+  return m_tree_view.get_columns().size();
 }
 
 guint DbAddDel::get_fixed_cell_height()
@@ -510,7 +510,7 @@ guint DbAddDel::get_fixed_cell_height()
     // when all columns are known.
 
     //Get a default:
-    auto refLayoutDefault = m_TreeView.create_pango_layout("ExampleEg");
+    auto refLayoutDefault = m_tree_view.create_pango_layout("ExampleEg");
     int width_default = 0;
     int height_default = 0;
     refLayoutDefault->get_pixel_size(width_default, height_default);
@@ -532,7 +532,7 @@ guint DbAddDel::get_fixed_cell_height()
         continue;
 
       // Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-      auto refLayout = m_TreeView.create_pango_layout(_("ExampleEg"));
+      auto refLayout = m_tree_view.create_pango_layout(_("ExampleEg"));
       const Pango::FontDescription font(font_name);
       refLayout->set_font_description(font);
       int width = 0;
@@ -548,7 +548,7 @@ guint DbAddDel::get_fixed_cell_height()
   //We get this style property, which might be causing it. murrayc 
   //TODO: Find out if this is reallyt the right way to calculate the correct height:
   int extra_height = 0;
-  gtk_widget_style_get(GTK_WIDGET(m_TreeView.gobj()), "vertical-separator", &extra_height, (void*)0);
+  gtk_widget_style_get(GTK_WIDGET(m_tree_view.gobj()), "vertical-separator", &extra_height, (void*)0);
   //std::cout << "debug: extra_height=" << extra_height << std::endl;
 
   return m_fixed_cell_height + extra_height;
@@ -632,20 +632,20 @@ void DbAddDel::construct_specified_columns()
   {
     //std::cout << "debug: " << G_STRFUNC << ": showing hint model: m_find_mode=" << m_find_mode << std::endl;
 
-    m_refListStore.reset();
+    m_list_store.reset();
     if(m_table_name.empty())
     {
-      m_TreeView.set_model(m_refListStore); // clear old model from treeview
+      m_tree_view.set_model(m_list_store); // clear old model from treeview
     }
     else
       show_hint_model();
     return;
   }
 
-  m_refListStore = DbTreeModel::create(m_found_set, m_column_items, m_allow_view, m_find_mode, m_FieldsShown);
+  m_list_store = DbTreeModel::create(m_found_set, m_column_items, m_allow_view, m_find_mode, m_FieldsShown);
   //m_FieldsShown is needed by Base_DB_Table_Data::record_new().
 
-  m_TreeView.set_model(m_refListStore); // clear old model from treeview
+  m_tree_view.set_model(m_list_store); // clear old model from treeview
 
   //Remove all View columns:
   treeview_delete_all_columns();
@@ -665,7 +665,7 @@ void DbAddDel::construct_specified_columns()
 
 
     Gtk::Requisition requistion_min, requistion_natural; //TODO: Really support natural size.
-    pCellButton->get_preferred_size(m_TreeView, requistion_min, requistion_natural);
+    pCellButton->get_preferred_size(m_tree_view, requistion_min, requistion_natural);
 
     m_treeviewcolumn_button->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Needed by fixed-height mode.
 
@@ -673,14 +673,14 @@ void DbAddDel::construct_specified_columns()
     // have to take into account the xpad property of the cell renderer and
     // the spacing property of the treeviewcolumn.
     int horizontal_separator = 0;
-    m_TreeView.get_style_property("horizontal-separator", horizontal_separator);
+    m_tree_view.get_style_property("horizontal-separator", horizontal_separator);
     const int button_width = requistion_min.width + horizontal_separator*2;
     if(button_width > 0) //Otherwise an assertion fails.
       m_treeviewcolumn_button->set_fixed_width(button_width);
 
     m_treeviewcolumn_button->set_visible(m_allow_view_details);
 
-    m_TreeView.append_column(*m_treeviewcolumn_button);
+    m_tree_view.append_column(*m_treeviewcolumn_button);
 
     ++view_column_index;
   }
@@ -746,10 +746,10 @@ void DbAddDel::construct_specified_columns()
   else
   {
     //We must set this each time, because show_hint_model() might unset it:
-    m_TreeView.set_fixed_height_mode(); //This allows some optimizations.
+    m_tree_view.set_fixed_height_mode(); //This allows some optimizations.
   }
 
-  m_TreeView.columns_autosize();
+  m_tree_view.columns_autosize();
 
   //Make sure there's a blank row after the database rows that have just been added.
   //add_blank();
@@ -759,7 +759,7 @@ void DbAddDel::construct_specified_columns()
   //Show as many rows as needed, but not more than the maximum:
   gulong total = 0; //ignored
   gulong db_rows_count_found = 0;
-  auto refModelDerived = Glib::RefPtr<DbTreeModel>::cast_dynamic(m_refListStore);
+  auto refModelDerived = Glib::RefPtr<DbTreeModel>::cast_dynamic(m_list_store);
   if(refModelDerived)
     refModelDerived->get_record_counts(total, db_rows_count_found);
   
@@ -776,15 +776,15 @@ bool DbAddDel::refresh_from_database()
   return true;
 
   /*
-  if(m_refListStore)
+  if(m_list_store)
   {
     //Glib::RefPtr<Gtk::TreeModel> refNull;
-    const auto result = m_refListStore->refresh_from_database(m_found_set);
-    //m_TreeView.set_model(refNull); //TODO: This causes a g_warning(): gtk_tree_view_unref_tree_helper: assertion `node != NULL' failed
-    if(m_TreeView.get_model())
-      gtk_tree_view_set_model(m_TreeView.gobj(), 0); //This gives the same warning.
+    const auto result = m_list_store->refresh_from_database(m_found_set);
+    //m_tree_view.set_model(refNull); //TODO: This causes a g_warning(): gtk_tree_view_unref_tree_helper: assertion `node != NULL' failed
+    if(m_tree_view.get_model())
+      gtk_tree_view_set_model(m_tree_view.gobj(), 0); //This gives the same warning.
 
-    m_TreeView.set_model(m_refListStore);
+    m_tree_view.set_model(m_list_store);
     return result;
   }
   else
@@ -797,9 +797,9 @@ bool DbAddDel::refresh_from_database_blank()
   if(m_find_mode)
     return refresh_from_database();
 
-  if(m_refListStore)
+  if(m_list_store)
   {
-    m_refListStore->clear(); //Remove all rows.
+    m_list_store->clear(); //Remove all rows.
   }
 
   return true;
@@ -816,7 +816,7 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const std::shared
 
   InnerIgnore innerIgnore(this);
 
-  if(!m_refListStore)
+  if(!m_list_store)
   {
     std::cerr << G_STRFUNC << ": No model.\n";
     return;
@@ -877,7 +877,7 @@ void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint mo
   }
 
   auto cell =
-    dynamic_cast<CellRendererDbList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
+    dynamic_cast<CellRendererDbList*>( m_tree_view.get_column_cell_renderer(view_column_index) );
   if(!cell)
   {
     std::cerr << G_STRFUNC << ": cell renderer not found for model_column=" << model_index << std::endl;
@@ -1070,7 +1070,7 @@ void DbAddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
   if(test)
   {
     auto pCellRenderer =
-      dynamic_cast<CellRendererDbList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
+      dynamic_cast<CellRendererDbList*>( m_tree_view.get_column_cell_renderer(view_column_index) );
     if(pCellRenderer)
     {
       //Add the choices:
@@ -1119,7 +1119,7 @@ void DbAddDel::set_find_mode(bool val)
 
   //Recreate the model if necessary:
   if( (current != m_find_mode) &&
-      m_refListStore)
+      m_list_store)
   {
     construct_specified_columns();
   }
@@ -1165,8 +1165,8 @@ void DbAddDel::reactivate()
 
 void DbAddDel::remove_item(const Gtk::TreeModel::iterator& iter)
 {
-  if(iter && m_refListStore)
-    m_refListStore->erase(iter);
+  if(iter && m_list_store)
+    m_list_store->erase(iter);
 }
 
 bool DbAddDel::get_ignore_treeview_signals() const
@@ -1211,9 +1211,9 @@ Gnome::Gda::Value DbAddDel::treeview_get_key(const Gtk::TreeModel::iterator& row
 {
   Gnome::Gda::Value value;
 
-  if(m_refListStore)
+  if(m_list_store)
   {
-    return m_refListStore->get_key_value(row);
+    return m_list_store->get_key_value(row);
   }
 
   return value;
@@ -1254,10 +1254,10 @@ DbAddDel::type_signal_record_selection_changed DbAddDel::signal_record_selection
 
 void DbAddDel::on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, int model_column_index)
 {
-  if(!m_refListStore)
+  if(!m_list_store)
     return;
 
-  auto iter = m_refListStore->get_iter(path);
+  auto iter = m_list_store->get_iter(path);
   if(iter)
   {
     auto layout_item = m_column_items[model_column_index];
@@ -1276,13 +1276,13 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
   if(path_string.empty())
     return;
 
-  if(!m_refListStore)
+  if(!m_list_store)
     return;
 
   const Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
-  auto iter = m_refListStore->get_iter(path);
+  auto iter = m_list_store->get_iter(path);
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
@@ -1306,7 +1306,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
     bool bIsAdd = false;
     bool bIsChange = false;
 
-    const auto iCount = m_refListStore->children().size();
+    const auto iCount = m_list_store->children().size();
     if(iCount)
     {
       if(get_allow_user_actions()) //If add is possible:
@@ -1355,7 +1355,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
 
 void DbAddDel::on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& row, guint model_column_index)
 {
-  auto refTreeSelection = m_TreeView.get_selection();
+  auto refTreeSelection = m_tree_view.get_selection();
   if(!refTreeSelection)
     return;
     
@@ -1363,7 +1363,7 @@ void DbAddDel::on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& ro
   
   guint view_column_index = 0;
   get_view_column_index(model_column_index, view_column_index);
-  auto pColumn = m_TreeView.get_column(view_column_index);
+  auto pColumn = m_tree_view.get_column(view_column_index);
   if(!pColumn)
   {
     std::cerr << G_STRFUNC << ": pColumn is null.\n";
@@ -1380,7 +1380,7 @@ void DbAddDel::on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& ro
   const auto path = get_model()->get_path(row);
   
   //Highlights the cell, and start the editing:
-  m_TreeView.set_cursor(path, *pColumn, *pCell, true /* start_editing */);
+  m_tree_view.set_cursor(path, *pColumn, *pCell, true /* start_editing */);
 }
 
 void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index, int data_model_column_index)
@@ -1389,7 +1389,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
   if(path_string.empty())
     return;
 
-  if(!m_refListStore)
+  if(!m_list_store)
     return;
 
   const Gtk::TreeModel::Path path(path_string);
@@ -1401,7 +1401,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
   }
 
   //Get the row from the path:
-  auto iter = m_refListStore->get_iter(path);
+  auto iter = m_list_store->get_iter(path);
   if(iter != get_model()->children().end())
   {
     Gtk::TreeModel::Row row = *iter;
@@ -1432,7 +1432,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
           return;
 
         //Mark this row as no longer a placeholder, because it has data now. The client code must set an actual key for this in the signal_user_added() or m_signal_user_changed signal handlers.
-        m_refListStore->set_is_not_placeholder(iter);
+        m_list_store->set_is_not_placeholder(iter);
         //Don't mark this as not a placeholder, because it's still a placeholder until it has a key value.
 
         set_prevent_user_signals(bPreventUserSignals);
@@ -1552,9 +1552,9 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
   //We do not save the column width if this is the last column,
   //because that must always be automatic,
   //because it must resize when the whole column resizes.
-  std::vector<Gtk::TreeView::Column*> columns = m_TreeView.get_columns();
+  std::vector<Gtk::TreeView::Column*> columns = m_tree_view.get_columns();
   const auto n_view_columns = columns.size();
-  if(n_view_columns && (view_column == m_TreeView.get_column(n_view_columns -1)))
+  if(n_view_columns && (view_column == m_tree_view.get_column(n_view_columns -1)))
     return;
 
   const std::shared_ptr<LayoutItem>& layout_item = m_column_items[model_column_index];
@@ -1609,7 +1609,7 @@ void DbAddDel::on_treeview_columns_changed()
     //Get the new column order, and save it in m_column_ids:
     m_column_ids.clear();
 
-    for(const auto& vecViewColumn : m_TreeView.get_columns())
+    for(const auto& vecViewColumn : m_tree_view.get_columns())
     {
       const auto view_column = dynamic_cast<DbTreeViewColumnGlom*>(vecViewColumn);
       if(!view_column)
@@ -1669,7 +1669,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   //But we must call set_fixed_width() later or we will have a zero-width column.
   pViewColumn->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
 
-  auto cols_count = m_TreeView.append_column(*pViewColumn);
+  auto cols_count = m_tree_view.append_column(*pViewColumn);
 
   auto layout_item = m_column_items[model_column_index];
   auto layout_item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
@@ -1733,11 +1733,11 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
 
 Glib::RefPtr<Gtk::TreeModel> DbAddDel::get_model()
 {
-  return m_refListStore;
+  return m_list_store;
 }
 Glib::RefPtr<const Gtk::TreeModel> DbAddDel::get_model() const
 {
-  return m_refListStore;
+  return m_list_store;
 }
 
 bool DbAddDel::get_is_first_row(const Gtk::TreeModel::iterator& iter) const
@@ -1761,16 +1761,16 @@ bool DbAddDel::get_is_last_row(const Gtk::TreeModel::iterator& iter) const
 
 Gtk::TreeModel::iterator DbAddDel::get_last_row() const
 {
-  if(m_refListStore)
-    return m_refListStore->get_last_row();
+  if(m_list_store)
+    return m_list_store->get_last_row();
   else
     return Gtk::TreeModel::iterator();
 }
 
 Gtk::TreeModel::iterator DbAddDel::get_last_row()
 {
-  if(m_refListStore)
-    return m_refListStore->get_last_row();
+  if(m_list_store)
+    return m_list_store->get_last_row();
   else
     return Gtk::TreeModel::iterator();
 }
@@ -1783,16 +1783,16 @@ Gnome::Gda::Value DbAddDel::get_value_key(const Gtk::TreeModel::iterator& iter) 
 
 void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::Gda::Value& value)
 {
-  if(iter && m_refListStore)
+  if(iter && m_list_store)
   { 
     if(!(Conversions::value_is_empty(value)))
     {
       //This is not a placeholder anymore, if it every was:
-      m_refListStore->set_is_not_placeholder(iter);
+      m_list_store->set_is_not_placeholder(iter);
       //row[*m_modelcolumn_placeholder] = false;
     }
 
-    m_refListStore->set_key_value(iter, value);
+    m_list_store->set_key_value(iter, value);
   }
 }
 
@@ -1803,15 +1803,15 @@ bool DbAddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) cons
   if(!iter)
     return false;
 
-  if(!m_refListStore)
+  if(!m_list_store)
     return false;
 
-  if(iter == m_refListStore->children().end())
+  if(iter == m_list_store->children().end())
   {
     return false;
   }
 
-  return  m_refListStore->get_is_placeholder(iter);
+  return  m_list_store->get_is_placeholder(iter);
   //Gtk::TreeModel::Row row = *iter;
   //return row[*m_modelcolumn_placeholder];
 }
@@ -2031,9 +2031,9 @@ void DbAddDel::show_hint_model()
   auto iter = m_model_hint->append();
   (*iter)[m_columns_hint.m_col_hint] = _("Right-click to layout, to specify the related fields.");
 
-  m_TreeView.set_model(m_model_hint);
-  m_TreeView.set_fixed_height_mode(false); //fixed_height mode is incompatible with the default append_column() helper method.
-  m_TreeView.append_column("", m_columns_hint.m_col_hint);
+  m_tree_view.set_model(m_model_hint);
+  m_tree_view.set_fixed_height_mode(false); //fixed_height mode is incompatible with the default append_column() helper method.
+  m_tree_view.append_column("", m_columns_hint.m_col_hint);
 }
 
 bool DbAddDel::start_new_record()
@@ -2393,7 +2393,7 @@ Gtk::TreeModel::iterator DbAddDel::get_row_selected()
 
 void DbAddDel::on_treeview_selection_changed()
 {
-  auto refSelection = m_TreeView.get_selection();
+  auto refSelection = m_tree_view.get_selection();
   if(!refSelection)
     return;
 
@@ -2411,7 +2411,7 @@ void DbAddDel::on_selection_changed(bool selection)
 
 void DbAddDel::treeview_delete_all_columns()
 {
-  UiUtils::treeview_delete_all_columns(&m_TreeView);
+  UiUtils::treeview_delete_all_columns(&m_tree_view);
 
   //Reset this too, because we must have just deleted it:
   m_treeviewcolumn_button = nullptr;

@@ -277,19 +277,19 @@ private:
   typedef Gtk::Box type_base;
 
   //Member widgets:
-  Gtk::ScrolledWindow m_ScrolledWindow;
+  Gtk::ScrolledWindow m_scrolled_window;
 
 protected:
-  Gtk::TreeView m_TreeView;
+  Gtk::TreeView m_tree_view;
 
 private:
-  Gtk::TreeModel::ColumnRecord m_ColumnRecord;
-  Glib::RefPtr<Gtk::ListStore> m_refListStore;
+  Gtk::TreeModel::ColumnRecord m_column_record;
+  Glib::RefPtr<Gtk::ListStore> m_list_store;
   guint m_col_key; //The index of the hidden model column.
   guint m_col_placeholder; //The index of the placeholder-marker model column.
 
   typedef std::vector<AddDelColumnInfo> type_ColumnTypes;
-  type_ColumnTypes m_ColumnTypes;
+  type_ColumnTypes m_column_types;
 
   bool m_allow_user_actions;
 

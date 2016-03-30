@@ -52,8 +52,8 @@ Window_RelationshipsOverview::Window_RelationshipsOverview(BaseObjectType* cobje
   if(button_close)
     button_close->signal_clicked().connect( sigc::mem_fun(*this, &Window_RelationshipsOverview::on_button_close) );
 
-  m_refPageSetup = Gtk::PageSetup::create();
-  m_refSettings = Gtk::PrintSettings::create();
+  m_page_setup = Gtk::PageSetup::create();
+  m_settings = Gtk::PrintSettings::create();
 
   //Add a menu:
   Gtk::Box* vbox = nullptr;
@@ -330,11 +330,11 @@ void Window_RelationshipsOverview::on_menu_file_page_setup()
 {
   //Show the page setup dialog, asking it to start with the existing settings:
   auto new_page_setup =
-      Gtk::run_page_setup_dialog(*this, m_refPageSetup, m_refSettings);
+      Gtk::run_page_setup_dialog(*this, m_page_setup, m_settings);
 
   //Save the chosen page setup dialog for use when printing, previewing, or
   //showing the page setup dialog again:
-  m_refPageSetup = new_page_setup;
+  m_page_setup = new_page_setup;
 }
 
 void Window_RelationshipsOverview::on_menu_view_showgrid(const Glib::VariantBase& /* parameter */)
@@ -369,8 +369,8 @@ void Window_RelationshipsOverview::print_or_preview(Gtk::PrintOperationAction pr
   print->set_canvas(&m_canvas);
 
   print->set_track_print_status();
-  print->set_default_page_setup(m_refPageSetup);
-  print->set_print_settings(m_refSettings);
+  print->set_default_page_setup(m_page_setup);
+  print->set_print_settings(m_settings);
 
   //print->signal_done().connect(sigc::bind(sigc::mem_fun(*this,
   //                &ExampleWindow::on_printoperation_done), print));
