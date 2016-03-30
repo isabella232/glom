@@ -87,4 +87,3 @@ void        gimp_ruler_get_range           (GimpRuler      *ruler,
 G_END_DECLS
 
 #endif /* __GIMP_RULER_H__ */
-
