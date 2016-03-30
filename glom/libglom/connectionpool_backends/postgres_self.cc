@@ -465,21 +465,7 @@ bool PostgresSelfHosted::set_network_shared(const SlotProgress& /* slot_progress
 
   m_network_shared = network_shared;
 
-  const auto dbdir_uri = m_database_directory_uri;
-
-  std::string dbdir;
-  try
-  {
-    dbdir = Glib::filename_from_uri(dbdir_uri);
-  }
-  catch(const Glib::ConvertError& ex)
-  {
-    std::cerr << G_STRFUNC << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
-
-    return false;
-  }
-
-  const std::string dbdir_uri_config = dbdir_uri + "/config";
+  const std::string dbdir_uri_config = m_database_directory_uri + "/config";
   const char* default_conf_contents = nullptr;
 
   // Choose the configuration contents based on 
