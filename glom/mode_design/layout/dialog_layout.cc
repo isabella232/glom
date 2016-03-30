@@ -53,8 +53,6 @@ void Dialog_Layout::init(const Glib::ustring& layout_name, const Glib::ustring& 
   m_layout_name = layout_name;
   m_layout_platform = layout_platform;
   m_table_name = table_name;
-
-  m_modified = false;
 }
 
 void Dialog_Layout::move_treeview_selection_up(Gtk::TreeView* treeview, const Gtk::TreeModelColumn<guint>& sequence_column)
