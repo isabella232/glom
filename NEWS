@@ -1,3 +1,11 @@
+1.31.4 (unstable):
+
+* Prevent a crash (in the menu code) when using a table name containing a space,
+  though there are still problems with that.
+  (Murray Cumming) Bug #763534 (m.rick.mac)
+* Lots of code refactoring and correcting.
+  (Murray Cumming)
+
 1.31.3 (unstable):
 
 * Show the translated UI in non-English locales,
