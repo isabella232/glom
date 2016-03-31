@@ -587,7 +587,7 @@ void Frame_Glom::on_menu_file_export()
     return;
   }
 
-  DbUtils::export_data_to_stream(document, the_stream, found_set, const_sequence);
+  DbUtilsExport::export_data_to_stream(document, the_stream, found_set, const_sequence);
 }
 
 void Frame_Glom::on_menu_file_import()

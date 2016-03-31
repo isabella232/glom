@@ -29,9 +29,8 @@
 namespace Glom
 {
 
-namespace DbUtils
+namespace DbUtilsExport
 {
-
 
 //TODO: Reduce copy/pasting in these export_data_to_*() methods:
 void export_data_to_vector(const std::shared_ptr<Document>& document, Document::type_example_rows& the_vector, const FoundSet& found_set, const Document::type_list_const_layout_groups& sequence)
@@ -183,6 +182,6 @@ void export_data_to_stream(const std::shared_ptr<Document>& document, std::ostre
   }
 }
 
-} //namespace DbUtils
+} //namespace DbUtilsExport
 
 } //namespace Glom

@@ -50,7 +50,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   group->add_item(field_year);
   
   std::stringstream the_stream;
-  Glom::DbUtils::export_data_to_stream(document, the_stream, found_set, layout_groups);
+  Glom::DbUtilsExport::export_data_to_stream(document, the_stream, found_set, layout_groups);
   const auto text = the_stream.str();
   std::cout << "debug: " << text << std::endl;
 
