@@ -53,7 +53,7 @@ public:
 
   void set_action_widget(Gtk::Widget* widget, Gtk::PackType pack_type);
 
-  typedef sigc::signal<void, Gtk::Widget*> type_signal_switch_page;
+  typedef sigc::signal<void(Gtk::Widget*)> type_signal_switch_page;
 
   type_signal_switch_page signal_switch_page();
 

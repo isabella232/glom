@@ -41,7 +41,7 @@ public:
   virtual void set_modified(bool modified = true);
 
   //int page_number
-  typedef sigc::signal<void> type_signal_apply;
+  typedef sigc::signal<void()> type_signal_apply;
   type_signal_apply signal_apply();
 
 protected:

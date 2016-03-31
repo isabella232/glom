@@ -57,7 +57,7 @@ public:
 
   static void set_command_line_args(int argc, char** &argv); //Needed for session management.
 
-  typedef sigc::signal<void> type_signal_hide;
+  typedef sigc::signal<void()> type_signal_hide;
   type_signal_hide ui_signal_hide();
 
 protected:

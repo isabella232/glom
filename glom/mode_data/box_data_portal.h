@@ -63,14 +63,14 @@ public:
   std::shared_ptr<const LayoutItem_Portal> get_portal() const;
   std::shared_ptr<const Field> get_key_field() const;
 
-  sigc::signal<void, Gnome::Gda::Value> signal_record_added;
+  sigc::signal<void(Gnome::Gda::Value)> signal_record_added;
 
   /** Tell the parent widget that something has changed in one of the related records,
    * or a record was added or deleted.
    *
    * @param relationship_name, if any.
    */
-  typedef sigc::signal<void, const Glib::ustring&> type_signal_portal_record_changed;
+  typedef sigc::signal<void(const Glib::ustring&)> type_signal_portal_record_changed;
   type_signal_portal_record_changed signal_portal_record_changed();
     
   bool get_has_suitable_record_to_view_details() const;

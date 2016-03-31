@@ -35,7 +35,7 @@ public:
 
   virtual Gnome::Gda::Value get_value() const = 0;
 
-  typedef sigc::signal<void> type_signal_edited;
+  typedef sigc::signal<void()> type_signal_edited;
   type_signal_edited signal_edited();
 
 protected:

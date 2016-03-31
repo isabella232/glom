@@ -422,7 +422,7 @@ void Dialog_GroupsList::load_from_document()
   //fill_table_list();
 }
 
-void Dialog_GroupsList::treeview_append_bool_column(Gtk::TreeView& treeview, const Glib::ustring& title, Gtk::TreeModelColumn<bool>& model_column, const sigc::slot<void,  const Glib::ustring&>& slot_toggled)
+void Dialog_GroupsList::treeview_append_bool_column(Gtk::TreeView& treeview, const Glib::ustring& title, Gtk::TreeModelColumn<bool>& model_column, const sigc::slot<void(const Glib::ustring&)>& slot_toggled)
 {
   auto pCellRenderer = Gtk::manage( new Gtk::CellRendererToggle() );
 

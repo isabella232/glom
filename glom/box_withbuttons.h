@@ -56,8 +56,8 @@ public:
   void set_button_cancel(Gtk::Button& button);
 
   //Signals:
-  sigc::signal<void, Glib::ustring> signal_selected; //When an item is selected.
-  sigc::signal<void> signal_cancelled; //When the cancel button is clicked.
+  sigc::signal<void(Glib::ustring)> signal_selected; //When an item is selected.
+  sigc::signal<void()> signal_cancelled; //When the cancel button is clicked.
 
   virtual Gtk::Widget* get_default_button();
 

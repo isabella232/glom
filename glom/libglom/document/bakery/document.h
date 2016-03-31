@@ -100,7 +100,7 @@ public:
   //Signals
   /** For instance, void on_document_modified(bool modified);
    */
-  typedef sigc::signal<void, bool> type_signal_modified;
+  typedef sigc::signal<void(bool)> type_signal_modified;
 
   /** This signal is emitted when the document has been modified.
    * It allows the view to update itself to show the new information.

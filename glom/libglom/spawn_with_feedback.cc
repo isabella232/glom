@@ -146,7 +146,7 @@ private:
 #endif // !G_OS_WIN32
 
 public:
-  typedef sigc::signal<void> SignalFinished;
+  typedef sigc::signal<void()> SignalFinished;
 
   /** TODO: Document the redirect parameter.
    */
@@ -188,7 +188,7 @@ public:
       std::vector<std::string> arguments = Glib::shell_parse_argv(command_line);
       int child_stdout = 0;
       int child_stderr = 0;
-      Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void>(), &pid, 0, (redirect & REDIRECT_STDOUT) ? &child_stdout : 0, (redirect & REDIRECT_STDERR) ? &child_stderr : 0);
+      Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void()>(), &pid, 0, (redirect & REDIRECT_STDOUT) ? &child_stdout : 0, (redirect & REDIRECT_STDERR) ? &child_stderr : 0);
       if(redirect & REDIRECT_STDOUT)
         redirect_to_string(child_stdout, stdout_text);
       if(redirect & REDIRECT_STDERR)

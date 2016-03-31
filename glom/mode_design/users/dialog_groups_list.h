@@ -57,7 +57,7 @@ private:
   void fill_table_list(const Glib::ustring& group_name);
   Glib::ustring get_selected_group() const;
 
-  void treeview_append_bool_column(Gtk::TreeView& treeview, const Glib::ustring& title, Gtk::TreeModelColumn<bool>& model_column, const sigc::slot<void, const Glib::ustring&>& slot_toggled);
+  void treeview_append_bool_column(Gtk::TreeView& treeview, const Glib::ustring& title, Gtk::TreeModelColumn<bool>& model_column, const sigc::slot<void(const Glib::ustring&)>& slot_toggled);
 
   //Enable/disable buttons, depending on treeview selection:
   void enable_buttons();

@@ -64,7 +64,7 @@ public:
 
   CsvParser::type_row_strings parser_fetch_next_row();
 
-  typedef sigc::signal<void> type_signal_state_changed;
+  typedef sigc::signal<void()> type_signal_state_changed;
 
   /** This signal will be emitted when the parser's state changes.
    */

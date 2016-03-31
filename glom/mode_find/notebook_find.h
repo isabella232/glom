@@ -42,7 +42,7 @@ public:
    * should be used to find and display records.
    * @param find_criteria The SQL where clause.
    */
-  sigc::signal<void, Gnome::Gda::SqlExpr> signal_find_criteria;
+  sigc::signal<void(Gnome::Gda::SqlExpr)> signal_find_criteria;
 
 private:
 

@@ -64,7 +64,7 @@ public:
 
   void set_outline_visible(bool visible = true);
 
-  typedef sigc::signal<void> type_signal_resized;
+  typedef sigc::signal<void()> type_signal_resized;
 
   /// This signal is emitted when the canvas item is resized by the user.
   type_signal_resized signal_resized();

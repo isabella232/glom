@@ -87,14 +87,14 @@ public:
   type_row_strings fetch_next_row();
 
   // Signals:
-  typedef sigc::signal<void, const Glib::ustring&> type_signal_file_read_error;
+  typedef sigc::signal<void(const Glib::ustring&)> type_signal_file_read_error;
 
   /** This signal will be emitted if the parser encounters an error while trying to open the file for reading.
    */
   type_signal_file_read_error signal_file_read_error() const;
 
 
-  typedef sigc::signal<void, const Glib::ustring&> type_signal_have_display_name;
+  typedef sigc::signal<void(const Glib::ustring&)> type_signal_have_display_name;
 
   /** This signal will be emitted when the parser has discovered the
    * display name for the file. This does not require any parsing of the contents,
@@ -103,7 +103,7 @@ public:
   type_signal_have_display_name signal_have_display_name() const;
 
 
-  typedef sigc::signal<void> type_signal_encoding_error;
+  typedef sigc::signal<void()> type_signal_encoding_error;
 
   /** This signal will be emitted when the parser encounters an error while parsing.
    * TODO: How do we discover what the error is?
@@ -111,21 +111,21 @@ public:
   type_signal_encoding_error signal_encoding_error() const;
 
 
-  typedef sigc::signal<void, type_row_strings, unsigned int> type_signal_line_scanned;
+  typedef sigc::signal<void(type_row_strings, unsigned int)> type_signal_line_scanned;
 
   /** This signal will be emitted each time the parser has scanned a line. TODO: Do we mean row instead of line? - A row contain a newline.
    */
   type_signal_line_scanned signal_line_scanned() const;
 
 
-  typedef sigc::signal<void> type_signal_finished_parsing;
+  typedef sigc::signal<void()> type_signal_finished_parsing;
 
   /** This signal will be emitted when the parser successfully finished to parse a file.
    */
   type_signal_finished_parsing signal_finished_parsing() const;
 
 
-  typedef sigc::signal<void> type_signal_state_changed;
+  typedef sigc::signal<void()> type_signal_state_changed;
 
   /** This signal will be emitted when the state changes.
    */

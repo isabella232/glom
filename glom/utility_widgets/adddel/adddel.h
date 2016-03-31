@@ -180,33 +180,33 @@ public:
 
   //Signals:
   //row number.
-  typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_added;
+  typedef sigc::signal<void(const Gtk::TreeModel::iterator&)> type_signal_user_added;
   type_signal_user_added signal_user_added();
 
   //row number, col number.
-  typedef sigc::signal<void, const Gtk::TreeModel::iterator&, guint> type_signal_user_changed;
+  typedef sigc::signal<void(const Gtk::TreeModel::iterator&, guint)> type_signal_user_changed;
   type_signal_user_changed signal_user_changed();
 
   //start row, end row
-  typedef sigc::signal<void, const Gtk::TreeModel::iterator&, const Gtk::TreeModel::iterator&> type_signal_user_requested_delete;
+  typedef sigc::signal<void(const Gtk::TreeModel::iterator&, const Gtk::TreeModel::iterator&)> type_signal_user_requested_delete;
   type_signal_user_requested_delete signal_user_requested_delete();
 
   //row number.
-  typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_requested_edit;
+  typedef sigc::signal<void(const Gtk::TreeModel::iterator&)> type_signal_user_requested_edit;
   type_signal_user_requested_edit signal_user_requested_edit();
 
   //TODO: Add this to the menu?
   /** This signal is emitted when the user presses the "extra" button.
    * This sends the row number.
    */
-  typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_requested_extra;
+  typedef sigc::signal<void(const Gtk::TreeModel::iterator&)> type_signal_user_requested_extra;
   type_signal_user_requested_extra signal_user_requested_extra();
 
-  typedef sigc::signal<void> type_signal_user_requested_add;
+  typedef sigc::signal<void()> type_signal_user_requested_add;
   type_signal_user_requested_add signal_user_requested_add();
 
   //row number, col number.
-  typedef sigc::signal<void, const Gtk::TreeModel::iterator&, guint> type_signal_user_activated;
+  typedef sigc::signal<void(const Gtk::TreeModel::iterator&, guint)> type_signal_user_activated;
   type_signal_user_activated signal_user_activated();
 
   bool get_model_column_index(guint view_column_index, guint& model_column_index);

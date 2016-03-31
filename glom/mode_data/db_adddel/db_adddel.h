@@ -204,21 +204,21 @@ public:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   /** Emitted when the user wants to edit the layout of the items in this widget.
    */
-  typedef sigc::signal<void> type_signal_user_requested_layout;
+  typedef sigc::signal<void()> type_signal_user_requested_layout;
   type_signal_user_requested_layout signal_user_requested_layout();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   /** Emitted when the user request a view/edit of the details of the record.
    * @param row
    */
-  typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_requested_edit;
+  typedef sigc::signal<void(const Gtk::TreeModel::iterator&)> type_signal_user_requested_edit;
   type_signal_user_requested_edit signal_user_requested_edit();
 
   /** Emitted when the user clicks on a script button.
    * @param layout_button The layout item for the script button that was clicked.
    * @param row
    */
-  typedef sigc::signal<void, const std::shared_ptr<const LayoutItem_Button>&, const Gtk::TreeModel::iterator&> type_signal_script_button_clicked;
+  typedef sigc::signal<void(const std::shared_ptr<const LayoutItem_Button>&, const Gtk::TreeModel::iterator&)> type_signal_script_button_clicked;
   type_signal_script_button_clicked signal_script_button_clicked();
 
   /** Allow a parent widget to set the foreign key when a record is added,
@@ -227,18 +227,18 @@ public:
    * @param row Row number
    * @param primary_key_value The value of the primary key of the new related record.
    */
-  typedef sigc::signal<void, const Gtk::TreeModel::iterator&, const Gnome::Gda::Value&> type_signal_record_added;
+  typedef sigc::signal<void(const Gtk::TreeModel::iterator&, const Gnome::Gda::Value&)> type_signal_record_added;
   type_signal_record_added signal_record_added();
 
   /** Emitted when the user changed the sort order,
    * for instance by clicking on a column header.
    */
-  typedef sigc::signal<void> type_signal_sort_clause_changed;
+  typedef sigc::signal<void()> type_signal_sort_clause_changed;
   type_signal_sort_clause_changed signal_sort_clause_changed();
   
   /** Emitted when the user selected (or deselected) a record.
    */
-  typedef sigc::signal<void> type_signal_record_selection_changed;
+  typedef sigc::signal<void()> type_signal_record_selection_changed;
   type_signal_record_selection_changed signal_record_selection_changed();
 
   /** Get the last row.

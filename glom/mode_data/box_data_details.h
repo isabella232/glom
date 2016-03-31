@@ -48,19 +48,19 @@ public:
 
 
   //Signals:
-  typedef sigc::signal<void> type_signal_void;
+  typedef sigc::signal<void()> type_signal_void;
   type_signal_void signal_nav_first();
   type_signal_void signal_nav_prev();
   type_signal_void signal_nav_next();
   type_signal_void signal_nav_last();
 
-  typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_record_deleted; //arg is PrimaryKey.
+  typedef sigc::signal<void(const Gnome::Gda::Value&)> type_signal_record_deleted; //arg is PrimaryKey.
   type_signal_record_deleted signal_record_deleted();
 
    /** For instance,
     * void on_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
     */
-  typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_requested_related_details;
+  typedef sigc::signal<void(const Glib::ustring&, Gnome::Gda::Value)> type_signal_requested_related_details;
   type_signal_requested_related_details signal_requested_related_details();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

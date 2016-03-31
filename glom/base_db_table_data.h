@@ -41,7 +41,7 @@ public:
    *
    * @param relationship_name, if any.
    */
-  typedef sigc::signal<void> type_signal_record_changed;
+  typedef sigc::signal<void()> type_signal_record_changed;
   type_signal_record_changed signal_record_changed();
 
 protected:

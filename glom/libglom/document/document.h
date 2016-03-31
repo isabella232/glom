@@ -438,7 +438,7 @@ public:
    */
   bool set_userlevel(AppState::userlevels userlevel);
 
-  typedef sigc::signal<void, AppState::userlevels> type_signal_userlevel_changed;
+  typedef sigc::signal<void(AppState::userlevels)> type_signal_userlevel_changed;
   type_signal_userlevel_changed signal_userlevel_changed();
 
   //TODO: This is a rather indirect way for application.cc to request the UI to update for the userlevel.

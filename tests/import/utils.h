@@ -8,7 +8,7 @@ namespace ImportTests
 
 bool check(const std::string& name, bool test, std::stringstream& report);
 
-typedef sigc::slot<void, Glom::CsvParser&> FuncConnectParserSignals;
+typedef sigc::slot<void(Glom::CsvParser&)> FuncConnectParserSignals;
 
 /**
  * @result Whether the parser finished without being killed by a timeout.

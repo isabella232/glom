@@ -33,7 +33,7 @@ class GlomCellRenderer_ButtonImage : public Gtk::CellRendererPixbuf
 public: 
   GlomCellRenderer_ButtonImage();
 
-  typedef sigc::signal<void, const Gtk::TreeModel::Path&> type_signal_clicked;
+  typedef sigc::signal<void(const Gtk::TreeModel::Path&)> type_signal_clicked;
   type_signal_clicked signal_clicked();
   
 private:

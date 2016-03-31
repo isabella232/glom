@@ -72,16 +72,16 @@ public:
   Gtk::Widget* get_data_child_widget();
   const Gtk::Widget* get_data_child_widget() const;
 
-  typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_edited;
+  typedef sigc::signal<void(const Gnome::Gda::Value&)> type_signal_edited;
   type_signal_edited signal_edited();
 
-  typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_open_details_requested;
+  typedef sigc::signal<void(const Gnome::Gda::Value&)> type_signal_open_details_requested;
   type_signal_open_details_requested signal_open_details_requested();
 
   /** For instance,
    * void on_choices_changed();
    */
-  typedef sigc::signal<void> type_signal_choices_changed;
+  typedef sigc::signal<void()> type_signal_choices_changed;
 
   /** This is emitted when the related records, used by a choices combobox,
    * have been changed. For instance, when the user adds a new choice via the "New" button.
