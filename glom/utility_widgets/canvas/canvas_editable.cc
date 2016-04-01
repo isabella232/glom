@@ -28,8 +28,6 @@ namespace Glom
 {
 
 CanvasEditable::CanvasEditable()
-: m_dragging(false),
-  m_drag_x(0.0), m_drag_y(0.0)
 {
   m_grid = CanvasGroupGrid::create();
   add_item(m_grid);

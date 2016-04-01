@@ -102,9 +102,6 @@ private:
   
   void on_item_selected(const Glib::RefPtr<CanvasItemMovable>& item, bool group_select);
 
-  bool m_dragging;
-  double m_drag_x, m_drag_y;
-
   class ItemInfo
   {
   public:
