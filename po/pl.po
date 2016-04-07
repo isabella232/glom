@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-08 12:11+0100\n"
-"PO-Revision-Date: 2016-02-08 12:12+0100\n"
+"POT-Creation-Date: 2016-04-07 19:45+0200\n"
+"PO-Revision-Date: 2016-04-07 19:47+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -171,7 +171,7 @@ msgstr ""
 #: ../glom/box_withbuttons.cc:50 ../glom/box_withbuttons.cc:64
 #: ../glom/dialog_existing_or_new.cc:802 ../glom/filechooser_export.cc:39
 #: ../glom/frame_glom.cc:513 ../glom/frame_glom.cc:737
-#: ../glom/frame_glom.cc:824 ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:515
+#: ../glom/frame_glom.cc:824 ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:472
 #: ../glom/onlineglom_strings.cc:40 ../glom/bakery/dialog_offersave.cc:57
 #: ../glom/main.cc:267 ../glom/main.cc:323
 #: ../glom/mode_design/fields/box_db_table_definition.cc:291
@@ -184,8 +184,8 @@ msgstr ""
 #: ../glom/navigation/box_tables.cc:307 ../glom/navigation/box_tables.cc:401
 #: ../glom/mode_design/translation/window_translations.cc:357
 #: ../glom/mode_design/translation/window_translations.cc:396
-#: ../glom/utility_widgets/imageglom.cc:682
-#: ../glom/utility_widgets/imageglom.cc:769
+#: ../glom/utility_widgets/imageglom.cc:724
+#: ../glom/utility_widgets/imageglom.cc:811
 #: ../data/ui/operator/dialog_choose_date.glade.h:3
 #: ../data/ui/operator/dialog_connection.glade.h:3
 #: ../data/ui/operator/dialog_find_id.glade.h:2
@@ -287,7 +287,7 @@ msgstr "Zapisz dokument"
 #: ../glom/appwindow.cc:2154 ../glom/appwindow.cc:2431
 #: ../glom/bakery/dialog_offersave.cc:58
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:40
-#: ../glom/utility_widgets/imageglom.cc:683
+#: ../glom/utility_widgets/imageglom.cc:725
 #: ../data/ui/developer/window_default_formatting.glade.h:3
 #: ../data/ui/developer/window_field_definition_edit.glade.h:17
 msgid "_Save"
@@ -409,11 +409,11 @@ msgstr "_Otwórz"
 msgid "Internal error"
 msgstr "Wewnętrzny błąd"
 
-#: ../glom/base_db.cc:1368
+#: ../glom/base_db.cc:1343
 msgid "Value Is Not Unique"
 msgstr "Wartość nie jest unikalna"
 
-#: ../glom/base_db.cc:1368
+#: ../glom/base_db.cc:1343
 msgid ""
 "The field's value must be unique, but a record with this value already "
 "exists."
@@ -593,7 +593,7 @@ msgid "Open a Document"
 msgstr "Otwórz dokument"
 
 #: ../glom/dialog_existing_or_new.cc:138
-#: ../glom/utility_widgets/imageglom.cc:953
+#: ../glom/utility_widgets/imageglom.cc:995
 msgid "Select File"
 msgstr "Wybierz plik"
 
@@ -757,7 +757,7 @@ msgstr "Wszystkie pliki"
 
 #: ../glom/frame_glom.cc:821
 msgid "Share on the network"
-msgstr "Współdziel w sieci"
+msgstr "Udostępnij w sieci"
 
 #: ../glom/frame_glom.cc:822
 msgid "This will allow other users on the network to use this database."
@@ -765,12 +765,12 @@ msgstr "Umożliwi to używanie tej bazy danych innym użytkownikom w sieci."
 
 #: ../glom/frame_glom.cc:825
 msgid "_Share"
-msgstr "_Współdziel"
+msgstr "_Udostępnij"
 
 #. TODO: Warn about connected users if possible.
 #: ../glom/frame_glom.cc:927
 msgid "Stop sharing on the network"
-msgstr "Zatrzymaj współdzielenie w sieci"
+msgstr "Zatrzymaj udostępnianie w sieci"
 
 #: ../glom/frame_glom.cc:928
 msgid "This will prevent other users on the network from using this database."
@@ -778,7 +778,7 @@ msgstr "Uniemożliwi to używanie tej bazy danych innym użytkownikom w sieci."
 
 #: ../glom/frame_glom.cc:931
 msgid "_Stop Sharing"
-msgstr "_Zatrzymaj współdzielenie"
+msgstr "_Zatrzymaj udostępnianie"
 
 #: ../glom/frame_glom.cc:980 ../glom/frame_glom.cc:2180
 msgid "Stopping Database Server"
@@ -885,39 +885,35 @@ msgstr "Inicjowanie danych bazy danych"
 msgid "All"
 msgstr "Wszystko"
 
-#: ../glom/utils_ui.cc:171
-msgid "No help file available"
-msgstr "Brak dostępnego pliku pomocy"
-
-#: ../glom/utils_ui.cc:189
+#: ../glom/utils_ui.cc:146
 msgid "Could not display help: %1"
 msgstr "Nie można wyświetlić pomocy: %1"
 
-#: ../glom/utils_ui.cc:509
+#: ../glom/utils_ui.cc:466
 msgid "Your find criteria did not match any records in the table."
 msgstr "Kryteria wyszukiwania nie pasowały do żadnego wpisu w tablicy."
 
-#: ../glom/utils_ui.cc:511
+#: ../glom/utils_ui.cc:468
 msgid "No Records Found"
 msgstr "Nie odnaleziono wpisów"
 
-#: ../glom/utils_ui.cc:516
+#: ../glom/utils_ui.cc:473
 msgid "New Find"
 msgstr "Nowe wyszukiwanie"
 
-#: ../glom/utils_ui.cc:527
+#: ../glom/utils_ui.cc:484
 msgid "Report Finished"
 msgstr "Ukończono raport"
 
-#: ../glom/utils_ui.cc:527
+#: ../glom/utils_ui.cc:484
 msgid "The report will now be opened in your web browser."
 msgstr "Raport zostanie otwarty w przeglądarce WWW."
 
-#: ../glom/utils_ui.cc:566
+#: ../glom/utils_ui.cc:528
 msgid "Script Uses PyGTK 2"
 msgstr "Skrypt używa biblioteki PyGTK 2"
 
-#: ../glom/utils_ui.cc:567
+#: ../glom/utils_ui.cc:529
 msgid ""
 "Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, "
 "and attempting to use pygtk 2 would cause Glom to crash."
@@ -1244,20 +1240,20 @@ msgid "Vietnamese"
 msgstr "wietnamskie"
 
 #. Translators: This means an unknown or unnacceptable value type in a database.
-#: ../glom/libglom/data_structure/field.cc:660
+#: ../glom/libglom/data_structure/field.cc:662
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:151
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:159
 msgid "Invalid"
 msgstr "Nieprawidłowe"
 
 #. Translators: This means a numeric value type in a database.
-#: ../glom/libglom/data_structure/field.cc:663
+#: ../glom/libglom/data_structure/field.cc:665
 msgid "Number"
 msgstr "Liczba"
 
 #. Translators: This means a text/string value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:666
+#: ../glom/libglom/data_structure/field.cc:668
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
 #: ../glom/libglom/data_structure/translatable_item.cc:268
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1165
@@ -1266,23 +1262,23 @@ msgid "Text"
 msgstr "Tekst"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:669
+#: ../glom/libglom/data_structure/field.cc:671
 msgid "Time"
 msgstr "Czas"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:672
+#: ../glom/libglom/data_structure/field.cc:674
 msgid "Date"
 msgstr "Data"
 
 #. Translators: This means a true/false value type in a database.
-#: ../glom/libglom/data_structure/field.cc:675
+#: ../glom/libglom/data_structure/field.cc:677
 msgid "Boolean"
 msgstr "Zmienna logiczna"
 
 #. Translators: This means a picture value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:678
+#: ../glom/libglom/data_structure/field.cc:680
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
 #: ../glom/libglom/data_structure/translatable_item.cc:262
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1172
@@ -2967,7 +2963,7 @@ msgstr ""
 "wpis, ponieważ związek używa unikalnego klucza."
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:86
-#: ../glom/utility_widgets/imageglom.cc:770
+#: ../glom/utility_widgets/imageglom.cc:812
 #: ../data/ui/developer/dialog_field_summary.glade.h:5
 #: ../data/ui/developer/dialog_group_by.glade.h:6
 msgid "Select"
@@ -3080,40 +3076,40 @@ msgstr ""
 "Utworzenie bazy danych na zewnętrznym serwerze bazy danych MySQL, "
 "określonego w następnym kroku."
 
-#: ../glom/utility_widgets/imageglom.cc:655
+#: ../glom/utility_widgets/imageglom.cc:697
 msgid "Images"
 msgstr "Obrazy"
 
-#: ../glom/utility_widgets/imageglom.cc:676
+#: ../glom/utility_widgets/imageglom.cc:718
 msgid "Save Image"
 msgstr "Zapisz obraz"
 
-#: ../glom/utility_widgets/imageglom.cc:763
+#: ../glom/utility_widgets/imageglom.cc:805
 #: ../data/ui/developer/dialog_database_preferences.glade.h:15
 msgid "Choose Image"
 msgstr "Wybierz obraz"
 
-#: ../glom/utility_widgets/imageglom.cc:951
+#: ../glom/utility_widgets/imageglom.cc:993
 msgid "_Open File"
 msgstr "_Otwórz plik"
 
-#: ../glom/utility_widgets/imageglom.cc:952
+#: ../glom/utility_widgets/imageglom.cc:994
 msgid "Open File With"
 msgstr "Otwórz plik za pomocą"
 
-#: ../glom/utility_widgets/imageglom.cc:954
+#: ../glom/utility_widgets/imageglom.cc:996
 #: ../data/ui/operator/window_main.glade.h:15
 #: ../data/ui/developer/window_print_layout_edit.glade.h:6
 msgid "_Copy"
 msgstr "S_kopiuj"
 
-#: ../glom/utility_widgets/imageglom.cc:955
+#: ../glom/utility_widgets/imageglom.cc:997
 #: ../data/ui/operator/window_main.glade.h:16
 #: ../data/ui/developer/window_print_layout_edit.glade.h:7
 msgid "_Paste"
 msgstr "Wk_lej"
 
-#: ../glom/utility_widgets/imageglom.cc:956
+#: ../glom/utility_widgets/imageglom.cc:998
 #: ../data/ui/operator/window_main.glade.h:17
 msgid "_Clear"
 msgstr "Wy_czyść"
@@ -3466,7 +3462,7 @@ msgstr "_Zapisz jako przykład"
 
 #: ../data/ui/operator/window_main.glade.h:9
 msgid "S_hared on Network"
-msgstr "_Współdzielenie w sieci"
+msgstr "_Udostępnianie w sieci"
 
 #: ../data/ui/operator/window_main.glade.h:10
 #: ../data/ui/developer/window_relationships_overview.glade.h:3
