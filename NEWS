@@ -1,3 +1,8 @@
+1.28.8 (stable):
+
+* (Hopefully) fix the build without C++11 support.
+  (Murray Cumming)
+
 1.28.7 (stable):
 
 * Show the translated UI in non-English locales,
