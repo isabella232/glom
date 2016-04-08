@@ -1094,7 +1094,7 @@ void Dialog_Layout_Details::save_to_document()
 
       fill_group(row, group);
 
-      list_groups.emplace_back(group);
+      list_groups.push_back(group);
     }
 
     if(document)
