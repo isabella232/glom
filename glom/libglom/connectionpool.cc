@@ -680,7 +680,7 @@ bool ConnectionPool::connect_nothrow()
     }
   }
 
-  return (m_gda_connection != 0);
+  return (bool)m_gda_connection;
 }
 
 //TODO: Why do we use noexcept here and on change_columns()?
