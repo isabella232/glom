@@ -129,11 +129,11 @@ private:
   void setup_context_menu();
   void set_ruler_sizes();
 
-  bool get_is_item_at(double x, double y);
+  bool get_is_item_at(double x, double y) const;
   void set_default_position(const std::shared_ptr<LayoutItem>& item);
   
   void canvas_convert_from_drag_pixels(double& x, double& y, bool adjust_for_scrolling = false) const;
-  void get_dimensions_of_multiple_selected_items(double& x, double& y, double& width, double& height);
+  void get_dimensions_of_multiple_selected_items(double& x, double& y, double& width, double& height) const;
 
   Glib::RefPtr<CanvasLayoutItem> create_canvas_layout_item_and_add(const std::shared_ptr<LayoutItem>& layout_item);
 

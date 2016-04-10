@@ -734,13 +734,13 @@ void Window_PrintLayout_Edit::on_canvas_show_context_menu(guint button, guint32 
     m_context_menu->popup(button, activate_time);
 }
 
-bool Window_PrintLayout_Edit::get_is_item_at(double x, double y)
+bool Window_PrintLayout_Edit::get_is_item_at(double x, double y) const
 {
-  auto item_hit = m_canvas.get_item_at(x, y, false);
+  const auto item_hit = m_canvas.get_item_at(x, y, false);
   if(!item_hit)
    return false;
 
-  const auto layout_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(item_hit);
+  const auto layout_item = Glib::RefPtr<const CanvasLayoutItem>::cast_dynamic(item_hit);
   return (bool)layout_item;
 }
 
@@ -1348,7 +1348,7 @@ bool Window_PrintLayout_Edit::on_configure_event(GdkEventConfigure* configure_ev
   return result;
 }
 
-void Window_PrintLayout_Edit::get_dimensions_of_multiple_selected_items(double& x, double& y, double& width, double& height)
+void Window_PrintLayout_Edit::get_dimensions_of_multiple_selected_items(double& x, double& y, double& width, double& height) const
 {
  //Get the selected items, and their dimensions as a group:
   x = 0;
