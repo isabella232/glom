@@ -1002,8 +1002,8 @@ Goocanvas::Canvas* CanvasGroupResizable::get_parent_canvas_widget()
 
 bool CanvasGroupResizable::get_is_line() const
 {
-  Glib::RefPtr<CanvasLineMovable> line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(m_child);
-  return line;
+  const auto line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(m_child);
+  return (bool)line;
 }
 
 CanvasGroupResizable::type_signal_resized CanvasGroupResizable::signal_resized()
