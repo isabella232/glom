@@ -701,7 +701,7 @@ bool ConnectionPool::connect_nothrow()
     }
   }
 
-  return (m_refGdaConnection != 0);
+  return (bool)m_refGdaConnection;
 }
 
 //TODO: Why do we use throw() here and on change_columns()?

@@ -2334,7 +2334,8 @@ type_map_fields get_record_field_values(const Document* document, const Glib::us
     }
     catch(const Glib::Exception& ex)
     {
-      std::cerr << G_STRFUNC << ": Exception while executing SQL: " << query << std::endl;
+      const Glib::ustring sql_query = Utils::sqlbuilder_get_full_query(query);
+      std::cerr << G_STRFUNC << ": Exception while executing SQL: " << sql_query << std::endl;
       handle_error(ex);
       return field_values;
     }

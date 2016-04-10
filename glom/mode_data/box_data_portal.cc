@@ -320,7 +320,8 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
       << ", key_field=" << key_field->get_name()
       << ", primary_key_value=" << primary_key_value.to_string() << std::endl;
 
-    std::cout << "  DEBUG: SQL was: " << query << std::endl;
+    const Glib::ustring sql_query = Utils::sqlbuilder_get_full_query(query);
+    std::cout << "  DEBUG: SQL was: " << sql_query << std::endl;
   }
 
   if(!value_found)

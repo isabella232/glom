@@ -743,7 +743,7 @@ bool Window_PrintLayout_Edit::get_is_item_at(double x, double y)
    return false;
 
   Glib::RefPtr<CanvasLayoutItem> layout_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(item_hit);
-  return layout_item;
+  return (bool)layout_item;
 }
 
 void Window_PrintLayout_Edit::set_default_position(const sharedptr<LayoutItem>& item)
