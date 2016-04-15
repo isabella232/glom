@@ -104,7 +104,6 @@ std::shared_ptr<ConnectionPool> ConnectionPool::m_instance;
 ConnectionPool::ConnectionPool()
 :
   m_epc_publisher(nullptr),
-  m_dialog_epc_progress(nullptr),
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
   m_show_debug_output(false),

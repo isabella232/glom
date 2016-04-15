@@ -39,11 +39,6 @@ typedef struct _EpcContents EpcContents;
 typedef struct _EpcAuthContext EpcAuthContext;
 }
 
-namespace Gtk
-{
-  class Dialog;
-}
-
 namespace Glom
 {
 
@@ -336,7 +331,6 @@ private:
 private:
 
   EpcPublisher* m_epc_publisher;
-  Gtk::Dialog* m_dialog_epc_progress; //For progress while generating certificates.
 
   std::shared_ptr<Backend> m_backend;
   Glib::RefPtr<Gnome::Gda::Connection> m_gda_connection;
