@@ -66,7 +66,6 @@ static const char GLOM_ATTRIBUTE_CONNECTION_NETWORK_SHARED[] = "network_shared";
 static const char GLOM_ATTRIBUTE_CONNECTION_SERVER[] = "server";
 static const char GLOM_ATTRIBUTE_CONNECTION_PORT[] = "port";
 static const char GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS[] = "try_other_ports";
-static const char GLOM_ATTRIBUTE_CONNECTION_USER[] = "user";
 static const char GLOM_ATTRIBUTE_CONNECTION_DATABASE[] = "database";
 
 static const char GLOM_NODE_DATA_LAYOUT_GROUPS[] = "data_layout_groups";
@@ -210,7 +209,6 @@ static const char GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_FOREGROUND[] = "color_fg";
 static const char GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND[] = "color_bg";
 
 static const char GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT[] = "alignment_horizontal";
-static const char GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_AUTO[] = "auto";
 static const char GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT[] = "left";
 static const char GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT[] = "right";
 
