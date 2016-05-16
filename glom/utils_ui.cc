@@ -617,9 +617,17 @@ void UiUtils::container_remove_all(Gtk::Container& container)
   }
 }
 
-void UiUtils::load_font_into_css_provider(Gtk::Widget& widget, const Glib::ustring& font)
+void UiUtils::load_font_into_css_provider(Gtk::Widget& widget, const Glib::ustring& pango_font_name)
 {
-  const auto css = "* { font-family: " + font + "; }";
+  const Pango::FontDescription font_desc(pango_font_name);
+  const auto font_family = font_desc.get_family();
+  const auto font_size = font_desc.get_size();
+  const auto css =
+    "* {\n" +
+    (font_family.empty() ? "" : "    font-family: " + font_desc.get_family() + ";\n") +
+    (font_size == 0 ? "" : "    font-size: " + std::to_string(font_size / PANGO_SCALE) + "pt;\n") +
+    "}";
+
   load_into_css_provider(widget, css);
 }
 
