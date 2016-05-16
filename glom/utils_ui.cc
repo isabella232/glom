@@ -619,7 +619,7 @@ void UiUtils::container_remove_all(Gtk::Container& container)
 
 void UiUtils::load_font_into_css_provider(Gtk::Widget& widget, const Glib::ustring& font)
 {
-  const auto css = "* { font: " + font + "; }";
+  const auto css = "* { font-family: " + font + "; }";
   load_into_css_provider(widget, css);
 }
 
