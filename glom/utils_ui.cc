@@ -60,9 +60,11 @@
 namespace
 {
 
-static void on_css_parsing_error(const Glib::RefPtr<const Gtk::CssSection>& section, const Glib::Error& error)
+static void on_css_parsing_error(const Glib::RefPtr<const Gtk::CssSection>& section, const Glib::Error& error,
+    const Glib::ustring& error_clue)
 {
   std::cerr << G_STRFUNC << ": Parsing error: " << error.what() << std::endl;
+  std::cerr << "  css: " << error_clue << std::endl;
 
   if(section)
   {
@@ -79,7 +81,7 @@ static void on_css_parsing_error(const Glib::RefPtr<const Gtk::CssSection>& sect
   }
 }
 
-static Glib::RefPtr<Gtk::CssProvider> create_css_provider(Gtk::Widget& widget)
+static Glib::RefPtr<Gtk::CssProvider> create_css_provider(Gtk::Widget& widget, const Glib::ustring& error_clue)
 {
   // Add a StyleProvider so we can change the color, background color, and font.
   // This was easier before Gtk::Widget::override_color() was deprecated.
@@ -90,9 +92,34 @@ static Glib::RefPtr<Gtk::CssProvider> create_css_provider(Gtk::Widget& widget)
     refStyleContext->add_provider(css_provider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
   css_provider->signal_parsing_error().connect(
-    sigc::ptr_fun(&on_css_parsing_error));
+    sigc::bind(
+      sigc::ptr_fun(&on_css_parsing_error),
+      error_clue));
 
   return css_provider;
+}
+
+
+static void load_into_css_provider(Gtk::Widget& widget, const Glib::ustring& css)
+{
+  auto css_provider = create_css_provider(widget, css);
+
+  try
+  {
+    css_provider->load_from_data(css);
+  }
+  catch(const Gtk::CssProviderError& ex)
+  {
+    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed with CssProviderError: "
+      << ex.what() << std::endl;
+    std::cerr << "  with css: " << css << std::endl;
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed with Error: "
+      << ex.what() << std::endl;
+    std::cerr << "  with css: " << css << std::endl;
+  }
 }
 
 } //anonymous namespace
@@ -592,53 +619,19 @@ void UiUtils::container_remove_all(Gtk::Container& container)
 
 void UiUtils::load_font_into_css_provider(Gtk::Widget& widget, const Glib::ustring& font)
 {
-  Glib::RefPtr<Gtk::CssProvider> css_provider = create_css_provider(widget);
-
-  try
-  {
-    css_provider->load_from_data("* { font: " + font + "; }");
-  }
-  catch(const Gtk::CssProviderError& ex)
-  {
-    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
-      << ex.what() << std::endl;
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
-      << ex.what() << std::endl;
-  }
+  const auto css = "* { font: " + font + "; }";
+  load_into_css_provider(widget, css);
 }
 
 void UiUtils::load_color_into_css_provider(Gtk::Widget& widget, const Glib::ustring& color)
 {
-  Glib::RefPtr<Gtk::CssProvider> css_provider = create_css_provider(widget);
-
-  try
-  {
-    css_provider->load_from_data("* { color: " + color + "; }");
-  }
-  catch(const Gtk::CssProviderError& ex)
-  {
-    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
-      << ex.what() << std::endl;
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
-      << ex.what() << std::endl;
-  }
+  const auto css = "* { color: " + color + "; }";
+  load_into_css_provider(widget, css);
 }
 
 void UiUtils::load_background_color_into_css_provider(Gtk::Widget& widget, const Glib::ustring& color)
 {
-  Glib::RefPtr<Gtk::CssProvider> css_provider = create_css_provider(widget);
-
-  try
-  {
-    css_provider->load_from_data(
-      "* { background-color: " + color + "; }"
-      );
+  auto css = "* { background-color: " + color + "; }";
 /*
       "GtkTextView {\n"
       "  background-color: " + color + "; }\n"
@@ -650,17 +643,7 @@ void UiUtils::load_background_color_into_css_provider(Gtk::Widget& widget, const
       "  background-color: " + color + "; }"
 */
 
-  }
-  catch(const Gtk::CssProviderError& ex)
-  {
-    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
-      << ex.what() << std::endl;
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
-      << ex.what() << std::endl;
-  }
+  load_into_css_provider(widget, css);
 }
 
 } //namespace Glom
