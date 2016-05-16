@@ -69,7 +69,7 @@ static void on_css_parsing_error(const Glib::RefPtr<const Gtk::CssSection>& sect
     const auto file = section->get_file();
     if (file)
     {
-      std::cerr << " URI = " << section->get_file()->get_uri() << std::endl;
+      std::cerr << " URI = " << file->get_uri() << std::endl;
     }
 
     std::cerr << " start_line = " << section->get_start_line()+1
