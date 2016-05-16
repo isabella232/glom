@@ -40,7 +40,7 @@ class LayoutItem_Portal;
  *
  * If the CanvasLayoutItem is not already (indirectly) in a GooCanvas::Canvas then
  * Goocanvas::Image items will show over-scaled images, due to goocanvas bug:
- * https://bugzilla.gnome.org/show_bug.cgi?id=657592#c16 
+ * https://bugzilla.gnome.org/show_bug.cgi?id=657592#c16
  */
 class CanvasLayoutItem : public CanvasGroupResizable
 {
@@ -56,7 +56,7 @@ public:
   //Create an appropriate child canvas item,
   //and sets the position and size of this canvas item to the position in the LayoutItem.
   void set_layout_item(const std::shared_ptr<LayoutItem>& layout_item);
-  
+
   /// Make the canvas item show actual data instead of, for instance, a field name.
   void set_db_data(const Gnome::Gda::Value& value);
 
@@ -79,7 +79,7 @@ private:
   static Glib::RefPtr<CanvasItemMovable> create_canvas_item_for_layout_item(const std::shared_ptr<LayoutItem>& layout_item);
 
   static void apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item);
-  
+
   static void add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTableMovable>& canvas_table, const std::shared_ptr<LayoutItem_Portal>& portal, guint rows_count);
 
   void on_resized();

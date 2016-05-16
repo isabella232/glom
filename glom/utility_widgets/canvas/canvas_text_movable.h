@@ -61,7 +61,7 @@ public:
    */
   void set_text(const Glib::ustring& text);
 
-  /** The font name, as returned from Gtk::FontButton::get_font_name(), 
+  /** The font name, as returned from Gtk::FontButton::get_font_name(),
    * which may include the size and style.
    * This assumes that the font size is specified in points.
    * Note that property_font() assumes that the size is in canavs units (usually mm).

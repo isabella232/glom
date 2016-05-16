@@ -95,7 +95,7 @@ public:
    * It is up to the caller to indicate in the menu that find mode is not active.
    */
   void set_mode_data();
-  
+
   void on_menu_add_record();
 
   void on_menu_report_selected(const Glib::ustring& report_name);
@@ -166,7 +166,7 @@ public:
 
   ///Create the database for new documents, showing the Connection dialog
   bool create_database(const Glib::ustring& database_name, const Glib::ustring& title);
-  
+
   void set_enable_layout_drag_and_drop(bool enable = true);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

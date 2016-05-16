@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #include <glom/appwindow.h> // For get_appwindow().
 
 #include "canvas_image_movable.h"
@@ -38,7 +38,7 @@ CanvasImageMovable::CanvasImageMovable(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, 
 }
 
 CanvasImageMovable::CanvasImageMovable(double x, double y)
-: Goocanvas::Image(x, y), 
+: Goocanvas::Image(x, y),
   CanvasItemMovable(),
   m_snap_corner(Corners::TOP_LEFT) //arbitrary default.
 {
@@ -81,7 +81,7 @@ void CanvasImageMovable::get_width_height(double& width, double& height) const
 {
   //TODO: This only works when it is on a canvas already,
   //and this is apparently incorrect when the "coordinate space" of the item changes, whatever that means. murrayc.
-  
+
   width = property_width();
   height = property_height();
 }
@@ -156,7 +156,7 @@ void CanvasImageMovable::set_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, bool
 
   if(scale_image)
     scale_to_size();
- 
+
   m_image_empty = false;
 }
 
@@ -174,7 +174,7 @@ void CanvasImageMovable::scale_to_size()
     std::cerr << G_STRFUNC << ": canvas is null\n";
     return;
   }
-  
+
   //Convert, because our canvas uses units (mm) but the pixbuf uses pixels:
   double width_pixels = width;
   double height_pixels = height;
@@ -188,8 +188,8 @@ void CanvasImageMovable::scale_to_size()
 
   //Make sure that the size stays the same even if the scaling wasn't exact:
   set_width_height(width, height);
-  
-  //TODO: Fix this goocanvas bug http://bugzilla.gnome.org/show_bug.cgi?id=657592, 
+
+  //TODO: Fix this goocanvas bug http://bugzilla.gnome.org/show_bug.cgi?id=657592,
   //We can't work around it by forcing an extra scale in GooCanvasItem like so:
   //property_scale_to_fit() = true;
   //because that does not keep the aspect ratio.

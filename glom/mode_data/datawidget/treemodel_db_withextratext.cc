@@ -36,18 +36,18 @@ DbTreeModelWithExtraText::DbTreeModelWithExtraText(const FoundSet& found_set, co
   int column_index = 0;
   for(const auto& item : layout_items)
   {
-    const auto item_field = 
+    const auto item_field =
       std::dynamic_pointer_cast<const LayoutItem_Field>(item);
     if(item_field)
     {
       m_item_first = item_field;
       break;
     }
-    
+
     ++column_index;
   }
 
-  
+
   if(m_item_first)
   {
    m_column_index_first = column_index;
@@ -96,7 +96,7 @@ void DbTreeModelWithExtraText::get_value_vfunc(const TreeModel::iterator& iter, 
   if(column == get_text_column())
   {
     Glib::ustring text;
-    
+
     if(m_column_index_first == -1)
     {
       std::cerr << G_STRFUNC << ": m_column_index_first is not set.\n";
@@ -107,14 +107,14 @@ void DbTreeModelWithExtraText::get_value_vfunc(const TreeModel::iterator& iter, 
       Glib::Value<Gnome::Gda::Value> value_db;
       get_value_vfunc(iter, m_column_index_first, value_db);
       const auto dbvalue = value_db.get();
-      
+
       text =
         Conversions::get_text_for_gda_value(m_item_first->get_glom_type(), dbvalue, m_item_first->get_formatting_used().m_numeric_format);
       //std::cout << "debug: text=" << text << std::endl;
       //std::cout << "  debug: m_item_key name=" << m_item_key->get_name() << std::endl;
       //std::cout << "  debug: dbvalue=" << dbvalue.to_string() << std::endl;
     }
-  
+
     type_value_string value_specific;
     value_specific.init( type_value_string::value_type() );  //TODO: Is there any way to avoid this step?
     value_specific.set(text);

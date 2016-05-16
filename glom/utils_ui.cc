@@ -88,7 +88,7 @@ namespace Glom
 int UiUtils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
 {
   int result = dialog->run();
-  
+
   while (result == Gtk::RESPONSE_HELP)
   {
     show_help(dialog, id);
@@ -111,7 +111,7 @@ void UiUtils::show_help(Gtk::Window* parent_window, const Glib::ustring& id)
   Glib::ustring uri = "help:glom";
   if (!id.empty())
     uri += "/" + id;
-    
+
   try
   {
     //Use the GNOME help browser:
@@ -175,12 +175,12 @@ void UiUtils::show_window_until_hide(Gtk::Window* window)
 
   //Stop the main_loop when the window is hidden:
   sigc::connection handler_connection; //TODO: There seems to be a crash if this is on the same line.
-  handler_connection = window->signal_hide().connect( 
+  handler_connection = window->signal_hide().connect(
     sigc::bind(
       sigc::ptr_fun(&on_window_hide),
       main_loop, handler_connection
     ) );
-  
+
   window->show();
   main_loop->run(); //Run and block until it is stopped by the hide signal handler.
 }
@@ -230,7 +230,7 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::get_pixbuf_for_gda_value(const Gnome::Gda::Va
       //  std::cout << " name=" << iter->get_name() << ", writable=" << iter->is_writable() << std::endl;
       //}
 
-      Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;      
+      Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;
       try
       {
         refPixbufLoader = Gdk::PixbufLoader::create();
@@ -316,7 +316,7 @@ int UiUtils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const std:
         example_text = "EUR 999.99";
       else
         example_text = "EUR 9999999999";
-        
+
       break;
     }
     case(Field::glom_field_type::TEXT):
@@ -425,7 +425,7 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::image_scale_keeping_ratio(const Glib::RefPtr<
     return pixbuf;
   else if(scale_mode == enum_scale_mode::HEIGHT)
   {
-    const float ratio = (float)target_height / (float)pixbuf_height; 
+    const float ratio = (float)target_height / (float)pixbuf_height;
     target_width = (int)((float)pixbuf_width * ratio);
   }
   else if(scale_mode == enum_scale_mode::WIDTH)

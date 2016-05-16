@@ -154,7 +154,7 @@ public:
    */
   Glib::ustring sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnome::Gda::Connection>& connection) const;
 
-  /** Get the canonical format for a file, for instance for 
+  /** Get the canonical format for a file, for instance for
    * a default value or for example data.
    * This does not add quotes for text fields so the caller may need to do that.
    * Note that this does not do any extra escaping such as an XML file might need.

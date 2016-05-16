@@ -29,7 +29,7 @@ namespace Glom
 
 class AddDel_WithButtons : public AddDel
 {
-public: 
+public:
   AddDel_WithButtons();
   AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 

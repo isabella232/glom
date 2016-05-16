@@ -501,7 +501,7 @@ void ConnectionPool::invalidate_connection()
 
   if(m_gda_connection)
     m_gda_connection->close();
-    
+
   m_gda_connection.reset();
   m_sharedconnection_refcount = 0;
 
@@ -636,7 +636,7 @@ bool ConnectionPool::cleanup(const SlotProgress& slot_progress)
   //Otherwise database shutdown could fail.
   //And make sure that connect() tries to make a new connection:
   invalidate_connection();
-      
+
   if(m_backend)
     result = m_backend->cleanup(slot_progress);
 
@@ -751,7 +751,7 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
 
   //Add or remove any auto-increment rows:
   //The new auto-increment row would actually be added automatically,
-  //but this makes it available even before a record has been added. 
+  //but this makes it available even before a record has been added.
   auto iter_old = old_fields.begin();
   auto iter_new = new_fields.begin();
   while( (iter_old != old_fields.end()) && (iter_new != new_fields.end()) )
@@ -770,7 +770,7 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
     ++iter_old;
     ++iter_new;
   }
- 
+
   return result;
 }
 
@@ -786,7 +786,7 @@ std::shared_ptr<Document> ConnectionPool::get_document()
 {
   if(!m_slot_get_document)
   {
-    //Don't bother warning because all the code that calls get_document() checks 
+    //Don't bother warning because all the code that calls get_document() checks
     //for 0 and responds reasonably.
     //std::cerr << G_STRFUNC << ": m_slot_get_document is null.\n";
     return nullptr;

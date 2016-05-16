@@ -63,7 +63,7 @@ std::shared_ptr<SharedConnection> Dialog_Connection::connect_to_server_with_conn
 
   auto connection_pool = ConnectionPool::get_instance();
   g_assert(connection_pool);
-  
+
   //Set the connection details in the ConnectionPool singleton.
   //The ConnectionPool will now use these every time it tries to connect.
 
@@ -92,7 +92,7 @@ std::shared_ptr<SharedConnection> Dialog_Connection::connect_to_server_with_conn
   result = Base_DB::connect_to_server(const_cast<Dialog_Connection*>(this));
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-  //Remember the port, 
+  //Remember the port,
   //to make opening faster next time,
   //and so we can tell connecting clients (using browse network) what port to use:
   auto unconst = std::const_pointer_cast<Document>(document);
@@ -120,9 +120,9 @@ std::shared_ptr<SharedConnection> Dialog_Connection::connect_to_server_with_conn
     unconst->set_connection_try_other_ports(false);
   }
 #endif //GLOM_ENABLE_CLIENT_ONLY
- 
+
 #endif //GLOM_ENABLE_POSTGRESQL
- 
+
   return result;
 }
 
@@ -146,7 +146,7 @@ void Dialog_Connection::load_from_document()
       Glib::ustring host = document->get_connection_server();
       if(host.empty())
         host = "localhost";
-     
+
       m_entry_host->set_text(host);
       m_entry_host->set_sensitive(true);
     }
@@ -156,7 +156,7 @@ void Dialog_Connection::load_from_document()
     if(user.empty())
     {
       //Default to the UNIX user name, which is often the same as the Postgres user name:
-      const auto pchUser = getenv("USER"); 
+      const auto pchUser = getenv("USER");
       if(pchUser)
         user = pchUser;
     }

@@ -50,7 +50,7 @@ Glib::ustring Conversions::format_time(const tm& tm_data)
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
     std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
     return Glib::ustring();
-  } 
+  }
 }
 
 
@@ -132,11 +132,11 @@ static inline const char* glom_get_locale_date_format()
       }
     }
 
-    /* TRANSLATORS: Please only translate this string if you know that strftime() 
-     * shows only 2 year digits when using format "x". We want to always display 
-     * 4 year digits. For instance, en_GB should translate it to "%d/%m/%Y". 
-     * Glom will show a warning in the terminal at startup if this is necessary 
-     * and default to %d/%m/%Y" if it detects a problem, but that might not be 
+    /* TRANSLATORS: Please only translate this string if you know that strftime()
+     * shows only 2 year digits when using format "x". We want to always display
+     * 4 year digits. For instance, en_GB should translate it to "%d/%m/%Y".
+     * Glom will show a warning in the terminal at startup if this is necessary
+     * and default to %d/%m/%Y" if it detects a problem, but that might not be
      * correct for your locale.
      * Thanks.
      * xgettext:no-c-format */
@@ -199,8 +199,8 @@ bool Conversions::sanity_check_date_parsing()
   }
 
   if(!success ||
-     parsed_date.tm_year != the_c_time.tm_year || 
-     parsed_date.tm_mon != the_c_time.tm_mon || 
+     parsed_date.tm_year != the_c_time.tm_year ||
+     parsed_date.tm_mon != the_c_time.tm_mon ||
      parsed_date.tm_mday != the_c_time.tm_mday)
   {
     //Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
@@ -209,8 +209,8 @@ bool Conversions::sanity_check_date_parsing()
     //If translators cannot be relied upon to do this, maybe we should default to "%d/%m/%Y" when "%x" fails this test.
 
     return false;
-  } 
-     
+  }
+
   return true;
 }
 
@@ -246,7 +246,7 @@ bool Conversions::sanity_check_date_text_representation_uses_4_digit_years(bool 
     std::cout << "  Current locale: " << std::locale("").name() << std::endl;
 
     //Do not depend on translators to do what we ask.
-    //Default to a common format, though this would be incorrect in some 
+    //Default to a common format, though this would be incorrect in some
     //locales, such as German.
     c_locale_date_format = "%d/%m/%Y";
 
@@ -258,7 +258,7 @@ bool Conversions::sanity_check_date_text_representation_uses_4_digit_years(bool 
 
 
 Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& locale, const char* format)
-{   
+{
   //This is based on docs found here:
   //http://www.roguewave.com/support/docs/sourcepro/stdlibref/time-put.html
 
@@ -519,7 +519,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
       }
       else
       {
-        //Increase the number of digits (even before the decimal point) we can 
+        //Increase the number of digits (even before the decimal point) we can
         //have until it uses the awkward e syntax. The default seems to be 7.
         another_stream << std::setprecision( NumericFormat::get_default_precision() );
       }
@@ -555,7 +555,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     {
       std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
       std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
-    }      
+    }
 
     //std::cout << "debug: " << G_STRFUNC << ": number=" << number << ", text=" << text << std::endl;
     return text; //Do something like Glib::locale_to_utf(), but with the specified locale instead of the current locale.
@@ -576,8 +576,8 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   else if(glom_type == Field::glom_field_type::IMAGE)
   {
     //This function is only used for :
-    //- UI-visible strings, but images should never be shown as text in the UI. 
-    //- Values in SQL queries, but we only do that for clauses (where/sort/order) 
+    //- UI-visible strings, but images should never be shown as text in the UI.
+    //- Values in SQL queries, but we only do that for clauses (where/sort/order)
     //  which should never use image values.
     std::cerr << G_STRFUNC << ": Unexpected enumType::IMAGE field type: " << Utils::to_utype(glom_type) << std::endl;
     return Glib::ustring();
@@ -614,8 +614,8 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
     std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
-  } 
-  
+  }
+
   //Put a NULL in the database for empty dates, times, and numerics, because 0 would be an actual value.
   //But we use "" for strings, because the distinction between NULL and "" would not be clear to users.
   if(text.empty())
@@ -680,7 +680,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
     the_stream >> the_number;  //TODO: Does this throw any exception if the text is an invalid number?
 
     //std::cout << "debug: " << G_STRFUNC << ": text=" << text_to_parse << ", number=" << the_number << std::endl;
-   
+
 
     Gnome::Gda::Numeric numeric;
     numeric.set_double(the_number);
@@ -696,7 +696,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   else if(glom_type == Field::glom_field_type::IMAGE)
   {
     //This function is only used for :
-    //- UI-visible strings, but images should never be entered as text in the UI. 
+    //- UI-visible strings, but images should never be entered as text in the UI.
     std::cerr << G_STRFUNC << ": Unexpected enumType::IMAGE field type: " << Utils::to_utype(glom_type) << std::endl;
     return Gnome::Gda::Value();
   }
@@ -716,11 +716,11 @@ tm Conversions::parse_date(const Glib::ustring& text, bool& success)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
     std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
-    
+
     tm the_c_time;
     memset(&the_c_time, 0, sizeof(the_c_time));
     return the_c_time;
-  } 
+  }
 }
 
 tm Conversions::parse_date(const Glib::ustring& text, const std::locale& locale, bool& success)
@@ -782,7 +782,7 @@ tm Conversions::parse_date(const Glib::ustring& text, const std::locale& locale,
   }
   else
   {
-    //time_get can fail just because you have entered "1/2/1903" instead of "01/02/1903", 
+    //time_get can fail just because you have entered "1/2/1903" instead of "01/02/1903",
     //or maybe we chose to skip it because it is not useful in this locale,
     //so let's try another, more liberal, way:
     Glib::Date date;
@@ -842,7 +842,7 @@ tm Conversions::parse_time(const Glib::ustring& text, bool& success)
 
   //time_get() does not seem to work with non-C locales.  TODO: Try again.
   tm the_time;
-  
+
   try
   {
     the_time = parse_time( text, std::locale("") /* the user's current locale */, success );
@@ -851,8 +851,8 @@ tm Conversions::parse_time(const Glib::ustring& text, bool& success)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
     std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
-  } 
-  
+  }
+
   if(success)
   {
     return the_time;
@@ -911,7 +911,7 @@ tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale,
     success = true;
     return the_c_time;
   }
-  
+
 #ifdef HAVE_STRPTIME
   //Fall back to strptime():
   //This fallback will be used in most cases. TODO: Remove the useless? time_get<> code then?
@@ -919,7 +919,7 @@ tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale,
   // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2006/n2070.html
   //
   //Try various formats:
-  
+
   memset(&the_c_time, 0, sizeof(the_c_time));
   char* lastchar = strptime(text.c_str(), "%r" /* 12-hour clock time using the AM/PM notation */, &the_c_time);
   if(lastchar)
@@ -927,7 +927,7 @@ tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale,
     success = true;
     return the_c_time;
   }
-  
+
   memset(&the_c_time, 0, sizeof(the_c_time));
   lastchar = strptime(text.c_str(), "%X" /* The time, using the locale's time format. */, &the_c_time);
   if(lastchar)
@@ -936,9 +936,9 @@ tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale,
     success = true;
     return the_c_time;
   }
-  
+
   //Note: strptime() with "%OI" parses "01:00 PM" incorrectly as 01:00, though it claims to parse successfully.
-  
+
   memset(&the_c_time, 0, sizeof(the_c_time));
   lastchar = strptime(text.c_str(), "%c" /* alternative 12-hour clock */, &the_c_time);
   if(lastchar)
@@ -947,7 +947,7 @@ tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale,
     success = true;
     return the_c_time;
   }
-  
+
   //This seems to be the only one that can parse "01:00 PM":
   memset(&the_c_time, 0, sizeof(the_c_time));
   lastchar = strptime(text.c_str(), "%I : %M %p" /* 12 hours clock with AM/PM, without seconds. */, &the_c_time);
@@ -957,7 +957,7 @@ tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale,
     success = true;
     return the_c_time;
   }
- 
+
   //std::cout << "  DEBUG: strptime(%c) failed on text=" << text << std::endl;
 
 #endif // HAVE_STRPTIME
@@ -1083,13 +1083,13 @@ Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Fie
   const auto gvalue_type_source = value.get_value_type();
   if(gvalue_type_source == gvalue_type_target)
     return value; //No conversion necessary, and no loss of precision.
-  
+
   const auto source_glom_type = Field::get_glom_type_for_gda_type(gvalue_type_source);
   if(source_glom_type == target_glom_type)
   {
-    //Try to return the canonical type, 
+    //Try to return the canonical type,
     //instead of just something of a similar GType:
-    if((target_glom_type == Field::glom_field_type::NUMERIC) && 
+    if((target_glom_type == Field::glom_field_type::NUMERIC) &&
       (vtype_is_numeric(gvalue_type_source)))
     {
       const auto number = get_double_for_gda_value_numeric(value);

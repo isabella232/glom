@@ -49,7 +49,7 @@ typedef std::list<Encoding> type_list_encodings;
  */
 type_list_encodings get_list_of_encodings();
 
-/** Discover the human-readable name (such as "Western") of a charset 
+/** Discover the human-readable name (such as "Western") of a charset
  * (such as "ISO-8859-1")
  */
 Glib::ustring get_name_of_charset(const Glib::ustring& charset);

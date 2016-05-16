@@ -107,7 +107,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_p
     return;
 
   //Set justification on labels and text views:
-  //Assume that people want left/right justification of multi-line text if they chose 
+  //Assume that people want left/right justification of multi-line text if they chose
   //left/right alignment of the text itself.
   {
     const Formatting::HorizontalAlignment alignment =
@@ -154,7 +154,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_p
     UiUtils::load_font_into_css_provider(*widget_to_change, font_desc);
   }
 
-  
+
   const auto fg = formatting.get_text_format_color_foreground();
   if(!fg.empty())
   {
@@ -168,8 +168,8 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_p
     {
       UiUtils::load_background_color_into_css_provider(*widget_to_change, bg);
     }
-    //According to the gtk_widget_override_background_color() documentation, 
-    //a GtkLabel can only have a background color by, for instance, placing it 
+    //According to the gtk_widget_override_background_color() documentation,
+    //a GtkLabel can only have a background color by, for instance, placing it
     //in a GtkEventBox. Luckily Label is actually derived from EventBox.
     else if(labelglom)
     {

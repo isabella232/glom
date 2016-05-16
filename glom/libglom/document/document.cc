@@ -476,7 +476,7 @@ void Document::set_relationship(const Glib::ustring& table_name, const std::shar
   const auto info = get_table_info(table_name);
   if(!info)
     return;
-   
+
   //Look for the relationship with this name:
   bool existing = false;
   const auto relationship_name = glom_get_sharedptr_name(relationship);
@@ -1078,7 +1078,7 @@ void Document::change_relationship_name(const Glib::ustring& table_name, const G
   if(doctableinfo)
   {
     const auto relationships = doctableinfo->m_relationships;
-      
+
     //Change the relationship name:
     auto iterRelFind = find_if_same_name(relationships, name);
     if(iterRelFind != relationships.end())
@@ -1295,7 +1295,7 @@ void Document::fill_sort_field_details(const Glib::ustring& parent_table_name, F
     auto sort_field = sort_pair.first;
     if(!sort_field)
      continue;
- 
+
     //TODO: Avoid this unconst?
     auto unconst_sort_field = std::const_pointer_cast<LayoutItem_Field>(sort_field);
     auto field = get_field( sort_field->get_table_used(parent_table_name), sort_field->get_name() );
@@ -1407,7 +1407,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
     details->set_columns_count(2);
     result.emplace_back(details);
   }
-  
+
   //If, for some reason, we didn't create the-subgroups, add everything to a top level group:
   if(!overview && !details)
   {
@@ -1415,7 +1415,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
     overview->set_name("main");
     overview->set_columns_count(1);
     result.emplace_back(overview);
-      
+
     details = overview; //Adding anything to details adds it to the overview, which is the only group.
   }
 
@@ -1927,7 +1927,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
   if(field_type == Field::glom_field_type::TEXT)
   {
     format.set_text_format_multiline( XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE) );
-    format.set_text_format_multiline_height_lines( XmlUtils::get_node_attribute_value_as_decimal(element, 
+    format.set_text_format_multiline_height_lines( XmlUtils::get_node_attribute_value_as_decimal(element,
       GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES_DEFAULT) );
   }
 
@@ -2094,7 +2094,7 @@ void Document::load_after_layout_item_field(const xmlpp::Element* element, const
 
   //Needed to decide what formatting to load/save:
   const auto field = get_field(item->get_table_used(table_name), name);
-  
+
   // This is not unusual, because tables often refer to tables that have not been loaded yet.
   // Code should sometimes check this before returning the layout items.
   //
@@ -2241,10 +2241,10 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
           XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y),
           XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X),
           XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y) );
-          
+
         item->set_line_width(
           XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_WIDTH) );
-          
+
         item->set_line_color(
           XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_COLOR) );
 
@@ -2338,31 +2338,31 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
 
         if(!calendar_portal)
         {
-          const gulong rows_count_min = 
-            XmlUtils::get_node_attribute_value_as_decimal_double(element, 
+          const gulong rows_count_min =
+            XmlUtils::get_node_attribute_value_as_decimal_double(element,
               GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MIN);
-          const gulong rows_count_max = 
-            XmlUtils::get_node_attribute_value_as_decimal_double(element, 
+          const gulong rows_count_max =
+            XmlUtils::get_node_attribute_value_as_decimal_double(element,
               GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MAX);
           if(rows_count_min || rows_count_max) //Ignore useless 0, 0 values.
             portal->set_rows_count(rows_count_min, rows_count_max);
-            
+
           //Print Layout specific stuff:
           portal->set_print_layout_row_height(
-            XmlUtils::get_node_attribute_value_as_decimal(element, 
+            XmlUtils::get_node_attribute_value_as_decimal(element,
               GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT) );
-            
+
           portal->set_print_layout_row_line_width(
-            XmlUtils::get_node_attribute_value_as_decimal(element, 
+            XmlUtils::get_node_attribute_value_as_decimal(element,
               GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_WIDTH) );
           portal->set_print_layout_column_line_width(
-            XmlUtils::get_node_attribute_value_as_decimal(element, 
+            XmlUtils::get_node_attribute_value_as_decimal(element,
               GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_COLUMN_LINE_WIDTH) );
           portal->set_print_layout_line_color(
-            XmlUtils::get_node_attribute_value(element, 
+            XmlUtils::get_node_attribute_value(element,
               GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_LINE_COLOR) );
         }
-                
+
         item_added = portal;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY)
@@ -2564,7 +2564,7 @@ bool Document::load_after(int& failure_code)
       //"database_title" is deprecated in favour of "title", loaded in
       //load_after_translations(), but load this from old documents if
       //if it is present, and the only thing present:
-      const Glib::ustring database_title_deprecated = 
+      const Glib::ustring database_title_deprecated =
         XmlUtils::get_node_attribute_value(nodeRoot, GLOM_DEPRECATED_ATTRIBUTE_CONNECTION_DATABASE_TITLE);
       if(!database_title_deprecated.empty() && get_database_title_original().empty())
         m_database_title->set_title_original(database_title_deprecated);
@@ -2959,10 +2959,10 @@ bool Document::load_after(int& failure_code)
                 //Page Setup:
                 const auto key_file_text = XmlUtils::get_child_text_node(node_print_layout, GLOM_NODE_PAGE_SETUP);
                 print_layout->set_page_setup(key_file_text);
-                
+
                 print_layout->set_page_count(
                   XmlUtils::get_node_attribute_value_as_decimal(node_print_layout, GLOM_ATTRIBUTE_PRINT_LAYOUT_PAGE_COUNT, 1));
-                 
+
 
                 //Layout Groups:
                 const auto nodeGroups = XmlUtils::get_node_child_named(node_print_layout, GLOM_NODE_DATA_LAYOUT_GROUPS);
@@ -3116,7 +3116,7 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
   if(field_type == Field::glom_field_type::TEXT)
   {
     XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE, format.get_text_format_multiline());
-    XmlUtils::set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES, 
+    XmlUtils::set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES,
       format.get_text_format_multiline_height_lines(), GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES_DEFAULT);
   }
 
@@ -3344,24 +3344,24 @@ void Document::save_before_layout_group(xmlpp::Element* node, const std::shared_
                 gulong rows_count_min = 0;
                 gulong rows_count_max = 0;
                 portal->get_rows_count(rows_count_min, rows_count_max);
-                XmlUtils::set_node_attribute_value_as_decimal_double(child, 
+                XmlUtils::set_node_attribute_value_as_decimal_double(child,
                   GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MIN, rows_count_min);
-                XmlUtils::set_node_attribute_value_as_decimal_double(child, 
+                XmlUtils::set_node_attribute_value_as_decimal_double(child,
                   GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MAX, rows_count_max);
 
                 //Print Layout specific stuff:
                 XmlUtils::set_node_attribute_value_as_decimal(child,
-                  GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT, 
+                  GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT,
                   portal->get_print_layout_row_height());
-                
+
                 XmlUtils::set_node_attribute_value_as_decimal(child,
-                  GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_WIDTH, 
+                  GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_WIDTH,
                   portal->get_print_layout_row_line_width());
                 XmlUtils::set_node_attribute_value(child,
-                  GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_COLOR, 
+                  GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_COLOR,
                   portal->get_print_layout_line_color());
                 XmlUtils::set_node_attribute_value(child,
-                  GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_LINE_COLOR, 
+                  GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_LINE_COLOR,
                   portal->get_print_layout_line_color());
               }
             }
@@ -3479,10 +3479,10 @@ void Document::save_before_layout_group(xmlpp::Element* node, const std::shared_
                   XmlUtils::set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y, start_y);
                   XmlUtils::set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X, end_x);
                   XmlUtils::set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y, end_y);
-                  
-                  XmlUtils::set_node_attribute_value_as_decimal_double(nodeItem, 
+
+                  XmlUtils::set_node_attribute_value_as_decimal_double(nodeItem,
                     GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_WIDTH, line->get_line_width());
-                  XmlUtils::set_node_attribute_value(nodeItem, 
+                  XmlUtils::set_node_attribute_value(nodeItem,
                     GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_COLOR, line->get_line_color());
                 }
               }
@@ -3619,7 +3619,7 @@ bool Document::save_before()
     switch(m_hosting_mode)
     {
     case HostingMode::POSTGRES_CENTRAL:
-      XmlUtils::set_node_attribute_value(nodeConnection, 
+      XmlUtils::set_node_attribute_value(nodeConnection,
         GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL);
       break;
     case HostingMode::POSTGRES_SELF:
@@ -3631,7 +3631,7 @@ bool Document::save_before()
         GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE);
       break;
     case HostingMode::MYSQL_CENTRAL:
-      XmlUtils::set_node_attribute_value(nodeConnection, 
+      XmlUtils::set_node_attribute_value(nodeConnection,
         GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MYSQL_CENTRAL);
       break;
     case HostingMode::MYSQL_SELF:
@@ -3843,8 +3843,8 @@ bool Document::save_before()
             auto child = nodePrintLayout->add_child_element(GLOM_NODE_PAGE_SETUP);
             child->add_child_text( Utils::string_clean_for_xml(page_setup) );
           }
-          
-          XmlUtils::set_node_attribute_value_as_decimal(nodePrintLayout, GLOM_ATTRIBUTE_PRINT_LAYOUT_PAGE_COUNT, 
+
+          XmlUtils::set_node_attribute_value_as_decimal(nodePrintLayout, GLOM_ATTRIBUTE_PRINT_LAYOUT_PAGE_COUNT,
             print_layout->get_page_count(), 1);
 
           auto nodeGroups = nodePrintLayout->add_child_element(GLOM_NODE_DATA_LAYOUT_GROUPS);
@@ -4151,7 +4151,7 @@ std::shared_ptr<const Relationship> Document::get_field_used_in_relationship_to_
     //This table is special. We would not create a relationship to it using a field:
     if(table_used == GLOM_STANDARD_TABLE_PREFS_TABLE_NAME)
       return result;
-     
+
     std::cerr << G_STRFUNC << ": table not found:" << table_used << std::endl;
     return result;
   }
@@ -4315,7 +4315,7 @@ auto find_if_item_and_hint_equal(T_Container& container, const Document::pair_tr
           return false;
       }
 
-      if(get_po_context_for_item(element.first, element.second) != 
+      if(get_po_context_for_item(element.first, element.second) !=
         get_po_context_for_item(item_and_hint.first, item_and_hint.second))
       {
         return false;
@@ -4386,7 +4386,7 @@ Document::type_list_translatables Document::get_translatable_items()
       //Custom Choices, if any:
       if(field->get_glom_type() == Field::glom_field_type::TEXT) //Choices for other field types could not be translated.
       {
-        const auto this_hint = hint + ", Parent Field: " + field->get_name();   
+        const auto this_hint = hint + ", Parent Field: " + field->get_name();
         type_list_translatables list_choice_items;
         Document::fill_translatable_custom_choices(field->m_default_formatting, list_choice_items, this_hint);
         add_to_translatable_list(result, list_choice_items);
@@ -4405,7 +4405,7 @@ Document::type_list_translatables Document::get_translatable_items()
         continue;
 
       add_to_translatable_list(result, report, hint);
-      
+
       //Translatable report items:
       const auto this_hint = hint + ", Parent Report: " + report->get_name();
       const auto list_layout_items = get_translatable_report_items(table_name, report_name, this_hint);
@@ -4420,7 +4420,7 @@ Document::type_list_translatables Document::get_translatable_items()
         continue;
 
       add_to_translatable_list(result, print_layout, hint);
-      
+
       //Translatable print layout items:
       const auto this_hint = hint + ", Print Layout: " + print_layout->get_name();
       const auto list_layout_items = get_translatable_print_layout_items(table_name, print_layout_name, this_hint);
@@ -4500,11 +4500,11 @@ void Document::fill_translatable_layout_items(const std::shared_ptr<LayoutItem_F
   auto custom_title = layout_field->get_title_custom();
   if(custom_title)
   {
-    the_list.emplace_back( pair_translatable_item_and_hint(custom_title, hint) ); 
+    the_list.emplace_back( pair_translatable_item_and_hint(custom_title, hint) );
   }
 
   //The field will be added separately.
-  
+
   //Custom Choices, if any:
   //Only text fields can have translated choice values:
   if(layout_field->get_glom_type() == Field::glom_field_type::TEXT)
@@ -4523,7 +4523,7 @@ void Document::fill_translatable_layout_items(const std::shared_ptr<LayoutGroup>
   {
     the_list.emplace_back( pair_translatable_item_and_hint(group, hint) );
   }
-  
+
   const auto group_name = group->get_name();
   Glib::ustring this_hint = hint;
   if(!group_name.empty())
@@ -4806,7 +4806,7 @@ bool add_file_to_archive(archive* a, const std::string& parent_dir_path, const s
   {
     // Query size of the file, so that we can show progress:
     //TODO: stream->query_info_async(sigc::mem_fun(*this, &DialogImageLoadProgress::on_query_info), G_FILE_ATTRIBUTE_STANDARD_SIZE);
-  
+
     const guint BYTES_TO_PROCESS = 256;
     guint buffer[BYTES_TO_PROCESS] = {0, }; // For each chunk.
     bool bContinue = true;
@@ -4884,7 +4884,7 @@ Glib::ustring Document::save_backup_file(const Glib::ustring& uri, const SlotPro
 
   //Save the data:
   auto connection_pool = ConnectionPool::get_instance();
-  const bool data_saved = 
+  const bool data_saved =
     connection_pool->save_backup(slot_progress, path_dir);
   if(!data_saved)
   {
@@ -4954,7 +4954,7 @@ void read_archive_entry_file_contents(archive* a, archive_entry* entry, std::str
   const std::unique_ptr<char[]> buf(new char[size + 1]);
 
   const auto r = archive_read_data(a, buf.get(), size);
-    
+
   if((r == ARCHIVE_FATAL) || (r == ARCHIVE_WARN) ||
     (r == ARCHIVE_RETRY)) //0 or a number of bytes read are the signs of success.
   {
@@ -5020,14 +5020,14 @@ Glib::ustring Document::extract_backup_file(const Glib::ustring& backup_uri, std
     return Glib::ustring();
   }
 
-  if(slot_progress)   
+  if(slot_progress)
     slot_progress();
 
 
   //const char *name = archive_entry_pathname(entry);
   //std::cout << "debug: name=" << name << std::endl;
 
-  if(slot_progress)  
+  if(slot_progress)
     slot_progress();
 
   Glib::ustring contents;

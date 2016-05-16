@@ -104,7 +104,7 @@ void AddDel_WithButtons::on_button_extra()
   auto iter = refSelection->get_selected();
   if(!iter)
     return;
-   
+
   if(get_is_placeholder_row(iter))
     return;
 

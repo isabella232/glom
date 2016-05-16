@@ -40,7 +40,7 @@ public:
   GType get_fallback_type_for_gdavaluetype(GType field_type) const;
 
   guint get_types_count() const;
-  
+
 private:
   /** Use some default mappings,
    * if, for some reason, we cannot get it from the database server at runtime.

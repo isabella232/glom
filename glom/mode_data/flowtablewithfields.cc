@@ -159,7 +159,7 @@ void FlowTableWithFields::add_layout_group_or_derived(const std::shared_ptr<Layo
     }
   }
 }
-          
+
 void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& group, bool with_indent)
 {
   if(!group)
@@ -209,11 +209,11 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
       //Add some indenting just to avoid the out-denting caused by this GtkFrame bug:
       //https://bugzilla.gnome.org/show_bug.cgi?id=644199
       const int BASE_INDENT = 3;
-      
+
       //std::cout << "title= " << group_title << ", with_indent=" << with_indent << std::endl;
       event_box->set_margin_top(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
 
-      if(with_indent) 
+      if(with_indent)
       {
         event_box->set_margin_start(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL) + BASE_INDENT);
       }
@@ -759,7 +759,7 @@ void FlowTableWithFields::update_choices(const std::shared_ptr<const LayoutItem_
       continue;
 
     const auto layout_item = combo->get_layout_item();
-    const auto layout_item_field = 
+    const auto layout_item_field =
       std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
     if(!layout_item_field || !layout_item_field->get_formatting_used().get_has_related_choices())
       continue;
@@ -1373,7 +1373,7 @@ void FlowTableWithFields::set_find_mode(bool val)
 
 void FlowTableWithFields::set_enable_drag_and_drop(bool enabled)
 {
-  const EggDragEnableMode drag_mode = 
+  const EggDragEnableMode drag_mode =
     (enabled ? EGG_DRAG_FULL : EGG_DRAG_DISABLED);
 
   //Only enable dragging of the sub-tables.
@@ -1381,18 +1381,18 @@ void FlowTableWithFields::set_enable_drag_and_drop(bool enabled)
   //though there would be nowhere to drop it:
   set_drag_enabled(EGG_DRAG_DISABLED);
   set_drop_enabled(enabled);
-  
+
   for(const auto& child : m_sub_flow_tables)
   {
     if(child)
     {
       //std::cout << G_STRFUNC << ": child\n";
       child->set_drag_enabled(drag_mode);
-      child->set_drop_enabled(enabled);  
+      child->set_drop_enabled(enabled);
     }
   }
 }
-  
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } //namespace Glom

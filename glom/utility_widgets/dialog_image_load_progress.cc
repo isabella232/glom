@@ -60,7 +60,7 @@ DialogImageLoadProgress::~DialogImageLoadProgress()
 
 void DialogImageLoadProgress::load(const Glib::ustring& uri)
 {
-  // Can only load one file with data 
+  // Can only load one file with data
   g_assert(!m_data.get());
 
   m_data = std::make_unique<GdaBinary>();
@@ -122,13 +122,13 @@ void DialogImageLoadProgress::on_stream_read(const Glib::RefPtr<Gio::AsyncResult
   {
     const auto size = m_stream->read_finish(result);
     g_assert(size >= 0); // Would have thrown an exception otherwise
-    
+
     // Cannot read more data than there is available in the file:
     g_assert( static_cast<gssize>(offset + size) <= static_cast<gssize>(m_data->binary_length));
-    
+
     // Set progress
     m_progress_bar->set_fraction(static_cast<double>(offset + size) / m_data->binary_length);
-    
+
     // Read next chunk, if any
     if( static_cast<gssize>(offset + size) < static_cast<gssize>(m_data->binary_length) )
     {

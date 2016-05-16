@@ -228,9 +228,9 @@ Gtk::TreeModel::iterator Dialog_FieldsList::append_appropriate_row()
   }
   else
   {
-    result = m_model_fields->append(); 
+    result = m_model_fields->append();
   }
-  
+
   return result;
 }
 

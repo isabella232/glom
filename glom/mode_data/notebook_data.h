@@ -79,7 +79,7 @@ public:
   type_signal_record_details_requested signal_record_details_requested();
 
   typedef sigc::signal<void()> type_signal_record_selection_changed;
-  
+
   /** This signal is emitted when the a record is selected, or deselected,
    * in the list view.
    */

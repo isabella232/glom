@@ -53,7 +53,7 @@ private:
 
   void set_value(const Gnome::Gda::Value& value) override;
   Gnome::Gda::Value get_value() const override;
-  
+
   void repack_cells_fixed(Gtk::CellLayout* combobox);
   void repack_cells_related(Gtk::CellLayout* combobox);
 

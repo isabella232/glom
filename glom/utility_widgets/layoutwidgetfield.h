@@ -28,7 +28,7 @@ namespace Glom
 
 class LayoutWidgetField : public LayoutWidgetMenu
 {
-public: 
+public:
   LayoutWidgetField();
 
   virtual void set_value(const Gnome::Gda::Value& value) = 0;

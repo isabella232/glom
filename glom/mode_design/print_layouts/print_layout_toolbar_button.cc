@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #include "print_layout_toolbar_button.h"
 #include <glom/utils_ui.h>
 #include <libglom/utils.h>
@@ -49,7 +49,7 @@ PrintLayoutToolbarButton::PrintLayoutToolbarButton(const std::string& icon_name,
   std::vector<Gtk::TargetEntry> targetentries;
   targetentries.emplace_back(Gtk::TargetEntry(get_target()));
 
-  drag_source_set(targetentries, Gdk::MODIFIER_MASK, 
+  drag_source_set(targetentries, Gdk::MODIFIER_MASK,
                   Gdk::ACTION_COPY | Gdk::ACTION_MOVE);
   set_tooltip_text(tooltip);
   set_label(title);
@@ -66,7 +66,7 @@ PrintLayoutToolbarButton::enumItems PrintLayoutToolbarButton::get_item_type_from
     palette_candidate = palette_candidate->get_parent();
     palette = dynamic_cast<Gtk::ToolPalette*>(palette_candidate);
   }
-  
+
   if(!palette)
     return result;
 

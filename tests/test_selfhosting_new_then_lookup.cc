@@ -67,14 +67,14 @@ static bool contains_field(const Glom::Document::type_list_lookups& container, c
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   auto document = std::make_shared<Glom::Document>();
-  const bool recreated = 
+  const bool recreated =
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
     std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
-  
+
   const Glib::ustring table_name = "invoice_lines";
   auto primary_key_field = document->get_field_primary_key(table_name);
   if(!primary_key_field)
@@ -112,14 +112,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   const Glib::ustring field_name = "product_price";
   std::shared_ptr<const Glom::Relationship> relationship;
-  const auto layout_field = 
+  const auto layout_field =
     get_lookup_field(lookups, table_name, field_name, relationship);
   if(!layout_field)
   {
     std::cerr << G_STRFUNC << ": Failure: The lookup field is empty.\n";
     return false;
   }
- 
+
   if(!relationship)
   {
     std::cerr << G_STRFUNC << ": Failure: The lookup relationship is empty.\n";
@@ -176,14 +176,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   //Lookup the value from the related record.
-  const auto field_source = 
+  const auto field_source =
     document->get_field(relationship->get_to_table(), field->get_lookup_field());
-  const auto value = Glom::DbUtils::get_lookup_value(document, 
+  const auto value = Glom::DbUtils::get_lookup_value(document,
     table_name, relationship, field_source, Gnome::Gda::Value(2));
 
   if(!test_check_numeric_value_type(hosting_mode, value))
   {
-    std::cerr << G_STRFUNC << ": Failure: The value has an unexpected type: " << 
+    std::cerr << G_STRFUNC << ": Failure: The value has an unexpected type: " <<
       g_type_name(value.get_value_type()) << std::endl;
     return false;
   }
@@ -197,14 +197,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   test_selfhosting_cleanup();
- 
-  return true; 
+
+  return true;
 }
 
 int main()
 {
   Glom::libglom_init();
-  
+
   const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();

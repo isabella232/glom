@@ -63,7 +63,7 @@ public:
    * This means that it must be a text type.
    */
   bool is_translatable() const;
-  
+
 
 private:
   Gnome::Gda::Value m_value;

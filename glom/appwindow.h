@@ -145,8 +145,8 @@ public:
   void pulse_progress_message();
   void clear_progress_message();
 
-  /** Set the locale used for original text of titles. This 
-   * must usually be stored in the document. 
+  /** Set the locale used for original text of titles. This
+   * must usually be stored in the document.
    * Ideally, it would be English.
    */
   static void set_original_locale(const Glib::ustring& locale);
@@ -308,7 +308,7 @@ private:
 
   Gtk::Box* m_box_top;
   Frame_Glom* m_frame;
-  
+
   bool m_about_shown;
   Gtk::AboutDialog* m_about; //About box.
 

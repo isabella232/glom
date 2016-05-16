@@ -35,7 +35,7 @@ private:
 
 public:
 
-  //Tree model columns:  
+  //Tree model columns:
   class ModelColumns : public Gtk::TreeModel::ColumnRecord
   {
   public:

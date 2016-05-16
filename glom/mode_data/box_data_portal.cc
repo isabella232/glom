@@ -287,7 +287,7 @@ bool Box_Data_Portal::get_has_suitable_record_to_view_details() const
   const auto document = get_document();
   if(!document)
     return false;
-    
+
   Glib::ustring navigation_table_name;
   std::shared_ptr<const UsesRelationship> navigation_relationship; //Ignored.
   portal->get_suitable_table_to_view_details(navigation_table_name, navigation_relationship, document);
@@ -308,11 +308,11 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   const auto document = get_document();
   if(!document)
     return;
-    
+
   Glib::ustring navigation_table_name;
   std::shared_ptr<const UsesRelationship> navigation_relationship;
   portal->get_suitable_table_to_view_details(navigation_table_name, navigation_relationship, document);
-  
+
   //if(navigation_relationship && navigation_relationship->get_relationship())
   //  std::cout << "debug: navigation_relationship=" << navigation_relationship->get_relationship()->get_name() << std::endl;
   //if(navigation_relationship && navigation_relationship->get_related_relationship())

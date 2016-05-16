@@ -75,17 +75,17 @@ void AppWindow::on_menu_edit_cut()
 
 void AppWindow::on_menu_edit_copy()
 {
-  
+
 }
 
 void AppWindow::on_menu_edit_paste()
 {
-  
+
 }
 
 void AppWindow::on_menu_edit_clear()
 {
-  
+
 }
 
 void AppWindow::set_operation_cancelled(bool value /* = true */)

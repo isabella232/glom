@@ -28,7 +28,7 @@
 
 #include <iostream>
 
- 
+
 int main()
 {
   Glom::libglom_init();
@@ -66,7 +66,7 @@ int main()
   }
 
   document->set_allow_autosave(false); //Do not save changes back to the example file:
-  
+
   Glib::ustring po_file_uri;
   try
   {
@@ -90,7 +90,7 @@ int main()
   //std::cout << "po file URI: " << po_file_uri << std::endl;
 
   const Glib::ustring locale = "de";
-  const bool success = 
+  const bool success =
     Glom::import_translations_from_po_file(document, po_file_uri, locale);
   if(!success)
   {

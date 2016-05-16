@@ -78,7 +78,7 @@ static std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const s
   {
     if(!group)
       continue;
-    
+
     for(const auto& layout_item : group->get_items_recursive())
     {
       const auto layout_item_field =
@@ -93,7 +93,7 @@ static std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const s
       }
     }
   }
-  
+
   return std::shared_ptr<const Glom::LayoutItem_Field>();
 }
 
@@ -104,10 +104,10 @@ void check_title(const T_Item& item, const char* title_en, const char* title_de)
 {
   g_assert(item);
 
-  //The get_title_original() and get_title_translation() should not be called 
+  //The get_title_original() and get_title_translation() should not be called
   //on items that delegate to a child item:
   bool has_own_title = true;
-  auto field = 
+  auto field =
     std::dynamic_pointer_cast<const Glom::LayoutItem_Field>(item);
   if(field)
      has_own_title = false;
@@ -120,7 +120,7 @@ void check_title(const T_Item& item, const char* title_en, const char* title_de)
 
   if(has_own_title)
     g_assert( item->get_title_translation(locale_de) == title_de );
-    
+
   g_assert( item->get_title(locale_de) == title_de );
 
   g_assert( item->get_title_or_name(Glib::ustring()) == title_en );
@@ -192,7 +192,7 @@ int main()
 
   g_assert( document->get_table_title_original("scenes") == "Scenes" );
   g_assert( document->get_table_title_singular_original("scenes") == "Scene" );
-  
+
   g_assert( document->get_table_title("scenes", locale_de) == "Szenen" );
   g_assert( document->get_table_title_singular("scenes", locale_de) == "Szene" );
 
@@ -228,7 +228,7 @@ int main()
   check_title(relationship, "Actor", "Schauspieler");
 
   //Check a LayoutItemField's CustomTitle:
-  auto field_on_layout = 
+  auto field_on_layout =
     get_field_on_layout(document, "characters", "contacts", "name_full");
   g_assert(field_on_layout);
   g_assert(field_on_layout->get_has_relationship_name());
@@ -236,12 +236,12 @@ int main()
   check_title(field_on_layout, "Actor's Name", "Name des Schauspielers");
 
   //Check a LayoutItemField's Field title:
-  field_on_layout = 
+  field_on_layout =
     get_field_on_layout(document, "scenes", "locations", "name");
   g_assert(field_on_layout);
   check_title(field_on_layout, "Name", "Name" );
 
-  field_on_layout = 
+  field_on_layout =
     get_field_on_layout(document, "scenes", "scenes", "day_or_night");
   g_assert(field_on_layout);
   check_title(field_on_layout,  "Day/Night", "Tag/Nacht");

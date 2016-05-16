@@ -56,7 +56,7 @@ protected:
    * This caches the result to avoid repeated recalculation.
    */
   int get_fixed_cell_height(Gtk::Widget& widget);
-  
+
 
   typedef Gtk::TreeModelColumn<Glib::ustring> type_model_column_string_fixed;
   typedef std::vector<std::unique_ptr<type_model_column_string_fixed>> type_vec_model_columns_string_fixed;
@@ -66,7 +66,7 @@ protected:
   typedef std::vector<std::unique_ptr<type_model_column_value_fixed>> type_vec_model_columns_value_fixed;
   type_vec_model_columns_value_fixed m_vec_model_columns_value_fixed; //If set_choices_fixed() was used.
 
-  /** Get the index of the extra column, at the end, that is just a 
+  /** Get the index of the extra column, at the end, that is just a
    * text representation of the first column, for use by GtkCombo with has-entry=true,
    * which accepts only a text column.
    */
@@ -91,7 +91,7 @@ private:
   Glib::RefPtr<Gtk::TreeModel> m_model;
 
   void delete_model();
-  
+
   int m_fixed_cell_height;
 };
 

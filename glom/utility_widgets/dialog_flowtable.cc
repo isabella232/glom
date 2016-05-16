@@ -27,7 +27,7 @@ namespace Glom
 
 const char* Dialog_FlowTable::glade_id("dialog_flowtable");
 const bool Dialog_FlowTable::glade_developer(true);
-		
+
 Dialog_FlowTable::Dialog_FlowTable(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_entry_title(nullptr),
@@ -36,7 +36,7 @@ Dialog_FlowTable::Dialog_FlowTable(BaseObjectType* cobject, const Glib::RefPtr<G
 {
   builder->get_widget("entry_title",  m_entry_title);
   builder->get_widget("spin_columns",  m_spin_columns);
-  
+
   //Set the adjustment details, to avoid a useless 0-to-0 range and a 0 incremenet.
   //We don't do this the Glade file because GtkBuilder wouldn't find the
   //associated adjustment object unless we specified it explictly:

@@ -38,7 +38,7 @@ public:
 
   void add_widgets(Gtk::Widget& first, Gtk::Widget& second, bool expand_second = false);
   void add_widgets(Gtk::Widget& first, bool expand = false);
- 
+
   /** Show extra UI that is useful in RAD tools:
    */
   virtual void set_design_mode(bool value = true);

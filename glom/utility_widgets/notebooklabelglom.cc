@@ -27,7 +27,7 @@
 namespace Glom
 {
 
-NotebookLabel::NotebookLabel(NotebookGlom* notebook) 
+NotebookLabel::NotebookLabel(NotebookGlom* notebook)
 : m_notebook(notebook),
   m_popup_menu(nullptr)
 {
@@ -53,7 +53,7 @@ void NotebookLabel::init()
 
 void NotebookLabel::set_label (const Glib::ustring& title)
 {
-  m_label.set_label (title); 
+  m_label.set_label (title);
 }
 
 AppWindow* NotebookLabel::get_appwindow()
@@ -69,10 +69,10 @@ void NotebookLabel::on_menu_new_group_activate()
   auto group = std::make_shared<LayoutGroup>();
   group->set_title_original(_("New Group"));
   group->set_name(_("Group"));
-  
+
   auto notebook_group = std::dynamic_pointer_cast<LayoutGroup>(m_notebook->get_layout_item());
   notebook_group->add_item(group);
-  
+
   m_notebook->signal_layout_changed().emit();
 }
 
@@ -110,7 +110,7 @@ void NotebookLabel::setup_menu(Gtk::Widget* /* widget */)
     sigc::mem_fun(*this, &NotebookLabel::on_menu_new_group_activate) );
   m_deelete = m_action_group->add_action("delete",
     sigc::mem_fun(*this, &NotebookLabel::on_menu_delete_activate) );
- 
+
   insert_action_group("context", m_action_group);
 
   auto menu = Gio::Menu::create();

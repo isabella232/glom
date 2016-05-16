@@ -61,12 +61,12 @@ public:
   type_list_values get_choices_custom() const;
   void set_choices_custom(const type_list_values& choices);
 
-  /** Get the original text that corresponds to the translated choice for the 
+  /** Get the original text that corresponds to the translated choice for the
    * current locale.
    */
   Glib::ustring get_custom_choice_original_for_translated_text(const Glib::ustring& text, const Glib::ustring& locale = Glib::ustring()) const;
 
-  /** Get the translated choice text, for the 
+  /** Get the translated choice text, for the
    * current locale, that corresponds to the original text .
    */
   Glib::ustring get_custom_choice_translated(const Glib::ustring& original_text, const Glib::ustring& locale = Glib::ustring()) const;
@@ -87,7 +87,7 @@ public:
 
   //TODO: Add a ChoicesRelated class?
 
-  
+
   void get_choices_related(std::shared_ptr<const Relationship>& relationship, std::shared_ptr<LayoutItem_Field>& field, std::shared_ptr<LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all);
   void get_choices_related(std::shared_ptr<const Relationship>& relationship, std::shared_ptr<const LayoutItem_Field>& field, std::shared_ptr<const LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all) const;
   void set_choices_related(const std::shared_ptr<const Relationship>& relationship_name, const std::shared_ptr<LayoutItem_Field>& field, const std::shared_ptr<LayoutGroup>& extra_layout, const type_list_sort_fields& sort_fields, bool show_all);

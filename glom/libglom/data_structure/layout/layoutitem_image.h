@@ -33,7 +33,7 @@ namespace Glom
   const char GLOM_IMAGE_FORMAT[] = "png";
   const char GLOM_IMAGE_FORMAT_MIME_TYPE[] = "image/png";
 
-class LayoutItem_Image 
+class LayoutItem_Image
  : public LayoutItem
 {
 public:

@@ -86,7 +86,7 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
     //TODO: Catch an exception
     key_file.load_from_data(key_file_text);
 
-    auto page_setup = 
+    auto page_setup =
       Gtk::PageSetup::create_from_key_file(key_file);
     set_page_setup(page_setup);
   }
@@ -176,7 +176,7 @@ void Canvas_PrintLayout::create_canvas_layout_item_and_add(const std::shared_ptr
   auto canvas_item = CanvasLayoutItem::create();
   add_canvas_layout_item(canvas_item);
   canvas_item->set_layout_item(layout_item);
-  
+
   canvas_item->set_outline_visible(m_outline_visibility);
 }
 
@@ -297,7 +297,7 @@ void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activat
     return;
 
   m_context_item = item;
-  
+
   //Do not enable the Formatting menu item for all types of items:
   auto layout_item = m_context_item->get_layout_item();
   bool enable_formatting = false;
@@ -357,7 +357,7 @@ std::shared_ptr<LayoutItem_Line> Canvas_PrintLayout::offer_line(const std::share
 
   if(parent)
     dialog->set_transient_for(*parent);
-    
+
   dialog->set_line(line);
 
   const int response = Glom::UiUtils::dialog_run_with_help(dialog);
@@ -380,7 +380,7 @@ void Canvas_PrintLayout::on_context_menu_edit()
   m_context_item->update_layout_position_from_canvas();
 
   auto layout_item = m_context_item->get_layout_item();
-  auto field = 
+  auto field =
     std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
   if(field)
   {
@@ -501,13 +501,13 @@ void Canvas_PrintLayout::on_context_menu_delete()
   {
     if(!selected_item)
       continue;
-      
-    const Glib::RefPtr<CanvasLayoutItem> canvas_layout_item = 
+
+    const Glib::RefPtr<CanvasLayoutItem> canvas_layout_item =
       Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(selected_item);
     if(canvas_layout_item)
       remove_canvas_layout_item(canvas_layout_item);
   }
-  
+
   signal_selection_changed().emit();
 }
 
@@ -532,7 +532,7 @@ void Canvas_PrintLayout::on_dialog_format_hide()
   else if(layout_item_text)
     m_dialog_format->m_box_formatting->get_formatting(layout_item_text->m_formatting);
 
-  
+
   m_context_item->set_layout_item(layout_item); //Redraw the child item with the new formatting.
 
   delete m_dialog_format;
@@ -581,7 +581,7 @@ void Canvas_PrintLayout::update_page_bounds()
     page_width = paper_size.get_height(units);
     page_height = paper_size.get_width(units);
   }
-  
+
   bounds.set_x2( page_width );
   bounds.set_y2( page_height * m_page_count );
   set_bounds(bounds);
@@ -613,24 +613,24 @@ void Canvas_PrintLayout::update_page_bounds()
 
   m_margin_left = create_margin_line(m_page_setup->get_left_margin(units), bounds.get_y1(), m_page_setup->get_left_margin(units), bounds.get_y2());
   m_margin_right = create_margin_line(bounds.get_x2() - m_page_setup->get_right_margin(units), bounds.get_y1(), bounds.get_x2() - m_page_setup->get_right_margin(units), bounds.get_y2());
- 
-  m_vec_margin_tops.clear();  
+
+  m_vec_margin_tops.clear();
   m_vec_margin_bottoms.clear();
   for(guint page = 0; page < m_page_count; ++page)
   {
     const double top_y = paper_size.get_height(units) * page + m_page_setup->get_top_margin(units);
-    auto margin_top = 
+    auto margin_top =
       create_margin_line(
         bounds.get_x1(), top_y, bounds.get_x2(), top_y);
     m_vec_margin_tops.emplace_back(margin_top);
-      
+
     const double bottom_y = paper_size.get_height(units) * (page + 1) - m_page_setup->get_bottom_margin(units);
-    auto margin_bottom = 
+    auto margin_bottom =
       create_margin_line(
         bounds.get_x1(), bottom_y, bounds.get_x2(), bottom_y);
     m_vec_margin_bottoms.emplace_back(margin_bottom);
   }
-  
+
   m_bounds_group->lower();
 
   //Try to show the whole thing, by (indirectly) making the parent window big enough:
@@ -641,7 +641,7 @@ void Canvas_PrintLayout::update_page_bounds()
   std::cout << "DEBUG: width_pixels=" << width_pixels << ", height_pixels=" << height_pixels << std::endl;
   set_size_request(width_pixels, height_pixels);
   */
-  
+
   //Update the grid lines:
   m_grid->update_grid_for_new_size();
 }
@@ -675,7 +675,7 @@ void Canvas_PrintLayout::set_page_count(guint count)
   }
 
   m_page_count = count;
-  
+
   update_page_bounds();
   m_modified = true;
 }
@@ -694,21 +694,21 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set, bool avoid_pa
     std::cout << G_STRFUNC << ": Not attempting to show real data because the where_clause is empty, maybe because there are no records in the database yet.\n";
     return;
   }
-  
+
   fill_with_data(m_items_group, found_set, avoid_page_margins);
 }
 
 void Canvas_PrintLayout::fill_with_data_system_preferences(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, const std::shared_ptr<Document>& document)
 {
-  auto layoutitem_field = 
+  auto layoutitem_field =
     std::dynamic_pointer_cast<LayoutItem_Field>(canvas_item->get_layout_item());
   if(!layoutitem_field)
     return;
-  
+
   bool empty = true;
   if(!layoutitem_field->get_name().empty())
   {
-    const auto relationship = 
+    const auto relationship =
       layoutitem_field->get_relationship();
 
     if(!document)
@@ -735,7 +735,7 @@ void Canvas_PrintLayout::fill_with_data_system_preferences(const Glib::RefPtr<Ca
     }
   }
 }
- 
+
 
 void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& canvas_group, const FoundSet& found_set, bool avoid_page_margins)
 {
@@ -852,7 +852,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
       //Clear the no-image pixbuf from images:
       canvas_item->remove_empty_indicators();
     }
-    
+
     if(avoid_page_margins)
     {
       const Glib::RefPtr<Gtk::PageSetup> page_setup = get_page_setup();
@@ -866,7 +866,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
         double width = 0;
         double height = 0;
         canvas_item->get_width_height(width, height);
-               
+
         const double offset = PrintLayoutUtils::get_offset_to_move_fully_to_next_page(page_setup, units, y, height);
         move_items_down(y, offset);
       }
@@ -951,7 +951,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
     for(guint col = 0; col < cols_count; ++col)
     {
       //Glib::RefPtr<Goocanvas::Item> canvas_child = base_item->get_cell_child(row, col); //TODO: Add this to Goocanvas::Table.
-      auto canvas_child = 
+      auto canvas_child =
         CanvasLayoutItem::get_canvas_table_cell_child(canvas_table, row, col); //TODO: Add this to Goocanvas::Table.
       if(!canvas_child)
       {
@@ -1008,17 +1008,17 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
 
     Glib::ustring text;
 
-    auto with_formatting = 
+    auto with_formatting =
       std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(field);
     if(with_formatting)
     {
       const Formatting& formatting = with_formatting->get_formatting_used();
-      text = Conversions::get_text_for_gda_value(field->get_glom_type(), 
+      text = Conversions::get_text_for_gda_value(field->get_glom_type(),
         value, formatting.m_numeric_format);
     }
     else
     {
-      text = Conversions::get_text_for_gda_value(field->get_glom_type(), 
+      text = Conversions::get_text_for_gda_value(field->get_glom_type(),
         value);
     }
 
@@ -1164,7 +1164,7 @@ void Canvas_PrintLayout::select_all(bool selected)
 Goocanvas::Bounds Canvas_PrintLayout::get_page_bounds(guint page_num) const
 {
   Goocanvas::Bounds bounds;
-  
+
    //Change the scroll extents to match the page size:
   const Gtk::PaperSize paper_size = m_page_setup->get_paper_size();
   const Gtk::Unit units = property_units();
@@ -1183,7 +1183,7 @@ Goocanvas::Bounds Canvas_PrintLayout::get_page_bounds(guint page_num) const
     page_width = paper_size.get_height(units);
     page_height = paper_size.get_width(units);
   }
-  
+
   bounds.set_x1(0);
   bounds.set_y1( page_height * page_num);
   bounds.set_x2( page_width );
@@ -1204,14 +1204,14 @@ Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::move_items_down(double y_star
     return needs_moving_top;
 
   double bottom_max = 0;
-  
+
   const Glib::RefPtr<Gtk::PageSetup> page_Setup = get_page_setup();
 
   const int count = root->get_n_children();
   for(int i = 0; i < count; ++i)
   {
     auto child = root->get_child(i);
-    auto derived = 
+    auto derived =
       Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(child);
     if(!derived)
     {
@@ -1260,7 +1260,7 @@ Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::move_items_down(double y_star
   }
 
   //Add extra pages if necessary:
-  const auto last_page_needed = PrintLayoutUtils::get_page_for_y(page_Setup, 
+  const auto last_page_needed = PrintLayoutUtils::get_page_for_y(page_Setup,
     property_units(), bottom_max);
   if((last_page_needed + 1) > get_page_count())
   {
@@ -1272,7 +1272,7 @@ Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::move_items_down(double y_star
   if(needs_moving_top && (y_needs_moving_top > y_start))
   {
     std::cout << "extra move: y_needs_moving_top=" << y_needs_moving_top << std::endl;
-    const double extra_offset = 
+    const double extra_offset =
       PrintLayoutUtils::get_offset_to_move_fully_to_next_page(
         page_Setup, property_units(),
         y_needs_moving_top, needs_moving_top_height);
@@ -1289,7 +1289,7 @@ Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::move_items_down(double y_star
 
 double Canvas_PrintLayout::get_page_height() const
 {
-  const Glib::RefPtr<const Gtk::PageSetup> page_setup = get_page_setup(); 
+  const Glib::RefPtr<const Gtk::PageSetup> page_setup = get_page_setup();
   return PrintLayoutUtils::get_page_height(page_setup, property_units());
 }
 

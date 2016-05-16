@@ -45,13 +45,13 @@ Glib::ustring locale_simplify(const Glib::ustring& locale_id);
 Glib::ustring locale_language_id(const Glib::ustring& locale_id);
 
 
-/** @returns true if the script is OK, or 
+/** @returns true if the script is OK, or
  * false if the script uses pygtk2, which would cause a crash,
  * because Glom itself uses GTK+ 3.
  */
 bool script_check_for_pygtk2(const Glib::ustring& script);
 
-/** 
+/**
  * This is simpler than catching the exception from Gio::Resource::get_info_global().
  *
  * @returns true if the GResource exists.

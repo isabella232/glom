@@ -211,7 +211,7 @@ void Dialog_SortFields::on_button_add_field()
 {
   //Get the chosen fields:
   const auto fields_list = offer_field_list(m_table_name, this);
-  for(const auto& field : fields_list) 
+  for(const auto& field : fields_list)
   {
     if(!field)
       continue;
@@ -285,7 +285,7 @@ void Dialog_SortFields::on_button_edit_field()
       std::shared_ptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
       //Get the chosen field:
-      auto field_chosen = 
+      auto field_chosen =
         offer_field_list_select_one_field(field, m_table_name, this);
       if(field_chosen)
 

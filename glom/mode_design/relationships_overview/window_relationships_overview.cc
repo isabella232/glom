@@ -406,7 +406,7 @@ Glib::RefPtr<CanvasGroupDbTable> Window_RelationshipsOverview::get_table_group(c
 
 void Window_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasItemMovable>& item, double /* x_offset */, double /* y_offset */)
 {
-  auto table = 
+  auto table =
     Glib::RefPtr<CanvasGroupDbTable>::cast_dynamic(item);
   if(!table)
     return;

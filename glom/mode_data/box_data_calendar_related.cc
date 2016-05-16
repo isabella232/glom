@@ -40,7 +40,7 @@ Box_Data_Calendar_Related::Box_Data_Calendar_Related()
 
   m_Frame.add(m_calendar);
   m_calendar.set_margin_start(Utils::to_utype(UiUtils::DefaultSpacings::LARGE));
-  m_calendar.set_margin_top(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));   
+  m_calendar.set_margin_top(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
   m_calendar.show();
 
   //m_calendar.set_show_details();

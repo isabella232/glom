@@ -28,7 +28,7 @@ namespace Glom
 
 class Box_Data_Details_Find : public Box_Data_Details
 {
-public: 
+public:
   Box_Data_Details_Find();
 
   bool init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform);

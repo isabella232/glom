@@ -51,7 +51,7 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
 : Glib::OptionGroup("glom_import_po_all", _("Glom options"), _("Command-line options")),
   m_arg_version(false)
 {
-  Glib::OptionEntry entry; 
+  Glib::OptionEntry entry;
   entry.set_long_name("input-path");
   entry.set_short_name('o');
   entry.set_description(_("The path to a directory containing .po files, such as /home/someuser/po_files/ ."));
@@ -86,9 +86,9 @@ int main(int argc, char* argv[])
     std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
   }
 
-  
+
   Glom::libglom_init();
-  
+
   Glib::OptionContext context;
   GlomCreateOptionGroup group;
   context.set_main_group(group);
@@ -157,7 +157,7 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  //Check the po files path: 
+  //Check the po files path:
   if(group.m_arg_filepath_po_input.empty())
   {
     std::cerr << _("Please specify the path to a directory containing po files.") << std::endl;
@@ -201,13 +201,13 @@ int main(int argc, char* argv[])
 
     //Check that it has the .po file extension:
     const auto basename = child->get_basename();
-    const auto locale_id = 
+    const auto locale_id =
       Glom::Utils::string_remove_suffix(basename, ".po");
     if(locale_id == basename)
       continue;
-    
+
     document->set_allow_autosave(false); //Prevent saving while we modify the document.
-    const bool succeeded = 
+    const bool succeeded =
       Glom::import_translations_from_po_file(document, child->get_uri(), locale_id);
     if(!succeeded)
     {

@@ -44,7 +44,7 @@ public:
   explicit CheckButton(const Glib::ustring& title = Glib::ustring());
 
   void set_value(const Gnome::Gda::Value& value) override;
-  Gnome::Gda::Value get_value() const override;    
+  Gnome::Gda::Value get_value() const override;
 
 private:
 #ifndef GLOM_ENABLE_CLIENT_ONLY

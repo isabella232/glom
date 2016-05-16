@@ -29,7 +29,7 @@
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   auto document = std::make_shared<Glom::Document>();
-  const bool recreated = 
+  const bool recreated =
     test_create_and_selfhost_from_example("example_music_collection.glom", document, hosting_mode);
   if(!recreated)
   {
@@ -37,7 +37,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  const auto report_temp = 
+  const auto report_temp =
     Glom::ReportBuilder::create_standard_list_report(document, "albums");
 
   Glom::FoundSet found_set; //TODO: Test a where clause.
@@ -46,7 +46,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   const std::locale locale("en_US.UTF-8"); //Instead of just "" (current locale) so we get the same results each time.
   Glom::ReportBuilder report_builder(locale);
   report_builder.set_document(document);
-  const Glib::ustring html = 
+  const Glib::ustring html =
     report_builder.report_build(found_set, report_temp);
 
   if(html.empty())
@@ -62,14 +62,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   test_selfhosting_cleanup();
-    
+
   return true;
 }
 
 int main()
 {
   Glom::libglom_init();
-  
+
   const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();

@@ -35,7 +35,7 @@ LayoutItem_WithFormatting::LayoutItem_WithFormatting(const LayoutItem_WithFormat
 
 bool LayoutItem_WithFormatting::operator==(const LayoutItem_WithFormatting& src) const
 {
-  auto result = LayoutItem::operator==(src) && 
+  auto result = LayoutItem::operator==(src) &&
                 (m_formatting == src.m_formatting);
 
   return result;
@@ -59,12 +59,12 @@ const Formatting& LayoutItem_WithFormatting::get_formatting_used() const
 Formatting::HorizontalAlignment LayoutItem_WithFormatting::get_formatting_used_horizontal_alignment(bool /* for_details_view */) const
 {
   const auto format = get_formatting_used();
-  Formatting::HorizontalAlignment alignment = 
+  Formatting::HorizontalAlignment alignment =
     format.get_horizontal_alignment();
-  
+
   if(alignment == Formatting::HorizontalAlignment::AUTO)
     alignment = Formatting::HorizontalAlignment::LEFT;
-  
+
   return alignment;
 }
 

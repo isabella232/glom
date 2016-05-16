@@ -37,9 +37,9 @@ class PyGlomRecord
 public:
   PyGlomRecord();
   ~PyGlomRecord();
-  
+
   /* Prevent python code from changing data in the database via this object.
-   * For instance, this should be used in a field calculation, 
+   * For instance, this should be used in a field calculation,
    * though changing data would be OK from a script.
    * This is not exposed via Python.
    */
@@ -78,7 +78,7 @@ private:
   boost::python::object m_related; //Actually a PyGlomRelated
 
   Glib::RefPtr<Gnome::Gda::Connection> m_connection;
-  
+
 private:
   bool m_read_only;
 };

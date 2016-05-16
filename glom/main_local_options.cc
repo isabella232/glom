@@ -61,7 +61,7 @@ bool LocalOptionGroup::handle_options()
     std::cout << PACKAGE_STRING << std::endl;
     return false; //Then stop.
   }
-  
+
   // Some more sanity checking:
   // These print errors to the stdout if they fail.
   // In future we might refuse to start if they fail.
@@ -87,9 +87,9 @@ bool LocalOptionGroup::handle_options()
 bool LocalOptionGroup::get_debug_date_check_result(bool& stop) const
 {
   //This command-line option is documented as stopping executing after checking,
-  //so that the execution result can be checked: 
+  //so that the execution result can be checked:
   stop = m_arg_debug_date_check;
-  
+
   return m_debug_date_check_result;
 }
 

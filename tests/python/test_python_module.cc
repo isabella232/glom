@@ -32,9 +32,9 @@ bool gda_python_module_is_available()
   //TODO: How can we requests a specific version to avoid confusion
   //between the parallel-installed Gda-5.0 and Gda-6.0 APIs?
 
-  //Python code usually uses "from gi.repository import Gda" so that 
+  //Python code usually uses "from gi.repository import Gda" so that
   //the code may use Gda. rather than gi.repository.Gda in the code.
-  const gchar* name = "gi.repository.Gda"; 
+  const gchar* name = "gi.repository.Gda";
   PyObject* module_glom = PyImport_ImportModule((char*)name);
 
   if(!module_glom)
@@ -55,13 +55,13 @@ int main ()
   atexit(__libc_freeres);
 #endif
   Glom::libglom_init();  // Calls PyInitialize()
-  
+
   if(!Glom::gda_python_module_is_available())
     return EXIT_FAILURE;
   if(!Glom::glom_python_module_is_available())
     return EXIT_FAILURE;
-  
+
   Glom::libglom_deinit(); // Calls Py_Finalize();
-  
+
   return EXIT_SUCCESS;
 }

@@ -28,19 +28,19 @@
 namespace Glom
 {
 
-/** A base class that is a Bakery View with some database functionality 
+/** A base class that is a Bakery View with some database functionality
  * for use with a specific database table.
  */
 class Base_DB_Table : public Base_DB
 {
-public: 
+public:
   Base_DB_Table();
 
   bool init_db_details(const Glib::ustring& table_name);
 
   Glib::ustring get_table_name() const;
 
-protected:    
+protected:
   Glib::ustring m_table_name;
 };
 

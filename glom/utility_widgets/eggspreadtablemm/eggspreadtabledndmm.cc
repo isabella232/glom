@@ -156,8 +156,8 @@ gboolean SpreadTableDnd_Class::widget_drop_possible_callback(EggSpreadTableDnd* 
       {
         // Call the virtual member method, which derived classes might override.
         bool cpp_drop_possible = false;
-        const bool result = 
-          static_cast<int>(obj->on_widget_drop_possible(Glib::wrap(p0), 
+        const bool result =
+          static_cast<int>(obj->on_widget_drop_possible(Glib::wrap(p0),
             cpp_drop_possible));
         *drop_possible = cpp_drop_possible;
         return result;
@@ -255,7 +255,7 @@ void SpreadTableDnd::remove_child(Gtk::Widget& child)
   //before being added to the first container.
   if(child.is_managed_())
     child.reference();
-    
+
   egg_spread_table_dnd_remove_child(gobj(), child.gobj());
 }
 

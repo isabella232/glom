@@ -39,7 +39,7 @@ class Document; //For the utility functions.
 class LayoutItem_Portal
 : public LayoutGroup,
   public UsesRelationship
-  
+
   //TODO: Allow portals to have custom titles that override the relationship titles?
   //public HasTitleSingular
 {
@@ -68,24 +68,24 @@ public:
 
   //virtual void debug(guint level = 0) const;
 
-  /** Gets the relationship to use for navigation if get_navigation_type() is 
+  /** Gets the relationship to use for navigation if get_navigation_type() is
    * NAVIGATION_NONE.
    */
   std::shared_ptr<UsesRelationship> get_navigation_relationship_specific();
 
-  /** Get the @a relationship to use for navigation if get_navigation_type() is 
+  /** Get the @a relationship to use for navigation if get_navigation_type() is
    * NAVIGATION_NONE.
    */
   std::shared_ptr<const UsesRelationship> get_navigation_relationship_specific() const;
 
-  /** Set the @a relationship to use for navigation if get_navigation_type() is 
+  /** Set the @a relationship to use for navigation if get_navigation_type() is
    * NAVIGATION_NONE.
    */
   void set_navigation_relationship_specific(const std::shared_ptr<UsesRelationship>& relationship);
 
   void reset_navigation_relationship();
 
-  /** The navigation (if any) that should be used when the user 
+  /** The navigation (if any) that should be used when the user
    * activates a related record row.
    */
   enum class navigation_type
@@ -95,16 +95,16 @@ public:
     SPECIFIC /**< The destination related table will be determined by a specified relationship. */
   };
 
-  /** Discover what @a type (if any) navigation should be used when the user 
+  /** Discover what @a type (if any) navigation should be used when the user
    * activates a related record row.
    */
   navigation_type get_navigation_type() const;
 
-  /** Set what @a type (if any) navigation should be used when the user 
+  /** Set what @a type (if any) navigation should be used when the user
    * activates a related record row.
    */
   void set_navigation_type(navigation_type type);
-  
+
   /** Discover what table to show when clicking on a related record.
    * This table will not necessarily just be the directly related table.
    * The caller should check, in the document, that the returned @a table_name is not hidden.
@@ -129,26 +129,26 @@ public:
 
   /// This is used only for the print layouts.
   double get_print_layout_row_line_width() const;
-    
+
   /// This is used only for the print layouts.
   void set_print_layout_row_line_width(double width);
-  
+
   /// This is used only for the print layouts.
   double get_print_layout_column_line_width() const;
-  
+
   /// This is used only for the print layouts.
   void set_print_layout_column_line_width(double width);
-  
+
   /// This is used only for the print layouts.
   Glib::ustring get_print_layout_line_color() const;
-  
+
   /// This is used only for the print layouts.
   void set_print_layout_line_color(const Glib::ustring& color);
-  
+
   /** Get the number of rows that should be displayed.
    */
   void get_rows_count(gulong& rows_count_min, gulong& rows_count_max) const;
-  
+
   /** Set the number of rows that should be displayed.
    */
   void set_rows_count(gulong rows_count_min, gulong rows_count_max);
@@ -169,7 +169,7 @@ private:
 
   //If no navigation relationship has been specified then it will be automatically chosen or navigation will be disabled:
   navigation_type m_navigation_type;
-  
+
   gulong m_rows_count_min, m_rows_count_max;
 };
 

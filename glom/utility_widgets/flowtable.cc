@@ -53,7 +53,7 @@ const Gtk::Box* FlowTable::get_parent_hbox(const Gtk::Widget* first) const
     std::cerr << G_STRFUNC << ": first was not a first widget. first=" << first << std::endl;
     return nullptr; //It has no Box parent because it is not even a first widget.
   }
-  
+
   for(const auto& hbox : m_list_hboxes)
   {
     if(!hbox)
@@ -85,7 +85,7 @@ void FlowTable::delete_and_forget_hbox(Gtk::Box* hbox)
 
   //This check does not work because EggSpreadTableDnD adds an intermediate GtkEventBox:
   //if(hbox->get_parent() == this)
-  
+
   //Check that it is in our list of hboxes:
   const auto iter = Utils::find(m_list_hboxes, hbox);
   if(iter == m_list_hboxes.end())
@@ -93,7 +93,7 @@ void FlowTable::delete_and_forget_hbox(Gtk::Box* hbox)
     std::cerr << G_STRFUNC << ": hbox=" << hbox << " is not in our list of hboxes.\n";
     return;
   }
-  
+
   //Check that it has a parent,
   //as a sanity check:
   Gtk::Widget* parent= hbox->get_parent();
@@ -164,7 +164,7 @@ void FlowTable::remove_all()
   for(const auto& item : m_list_first_widgets)
   {
     auto first_widget = const_cast<Gtk::Widget*>(item);
-    
+
     if(first_widget)
       remove(*first_widget);
   }
@@ -183,20 +183,20 @@ void FlowTable::remove_all()
 void FlowTable::remove(Gtk::Widget& first)
 {
   //std::cout << G_STRFUNC << ": debug: remove() first=" << &first << std::endl;
-  
+
   //Handle widgets that were added to an Box:
   auto parent = const_cast<Gtk::Box*>(get_parent_hbox(&first));
   if(parent)
   {
     //std::cout << "  debug: hbox=" << parent << std::endl;
- 
+
     delete_and_forget_hbox(parent);
     return;
   }
 
   Egg::SpreadTableDnd::remove_child(first);
 }
-  
+
 bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& column) const
 {
   //Initialize output parameter:
@@ -208,18 +208,18 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
   //Discover actual child widget that was added to the EggSpreadTable,
   //so we can use it again to call EggSpreadTable::get_child_line():
   const Gtk::Widget* child = nullptr;
-      
+
   //Check that it is really a child widget:
   if(!Utils::find_exists(m_list_first_widgets, &first))
     return false; //It is not a first widget.
-    
+
   child = &first;
-  
+
   //Check if it was added to an Box:
   const auto hbox = get_parent_hbox(child);
   if(hbox)
     child = hbox;
-    
+
   if(!child)
     return false;
 
@@ -227,13 +227,13 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
   int width_natural = 0;
   child->get_preferred_width(width_min, width_natural);
   //std::cout << G_STRFUNC << ": Calling get_child_line() with child=" << child << ", for first=" << &first << std::endl;
-  
+
   //Get the internal parent GtkEventBox, if any,
   //though we need a derived get_child_line() to do this automatically:
   const auto parent = child->get_parent();
   if(dynamic_cast<const Gtk::EventBox*>(parent))
      child = parent;
-     
+
   column = get_child_line(*child, width_natural);
 
   return true;

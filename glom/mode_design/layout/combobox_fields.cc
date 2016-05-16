@@ -109,7 +109,7 @@ void ComboBox_Fields::set_fields(const std::shared_ptr<Document>& document, cons
 
   if(!m_model)
     return;
-  
+
   m_model->clear();
 
   //Fill the model:
@@ -131,7 +131,7 @@ void ComboBox_Fields::set_fields(const std::shared_ptr<Document>& document, cons
 
   if(!m_model)
     return;
-  
+
   m_model->clear();
 
   //Fill the model:
@@ -154,7 +154,7 @@ void ComboBox_Fields::set_fields(const type_vec_fields& fields, bool with_none_i
 {
   if(!m_model)
     return;
-  
+
   m_model->clear();
 
   if(with_none_item)
@@ -163,14 +163,14 @@ void ComboBox_Fields::set_fields(const type_vec_fields& fields, bool with_none_i
     auto tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
 
-    row[m_model_columns.m_field] = std::shared_ptr<Field>(); 
+    row[m_model_columns.m_field] = std::shared_ptr<Field>();
     row[m_model_columns.m_separator] = false;
 
     //Add a separator after the "None" item:
     tree_iter = m_model->append();
     row = *tree_iter;
 
-    row[m_model_columns.m_field] = std::shared_ptr<Field>(); 
+    row[m_model_columns.m_field] = std::shared_ptr<Field>();
     row[m_model_columns.m_separator] = true;
   }
 

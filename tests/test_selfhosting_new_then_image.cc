@@ -35,14 +35,14 @@
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   auto document = std::make_shared<Glom::Document>();
-  const bool recreated = 
+  const bool recreated =
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
     std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
-  
+
 
   //Where clause:
 
@@ -57,13 +57,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  const Gnome::Gda::SqlExpr where_clause = 
+  const Gnome::Gda::SqlExpr where_clause =
     Glom::SqlUtils::build_simple_where_expression(table_name, key_field, Gnome::Gda::Value(1));
 
   //Set the value, from an image file:
   const auto value_set = get_value_for_image();
   g_assert(check_value_is_an_image(value_set));
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder_set = 
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder_set =
     Glom::SqlUtils::build_sql_update_with_where_clause(table_name,
       field, value_set, where_clause);
   const auto rows_affected = Glom::DbUtils::query_execute(builder_set);
@@ -80,10 +80,10 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   layoutitem->set_full_field_details(field);
   fieldsToGet.emplace_back(layoutitem);
 
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder_get = 
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder_get =
     Glom::SqlUtils::build_sql_select_with_where_clause(table_name,
       fieldsToGet, where_clause);
-  auto data_model = 
+  auto data_model =
     Glom::DbUtils::query_execute_select(builder_get);
   if(!test_model_expected_size(data_model, 1, 1))
   {
@@ -97,7 +97,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     std::cerr << G_STRFUNC << ": Failure: The COUNT query returned an unexpected value: " << count << std::endl;
     return false;
   }
-  
+
   const auto value_read = data_model->get_value_at(0, 0);
   const auto value_read_type = value_read.get_value_type();
   if( (value_read_type != GDA_TYPE_BINARY) &&
@@ -154,14 +154,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   test_selfhosting_cleanup();
- 
-  return true; 
+
+  return true;
 }
 
 int main()
 {
   Glom::libglom_init();
-  
+
   const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();

@@ -32,7 +32,7 @@ class Dialog_Layout_Export;
 class FileChooser_Export :
   public Gtk::FileChooserDialog
 {
-public: 
+public:
   FileChooser_Export();
   virtual ~FileChooser_Export();
 

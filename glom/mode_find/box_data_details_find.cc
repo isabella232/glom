@@ -83,5 +83,5 @@ Gtk::Widget* Box_Data_Details_Find::get_default_button() //override
 {
   return &m_Button_Find;
 }
- 
+
 } //namespace Glom

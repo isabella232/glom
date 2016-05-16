@@ -34,7 +34,7 @@ namespace Glom
   * allowing the user to select a table,
   * or add or delete a table.
   */
-class Box_Tables 
+class Box_Tables
 : public Box_WithButtons,
   public Base_DB
 {
@@ -62,7 +62,7 @@ private:
   void on_show_hidden_toggled();
 
   void on_userlevel_changed(AppState::userlevels userlevel) override;
-      
+
   Gtk::CheckButton* m_check_button_show_hidden;
   guint m_col_table_name;
   guint m_col_hidden;

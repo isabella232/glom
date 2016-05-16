@@ -36,7 +36,7 @@ class Dialog_Layout_Calendar_Related : public Dialog_Layout_List
 public:
   static const char* glade_id;
   static const bool glade_developer;
-  
+
   Dialog_Layout_Calendar_Related(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   /**
@@ -61,9 +61,9 @@ private:
   //signal handlers:
   void on_button_add_field() override;
   void on_button_edit() override;
- 
+
   void on_combo_relationship_changed();
-  
+
   void on_combo_navigation_specific_changed();
   void on_combo_date_field_changed();
   void on_checkbutton_show_child_relationships();
@@ -77,7 +77,7 @@ private:
   Gtk::RadioButton* m_radio_navigation_specify;
   Gtk::Label* m_label_navigation_automatic;
   ComboBox_Relationship* m_combo_navigation_specify;
-    
+
   ComboBox_Fields* m_combobox_date_field;
 };
 

@@ -44,7 +44,7 @@ Notebook_Find::Notebook_Find()
   //Pass it up to the application:
   signal_connect_for_reemit_1arg(m_Box_List.signal_find_criteria, signal_find_criteria);
   signal_connect_for_reemit_1arg(m_Box_Details.signal_find_criteria, signal_find_criteria);
-  
+
 
   add_view(&m_Box_Details);
 

@@ -34,7 +34,7 @@ namespace GlomBakery
  * - Override methods to add/change menus/toolbars/statusbar.
  *   - Default is basic File, Edit, Help menus and toolbar icons.
  *
- 
+
  *
  * TODO:
  * - Command-line args - wrap popt?
@@ -72,17 +72,17 @@ protected:
   virtual void init_menus_file() = 0;
 
   /** Call this from init_menus() to add the standard edit menu
-   */ 
+   */
   virtual void init_menus_edit() = 0;
-  
+
   virtual void new_instance(const Glib::ustring& uri = Glib::ustring()) = 0; //Must override in order to new() the derived document class.
 
 //  virtual void close_window() = 0;
 //  virtual void bring_to_front() = 0;
   //Signal handlers:
 
-public: // We can not take function pointers of these methods in a 
-        // derived class, if they are protected - for instance, with sigc::mem_fun() 
+public: // We can not take function pointers of these methods in a
+        // derived class, if they are protected - for instance, with sigc::mem_fun()
   //Menus:
   virtual void on_menu_file_new();
   virtual void on_menu_file_close();
@@ -102,12 +102,12 @@ protected:
 
   //operation_cancelled:
   //e.g. A File|Open tries to save existing data,
-  //but this needs to be cancelled if the save failed. 
+  //but this needs to be cancelled if the save failed.
   static void set_operation_cancelled(bool value = true);
   static bool get_operation_cancelled();
 
   //Member data:
-  
+
   //'About Box'/WM Class information:
   static Glib::ustring m_strAppName;
 

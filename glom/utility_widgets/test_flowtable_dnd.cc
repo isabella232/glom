@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #include "flowtable_dnd.h"
 #include <gtkmm/window.h>
 
@@ -68,14 +68,14 @@ main(int argc, char* argv[])
   Gtk::Entry button12; button11.set_text("eleven");
   flowtable.add(button11, button12);
   button11.show(); button12.show();
-  
+
   window.add(flowtable);
   flowtable.set_design_mode();
   flowtable.show();
 
 //  Glom::DragWindow drag_window;
 //  drag_window.show();
-  
+
   Gtk::Main::run(window);
 
   return 0;

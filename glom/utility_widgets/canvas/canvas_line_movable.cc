@@ -93,7 +93,7 @@ bool CanvasLineMovable::on_enter_notify_event(const Glib::RefPtr<Item>& target, 
 }
 
 bool CanvasLineMovable::on_leave_notify_event(const Glib::RefPtr<Item>& target, GdkEventCrossing* event)
-{ 
+{
   if(!m_hover_color.empty())
     property_stroke_color_gdk_rgba() = m_stroke_color;
 

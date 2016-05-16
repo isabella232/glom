@@ -26,7 +26,7 @@
 namespace Glom
 {
 
-class LayoutItem_Button 
+class LayoutItem_Button
  : public LayoutItem_WithFormatting
 {
 public:

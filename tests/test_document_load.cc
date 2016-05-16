@@ -68,7 +68,7 @@ static bool get_group_named(const Glom::Document::type_list_groups& container, c
     group_info = *iter;
     return true;
   }
-  
+
   group_info = Glom::GroupInfo();
   return false;
 }
@@ -81,23 +81,23 @@ static bool needs_navigation(const std::shared_ptr<Glom::Document>& document, co
     document->get_field(table_name, field_name));
 
   std::shared_ptr<Glom::Relationship> field_used_in_relationship_to_one;
-  return Glom::DbUtils::layout_field_should_have_navigation(table_name, 
+  return Glom::DbUtils::layout_field_should_have_navigation(table_name,
     layout_item, document, field_used_in_relationship_to_one);
 }
 
 static std::shared_ptr<const Glom::LayoutItem_Portal> get_portal_from_details_layout(const std::shared_ptr<Glom::Document>& document, const Glib::ustring& table_name, const Glib::ustring& relationship_name)
 {
-  const auto groups = 
+  const auto groups =
     document->get_data_layout_groups("details", table_name);
   if(groups.empty())
   {
     std::cerr << G_STRFUNC << ": groups is empty.\n";
   }
-  
+
   for(const auto& group : groups)
   {
     for(const auto& layout_item : group->get_items_recursive_with_groups())
-    { 
+    {
       const auto child_group =
         std::dynamic_pointer_cast<const Glom::LayoutGroup>(layout_item);
       if(!child_group)
@@ -112,11 +112,11 @@ static std::shared_ptr<const Glom::LayoutItem_Portal> get_portal_from_details_la
         return portal;
     }
   }
-      
+
   return std::shared_ptr<Glom::LayoutItem_Portal>();
 }
-  
- 
+
+
 int main()
 {
   Glom::libglom_init();
@@ -207,35 +207,35 @@ int main()
 
 
   //Check a layout:
-  const auto groups = 
+  const auto groups =
     document->get_data_layout_groups("details", "scenes");
   g_assert(groups.size() == 3);
   const auto group =
     groups[1];
-  const auto items = 
+  const auto items =
     group->get_items_recursive();
   //std::cout << "size: " << items.size() << std::endl;
   g_assert(items.size() == 13);
-  const auto items_with_groups = 
+  const auto items_with_groups =
     group->get_items_recursive_with_groups();
   //std::cout << "size: " << items_with_groups.size() << std::endl;
   g_assert(items_with_groups.size() == 15);
 
   //Check that expected fields can be found on a layout.
-  auto field_on_layout = 
+  auto field_on_layout =
     get_field_on_layout(document, "scenes", "locations", "address_town");
   g_assert(field_on_layout);
   g_assert(field_on_layout->get_table_used("scenes") == "locations");
   g_assert(field_on_layout->get_name() == "address_town");
 
-  
+
   //Check Field Formatting:
-  field = document->get_field("contacts", "name_title");  
+  field = document->get_field("contacts", "name_title");
   g_assert(field);
   g_assert(field->get_glom_type() == Glom::Field::glom_field_type::TEXT);
   const auto& formatting = field->m_default_formatting;
   g_assert(formatting.get_horizontal_alignment() == Glom::Formatting::HorizontalAlignment::AUTO);
-  
+
   g_assert(formatting.get_has_choices());
   g_assert(formatting.get_has_custom_choices());
   g_assert(!formatting.get_has_related_choices());
@@ -243,9 +243,9 @@ int main()
   g_assert(!choices.empty());
   g_assert(contains_value(choices, "Mr"));
   g_assert(contains_value(choices, "Mrs"));
-  
+
   //Check that the default formatting is used on the layout:
-  field_on_layout = 
+  field_on_layout =
     get_field_on_layout(document, "contacts", "contacts", "name_title");
   g_assert(field_on_layout);
   g_assert(field_on_layout->get_table_used("contacts") == "contacts");
@@ -266,8 +266,8 @@ int main()
   }
 
 
-  //Test print layouts:  
-  const auto print_layout_names = 
+  //Test print layouts:
+  const auto print_layout_names =
     document->get_print_layout_names("contacts");
   if(print_layout_names.size() != 1)
   {
@@ -280,20 +280,20 @@ int main()
     std::cerr << G_STRFUNC << ": Failure: Could not find the expected print layout name.\n";
     return false;
   }
-  
+
   const auto print_layout = document->get_print_layout("contacts", "contact_details");
   if(!print_layout)
   {
     std::cerr << G_STRFUNC << ": Failure: Could not get an expected print layout.\n";
     return false;
   }
-  
+
   if(print_layout->get_title_original() != "Contact Details")
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected print layout title.\n";
     return false;
   }
-  
+
   if(!print_layout->get_layout_group())
   {
     std::cerr << G_STRFUNC << ": Failure: The print layout has no layout group.\n";
@@ -301,7 +301,7 @@ int main()
   }
 
 
-  const auto report_names = 
+  const auto report_names =
     document->get_report_names("contacts");
   if(report_names.size() != 2)
   {
@@ -321,20 +321,20 @@ int main()
     std::cerr << G_STRFUNC << ": Failure: Could not get an expected report.\n";
     return false;
   }
-  
+
   if(report->get_title_original() != "By Country, By Town")
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected report title.\n";
     return false;
   }
-  
+
   if(!report->get_layout_group())
   {
     std::cerr << G_STRFUNC << ": Failure: The report has no layout group.\n";
     return false;
   }
 
-  
+
   //Test user groups:
   Glom::Document::type_list_groups user_groups = document->get_groups();
   Glom::GroupInfo group_info_ignored;

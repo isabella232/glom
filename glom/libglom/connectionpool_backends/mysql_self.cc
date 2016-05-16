@@ -196,7 +196,7 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
   else
   {
     //std::cout << "debug: command_initdb succeeded" << ", this=" << this << std::endl;
-  
+
     //This is used during the first start:
     m_initial_password_to_set = password;
     m_initial_username_to_set = initial_username;
@@ -457,16 +457,16 @@ void MySQLSelfHosted::show_active_connections()
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_field("*", "pg_stat_activity");
   builder->select_add_target("pg_stat_activity");
- 
+
   auto gda_connection = connect(m_saved_database_name, m_saved_username, m_saved_password);
   if(!gda_connection)
     std::cerr << G_STRFUNC << ": connection failed.\n";
-  
+
   auto datamodel = DbUtils::query_execute_select(builder);
   if(!datamodel)
     std::cerr << G_STRFUNC << ": pg_stat_activity SQL query failed.\n";
-  
-  const auto rows_count = datamodel->get_n_rows(); 
+
+  const auto rows_count = datamodel->get_n_rows();
   if(datamodel->get_n_rows() < 1)
     std::cerr << G_STRFUNC << ": pg_stat_activity SQL query returned no rows.\n";
 
@@ -478,13 +478,13 @@ void MySQLSelfHosted::show_active_connections()
     {
       if(col != 0)
         std::cout << ", ";
-        
+
       std::cout << datamodel->get_value_at(col, row).to_string();
     }
-    
+
     std::cout << std::endl;
   }
-  
+
   //Make sure that this connection does not stop a further attempt to stop the server.
   gda_connection->close();
 */
@@ -547,7 +547,7 @@ bool MySQLSelfHosted::cleanup(const SlotProgress& slot_progress)
   if(!result)
   {
     std::cerr << G_STRFUNC << ": Error while attempting to stop self-hosting of the MySQL database. Trying again."  << std::endl;
-    
+
     //Show open connections for debugging:
     try
     {
@@ -557,7 +557,7 @@ bool MySQLSelfHosted::cleanup(const SlotProgress& slot_progress)
     {
       std::cerr << G_STRFUNC << ": exception while trying to show active MySQL connections: " << ex.what() << std::endl;
     }
-    
+
     //I've seen it fail when running under valgrind, and there are reports of failures in bug #420962.
     //Maybe it will help to try again:
     if(!Glom::Spawn::execute_command_line_and_wait(command_mysql_stop, slot_progress))

@@ -45,7 +45,7 @@ Dialog_Layout_List::Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefP
   //We don't want this part of the dialog:
   //(We share one glade definition for several dialogs.)
   Gtk::Frame* box_calendar = nullptr;
-  builder->get_widget("frame_calendar", box_calendar); 
+  builder->get_widget("frame_calendar", box_calendar);
   box_calendar->hide();
 
   //We don't use this column:

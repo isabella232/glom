@@ -29,7 +29,7 @@ std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const std::sha
   {
     if(!group)
       continue;
-    
+
     for(const auto& layout_item : group->get_items_recursive())
     {
       const auto layout_item_field =
@@ -44,7 +44,7 @@ std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const std::sha
       }
     }
   }
-  
+
   return std::shared_ptr<const Glom::LayoutItem_Field>();
 }
 

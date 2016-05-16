@@ -36,7 +36,7 @@ class Combo_TextGlade : public Gtk::ComboBoxText
 {
 public:
   Combo_TextGlade(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  
+
   ///This ensures that something is selected,
   void set_first_active();
 };

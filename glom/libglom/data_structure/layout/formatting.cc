@@ -312,8 +312,8 @@ bool Formatting::change_field_item_name(const Glib::ustring& table_name, const G
     return false; //Nothing changed.
 
   auto relationship = get_relationship();
-  
-  const Glib::ustring field_table = 
+
+  const Glib::ustring field_table =
     m_choices_related_field->get_table_used( relationship->get_to_table() );
 
   if((field_table == table_name) &&
@@ -323,10 +323,10 @@ bool Formatting::change_field_item_name(const Glib::ustring& table_name, const G
     m_choices_related_field->set_name(field_name_new);
     return true; //something changed.
   }
-  
+
   if(m_choices_extra_layout_group)
   {
-    m_choices_extra_layout_group->change_field_item_name(table_name, 
+    m_choices_extra_layout_group->change_field_item_name(table_name,
       field_name_old, field_name_new);
   }
 

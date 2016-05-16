@@ -88,7 +88,7 @@ public:
 
   bool get_is_example_file() const;
   void set_is_example_file(bool value = true);
-  
+
   bool get_is_backup_file() const;
   void set_is_backup_file(bool value = true);
 
@@ -217,11 +217,11 @@ public:
    * so that it is not used anymore in relationships, layouts, reports, etc.
    */
   void remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name);
-  
-  
+
+
   typedef std::pair< std::shared_ptr<LayoutItem_Field>, std::shared_ptr<Relationship> > type_pairFieldTrigger;
   typedef std::vector<type_pairFieldTrigger> type_list_lookups;
-  
+
   /** Get the fields whose values should be looked up when @a field_name changes, with
    * the relationship used to lookup the value.
    */
@@ -463,14 +463,14 @@ public:
    * For instance, a pulsing ProgressBar.
    */
   typedef std::function<void()> SlotProgress;
-  
+
   /** Save a copy of the document as a backup.
    * This document (and its URI) will not be changed.
    * @param uri The location at which to save the backup Glom file.
    * @result The URI of the .tar.gz tarball.
    */
   Glib::ustring save_backup_file(const Glib::ustring& uri, const SlotProgress& slot_progress);
-  
+
   /** Extract the .glom file and backup data from a .tar.gz archive.
    * The backup data must be stored temporarily on disk because pg_restore requires a file on disk.
    *
@@ -479,7 +479,7 @@ public:
    * @result The contents of the .glom file from the .tar.gz file.
    */
   static Glib::ustring extract_backup_file(const Glib::ustring& backup_uri, std::string& backup_path, const SlotProgress& slot_progress);
-  
+
 
 private:
 
@@ -551,7 +551,7 @@ private:
     Glib::RefPtr<Gio::FileInputStream> stream;
 
     struct archive* a;
-    
+
   private:
     //Prevent copying:
     FileReadWriteToArchiveData(const FileReadWriteToArchiveData& src);

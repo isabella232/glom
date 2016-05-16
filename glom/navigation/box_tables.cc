@@ -73,7 +73,7 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const std:
     std::cerr << G_STRFUNC << ": table_info was null.\n";
     return;
   }
-  
+
   if(iter)
   {
     const auto developer_mode = (get_userlevel() == AppState::userlevels::DEVELOPER);
@@ -219,7 +219,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
   if(table_name.empty())
     return;
 
-  bool created = false; 
+  bool created = false;
 
   //Check whether it exists already. (Maybe it is somehow in the database but not in the document. That shouldn't happen.)
   const auto exists_in_db = DbUtils::get_table_exists_in_database(table_name);
@@ -243,11 +243,11 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
   {
     created = DbUtils::create_table_with_default_fields(get_document(), table_name);
   }
-  
+
   if(created)
   {
     //Show the new information for this whole row:
-    
+
     auto document = get_document();
     if(document)
     {
@@ -303,7 +303,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
           dialog.add_button(_("Delete Table"), Gtk::RESPONSE_OK);
           const auto iButtonClicked = dialog.run();
-          
+
           //Get a list of autoincrementing fields in the table:
           const auto fields = document->get_table_fields(table_name);
 
@@ -317,19 +317,19 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
             {
               //Forget about it in the document too.
               get_document()->remove_table(table_name);
-              
+
               something_changed = true;
             }
-            
+
             //Remove the auto-increment rows.
             //Otherwise it would not start at 0 if a table with the same name, and same field, is added again later.
             for(const auto& field : fields)
             {
               if(!field || !field->get_auto_increment())
                 continue;
-                
+
               const auto field_name = field->get_name();
-            
+
               if(!field_name.empty())
                 DbUtils::remove_auto_increment(table_name, field_name);
               else
@@ -442,7 +442,7 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
     else
     {
        //Go ahead:
- 
+
        save_to_document();
 
        //Emit the signal:

@@ -39,7 +39,7 @@ public:
   void remove();
 
   Gtk::Widget* get_child();
-  const Gtk::Widget* get_child() const;  
+  const Gtk::Widget* get_child() const;
 
 private:
   Gtk::Widget* m_pChild;

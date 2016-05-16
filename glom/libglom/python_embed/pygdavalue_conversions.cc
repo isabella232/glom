@@ -33,7 +33,7 @@
  */
 bool
 glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input)
-{       
+{
     /* Use an appropriate gda_value_set_*() function.
        We cannot know what GValue type is actually wanted, so
        we must still have the get_*() functions in the python API.
@@ -41,7 +41,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
 
     if(G_IS_VALUE (boxed))
       g_value_unset(boxed);
-      
+
     auto input_c = input.ptr();
 
     if(input_c == Py_None)
@@ -49,8 +49,8 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
       std::cerr << G_STRFUNC << ": Returning false for Py_None\n";
       return false;
     }
-    
-    //We check for bool first, 
+
+    //We check for bool first,
     //because bool is derived from int in Python,
     //so PyInt_Check() would also succeed on a bool object.
     //  This comment probably only applies to Python 2,
@@ -66,7 +66,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
         return true;
       }
     }
- 
+
 #if PY_MAJOR_VERSION < 3
     //Python 3 doesn't seem to have an Integer type.
     if(PyInt_Check(input_c))
@@ -93,7 +93,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
         return true;
       }
     }
-    
+
     if(PyFloat_Check(input_c))
     {
       boost::python::extract<double> extractor_double(input);
@@ -105,7 +105,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
         return true;
       }
     }
-    
+
     if(PyUnicode_Check(input_c))
     {
       boost::python::extract<std::string> extractor_string(input);
@@ -117,7 +117,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
         return true;
       }
     }
-    
+
 #if PY_VERSION_HEX >= 0x02040000
 
     // Note that this sets a local copy of PyDateTimeAPI (in Python's datetime.h
@@ -171,7 +171,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
 
     std::cerr << G_STRFUNC << ": Unhandled python type: object as string:" <<
       str_as_string << std::endl;
-    std::cerr << G_STRFUNC << ": PY_MAJOR_VERSION=" << PY_MAJOR_VERSION << 
+    std::cerr << G_STRFUNC << ": PY_MAJOR_VERSION=" << PY_MAJOR_VERSION <<
       ", PY_VERSION_HEX=" << std::hex << PY_VERSION_HEX << std::endl;
     return false; /* failed. */
 }

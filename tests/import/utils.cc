@@ -32,7 +32,7 @@ static Glib::ustring create_file_from_buffer(const char* input, guint input_size
   auto file = Gio::File::create_for_uri(file_uri);
 
   gssize result = 0;
- 
+
   try
   {
     result = file->append_to()->write(input, input_size);

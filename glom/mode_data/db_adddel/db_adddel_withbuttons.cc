@@ -132,7 +132,7 @@ void DbAddDel_WithButtons::on_selection_changed(bool selection)
 {
   m_Button_Edit.set_sensitive(selection);
   m_Button_Del.set_sensitive(selection);
-  
+
   DbAddDel::on_selection_changed(selection);
 }
 

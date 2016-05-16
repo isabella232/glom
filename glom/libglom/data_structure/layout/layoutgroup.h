@@ -71,7 +71,7 @@ public:
    * @param item The item to remove.
    */
   void remove_item(const std::shared_ptr<LayoutItem>& item);
-  
+
   /** Remove any instance of the field from the layout.
    *
    * @param parent_table_name The table to which this layout belongs.

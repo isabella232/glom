@@ -252,9 +252,9 @@ const Formatting& LayoutItem_Field::get_formatting_used() const
 Formatting::HorizontalAlignment LayoutItem_Field::get_formatting_used_horizontal_alignment(bool for_details_view) const
 {
   const auto format = get_formatting_used();
-  Formatting::HorizontalAlignment alignment = 
+  Formatting::HorizontalAlignment alignment =
     format.get_horizontal_alignment();
-  
+
   if(alignment == Formatting::HorizontalAlignment::AUTO)
   {
     //By default, right-align numbers on list views, unless they are ID fields.
@@ -267,7 +267,7 @@ Formatting::HorizontalAlignment LayoutItem_Field::get_formatting_used_horizontal
     else
       alignment = Formatting::HorizontalAlignment::LEFT;
   }
-  
+
   return alignment;
 }
 
@@ -342,7 +342,7 @@ bool LayoutItem_Field::is_same_field(const std::shared_ptr<const LayoutItem_Fiel
   const UsesRelationship* uses_b = &(*field);
   if(!uses_a || !uses_b)
     return false; //Shouldn't happen.
-    
+
   return (get_name() == field->get_name()) &&
          (*uses_a == *uses_b);
 }

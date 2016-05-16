@@ -61,7 +61,7 @@ void Entry::set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, cons
 #endif
 
   //Horizontal Alignment:
-  Formatting::HorizontalAlignment alignment = 
+  Formatting::HorizontalAlignment alignment =
     Formatting::HorizontalAlignment::LEFT;
   auto layout_field =
     std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
@@ -148,7 +148,7 @@ void Entry::set_value(const Gnome::Gda::Value& value)
   //Show a different color if the value is numeric, if that's specified:
   if(layout_item->get_glom_type() == Field::glom_field_type::NUMERIC)
   {
-    const Glib::ustring fg_color = 
+    const Glib::ustring fg_color =
     layout_item->get_formatting_used().get_text_format_color_foreground_to_use(value);
     if(!fg_color.empty())
     {
@@ -190,7 +190,7 @@ bool Entry::on_button_press_event(GdkEventButton *button_event)
     pApp->add_developer_action(m_context_add_related_records);
     pApp->add_developer_action(m_context_add_group);
 
-    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+    pApp->update_userlevel_ui(); //Update our action's sensitivity.
 
     //Only show this popup in developer mode, so operators still see the default GtkEntry context menu.
     //TODO: It would be better to add it somehow to the standard context menu.

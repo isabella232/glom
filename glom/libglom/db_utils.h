@@ -191,7 +191,7 @@ Glib::ustring escape_sql_id(const Glib::ustring& id);
 
 /** Just a wrapper around gda_rfc1738_encode(),
  * for use when building libgda connection strings or authentication strings.
- */ 
+ */
 Glib::ustring gda_cnc_string_encode(const Glib::ustring& str);
 
 Glib::ustring build_query_create_group(const Glib::ustring& group, bool superuser = false);
@@ -223,7 +223,7 @@ typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
 
 //TODO: Performance: This is massively inefficient:
 type_map_fields get_record_field_values(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const std::shared_ptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
-  
+
 /** Allow a fake connection, so sqlbuilder_get_full_query() can work.
  */
 void set_fake_connection();

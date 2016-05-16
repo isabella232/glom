@@ -39,11 +39,11 @@ public:
 
   bool operator==(const SystemPrefs& src) const;
   bool operator!=(const SystemPrefs& src) const;
- 
+
 
   //TODO: Add getters and setters:
   Glib::ustring m_name, m_org_name,
-    m_org_address_street, m_org_address_street2, m_org_address_town, 
+    m_org_address_street, m_org_address_street2, m_org_address_town,
     m_org_address_county, m_org_address_country, m_org_address_postcode;
   Gnome::Gda::Value m_org_logo; //enumType::IMAGE.
 };

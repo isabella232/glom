@@ -85,7 +85,7 @@ public:
    */
   typedef sigc::signal<void(const Glib::RefPtr<CanvasItemMovable>&, bool)> type_signal_selected;
 
-  /** This signal is emitted if the user causes the item 
+  /** This signal is emitted if the user causes the item
    * to be selected or deselected. See get_selected().
    */
   type_signal_selected signal_selected();

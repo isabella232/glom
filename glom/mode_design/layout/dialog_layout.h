@@ -47,7 +47,7 @@ public:
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
   virtual void init(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, const std::shared_ptr<Document>& document, const Glib::ustring& table_name, const type_vecConstLayoutFields& table_fields);
-  
+
 protected:
 
   void treeview_fill_sequences(const Glib::RefPtr<Gtk::TreeModel> model, const Gtk::TreeModelColumn<guint>& sequence_column);
@@ -76,7 +76,7 @@ protected:
   //Whether the layout is for a view that allows editing.
   //If so, various editing options will be available in the formatting.
   bool m_editable_layout;
-  
+
   bool m_modified;
 };
 

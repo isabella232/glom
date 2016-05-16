@@ -30,7 +30,7 @@ namespace Glom
 
 class Notebook_Find : public Notebook_Glom
 {
-public: 
+public:
   Notebook_Find();
   virtual ~Notebook_Find();
 
@@ -50,7 +50,7 @@ private:
 
   //Member widgets:
   Box_Data_List_Find m_Box_List;
-  
+
   Box_Data_Details_Find m_Box_Details;
 };
 

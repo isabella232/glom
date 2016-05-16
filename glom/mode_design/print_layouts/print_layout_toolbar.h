@@ -37,7 +37,7 @@ public:
 
 private:
   Gtk::ToolItemGroup m_group_items, m_group_lines, m_group_records;
-  PrintLayoutToolbarButton m_drag_field, m_drag_text, m_drag_image, 
+  PrintLayoutToolbarButton m_drag_field, m_drag_text, m_drag_image,
     m_drag_line_horizontal, m_drag_line_vertical, m_drag_related_records;
 };
 

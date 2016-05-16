@@ -30,7 +30,7 @@ namespace Glom
 /** A base class for all layout items that may have formatting options.
  * See get_formatting_used().
  */
-class LayoutItem_WithFormatting 
+class LayoutItem_WithFormatting
  : public LayoutItem
 {
 public:
@@ -45,7 +45,7 @@ public:
 
   Formatting m_formatting;
 
-  /** Get the field formatting used by this layout item, which 
+  /** Get the field formatting used by this layout item, which
    * may be either custom field formatting or the default field formatting.
    */
   virtual const Formatting& get_formatting_used() const;

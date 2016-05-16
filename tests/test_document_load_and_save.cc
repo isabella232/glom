@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
   //Validate the original document, though the test_dtd_file_validation.sh test does this anyway:
   if(!validate_glom_file(uri, dtd_filepath))
     return EXIT_FAILURE;
-  
+
 
   // Load the document:
   auto document = std::make_shared<Glom::Document>();
@@ -105,7 +105,7 @@ int main(int argc, char* argv[])
 
   // Save the document:
   document->set_allow_autosave(false);
-  const Glib::ustring temp_uri = 
+  const Glib::ustring temp_uri =
     Glom::FileUtils::get_temp_file_uri("testglom_document", ".glom");
   document->set_file_uri(temp_uri);
   document->set_modified(); //TODO: Let save() succeed without this.

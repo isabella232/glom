@@ -72,7 +72,7 @@ void CsvParser::set_file_and_start_parsing(const std::string& file_uri)
   auto file = Gio::File::create_for_uri(file_uri);
 
   set_state(CsvParser::State::PARSING);
-  
+
   //TODO Get a rough estimate of the number of rows (for showing progress),
   //by counting the number of lines:
   //guint lines_count = 0;

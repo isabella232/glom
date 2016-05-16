@@ -198,7 +198,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 #endif
 
   m_select_button->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_select_clicked));
- 
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_notebook->signal_switch_page().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_switch_page));
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */
@@ -262,7 +262,7 @@ bool Dialog_ExistingOrNew::list_examples()
   {
     const char* examples_dir = "/org/gnome/glom/examples/";
     const auto examples = Gio::Resource::enumerate_children_global(examples_dir);
-    
+
     bool example_found = false;
     for(const auto& example_name : examples)
     {
@@ -641,7 +641,7 @@ Glib::ustring Dialog_ExistingOrNew::get_title_from_example(const std::string& re
   {
     auto stream =
       Gio::Resource::open_stream_global(resource_name);
-    
+
     //TODO: Really do this asynchronously?
     m_current_buffer.reset(new buffer);
     const auto bytes_read = stream->read(m_current_buffer->buf, buffer::SIZE);

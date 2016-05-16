@@ -43,7 +43,7 @@ public:
   void remove_all_items();
   void remove_all_items(const Glib::RefPtr<Goocanvas::Group>& group);
 
-  /** Set the distance between grid lines, 
+  /** Set the distance between grid lines,
    * used to snap to the grid lines when moving or resizing items.
    */
   virtual void set_grid_gap(double gap = 20.0);
@@ -93,13 +93,13 @@ public:
    */
   typedef sigc::signal<void()> type_signal_selection_changed;
 
-  /** This signal is emitted if the user causes items 
+  /** This signal is emitted if the user causes items
    * to be selected or deselected. See get_selected_items().
    */
   type_signal_selection_changed signal_selection_changed();
 
 private:
-  
+
   void on_item_selected(const Glib::RefPtr<CanvasItemMovable>& item, bool group_select);
 
   class ItemInfo

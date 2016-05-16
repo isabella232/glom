@@ -27,14 +27,14 @@
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   auto document = std::make_shared<Glom::Document>();
-  const bool recreated = 
+  const bool recreated =
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
     std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
-  
+
   const auto groups = Glom::Privs::get_database_groups();
   if(groups.empty())
   {
@@ -63,21 +63,21 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   test_selfhosting_cleanup();
- 
-  return true; 
+
+  return true;
 }
 
 int main()
 {
   Glom::libglom_init();
-  
+
   if(!test(Glom::Document::HostingMode::POSTGRES_SELF))
   {
     std::cerr << G_STRFUNC << ": Failed with PostgreSQL\n";
     test_selfhosting_cleanup();
     return EXIT_FAILURE;
   }
-  
+
   /* SQLite does not have this feature:
   if(!test(Glom::Document::HostingMode::SQLITE))
   {

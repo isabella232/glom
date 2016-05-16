@@ -140,7 +140,7 @@ xmlpp::Element* Document_XML::get_node_document()
 {
   if(!m_dom_document)
     m_dom_document = m_dom_parser.get_document();
-  
+
   //Make sure that it has the DTD declaration:
   //TODO: Put this in a better place, where it's more guaranteed to always be set?
   //TODO: Add API to specify the PUBLIC URI, if the document should write this:
@@ -154,7 +154,7 @@ xmlpp::Element* Document_XML::get_node_document()
     //Add it if it isn't there already:
     nodeRoot = m_dom_document->create_root_node(m_root_node_name, m_root_xmlns);
   }
-  
+
   //Make sure that it has the root name name and xmlns:
   nodeRoot->set_namespace_declaration(m_root_xmlns);
 
@@ -182,7 +182,7 @@ void Document_XML::add_indenting_white_space_to_node(xmlpp::Node* node, const Gl
   }
   }
 
-  //All indents have a newline, 
+  //All indents have a newline,
   //and we add spaces each time we recurse:
   auto indent = start_indent;
   if(indent.empty())

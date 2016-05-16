@@ -159,7 +159,7 @@ AppWindow::~AppWindow()
   m_avahi_progress_dialog = nullptr;
 
   #endif // !GLOM_ENABLE_CLIENT_ONLY
-  
+
   delete m_about;
   m_about = nullptr;
 
@@ -195,7 +195,7 @@ void AppWindow::on_connection_avahi_done()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void AppWindow::init()
-{  
+{
   GlomBakery::AppWindow_WithDoc::init(); //Create document and ask to show it in the UI.
   init_layout();
   show();
@@ -428,9 +428,9 @@ void AppWindow::init_menus()
 
   insert_action_group("developer", m_action_group_developer);
 
-  
+
   m_help_action_group = Gio::SimpleActionGroup::create();
- 
+
   m_help_action_group->add_action("about",
     sigc::mem_fun(*this, &AppWindow::on_menu_help_about) );
   m_help_action_group->add_action("contents",
@@ -466,7 +466,7 @@ void AppWindow::on_menu_help_about()
     m_about->set_copyright(_("© 2000-2011 Murray Cumming, Openismus GmbH"));
     const std::vector<Glib::ustring> vecAuthors({"Murray Cumming <murrayc@murrayc.com>"});
     m_about->set_authors(vecAuthors);
-    
+
     //For some reason this use of the resource:// syntax does not work:
     const char* about_icon_name = "48x48/glom.png";
     //const Glib::ustring glom_icon_path = "resource://" + UiUtils::get_icon_path(about_icon_name);
@@ -1231,10 +1231,10 @@ void AppWindow::update_table_sensitive_ui()
     has_table = !m_frame->get_shown_table_name().empty();
 
   for(const auto& action : m_listTableSensitiveActions)
-  { 
+  {
     bool sensitive = has_table;
 
-    const bool is_developer_item = 
+    const bool is_developer_item =
       (Utils::find_exists(m_listDeveloperActions, action));
     if(is_developer_item)
       sensitive = sensitive && (userlevel == AppState::userlevels::DEVELOPER);
@@ -1284,7 +1284,7 @@ void AppWindow::update_userlevel_ui()
     // Remove the drag layout toolbar
   }
   */
-  
+
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -1841,7 +1841,7 @@ void AppWindow::fill_menu_tables()
     {
       const auto title = Utils::string_escape_underscores(item_get_title_or_name(table_info));
       const auto action_name = escape_for_action_name(table_info->get_name());
-  
+
       menu->append(title, ACTION_GROUP_NAME_TABLES + "." + action_name);
 
       auto action = m_nav_tables_action_group->add_action(action_name,
@@ -1899,7 +1899,7 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
       {
         const auto title = Utils::string_escape_underscores(item_get_title_or_name(report));
         const Glib::ustring action_name = report_name;
-  
+
         menu->append(title, ACTION_GROUP_NAME_REPORTS + "." + report_name);
 
         auto action = m_nav_reports_action_group->add_action(action_name,
@@ -1924,7 +1924,7 @@ void AppWindow::enable_menu_print_layouts_details(bool enable)
   //TODO: Suggest a simpler get_actions() method?
   for(const auto& name : m_nav_print_layouts_action_group->list_actions())
   {
-    auto action = 
+    auto action =
       Glib::RefPtr<Gio::SimpleAction>::cast_dynamic(m_nav_print_layouts_action_group->lookup_action(name));
     if(action)
       action->set_enabled(enable);
@@ -2311,7 +2311,7 @@ void AppWindow::on_menu_developer_changelanguage()
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
-    
+
   dialog->set_transient_for(*this);
   const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
@@ -2449,7 +2449,7 @@ bool AppWindow::do_restore_backup(const Glib::ustring& backup_uri)
   auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
     return false;
-    
+
   ShowProgressMessage progress_message(_("Restoring backup"));
   const auto backup_glom_file_contents = Glom::Document::extract_backup_file(
     backup_uri, m_backup_data_filepath,
@@ -2503,7 +2503,7 @@ void AppWindow::document_history_add(const Glib::ustring& file_uri)
 
   //This can sometimes be called for a file that does not yet exist on disk.
   //Avoid warning in RecentManager if that is the case.
-  //For instance, Glom does this when the user chooses a new filename, 
+  //For instance, Glom does this when the user chooses a new filename,
   //but before Glom has enough information to save a useful file.
   if(!file_exists(file_uri))
     return;
@@ -2625,7 +2625,7 @@ void AppWindow::set_progress_message(const Glib::ustring& message)
 
   // Pulse the progress bar regardless of whether the message is new or not.
   m_infobar_progress->pulse();
-  
+
   //Block interaction with the rest of the UI.
   if(m_menubar)
     m_menubar->set_sensitive(false);
@@ -2671,7 +2671,7 @@ Glib::ustring AppWindow::get_original_locale()
   if(m_original_locale.empty())
     m_original_locale = "en";
 
-  return m_original_locale; 
+  return m_original_locale;
 }
 
 bool AppWindow::get_current_locale_not_original()
@@ -2727,7 +2727,7 @@ void AppWindow::on_hide()
 
 void AppWindow::ui_hide()
 {
-  hide();  
+  hide();
 }
 
 void AppWindow::ui_bring_to_front()
@@ -2738,7 +2738,7 @@ void AppWindow::ui_bring_to_front()
 void AppWindow::init_menus_edit()
 {
   //Edit menu
-  
+
   //Build actions:
   m_action_group_edit = Gio::SimpleActionGroup::create();
 
@@ -2839,7 +2839,7 @@ AppWindow::enumSaveChanges AppWindow::ui_offer_to_save_changes()
   if(!m_document)
     return result;
 
-  GlomBakery::Dialog_OfferSave* pDialogQuestion 
+  GlomBakery::Dialog_OfferSave* pDialogQuestion
     = new GlomBakery::Dialog_OfferSave( m_document->get_file_uri() );
 
   Gtk::Window* pWindow = this;
@@ -2890,7 +2890,7 @@ void AppWindow::on_menu_edit_copy_activate()
     auto buffer = textview->get_buffer();
     if(buffer)
     {
-      auto clipboard = 
+      auto clipboard =
         Gtk::Clipboard::get_for_display(get_display());
       buffer->copy_clipboard(clipboard);
     }
@@ -2916,7 +2916,7 @@ void AppWindow::on_menu_edit_cut_activate()
     auto buffer = textview->get_buffer();
     if(buffer)
     {
-      auto clipboard = 
+      auto clipboard =
         Gtk::Clipboard::get_for_display(get_display());
       buffer->cut_clipboard(clipboard, textview->get_editable());
     }
@@ -2942,7 +2942,7 @@ void AppWindow::on_menu_edit_paste_activate()
     auto buffer = textview->get_buffer();
     if(buffer)
     {
-      auto clipboard = 
+      auto clipboard =
         Gtk::Clipboard::get_for_display(get_display());
       buffer->paste_clipboard(clipboard);
     }

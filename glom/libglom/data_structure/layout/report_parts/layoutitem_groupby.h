@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_GROUPBY_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_GROUPBY_H
 
@@ -72,7 +72,7 @@ public:
 
   std::shared_ptr<LayoutGroup> get_secondary_fields();
   std::shared_ptr<const LayoutGroup> get_secondary_fields() const;
-  
+
 private:
 
   std::shared_ptr<LayoutItem_Field> m_field_group_by;

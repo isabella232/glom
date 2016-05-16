@@ -253,12 +253,12 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
         if(layout_item)
           std::cerr << G_STRFUNC << ":   field: " << layout_item->get_name() << std::endl;
       }
-      
+
       return;
     }
-      
+
     m_column_index_key = column_index_key;
-      
+
     //The Column information that can be used with TreeView::append(), TreeModel::iterator[], etc.
     m_columns_count = m_column_fields.size();
     refresh_from_database(m_found_set);
@@ -914,10 +914,10 @@ Gtk::TreeModel::iterator DbTreeModel::get_last_row()
   if(rows_count)
   {
     auto row = rows_count - 1;
-    
+
     if(row > 0) //This should always be true, because there is always a placeholder.
       --row; //Ignore the placeholder.
-   
+
     //Step backwards until we find one that is not removed.
     while((m_map_rows.find(row) != m_map_rows.end()) && m_map_rows[row].m_removed)
     {

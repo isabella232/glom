@@ -35,7 +35,7 @@ private:
 
 public:
   static Glib::RefPtr<CanvasGroupDbTable> create(const Glib::ustring& table_name, const Glib::ustring& table_title, const Document::type_vec_fields& fields, double x = 0.0, double y = 0.0);
- 
+
   //TODO: Use bounds instead?
   double get_table_height() const;
   double get_table_width() const;

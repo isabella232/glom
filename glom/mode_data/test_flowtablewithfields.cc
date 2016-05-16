@@ -61,8 +61,8 @@ static void fill_flowtable(Glom::FlowTableWithFields& flowtable)
     item->set_title("title for image", AppWindow::get_current_locale());
     flowtable.add_layout_item(item);
   }
-  
-  auto group = 
+
+  auto group =
     std::make_shared<Glom::LayoutGroup>();
   auto item =
     std::make_shared<Glom::LayoutItem_Text>();
@@ -99,7 +99,7 @@ main(int argc, char* argv[])
   window.add(flowtable);
   flowtable.set_design_mode();
   flowtable.show();
-  
+
   flowtable.set_enable_drag_and_drop(true);
   //flowtable.set_drag_enabled(EGG_DRAG_FULL);
   //flowtable.set_drop_enabled(true);

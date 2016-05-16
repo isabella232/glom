@@ -44,20 +44,20 @@ public:
   Label();
   explicit Label(const Glib::ustring& label, bool mnemonic = false);
   explicit Label(const Glib::ustring& label, Gtk::Align xalign, Gtk::Align yalign, bool mnemonic = false);
-  
+
   Gtk::Label* get_label();
 
 private:
   void init();
 
   AppWindow* get_appwindow() const override;
-    
+
   Gtk::Label m_label;
-#ifndef GLOM_ENABLE_CLIENT_ONLY    
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   bool on_button_press_event(GdkEventButton *event) override;
   void on_menu_properties_activate() override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-    
+
 };
 
 } //namespace DataWidetChildren

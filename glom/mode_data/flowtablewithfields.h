@@ -103,7 +103,7 @@ public:
    */
   void set_other_field_value(const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& value);
 
-  /** Refresh the list of related records in choice combo boxes, 
+  /** Refresh the list of related records in choice combo boxes,
    * in any instance of the specified field.
    */
   void update_choices(const std::shared_ptr<const LayoutItem_Field>& field);
@@ -136,7 +136,7 @@ public:
    */
   void get_layout_groups(Document::type_list_layout_groups& groups);
   std::shared_ptr<LayoutGroup> get_layout_group();
-  
+
   void set_enable_drag_and_drop(bool enabled = true);
 
   /** For instance,

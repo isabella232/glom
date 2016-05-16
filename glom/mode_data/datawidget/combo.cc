@@ -96,14 +96,14 @@ void ComboGlom::set_choices_fixed(const Formatting::type_list_values& list_value
     clear(); //This breaks GtkCombo with has-entry.
   }
 
-  auto cell_area = 
+  auto cell_area =
     Glib::RefPtr<Gtk::CellAreaBox>::cast_dynamic(get_area());
   if(!cell_area)
   {
     std::cerr << G_STRFUNC << ": Unexpected or null CellArea type.\n";
     return;
   }
-  
+
   int columns_count = model->get_n_columns();
   if(columns_count)
     columns_count -= 1; //The last one is the just the extra text-equivalent of the first one, for GtkComboBox with has-entry=true, or for translations.

@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_SUMMARY_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_SUMMARY_H
 

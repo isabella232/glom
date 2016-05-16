@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #include <gtkmm/window.h>
 #include "canvas_editable.h"
 #include "canvas_line_movable.h"
@@ -32,7 +32,7 @@
 class MyCanvas : public Glom::CanvasEditable
 {
 public:
-  
+
   MyCanvas()
   : m_context_menu(nullptr)
   {
@@ -112,8 +112,8 @@ public:
     goo_canvas_item_set_child_properties(GOO_CANVAS_ITEM(table->gobj()), GOO_CANVAS_ITEM(innerrect1->gobj()),
                                        "row", 0,
                                        "column", 0,
-                                       "x-fill", TRUE, 
-                                       "x-expand", TRUE, 
+                                       "x-fill", TRUE,
+                                       "x-expand", TRUE,
                                        (void*)0);
     auto innerrect2 = Glom::CanvasRectMovable::create();
     innerrect2->property_fill_color() = "green"; //This makes the whole area clickable, not just the outline stroke.
@@ -124,8 +124,8 @@ public:
     goo_canvas_item_set_child_properties(GOO_CANVAS_ITEM(table->gobj()), GOO_CANVAS_ITEM(innerrect2->gobj()),
                                        "row", 1,
                                        "column", 1,
-                                       "x-fill", TRUE, 
-                                       "x-expand", TRUE, 
+                                       "x-fill", TRUE,
+                                       "x-expand", TRUE,
                                        (void*)0);
     auto innerrect3 = Goocanvas::Text::create();
     innerrect3->property_fill_color() = "yellow"; //This makes the whole area clickable, not just the outline stroke.
@@ -139,8 +139,8 @@ public:
     goo_canvas_item_set_child_properties(GOO_CANVAS_ITEM(table->gobj()), GOO_CANVAS_ITEM(innerrect3->gobj()),
                                        "row", 2,
                                        "column", 2,
-                                       "x-fill", TRUE, 
-                                       "x-expand", TRUE, 
+                                       "x-fill", TRUE,
+                                       "x-expand", TRUE,
                                        (void*)0);
 
     add_item(table, true);
@@ -164,7 +164,7 @@ private:
   void on_context_menu_delete()
   {
   }
-  
+
   void setup_context_menu()
   {
     m_context_menu_action_group = Gtk::ActionGroup::create();
@@ -182,12 +182,12 @@ private:
     auto menu = Gio::Menu::create();
     menu->append(_("_Edit"), "context.edit");
     menu->append(_("_Delete"), "context.delete");
-    
+
     //Get the menu:
     m_context_menu = std::make_unique<Gtk::Menu>(menu);
     m_context_menu->attach_to_widget(*this);
   }
- 
+
   std::unique_ptr<Gtk::Menu> m_context_menu;
   Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
   Glib::RefPtr<Gtk::Builder> m_context_menu_builder;
@@ -203,7 +203,7 @@ main(int argc, char* argv[])
   MyCanvas canvas;
   window.add(canvas);
   canvas.show();
-  
+
 
   Gtk::Main::run(window);
 

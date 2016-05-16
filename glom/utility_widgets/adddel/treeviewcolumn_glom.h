@@ -35,7 +35,7 @@ public:
   void set_column_id(const Glib::ustring& value);
 
 private:
-  Glib::ustring m_column_id; 
+  Glib::ustring m_column_id;
 };
 
 } //namespace Glom

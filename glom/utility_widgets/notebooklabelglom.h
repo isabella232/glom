@@ -39,24 +39,24 @@ public:
   explicit NotebookLabel(NotebookGlom* notebook);
   explicit NotebookLabel(const Glib::ustring& label, NotebookGlom* notebook);
 
-  void set_label(const Glib::ustring& title);  
-    
+  void set_label(const Glib::ustring& title);
+
 private:
   void init();
 
   virtual AppWindow* get_appwindow();
-    
+
   Gtk::Label m_label;
   NotebookGlom* m_notebook;
-  
+
   void setup_menu(Gtk::Widget* widget);
   std::unique_ptr<Gtk::Menu> m_popup_menu;
-  
+
   void on_menu_new_group_activate();
   void on_menu_delete_activate();
-    
+
   bool on_button_press_event(GdkEventButton *event) override;
-  
+
   Glib::RefPtr<Gio::SimpleAction> m_new_group;
   Glib::RefPtr<Gio::SimpleAction> m_deelete;
   Glib::RefPtr<Gio::SimpleActionGroup> m_action_group;

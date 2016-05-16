@@ -90,7 +90,7 @@ static void clear_flowtable(Glom::FlowTable& flowtable)
   for(const auto& widget : vec_child_widgets)
   {
     //std::cout << "  loop: widget=" << widget << std::endl;
-    delete widget; //TODO: This crashes 
+    delete widget; //TODO: This crashes
   }
 
   vec_child_widgets.clear();
@@ -99,7 +99,7 @@ static void clear_flowtable(Glom::FlowTable& flowtable)
 int
 main(int argc, char* argv[])
 {
-  auto app = 
+  auto app =
     Gtk::Application::create(argc, argv, "org.glom.test_flowtable");
 
   Gtk::Window window;

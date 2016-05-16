@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #include "dialog_invalid_data.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/utils_ui.h>
@@ -38,11 +38,11 @@ bool glom_show_dialog_invalid_data(Field::glom_field_type glom_type)
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return false;
-    
+
   dialog->set_example_data(glom_type);
   //dialog->set_transient_for(*this);
   const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
-  
+
   delete dialog;
   return (response == 2); //The glade file has a response of 2 for the Revert button.
 }

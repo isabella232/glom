@@ -26,7 +26,7 @@
 namespace Glom
 {
 
-/** This is a separate class, instead of just deriving Document from 
+/** This is a separate class, instead of just deriving Document from
  * TranslatableItem, to avoid the need to use Document via std::shared_ptr.
  */
 class DatabaseTitle

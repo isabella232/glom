@@ -52,7 +52,7 @@ TableInfo& TableInfo::operator=(const TableInfo& src) noexcept
 bool TableInfo::operator==(const TableInfo& src) const noexcept
 {
   return TranslatableItem::operator==(src) &&
-    HasTitleSingular::operator==(src) && 
+    HasTitleSingular::operator==(src) &&
     (m_hidden == src.m_hidden) &&
     (m_default == src.m_default);
 }

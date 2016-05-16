@@ -34,7 +34,7 @@ class Notebook_Glom :
   public NotebookNoFrame,
   public Base_DB
 {
-public: 
+public:
   Notebook_Glom();
 
   //virtual void show_hint();

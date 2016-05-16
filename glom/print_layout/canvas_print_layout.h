@@ -50,12 +50,12 @@ public:
   void set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page_setup);
   Glib::RefPtr<Gtk::PageSetup> get_page_setup();
   Glib::RefPtr<const Gtk::PageSetup> get_page_setup() const;
-  
+
   void set_page_count(guint count);
   guint get_page_count() const;
 
   void set_zoom_percent(guint percent);
- 
+
   /** Hide the bounds rectangle and the margin lines:
    */
   void hide_page_bounds();
@@ -80,12 +80,12 @@ public:
    */
   type_vec_items get_selected_items() override;
 
-  /** Set all items as selected or unselected. 
+  /** Set all items as selected or unselected.
    * @param selected Use false to unselect all.
    */
   void select_all(bool selected = true);
-  
-  
+
+
   Goocanvas::Bounds get_page_bounds(guint page_num) const;
 
   /** Look for any items that overlap the @a canvas_item and move them down so that the no longer overlap.
@@ -94,7 +94,7 @@ public:
    * @param result The highest item that should be moved down to the start of the next page, if any:
    */
   Glib::RefPtr<CanvasLayoutItem> move_items_down(double y_start, double offset);
-  
+
 private:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -109,7 +109,7 @@ private:
   void fill_with_data(const Glib::RefPtr<Goocanvas::Group>& canvas_group, const FoundSet& found_set, bool avoid_page_margins);
   void fill_with_data_portal(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, const Gnome::Gda::Value& foreign_key_value);
   static void set_canvas_item_field_value(const Glib::RefPtr<Goocanvas::Item>& canvas_item, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  
+
   type_vecConstLayoutFields get_portal_fields_to_show(const std::shared_ptr<const LayoutItem_Portal>& portal);
 
   void create_canvas_layout_item_and_add(const std::shared_ptr<LayoutItem>& layout_item);
@@ -117,7 +117,7 @@ private:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   std::shared_ptr<LayoutItem_Portal> offer_related_records(const std::shared_ptr<LayoutItem_Portal>& portal, Gtk::Window* parent);
   std::shared_ptr<LayoutItem_Line> offer_line(const std::shared_ptr<LayoutItem_Line>& portal, Gtk::Window* parent);
-  
+
   //TODO: Make the signal send the item, so we can pass it by const reference:
   void on_item_show_context_menu(guint button, guint32 activate_time, Glib::RefPtr<CanvasLayoutItem> item);
   void on_context_menu_edit();
@@ -129,7 +129,7 @@ private:
 #endif
 
   void update_page_bounds();
-  
+
   Glib::RefPtr<Goocanvas::Polyline> create_margin_line(double x1, double y1, double x2, double y2);
 
   double get_page_height() const;
@@ -145,7 +145,7 @@ private:
   Glib::RefPtr<Goocanvas::Group> m_bounds_group; //the page and its margins.
   Glib::RefPtr<Goocanvas::Rect> m_bounds_rect;
   Glib::RefPtr<Goocanvas::Polyline> m_margin_left, m_margin_right;
-  
+
   typedef std::vector< Glib::RefPtr<Goocanvas::Polyline> > type_vec_margins;
   type_vec_margins m_vec_margin_tops;
   type_vec_margins m_vec_margin_bottoms;

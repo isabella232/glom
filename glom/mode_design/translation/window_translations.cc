@@ -190,7 +190,7 @@ void Window_Translations::on_cell_data_original(Gtk::CellRenderer* renderer, con
 
       //Use the name if there is no title:
       if(text.empty())
-        text = item->get_name(); 
+        text = item->get_name();
 
       //TODO: Mark non-English originals.
       renderer_text->property_text() = text;
@@ -241,7 +241,7 @@ void Window_Translations::load_from_document()
 
     if(item->get_title_original().empty())
       continue;
-      
+
     auto iterTree = m_model->append();
     Gtk::TreeModel::Row row = *iterTree;
 
@@ -338,12 +338,12 @@ void Window_Translations::on_treeview_edited(const Glib::ustring& /* path */, co
 }
 
 void Window_Translations::on_button_export()
-{ 
+{
   //Show the file-chooser dialog, to select an output .po file:
   Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FILE_CHOOSER_ACTION_SAVE);
   file_dlg.set_transient_for(*this);
   file_dlg.set_do_overwrite_confirmation();
-  
+
   // Only po files
   auto filter = Gtk::FileFilter::create();
   filter->set_name(_("Po files"));
@@ -351,8 +351,8 @@ void Window_Translations::on_button_export()
   file_dlg.add_filter(filter);
 
   file_dlg.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  file_dlg.add_button(_("Export"), Gtk::RESPONSE_OK); 
-  
+  file_dlg.add_button(_("Export"), Gtk::RESPONSE_OK);
+
   const auto result = file_dlg.run();
   if(result != Gtk::RESPONSE_OK)
     return;
@@ -362,7 +362,7 @@ void Window_Translations::on_button_export()
     return;
 
   save_to_document();
-  
+
   //Enforce the file extension:
   const Glib::ustring extension = ".po";
   bool add_extension = false;
@@ -391,9 +391,9 @@ void Window_Translations::on_button_import()
 
   file_dlg.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
 
-  //Note to translators: "Import" here is an action verb - it's a button. 
+  //Note to translators: "Import" here is an action verb - it's a button.
   file_dlg.add_button(_("Import"), Gtk::RESPONSE_OK);
-  
+
   const auto result = file_dlg.run();
   if(result != Gtk::RESPONSE_OK)
     return;
@@ -403,7 +403,7 @@ void Window_Translations::on_button_import()
     return;
 
   Glom::import_translations_from_po_file(get_document(), uri, m_translation_locale);
-  
+
   //Show the changed document in the UI:
   load_from_document();
 }

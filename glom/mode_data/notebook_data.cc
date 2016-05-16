@@ -54,7 +54,7 @@ Notebook_Data::Notebook_Data()
   //Allow List to ask Details to show a record.
   m_Box_List.signal_user_requested_details().connect(sigc::mem_fun(*this,
     &Notebook_Data::on_list_user_requested_details));
-  
+
   //Allow the parent widget to detect list selection changes:
   m_Box_List.signal_record_selection_changed().connect(m_signal_record_selection_changed.make_slot());
 
@@ -69,7 +69,7 @@ Notebook_Data::Notebook_Data()
 
   //Allow Details to ask to show a different record in a different table:
   signal_connect_for_reemit_2args(m_Box_Details.signal_requested_related_details(), m_signal_record_details_requested);
-  
+
 
   //Fill composite view:
   add_view(&m_Box_List);
@@ -240,8 +240,8 @@ FoundSet Notebook_Data::get_found_set_selected() const
   {
     //Start with something sensible:
     FoundSet found_set = m_Box_List.get_found_set();
-    
-    const Gnome::Gda::Value primary_key_value_selected = 
+
+    const Gnome::Gda::Value primary_key_value_selected =
       m_Box_List.get_primary_key_value_selected();
     if(Conversions::value_is_empty(primary_key_value_selected))
     {
@@ -257,7 +257,7 @@ FoundSet Notebook_Data::get_found_set_selected() const
       found_set.m_where_clause = Gnome::Gda::SqlExpr();
       return found_set;
     }
-    
+
     auto primary_key_field =
       document->get_field_primary_key(m_table_name);
     found_set.m_where_clause = SqlUtils::build_simple_where_expression(

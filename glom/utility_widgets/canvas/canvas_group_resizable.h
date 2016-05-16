@@ -44,13 +44,13 @@ public:
 
   /** This should only be called after this CanvasGroupResizable has already been added to a canvas.
    * The position (x, y, width, height) of the child will match the position of the CanvasGroupResizable,
-   * overriding any previous position of the child. 
+   * overriding any previous position of the child.
    */
   void set_child(const Glib::RefPtr<CanvasItemMovable>& child);
-  
+
   /// Get the only child:
   Glib::RefPtr<CanvasItemMovable> get_child();
-  
+
   /// Get the only child:
   Glib::RefPtr<const CanvasItemMovable> get_child() const;
 

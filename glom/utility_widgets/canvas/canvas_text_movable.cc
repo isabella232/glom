@@ -29,7 +29,7 @@ namespace Glom
 
 
 CanvasTextMovable::CanvasTextMovable(const Glib::ustring& text, double x, double y, double width, Goocanvas::AnchorType anchor)
-: Goocanvas::Text(text, x, y, width, anchor), 
+: Goocanvas::Text(text, x, y, width, anchor),
   m_snap_corner(Corners::TOP_LEFT) //arbitrary default.
 {
   init();
@@ -66,7 +66,7 @@ void CanvasTextMovable::get_width_height(double& width, double& height) const
 {
   //TODO: This only works when it is on a canvas already,
   //and this is apparently incorrect when the "coordinate space" of the item changes, whatever that means. murrayc.
-  
+
   width = property_width();
   height = property_height();
 }
@@ -148,14 +148,14 @@ void CanvasTextMovable::set_font_points(const Glib::ustring& font)
 
   //Convert the size to mm, because GooCanvasText can only understand font sizes in terms of the canvas units,
   //but user will provide the size in points.
-  //TODO: Discover the canvas units and do an appropriate conversion, 
+  //TODO: Discover the canvas units and do an appropriate conversion,
   //so that this works for other canvas units:
   Pango::FontDescription pango_font(font_points);
   pango_font.set_absolute_size( (int)((double)pango_font.get_size() * 0.375) ); //according to Wikipedia.
   //I don't know what it would be relative to, but it seems necessary to specify the absolute size.
 
   font_points = pango_font.to_string();
-  
+
   m_font = font_points;
   //std::cout << "DEBUG: m_font=" << m_font << std::endl;
 
@@ -173,15 +173,15 @@ void CanvasTextMovable::reconstruct_markup()
   char* markup = nullptr;
   if(!m_text.empty())
   {
-    //We will use the text as markup, so remove anything that could be 
+    //We will use the text as markup, so remove anything that could be
     //interpreted as pango markup.
     //This is not really pango-specific, but it might just work:
     const auto text_escaped = Glib::Markup::escape_text(m_text);
-    
+
     //We add px (meaning absolute points size).
     //Otherwise both GooCanvas and GTK+ scale the font up, making it too large.
     //This really seems like a bug in GooCanvas.
-    //TODO: This might not be robust - it assumes that the font size is at the end of the font_desc 
+    //TODO: This might not be robust - it assumes that the font size is at the end of the font_desc
     //provided by GtkFontButton.
     markup = g_strdup_printf("<span font_desc=\"%s\">%s</span>", m_font.c_str(), text_escaped.c_str());
     //std::cout << "DEBUG: markup=" << markup << std::endl;

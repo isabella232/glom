@@ -66,10 +66,10 @@ void ComboChoicesWithTreeModel::create_model_non_db(guint columns_count)
   Gtk::TreeModel::ColumnRecord record;
 
   //Create the TreeModelColumns, adding them to the ColumnRecord:
-    
+
   m_vec_model_columns_value_fixed.resize(columns_count);
   for(guint i = 0; i < columns_count; ++i)
-  {    
+  {
     //Create a value column for all columns
     //for instance for later value comparison.
     auto model_column = std::make_unique<type_model_column_value_fixed>();
@@ -78,7 +78,7 @@ void ComboChoicesWithTreeModel::create_model_non_db(guint columns_count)
     //Store it so we can use it and delete it later:
     m_vec_model_columns_value_fixed[i] = std::move(model_column);
   }
-  
+
   //Create a text column, for use by a GtkComboBox with has-entry, which allows no other column type:
   //Note that get_fixed_model_text_column() assumes that this is the last column:
   m_vec_model_columns_string_fixed.resize(1); //TODO: Shouldn't this be 0?
@@ -199,7 +199,7 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const Formatting::type_list_va
     auto layout_item = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
     if(!layout_item)
       continue;
-    
+
     if(!choicevalue)
       continue;
 
@@ -218,7 +218,7 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const Formatting::type_list_va
     }
     else
     {
-      text = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), 
+      text = Conversions::get_text_for_gda_value(layout_item->get_glom_type(),
         value, layout_item->get_formatting_used().m_numeric_format);
     }
 
@@ -287,7 +287,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const std::shared_ptr<const 
 
   m_db_layout_items.clear();
 
-  //We create DbTreeModelWithExtraText rather than just DbTreeModel, 
+  //We create DbTreeModelWithExtraText rather than just DbTreeModel,
   //because Combo(has_entry) needs it.
   //TODO: Avoid getting the actual data if the user does not have view rights.
   const auto table_privs = Privs::get_current_privs(found_set.m_table_name);
@@ -381,7 +381,7 @@ void ComboChoicesWithTreeModel::on_cell_data(const Gtk::TreeModel::iterator& ite
     std::cerr << G_STRFUNC << ": model_column_index (" << model_column_index << ") is out of range. size=" << m_db_layout_items.size() << std::endl;
     return;
   }
-   
+
   if(!cell)
   {
     std::cerr << G_STRFUNC << ": cell is null.\n";
@@ -410,7 +410,7 @@ void ComboChoicesWithTreeModel::cell_connect_cell_data_func(Gtk::CellLayout* cel
     std::cerr << G_STRFUNC << ": model_column_index (" << model_column_index << ") is out of range. size=" << m_db_layout_items.size() << std::endl;
     return;
   }
-  
+
   celllayout->set_cell_data_func(*cell,
     sigc::bind( sigc::mem_fun(*this, &ComboChoicesWithTreeModel::on_cell_data), cell, model_column_index));
 }

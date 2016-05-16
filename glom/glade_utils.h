@@ -99,8 +99,8 @@ Glib::RefPtr<Gtk::Builder> get_glade_child_widget_derived_with_warning(T_Widget*
   // TODO: Should we use build_filename()?
   const auto filename = Glib::build_filename(
       (T_Widget::glade_developer ? "developer" : "operator"),
-      std::string(T_Widget::glade_id) + ".glade"); 
-  
+      std::string(T_Widget::glade_id) + ".glade");
+
   return helper_get_glade_widget_derived_with_warning(filename, T_Widget::glade_id, widget, false /* load just this */);
 }
 
@@ -132,8 +132,8 @@ void get_glade_widget_derived_with_warning(T_Widget*& widget)
   // The id is the same as the filename, in a developer/operator sub-directory:
   const auto filename = Glib::build_filename(
       (T_Widget::glade_developer ? "developer" : "operator"),
-      std::string(T_Widget::glade_id) + ".glade"); 
-  
+      std::string(T_Widget::glade_id) + ".glade");
+
   helper_get_glade_widget_derived_with_warning(filename, T_Widget::glade_id, widget, true /* load_all */);
 }
 

@@ -45,7 +45,7 @@ void VariablesMap::connect_widget(const Glib::ustring& widget_name, bool& variab
 void VariablesMap::connect_widget(const Glib::ustring& widget_name, Glib::ustring& variable)
 {
   Gtk::Widget* pWidget = nullptr;
-  m_builder->get_widget(widget_name, pWidget); 
+  m_builder->get_widget(widget_name, pWidget);
 
   auto pEntry = dynamic_cast<Gtk::Entry*>(pWidget); //it mange both Gtk::entry and Gtk::SpinButton
   auto pComboBox = dynamic_cast<Gtk::ComboBox*>(pWidget);
@@ -63,9 +63,9 @@ void VariablesMap::connect_widget(const Glib::ustring& widget_name, Glib::ustrin
 void VariablesMap::connect_widget(const Glib::ustring& widget_name, double& variable)
 {
   Gtk::Widget* pWidget = nullptr;
-  m_builder->get_widget(widget_name, pWidget); 
+  m_builder->get_widget(widget_name, pWidget);
 
-  auto pScale = dynamic_cast<Gtk::Scale*>(pWidget); 
+  auto pScale = dynamic_cast<Gtk::Scale*>(pWidget);
   if(pScale)
   {
     m_mapWidgetsToVariables[pScale] = (void*)(&variable);
@@ -75,9 +75,9 @@ void VariablesMap::connect_widget(const Glib::ustring& widget_name, double& vari
 void VariablesMap::connect_widget(const Glib::ustring& widget_name, Glib::Date& variable)
 {
   Gtk::Widget* pWidget = nullptr;
-  m_builder->get_widget(widget_name, pWidget); 
+  m_builder->get_widget(widget_name, pWidget);
 
-  auto pCalendar = dynamic_cast<Gtk::Calendar*>(pWidget); 
+  auto pCalendar = dynamic_cast<Gtk::Calendar*>(pWidget);
   if(pCalendar)
   {
     m_mapWidgetsToVariables[pCalendar] = (void*)(&variable);
@@ -119,8 +119,8 @@ void VariablesMap::transfer_one_widget(Gtk::Widget* pWidget, bool to_variable)
       auto pComboBox = dynamic_cast<Gtk::ComboBox*>(pWidget);
 
       auto pToggleButton = dynamic_cast<Gtk::ToggleButton*>(pWidget); //CheckButtons and RadioButtons.
-      auto pScale = dynamic_cast<Gtk::Scale*>(pWidget); 
-      auto pCalendar = dynamic_cast<Gtk::Calendar*>(pWidget); 
+      auto pScale = dynamic_cast<Gtk::Scale*>(pWidget);
+      auto pCalendar = dynamic_cast<Gtk::Calendar*>(pWidget);
 
       if(pEntry)
       {
@@ -131,7 +131,7 @@ void VariablesMap::transfer_one_widget(Gtk::Widget* pWidget, bool to_variable)
         else
           pEntry->set_text(*pVar);
       }
-      
+
       if(pComboBox)
       {
         auto pVar = static_cast<Glib::ustring*>(pVariable);
@@ -139,14 +139,14 @@ void VariablesMap::transfer_one_widget(Gtk::Widget* pWidget, bool to_variable)
 
         if(to_variable)
         {
-	      if(pIEntry) 
+	      if(pIEntry)
           	(*pVar) = pIEntry->get_text();
         } else {
-	      if(pIEntry) 
+	      if(pIEntry)
 	          pIEntry->set_text(*pVar);
 	    }
       }
-      
+
       if(pToggleButton)
       {
         auto pVar = static_cast<bool*>(pVariable);
@@ -156,7 +156,7 @@ void VariablesMap::transfer_one_widget(Gtk::Widget* pWidget, bool to_variable)
         else
           pToggleButton->set_active(*pVar);
       }
-      
+
       if(pScale)
       {
         auto pVar = static_cast<double*>(pVariable);
@@ -166,7 +166,7 @@ void VariablesMap::transfer_one_widget(Gtk::Widget* pWidget, bool to_variable)
         else
           pScale->set_value(*pVar);
       }
-      
+
       if(pCalendar)
       {
         auto pVar = static_cast<Glib::Date*>(pVariable);

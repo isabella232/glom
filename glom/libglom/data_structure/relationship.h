@@ -32,7 +32,7 @@ class Relationship
  : public TranslatableItem,
    public HasTitleSingular
 {
-public: 
+public:
   Relationship();
   Relationship(const Relationship& src);
   Relationship(Relationship&& src) = delete;

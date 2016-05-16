@@ -68,7 +68,7 @@ public:
 #endif
 
   void do_new_record();
-  
+
   void set_enable_drag_and_drop(bool enabled = true);
 
 protected:

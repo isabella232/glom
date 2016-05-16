@@ -60,7 +60,7 @@ void Dialog_InitialPassword::load_from_document()
     if(user.empty())
     {
       //Default to the UNIX user name, which is often the same as the Postgres user name:
-      const auto pchUser = getenv("USER"); 
+      const auto pchUser = getenv("USER");
       if(pchUser)
         user = pchUser;
     }

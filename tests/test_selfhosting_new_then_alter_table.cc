@@ -33,14 +33,14 @@
 static bool do_test(Glom::Document::HostingMode hosting_mode, const Glib::ustring& first_table_name, const Glib::ustring& renamed_table_name)
 {
   auto document = std::make_shared<Glom::Document>();
-  const bool recreated = 
+  const bool recreated =
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
     std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
-  
+
   if(!Glom::DbUtils::create_table_with_default_fields(document, first_table_name))
   {
     std::cerr << G_STRFUNC << ": Failure: create_table_with_default_fields() failed.\n";
@@ -66,8 +66,8 @@ static bool do_test(Glom::Document::HostingMode hosting_mode, const Glib::ustrin
   }
 
   test_selfhosting_cleanup();
- 
-  return true; 
+
+  return true;
 }
 
 static bool test(Glom::Document::HostingMode hosting_mode)
@@ -93,7 +93,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 int main()
 {
   Glom::libglom_init();
-  
+
   const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();

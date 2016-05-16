@@ -28,7 +28,7 @@
 namespace Glom
 {
 
-/** 
+/**
  */
 class Dialog_ChangeLanguage
   : public Gtk::Dialog

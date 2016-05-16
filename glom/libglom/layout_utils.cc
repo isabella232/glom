@@ -68,7 +68,7 @@ Glib::ustring Utils::get_list_of_sort_fields_for_display(const Formatting::type_
     const auto item = the_pair.first;
     if(!item)
       continue;
-    
+
     if(!text.empty())
       text += ", ";
 
@@ -97,7 +97,7 @@ LayoutGroup::type_list_const_items Utils::get_layout_items_plus_primary_key(cons
   auto pk_layout_item = std::make_shared<LayoutItem_Field>();
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
-  
+
   if(find_if_layout_item_field_is_same_field_exists(items, pk_layout_item))
     return items; //It is already in the list:
 
@@ -125,7 +125,7 @@ LayoutGroup::type_list_items Utils::get_layout_items_plus_primary_key(const Layo
   auto pk_layout_item = std::make_shared<LayoutItem_Field>();
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
-  
+
   if(find_if_layout_item_field_is_same_field_exists(items, pk_layout_item))
     return items; //It is already in the list:
 

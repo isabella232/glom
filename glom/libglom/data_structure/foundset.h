@@ -30,7 +30,7 @@
 namespace Glom
 {
 
-/** A grouping of information about a view of a table, 
+/** A grouping of information about a view of a table,
  * including what records are viewed (the where clause),
  * how the are  sorted (the sort clause).
  */

@@ -98,9 +98,9 @@ public:
    * Use delete_instance() when the program quits.
    */
   static std::shared_ptr<ConnectionPool> get_instance();
-  
+
   /** Whether the connection is ready to be used.
-   */ 
+   */
   static bool get_instance_is_ready();
 
   /** Make the ConnectionPool use the correct backend, with the necessary details,
@@ -138,7 +138,7 @@ public:
 
   std::shared_ptr<Backend> get_backend();
   std::shared_ptr<const Backend> get_backend() const;
-  
+
   /** Discover whether the backend can create GdaDataModels that can be iterated,
    * by creating them with the GDA_STATEMENT_MODEL_CURSOR_FORWARD flag.
    * If not (with sqlite, for instance), the GdaDataAccessWrapper model can provide that API, without the performance.
@@ -243,7 +243,7 @@ public:
 
   /** Add a field to the database.
    * The caller should then update the document's list of fields,
-   * for instance by calling Document::set_table_fields(). 
+   * for instance by calling Document::set_table_fields().
    *
    * @param table_name The parent table of the fields to be changed.
    * @param field The field to be added.
@@ -252,7 +252,7 @@ public:
 
   /** Remove a field from the database.
    * The caller should then update the document's list of fields,
-   * for instance by calling Document::set_table_fields(). 
+   * for instance by calling Document::set_table_fields().
    *
    * @param table_name The parent table of the fields to be changed.
    * @param field_name The name of the field to be removed.
@@ -261,21 +261,21 @@ public:
 
   /** Change some detail about a field in the database.
    * The caller should then update the document's list of fields,
-   * for instance by calling Document::set_table_fields(). 
+   * for instance by calling Document::set_table_fields().
    *
    * @param table_name The parent table of the field to be changed.
    * @param field_old The old field information.
-   * @param field The new field information. 
+   * @param field The new field information.
    */
   bool change_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field_old, const std::shared_ptr<const Field>& field) noexcept;
 
   /** Change some detail about some fields in the database.
    * The caller should then update the document's list of fields,
-   * for instance by calling Document::set_table_fields(). 
+   * for instance by calling Document::set_table_fields().
    *
    * @param table_name The parent table of the fields to be changed.
    * @param old_fields The old field information.
-   * @param fields The new field information. 
+   * @param fields The new field information.
    */
   bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& fields) noexcept;
 

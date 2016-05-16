@@ -27,7 +27,7 @@
 namespace Glom
 {
 
-/** 
+/**
  */
 class LayoutItem_Footer
 : public LayoutGroup

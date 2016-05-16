@@ -105,7 +105,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
         const auto field = layout_item->get_full_field_details();
         if(!field)
           continue;
-        
+
         //Use the specified (generated) primary key value, if there is one:
         if(primary_key_name == field_name && !Conversions::value_is_empty(primary_key_value))
         {
@@ -154,7 +154,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
         //Use auto-increment values:
         if(field->get_auto_increment() && Conversions::value_is_empty(value))
         {
-          value = 
+          value =
             DbUtils::get_next_auto_increment_value(m_table_name, field->get_name());
         }
 

@@ -268,12 +268,12 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   //Test get_table_privileges().
- 
+
 
 
   test_selfhosting_cleanup(false /* do not delete the file. */);
 
-  return true; 
+  return true;
 }
 
 int main()

@@ -33,14 +33,14 @@
 namespace Glom
 {
 
-/** A Gtk::Box base widget class, 
- * with some extra signals to allow derived classes to be used generically in 
+/** A Gtk::Box base widget class,
+ * with some extra signals to allow derived classes to be used generically in
  * Window_BoxHolder, allowing the dialog to respond to buttons in the box.
  */
 class Box_WithButtons :
   public Gtk::Box
 {
-public: 
+public:
   Box_WithButtons();
 
   Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);

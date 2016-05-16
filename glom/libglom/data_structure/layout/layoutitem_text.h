@@ -32,7 +32,7 @@ namespace Glom
  * The base class TranslatableItem holds the title,
  * and the actual (translatable) text is in the m_text member.
  */
-class LayoutItem_Text 
+class LayoutItem_Text
  : public LayoutItem_WithFormatting
 {
 public:

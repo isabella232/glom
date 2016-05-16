@@ -75,7 +75,7 @@ public:
 public:
   typedef std::vector< std::shared_ptr<LayoutItem> > type_vec_layout_items;
   typedef std::vector< std::shared_ptr<const LayoutItem> > type_vec_const_layout_items;
-  
+
 protected:
 
   /**
@@ -90,7 +90,7 @@ protected:
   virtual ~DbTreeModel();
 
 public:
- 
+
   /** A convenience method, creating the model from a list of LayoutItems,
    * instead of a list of LayoutItem_Fields.
    *
@@ -122,7 +122,7 @@ public:
   DbValue get_key_value(const TreeModel::iterator& iter) const;
 
   /** Get the last row.
-   * This will never return the placeholder row. 
+   * This will never return the placeholder row.
    */
   TreeModel::iterator get_last_row();
 

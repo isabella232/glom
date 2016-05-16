@@ -42,8 +42,8 @@ public:
 
 protected:
   friend class NotebookLabel;
-  void delete_from_layout();  
-  
+  void delete_from_layout();
+
 protected:
   void init();
 

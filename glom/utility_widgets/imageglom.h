@@ -48,7 +48,7 @@ public:
 
 
   virtual ~ImageGlom();
-  
+
   void set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name) override;
 
   void set_value(const Gnome::Gda::Value& value) override;
@@ -62,7 +62,7 @@ public:
   void set_read_only(bool read_only = true) override;
 
   void on_ev_job_finished(EvJob* job);
-  
+
 private:
   void init();
   void init_widgets(bool use_evince);
@@ -91,12 +91,12 @@ private:
   void show_image_data();
 
   void popup_menu(guint button, guint32 activate_time);
-  
+
   const GdaBinary* get_binary() const;
-  
+
   //Get a pixbuf scaled down to the current size allocation:
   Glib::RefPtr<Gdk::Pixbuf> get_scaled_image();
-  
+
   Glib::ustring save_to_temp_file(bool show_progress = true);
   bool save_file(const Glib::ustring& uri);
   bool save_file_sync(const Glib::ustring& uri);
@@ -105,16 +105,16 @@ private:
   Glib::ustring get_mime_type() const;
   static void fill_evince_supported_mime_types();
   static void fill_gdkpixbuf_supported_mime_types();
- 
+
   mutable Gnome::Gda::Value m_original_data; // Original file data (mutable so that we can create it in get_value() if it does not exist yet)
 
   Gtk::Frame m_frame;
-  
+
   //For anything supported by Evince:
   std::unique_ptr<Gtk::ScrolledWindow> m_ev_scrolled_window;
   EvView* m_ev_view;
   EvDocumentModel* m_ev_document_model;
-  
+
   //For anything supported by GdkPixbuf,
   //or for representative thumbnails and icons:
   std::unique_ptr<Gtk::Image> m_image;
@@ -124,7 +124,7 @@ private:
 
   std::unique_ptr<Gtk::Menu> m_menu_popup_user_mode;
 
-  //TODO: Use just the Gio::ActionGroup type when it derives from Gio::ActionMap. 
+  //TODO: Use just the Gio::ActionGroup type when it derives from Gio::ActionMap.
   Glib::RefPtr<Gio::SimpleActionGroup> m_action_group_user_mode_popup;
 
   //We use Gio::SimpleAction rather than Gio::Action
@@ -133,7 +133,7 @@ private:
     m_action_save_file, m_action_select_file, m_action_copy, m_action_paste, m_action_clear;
 
   bool m_read_only;
-  
+
   typedef std::vector<Glib::ustring> type_vec_ustrings;
   static type_vec_ustrings m_evince_supported_mime_types;
   static type_vec_ustrings m_gdkpixbuf_supported_mime_types;

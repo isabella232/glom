@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 
 #ifndef GLOM_PRINT_LAYOUT_TOOLBAR_BUTTON_H
 #define GLOM_PRINT_LAYOUT_TOOLBAR_BUTTON_H
@@ -59,7 +59,7 @@ private:
   {
     return "flowtable";
   };
-  
+
 private:
   enumItems m_type;
 };

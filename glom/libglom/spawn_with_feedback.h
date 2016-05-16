@@ -52,7 +52,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
 
 /** Execute a command-line command, and repeatedly call a second command that tests whether the first command has finished.
  * @param command The command-line command.
- * @param message A human-readable message to be shown, for instance in a dialog, while waiting. 
+ * @param message A human-readable message to be shown, for instance in a dialog, while waiting.
  * @slot_progress A callback to call while the work is still happening.
  * @success_text If this is not empty, then the second command will only be considered to have succeeded when this text is found in its stdout output.
  */

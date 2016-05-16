@@ -64,7 +64,7 @@ public:
 
   /// This is used only for the print layouts.
   void set_print_layout_position(double x, double y, double width, double height);
-  
+
   /// This is used only for the print layouts.
   void set_print_layout_position_y(double y);
 
@@ -109,7 +109,7 @@ private:
     //(A split will happen anyway if it is too big for a whole page):
     bool m_split_across_pages;
   };
-  
+
   mutable std::unique_ptr<PrintLayoutPosition> m_positions;
 };
 

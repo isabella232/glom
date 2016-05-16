@@ -92,12 +92,12 @@ private:
   bool on_new_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected);
   void on_new_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
 
-  
+
   bool list_examples();
   Glib::ustring get_title_from_example(const std::string& resource_name);
   void append_example(const Glib::ustring& title, const std::string& resource_name);
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */
-    
+
 #ifndef G_OS_WIN32
   static void on_service_found_static(EpcServiceMonitor* monitor, gchar* name, EpcServiceInfo* info, gpointer user_data);
   static void on_service_removed_static(EpcServiceMonitor* monitor, gchar* name, gchar* type, gpointer user_data);
@@ -108,8 +108,8 @@ private:
 
   void on_existing_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
   void on_select_clicked();
-  
-  
+
+
   Gtk::Notebook* m_notebook;
   Gtk::Button* m_select_button;
 
@@ -142,7 +142,7 @@ private:
     // For recently used resources:
     Gtk::TreeModelColumn< Glib::RefPtr<Gtk::RecentInfo> > m_col_recent_info;
   };
-  
+
 
   ExistingModelColumns m_existing_columns;
   Glib::RefPtr<Gtk::TreeStore> m_existing_model;
@@ -159,11 +159,11 @@ private:
     Gtk::TreeModelColumn<Glib::ustring> m_col_title;
     Gtk::TreeModelColumn<Glib::ustring> m_col_template_uri;
   };
-  
+
   NewModelColumns m_new_columns;
   Gtk::TreeView* m_new_view;
   Glib::RefPtr<Gtk::TreeStore> m_new_model;
-  
+
   Gtk::TreeViewColumn m_new_column_title;
   Gtk::TreeViewColumn m_new_column_button;
   Gtk::CellRendererPixbuf m_new_icon_renderer;
@@ -184,7 +184,7 @@ private:
   Gtk::TreeModel::iterator m_iter_existing_network;
 #endif
   Gtk::TreeModel::iterator m_iter_existing_other;
- 
+
   // Dummy children to indicate that a parent item has no (real) children
 #ifndef G_OS_WIN32
   std::shared_ptr<Gtk::TreeModel::iterator> m_iter_existing_network_dummy;
@@ -196,7 +196,7 @@ private:
   struct buffer { static const guint SIZE = 1024; char buf[SIZE]; };
   std::shared_ptr<buffer> m_current_buffer;
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */
-    
+
 #ifndef G_OS_WIN32
   EpcServiceMonitor* m_service_monitor;
 #endif

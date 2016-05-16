@@ -235,19 +235,19 @@ public:
    */
   typedef sigc::signal<void()> type_signal_sort_clause_changed;
   type_signal_sort_clause_changed signal_sort_clause_changed();
-  
+
   /** Emitted when the user selected (or deselected) a record.
    */
   typedef sigc::signal<void()> type_signal_record_selection_changed;
   type_signal_record_selection_changed signal_record_selection_changed();
 
   /** Get the last row.
-   * This will never return the placeholder row. 
+   * This will never return the placeholder row.
    */
   Gtk::TreeModel::iterator get_last_row();
-  
+
   /** Get the last row.
-   * This will never return the placeholder row. 
+   * This will never return the placeholder row.
    */
   Gtk::TreeModel::iterator get_last_row() const;
 
@@ -258,9 +258,9 @@ public:
    * adding the generated primary key if necessary.
    */
   bool start_new_record();
-  
+
   /** Request a height for this widget, based on the number of rows to show.
-   * The widget will change its requested height if it is filled with enough 
+   * The widget will change its requested height if it is filled with enough
    * data to need more than the @a rows_count_min, if @a rows_count_max allows that.
    */
   void set_height_rows(gulong rows_count_min, gulong rows_count_max);

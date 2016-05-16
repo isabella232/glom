@@ -39,7 +39,7 @@ class Dialog_TextObject
 public:
   static const char* glade_id;
   static const bool glade_developer;
-  
+
   Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   void set_textobject(const std::shared_ptr<const LayoutItem_Text>& textobject, const Glib::ustring& table_name, bool show_title = true);

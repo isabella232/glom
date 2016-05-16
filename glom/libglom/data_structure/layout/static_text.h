@@ -28,7 +28,7 @@ namespace Glom
 
 /** This reuses the title concept of the TranslatableItem base class to give us translatable text.
  */
-class StaticText 
+class StaticText
  : public TranslatableItem
 {
 public:

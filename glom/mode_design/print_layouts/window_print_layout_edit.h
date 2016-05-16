@@ -74,7 +74,7 @@ private:
   void on_menu_insert_create_standard();
   void on_menu_insert_add_page();
   void on_menu_insert_delete_page();
-  
+
   void on_menu_view_show_grid();
   void on_menu_view_show_rules();
   void on_menu_view_show_outlines();
@@ -86,7 +86,7 @@ private:
   void on_menu_edit_delete();
   void on_menu_edit_selectall();
   void on_menu_edit_unselectall();
-  
+
   void on_menu_align_top();
   void on_menu_align_bottom();
   void on_menu_align_left();
@@ -131,7 +131,7 @@ private:
 
   bool get_is_item_at(double x, double y) const;
   void set_default_position(const std::shared_ptr<LayoutItem>& item);
-  
+
   void canvas_convert_from_drag_pixels(double& x, double& y, bool adjust_for_scrolling = false) const;
   void get_dimensions_of_multiple_selected_items(double& x, double& y, double& width, double& height) const;
 
@@ -192,18 +192,18 @@ private:
   Glib::RefPtr<Gio::SimpleAction> m_action_zoom;
 
   //Edit menu:
-  Glib::RefPtr<Gio::SimpleAction> m_action_edit_cut, m_action_edit_copy, 
+  Glib::RefPtr<Gio::SimpleAction> m_action_edit_cut, m_action_edit_copy,
     m_action_edit_paste, m_action_edit_delete;
-    
+
   //Align menu:
-  Glib::RefPtr<Gio::SimpleAction> m_action_align_top, m_action_align_bottom, 
+  Glib::RefPtr<Gio::SimpleAction> m_action_align_top, m_action_align_bottom,
     m_action_align_left, m_action_align_right;
 
   //Toolbar:
   Gtk::Box* m_palette_box;
   std::vector<Gtk::TargetEntry> m_drag_targets_all;
   PrintLayoutToolbar m_toolbar;
-  
+
   //Context menu for clicking on empty space on the canvas:
   std::unique_ptr<Gtk::Menu> m_context_menu;
 };

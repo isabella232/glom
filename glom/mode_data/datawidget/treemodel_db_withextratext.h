@@ -26,7 +26,7 @@
 namespace Glom
 {
 
-/** This awkward class is just a version of DbTreeModel that has an 
+/** This awkward class is just a version of DbTreeModel that has an
  * extra text column that is a text representation of the primary key,
  * for use in a GtkCombo with has_entry, which requires a text column in the model.
  */
@@ -51,7 +51,7 @@ public:
    * Any LayoutItem_Fields should already have their full field details.
    */
   static Glib::RefPtr<DbTreeModelWithExtraText> create(const FoundSet& found_set, const type_vec_const_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown);
-  
+
   /** This column is a text representation of the first field column.
    */
   int get_text_column() const;
@@ -60,8 +60,8 @@ private:
   int get_n_columns_vfunc() const override;
   GType get_column_type_vfunc(int index) const override;
   void get_value_vfunc(const TreeModel::iterator& iter, int column, Glib::ValueBase& value) const override;
-  
-  
+
+
   int m_column_index_first; //The index of the first field in the TreeModel.
   std::shared_ptr<const LayoutItem_Field> m_item_first;
 };

@@ -48,13 +48,13 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   m_spinbutton_column_line_width(nullptr),
   m_colorbutton_line(nullptr),
   m_for_print_layout(false)
-{  
+{
   // Show the appropriate alternate widgets:
   m_box_table_widgets->hide();
   m_box_related_table_widgets->show();
   m_box_related_navigation->show();
   m_hbox_rows_count->show();
-  
+
   m_spinbutton_rows_count_min->set_range(0, 100); //Otherwise only 0 would be allowed.
   m_spinbutton_rows_count_min->set_increments(1, 10); //Otherwise the buttons do nothing.
   m_spinbutton_rows_count_min->signal_value_changed().connect(
@@ -162,7 +162,7 @@ void Dialog_Layout_List_Related::init_with_portal(const Glib::ustring& layout_na
   {
     m_box_related_navigation->hide();
     m_box_frame_lines->show();
-    
+
     m_spinbutton_row_line_width->set_value(
       portal->get_print_layout_row_line_width());
     m_spinbutton_column_line_width->set_value(
@@ -290,9 +290,9 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
   }
 
   //Describe the automatic navigation:
-  auto relationship_navigation_automatic = 
+  auto relationship_navigation_automatic =
     m_portal->get_portal_navigation_relationship_automatic(document);
-  Glib::ustring automatic_navigation_description = 
+  Glib::ustring automatic_navigation_description =
     m_portal->get_relationship_name_used(); //TODO: Use get_relationship_display_name() instead?
   if(relationship_navigation_automatic) //This is a relationship in the related table.
   {
@@ -316,7 +316,7 @@ void Dialog_Layout_List_Related::save_to_document()
   if(m_modified)
   {
     //Get the data from the TreeView and store it in the document:
-    
+
     //Get the groups and their fields:
     Document::type_list_layout_groups mapGroups;
 
@@ -370,17 +370,17 @@ void Dialog_Layout_List_Related::save_to_document()
       uses_rel->set_related_relationship(std::shared_ptr<Relationship>());
       m_portal->set_navigation_type(LayoutItem_Portal::navigation_type::NONE);
     }
-    
+
     m_portal->set_rows_count(
       m_spinbutton_rows_count_min->get_value(),
       m_spinbutton_rows_count_max->get_value());
-    
+
     if(m_for_print_layout)
     {
       m_portal->set_print_layout_row_line_width(
         m_spinbutton_row_line_width->get_value());
       m_portal->set_print_layout_column_line_width(
-        m_spinbutton_column_line_width->get_value());      
+        m_spinbutton_column_line_width->get_value());
       m_portal->set_print_layout_line_color(
         m_colorbutton_line->get_rgba().to_string() );
     }
@@ -406,7 +406,7 @@ void Dialog_Layout_List_Related::on_combo_relationship_changed()
   //The relationship's to field may not be a unique field, because that would
   //prevent the portal from having multiple records.
   auto to_key_field =
-    DbUtils::get_fields_for_table_one_field(get_document(), 
+    DbUtils::get_fields_for_table_one_field(get_document(),
       relationship->get_to_table(), relationship->get_to_field());
   bool relationship_invalid = false;
   if(!to_key_field)

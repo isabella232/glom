@@ -80,13 +80,13 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   box_calendar->hide();
 
   builder->get_widget("label_table_name", m_label_table_name);
-  
+
   //This is only shown in Dialog_Layout_List_Related:
   builder->get_widget("hbox_rows_count", m_hbox_rows_count);
   builder->get_widget("spinbutton_rows_count_min", m_spinbutton_rows_count_min);
   builder->get_widget("spinbutton_rows_count_max", m_spinbutton_rows_count_max);
   m_hbox_rows_count->hide();
-  
+
   builder->get_widget("treeview_fields", m_treeview_fields);
   if(m_treeview_fields)
   {

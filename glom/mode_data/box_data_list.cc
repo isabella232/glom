@@ -449,7 +449,7 @@ void Box_Data_List::create_layout()
 
   const auto table_privs = Privs::get_current_privs(m_found_set.m_table_name);
   m_AddDel.set_allow_view(table_privs.m_view);
-    
+
   m_AddDel.set_found_set(m_found_set);
   m_AddDel.set_columns(items_to_use); //TODO: Use LayoutGroup::type_list_const_items instead?
 

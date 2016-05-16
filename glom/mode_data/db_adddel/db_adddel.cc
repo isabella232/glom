@@ -175,9 +175,9 @@ void DbAddDel::on_cell_button_clicked(const Gtk::TreeModel::Path& path)
   }
 
   //This delayed action avoids a warning about a NULL GtkAdjustment.
-  //It's fairly understandable that GtkTreeView doesn't like to be destroyed 
+  //It's fairly understandable that GtkTreeView doesn't like to be destroyed
   //as a side-effect of a click on one of its GtkCellRenderers.
-  //That's unlikely to be fixed properly until GtkTreeView supports a real 
+  //That's unlikely to be fixed properly until GtkTreeView supports a real
   //button cell-renderer.
   Glib::signal_idle().connect_once(
     sigc::mem_fun(*this, &DbAddDel::on_idle_row_edit));
@@ -543,9 +543,9 @@ guint DbAddDel::get_fixed_cell_height()
         m_fixed_cell_height = (guint)height;
     }
   }
-  
+
   //We add extra spacing, because otherwise the bottom of letters such as "g" get cut off.
-  //We get this style property, which might be causing it. murrayc 
+  //We get this style property, which might be causing it. murrayc
   //TODO: Find out if this is reallyt the right way to calculate the correct height:
   int extra_height = 0;
   gtk_widget_style_get(GTK_WIDGET(m_tree_view.gobj()), "vertical-separator", &extra_height, (void*)0);
@@ -762,7 +762,7 @@ void DbAddDel::construct_specified_columns()
   auto refModelDerived = Glib::RefPtr<DbTreeModel>::cast_dynamic(m_list_store);
   if(refModelDerived)
     refModelDerived->get_record_counts(total, db_rows_count_found);
-  
+
   //+1 for the empty row:
   gulong rows_count = std::min(m_rows_count_max,  db_rows_count_found + 1);
   //Do not use less than the minimum:
@@ -1358,9 +1358,9 @@ void DbAddDel::on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& ro
   auto refTreeSelection = m_tree_view.get_selection();
   if(!refTreeSelection)
     return;
-    
+
   refTreeSelection->select(row); //TODO: This does not seem to work.
-  
+
   guint view_column_index = 0;
   get_view_column_index(model_column_index, view_column_index);
   auto pColumn = m_tree_view.get_column(view_column_index);
@@ -1369,16 +1369,16 @@ void DbAddDel::on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& ro
     std::cerr << G_STRFUNC << ": pColumn is null.\n";
     return;
   }
-  
+
   auto pCell = dynamic_cast<Gtk::CellRendererText*>(pColumn->get_first_cell());
   if(!pCell)
   {
     std::cerr << G_STRFUNC << ": pCell is null.\n";
     return;
   }
-    
+
   const auto path = get_model()->get_path(row);
-  
+
   //Highlights the cell, and start the editing:
   m_tree_view.set_cursor(path, *pColumn, *pCell, true /* start_editing */);
 }
@@ -1393,7 +1393,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
     return;
 
   const Gtk::TreeModel::Path path(path_string);
- 
+
   if(path.empty())
   {
     std::cerr << G_STRFUNC << ": path is empty.\n";
@@ -1461,7 +1461,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
         const auto formatting = item_field->get_formatting_used();
         new_text_to_save = formatting.get_custom_choice_original_for_translated_text(new_text);
 
-        //If somehow (though this should be impossible), the user entered a 
+        //If somehow (though this should be impossible), the user entered a
         //translated value with no corresponding original text, then
         //store the translated version rather than losing data.
         if(new_text_to_save.empty())
@@ -1470,7 +1470,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
 
       const auto value = Conversions::parse_value(field_type, new_text_to_save, item_field->get_formatting_used().m_numeric_format, success);
       if(!success)
-      {  
+      {
           //Tell the user and offer to revert or try again:
           const auto revert = glom_show_dialog_invalid_data(field_type);
           if(revert)
@@ -1481,12 +1481,12 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
           else
           {
             //Reactivate the cell so that the data can be corrected.
-            
+
             //Set the text to be used in the start_editing signal handler:
             m_validation_invalid_text_for_retry = new_text;
             m_validation_retry = true;
 
-            //But do this in an idle timout, so that the TreeView doesn't get 
+            //But do this in an idle timout, so that the TreeView doesn't get
             //confused by us changing editing state in this signal handler.
             Glib::signal_idle().connect_once(
               sigc::bind(
@@ -1534,7 +1534,7 @@ void DbAddDel::on_treeview_button_press_event(GdkEventButton* button_event)
 }
 
 /* We do not let the developer resize the columns directly in the treeview
- * because we cannot easily avoid this signal handler from being called just during the 
+ * because we cannot easily avoid this signal handler from being called just during the
  * intial size allocation.
  * Anyway, this would be rather implicit anyway - people might not know that they are changing it in the document.
  * The size can still be specified in the layout dialog.
@@ -1784,7 +1784,7 @@ Gnome::Gda::Value DbAddDel::get_value_key(const Gtk::TreeModel::iterator& iter) 
 void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::Gda::Value& value)
 {
   if(iter && m_list_store)
-  { 
+  {
     if(!(Conversions::value_is_empty(value)))
     {
       //This is not a placeholder anymore, if it every was:
@@ -1967,11 +1967,11 @@ AppWindow* DbAddDel::get_appwindow()
 
 void DbAddDel::on_treeview_cell_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& /* path */)
 {
-  //Start editing with previously-entered (but invalid) text, 
-  //if we are allowing the user to correct some invalid data. 
+  //Start editing with previously-entered (but invalid) text,
+  //if we are allowing the user to correct some invalid data.
   if(m_validation_retry)
   {
-    //This is the CellEditable inside the CellRenderer. 
+    //This is the CellEditable inside the CellRenderer.
     auto celleditable_validated = cell_editable;
 
     //It's usually an Entry, at least for a CellRendererText:
@@ -2124,7 +2124,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
           table_name = relationship->get_to_table();
           const auto to_field_name = relationship->get_to_field();
           //Get the key field in the other table (the table that we will change)
-          primary_key_field = DbUtils::get_fields_for_table_one_field(document, 
+          primary_key_field = DbUtils::get_fields_for_table_one_field(document,
             table_name, to_field_name); //TODO_Performance.
           if(primary_key_field)
           {
@@ -2405,7 +2405,7 @@ void DbAddDel::on_selection_changed(bool selection)
 {
   m_context_delete->set_enabled(selection);
   m_context_add->set_enabled(selection);
-  
+
   m_signal_record_selection_changed.emit();
 }
 
@@ -2422,7 +2422,7 @@ const Gtk::Window* DbAddDel::get_app_window() const
   auto nonconst = const_cast<DbAddDel*>(this);
   return nonconst->get_app_window();
 }
-  
+
 Gtk::Window* DbAddDel::get_app_window()
 {
   return dynamic_cast<Gtk::Window*>(get_toplevel());

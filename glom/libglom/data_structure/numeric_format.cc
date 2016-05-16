@@ -49,10 +49,10 @@ NumericFormat& NumericFormat::operator=(const NumericFormat& src)
 
 bool NumericFormat::operator==(const NumericFormat& src) const
 {
-  return (m_currency_symbol == src.m_currency_symbol) && 
+  return (m_currency_symbol == src.m_currency_symbol) &&
          (m_use_thousands_separator == src.m_use_thousands_separator) &&
          (m_decimal_places_restricted == src.m_decimal_places_restricted) &&
-         (m_decimal_places == src.m_decimal_places) && 
+         (m_decimal_places == src.m_decimal_places) &&
          (m_alt_foreground_color_for_negatives == src.m_alt_foreground_color_for_negatives);
 }
 

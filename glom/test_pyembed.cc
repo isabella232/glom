@@ -43,7 +43,7 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
   func_def = "def glom_calc_field_value():\n" + func_def;
 
   std::cout << func_def << std::endl;
-  
+
   Py_Initialize();
   //PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
 

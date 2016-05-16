@@ -32,7 +32,7 @@ namespace GlomBakery
 template< class T_Document >
 class View_Composite : public View<T_Document>
 {
-public: 
+public:
   View_Composite()
   {
   }
@@ -94,7 +94,7 @@ public:
 
 protected:
   typedef std::vector<type_view*> type_vec_views;
-  type_vec_views m_vecViews;    
+  type_vec_views m_vecViews;
 };
 
 } //namespace

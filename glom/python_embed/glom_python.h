@@ -47,7 +47,7 @@ bool gda_python_module_is_available();
 typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
 
 /** Run a script, ignoring the python return value.
- * The record object will be writable and the function will receive a ui 
+ * The record object will be writable and the function will receive a ui
  * parameter so it can control navigation in the UI.
  */
 void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
@@ -61,7 +61,7 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
   Glib::ustring& error_message);
 
 /** Run a python calculation, returning the python return value.
- * @param for_script: If this is true then the record object will be writable, 
+ * @param for_script: If this is true then the record object will be writable,
  * and the function will receive a ui parameter so it can control navigation in the UI.
  */
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type,

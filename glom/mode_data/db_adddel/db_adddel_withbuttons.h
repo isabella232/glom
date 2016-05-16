@@ -29,7 +29,7 @@ namespace Glom
 
 class DbAddDel_WithButtons : public DbAddDel
 {
-public: 
+public:
   DbAddDel_WithButtons();
 
   void set_allow_add(bool val = true) override;
@@ -41,7 +41,7 @@ public:
 
 private:
   void setup_buttons();
-  
+
   void on_button_add();
   void on_button_del();
   void on_button_edit();
@@ -51,7 +51,7 @@ private:
 
   //member widgets:
   Gtk::ButtonBox m_ButtonBox;
-  
+
   typedef Gtk::Button type_button;
 
   type_button m_Button_Del;

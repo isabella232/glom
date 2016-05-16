@@ -68,7 +68,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   //for an attempt to do this properly.
 
   //Try to give the user a large-enough window for working with a whole page:
-  //TODO: Make this even larger if we can be sure that no WM will make 
+  //TODO: Make this even larger if we can be sure that no WM will make
   //the window bigger than the screen.
   set_default_size(900, 640);
 
@@ -99,7 +99,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   const Gtk::TargetEntry target_rule(DRAG_TARGET_NAME_RULE, Gtk::TARGET_SAME_APP, 0);
   m_drag_targets_rule.emplace_back(target_rule);
 
-  //The rulers are not in the glade file because they use an unusual widget 
+  //The rulers are not in the glade file because they use an unusual widget
   //that Glade wouldn't usually know about:
   m_vruler = GIMP_RULER(gimp_ruler_new(GTK_ORIENTATION_VERTICAL));
   gtk_widget_show(GTK_WIDGET(m_vruler));
@@ -116,17 +116,17 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_hruler_button_press_event), true);
   Glib::wrap(GTK_WIDGET(m_vruler))->signal_button_press_event().connect(
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_vruler_button_press_event), false);
- 
+
   //Add the ruler widgets to the table at the left and top:
   //TODO: Use C++ API here:
   Gtk::Grid* grid = nullptr;
   builder->get_widget("grid_canvas", grid);
-  gtk_grid_attach(grid->gobj(), GTK_WIDGET(m_vruler), 
+  gtk_grid_attach(grid->gobj(), GTK_WIDGET(m_vruler),
     0, 1, 1, 1);
   gtk_widget_set_hexpand(GTK_WIDGET(m_vruler), FALSE);
   gtk_widget_set_vexpand(GTK_WIDGET(m_vruler), TRUE);
 
-  gtk_grid_attach(grid->gobj(), GTK_WIDGET(m_hruler), 
+  gtk_grid_attach(grid->gobj(), GTK_WIDGET(m_hruler),
     1, 0, 1, 1);
   gtk_widget_set_hexpand(GTK_WIDGET(m_hruler), TRUE);
   gtk_widget_set_vexpand(GTK_WIDGET(m_hruler), FALSE);
@@ -188,7 +188,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_canvas.signal_selection_changed().connect(
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_selection_changed));
   on_canvas_selection_changed(); //Disable relevant widgets or actions by default.
-  
+
   show_all_children();
 }
 
@@ -207,8 +207,8 @@ void Window_PrintLayout_Edit::init_menu()
 
   m_action_edit_copy = add_action("copy",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_copy) );
-  
-  m_action_edit_paste = add_action("paste", 
+
+  m_action_edit_paste = add_action("paste",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_paste) );
   m_action_edit_paste->set_enabled(false); //This is enabled when something is copied or cut.
 
@@ -240,12 +240,12 @@ void Window_PrintLayout_Edit::init_menu()
    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_delete_page) );
 
 
-  m_action_align_top = action_group->add_action("align-top", 
+  m_action_align_top = action_group->add_action("align-top",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_align_top) );
 
   m_action_align_bottom = action_group->add_action("align-bottom",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_align_bottom) );
-  
+
   m_action_align_left = action_group->add_action("align-left",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_align_left) );
 
@@ -301,7 +301,7 @@ bool Window_PrintLayout_Edit::on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragCo
     return false;
 
   //Cause our drag_data_received callback to be called:
-  //Note that this isn't necessary when using DEST_DEFAULT_DEFAULTS (or DEST_DEFAULT_DROP), 
+  //Note that this isn't necessary when using DEST_DEFAULT_DEFAULTS (or DEST_DEFAULT_DROP),
   //because that would allow us to just return true to make this happen automatically.
   m_canvas.drag_get_data(drag_context, target, timestamp);
 
@@ -382,7 +382,7 @@ std::shared_ptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayo
   {
     auto layout_item_derived = std::make_shared<LayoutItem_Text>();
 
-    // Note to translators: This is the default contents of a text item on a print layout: 
+    // Note to translators: This is the default contents of a text item on a print layout:
     layout_item_derived->set_text_original(_("text")); //TODO: Choose some other longer default because this is hidden under the drag icon?
     layout_item = layout_item_derived;
     layout_item->set_print_layout_position(0, 0,
@@ -423,7 +423,7 @@ std::shared_ptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayo
   //Set a default text style and size:
   //12pt text seems sane. It is what OpenOffice/LibreOffice and Abiword use:
   //Serif (rather than sans-serif) is sane for body text:
-  auto with_formatting = 
+  auto with_formatting =
     std::dynamic_pointer_cast<LayoutItem_WithFormatting>(layout_item);
   if(with_formatting)
     with_formatting->m_formatting.set_text_format_font("Serif 12");
@@ -439,7 +439,7 @@ void Window_PrintLayout_Edit::canvas_convert_from_drag_pixels(double& x, double&
   {
     const auto scroll_x = m_scrolled_window.get_hadjustment()->get_value();
     const auto scroll_y = m_scrolled_window.get_vadjustment()->get_value();
-  
+
     x += scroll_x;
     y += scroll_y;
   }
@@ -451,7 +451,7 @@ void Window_PrintLayout_Edit::canvas_convert_from_drag_pixels(double& x, double&
 void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint /* info */, guint timestamp)
 {
   //This is called when an item is dropped on the canvas,
-  //or after our drag_motion handler has called drag_get_data()): 	
+  //or after our drag_motion handler has called drag_get_data()):
 
   const auto target = m_canvas.drag_dest_find_target(drag_context);
   if(target.empty())
@@ -470,7 +470,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
       return;
 
     m_canvas.show_temp_rule(0, 0, false);
- 
+
     if(m_temp_rule_horizontal)
       m_canvas.add_horizontal_rule(item_y);
     else
@@ -480,7 +480,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
 
     return;
   }
-  
+
   //Discover what toolbar item was dropped:
   const auto item_type = PrintLayoutToolbarButton::get_item_type_from_selection_data(drag_context, selection_data);
   if(item_type == PrintLayoutToolbarButton::enumItems::INVALID)
@@ -499,7 +499,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
       //Show it on the canvas, at the position:
       if(layout_item)
       {
-        m_layout_item_dropping = 
+        m_layout_item_dropping =
           create_canvas_layout_item_and_add(layout_item);
 
         m_layout_item_dropping->snap_position(item_x, item_y);
@@ -528,7 +528,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
       create_canvas_layout_item_and_add(layout_item);
     item->snap_position(item_x, item_y);
     item->set_xy(item_x, item_y);
-   
+
     if(m_layout_item_dropping)
     {
       m_layout_item_dropping->remove();
@@ -609,7 +609,7 @@ void Window_PrintLayout_Edit::set_print_layout(const Glib::ustring& table_name, 
   //Set the table name and title:
   update_table_title();
 
-  m_entry_name->set_text(print_layout->get_name()); 
+  m_entry_name->set_text(print_layout->get_name());
   m_entry_title->set_text(item_get_title(print_layout));
 
   set_ruler_sizes();
@@ -635,7 +635,7 @@ std::shared_ptr<PrintLayout> Window_PrintLayout_Edit::get_print_layout()
   m_print_layout->set_title( m_entry_title->get_text() , AppWindow::get_current_locale());
 
   bool showgrid = false;
-  m_action_showgrid->get_state(showgrid); 
+  m_action_showgrid->get_state(showgrid);
   m_print_layout->set_show_grid(showgrid);
 
   bool showrules = false;
@@ -713,7 +713,7 @@ void Window_PrintLayout_Edit::setup_context_menu()
 
 bool Window_PrintLayout_Edit::on_canvas_motion_notify_event(GdkEventMotion* motion_event)
 {
-  //Notice that, unlike drag-motion, motion-notify-event's x/y position already 
+  //Notice that, unlike drag-motion, motion-notify-event's x/y position already
   //seems to have the scrolling taken into account.
   double x = motion_event->x;
   double y = motion_event->y;
@@ -752,7 +752,7 @@ void Window_PrintLayout_Edit::set_default_position(const std::shared_ptr<LayoutI
   double item_x = 10;
   double item_y = 10;
   canvas_convert_from_drag_pixels(item_x, item_y);
-  
+
   //TODO: This doesn't seem to actually work:
   while(get_is_item_at(item_x, item_y))
   {
@@ -774,7 +774,7 @@ void Window_PrintLayout_Edit::on_menu_insert_field()
 {
   auto layout_item = create_empty_item(PrintLayoutToolbarButton::enumItems::FIELD);
 
-  // Note to translators: This is the default contents of a text item on a print layout: 
+  // Note to translators: This is the default contents of a text item on a print layout:
   set_default_position(layout_item);
 
   create_canvas_layout_item_and_add(layout_item);
@@ -791,7 +791,7 @@ void Window_PrintLayout_Edit::on_menu_insert_text()
 void Window_PrintLayout_Edit::on_menu_insert_image()
 {
   auto layout_item = create_empty_item(PrintLayoutToolbarButton::enumItems::IMAGE);
-  // Note to translators: This is the default contents of a text item on a print layout: 
+  // Note to translators: This is the default contents of a text item on a print layout:
   //layout_item->set_text_original(_("text"));
   set_default_position(layout_item);
 
@@ -816,7 +816,7 @@ void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
   m_canvas.convert_from_pixels(item_x, item_y);
   */
 
-  // Note to translators: This is the default contents of a text item on a print layout: 
+  // Note to translators: This is the default contents of a text item on a print layout:
   //layout_item->set_text_original(_("text"));
   //layout_item->set_coordinates(item_x, item_y, item_x + 100, item_y);
 
@@ -856,9 +856,9 @@ void Window_PrintLayout_Edit::on_menu_insert_create_standard()
     std::cerr << G_STRFUNC << ": page_setup was null\n";
     return;
   }
-  
+
   m_print_layout = PrintLayoutUtils::create_standard(page_setup, m_table_name, document, true /* avoid page margins */);
-  
+
   m_canvas.set_print_layout(m_table_name, m_print_layout);
 }
 
@@ -884,7 +884,7 @@ void Window_PrintLayout_Edit::on_menu_insert_delete_page()
   dialog.add_button(_("Remove Page"), Gtk::RESPONSE_OK);
   if(dialog.run() != Gtk::RESPONSE_OK)
     return;
-      
+
   m_canvas.set_page_count(page_count - 1);
 }
 
@@ -976,7 +976,7 @@ void Window_PrintLayout_Edit::on_menu_view_zoom(int parameter)
     //Get the canvas size:
     Goocanvas::Bounds bounds;
     m_canvas.get_bounds(bounds);
-  
+
     double canvas_width_pixels = bounds.get_x2() - bounds.get_x1();
     double canvas_height_pixels = bounds.get_y2() - bounds.get_y1();
     m_canvas.convert_to_pixels(canvas_width_pixels, canvas_height_pixels);
@@ -999,7 +999,7 @@ void Window_PrintLayout_Edit::on_menu_view_zoom(int parameter)
   else
   {
     m_canvas.set_zoom_percent(parameter);
-  }  
+  }
 }
 
 void Window_PrintLayout_Edit::on_menu_file_page_setup()
@@ -1056,7 +1056,7 @@ void Window_PrintLayout_Edit::on_menu_edit_copy()
     if(item)
       item->update_layout_position_from_canvas();
 
-    auto cloned = 
+    auto cloned =
       glom_sharedptr_clone(item->get_layout_item());
 
     m_layout_items_to_paste.emplace_back(cloned);
@@ -1098,9 +1098,9 @@ Glib::RefPtr<CanvasLayoutItem> Window_PrintLayout_Edit::create_canvas_layout_ite
   auto canvas_item = CanvasLayoutItem::create();
   m_canvas.add_canvas_layout_item(canvas_item);
   canvas_item->set_layout_item(layout_item);
-  
+
   //canvas_item->set_outline_visible(m_outline_visibility);
-  
+
   return canvas_item;
 }
 
@@ -1146,7 +1146,7 @@ void Window_PrintLayout_Edit::on_menu_align_top()
     else if(y < top)
       top = y;
   }
-  
+
   //Give all items the same top position:
   for(const auto& selected_item : m_layout_items_selected)
   {
@@ -1174,7 +1174,7 @@ void Window_PrintLayout_Edit::on_menu_align_bottom()
     double x = 0;
     double y = 0;
     selected_item->get_xy(x, y);
-    
+
     double width = 0;
     double height = 0;
     selected_item->get_width_height(width, height);
@@ -1185,7 +1185,7 @@ void Window_PrintLayout_Edit::on_menu_align_bottom()
     else if(this_bottom > bottom)
       bottom = this_bottom;
   }
-  
+
   //Give all items the same top position:
   for(const auto& selected_item : m_layout_items_selected)
   {
@@ -1195,7 +1195,7 @@ void Window_PrintLayout_Edit::on_menu_align_bottom()
     double x = 0;
     double y = 0;
     selected_item->get_xy(x, y);
-    
+
     double width = 0;
     double height = 0;
     selected_item->get_width_height(width, height);
@@ -1226,7 +1226,7 @@ void Window_PrintLayout_Edit::on_menu_align_left()
     else if(x < left)
       left = x;
   }
-  
+
   //Give all items the same left position:
   for(const auto& selected_item : m_layout_items_selected)
   {
@@ -1255,7 +1255,7 @@ void Window_PrintLayout_Edit::on_menu_align_right()
     double x = 0;
     double y = 0;
     selected_item->get_xy(x, y);
-    
+
     double width = 0;
     double height = 0;
     selected_item->get_width_height(width, height);
@@ -1266,7 +1266,7 @@ void Window_PrintLayout_Edit::on_menu_align_right()
     else if(this_right > right)
       right = this_right;
   }
-  
+
   //Give all items the same top position:
   for(const auto& selected_item : m_layout_items_selected)
   {
@@ -1276,7 +1276,7 @@ void Window_PrintLayout_Edit::on_menu_align_right()
     double x = 0;
     double y = 0;
     selected_item->get_xy(x, y);
-    
+
     double width = 0;
     double height = 0;
     selected_item->get_width_height(width, height);
@@ -1320,10 +1320,10 @@ void Window_PrintLayout_Edit::on_scroll_value_changed()
   double height = m_scrolled_window.get_vadjustment()->get_page_size();
   double x = m_scrolled_window.get_hadjustment()->get_value();
   double y = m_scrolled_window.get_vadjustment()->get_value();
-  
+
   //This definitely seems to give the correct mm values.
   //(It understands the canvas units and scale):
-  m_canvas.convert_from_pixels(width, height); 
+  m_canvas.convert_from_pixels(width, height);
   m_canvas.convert_from_pixels(x, y);
 
   //std::cout << "DEBUG: Calling m_hruler->set_range(" << x << ", " << x + width << ", 0, " <<  x + width << std::endl;
@@ -1400,7 +1400,7 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
     item.disconnect();
   }
   m_connections_items_selected_moved.clear();
-  
+
   const auto items = m_canvas.get_selected_items();
   for(const auto& base_item : items)
   {
@@ -1469,12 +1469,12 @@ void Window_PrintLayout_Edit::on_selected_item_moved(const Glib::RefPtr<CanvasIt
     selected_item->get_xy(x, y);
     selected_item->set_xy(x + x_offset, y + y_offset);
   }
-  
+
   //Show the new positions in the spinbuttons:
   on_canvas_selection_changed();
 
   //Show the left-most and top-most position in the rulers:
-  //TODO: Maybe showing the position of the one item being 
+  //TODO: Maybe showing the position of the one item being
   //moved (though part of a group) would be better.
   //Inkscape just tracks the cursor, which doesn't seem useful.
   double x = 0;
@@ -1596,7 +1596,7 @@ bool Window_PrintLayout_Edit::on_hruler_button_press_event(GdkEventButton* butto
     return true;
 
   m_temp_rule_horizontal = true;
- 
+
   return false;
 }
 

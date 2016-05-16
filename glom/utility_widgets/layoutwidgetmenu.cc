@@ -88,7 +88,7 @@ void LayoutWidgetMenu::setup_menu(Gtk::Widget* widget)
 
   add_action(m_context_add_text,
     sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), enumType::TEXT ) );
-  
+
   add_action(m_context_delete,
     sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_activate_delete) );
 
@@ -105,7 +105,7 @@ void LayoutWidgetMenu::setup_menu(Gtk::Widget* widget)
     pApp->add_developer_action(m_context_add_button);
     pApp->add_developer_action(m_context_add_text);
 
-    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+    pApp->update_userlevel_ui(); //Update our action's sensitivity.
   }
 
   auto menu = Gio::Menu::create();
@@ -171,14 +171,14 @@ void LayoutWidgetMenu::on_menupopup_activate_delete()
 
   if(base)
   {
-    auto group = 
+    auto group =
       std::dynamic_pointer_cast<LayoutGroup>(base->get_layout_item());
     if(!group)
-      return; 
- 
+      return;
+
     group->remove_item(get_layout_item());
     base->signal_layout_changed().emit();
-  } 
+  }
 }
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY

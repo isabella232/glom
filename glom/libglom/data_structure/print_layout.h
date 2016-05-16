@@ -47,10 +47,10 @@ public:
    */
   void set_page_setup(const std::string& page_setup);
 
-  /** Returns the Page Setup as it would be created by a Gtk::PageSetup.   
+  /** Returns the Page Setup as it would be created by a Gtk::PageSetup.
    */
   std::string get_page_setup() const;
-  
+
   void set_page_count(guint count);
   guint get_page_count() const;
 

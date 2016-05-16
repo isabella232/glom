@@ -28,7 +28,7 @@ namespace Glom
 
 /** Changes the cursor for as long as this instance lives.
  * For instance, put it at the start of code in a { and } block.
- */ 
+ */
 class BusyCursor
 {
 public:

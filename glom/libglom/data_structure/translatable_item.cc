@@ -191,7 +191,7 @@ void TranslatableItem::set_title_original(const Glib::ustring& title) noexcept
 void TranslatableItem::clear_title_in_all_locales() noexcept
 {
   m_title.clear();
-  
+
   for(const auto& the_pair : m_map_translations)
   {
     auto translation = the_pair.second;

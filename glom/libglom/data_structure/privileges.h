@@ -31,7 +31,7 @@ namespace Glom
 
 class Privileges
 {
-public: 
+public:
   Privileges();
   Privileges(const Privileges& src);
   Privileges(Privileges&& src);

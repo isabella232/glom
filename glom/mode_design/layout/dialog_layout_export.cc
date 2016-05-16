@@ -139,7 +139,7 @@ void Dialog_Layout_Export::set_layout_groups(Document::type_list_const_layout_gr
       //Add the group's fields:
       for(const auto& base_item : group->get_items())
       {
-        auto item = std::dynamic_pointer_cast<const LayoutItem_Field>(base_item); 
+        auto item = std::dynamic_pointer_cast<const LayoutItem_Field>(base_item);
         if(item)
         {
           auto iterTree = m_model_fields->append();
@@ -251,7 +251,7 @@ void Dialog_Layout_Export::on_button_add_field()
 {
   //Get the chosen fields:
   const auto fields_list = offer_field_list(m_table_name, this);
-  for(const auto& field : fields_list) 
+  for(const auto& field : fields_list)
   {
     if(!field)
       continue;

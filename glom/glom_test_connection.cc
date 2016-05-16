@@ -76,12 +76,12 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
   entry.set_short_name('h');
   entry.set_description(_("The hostname of the PostgreSQL server, such as localhost."));
   add_entry(entry, m_arg_server_hostname);
-  
+
   entry.set_long_name("server-port");
   entry.set_short_name('p');
   entry.set_description(_("The port of the PostgreSQL server, such as 5434."));
   add_entry(entry, m_arg_server_port);
-  
+
   entry.set_long_name("server-username");
   entry.set_short_name('u');
   entry.set_description(_("The username for the PostgreSQL server."));
@@ -134,11 +134,11 @@ int main(int argc, char* argv[])
 
 
   Glom::libglom_init();
-  
+
   Glib::OptionContext context;
   GlomCreateOptionGroup group;
   context.set_main_group(group);
-  
+
   try
   {
     context.parse(argc, argv);
@@ -268,7 +268,7 @@ int main(int argc, char* argv[])
     {
       //We expect this exception if we did not specify a database:
       if(!(group.m_arg_server_database.empty()))
-      {  
+      {
         std::cerr << _("Error: Could not connect to the specified database.") << std::endl;
         return EXIT_FAILURE;
       }
@@ -276,7 +276,7 @@ int main(int argc, char* argv[])
   }
 
   std::cout << _("Successful connection.") << std::endl;
-        
+
   Glom::libglom_deinit();
 
   return EXIT_SUCCESS;

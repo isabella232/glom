@@ -26,7 +26,7 @@
 namespace Glom
 {
 
-class CustomTitle 
+class CustomTitle
  : public TranslatableItem
 {
 public:

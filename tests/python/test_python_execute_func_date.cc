@@ -31,7 +31,7 @@ void execute_func_with_date_return_value()
     std::cerr << "Unexpected error message: " << error_message << "\n";
   }
   g_assert(error_message.empty());
-  
+
   //Check that the return value is of the expected type:
   g_assert(value.get_value_type() == G_TYPE_DATE);
 
@@ -43,7 +43,7 @@ void execute_func_with_date_return_value()
 
   //std::cout << "value=" << value.to_string() << std::endl;
 }
-                            
+
 void execute_func_with_date_input_value()
 {
   const char* calculation = "import datetime\n"
@@ -69,7 +69,7 @@ void execute_func_with_date_input_value()
     std::cerr << "Unexpected error message: " << error_message << "\n";
   }
   g_assert(error_message.empty());
-  
+
   //Check that the return value is of the expected type:
   g_assert(value.get_value_type() == GDA_TYPE_NUMERIC);
 

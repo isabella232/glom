@@ -217,7 +217,7 @@ CanvasEditable::type_vec_items CanvasEditable::get_selected_items()
 
 void CanvasEditable::set_rules_visibility(bool visible)
 {
-  m_grid->set_rules_visibility(visible);  
+  m_grid->set_rules_visibility(visible);
 }
 
 

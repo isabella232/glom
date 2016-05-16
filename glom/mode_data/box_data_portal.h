@@ -36,13 +36,13 @@ class Box_Data_Details;
 
 /** This is a base class for data widgets that should show multiple related records.
  */
-class Box_Data_Portal : 
+class Box_Data_Portal :
   public Box_Data_ManyRecords,
-  public LayoutWidgetBase     
+  public LayoutWidgetBase
 {
-public: 
+public:
   Box_Data_Portal();
-  
+
   /**
    * @param portal: The full portal details
    */
@@ -72,7 +72,7 @@ public:
    */
   typedef sigc::signal<void(const Glib::ustring&)> type_signal_portal_record_changed;
   type_signal_portal_record_changed signal_portal_record_changed();
-    
+
   bool get_has_suitable_record_to_view_details() const;
 
   /** Discover what record to show, in what table, when clicking on a related record.
@@ -98,11 +98,11 @@ public:
 
 protected:
   type_vecConstLayoutFields get_fields_to_show() const override;
-    
+
   //Implementations of pure virtual methods from Base_DB_Table_Data:
   std::shared_ptr<Field> get_field_primary_key() const override;
 
-  //Overrides of virtual methods from Base_Db_Table_Data: 
+  //Overrides of virtual methods from Base_Db_Table_Data:
   void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row) override; // Not a signal handler.
   void on_record_deleted(const Gnome::Gda::Value& primary_key_value) override;
 
@@ -119,18 +119,18 @@ protected:
   /** Get the title of the relationship used by the portal.
    */
   Glib::ustring get_title(const Glib::ustring& locale) const;
-  
+
   /** Get the singular title of the relationship used by the portal.
    */
-  Glib::ustring get_title_singular(const Glib::ustring& locale) const;  
-  
+  Glib::ustring get_title_singular(const Glib::ustring& locale) const;
+
   Gtk::Frame m_Frame;
   Gtk::Label m_Label;
 
 private:
   Glib::ustring m_parent_table; //A duplicate of the from_table in the poral, but only when get_portal() is not null.
-  
-  // m_key_field and m_key_value are the field and its value in this table that 
+
+  // m_key_field and m_key_value are the field and its value in this table that
   // must match another field in the parent table.
 
 public:
@@ -139,7 +139,7 @@ public:
 
 private:
   bool m_find_mode;
-    
+
   type_signal_portal_record_changed m_signal_portal_record_changed;
 };
 

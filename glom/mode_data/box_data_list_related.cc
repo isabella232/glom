@@ -187,7 +187,7 @@ void Box_Data_List_Related::on_adddel_user_requested_edit(const Gtk::TreeModel::
   //Note that this is really an Open rather than an Edit.
 
   const auto primary_key_value = m_AddDel.get_value_key(row); //The primary key is in the key.
-  
+
   if(!Conversions::value_is_empty(primary_key_value))
   {
     //std::cout << "debug: " << G_STRFUNC << ": Requesting edit for primary_key=" << primary_key_value.to_string() << std::endl;
@@ -454,7 +454,7 @@ void Box_Data_List_Related::create_layout()
         child_item->set_editable(false);
 
       auto child_field = std::dynamic_pointer_cast<const LayoutItem_Field>(child_item);
-      
+
       //This check has already happened in Frame_Glom::update_table_in_document_from_database().
       //It is inefficient and unnecessary to do it here too.
       /*
@@ -489,7 +489,7 @@ void Box_Data_List_Related::create_layout()
 
   const auto table_privs = Privs::get_current_privs(m_found_set.m_table_name);
   m_AddDel.set_allow_view(table_privs.m_view);
-  
+
   m_AddDel.set_found_set(m_found_set);
   m_AddDel.set_columns(items_to_use);
 

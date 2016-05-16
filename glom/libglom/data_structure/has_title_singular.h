@@ -44,7 +44,7 @@ public:
   bool operator==(const HasTitleSingular& src) const;
   bool operator!=(const HasTitleSingular& src) const;
 
-  /** Get the (translation of the) singular form of the title, in the current locale, 
+  /** Get the (translation of the) singular form of the title, in the current locale,
    * if specified.
    */
   Glib::ustring get_title_singular(const Glib::ustring& locale) const;
@@ -53,8 +53,8 @@ public:
    */
   Glib::ustring get_title_singular_original() const;
 
-  /** Get the (translation of the) singular form of the title, in the current locale, 
-   * if specified, falling back to the non-singular title, and 
+  /** Get the (translation of the) singular form of the title, in the current locale,
+   * if specified, falling back to the non-singular title, and
    * then falling back to the table name.
    */
   Glib::ustring get_title_singular_with_fallback(const Glib::ustring& locale) const;

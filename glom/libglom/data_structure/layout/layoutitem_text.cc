@@ -46,7 +46,7 @@ LayoutItem* LayoutItem_Text::clone() const
 
 bool LayoutItem_Text::operator==(const LayoutItem_Text& src) const
 {
-  auto result = LayoutItem_WithFormatting::operator==(src) && 
+  auto result = LayoutItem_WithFormatting::operator==(src) &&
                 (*m_text == *(src.m_text));
 
   return result;

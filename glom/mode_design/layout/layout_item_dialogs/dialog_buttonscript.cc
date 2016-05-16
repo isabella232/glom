@@ -53,10 +53,10 @@ Dialog_ButtonScript::Dialog_ButtonScript(BaseObjectType* cobject, const Glib::Re
   //Dialog_Properties::set_modified(false);
 
   //Tell the SourceView to do syntax highlighting for Python:
-  auto languages_manager = 
+  auto languages_manager =
     Gsv::LanguageManager::get_default();
 
-  auto language = 
+  auto language =
     languages_manager->get_language("python"); //This is the GtkSourceView language ID.
   if(language)
   {
@@ -130,7 +130,7 @@ void Dialog_ButtonScript::on_button_test_script()
     sharedconnection->get_gda_connection(),
     callbacks,
     error_message);
-    
+
   if(!error_message.empty())
     UiUtils::show_ok_dialog(_("Calculation failed"), Glib::ustring::compose(_("The calculation failed with this error:\n%1"), error_message), *this, Gtk::MESSAGE_ERROR);
 }

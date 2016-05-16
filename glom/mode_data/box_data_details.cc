@@ -655,12 +655,12 @@ void Box_Data_Details::on_flowtable_field_open_details_requested(const std::shar
   ////auto unconst_field = std::const_pointer_cast<LayoutItem_Field>(layout_field); //A hack, because layout_field_should_have_navigation() needs to get full field details.
   //unconst_field->set_full_field_details(
   //  document->get_field(field->get_table_used(table_name), field->get_name()) ); //Otherwise get_primary_key() returns false always.
-      
+
   std::shared_ptr<Relationship> field_used_in_relationship_to_one;
-  const bool has_open_button = 
-    DbUtils::layout_field_should_have_navigation(m_table_name, layout_field, get_document(), 
+  const bool has_open_button =
+    DbUtils::layout_field_should_have_navigation(m_table_name, layout_field, get_document(),
     field_used_in_relationship_to_one);
-         
+
   //If it's a simple field that is part of a relationship,
   //identifying a related record.
   if(field_used_in_relationship_to_one)
@@ -684,7 +684,7 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const std::shared_ptr<
     std::cerr << G_STRFUNC << ": layout_item is null\n";
     return;
   }
-  
+
   const auto primary_key_value = get_primary_key_value_selected();
   const Glib::ustring table_name_before = m_table_name;
   execute_button_script(layout_item, primary_key_value);
@@ -927,7 +927,7 @@ void Box_Data_Details::print_layout()
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)
     return;  //TODO: Warn the user.
-   
+
   const auto document = std::dynamic_pointer_cast<const Document>(get_document());
   if(!document)
   {
@@ -942,14 +942,14 @@ void Box_Data_Details::print_layout()
     return;
   }
 
-  //Note that we initially create the page layout without spaces for page 
+  //Note that we initially create the page layout without spaces for page
   //breaks because those spaces would be empty space on the page after
   //we have moved items down when expanding:
   //TODO: Squash that space when expanding custom layouts.
-  auto layout = 
+  auto layout =
     PrintLayoutUtils::create_standard(page_setup, m_table_name, document,
       false /* do not avoid page margins */);
-  
+
   //Show the print preview window:
   auto app = AppWindow::get_appwindow();
   PrintLayoutUtils::do_print_layout(layout, m_found_set,

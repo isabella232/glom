@@ -1,18 +1,18 @@
 /*
  * glom
- * 
+ *
  * glom is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the
  * GNU General Public License, as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option)
  * any later version.
- * 
+ *
  * glom is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with glom.  If not, write to:
  *   The Free Software Foundation, Inc.,
@@ -35,7 +35,7 @@ class LayoutWidgetUtils : public LayoutWidgetBase
 {
 public:
   LayoutWidgetUtils();
-  
+
 protected:
   void setup_util_menu(Gtk::Widget* widget);
 
@@ -47,7 +47,7 @@ protected:
   virtual void on_menu_delete_activate();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-private:  
+private:
   Glib::RefPtr<Gio::SimpleAction> m_util_properties;
   Glib::RefPtr<Gio::SimpleAction> m_util_delete;
   Glib::RefPtr<Gio::SimpleActionGroup> m_action_group;

@@ -1,4 +1,4 @@
- 
+
 #ifndef __EGG_PLACEHOLDER_H__
 #define __EGG_PLACEHOLDER_H__
 
@@ -28,7 +28,7 @@ typedef enum {
 struct _EggPlaceholder
 {
   GtkDrawingArea drawing_area;
-	
+
   EggPlaceholderPrivate *priv;
 };
 

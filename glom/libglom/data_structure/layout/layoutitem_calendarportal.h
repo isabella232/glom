@@ -42,9 +42,9 @@ public:
 
   std::shared_ptr<Field> get_date_field();
   std::shared_ptr<const Field> get_date_field() const;
-    
+
   void set_date_field(const std::shared_ptr<Field>& field);
-    
+
   void change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new) override;
   void change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new) override;
 

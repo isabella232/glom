@@ -238,7 +238,7 @@ void Dialog_GroupsList::on_button_group_new()
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
-    
+
   dialog->set_transient_for(*this);
   const auto dialog_response = Glom::UiUtils::dialog_run_with_help(dialog);
 
@@ -280,7 +280,7 @@ void Dialog_GroupsList::on_button_group_users()
       Utils::get_glade_widget_derived_with_warning(dialog);
       if(!dialog) //Unlikely and it already warns on stderr.
         return;
-    
+
       dialog->set_transient_for(*this);
       add_view(dialog); //Give it access to the document.
 

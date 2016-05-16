@@ -39,7 +39,7 @@
 
 namespace Glom
 {
- 
+
 class Window_RelationshipsOverview
  : public Gtk::ApplicationWindow,
    public View_Composite_Glom
@@ -50,12 +50,12 @@ public:
 
   Window_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Window_RelationshipsOverview();
-  
+
   void load_from_document() override;
 
 private:
   class TableView;
-  
+
   void draw_tables();
   void draw_lines();
   void setup_context_menu();
@@ -94,7 +94,7 @@ private:
 
   typedef std::list<sigc::connection> type_list_connections;
   type_list_connections m_list_table_connections;
-  
+
   //Context menu:
   std::unique_ptr<Gtk::Menu> m_context_menu;
   Glib::RefPtr<Gio::SimpleAction> m_action_edit_fields, m_action_edit_relationships;

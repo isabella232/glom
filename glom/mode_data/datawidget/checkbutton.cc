@@ -50,7 +50,7 @@ bool CheckButton::on_button_press_event(GdkEventButton *button_event)
     pApp->add_developer_action(m_context_add_related_records);
     pApp->add_developer_action(m_context_add_group);
 
-    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+    pApp->update_userlevel_ui(); //Update our action's sensitivity.
 
     //Only show this popup in developer mode, so operators still see the default GtkCheckButton context menu.
     //TODO: It would be better to add it somehow to the standard context menu.

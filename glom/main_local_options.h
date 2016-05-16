@@ -36,12 +36,12 @@ class LocalOptionGroup : public Glib::OptionGroup
 {
 public:
   LocalOptionGroup();
-  
+
   /**
    * @result If this is false then the GApplication, or main() should return EXIT_FAILURE.
    */
   bool handle_options();
-  
+
   bool get_debug_date_check_result(bool& stop) const;
 
 private:

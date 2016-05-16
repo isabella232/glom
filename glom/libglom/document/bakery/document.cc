@@ -314,7 +314,7 @@ bool Document::write_to_disk()
             std::cerr << G_STRFUNC << ": This part of the URI is not a directory: " << parent->get_uri() <<  std::endl;
             std::cerr << G_STRFUNC << ":   using m_file_uri = " << m_file_uri << std::endl;
             return false;
-          } 
+          }
         }
         else
         {

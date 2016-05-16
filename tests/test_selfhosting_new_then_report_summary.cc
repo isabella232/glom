@@ -29,7 +29,7 @@
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   auto document = std::make_shared<Glom::Document>();
-  const bool recreated = 
+  const bool recreated =
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
@@ -37,7 +37,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  const auto report = 
+  const auto report =
     document->get_report("invoices", "by_customer");
   if(!report)
   {
@@ -51,7 +51,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   const std::locale locale("en_US.UTF-8"); //Instead of just "" (current locale) so we know what numeric representations to expect and check for.
   Glom::ReportBuilder report_builder(locale);
   report_builder.set_document(document);
-  const Glib::ustring html = 
+  const Glib::ustring html =
     report_builder.report_build(found_set, report);
 
   if(html.empty())
@@ -73,7 +73,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   test_selfhosting_cleanup();
-    
+
   return true;
 }
 
@@ -92,7 +92,7 @@ int main()
     test_selfhosting_cleanup();
     return EXIT_FAILURE;
   }
-  
+
   if(!test(Glom::Document::HostingMode::SQLITE))
   {
     std::cerr << G_STRFUNC << ": Failed with SQLite\n";

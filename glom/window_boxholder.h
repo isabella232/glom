@@ -33,7 +33,7 @@ namespace Glom
 class Window_BoxHolder :
   public Gtk::Window
 {
-public: 
+public:
   explicit Window_BoxHolder(Box_WithButtons* pBox, const Glib::ustring& title = Glib::ustring());
 
 private:

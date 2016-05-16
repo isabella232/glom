@@ -70,11 +70,11 @@ private:
    * order, and return the first one that is available.
    */
   static unsigned int discover_first_free_port(unsigned int start_port, unsigned int end_port);
-  
+
   void show_active_connections();
 
   bool m_network_shared;
-  
+
   //These are only remembered in order to use them to provide debug
   //information when the PostgreSQL shutdown fails:
   Glib::ustring m_saved_database_name, m_saved_username, m_saved_password;

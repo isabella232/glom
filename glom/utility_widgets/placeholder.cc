@@ -61,6 +61,6 @@ const Gtk::Widget* PlaceHolder::get_child() const
 {
   return m_pChild;
 }
- 
+
 } //namespace Glom
 

@@ -57,7 +57,7 @@ void DialogImageSaveProgress::save(const Glib::ustring& uri)
 
   if(m_data->data == 0)
     return;
-    
+
   if(m_data->binary_length == 0)
     return;
 
@@ -65,7 +65,7 @@ void DialogImageSaveProgress::save(const Glib::ustring& uri)
   m_progress_bar->set_text(Glib::ustring::compose("Saving %1...", m_file->get_parse_name()));
 
   m_stream.reset();
-   
+
   try
   {
     if(m_file->query_exists())
@@ -85,7 +85,7 @@ void DialogImageSaveProgress::save(const Glib::ustring& uri)
     response(Gtk::RESPONSE_REJECT);
     return;
   }
-  
+
   //Write the data to the output uri
   try
   {
@@ -107,10 +107,10 @@ void DialogImageSaveProgress::on_stream_write(const Glib::RefPtr<Gio::AsyncResul
   {
     const auto size = m_stream->write_finish(result);
     g_assert(size >= 0); // Would have thrown an exception otherwise
-    
+
     // Set progress
     m_progress_bar->set_fraction(static_cast<double>(offset + size) / m_data->binary_length);
-    
+
     // Write next chunk, if any
     if(  static_cast<gssize>(offset + size) < static_cast<gssize>(m_data->binary_length))
       // Even if choose a priority lower than GDK_PRIORITY_REDRAW + 10 for the

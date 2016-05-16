@@ -397,7 +397,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
           int count = 0;
           if(table_privs.m_view) //Avoid the query if the user does not have view rights, because it would fail.
             count = DbUtils::count_rows_returned_by(sql_query_without_sort);
-            
+
           if(count < 10000) //Arbitrary large number.
             found_set.m_sort_clause.emplace_back( SqlUtils::type_pair_sort_field(layout_item_sort, true /* ascending */) );
         }
@@ -527,7 +527,7 @@ bool Frame_Glom::attempt_change_usermode_to_operator()
   auto document = std::dynamic_pointer_cast<Document>(get_document());
   if(!document)
     return false;
-    
+
   document->set_userlevel(AppState::userlevels::OPERATOR);
 
   return true;
@@ -1189,7 +1189,7 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
   const auto quickfind_criteria = m_entry_quick_find->get_text();
   if(!quickfind_criteria.empty())
   {
-    where_clause_to_use = 
+    where_clause_to_use =
       SqlUtils::get_find_where_clause_quick(get_document(), m_table_name, Gnome::Gda::Value(quickfind_criteria));
   }
 
@@ -1206,7 +1206,7 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
   }
 
   //std::cout << "debug: " << G_STRFUNC << ": " << where_clause << std::endl;
-  
+
 
   //Try to find some records with the where_clause:
   bool records_found = false;
@@ -1294,7 +1294,7 @@ void Frame_Glom::update_table_in_document_from_database()
   if(fieldsDatabase.empty())
   {
     std::cerr << G_STRFUNC << ": Could not get the list of fields for table=" << m_table_name <<
-      " from the database. This might be due to insufficient database user rights." << 
+      " from the database. This might be due to insufficient database user rights." <<
       " Falling back to the field details in the document.\n";
   }
 
@@ -1405,7 +1405,7 @@ void Frame_Glom::on_menu_developer_database_preferences()
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
-        
+
   dialog->set_transient_for(*(get_app_window()));
   add_view(dialog);
   dialog->load_from_document();
@@ -1500,7 +1500,7 @@ void Frame_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib
       std::cerr << G_STRFUNC << ": m_dialog_relationships is null.\n";
       return;
     }
-    
+
     m_dialog_relationships->set_title("Relationships");
     m_dialog_relationships->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
     add_view(m_dialog_relationships); //Also a composite view.
@@ -1528,7 +1528,7 @@ void Frame_Glom::on_menu_developer_users()
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
-    
+
   dialog->set_transient_for(*get_app_window());
 
   add_view(dialog); //Give it access to the document.
@@ -1636,7 +1636,7 @@ void Frame_Glom::on_menu_developer_script_library()
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
-    
+
   dialog->set_transient_for(*(get_app_window()));
   add_view(dialog); //Give it access to the document.
   dialog->load_from_document();
@@ -1963,7 +1963,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
         //m_dialog_connection->load_from_document(); //Get good defaults.
         // No authentication required
-        
+
         break;
       }
   #endif //GLOM_ENABLE_SQLITE
@@ -2264,13 +2264,13 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
   //TODO: Find a way to get a full locale name from the simplified locale name from AppWindow::get_current_locale():
   ReportBuilder report_builder(std::locale("") /* the user's current locale */);
   report_builder.set_document(document);
-  const auto filepath = 
+  const auto filepath =
     report_builder.report_build_and_save(found_set, report); //TODO: Use found set's where_clause.
   UiUtils::show_report_in_browser(filepath, get_app_window());
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
- 
+
 void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout_name)
 {
   do_print_layout(print_layout_name, false /* not preview */, get_app_window());
@@ -2280,7 +2280,7 @@ void Frame_Glom::do_print_layout(const Glib::ustring& print_layout_name, bool pr
 {
   const auto document = get_document();
   auto print_layout = document->get_print_layout(m_table_name, print_layout_name);
-    
+
   const auto table_privs = Privs::get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
@@ -2289,17 +2289,17 @@ void Frame_Glom::do_print_layout(const Glib::ustring& print_layout_name, bool pr
     //TODO: Warn the user.
     return;
   }
-  
+
   //TODO: When expanding items, avoid the page gaps that the print layout's design
-  //has added.  
+  //has added.
   const auto found_set = m_notebook_data.get_found_set_selected();
   //Note that found_set.m_where_clause could be empty if there are no records yet,
-  //and that is acceptable if this is for a print preview while designing the print layout. 
-  
-  PrintLayoutUtils::do_print_layout(print_layout, found_set, 
+  //and that is acceptable if this is for a print preview while designing the print layout.
+
+  PrintLayoutUtils::do_print_layout(print_layout, found_set,
     preview, document, false /* do not avoid print margins */, transient_for);
 }
- 
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -2394,10 +2394,10 @@ void Frame_Glom::on_notebook_data_record_selection_changed()
   const auto found_set = m_notebook_data.get_found_set_selected();
   if(!found_set.m_where_clause.empty())
     something_selected = true;
-  
+
   auto pApp = dynamic_cast<AppWindow*>(get_app_window());
   if(pApp)
-    pApp->enable_menu_print_layouts_details(something_selected);  
+    pApp->enable_menu_print_layouts_details(something_selected);
 }
 
 namespace {

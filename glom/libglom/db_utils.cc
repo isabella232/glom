@@ -165,7 +165,7 @@ bool create_database(const std::shared_ptr<Document>& document, const Glib::ustr
       std::cerr << G_STRFUNC << ": add_standard_tables() failed.\n";
       return false;
     }
-    
+
     if(progress)
       progress();
 
@@ -177,7 +177,7 @@ bool create_database(const std::shared_ptr<Document>& document, const Glib::ustr
       std::cerr << G_STRFUNC << ": add_standard_groups() failed.\n";
       return false;
     }
-    
+
     if(progress)
       progress();
 
@@ -198,7 +198,7 @@ bool create_database(const std::shared_ptr<Document>& document, const Glib::ustr
 
     if(progress)
       progress();
-    
+
     //Save the port, if appropriate, so the document can be used to connect again:
     auto backend = connection_pool->get_backend();
     auto central = std::dynamic_pointer_cast<Glom::ConnectionPoolBackends::PostgresCentralHosted>(backend);
@@ -309,7 +309,7 @@ bool recreate_database_from_document(const std::shared_ptr<Document>& document, 
     std::cerr << G_STRFUNC << ": add_groups_from_document() failed.\n";
     return false;
   }
-  
+
   //Set table privileges, using the groups we just added:
   if(progress)
     progress();
@@ -318,7 +318,7 @@ bool recreate_database_from_document(const std::shared_ptr<Document>& document, 
     std::cerr << G_STRFUNC << ": set_table_privileges_groups_from_document() failed.\n";
     return false;
   }
-    
+
   for(const auto& table_info : tables)
   {
     //Add any example data to the table:
@@ -344,7 +344,7 @@ bool recreate_database_from_document(const std::shared_ptr<Document>& document, 
     //}
 
   } //for(tables)
-  
+
   return true; //All tables created successfully.
 }
 
@@ -429,7 +429,7 @@ SystemPrefs get_database_preferences(const std::shared_ptr<const Document>& docu
       {
          std::cerr << G_STRFUNC << ": add_standard_tables() failed.\n";
       }
-      
+
       ++attempts; //Try again now that we have tried to create the table.
     }
   }
@@ -969,7 +969,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
   return result;
 }
 
-//TODO: This is very inefficient, because it is 
+//TODO: This is very inefficient, because it is
 type_vec_fields get_fields_for_table(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, bool /* including_system_fields */)
 {
   //We could also get the field definitions from the database:
@@ -994,7 +994,7 @@ type_vec_fields get_fields_for_table(const std::shared_ptr<const Document>& docu
 
     //Get the field info from the database:
     //This is in the document as well, but it _might_ have changed.
-    const auto iterFindDatabase = 
+    const auto iterFindDatabase =
       find_if_same_name(fieldsDatabase, field_name);
 
     if(iterFindDatabase != fieldsDatabase.end() ) //Ignore fields that don't exist in the database anymore.
@@ -1199,7 +1199,7 @@ bool create_table_with_default_fields(const std::shared_ptr<Document>& document,
     std::cerr << G_STRFUNC << ": document was null.\n";
     return false;
   }
-  
+
   created = create_table(document->get_hosting_mode(), table_info, fields);
   if(created)
   {
@@ -1368,13 +1368,13 @@ static void builder_set_where_autoincrement(const Glib::RefPtr<Gnome::Gda::SqlBu
     std::cerr << G_STRFUNC << ": table_name is empty\n";
     return;
   }
-  
+
   if(field_name.empty())
   {
     std::cerr << G_STRFUNC << ": field_name is empty\n";
     return;
   }
-  
+
   builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
     builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
       builder->add_field_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME),
@@ -1391,13 +1391,13 @@ Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name,
     std::cerr << G_STRFUNC << ": table_name is empty\n";
     return Gnome::Gda::Value();
   }
-  
+
   if(field_name.empty())
   {
     std::cerr << G_STRFUNC << ": field_name is empty\n";
     return Gnome::Gda::Value();
   }
-  
+
   const auto result = DbUtils::auto_increment_insert_first_if_necessary(table_name, field_name);
   double num_result = Conversions::get_double_for_gda_value_numeric(result);
 
@@ -1424,7 +1424,7 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
     std::cerr << G_STRFUNC << ": table_name is empty\n";
     return Gnome::Gda::Value();
   }
-  
+
   if(field_name.empty())
   {
     std::cerr << G_STRFUNC << ": field_name is empty\n";
@@ -1493,7 +1493,7 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
     std::cerr << G_STRFUNC << ": table_name is empty\n";
     return;
   }
-  
+
   if(field_name.empty())
   {
     std::cerr << G_STRFUNC << ": field_name is empty\n";
@@ -1550,13 +1550,13 @@ void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring&
     std::cerr << G_STRFUNC << ": table_name is empty\n";
     return;
   }
-  
+
   if(field_name.empty())
   {
     std::cerr << G_STRFUNC << ": field_name is empty\n";
     return;
   }
-  
+
   auto builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_DELETE);
   builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
@@ -1780,7 +1780,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
     std::cerr << G_STRFUNC << ":   full_query: " << full_query << std::endl;
     return false;
   }
-  
+
   //Note that only -1 means an error, not all negative values.
   //For instance, it can return -2 for a successful CREATE TABLE query, to mean that the backend (SQLite) does not report how many rows were affected.
   if(exec_retval == -1)
@@ -1789,7 +1789,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
     std::cerr << G_STRFUNC << "Gnome::Gda::Connection::statement_execute_non_select() failed with SQL: " << full_query << std::endl;
     return false;
   }
-  
+
   return true;
 }
 
@@ -1865,19 +1865,19 @@ bool layout_field_should_have_navigation(const Glib::ustring& table_name, const 
 {
   //Initialize output parameter:
   field_used_in_relationship_to_one = std::shared_ptr<Relationship>();
-  
+
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document was null.\n";
     return false;
   }
-  
+
   if(table_name.empty())
   {
     std::cerr << G_STRFUNC << ": table_name was empty.\n";
     return false;
-  } 
-  
+  }
+
   if(!layout_item)
   {
     std::cerr << G_STRFUNC << ": layout_item was null.\n";
@@ -1903,7 +1903,7 @@ bool layout_field_should_have_navigation(const Glib::ustring& table_name, const 
 }
 
 Glib::ustring get_unused_database_name(const Glib::ustring& base_name)
-{ 
+{
   auto connection_pool = Glom::ConnectionPool::get_instance();
   if(!connection_pool)
     return Glib::ustring();
@@ -1937,7 +1937,7 @@ Glib::ustring get_unused_database_name(const Glib::ustring& base_name)
       database_name_possible = (base_name + pchExtraNum);
     }
     ++extra_num;
-    
+
     connection_pool->set_database(database_name_possible);
     connection_pool->set_ready_to_connect();
 
@@ -1966,8 +1966,8 @@ Glib::ustring get_unused_database_name(const Glib::ustring& base_name)
       }
     }
   }
-  
-  return Glib::ustring();    
+
+  return Glib::ustring();
 }
 
 int count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql_query)
@@ -2041,7 +2041,7 @@ Glib::ustring escape_sql_id(const Glib::ustring& id)
     return id;
   }
 
-  //Always put it in quotes even if 
+  //Always put it in quotes even if
 
   return gda_connection->quote_sql_identifier(id);
 }
@@ -2179,7 +2179,7 @@ bool add_group(const std::shared_ptr<const Document>& document, const Glib::ustr
     std::cerr << G_STRFUNC << ": group is empty.\n";
     return false;
   }
- 
+
   const auto strQuery = DbUtils::build_query_create_group(group, superuser);
   //std::cout << "DEBUGCREATE: " << strQuery << std::endl;
   const auto test = DbUtils::query_execute_string(strQuery);
@@ -2209,7 +2209,7 @@ bool add_group(const std::shared_ptr<const Document>& document, const Glib::ustr
   //Do not fail if the autoincrements table does not yet exist, because this can happen during restoring of a backup.
   if(!Utils::find_exists(table_list, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME))
     return true;
-    
+
   if(!Privs::set_table_privileges(group, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv))
   {
     std::cerr << G_STRFUNC << "Privs::set_table_privileges() failed.\n";

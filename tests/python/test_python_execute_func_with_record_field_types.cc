@@ -96,7 +96,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 {
   //Connect to a Glom database
   auto document = std::make_shared<Glom::Document>();
-  const bool recreated = 
+  const bool recreated =
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
@@ -159,7 +159,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 int main()
 {
   Glom::libglom_init();
-  
+
   const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();

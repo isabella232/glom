@@ -72,12 +72,12 @@ public:
   virtual Glib::ustring get_title_original() const noexcept;
 
   /** Get the title's translation for the specified @a locale, optionally
-   * falling back to a locale of the same language, and then falling back to 
+   * falling back to a locale of the same language, and then falling back to
    * the original.
    * Calling this with the current locale is the same as calling get_title_original().
    */
   Glib::ustring get_title_translation(const Glib::ustring& locale, bool fallback = true) const noexcept;
-  
+
 
   /** Set the title's translation for the specified locale.
    * @param title The text of the title.

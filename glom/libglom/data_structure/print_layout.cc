@@ -61,7 +61,7 @@ PrintLayout& PrintLayout::operator=(const PrintLayout& src)
   m_page_count = src.m_page_count;
   m_horizontal_rules = src.m_horizontal_rules;
   m_vertical_rules = src.m_vertical_rules;
-  
+
   return *this;
 }
 

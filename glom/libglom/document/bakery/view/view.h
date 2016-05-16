@@ -33,7 +33,7 @@ namespace GlomBakery
 template< class T_Document >
 class View : public ViewBase
 {
-public: 
+public:
   View()
   {
   }
@@ -65,7 +65,7 @@ public:
   }
 
 protected:
-  
+
   std::shared_ptr<T_Document> m_document;
 };
 

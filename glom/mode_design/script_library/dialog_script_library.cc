@@ -91,7 +91,7 @@ void Dialog_ScriptLibrary::on_button_add()
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
-    
+
   dialog->set_transient_for(*this);
   const auto dialog_response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
@@ -164,7 +164,7 @@ void Dialog_ScriptLibrary::load_current_script()
   {
     script = document->get_library_module(name);
   }
- 
+
   //Show the script text:
   m_text_view->get_buffer()->set_text(script);
 
@@ -197,7 +197,7 @@ void Dialog_ScriptLibrary::load_from_document()
     return;
 
   m_combobox_name->remove_all();
- 
+
   for(const auto& name : document->get_library_module_names())
   {
     m_combobox_name->append(name);
@@ -227,7 +227,7 @@ void Dialog_ScriptLibrary::save_to_document()
   if(!document)
     return;
 
-  save_current_script();  
+  save_current_script();
 }
 
 
