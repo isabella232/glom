@@ -1,3 +1,10 @@
+1.31.5 (unstable):
+
+* Avoid crash when trying to show GtkCssProvider errors.
+* Don't use deprecated font: syntax with GtkCssProvider.
+* Remove some unused code.
+* Require libsigc++ 2.9.2, for the newer R(Args...) syntax.
+
 1.31.4 (unstable):
 
 * Prevent a crash (in the menu code) when using a table name containing a space,
