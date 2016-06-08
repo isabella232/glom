@@ -1,3 +1,8 @@
+1.31.6 (unstable):
+
+* Layout: Custom fonts: Fix regressoin in 1.31.5.
+  (Murray Cumming)
+
 1.31.5 (unstable):
 
 * Avoid crash when trying to show GtkCssProvider errors.
