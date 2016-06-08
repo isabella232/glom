@@ -40,8 +40,7 @@ bool CsvParser::next_char_is_quote(const Glib::ustring::const_iterator& iter, co
     return false;
 
   // Look at the next character to see if it's really "" (an escaped "):
-  auto iter_next = iter;
-  ++iter_next;
+  const auto iter_next = std::next(iter);
   if(iter_next != end)
   {
     const auto c_next = *iter_next;

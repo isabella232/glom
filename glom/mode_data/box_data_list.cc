@@ -249,8 +249,7 @@ void Box_Data_List::on_details_nav_next()
     {
       //std::cout << "debug: " << G_STRFUNC << ": The current row was not the last row.\n";
 
-      iter++;
-      m_AddDel.select_item(iter);
+      m_AddDel.select_item(std::next(iter));
 
       signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
     }
