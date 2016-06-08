@@ -1,4 +1,9 @@
-1.30.3:
+1.30.4 (stable):
+
+* Avoid crash when trying to show GtkCssProvider errors.
+* Don't use deprecated font: syntax with GtkCssProvider.
+
+1.30.3 (stable):
 
 * Show the translated UI in non-English locales,
   even on newer Linux distros.
@@ -11,7 +16,7 @@
 * Export: Don't lose precision when exporting large numeric values.
   (Murray Cumming) Bug #763229 (m.rick.mac)
 
-1.30.2:
+1.30.2 (stable):
 
 * Fix crash when loading images into an image field.
   (Murray Cumming)
