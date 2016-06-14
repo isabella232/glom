@@ -166,6 +166,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   init_menu();
 
   m_palette_box->add(m_toolbar); //TODO: Just put the GtkToolPalette in the glade file and use get_widget_derived()?
+  m_toolbar.set_vexpand();
   m_toolbar.show();
 
   m_scrolled_window.get_hadjustment()->signal_changed().connect(
