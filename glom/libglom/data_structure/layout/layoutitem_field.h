@@ -140,7 +140,7 @@ public:
 
   /** Compare the name, relationship, and related_relationship.
    */
-  bool is_same_field(const std::shared_ptr<const LayoutItem_Field>& field) const;
+  bool is_same_field(const LayoutItem_Field& field) const;
 
 private:
 

@@ -60,6 +60,9 @@ static void apply_formatting(Gtk::CellRenderer* renderer, const std::shared_ptr<
     text_renderer->property_background() = bg;
 }
 
+//This really needs to take the layout_item as a std::shared_ptr<>,
+//because we might need to call set_layout_item(layout_item) on the newly-created cell.
+//TODO: And it should be non-const too.
 Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_item, const Glib::ustring& table_name, const std::shared_ptr<const Document>& document, guint fixed_cell_height)
 {
   Gtk::CellRenderer* cell = nullptr;
@@ -230,7 +233,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
         //TODO: Update this when the relationship's field value changes:
         if(choice_show_all) //Otherwise it must change whenever the relationships's ID value changes.
         {
-          pCellRendererDbList->set_choices_related(document, item_field, Gnome::Gda::Value() /* TODO: Makes no sense */);
+          pCellRendererDbList->set_choices_related(document, *item_field, Gnome::Gda::Value() /* TODO: Makes no sense */);
         }
       }
     }

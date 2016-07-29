@@ -122,8 +122,8 @@ protected:
   std::shared_ptr<Field> get_field_primary_key_for_table(const Glib::ustring& table_name) const;
 
   //Methods to be overridden by derived classes:
-  virtual void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value&  value);
-  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  virtual void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value&  value);
+  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field, const Gnome::Gda::Value& value);
 
 
   class FieldInRecord
@@ -229,7 +229,7 @@ protected:
 
   /** Get the fields whose values should be recalculated when @a field_name changes.
    */
-  type_list_const_field_items get_calculated_fields(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& field);
+  type_list_const_field_items get_calculated_fields(const Glib::ustring& table_name, const LayoutItem_Field& field);
 
   /** Get the fields used, if any, in the calculation of this field.
    */

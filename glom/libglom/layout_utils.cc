@@ -98,7 +98,7 @@ LayoutGroup::type_list_const_items Utils::get_layout_items_plus_primary_key(cons
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
 
-  if(find_if_layout_item_field_is_same_field_exists(items, pk_layout_item))
+  if(find_if_layout_item_field_is_same_field_exists(items, *pk_layout_item))
     return items; //It is already in the list:
 
   LayoutGroup::type_list_const_items items_plus_pk = items;
@@ -126,7 +126,7 @@ LayoutGroup::type_list_items Utils::get_layout_items_plus_primary_key(const Layo
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
 
-  if(find_if_layout_item_field_is_same_field_exists(items, pk_layout_item))
+  if(find_if_layout_item_field_is_same_field_exists(items, *pk_layout_item))
     return items; //It is already in the list:
 
   LayoutGroup::type_list_items items_plus_pk = items;

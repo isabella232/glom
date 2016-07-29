@@ -106,9 +106,9 @@ void FlowTableWithFields::add_layout_item(const std::shared_ptr<LayoutItem>& ite
     if(field_details)
     {
       if(field_details->get_auto_increment())
-        set_field_editable(field, false);
+        set_field_editable(*field, false);
       else
-        set_field_editable(field, field->get_editable_and_allowed());
+        set_field_editable(*field, field->get_editable_and_allowed());
     }
   }
   else
@@ -672,12 +672,12 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
   }
 }
 
-void FlowTableWithFields::set_field_value(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void FlowTableWithFields::set_field_value(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
   set_field_value(field, value, true);
 }
 
-void FlowTableWithFields::set_field_value(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, bool set_specified_field_layout)
+void FlowTableWithFields::set_field_value(const LayoutItem_Field& field, const Gnome::Gda::Value& value, bool set_specified_field_layout)
 {
   //Set widgets which should show the value of this field:
   for(const auto& item : get_field(field, set_specified_field_layout))
@@ -710,12 +710,12 @@ void FlowTableWithFields::set_field_value(const std::shared_ptr<const LayoutItem
   }
 }
 
-void FlowTableWithFields::set_other_field_value(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void FlowTableWithFields::set_other_field_value(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
   set_field_value(field, value, false);
 }
 
-Gnome::Gda::Value FlowTableWithFields::get_field_value(const std::shared_ptr<const LayoutItem_Field>& field) const
+Gnome::Gda::Value FlowTableWithFields::get_field_value(const LayoutItem_Field& field) const
 {
   const auto list_widgets = get_field(field, true);
   for(const auto& list_widget : list_widgets)
@@ -733,7 +733,7 @@ Gnome::Gda::Value FlowTableWithFields::get_field_value(const std::shared_ptr<con
   return Gnome::Gda::Value(); //null.
 }
 
-void FlowTableWithFields::set_field_editable(const std::shared_ptr<const LayoutItem_Field>& field, bool editable)
+void FlowTableWithFields::set_field_editable(const LayoutItem_Field& field, bool editable)
 {
   for(const auto& item : get_field(field, true))
   {
@@ -745,7 +745,7 @@ void FlowTableWithFields::set_field_editable(const std::shared_ptr<const LayoutI
   }
 }
 
-void FlowTableWithFields::update_choices(const std::shared_ptr<const LayoutItem_Field>& field)
+void FlowTableWithFields::update_choices(const LayoutItem_Field& field)
 {
   for(const auto& item : get_field(field, true))
   {
@@ -772,11 +772,11 @@ void FlowTableWithFields::update_choices(const std::shared_ptr<const LayoutItem_
 }
 
 
-FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const std::shared_ptr<const LayoutItem_Field>& from_key)
+FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const LayoutItem_Field& from_key)
 {
   type_portals result;
 
-  const auto from_key_name = from_key->get_name();
+  const auto from_key_name = from_key.get_name();
 
   //Check the single-item widgets:
   for(const auto& pPortalUI : m_portals)
@@ -815,13 +815,11 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const std::sh
   return result;
 }
 
-FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets(const std::shared_ptr<const LayoutItem_Field>& from_key)
+FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets(const LayoutItem_Field& from_key)
 {
   type_choice_widgets result;
-  if(!from_key)
-    return result;
 
-  const auto from_key_name = from_key->get_name();
+  const auto from_key_name = from_key.get_name();
 
   //Check the single-item widgets:
   for(const auto& the_pair : m_listFields)
@@ -876,11 +874,11 @@ namespace
   // Get the direct widgets represesenting a given layout item
   // from a flowtable, without considering subflowtables:
   template<typename InputIterator, typename OutputIterator>
-  static void get_direct_fields(InputIterator begin, InputIterator end, OutputIterator out, const std::shared_ptr<const LayoutItem_Field>& layout_item, bool include_item)
+  static void get_direct_fields(InputIterator begin, InputIterator end, OutputIterator out, const LayoutItem_Field& layout_item, bool include_item)
   {
     for(InputIterator iter = begin; iter != end; ++iter)
     {
-      if(iter->m_field->is_same_field(layout_item) && (include_item || iter->m_field != layout_item))
+      if(iter->m_field->is_same_field(layout_item) && (include_item || *(iter->m_field) != layout_item))
       {
         if(iter->m_checkbutton)
           *out++ = iter->m_checkbutton;
@@ -891,7 +889,7 @@ namespace
   }
 }
 
-FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const std::shared_ptr<const LayoutItem_Field>& layout_item, bool include_item) const
+FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const LayoutItem_Field& layout_item, bool include_item) const
 {
   type_list_const_widgets result;
 
@@ -914,7 +912,7 @@ FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(cons
   return result;
 }
 
-FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const std::shared_ptr<const LayoutItem_Field>& layout_item, bool include_item)
+FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const LayoutItem_Field& layout_item, bool include_item)
 {
   type_list_widgets result;
 

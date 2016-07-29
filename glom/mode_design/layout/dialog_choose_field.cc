@@ -256,7 +256,7 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
 
     // Start with the original LayoutItem_Field,
     // to preserve extra information such as Translations:
-    if(m_start_field && m_start_field->is_same_field(field))
+    if(m_start_field && m_start_field->is_same_field(*field))
       field = m_start_field;
     else
       field = std::make_shared<LayoutItem_Field>();

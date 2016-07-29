@@ -2376,13 +2376,13 @@ type_map_fields get_record_field_values(const std::shared_ptr<const Document>& d
 }
 
 
-type_list_values_with_second get_choice_values_all(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& field)
+type_list_values_with_second get_choice_values_all(const std::shared_ptr<const Document>& document, const LayoutItem_Field& field)
 {
   return get_choice_values(document, field,
                            Gnome::Gda::Value() /* means get all with no WHERE clause */);
 }
 
-type_list_values_with_second get_choice_values(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value)
+type_list_values_with_second get_choice_values(const std::shared_ptr<const Document>& document, const LayoutItem_Field& field, const Gnome::Gda::Value& foreign_key_value)
 {
   //TODO: Reduce duplication between this and get_choice_values(field).
 
@@ -2397,7 +2397,7 @@ type_list_values_with_second get_choice_values(const std::shared_ptr<const Docum
   }
   */
 
-  const Formatting& format = field->get_formatting_used();
+  const Formatting& format = field.get_formatting_used();
   std::shared_ptr<const Relationship> choice_relationship;
   std::shared_ptr<const LayoutItem_Field> layout_choice_first;
   std::shared_ptr<const LayoutGroup> layout_choice_extra;

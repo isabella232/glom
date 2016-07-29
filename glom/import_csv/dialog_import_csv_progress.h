@@ -57,8 +57,8 @@ private:
 
   void on_response(int response_id) override; // From Gtk::Dialog
 
-  Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const override; // from Base_DB_Table_Data
-  void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value&  value) override; // from Base_DB
+  Gnome::Gda::Value get_entered_field_data(const LayoutItem_Field& field) const override; // from Base_DB_Table_Data
+  void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value&  value) override; // from Base_DB
 
   std::shared_ptr<Field> get_field_primary_key() const override; // from Base_DB_Table_Data
   Gnome::Gda::Value get_primary_key_value_selected() const override; // from Base_DB_Table_Data
