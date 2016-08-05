@@ -691,7 +691,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   else if(glom_type == Field::glom_field_type::BOOLEAN)
   {
     success = true;
-    return Gnome::Gda::Value( (text.uppercase() == "TRUE" ? true : false) ); //TODO: Internationalize this, but it should never be used anyway.
+    return Gnome::Gda::Value(text.uppercase() == "TRUE"); //TODO: Internationalize this, but it should never be used anyway.
   }
   else if(glom_type == Field::glom_field_type::IMAGE)
   {
