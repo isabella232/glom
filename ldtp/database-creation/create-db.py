@@ -64,8 +64,8 @@ try:
 	doubleclickrow(creation_dialog, 'tblFiles', 'TestDatabase')
 
 	# Call the new document 'Test', and save it as 'Test.glom':
-	settextvalue(creation_dialog, 'txtName', 'Test');
-	settextvalue(creation_dialog, 'txtTitle', 'Test');
+	settextvalue(creation_dialog, 'txtName', 'Test')
+	settextvalue(creation_dialog, 'txtTitle', 'Test')
 
 	# Make sure we use the correct backend:
 	common.select_backend(creation_dialog, backend)

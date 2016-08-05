@@ -123,7 +123,7 @@ def wait_for_database_open():
 
 def check_small_business_integrity():
 	if(ldtp.getrowcount(main_window, 'tblTableContent') != 9):
-		raise ldtp.LdtpExecutionError("Newly created database does not contain all 8 rows"); # Note there is one placeholder row
+		raise ldtp.LdtpExecutionError("Newly created database does not contain all 8 rows") # Note there is one placeholder row
 
 	ldtp.selecttab(main_window, 'ptlListOrDetailsView', 'Details')
 
