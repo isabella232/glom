@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-19 19:42+0200\n"
-"PO-Revision-Date: 2016-08-19 19:43+0200\n"
+"POT-Creation-Date: 2016-09-08 23:08+0200\n"
+"PO-Revision-Date: 2016-09-08 23:09+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -550,7 +550,7 @@ msgid ""
 msgstr ""
 "Program Glom zawiera wysokopoziomowe funkcje, takie jak związki, "
 "wyszukiwanie, powiązane pola i wpisy, obliczone wpisy, pola wyboru, raporty, "
-"użytkownicy i grupy. Posiada proste typy pól numerycznych, tekstowych, dat, "
+"użytkownicy i grupy. Ma proste typy pól numerycznych, tekstowych, dat, "
 "czasu, zmiennych logicznych i obrazów."
 
 #: ../glom.appdata.xml.in.h:5
@@ -567,7 +567,7 @@ msgstr "Widok szczegółów wyświetlający wpisy z powiązanej tablicy"
 
 #: ../glom.desktop.in.in.h:2
 msgid "A user-friendly database environment"
-msgstr "Przyjazne dla użytkownika środowisko bazy danych"
+msgstr "Łatwe w obsłudze środowisko bazy danych"
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: ../glom.desktop.in.in.h:4
@@ -664,7 +664,7 @@ msgstr "Brak tablicy"
 
 #: ../glom/frame_glom.cc:324
 msgid "This database has no tables yet."
-msgstr "Ta baza danych nie posiada jeszcze żadnych tablic."
+msgstr "Ta baza danych nie ma jeszcze żadnych tablic."
 
 #. TODO: Obviously this could be possible but it would require a network protocol and some work:
 #: ../glom/frame_glom.cc:498
@@ -1003,7 +1003,7 @@ msgstr "Nie można otworzyć dokumentu."
 
 #: ../glom/bakery/dialog_offersave.cc:31
 msgid "This document has unsaved changes. Would you like to save the document?"
-msgstr "Dokument posiada niezapisane zmiany. Zapisać go?"
+msgstr "Dokument ma niezapisane zmiany. Zapisać go?"
 
 #. TODO: Can we use filename_display_basename() with a URI?
 #. No, almost certainly not. murrayc.
@@ -1683,7 +1683,7 @@ msgstr "Glom: ścieżka do pliku wyjściowego nie jest katalogiem."
 
 #: ../glom/glom_export_po_all.cc:204
 msgid "The Glom document has no translations."
-msgstr "Dokument .glom nie posiada tłumaczeń."
+msgstr "Dokument .glom nie ma tłumaczeń."
 
 #: ../glom/glom_import_po_all.cc:57
 msgid ""
@@ -2097,7 +2097,7 @@ msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
 msgstr ""
-"Główny klucz posiada automatyczny przyrost.\n"
+"Główny klucz ma automatyczny przyrost.\n"
 " Nie można podać własnej wartości głównego klucza."
 
 #: ../glom/mode_data/box_data_portal.cc:389
@@ -2287,8 +2287,8 @@ msgid ""
 "correct this."
 msgstr ""
 "To pole bazy danych zostało utworzone lub zmodyfikowane poza programem Glom. "
-"Posiada ono typ danych nieobsługiwany przez program Glom. Administrator "
-"komputera może to naprawić."
+"Ma ono typ danych nieobsługiwany przez program Glom. Administrator komputera "
+"może to naprawić."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:312
 msgid "Primary key required"
@@ -2299,7 +2299,7 @@ msgid ""
 "You may not unset the primary key because the table must have a primary key. "
 "You may set another field as the primary key instead."
 msgstr ""
-"Nie można usunąć ustawienia głównego klucza, ponieważ tablica musi posiadać "
+"Nie można usunąć ustawienia głównego klucza, ponieważ tablica musi mieć "
 "główny klucz. Można ustawić inne pole jako główny klucz zamiast tego."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:325
@@ -2356,7 +2356,7 @@ msgstr "Błąd obliczeniowy"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:99
 msgid "The calculation does not have a return statement."
-msgstr "Obliczenie nie posiada instrukcji zwrotnej."
+msgstr "Obliczenie nie ma instrukcji zwrotnej."
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:142
 msgid "Calculation result"
@@ -3806,7 +3806,7 @@ msgstr "Drugorzędne pola:"
 
 #: ../data/ui/developer/dialog_group_by.glade.h:10
 msgid "Border Width (ems):"
-msgstr "Szerokość krawędzi (w punktach):"
+msgstr "Szerokość krawędzi (w punktach):"
 
 #: ../data/ui/developer/dialog_initial_password.glade.h:1
 msgid "Database User"
@@ -4217,7 +4217,7 @@ msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
 msgstr ""
-"Wartość pola będzie wartością zwrotną funkcji języka Python, którą ttaj "
+"Wartość pola będzie wartością zwrotną funkcji języka Python, którą tutaj "
 "zaimplementowano."
 
 #: ../data/ui/developer/window_field_calculation.glade.h:7
@@ -4282,8 +4282,8 @@ msgid ""
 "your locale would normally use one. If it is selected then a thousands "
 "separator will be used only if your locale normally uses one."
 msgstr ""
-"Jeśli ta opcja nie jest zaznaczona, to separator tysięcy nie będzie używany "
-"nawet, jeśli lokalizacja by go używała. Jeśli ta opcja jest zaznaczona, to "
+"Jeśli ta opcja nie jest zaznaczona, to separator tysięcy nie będzie używany, "
+"nawet jeśli lokalizacja by go używała. Jeśli ta opcja jest zaznaczona, to "
 "separator tysięcy będzie używany tylko, jeśli lokalizacja go używa."
 
 #: ../data/ui/developer/box_formatting.glade.h:3
@@ -4328,7 +4328,7 @@ msgstr ""
 
 #: ../data/ui/developer/box_formatting.glade.h:11
 msgid "Height (lines)"
-msgstr "Wysokość (w wierszach)"
+msgstr "Wysokość (w wierszach)"
 
 #: ../data/ui/developer/box_formatting.glade.h:12
 msgid "Font:"
