@@ -50,8 +50,8 @@ protected:
   void on_adddel_record_changed();
   void on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row);
 
-  void on_adddel_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row);
-  bool on_script_button_idle(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key);
+  void on_adddel_script_button_clicked(const std::weak_ptr<const LayoutItem_Button>& layout_item_weak, const Gtk::TreeModel::iterator& row);
+  bool on_script_button_idle(const std::weak_ptr<const LayoutItem_Button>& layout_item_weak, const Gnome::Gda::Value& primary_key);
 
   void on_adddel_record_added(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& primary_key_value);
 

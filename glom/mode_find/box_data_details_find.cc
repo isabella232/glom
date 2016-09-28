@@ -73,7 +73,7 @@ bool Box_Data_Details_Find::fill_from_database()
   return result;
 }
 
-void Box_Data_Details_Find::on_flowtable_field_edited(const std::shared_ptr<const LayoutItem_Field>& /* id */, const Gnome::Gda::Value& /* value */)
+void Box_Data_Details_Find::on_flowtable_field_edited(const std::weak_ptr<const LayoutItem_Field>& /* id */, const Gnome::Gda::Value& /* value */)
 {
   //Don't do anything.
   //This just blocks the method in the base class.
