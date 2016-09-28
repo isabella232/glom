@@ -235,19 +235,34 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
       if(!name.empty() && !script.empty())
       {
         //TODO: Is there a boost::python equivalent for Py_CompileString()?
-        PyObject* cObject = Py_CompileString(script.c_str(), name.c_str() /* "filename", for debugging info */,  Py_file_input /* "start token" for multiple lines of code. */); //Returns a reference.
-        boost::python::object objectCompiled( (boost::python::handle<>(cObject)) ); //Takes the reference.
+        try {
+          PyObject* cObject = Py_CompileString(script.c_str(), name.c_str() /* "filename", for debugging info */,  Py_file_input /* "start token" for multiple lines of code. */); //Returns a reference.
+          if (!cObject) {
+            std::cerr << G_STRFUNC << ": Py_CompileString() returned null." << std::endl;
+            //TODO: Discover the actual Python compiler error.
+            return boost::python::object();
+          }
+          boost::python::object objectCompiled( (boost::python::handle<>(cObject)) ); //Takes the reference.
 
-        if(!objectCompiled.ptr()) //TODO: We'd probably have an exception instead if we don't use boost's allow_null.
-          HandlePythonError();
+          if(!objectCompiled.ptr()) //TODO: We'd probably have an exception instead if we don't use boost's allow_null.
+            HandlePythonError();
 
-        PyObject* cObjectExeced = PyImport_ExecCodeModule(const_cast<char*>(name.c_str()), cObject); //Returns a reference. //This should make it importable.
-        boost::python::object objectExeced( (boost::python::handle<>(cObjectExeced)) ); //Takes the reference.
+          PyObject* cObjectExeced = PyImport_ExecCodeModule(const_cast<char*>(name.c_str()), cObject); //Returns a reference. //This should make it importable.
+          if (!cObjectExeced) {
+            std::cerr << G_STRFUNC << ": PyImport_ExecCodeModule() returned null." << std::endl;
+            return boost::python::object();
+          }
 
-        if(!objectExeced.ptr())
-          HandlePythonError();
+          boost::python::object objectExeced( (boost::python::handle<>(cObjectExeced)) ); //Takes the reference.
 
-        //TODO: When do these stop being importable? Should we unload them somehow later?
+          if(!objectExeced.ptr())
+            HandlePythonError();
+
+          //TODO: When do these stop being importable? Should we unload them somehow later?
+        } catch(const boost::python::error_already_set& ex) {
+          std::cerr << G_STRFUNC << ": error_already_set exception." << std::endl;
+          return boost::python::object();
+        }
       }
     }
   }
