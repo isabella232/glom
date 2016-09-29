@@ -221,6 +221,18 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 
   bool created = false;
 
+  // Validate the name:
+  // TODO: Remove this check when the libgda bug has been fixed:
+  // https://bugzilla.gnome.org/show_bug.cgi?id=763534
+  if (std::find(std::begin(table_name), std::end(table_name), ' ') != std::end(table_name)) {
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Table Names Cannot Contain Spaces")), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+    dialog.set_secondary_text(_("Unfortunately, Glom tables cannot have names that contain spaces. Please enter a different name for the table."));
+    dialog.set_transient_for(*AppWindow::get_appwindow());
+    dialog.run();
+    dialog.hide();
+    return;
+  }
+
   //Check whether it exists already. (Maybe it is somehow in the database but not in the document. That shouldn't happen.)
   const auto exists_in_db = DbUtils::get_table_exists_in_database(table_name);
   if(exists_in_db)
