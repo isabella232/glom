@@ -400,6 +400,17 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
     else if(column == m_col_table_name)
     {
       Glib::ustring table_name = m_AddDel.get_value_key(row);
+
+      // Check that the table really already exists.
+      // It could be left over from a failed attempt to add a table.
+      // In that case, try to add it again.
+      auto document = get_document();
+      if(!document->get_table_is_known(table_name))
+      {
+        on_adddel_Add(row);
+        return;
+      }
+
       Glib::ustring table_name_new = m_AddDel.get_value(row, m_col_table_name);
       if(!table_name.empty() && !table_name_new.empty())
       {
@@ -422,7 +433,6 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
             set_modified();
 
             //Tell the document that this table's name has changed:
-            auto document = get_document();
             if(document)
               document->change_table_name(table_name, table_name_new);
 
