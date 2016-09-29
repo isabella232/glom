@@ -114,7 +114,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     typedef std::list<std::string> type_list_ids;
     type_list_ids list_ids;
 
-    const std::string locales_path = GLOM_LOCALEDIR;
+    const std::string locales_path = "/usr/share/i18n/locales/";
     try
     {
       Glib::Dir dir(locales_path);
