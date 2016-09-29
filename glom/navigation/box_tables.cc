@@ -57,11 +57,11 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_check_button_show_hidden->signal_toggled().connect(sigc::mem_fun(*this, &Box_Tables::on_show_hidden_toggled));
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_Add));
-  m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_Delete));
+  m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_add));
+  m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_delete));
   m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_changed));
 #endif //GLOM_ENABLE_CLIENT_ONLY
-  m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_Edit));
+  m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_edit));
 
   show_all_children();
 }
@@ -211,7 +211,7 @@ bool Box_Tables::fill_from_database()
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
+void Box_Tables::on_adddel_add(const Gtk::TreeModel::iterator& row)
 {
   //TODO: Handle cell renderer changes to prevent illegal table names (e.g. starting with numbers.).
 
@@ -280,7 +280,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
   }
 }
 
-void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd)
+void Box_Tables::on_adddel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd)
 {
   auto iterAfter = rowEnd;
   ++iterAfter;
@@ -407,7 +407,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
       auto document = get_document();
       if(!document->get_table_is_known(table_name))
       {
-        on_adddel_Add(row);
+        on_adddel_add(row);
         return;
       }
 
@@ -445,7 +445,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
-void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
+void Box_Tables::on_adddel_edit(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring table_name = m_AddDel.get_value_key(row);
 
