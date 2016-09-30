@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-05-18 06:54+0000\n"
-"PO-Revision-Date: 2016-05-20 15:43+0200\n"
+"POT-Creation-Date: 2016-09-29 09:46+0000\n"
+"PO-Revision-Date: 2016-09-30 19:34+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 1.8.9\n"
 
 #: ../glom/application.cc:159 ../glom/glom_create_from_example.cc:260
 #: ../glom/glom_export_po.cc:112 ../glom/glom_export_po_all.cc:100
@@ -167,17 +167,17 @@ msgstr ""
 #: ../glom/box_withbuttons.cc:51 ../glom/box_withbuttons.cc:65
 #: ../glom/dialog_existing_or_new.cc:785 ../glom/filechooser_export.cc:40
 #: ../glom/frame_glom.cc:516 ../glom/frame_glom.cc:602
-#: ../glom/frame_glom.cc:689 ../glom/frame_glom.cc:795 ../glom/utils_ui.cc:461
+#: ../glom/frame_glom.cc:689 ../glom/frame_glom.cc:795 ../glom/utils_ui.cc:493
 #: ../glom/onlineglom_strings.cc:40 ../glom/bakery/dialog_offersave.cc:57
 #: ../glom/main.cc:266 ../glom/main.cc:322
 #: ../glom/mode_design/fields/box_db_table_definition.cc:293
 #: ../glom/mode_design/fields/box_db_table_definition.cc:344
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:38
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:221
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:839
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:883
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:840
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:884
 #: ../glom/mode_design/script_library/dialog_script_library.cc:126
-#: ../glom/navigation/box_tables.cc:303 ../glom/navigation/box_tables.cc:396
+#: ../glom/navigation/box_tables.cc:315 ../glom/navigation/box_tables.cc:408
 #: ../glom/mode_design/translation/window_translations.cc:353
 #: ../glom/mode_design/translation/window_translations.cc:392
 #: ../glom/utility_widgets/imageglom.cc:701
@@ -400,15 +400,15 @@ msgstr "Öppna dokument"
 msgid "_Open"
 msgstr "Ö_ppna"
 
-#: ../glom/base_db.cc:112 ../glom/base_db.cc:125
+#: ../glom/base_db.cc:105 ../glom/base_db.cc:118
 msgid "Internal error"
 msgstr "Internt fel"
 
-#: ../glom/base_db.cc:1127
+#: ../glom/base_db.cc:1124
 msgid "Value Is Not Unique"
 msgstr "Värdet är inte unikt"
 
-#: ../glom/base_db.cc:1127
+#: ../glom/base_db.cc:1124
 msgid ""
 "The field's value must be unique, but a record with this value already "
 "exists."
@@ -884,35 +884,35 @@ msgstr "Initierar databasdata"
 msgid "All"
 msgstr "Alla"
 
-#: ../glom/utils_ui.cc:135
+#: ../glom/utils_ui.cc:167
 msgid "Could not display help: %1"
 msgstr "Kunde inte visa hjälp: %1"
 
-#: ../glom/utils_ui.cc:455
+#: ../glom/utils_ui.cc:487
 msgid "Your find criteria did not match any records in the table."
 msgstr "Ditt sökkriterium matchade inga poster i tabellen."
 
-#: ../glom/utils_ui.cc:457
+#: ../glom/utils_ui.cc:489
 msgid "No Records Found"
 msgstr "Inga poster hittades"
 
-#: ../glom/utils_ui.cc:462
+#: ../glom/utils_ui.cc:494
 msgid "New Find"
 msgstr "Ny sökning"
 
-#: ../glom/utils_ui.cc:473
+#: ../glom/utils_ui.cc:505
 msgid "Report Finished"
 msgstr "Rapport färdig"
 
-#: ../glom/utils_ui.cc:473
+#: ../glom/utils_ui.cc:505
 msgid "The report will now be opened in your web browser."
 msgstr "Rapporten kommer nu att öppnas i din webbläsare."
 
-#: ../glom/utils_ui.cc:517
+#: ../glom/utils_ui.cc:549
 msgid "Script Uses PyGTK 2"
 msgstr "Skript använder PyGTK 2"
 
-#: ../glom/utils_ui.cc:518
+#: ../glom/utils_ui.cc:550
 msgid ""
 "Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, "
 "and attempting to use pygtk 2 would cause Glom to crash."
@@ -935,7 +935,7 @@ msgstr "Tillbaka till lista"
 
 #. Translators: This is a noun. It is a notebook tab title.
 #. Details column:
-#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1408
+#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1406
 #: ../glom/mode_data/notebook_data.cc:43
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:213
 #: ../glom/mode_find/notebook_find.cc:38
@@ -1470,48 +1470,48 @@ msgstr "Databastitel"
 msgid "Unknown"
 msgstr "Okänd"
 
-#: ../glom/libglom/document/document.cc:505
-#: ../glom/libglom/document/document.cc:523
+#: ../glom/libglom/document/document.cc:503
+#: ../glom/libglom/document/document.cc:521
 msgid "System Preferences"
 msgstr "Systeminställningar"
 
-#: ../glom/libglom/document/document.cc:536
+#: ../glom/libglom/document/document.cc:534
 msgid "System Name"
 msgstr "Systemnamn"
 
-#: ../glom/libglom/document/document.cc:542
+#: ../glom/libglom/document/document.cc:540
 msgid "Organisation Name"
 msgstr "Namn på organisation"
 
-#: ../glom/libglom/document/document.cc:548
+#: ../glom/libglom/document/document.cc:546
 msgid "Organisation Logo"
 msgstr "Logotyp för organisation"
 
-#: ../glom/libglom/document/document.cc:554
+#: ../glom/libglom/document/document.cc:552
 msgid "Street"
 msgstr "Gata"
 
-#: ../glom/libglom/document/document.cc:560
+#: ../glom/libglom/document/document.cc:558
 msgid "Street (line 2)"
 msgstr "Gatuadress (rad 2)"
 
-#: ../glom/libglom/document/document.cc:566
+#: ../glom/libglom/document/document.cc:564
 msgid "City"
 msgstr "Stad"
 
-#: ../glom/libglom/document/document.cc:572
+#: ../glom/libglom/document/document.cc:570
 msgid "State"
 msgstr "Län/Region"
 
-#: ../glom/libglom/document/document.cc:578
+#: ../glom/libglom/document/document.cc:576
 msgid "Country"
 msgstr "Land"
 
-#: ../glom/libglom/document/document.cc:584
+#: ../glom/libglom/document/document.cc:582
 msgid "Zip Code"
 msgstr "Postnummer"
 
-#: ../glom/libglom/document/document.cc:1402
+#: ../glom/libglom/document/document.cc:1400
 msgid "Overview"
 msgstr "Översikt"
 
@@ -2084,11 +2084,11 @@ msgstr ""
 "Denna post kan inte tas bort eftersom det inte finns någon primärnyckel."
 
 #. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:854
+#: ../glom/mode_data/box_data_details.cc:863
 msgid "Primary key auto increments"
 msgstr "Automatisk ökning av primärnyckel"
 
-#: ../glom/mode_data/box_data_details.cc:855
+#: ../glom/mode_data/box_data_details.cc:864
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
@@ -2096,11 +2096,11 @@ msgstr ""
 "Primärnyckeln ökas automatiskt.\n"
 " Du kan inte ange egna värden på primärnyckel."
 
-#: ../glom/mode_data/box_data_portal.cc:388
+#: ../glom/mode_data/box_data_portal.cc:389
 msgid "No Corresponding Record Exists"
 msgstr "Ingen motsvarande post finns"
 
-#: ../glom/mode_data/box_data_portal.cc:388
+#: ../glom/mode_data/box_data_portal.cc:389
 msgid ""
 "No record with this value exists. Therefore navigation to the related record "
 "is not possible."
@@ -2108,53 +2108,53 @@ msgstr ""
 "Ingen post med detta värde existerar. På grund av detta är navigering till "
 "relaterad post inte möjlig."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1100
+#: ../glom/mode_data/flowtablewithfields.cc:1114
 #: ../glom/utility_widgets/notebooklabelglom.cc:70
 #: ../glom/utility_widgets/notebooklabelglom.cc:117
 msgid "New Group"
 msgstr "Ny grupp"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1106
+#: ../glom/mode_data/flowtablewithfields.cc:1120
 #: ../glom/mode_design/layout/dialog_layout_details.cc:726
 msgid "notebook"
 msgstr "flikhäfte"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1112
+#: ../glom/mode_data/flowtablewithfields.cc:1126
 msgid "tab1"
 msgstr "tab1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1115
+#: ../glom/mode_data/flowtablewithfields.cc:1129
 msgid "Tab One"
 msgstr "Flik ett"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1128
+#: ../glom/mode_data/flowtablewithfields.cc:1142
 msgid "button"
 msgstr "knapp"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1129
+#: ../glom/mode_data/flowtablewithfields.cc:1143
 #: ../glom/mode_design/layout/dialog_layout_details.cc:652
 msgid "New Button"
 msgstr "Ny knapp"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1135
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:386
+#: ../glom/mode_data/flowtablewithfields.cc:1149
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:387
 msgid "text"
 msgstr "text"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1136
+#: ../glom/mode_data/flowtablewithfields.cc:1150
 msgid "New Text"
 msgstr "Ny text"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1285
+#: ../glom/mode_data/flowtablewithfields.cc:1299
 msgid "Delete whole group \"%1\"?"
 msgstr "Ta bort hela gruppen ”%1”?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1291
+#: ../glom/mode_data/flowtablewithfields.cc:1305
 msgid "Delete whole group?"
 msgstr "Ta bort hela gruppen?"
 
@@ -2197,7 +2197,7 @@ msgid "Next Value"
 msgstr "Nästa värde"
 
 #: ../glom/mode_design/dialog_design.cc:49
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:568
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:569
 #: ../data/ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Ingen markerad"
@@ -2396,11 +2396,11 @@ msgstr "Standardvärde"
 msgid "(None)"
 msgstr "(Ingen)"
 
-#: ../glom/mode_design/layout/combobox_relationship.cc:284
+#: ../glom/mode_design/layout/combobox_relationship.cc:287
 msgid " Via: %1::%2"
 msgstr " Via: %1::%2"
 
-#: ../glom/mode_design/layout/combobox_relationship.cc:290
+#: ../glom/mode_design/layout/combobox_relationship.cc:293
 msgid " Via: %1"
 msgstr " Via: %1"
 
@@ -2590,7 +2590,7 @@ msgid "<b>Rename Print Layout</b>"
 msgstr "<b>Byt namn på utskriftslayout</b>"
 
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:222
-#: ../glom/navigation/box_tables.cc:397
+#: ../glom/navigation/box_tables.cc:409
 msgid "Rename"
 msgstr "Byt namn"
 
@@ -2655,11 +2655,11 @@ msgstr ""
 "poster."
 
 #. Ask for confirmation:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:836
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:837
 msgid "Create Standard Layout"
 msgstr "Skapa standardlayout"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:837
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:838
 msgid ""
 "This is an experimental feature. It will remove all items from the print "
 "layout and then try to create a layout similar to the layout of the detail "
@@ -2669,17 +2669,17 @@ msgstr ""
 "utskriftslayouten och sedan försöka skapa en layout liknande detaljvyns "
 "layout."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:840
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:841
 #: ../glom/mode_design/users/dialog_groups_list.cc:82
 msgid "Create"
 msgstr "Skapa"
 
 #. Ask the user to confirm:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:880
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:881
 msgid "Remove page"
 msgstr "Ta bort sida"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:881
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:882
 msgid ""
 "Are you sure that you wish to remove the last page and any items on that "
 "page?"
@@ -2687,7 +2687,7 @@ msgstr ""
 "Är du säker på att du vill ta bort den sista sidan och alla objekt på den "
 "sidan?"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:884
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:885
 msgid "Remove Page"
 msgstr "Ta bort sida"
 
@@ -2772,12 +2772,24 @@ msgstr "Dold"
 msgid "Default"
 msgstr "Standard"
 
-#. Ask the user if they want us to try to cope with this:
+#: ../glom/navigation/box_tables.cc:228
+msgid "Table Names Cannot Contain Spaces"
+msgstr "Tabellnamn kan inte innehålla blanksteg"
+
 #: ../glom/navigation/box_tables.cc:229
+msgid ""
+"Unfortunately, Glom tables cannot have names that contain spaces. Please "
+"enter a different name for the table."
+msgstr ""
+"Tyvärr kan tabeller i Glom inte ha namn som innehåller blanksteg. Ange ett "
+"annat namn för tabellen."
+
+#. Ask the user if they want us to try to cope with this:
+#: ../glom/navigation/box_tables.cc:241
 msgid "Table Already Exists"
 msgstr "Tabellen finns redan"
 
-#: ../glom/navigation/box_tables.cc:230
+#: ../glom/navigation/box_tables.cc:242
 msgid ""
 "This table already exists on the database server, though it is not mentioned "
 "in the .glom file. This should not happen. Would you like Glom to attempt to "
@@ -2788,7 +2800,7 @@ msgstr ""
 "befintliga tabellen?"
 
 #. TODO: Do not show tables that are not in the document.
-#: ../glom/navigation/box_tables.cc:290
+#: ../glom/navigation/box_tables.cc:302
 msgid ""
 "You cannot delete this table, because there is no information about this "
 "table in the document."
@@ -2797,7 +2809,7 @@ msgstr ""
 "information om den här tabellen i dokumentet."
 
 #. Ask the user to confirm:
-#: ../glom/navigation/box_tables.cc:297
+#: ../glom/navigation/box_tables.cc:309
 msgid ""
 "Are you sure that you want to delete this table?\n"
 "Table name: %1"
@@ -2805,24 +2817,24 @@ msgstr ""
 "Är du säker på att du vill ta bort den här tabellen?\n"
 "Tabellnamn: %1"
 
-#: ../glom/navigation/box_tables.cc:298 ../glom/navigation/box_tables.cc:304
+#: ../glom/navigation/box_tables.cc:310 ../glom/navigation/box_tables.cc:316
 msgid "Delete Table"
 msgstr "Ta bort tabell"
 
-#: ../glom/navigation/box_tables.cc:394
+#: ../glom/navigation/box_tables.cc:406
 msgid "Are you sure that you want to rename this table?"
 msgstr "Är du säker på att du vill byta namn på den här tabellen?"
 
 #. TODO: Show old and new names?
-#: ../glom/navigation/box_tables.cc:395
+#: ../glom/navigation/box_tables.cc:407
 msgid "<b>Rename Table</b>"
 msgstr "<b>Byt namn på tabell</b>"
 
-#: ../glom/navigation/box_tables.cc:437
+#: ../glom/navigation/box_tables.cc:449
 msgid "Unknown Table"
 msgstr "Okänd tabell"
 
-#: ../glom/navigation/box_tables.cc:438
+#: ../glom/navigation/box_tables.cc:450
 msgid ""
 "You cannot open this table, because there is no information about this table "
 "in the document."
@@ -2830,7 +2842,7 @@ msgstr ""
 "Du kan inte öppna den här tabellen därför att det inte finns någon "
 "information om den här tabellen i dokumentet."
 
-#: ../glom/print_layout/canvas_layout_item.cc:233
+#: ../glom/print_layout/canvas_layout_item.cc:230
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:112
 msgid "Choose Field"
 msgstr "Välj fält"
@@ -2942,16 +2954,16 @@ msgstr "Tabellinnehåll"
 msgid "ExampleEg"
 msgstr "Exempeltext"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2032
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2020
 msgid "Right-click to layout, to specify the related fields."
 msgstr "Högerklicka för layout, för att ange relaterade fält."
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2248
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2236
 msgid "Extra Related Records Not Possible"
 msgstr "Extra relaterade poster inte möjliga"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2249
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2237
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
