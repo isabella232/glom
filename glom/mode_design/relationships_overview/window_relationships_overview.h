@@ -31,6 +31,7 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/toggleaction.h>
 #include <gtkmm/builder.h>
+#include <glibmm/weakref.h>
 #include <goocanvasmm/canvas.h>
 #include <map>
 #include <vector>
@@ -68,10 +69,10 @@ private:
   void on_menu_view_showgrid(const Glib::VariantBase& /* parameter */);
 
   void on_table_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset);
-  void on_table_show_context(guint button, guint32 activate_time, Glib::RefPtr<CanvasGroupDbTable> table);
+  void on_table_show_context(guint button, guint32 activate_time, const Glib::WeakRef<CanvasGroupDbTable>& table);
 
-  void on_context_menu_edit_fields(const Glib::VariantBase& parameter, Glib::RefPtr<CanvasGroupDbTable> table);
-  void on_context_menu_edit_relationships(const Glib::VariantBase& parameter, Glib::RefPtr<CanvasGroupDbTable> table);
+  void on_context_menu_edit_fields(const Glib::VariantBase& parameter, const Glib::WeakRef<CanvasGroupDbTable>& table);
+  void on_context_menu_edit_relationships(const Glib::VariantBase& parameter, const Glib::WeakRef<CanvasGroupDbTable>& table);
 
   void on_scroll_value_changed();
 
@@ -91,9 +92,6 @@ private:
 
   Glib::RefPtr<Goocanvas::Group> m_group_tables;
   Glib::RefPtr<Goocanvas::Group> m_group_lines;
-
-  typedef std::list<sigc::connection> type_list_connections;
-  type_list_connections m_list_table_connections;
 
   //Context menu:
   std::unique_ptr<Gtk::Menu> m_context_menu;

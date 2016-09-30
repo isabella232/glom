@@ -29,6 +29,7 @@
 #include <giomm/file.h>
 #include <giomm/inputstream.h>
 //#include <gtkmm/liststore.h>
+#include <glibmm/weakref.h>
 
 namespace Glom
 {
@@ -169,10 +170,11 @@ private:
 
   void ensure_idle_handler_connection();
 
-  void on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source);
   void copy_buffer_and_continue_reading(gssize size);
+
+  void on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::WeakRef<Gio::File>& source);
   void on_buffer_read(const Glib::RefPtr<Gio::AsyncResult>& result);
-  void on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source) const;
+  void on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::WeakRef<Gio::File>& source) const;
 
   void set_state(State state);
 

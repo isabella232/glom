@@ -291,8 +291,12 @@ void Canvas_PrintLayout::setup_context_menu()
 }
 
 
-void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activate_time, Glib::RefPtr<CanvasLayoutItem> item)
+void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activate_time, const Glib::WeakRef<CanvasLayoutItem>& item_weak)
 {
+  const auto item = item_weak.get();
+  if(!item)
+    return;
+
   if(!m_context_menu || !item)
     return;
 

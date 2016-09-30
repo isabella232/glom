@@ -29,6 +29,7 @@
 #include <giomm/simpleactiongroup.h>
 #include <gtkmm/pagesetup.h>
 #include <gtkmm/menu.h>
+#include <glibmm/weakref.h>
 
 namespace Glom
 {
@@ -119,7 +120,7 @@ private:
   std::shared_ptr<LayoutItem_Line> offer_line(const std::shared_ptr<LayoutItem_Line>& portal, Gtk::Window* parent);
 
   //TODO: Make the signal send the item, so we can pass it by const reference:
-  void on_item_show_context_menu(guint button, guint32 activate_time, Glib::RefPtr<CanvasLayoutItem> item);
+  void on_item_show_context_menu(guint button, guint32 activate_time, const Glib::WeakRef<CanvasLayoutItem>& item);
   void on_context_menu_edit();
   void on_context_menu_formatting();
   void on_context_menu_delete();

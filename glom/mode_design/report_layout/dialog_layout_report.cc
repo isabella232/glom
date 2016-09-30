@@ -944,8 +944,12 @@ void Dialog_Layout_Report::on_treeview_parts_selection_changed()
   enable_buttons();
 }
 
-void Dialog_Layout_Report::on_cell_data_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, const Glib::RefPtr<type_model>& model)
+void Dialog_Layout_Report::on_cell_data_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, const Glib::WeakRef<type_model>& model_weak)
 {
+  const auto model = model_weak.get();
+  if (!model)
+    return;
+
   //TODO: If we ever use this as a real layout tree, then let's add icons for each type.
 
   //Set the view's cell properties depending on the model's data:
@@ -965,9 +969,13 @@ void Dialog_Layout_Report::on_cell_data_part(Gtk::CellRenderer* renderer, const 
   }
 }
 
-void Dialog_Layout_Report::on_cell_data_details(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, const Glib::RefPtr<type_model>& model)
+void Dialog_Layout_Report::on_cell_data_details(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, const Glib::WeakRef<type_model>& model_weak)
 {
-//Set the view's cell properties depending on the model's data:
+  const auto model = model_weak.get();
+  if(!model)
+    return;
+
+  //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(renderer_text)
   {

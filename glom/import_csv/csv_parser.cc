@@ -497,8 +497,12 @@ void CsvParser::ensure_idle_handler_connection()
   }
 }
 
-void CsvParser::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source)
+void CsvParser::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::WeakRef<Gio::File>& source_weak)
 {
+  const auto source = source_weak.get();
+  if (!source)
+    return;
+
   ensure_idle_handler_connection();
 
   try
@@ -549,11 +553,15 @@ void CsvParser::on_buffer_read(const Glib::RefPtr<Gio::AsyncResult>& result)
   }
 }
 
-void CsvParser::on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source) const
+void CsvParser::on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::WeakRef<Gio::File>& source_weak) const
 {
+  const auto source = source_weak.get();
+  if (!source)
+    return;
+
   try
   {
-    auto info = source->query_info_finish(result);
+    const auto info = source->query_info_finish(result);
     if(info)
       signal_have_display_name().emit(info->get_display_name());
   }
