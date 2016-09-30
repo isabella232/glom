@@ -645,12 +645,8 @@ void Box_Data_Details::on_flowtable_related_record_changed(const Glib::ustring& 
   recalculate_fields_for_related_records(relationship_name);
 }
 
-void Box_Data_Details::on_flowtable_field_open_details_requested(const std::weak_ptr<const LayoutItem_Field>& layout_field_weak, const Gnome::Gda::Value& field_value)
+void Box_Data_Details::on_flowtable_field_open_details_requested(const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value)
 {
-  const auto layout_field = layout_field_weak.lock();
-  if(!layout_field)
-    return;
-
   if(Conversions::value_is_empty(field_value))
     return; //Ignore empty ID fields.
 
@@ -681,9 +677,8 @@ void Box_Data_Details::on_flowtable_field_open_details_requested(const std::weak
   }
 }
 
-void Box_Data_Details::on_flowtable_script_button_clicked(const std::weak_ptr<const LayoutItem_Button>& layout_item_weak)
+void Box_Data_Details::on_flowtable_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item)
 {
-  const auto layout_item = layout_item_weak.lock();
   if(!layout_item)
   {
     std::cerr << G_STRFUNC << ": layout_item is null\n";
@@ -711,13 +706,9 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const std::weak_ptr<co
   }
 }
 
-void Box_Data_Details::on_flowtable_field_edited(const std::weak_ptr<const LayoutItem_Field>& layout_field_weak, const Gnome::Gda::Value& field_value)
+void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value)
 {
   if(m_ignore_signals)
-    return;
-
-  const auto layout_field = layout_field_weak.lock();
-  if (!layout_field)
     return;
 
   const auto strFieldName = layout_field->get_name();
@@ -905,13 +896,9 @@ void Box_Data_Details::on_flowtable_field_edited(const std::weak_ptr<const Layou
   } //if(get_primary_key_value_selected().size())
 }
 
-void Box_Data_Details::on_flowtable_field_choices_changed(const std::weak_ptr<const LayoutItem_Field>& layout_field_weak)
+void Box_Data_Details::on_flowtable_field_choices_changed(const std::shared_ptr<const LayoutItem_Field>& layout_field)
 {
   if(m_ignore_signals)
-    return;
-
-  const auto layout_field = layout_field_weak.lock();
-  if (!layout_field)
     return;
 
   m_FlowTable.update_choices(*layout_field);

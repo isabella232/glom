@@ -140,20 +140,20 @@ public:
   void set_enable_drag_and_drop(bool enabled = true);
 
   /** For instance,
-   * void on_flowtable_field_edited(const std::weak_ptr<const LayoutItem_Field>& field_weak, const Gnome::Gda::Value& value);
+   * void on_flowtable_field_edited(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
    */
   typedef sigc::signal<void(const std::shared_ptr<const LayoutItem_Field>&, const Gnome::Gda::Value&)> type_signal_field_edited;
   type_signal_field_edited signal_field_edited();
 
   /** For instance,
-   * void on_flowtable_field_choices_changed(const std::weak_ptr<const LayoutItem_Field>& field_weak);
+   * void on_flowtable_field_choices_changed(const std::shared_ptr<const LayoutItem_Field>& field);
    */
   typedef sigc::signal<void(const std::shared_ptr<const LayoutItem_Field>&)> type_signal_field_choices_changed;
   type_signal_field_choices_changed signal_field_choices_changed();
 
 
   /** For instance,
-   * void on_flowtable_field_open_details_requested(const std::weak_ptr<const LayoutItem_Field>& field_weak, const Gnome::Gda::Value& value);
+   * void on_flowtable_field_open_details_requested(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
    */
   typedef sigc::signal<void(const std::shared_ptr<const LayoutItem_Field>&, const Gnome::Gda::Value&)> type_signal_field_open_details_requested;
   type_signal_field_open_details_requested signal_field_open_details_requested();
@@ -171,7 +171,7 @@ public:
   type_signal_requested_related_details signal_requested_related_details();
 
  /** For instance,
-   * void on_script_button_clicked(const std::weak_ptr<LayoutItem_Button>& layout_item_weak>);
+   * void on_script_button_clicked(const std::shared_ptr<LayoutItem_Button>& layout_item>);
    */
   typedef sigc::signal<void(const std::shared_ptr<LayoutItem_Button>&)> type_signal_script_button_clicked;
   type_signal_script_button_clicked signal_script_button_clicked();
@@ -203,11 +203,11 @@ private:
 
   //int get_suitable_width(Field::glom_field_type field_type);
 
-  void on_entry_edited(const Gnome::Gda::Value& value, const std::weak_ptr<const LayoutItem_Field>& field_weak);
-  void on_entry_choices_changed(const std::weak_ptr<const LayoutItem_Field>& field_weak);
-  void on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::weak_ptr<const LayoutItem_Field>& field_weak);
+  void on_entry_edited(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field);
+  void on_entry_choices_changed(const std::shared_ptr<const LayoutItem_Field>& field);
+  void on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field);
 
-  void on_script_button_clicked(const std::weak_ptr<LayoutItem_Button>& layout_item_weak);
+  void on_script_button_clicked(const std::shared_ptr<LayoutItem_Button>& layout_item);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_datawidget_layout_item_added(LayoutWidgetBase::enumType item_type, DataWidget* pDataWidget);

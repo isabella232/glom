@@ -119,14 +119,14 @@ protected:
   //void on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring table_name);
 
   //This is virtual so it can be overriden in Box_Data_Details_Find.
-  virtual void on_flowtable_field_edited(const std::weak_ptr<const LayoutItem_Field>& layout_field_weak, const Gnome::Gda::Value& value);
+  virtual void on_flowtable_field_edited(const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& value);
 
-  void on_flowtable_field_choices_changed(const std::weak_ptr<const LayoutItem_Field>& layout_field_weak);
-  void on_flowtable_field_open_details_requested(const std::weak_ptr<const LayoutItem_Field>& id_weak, const Gnome::Gda::Value& value);
+  void on_flowtable_field_choices_changed(const std::shared_ptr<const LayoutItem_Field>& layout_field);
+  void on_flowtable_field_open_details_requested(const std::shared_ptr<const LayoutItem_Field>& id, const Gnome::Gda::Value& value);
   void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
   void on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
 
-  void on_flowtable_script_button_clicked(const std::weak_ptr<const LayoutItem_Button>& layout_item_weak);
+  void on_flowtable_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item);
 
   void recalculate_fields_for_related_records(const Glib::ustring& relationship_name);
 

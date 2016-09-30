@@ -39,7 +39,7 @@ private:
 
   bool fill_from_database() override;
 
-  void on_flowtable_field_edited(const std::weak_ptr<const LayoutItem_Field>& id_weak, const Gnome::Gda::Value& value) override;
+  void on_flowtable_field_edited(const std::shared_ptr<const LayoutItem_Field>& id, const Gnome::Gda::Value& value) override;
 };
 
 } //namespace Glom

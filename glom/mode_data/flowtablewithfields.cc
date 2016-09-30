@@ -1010,39 +1010,23 @@ FlowTableWithFields::type_signal_script_button_clicked FlowTableWithFields::sign
   return m_signal_script_button_clicked;
 }
 
-void FlowTableWithFields::on_script_button_clicked(const std::weak_ptr< LayoutItem_Button>& layout_item_weak)
+void FlowTableWithFields::on_script_button_clicked(const std::shared_ptr< LayoutItem_Button>& layout_item)
 {
-  const auto layout_item = layout_item_weak.lock();
-  if(!layout_item)
-    return;
-
   m_signal_script_button_clicked.emit(layout_item);
 }
 
-void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, const std::weak_ptr<const LayoutItem_Field>& field_weak)
+void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field)
 {
-  const auto field = field_weak.lock();
-  if(!field)
-    return;
-
   m_signal_field_edited.emit(field, value);
 }
 
-void FlowTableWithFields::on_entry_choices_changed(const std::weak_ptr<const LayoutItem_Field>& field_weak)
+void FlowTableWithFields::on_entry_choices_changed(const std::shared_ptr<const LayoutItem_Field>& field)
 {
-  const auto field = field_weak.lock();
-  if(!field)
-    return;
-
   m_signal_field_choices_changed.emit(field);
 }
 
-void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::weak_ptr<const LayoutItem_Field>& field_weak)
+void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field)
 {
-  const auto field = field_weak.lock();
-  if(!field)
-    return;
-
   m_signal_field_open_details_requested.emit(field, value);
 }
 

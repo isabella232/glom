@@ -216,9 +216,8 @@ void Box_Data_List_Related::on_adddel_user_requested_layout()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 
-void Box_Data_List_Related::on_adddel_script_button_clicked(const std::weak_ptr<const LayoutItem_Button>& layout_item_weak, const Gtk::TreeModel::iterator& row)
+void Box_Data_List_Related::on_adddel_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row)
 {
-  const auto layout_item = layout_item_weak.lock();
   if(!layout_item)
     return;
 
@@ -237,12 +236,8 @@ void Box_Data_List_Related::on_adddel_script_button_clicked(const std::weak_ptr<
       primary_key_value));
 }
 
-bool Box_Data_List_Related::on_script_button_idle(const std::weak_ptr<const LayoutItem_Button>& layout_item_weak, const Gnome::Gda::Value& primary_key)
+bool Box_Data_List_Related::on_script_button_idle(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key)
 {
-  const auto layout_item = layout_item_weak.lock();
-  if(!layout_item)
-    return false;
-
   execute_button_script(layout_item, primary_key);
 
   // Refill view from database as the script might have changed arbitrary records
