@@ -511,8 +511,7 @@ void FlowTableWithFields::add_field(const std::shared_ptr<LayoutItem_Field>& lay
 
   add_widgets(*eventbox, *(info.m_second), true);
 
-  info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
-
+  info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  );
   info.m_second->signal_choices_changed().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_choices_changed), layoutitem_field)  );
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -1010,23 +1009,39 @@ FlowTableWithFields::type_signal_script_button_clicked FlowTableWithFields::sign
   return m_signal_script_button_clicked;
 }
 
-void FlowTableWithFields::on_script_button_clicked(const std::shared_ptr< LayoutItem_Button>& layout_item)
+void FlowTableWithFields::on_script_button_clicked(const std::weak_ptr< LayoutItem_Button>& layout_item_weak)
 {
+  const auto layout_item = layout_item_weak.lock();
+  if(!layout_item)
+    return;
+
   m_signal_script_button_clicked.emit(layout_item);
 }
 
-void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field)
+void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, const std::weak_ptr<const LayoutItem_Field>& field_weak)
 {
+  const auto field = field_weak.lock();
+  if (!field)
+    return;
+
   m_signal_field_edited.emit(field, value);
 }
 
-void FlowTableWithFields::on_entry_choices_changed(const std::shared_ptr<const LayoutItem_Field>& field)
+void FlowTableWithFields::on_entry_choices_changed(const std::weak_ptr<const LayoutItem_Field>& field_weak)
 {
+  const auto field = field_weak.lock();
+  if (!field)
+    return;
+
   m_signal_field_choices_changed.emit(field);
 }
 
-void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field)
+void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::weak_ptr<const LayoutItem_Field>& field_weak)
 {
+  const auto field = field_weak.lock();
+  if (!field)
+    return;
+
   m_signal_field_open_details_requested.emit(field, value);
 }
 

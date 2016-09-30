@@ -177,9 +177,6 @@ void Box_Data_List::set_primary_key_value(const Gtk::TreeModel::iterator& row, c
 
 void Box_Data_List::on_adddel_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row)
 {
-  if(!layout_item)
-    return;
-
   const auto primary_key_value = get_primary_key_value(row);
 
   // TODO: Calling refresh_data_from_database(),
@@ -195,8 +192,12 @@ void Box_Data_List::on_adddel_script_button_clicked(const std::shared_ptr<const 
       primary_key_value));
 }
 
-bool Box_Data_List::on_script_button_idle(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key)
+bool Box_Data_List::on_script_button_idle(const std::weak_ptr<const LayoutItem_Button>& layout_item_weak, const Gnome::Gda::Value& primary_key)
 {
+  const auto layout_item = layout_item_weak.lock();
+  if(!layout_item)
+    return false;
+
   execute_button_script(layout_item, primary_key);
 
   // Refill view from database as the script might have changed arbitrary records

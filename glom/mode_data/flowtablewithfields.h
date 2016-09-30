@@ -171,7 +171,7 @@ public:
   type_signal_requested_related_details signal_requested_related_details();
 
  /** For instance,
-   * void on_script_button_clicked(const std::shared_ptr<LayoutItem_Button>& layout_item>);
+   * void on_script_button_clicked(const std::weak_ptr<LayoutItem_Button>& layout_item_weak>);
    */
   typedef sigc::signal<void(const std::shared_ptr<LayoutItem_Button>&)> type_signal_script_button_clicked;
   type_signal_script_button_clicked signal_script_button_clicked();
@@ -203,11 +203,11 @@ private:
 
   //int get_suitable_width(Field::glom_field_type field_type);
 
-  void on_entry_edited(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field);
-  void on_entry_choices_changed(const std::shared_ptr<const LayoutItem_Field>& field);
-  void on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field);
+  void on_entry_edited(const Gnome::Gda::Value& value, const std::weak_ptr<const LayoutItem_Field>& field);
+  void on_entry_choices_changed(const std::weak_ptr<const LayoutItem_Field>& field);
+  void on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::weak_ptr<const LayoutItem_Field>& field);
 
-  void on_script_button_clicked(const std::shared_ptr<LayoutItem_Button>& layout_item);
+  void on_script_button_clicked(const std::weak_ptr<LayoutItem_Button>& layout_item_weak);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_datawidget_layout_item_added(LayoutWidgetBase::enumType item_type, DataWidget* pDataWidget);

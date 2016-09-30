@@ -97,7 +97,7 @@ protected:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   void on_adddel_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row);
-  bool on_script_button_idle(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key);
+  bool on_script_button_idle(const std::weak_ptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Dialog_Layout* create_layout_dialog() const override;

@@ -218,9 +218,6 @@ void Box_Data_List_Related::on_adddel_user_requested_layout()
 
 void Box_Data_List_Related::on_adddel_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row)
 {
-  if(!layout_item)
-    return;
-
   const auto primary_key_value = get_primary_key_value(row);
 
   // TODO: Calling refresh_data_from_database(),
