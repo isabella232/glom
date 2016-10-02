@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-08 23:08+0200\n"
-"PO-Revision-Date: 2016-09-08 23:09+0200\n"
+"POT-Creation-Date: 2016-10-02 12:42+0200\n"
+"PO-Revision-Date: 2016-10-02 12:43+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -177,7 +177,7 @@ msgstr ""
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:840
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:884
 #: ../glom/mode_design/script_library/dialog_script_library.cc:126
-#: ../glom/navigation/box_tables.cc:303 ../glom/navigation/box_tables.cc:396
+#: ../glom/navigation/box_tables.cc:315 ../glom/navigation/box_tables.cc:419
 #: ../glom/mode_design/translation/window_translations.cc:353
 #: ../glom/mode_design/translation/window_translations.cc:392
 #: ../glom/utility_widgets/imageglom.cc:701
@@ -2088,11 +2088,11 @@ msgid "This record cannot be deleted because there is no primary key."
 msgstr "Nie można usunąć tego wpisu, ponieważ nie ma głównego klucza."
 
 #. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:854
+#: ../glom/mode_data/box_data_details.cc:863
 msgid "Primary key auto increments"
 msgstr "Automatyczny przyrost głównego klucza"
 
-#: ../glom/mode_data/box_data_details.cc:855
+#: ../glom/mode_data/box_data_details.cc:864
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
@@ -2112,53 +2112,53 @@ msgstr ""
 "Wpis o tej wartości nie istnieje. W związku z tym nawigacja do powiązanego "
 "wpisu jest niemożliwa."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1098
+#: ../glom/mode_data/flowtablewithfields.cc:1113
 #: ../glom/utility_widgets/notebooklabelglom.cc:70
 #: ../glom/utility_widgets/notebooklabelglom.cc:117
 msgid "New Group"
 msgstr "Nowa grupa"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1104
+#: ../glom/mode_data/flowtablewithfields.cc:1119
 #: ../glom/mode_design/layout/dialog_layout_details.cc:726
 msgid "notebook"
 msgstr "notatnik"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1110
+#: ../glom/mode_data/flowtablewithfields.cc:1125
 msgid "tab1"
 msgstr "karta1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1113
+#: ../glom/mode_data/flowtablewithfields.cc:1128
 msgid "Tab One"
 msgstr "Pierwsza karta"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1126
+#: ../glom/mode_data/flowtablewithfields.cc:1141
 msgid "button"
 msgstr "przycisk"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1127
+#: ../glom/mode_data/flowtablewithfields.cc:1142
 #: ../glom/mode_design/layout/dialog_layout_details.cc:652
 msgid "New Button"
 msgstr "Nowy przycisk"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1133
+#: ../glom/mode_data/flowtablewithfields.cc:1148
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:387
 msgid "text"
 msgstr "tekst"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1134
+#: ../glom/mode_data/flowtablewithfields.cc:1149
 msgid "New Text"
 msgstr "Nowy tekst"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1283
+#: ../glom/mode_data/flowtablewithfields.cc:1298
 msgid "Delete whole group \"%1\"?"
 msgstr "Usunąć całą grupę „%1”?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1289
+#: ../glom/mode_data/flowtablewithfields.cc:1304
 msgid "Delete whole group?"
 msgstr "Usunąć całą grupę?"
 
@@ -2592,7 +2592,7 @@ msgid "<b>Rename Print Layout</b>"
 msgstr "<b>Zmiana nazwy układu wydruku</b>"
 
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:222
-#: ../glom/navigation/box_tables.cc:397
+#: ../glom/navigation/box_tables.cc:420
 msgid "Rename"
 msgstr "Zmień nazwę"
 
@@ -2769,12 +2769,24 @@ msgstr "Ukryte"
 msgid "Default"
 msgstr "Domyślne"
 
-#. Ask the user if they want us to try to cope with this:
+#: ../glom/navigation/box_tables.cc:228
+msgid "Table Names Cannot Contain Spaces"
+msgstr "Nazwy tablic nie mogą zawierać spacji"
+
 #: ../glom/navigation/box_tables.cc:229
+msgid ""
+"Unfortunately, Glom tables cannot have names that contain spaces. Please "
+"enter a different name for the table."
+msgstr ""
+"Tablice programu Glom nie mogą mieć nazw zawierających spacji. Proszę podać "
+"inną nazwę dla tablicy."
+
+#. Ask the user if they want us to try to cope with this:
+#: ../glom/navigation/box_tables.cc:241
 msgid "Table Already Exists"
 msgstr "Tablica już istnieje"
 
-#: ../glom/navigation/box_tables.cc:230
+#: ../glom/navigation/box_tables.cc:242
 msgid ""
 "This table already exists on the database server, though it is not mentioned "
 "in the .glom file. This should not happen. Would you like Glom to attempt to "
@@ -2785,7 +2797,7 @@ msgstr ""
 "użyć istniejącej tablicy?"
 
 #. TODO: Do not show tables that are not in the document.
-#: ../glom/navigation/box_tables.cc:290
+#: ../glom/navigation/box_tables.cc:302
 msgid ""
 "You cannot delete this table, because there is no information about this "
 "table in the document."
@@ -2793,7 +2805,7 @@ msgstr ""
 "Nie można usunąć tej tablicy, ponieważ nie ma o niej informacji w dokumencie."
 
 #. Ask the user to confirm:
-#: ../glom/navigation/box_tables.cc:297
+#: ../glom/navigation/box_tables.cc:309
 msgid ""
 "Are you sure that you want to delete this table?\n"
 "Table name: %1"
@@ -2801,24 +2813,24 @@ msgstr ""
 "Na pewno usunąć tę tablicę?\n"
 "Nazwa tablicy: %1"
 
-#: ../glom/navigation/box_tables.cc:298 ../glom/navigation/box_tables.cc:304
+#: ../glom/navigation/box_tables.cc:310 ../glom/navigation/box_tables.cc:316
 msgid "Delete Table"
 msgstr "Usuń tablicę"
 
-#: ../glom/navigation/box_tables.cc:394
+#: ../glom/navigation/box_tables.cc:417
 msgid "Are you sure that you want to rename this table?"
 msgstr "Na pewno zmienić nazwę tej tablicy?"
 
 #. TODO: Show old and new names?
-#: ../glom/navigation/box_tables.cc:395
+#: ../glom/navigation/box_tables.cc:418
 msgid "<b>Rename Table</b>"
 msgstr "<b>Zmiana nazwy tablicy</b>"
 
-#: ../glom/navigation/box_tables.cc:437
+#: ../glom/navigation/box_tables.cc:459
 msgid "Unknown Table"
 msgstr "Nieznana tablica"
 
-#: ../glom/navigation/box_tables.cc:438
+#: ../glom/navigation/box_tables.cc:460
 msgid ""
 "You cannot open this table, because there is no information about this table "
 "in the document."
