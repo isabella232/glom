@@ -69,7 +69,7 @@ auto find_if_layout_item_is_equal(T_Container& container, const typename T_Conta
       if(!element)
         return false; //layout_item cannot (should not) be null because it is a reference.
 
-        return layout_item.is_same_field(*element);
+      return layout_item.is_same_field(*element);
     });
 }
 
