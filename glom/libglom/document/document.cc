@@ -1899,7 +1899,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
 
   auto field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
 
-  Field::glom_field_type field_type = Field::glom_field_type::INVALID;
+  auto field_type = Field::glom_field_type::INVALID;
   if(field)
     field_type = field->get_glom_type();
 
@@ -2724,7 +2724,7 @@ bool Document::load_after(int& failure_code)
                 const auto field_type = XmlUtils::get_node_attribute_value(node_field, GLOM_ATTRIBUTE_TYPE);
 
                 //Get the type enum for this string representation of the type:
-                Field::glom_field_type field_type_enum = Field::glom_field_type::INVALID;
+                auto field_type_enum = Field::glom_field_type::INVALID;
                 for(const auto& type_pair : type_names)
                 {
                   if(type_pair.second == field_type)
@@ -3083,7 +3083,7 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
 
   auto field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
 
-  Field::glom_field_type field_type = Field::glom_field_type::INVALID;
+  auto field_type = Field::glom_field_type::INVALID;
   if(field)
     field_type = field->get_glom_type();
 

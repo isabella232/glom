@@ -276,7 +276,7 @@ bool import_translations_from_po_file(const std::shared_ptr<Document>& document,
   error_handler.error = &on_gettextpo_error;
   #endif //HAVE_GETTEXTPO_XERROR
 
-  po_file_t po_file = po_file_read(filename.c_str(), &error_handler);
+  auto po_file = po_file_read(filename.c_str(), &error_handler);
   if(!po_file)
   {
     // error message is already given by error_handle.
@@ -288,7 +288,7 @@ bool import_translations_from_po_file(const std::shared_ptr<Document>& document,
   for (int i = 0; domains[i] != 0; ++i)
   {
     //Look at each message:
-    po_message_iterator_t iter = po_message_iterator(po_file, domains[i]);
+    auto iter = po_message_iterator(po_file, domains[i]);
     po_message_t msg;
     while ((msg = po_next_message(iter)))
     {

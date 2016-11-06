@@ -91,7 +91,7 @@ Glib::ustring get_file_uri_without_extension(const Glib::ustring& uri)
 
   const Glib::ustring filename_part = file->get_basename();
 
-  const Glib::ustring::size_type pos_dot = filename_part.rfind(".");
+  const auto pos_dot = filename_part.rfind(".");
   if(pos_dot == Glib::ustring::npos)
     return uri; //There was no extension, so just return the existing URI.
   else
@@ -117,7 +117,7 @@ std::string get_file_path_without_extension(const std::string& filepath)
 
   const Glib::ustring filename_part = file->get_basename();
 
-  const Glib::ustring::size_type pos_dot = filename_part.rfind(".");
+  const auto pos_dot = filename_part.rfind(".");
   if(pos_dot == Glib::ustring::npos)
     return filepath; //There was no extension, so just return the existing URI.
   else

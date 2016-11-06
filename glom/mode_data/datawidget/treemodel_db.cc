@@ -129,7 +129,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
 
             //We don't just create a Gda::Value of the column's gda type,
             //because we should use a NULL-type Gda::Value as the initial value for some fields:
-            const Field::glom_field_type glom_type = Field::get_glom_type_for_gda_type(column->get_g_type());
+            const auto glom_type = Field::get_glom_type_for_gda_type(column->get_g_type());
             m_db_values[col] = Glom::Conversions::get_empty_value(glom_type);
           }
         }
@@ -733,7 +733,7 @@ int DbTreeModel::get_internal_rows_count() const
 
 DbTreeModel::iterator DbTreeModel::append()
 {
-  //const size_type existing_size = m_data_model_rows_count;
+  //const auto existing_size = m_data_model_rows_count;
   //std::cerr << G_STRFUNC << ": existing_size = " << existing_size << std::endl;
   //m_rows.resize(existing_size + 1);
 

@@ -585,7 +585,7 @@ Field::glom_field_type Field::get_glom_type_for_gda_type(GType gda_type)
 {
   init_map();
 
-  Field::glom_field_type result = glom_field_type::INVALID;
+  auto result = glom_field_type::INVALID;
 
   //Get the glom type used for this gda type:
   {
@@ -788,7 +788,7 @@ Glib::ustring Field::get_type_name_ui(glom_field_type glom_type)
 //static:
 Field::glom_field_type Field::get_type_for_ui_name(const Glib::ustring& glom_type)
 {
-  glom_field_type result = glom_field_type::INVALID;
+  auto result = glom_field_type::INVALID;
 
   for(const auto& the_pair : m_map_type_names_ui)
   {

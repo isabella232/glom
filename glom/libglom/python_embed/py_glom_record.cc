@@ -145,7 +145,7 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
      return;
   }
 
-  const Field::glom_field_type field_type = field->get_glom_type(); //TODO
+  const auto field_type = field->get_glom_type(); //TODO
 
   Gnome::Gda::Value field_value;
   GValue value_c = {0, {{0}}};

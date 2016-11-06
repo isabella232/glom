@@ -377,7 +377,7 @@ bool CsvParser::on_idle_parse()
         m_in_quotes = false;
 
         /*
-        const size_t len = pos - prev;
+        const auto len = pos - prev;
         std::string quoted_text;
         if(len)
           quoted_text = std::string(prev, len);

@@ -978,13 +978,13 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
 
   while(index < count)
   {
-    Glib::ustring::size_type pos_find = calculation.find(prefix, index);
+    auto pos_find = calculation.find(prefix, index);
     if(pos_find != Glib::ustring::npos)
     {
-      Glib::ustring::size_type pos_find_end = calculation.find("\"]", pos_find);
+      auto pos_find_end = calculation.find("\"]", pos_find);
       if(pos_find_end  != Glib::ustring::npos)
       {
-        Glib::ustring::size_type pos_start = pos_find + prefix_size;
+        auto pos_start = pos_find + prefix_size;
         const auto field_name = calculation.substr(pos_start, pos_find_end - pos_start);
 
         auto field_found = document->get_field(table_name, field_name);

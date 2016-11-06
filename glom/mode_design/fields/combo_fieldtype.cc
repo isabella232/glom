@@ -79,7 +79,7 @@ void Combo_FieldType::set_field_type(Field::glom_field_type fieldType)
 
 Field::glom_field_type Combo_FieldType::get_field_type() const
 {
-  Field::glom_field_type result = Field::glom_field_type::INVALID;
+  auto result = Field::glom_field_type::INVALID;
 
   //Get the active row:
   auto active_row  = get_active();

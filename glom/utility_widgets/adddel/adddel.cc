@@ -1197,7 +1197,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
       {
         bool do_signal = true;
 
-        const Field::glom_field_type field_type = m_column_types[model_column_index].m_field_type;
+        const auto field_type = m_column_types[model_column_index].m_field_type;
         if(field_type != Field::glom_field_type::INVALID) //If a field type was specified for this column.
         {
           //Make sure that the entered data is suitable for this field type:
