@@ -31,7 +31,6 @@
 #include <libglom/data_structure/layout/layoutitem_calendarportal.h>
 #include <libglom/data_structure/layout/layoutitem_button.h>
 #include <libglom/data_structure/layout/layoutitem_text.h>
-#include <libglom/data_structure/layout/layoutitem_placeholder.h>
 #include <libglom/data_structure/field.h>
 #include <libglom/document/document.h>
 #include <glom/utility_widgets/layoutwidgetbase.h>
@@ -264,8 +263,6 @@ private:
 
   Box_Data_List_Related* create_related(const std::shared_ptr<LayoutItem_Portal>& portal, bool show_title = true);
   Box_Data_Calendar_Related* create_related_calendar(const std::shared_ptr<LayoutItem_CalendarPortal>& portal, bool show_title = true);
-
-  Gtk::Bin* m_placeholder;
 
   Glib::ustring m_table_name;
   bool m_find_mode;

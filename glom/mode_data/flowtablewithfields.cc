@@ -35,7 +35,6 @@
 #include <glom/mode_data/box_data_list_related.h>
 #include <glom/mode_design/layout/dialog_choose_relationship.h>
 #include <glom/utils_ui.h> //For bold_message()).
-#include <libglom/data_structure/layout/layoutitem_placeholder.h>
 #include <glom/signal_reemitter.h>
 
 #include <glibmm/i18n.h>
@@ -53,7 +52,6 @@ FlowTableWithFields::Info::Info()
 
 FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
 :
-  m_placeholder(nullptr),
   m_table_name(table_name),
   m_find_mode(false)
 {
