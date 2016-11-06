@@ -37,7 +37,7 @@ public:
   Glib::ustring m_name;
 };
 
-typedef std::list<Currency> type_list_currencies;
+typedef std::vector<Currency> type_list_currencies;
 type_list_currencies get_list_of_currency_symbols();
 
 class Locale
@@ -47,7 +47,7 @@ public:
   Glib::ustring m_name;
 };
 
-typedef std::list<Locale> type_list_locales;
+typedef std::vector<Locale> type_list_locales;
 type_list_locales get_list_of_locales();
 
 Glib::ustring get_locale_name(const Glib::ustring& locale_id);

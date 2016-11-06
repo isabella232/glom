@@ -254,7 +254,7 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::get_pixbuf_for_gda_value(const Gnome::Gda::Va
     /* Note that this is regular binary data, not escaped text representing the binary data: */
     if(buffer_binary && buffer_binary_length)
     {
-      //typedef std::list<Gdk::PixbufFormat> type_list_formats;
+      //typedef std::vector<Gdk::PixbufFormat> type_list_formats;
       //const auto formats = Gdk::Pixbuf::get_formats();
       //std::cout << "Debug: Supported pixbuf formats:\n";
       //for(const auto& item : formats)

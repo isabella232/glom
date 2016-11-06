@@ -286,7 +286,7 @@ private:
   bool get_model_column_index(guint view_column_index, guint& model_column_index);
 
 
-  typedef std::list<guint> type_list_indexes;
+  typedef std::vector<guint> type_list_indexes;
   ///Return the column indexes of any columns that display this field.
   type_list_indexes get_column_index(const LayoutItem& layout_item) const;
 

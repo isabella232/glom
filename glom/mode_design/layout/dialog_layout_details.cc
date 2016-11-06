@@ -351,7 +351,7 @@ void Dialog_Layout_Details::init(const Glib::ustring& layout_name, const Glib::u
     }
 
     //Show the field layout
-    //typedef std::list< Glib::ustring > type_listStrings;
+    //typedef std::vector< Glib::ustring > type_listStrings;
 
     m_model_items->clear();
 

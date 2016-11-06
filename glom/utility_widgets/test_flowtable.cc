@@ -41,7 +41,7 @@ void on_drag_data_get_entry(const Glib::RefPtr<Gdk::DragContext>&, Gtk::Selectio
 }
 */
 
-std::list<Gtk::Widget*> vec_child_widgets;
+std::vector<Gtk::Widget*> vec_child_widgets;
 
 static void fill_flowtable(Glom::FlowTable& flowtable)
 {

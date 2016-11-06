@@ -149,7 +149,7 @@ void Dialog_GroupsList::set_document(const Glib::ustring& layout, const std::sha
     }
 
     //Show the field layout
-    typedef std::list< Glib::ustring > type_listStrings;
+    typedef std::vector< Glib::ustring > type_listStrings;
 
     m_model_groups->clear();
 

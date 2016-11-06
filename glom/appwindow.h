@@ -292,7 +292,7 @@ private:
 #endif // !G_OS_WIN32
 
   //Widgets:
-  typedef std::list< Glib::RefPtr<Gio::SimpleAction> > type_listActions;
+  typedef std::vector< Glib::RefPtr<Gio::SimpleAction> > type_listActions;
   type_listActions m_listDeveloperActions; //Only enabled when in developer mode.
   type_listActions m_listTableSensitiveActions; // Only enabled when a table is loaded.
   Glib::RefPtr<Gio::SimpleAction> m_action_mode_find;

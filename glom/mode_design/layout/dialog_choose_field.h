@@ -53,7 +53,7 @@ public:
 
   std::shared_ptr<LayoutItem_Field> get_field_chosen() const;
 
-  typedef std::list< std::shared_ptr<LayoutItem_Field> > type_list_field_items;
+  typedef std::vector<std::shared_ptr<LayoutItem_Field>> type_list_field_items;
   type_list_field_items get_fields_chosen() const;
 
 private:

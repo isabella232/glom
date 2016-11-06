@@ -169,7 +169,7 @@ protected:
   bool m_close_after_save;
 
   //Mime types which this application can load and save:
-  typedef std::list<Glib::ustring> type_list_strings;
+  typedef std::vector<Glib::ustring> type_list_strings;
   static type_list_strings m_mime_types;
 };
 

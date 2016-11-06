@@ -31,7 +31,7 @@
 
 #include "glom_python.h"
 #include <libglom/data_structure/glomconversions.h>
-#include <list>
+#include <vector>
 #include <glib.h> //For g_warning().
 
 #include <iostream>
@@ -39,9 +39,9 @@
 namespace Glom
 {
 
-static std::list<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::ustring& separators, int maxParts)
+static std::vector<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::ustring& separators, int maxParts)
 {
-  std::list<Glib::ustring> result;
+  std::vector<Glib::ustring> result;
   Glib::ustring str = msg;
   bool nocount = false;
   if(maxParts == -1)

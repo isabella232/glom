@@ -87,8 +87,8 @@ protected:
 
   void clear_fields_calculation_in_progress();
 
-  typedef std::list< std::shared_ptr<LayoutItem_Field> > type_list_field_items;
-  typedef std::list< std::shared_ptr<const LayoutItem_Field> > type_list_const_field_items;
+  typedef std::vector< std::shared_ptr<LayoutItem_Field> > type_list_field_items;
+  typedef std::vector< std::shared_ptr<const LayoutItem_Field> > type_list_const_field_items;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   /** Allow the user to select a field from the list of fields for the table.

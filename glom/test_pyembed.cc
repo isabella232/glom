@@ -2,11 +2,11 @@
 #include <glib.h> //For g_warning().
 #include <glibmm/ustring.h>
 #include <iostream>
-#include <list>
+#include <vector>
 
-std::list<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::ustring& separators, int maxParts)
+std::vector<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::ustring& separators, int maxParts)
 {
-  std::list<Glib::ustring> result;
+  std::vector<Glib::ustring> result;
   Glib::ustring str = msg;
   bool nocount = false;
   if(maxParts == -1)

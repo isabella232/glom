@@ -97,7 +97,7 @@ private:
   //The cached data for the month:
   //For each date we have a list of rows (vectors):
   typedef std::vector<Gnome::Gda::Value> type_vector_values;
-  typedef std::list<type_vector_values*> type_list_vectors;
+  typedef std::vector<type_vector_values*> type_list_vectors;
 
   // TODO: Use std::unordered_map, maybe like this:
   //static constexpr auto date_hash = [](const Glib::Date& date) {

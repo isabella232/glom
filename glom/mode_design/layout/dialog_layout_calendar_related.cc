@@ -172,7 +172,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
     }
 
     //Show the field layout
-    //typedef std::list< Glib::ustring > type_listStrings;
+    //typedef std::vector< Glib::ustring > type_listStrings;
 
     m_model_items->clear();
 

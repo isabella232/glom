@@ -227,7 +227,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
       document->fill_layout_field_details(related_table_name, mapGroups); //Update with full field information.
 
       //Show the field layout
-      //typedef std::list< Glib::ustring > type_listStrings;
+      //typedef std::vector< Glib::ustring > type_listStrings;
     }
 
     m_model_items->clear();

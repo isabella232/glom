@@ -44,7 +44,7 @@
 #include <gtkmm/eventbox.h>
 #include <gtkmm/box.h>
 #include <unordered_map>
-#include <list>
+#include <vector>
 
 namespace Glom
 {
@@ -107,8 +107,8 @@ public:
    */
   void update_choices(const LayoutItem_Field& field);
 
-  typedef std::list<Gtk::Widget*> type_list_widgets;
-  typedef std::list<const Gtk::Widget*> type_list_const_widgets;
+  typedef std::vector<Gtk::Widget*> type_list_widgets;
+  typedef std::vector<const Gtk::Widget*> type_list_const_widgets;
 
   void set_design_mode(bool value = true) override;
 
@@ -184,13 +184,13 @@ private:
   type_list_widgets get_field(const LayoutItem_Field& field, bool include_item);
   type_list_const_widgets get_field(const LayoutItem_Field& field, bool include_item) const;
 
-  typedef std::list<Box_Data_Portal*> type_portals;
+  typedef std::vector<Box_Data_Portal*> type_portals;
 
   /// Get portals whose relationships have @a from_key as the from_key.
   type_portals get_portals(const LayoutItem_Field& from_key);
 
 
-  typedef std::list<DataWidgetChildren::ComboChoices*> type_choice_widgets;
+  typedef std::vector<DataWidgetChildren::ComboChoices*> type_choice_widgets;
 
   /// Get choice widgets with !show_all relationships that have @a from_key as the from_key.
   type_choice_widgets get_choice_widgets(const LayoutItem_Field& from_key);
@@ -229,15 +229,15 @@ private:
   };
 
   //Map of IDs to full info.
-  std::list<Info> m_listFields;
+  std::vector<Info> m_listFields;
 
   //Remember the nested FlowTables, so that we can search them for fields too:
-  std::list< FlowTableWithFields* > m_sub_flow_tables;
+  std::vector<FlowTableWithFields*> m_sub_flow_tables;
 
   type_portals m_portals;
 
   //Remember the sequence of LayoutWidgetBase widgets, so we can iterate over them later:
-  std::list<LayoutWidgetBase*> m_list_layoutwidgets;
+  std::vector<LayoutWidgetBase*> m_list_layoutwidgets;
 
   void add_button(const std::shared_ptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& table_name);
   void add_textobject(const std::shared_ptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name);
