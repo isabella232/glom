@@ -30,17 +30,17 @@
 namespace Glom
 {
 
-const Glib::ustring Notebook_Data::m_pagename_details = "details";
-const Glib::ustring Notebook_Data::m_pagename_list = "list";
+constexpr auto PAGENAME_DETAILS= "details";
+constexpr auto PAGENAME_LIST = "list";
 
 Notebook_Data::Notebook_Data()
 {
   //Add Pages:
   //Translators: This is a noun. It is a notebook tab title.
-  append_page(m_Box_List, m_pagename_list, _("List"));
+  append_page(m_Box_List, PAGENAME_LIST, _("List"));
 
   //Translators: This is a noun. It is a notebook tab title.
-  append_page(m_Box_Details, m_pagename_details, _("Details"));
+  append_page(m_Box_Details, PAGENAME_DETAILS, _("Details"));
 
   // Set accessible name for the notebook, to be able to access it via LDTP
 #ifdef GTKMM_ATKMM_ENABLED
@@ -271,20 +271,20 @@ FoundSet Notebook_Data::get_found_set_selected() const
 void Notebook_Data::set_current_view(dataview view)
 {
   if(view == dataview::LIST)
-    set_visible_child(m_pagename_list);
+    set_visible_child(PAGENAME_LIST);
   else
-    set_visible_child(m_pagename_details);
+    set_visible_child(PAGENAME_DETAILS);
 }
 
 void Notebook_Data::select_page_for_find_results()
 {
   if(m_Box_List.get_showing_multiple_records())
   {
-    set_visible_child(m_pagename_list);
+    set_visible_child(PAGENAME_LIST);
   }
   else
   {
-    set_visible_child(m_pagename_details);
+    set_visible_child(PAGENAME_DETAILS);
   }
 }
 
@@ -330,7 +330,7 @@ Notebook_Data::dataview Notebook_Data::get_current_view() const
   const auto current_page = get_visible_child_name();
 
   dataview result = dataview::DETAILS;
-  if(current_page == m_pagename_list)
+  if(current_page == PAGENAME_LIST)
     result = dataview::LIST;
 
   return result;

@@ -25,19 +25,19 @@
 namespace Glom
 {
 
-const Glib::ustring Notebook_Find::m_pagename_details = "details";
-const Glib::ustring Notebook_Find::m_pagename_list = "list";
+constexpr auto PAGENAME_DETAILS = "details";
+constexpr auto PAGENAME_LIST = "list";
 
 Notebook_Find::Notebook_Find()
 {
-  append_page(m_Box_List, m_pagename_list, _("List"));
+  append_page(m_Box_List, PAGENAME_LIST, _("List"));
 
   //Fill composite view:
   add_view(&m_Box_List);
 
-  append_page(m_Box_Details, m_pagename_details, _("Details"));
+  append_page(m_Box_Details, PAGENAME_DETAILS, _("Details"));
 
-  set_visible_child(m_pagename_details); //Show the details page by default. It's more obvious for a Find.
+  set_visible_child(PAGENAME_DETAILS); //Show the details page by default. It's more obvious for a Find.
   //TODO: Show the same layout that is being edited at the time that the mode was changed.
 
   //Connect Signals:
@@ -71,9 +71,9 @@ bool Notebook_Find::init_db_details(const Glib::ustring& table_name, const Glib:
 void Notebook_Find::set_current_view(Notebook_Data::dataview view)
 {
   if(view == Notebook_Data::dataview::LIST)
-    set_visible_child(m_pagename_list);
+    set_visible_child(PAGENAME_LIST);
   else
-    set_visible_child(m_pagename_details);
+    set_visible_child(PAGENAME_DETAILS);
 }
 
 } //namespace Glom

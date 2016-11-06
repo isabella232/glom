@@ -46,8 +46,6 @@ public:
 
 private:
 
-  static const Glib::ustring m_pagename_details, m_pagename_list;
-
   //Member widgets:
   Box_Data_List_Find m_Box_List;
 
