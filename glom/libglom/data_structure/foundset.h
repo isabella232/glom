@@ -56,8 +56,7 @@ public:
   //TODO: Avoid duplication with types in Formatting.
   ///field, ascending
   typedef std::pair< std::shared_ptr<const LayoutItem_Field>, bool> type_pair_sort_field;
-  typedef std::vector<type_pair_sort_field> type_sort_clause;
-  type_sort_clause m_sort_clause;
+ std::vector<type_pair_sort_field> m_sort_clause;
 };
 
 } //namespace Glom

@@ -599,8 +599,7 @@ private:
     type_vec_fields m_fields;
     type_vec_relationships m_relationships;
 
-    typedef std::vector< LayoutInfo > type_layouts;
-    type_layouts m_layouts;
+    std::vector< LayoutInfo > m_layouts;
 
     // map of report names to reports
     std::unordered_map<Glib::ustring, std::shared_ptr<Report>> m_reports;
@@ -625,20 +624,17 @@ private:
   std::shared_ptr<DocumentTableInfo> get_table_info(const Glib::ustring& table_name);
   std::shared_ptr<const DocumentTableInfo> get_table_info(const Glib::ustring& table_name) const;
 
-  typedef std::map<Glib::ustring, std::shared_ptr<DocumentTableInfo> > type_tables;
-  type_tables m_tables;
+  std::map<Glib::ustring, std::shared_ptr<DocumentTableInfo> > m_tables;
 
 
   //User groups:
-  typedef std::map<Glib::ustring, GroupInfo> type_map_groups;
-  type_map_groups m_groups;
+  std::map<Glib::ustring, GroupInfo> m_groups;
 
   std::shared_ptr<DatabaseTitle> m_database_title;
   Glib::ustring m_translation_original_locale;
   std::vector<Glib::ustring> m_translation_available_locales; //Just a cache, based on other data.
 
-  typedef std::map<Glib::ustring, Glib::ustring> type_map_library_scripts;
-  type_map_library_scripts m_map_library_scripts;
+  std::map<Glib::ustring, Glib::ustring> m_map_library_scripts;
 
   Glib::ustring m_startup_script;
 

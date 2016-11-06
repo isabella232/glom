@@ -1517,7 +1517,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups(const Glib::u
   const auto info = get_table_info(parent_table_name);
   if(info)
   {
-    const DocumentTableInfo::type_layouts layouts = info->m_layouts;
+    const auto layouts = info->m_layouts;
 
     //Look for the layout with this name:
     auto iter = find_if_layout(layouts, layout_name, layout_platform);
@@ -1559,7 +1559,7 @@ void Document::set_data_layout_groups(const Glib::ustring& layout_name, const Gl
     layout_info.m_layout_name = layout_name;
     layout_info.m_layout_groups = groups;
 
-    DocumentTableInfo::type_layouts& layouts = info->m_layouts;
+    auto& layouts = info->m_layouts;
     auto iter = find_if_layout(layouts, layout_name, layout_platform);
     if(iter == layouts.end())
       layouts.emplace_back(layout_info);

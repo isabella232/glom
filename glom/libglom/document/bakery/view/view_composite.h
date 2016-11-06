@@ -93,8 +93,7 @@ public:
   }
 
 protected:
-  typedef std::vector<type_view*> type_vec_views;
-  type_vec_views m_vecViews;
+  std::vector<type_view*> m_vecViews;
 };
 
 } //namespace

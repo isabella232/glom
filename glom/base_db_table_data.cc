@@ -90,8 +90,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   builder->set_table(m_table_name);
 
   //Avoid specifying the same field twice:
-  typedef std::unordered_set<Glib::ustring, std::hash<std::string>> type_map_added;
-  type_map_added map_added;
+  std::unordered_set<Glib::ustring, std::hash<std::string>> map_added;
   auto params = Gnome::Gda::Set::create();
 
   for(const auto& layout_item : fieldsToAdd)

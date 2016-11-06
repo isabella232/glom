@@ -172,11 +172,9 @@ private:
 
   //A cache of the selected item,
   //to avoid repeatedly requesting it:
-  typedef std::vector< Glib::RefPtr<CanvasLayoutItem> > type_vec_canvas_items;
-  type_vec_canvas_items m_layout_items_selected;
+  std::vector<Glib::RefPtr<CanvasLayoutItem>> m_layout_items_selected;
 
-  typedef std::vector<sigc::connection> type_vec_connections;
-  type_vec_connections m_connections_items_selected_moved;
+  std::vector<sigc::connection> m_connections_items_selected_moved;
 
   //A copied item to be pasted later:
   typedef LayoutGroup::type_list_items type_list_items;

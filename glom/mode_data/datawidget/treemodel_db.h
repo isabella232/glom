@@ -204,8 +204,7 @@ private:
    guint m_data_model_columns_count; //1 less than m_columns_count, which also has a model column for the key.
 
    //TODO: Performance:
-   typedef std::unordered_map<type_datamodel_row_index, DbTreeModelRow> type_map_rows;
-   mutable type_map_rows m_map_rows; //mutable because getting fills the internal cache.
+   mutable std::unordered_map<type_datamodel_row_index, DbTreeModelRow> m_map_rows; //mutable because getting fills the internal cache.
    int m_count_extra_rows; //Rows that are not from the database.
    int m_count_removed_rows; //A cache, instead of searching through the map.
    int get_internal_rows_count() const;

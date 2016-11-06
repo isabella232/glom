@@ -229,18 +229,16 @@ private:
     Gtk::CheckButton* m_checkbutton; //Used instead of first and second if it's a bool.
   };
 
-  typedef std::list<Info> type_listFields; //Map of IDs to full info.
-  type_listFields m_listFields;
+  //Map of IDs to full info.
+  std::list<Info> m_listFields;
 
   //Remember the nested FlowTables, so that we can search them for fields too:
-  typedef std::list< FlowTableWithFields* > type_sub_flow_tables;
-  type_sub_flow_tables m_sub_flow_tables;
+  std::list< FlowTableWithFields* > m_sub_flow_tables;
 
   type_portals m_portals;
 
   //Remember the sequence of LayoutWidgetBase widgets, so we can iterate over them later:
-  typedef std::list< LayoutWidgetBase* > type_list_layoutwidgets;
-  type_list_layoutwidgets m_list_layoutwidgets;
+  std::list<LayoutWidgetBase*> m_list_layoutwidgets;
 
   void add_button(const std::shared_ptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& table_name);
   void add_textobject(const std::shared_ptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name);

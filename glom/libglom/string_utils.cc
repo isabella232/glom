@@ -266,8 +266,7 @@ type_vec_strings string_separate(const Glib::ustring& str, const Glib::ustring& 
   const Glib::ustring::size_type size_separator = separator.size();
 
   //A stack of quotes, so that we can handle nested quotes, whether they are " or ':
-  typedef std::stack<Glib::ustring> type_queue_quotes;
-  type_queue_quotes m_current_quotes;
+  std::stack<Glib::ustring> m_current_quotes;
 
   Glib::ustring::size_type unprocessed_start = 0;
   Glib::ustring::size_type item_start = 0;

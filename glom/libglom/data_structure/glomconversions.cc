@@ -263,8 +263,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
   //http://www.roguewave.com/support/docs/sourcepro/stdlibref/time-put.html
 
   //Format it into this stream:
-  typedef std::stringstream type_stream;
-  type_stream the_stream;
+  std::stringstream the_stream;
   the_stream.imbue(locale); //Make it format things for this locale. (Actually, I don't know if this is necessary, because we mention the locale in the time_put<> constructor.
 
   // Get a time_put face:

@@ -71,8 +71,7 @@ private:
   Glib::RefPtr<Gdk::Window> m_gdk_window;
 
   //We remember the Boxes so we can delete them when the are no longer used.
-  typedef std::list<Gtk::Box*> type_list_hboxes;
-  type_list_hboxes m_list_hboxes;
+  std::list<Gtk::Box*> m_list_hboxes;
 
   type_const_list_widgets m_list_first_widgets;
 };

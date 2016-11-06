@@ -59,12 +59,10 @@ protected:
 
 
   typedef Gtk::TreeModelColumn<Glib::ustring> type_model_column_string_fixed;
-  typedef std::vector<std::unique_ptr<type_model_column_string_fixed>> type_vec_model_columns_string_fixed;
-  type_vec_model_columns_string_fixed m_vec_model_columns_string_fixed; //If set_choices_fixed() was used.
+  std::vector<std::unique_ptr<type_model_column_string_fixed>> m_vec_model_columns_string_fixed; //If set_choices_fixed() was used.
 
   typedef Gtk::TreeModelColumn<Gnome::Gda::Value> type_model_column_value_fixed;
-  typedef std::vector<std::unique_ptr<type_model_column_value_fixed>> type_vec_model_columns_value_fixed;
-  type_vec_model_columns_value_fixed m_vec_model_columns_value_fixed; //If set_choices_fixed() was used.
+  std::vector<std::unique_ptr<type_model_column_value_fixed>> m_vec_model_columns_value_fixed; //If set_choices_fixed() was used.
 
   /** Get the index of the extra column, at the end, that is just a
    * text representation of the first column, for use by GtkCombo with has-entry=true,
@@ -73,8 +71,7 @@ protected:
   int get_fixed_model_text_column() const;
 
 
-  typedef std::vector< std::shared_ptr<const LayoutItem_Field> > type_vec_const_layout_items;
-  type_vec_const_layout_items m_db_layout_items; //If set_choices_related() was used.
+  std::vector< std::shared_ptr<const LayoutItem_Field> > m_db_layout_items; //If set_choices_related() was used.
 
   //This avoids us making on_cell_data() public just so that derived classes can use it,
   //though that shouldn't be necessary anyway.
