@@ -23,7 +23,7 @@
 
 #include <libglom/data_structure/translatable_item.h>
 #include <libglom/data_structure/privileges.h>
-#include <map>
+#include <unordered_map>
 
 namespace Glom
 {
@@ -43,7 +43,7 @@ public:
 
   bool m_developer; //m_privs is ignored if this is true.
 
-  typedef std::map<Glib::ustring, Privileges> type_map_table_privileges;
+  typedef std::unordered_map<Glib::ustring, Privileges, std::hash<std::string>> type_map_table_privileges;
   type_map_table_privileges m_map_privileges;
 
   //typedef std::vector<Glib::ustring> type_users;

@@ -224,7 +224,7 @@ protected:
    */
   void do_calculations(const LayoutFieldInRecord& field_changed, bool first_calc_field);
 
-  typedef std::map<Glib::ustring, CalcInProgress> type_field_calcs;
+  typedef std::unordered_map<Glib::ustring, CalcInProgress, std::hash<std::string>> type_field_calcs;
 
 
   /** Get the fields whose values should be recalculated when @a field_name changes.
@@ -240,7 +240,7 @@ protected:
   void calculate_field_in_all_records(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field);
   void calculate_field_in_all_records(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field, const std::shared_ptr<const Field>& primary_key);
 
-  typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
+  typedef std::unordered_map<Glib::ustring, Gnome::Gda::Value, std::hash<std::string>> type_map_fields;
   //TODO: Performance: This is massively inefficient:
   type_map_fields get_record_field_values_for_calculation(const Glib::ustring& table_name, const std::shared_ptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
 

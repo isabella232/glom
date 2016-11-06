@@ -88,7 +88,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   builder->set_table(m_table_name);
 
   //Avoid specifying the same field twice:
-  typedef std::map<Glib::ustring, bool> type_map_added;
+  typedef std::unordered_map<Glib::ustring, bool, std::hash<std::string>> type_map_added;
   type_map_added map_added;
   auto params = Gnome::Gda::Set::create();
 

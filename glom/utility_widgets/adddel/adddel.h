@@ -31,7 +31,7 @@
 #include <giomm/simpleactiongroup.h>
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 namespace Glom
 {

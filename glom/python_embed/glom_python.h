@@ -44,7 +44,7 @@ bool gir_python_module_is_available();
  */
 bool gda_python_module_is_available();
 
-typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
+typedef std::unordered_map<Glib::ustring, Gnome::Gda::Value, std::hash<std::string>> type_map_fields;
 
 /** Run a script, ignoring the python return value.
  * The record object will be writable and the function will receive a ui

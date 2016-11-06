@@ -195,7 +195,7 @@ public:
   void set_visible(bool val = true);
   bool get_visible() const;
 
-  typedef std::map<glom_field_type, Glib::ustring> type_map_type_names;
+  typedef std::unordered_map<glom_field_type, Glib::ustring> type_map_type_names;
 
   /// Get canonical type names for internal use, such as in the XML of the document.
   static type_map_type_names get_type_names();
@@ -226,15 +226,15 @@ private:
   GType get_gda_data_type_with_fallback(const Gnome::Gda::Value& value);
 
   //The glom type to be used for the gda type:
-  typedef std::map<GType, glom_field_type> type_map_gda_type_to_glom_type;
+  typedef std::unordered_map<GType, glom_field_type> type_map_gda_type_to_glom_type;
   static type_map_gda_type_to_glom_type m_map_gda_type_to_glom_type;
 
   //The gda type to be used for the glom type:
-  typedef std::map<glom_field_type, GType> type_map_glom_type_to_gda_type;
+  typedef std::unordered_map<glom_field_type, GType> type_map_glom_type_to_gda_type;
   static type_map_glom_type_to_gda_type m_map_glom_type_to_gda_type;
 
   typedef std::vector<glom_field_type> type_list_conversion_targets;
-  typedef std::map<glom_field_type, type_list_conversion_targets> type_map_conversions;
+  typedef std::unordered_map<glom_field_type, type_list_conversion_targets> type_map_conversions;
 
   static type_map_type_names m_map_type_names; //These are canonical, for internal use.
   static type_map_type_names m_map_type_names_ui; //These are translated.

@@ -72,7 +72,7 @@ private:
   // We use this for implementing get_entered_field_data and
   // set_entered_field_data, required by Base_DB_Table_Data::record_new().
   // It just holds the values for the fields in the current row.
-  typedef std::map<Glib::ustring, Gnome::Gda::Value> type_mapValues;
+  typedef std::unordered_map<Glib::ustring, Gnome::Gda::Value, std::hash<std::string>> type_mapValues;
   type_mapValues m_current_row_values;
 
   Gtk::ProgressBar* m_progress_bar;

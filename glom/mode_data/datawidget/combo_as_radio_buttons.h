@@ -92,7 +92,7 @@ private:
 
   Glib::ustring m_old_text;
 
-  typedef std::map<Glib::ustring, Gtk::RadioButton*> type_map_buttons;
+  typedef std::unordered_map<Glib::ustring, Gtk::RadioButton*, std::hash<std::string>> type_map_buttons;
   type_map_buttons m_map_buttons;
 };
 

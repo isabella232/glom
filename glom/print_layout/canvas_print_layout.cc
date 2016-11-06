@@ -744,7 +744,7 @@ void Canvas_PrintLayout::fill_with_data_system_preferences(const Glib::RefPtr<Ca
 void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& canvas_group, const FoundSet& found_set, bool avoid_page_margins)
 {
   //A map of the text representation (e.g. field_name or relationship::field_name) to the index:
-  typedef std::map<Glib::ustring, guint> type_map_layout_fields_index;
+  typedef std::unordered_map<Glib::ustring, guint, std::hash<std::string>> type_map_layout_fields_index;
   type_map_layout_fields_index map_fields_index;
 
   //Get list of fields to get from the database.

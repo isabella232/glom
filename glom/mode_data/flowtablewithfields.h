@@ -44,7 +44,7 @@
 #include <gtkmm/sizegroup.h>
 #include <gtkmm/eventbox.h>
 #include <gtkmm/box.h>
-#include <map>
+#include <unordered_map>
 #include <list>
 
 namespace Glom

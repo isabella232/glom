@@ -32,7 +32,7 @@
 #include <giomm/simpleactiongroup.h>
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 

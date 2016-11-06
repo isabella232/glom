@@ -22,7 +22,7 @@
 #define GLOM_DATASTRUCTURE_TRANSLATABLE_ITEM_H
 
 #include <glibmm/ustring.h>
-#include <map>
+#include <unordered_map>
 #include <libglom/sharedptr.h>
 
 namespace Glom
@@ -94,7 +94,7 @@ public:
   /// Clear the original title and any translations of the title.
   void clear_title_in_all_locales() noexcept;
 
-  typedef std::map<Glib::ustring, Glib::ustring> type_map_locale_to_translations;
+  typedef std::unordered_map<Glib::ustring, Glib::ustring, std::hash<std::string>> type_map_locale_to_translations;
 
   bool get_has_translations() const noexcept;
 

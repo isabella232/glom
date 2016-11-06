@@ -48,7 +48,7 @@ private:
    double m_table_height;
    static double m_table_width;
 
-   typedef std::map <Glib::ustring, double> type_map_fields_y;
+   typedef std::unordered_map <Glib::ustring, double> type_map_fields_y;
    type_map_fields_y m_map_fields_y;
 };
 

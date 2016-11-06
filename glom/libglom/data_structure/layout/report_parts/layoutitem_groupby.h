@@ -23,7 +23,7 @@
 
 #include <libglom/data_structure/layout/layoutgroup.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
-#include <map>
+#include <unordered_map>
 
 namespace Glom
 {

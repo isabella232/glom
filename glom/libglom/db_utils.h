@@ -219,7 +219,7 @@ bool remove_user_from_group(const Glib::ustring& user, const Glib::ustring& grou
  */
 Gnome::Gda::Value get_lookup_value(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const std::shared_ptr<const Relationship>& relationship, const std::shared_ptr<const Field>& source_field, const Gnome::Gda::Value & key_value);
 
-typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
+typedef std::unordered_map<Glib::ustring, Gnome::Gda::Value, std::hash<std::string>> type_map_fields;
 
 //TODO: Performance: This is massively inefficient:
 type_map_fields get_record_field_values(const std::shared_ptr<const Document>& document, const Glib::ustring& table_name, const std::shared_ptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);

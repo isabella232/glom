@@ -98,7 +98,15 @@ private:
   //For each date we have a list of rows (vectors):
   typedef std::vector<Gnome::Gda::Value> type_vector_values;
   typedef std::list<type_vector_values*> type_list_vectors;
+
+  // TODO: Use std::unordered_map, maybe like this:
+  //static constexpr auto date_hash = [](const Glib::Date& date) {
+  //  std::tm ctm;
+  //  return std::hash<std::tm>()(ctm);
+  //};
+  //typedef std::unordered_map<Glib::Date, type_list_vectors, decltype(date_hash)> type_map_values;
   typedef std::map<Glib::Date, type_list_vectors> type_map_values;
+
   type_map_values m_map_values;
   mutable int m_query_column_date_field;
 };

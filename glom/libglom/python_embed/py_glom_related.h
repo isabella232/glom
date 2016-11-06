@@ -37,7 +37,7 @@ public:
   PyGlomRelated();
   ~PyGlomRelated();
 
-  typedef std::map<Glib::ustring, std::shared_ptr<Relationship> > type_map_relationships;
+  typedef std::unordered_map<Glib::ustring, std::shared_ptr<Relationship> , std::hash<std::string>> type_map_relationships;
   void set_relationships(const PyGlomRelated::type_map_relationships& relationships);
 
 
@@ -48,7 +48,7 @@ public:
   friend class PyGlomRecord;
 
 private:
-  typedef std::map<Glib::ustring, boost::python::object /* Actually PyGlomRelatedRecord* */> type_map_relatedrecords;
+  typedef std::unordered_map<Glib::ustring, boost::python::object /* Actually PyGlomRelatedRecord* */, std::hash<std::string>> type_map_relatedrecords;
 
   boost::python::object m_record; //Actually PyGlomRecord. A reference to the parent record.
 

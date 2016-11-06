@@ -33,7 +33,7 @@
 #include <gtkmm/builder.h>
 #include <glibmm/weakref.h>
 #include <goocanvasmm/canvas.h>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 //#include "relationships_canvas.h"
@@ -85,7 +85,7 @@ private:
   CanvasEditable m_canvas;
   Gtk::ScrolledWindow* m_scrolledwindow_canvas;
 
-  //typedef std::map<Glib::RefPtr<Goocanvas::Item>, TableView*> type_map_item_tables;
+  //typedef std::unordered_map<Glib::RefPtr<Goocanvas::Item>, TableView*> type_map_item_tables;
   //type_map_item_tables m_tables;
 
   static int m_last_size_x, m_last_size_y;

@@ -39,7 +39,7 @@ namespace IsoCodes
 static type_list_currencies list_currencies;
 static type_list_locales list_locales;
 
-typedef std::map<Glib::ustring, Locale> type_map_locales; //ID to locale.
+typedef std::unordered_map<Glib::ustring, Locale, std::hash<std::string>> type_map_locales; //ID to locale.
 static type_map_locales map_locales; //For quick lookup.
 
 type_list_currencies get_list_of_currency_symbols()
@@ -143,7 +143,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     }
 
     //Get the (translated) language names:
-    typedef std::map<Glib::ustring, Glib::ustring> type_map_language; //ID to language name.
+    typedef std::unordered_map<Glib::ustring, Glib::ustring, std::hash<std::string>> type_map_language; //ID to language name.
     type_map_language map_languages;
 
     const std::string filename_languages = ISO_CODES_PREFIX "/share/xml/iso-codes/iso_639.xml";
@@ -193,7 +193,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     }
 
     //Get the (translated) country names:
-    typedef std::map<Glib::ustring, Glib::ustring> type_map_country; //ID to country name.
+    typedef std::unordered_map<Glib::ustring, Glib::ustring, std::hash<std::string>> type_map_country; //ID to country name.
     type_map_country map_country;
 
     const Glib::ustring filename_countries = ISO_CODES_PREFIX "/share/xml/iso-codes/iso_3166.xml";

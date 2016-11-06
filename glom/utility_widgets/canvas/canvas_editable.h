@@ -24,7 +24,7 @@
 #include <goocanvasmm/canvas.h>
 #include <glom/utility_widgets/canvas/canvas_group_grid.h>
 #include <glom/utility_widgets/canvas/canvas_item_movable.h>
-#include <map>
+#include <unordered_map>
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 namespace Glom

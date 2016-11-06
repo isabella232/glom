@@ -53,7 +53,7 @@ public:
   boost::python::object get_related();
 
   //Available, for instance, in python via record["name_first"]
-  typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
+  typedef std::unordered_map<Glib::ustring, Gnome::Gda::Value, std::hash<std::string>> type_map_field_values;
 
   //[] notation:
   type_map_field_values::size_type len() const;
