@@ -142,9 +142,9 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
       Utils::add_unique(list_ids, id);
     }
 
-    //Get the (translated) language names:
-    typedef std::unordered_map<Glib::ustring, Glib::ustring, std::hash<std::string>> type_map_language; //ID to language name.
-    type_map_language map_languages;
+    // Get the (translated) language names:
+    // ID to language name.
+    std::unordered_map<Glib::ustring, Glib::ustring, std::hash<std::string>> map_languages;
 
     const std::string filename_languages = ISO_CODES_PREFIX "/share/xml/iso-codes/iso_639.xml";
 
@@ -192,9 +192,9 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
       std::cerr << G_STRFUNC << ": Exception while parsing iso codes (locales): " << ex.what() << std::endl;
     }
 
-    //Get the (translated) country names:
-    typedef std::unordered_map<Glib::ustring, Glib::ustring, std::hash<std::string>> type_map_country; //ID to country name.
-    type_map_country map_country;
+    // Get the (translated) country names:
+    // ID to country name.
+    std::unordered_map<Glib::ustring, Glib::ustring, std::hash<std::string>> map_country;
 
     const Glib::ustring filename_countries = ISO_CODES_PREFIX "/share/xml/iso-codes/iso_3166.xml";
 

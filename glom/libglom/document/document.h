@@ -602,18 +602,18 @@ private:
     typedef std::vector< LayoutInfo > type_layouts;
     type_layouts m_layouts;
 
-    typedef std::unordered_map< Glib::ustring, std::shared_ptr<Report> > type_reports; //map of report names to reports
-    type_reports m_reports;
+    // map of report names to reports
+    std::unordered_map<Glib::ustring, std::shared_ptr<Report>> m_reports;
 
-    typedef std::unordered_map< Glib::ustring, std::shared_ptr<PrintLayout> > type_print_layouts; //map of print layout names to print layouts
-    type_print_layouts m_print_layouts;
+    // map of print layout names to print layouts
+    std::unordered_map< Glib::ustring, std::shared_ptr<PrintLayout>> m_print_layouts;
 
     //Example data, used when creating a database from an example.
     type_example_rows m_example_rows;
 
-    //Per-session, not saved in document:
-    typedef std::unordered_map<Glib::ustring, Gnome::Gda::Value, std::hash<std::string>> type_map_layout_primarykeys;
-    type_map_layout_primarykeys m_map_current_record; //The record last viewed in each layout.
+    // Per-session, not saved in document:
+    // The record last viewed in each layout.
+    std::unordered_map<Glib::ustring, Gnome::Gda::Value, std::hash<std::string>> m_map_current_record;
     Glib::ustring m_layout_current;
     FoundSet m_foundset_current;
 

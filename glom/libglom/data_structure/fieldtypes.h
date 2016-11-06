@@ -48,12 +48,10 @@ private:
   void fill_with_default_data();
 
   //Duplicate information, to make searching easier:
-  typedef std::unordered_map<GType, Glib::ustring> type_mapGdaTypesToSchemaStrings;
-  type_mapGdaTypesToSchemaStrings m_mapGdaTypesToSchemaStrings;
+  std::unordered_map<GType, Glib::ustring> m_mapGdaTypesToSchemaStrings;
 
   //Fallback types used if the database system does not support a type natively
-  typedef std::unordered_map<GType, GType> type_mapFallbackTypes;
-  type_mapFallbackTypes m_mapFallbackTypes;
+  std::unordered_map<GType, GType> m_mapFallbackTypes;
 };
 
 } //namespace Glom

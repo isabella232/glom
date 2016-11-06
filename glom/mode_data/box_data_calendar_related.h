@@ -104,10 +104,9 @@ private:
   //  std::tm ctm;
   //  return std::hash<std::tm>()(ctm);
   //};
-  //typedef std::unordered_map<Glib::Date, type_list_vectors, decltype(date_hash)> type_map_values;
-  typedef std::map<Glib::Date, type_list_vectors> type_map_values;
+  //std::unordered_map<Glib::Date, type_list_vectors, decltype(date_hash)> m_map_values;
+  std::map<Glib::Date, type_list_vectors> m_map_values;
 
-  type_map_values m_map_values;
   mutable int m_query_column_date_field;
 };
 

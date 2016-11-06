@@ -42,8 +42,7 @@ public:
   //Field Values. We store them here after reading them from the database,
   //so that we can change them without changing them in the database immediately.
   //This is a duplication of data but at least we are still only getting the _rows_ that will be displayed. //TODO_Performance?
-  typedef std::unordered_map<int, DbValue > type_vec_values;
-  type_vec_values m_db_values;
+  std::unordered_map<int, DbValue > m_db_values;
 
   ///Gets the values from the database if necessary.
   DbValue get_value(DbTreeModel& model, int column, int row);

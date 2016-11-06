@@ -43,8 +43,7 @@ public:
 
   bool m_developer; //m_privs is ignored if this is true.
 
-  typedef std::unordered_map<Glib::ustring, Privileges, std::hash<std::string>> type_map_table_privileges;
-  type_map_table_privileges m_map_privileges;
+  std::unordered_map<Glib::ustring, Privileges, std::hash<std::string>> m_map_privileges;
 
   //typedef std::vector<Glib::ustring> type_users;
   //type_users m_users;
