@@ -31,6 +31,8 @@
 #include <iostream>
 #include <glibmm/i18n.h>
 
+#include <unordered_set>
+
 namespace Glom
 {
 
@@ -88,7 +90,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   builder->set_table(m_table_name);
 
   //Avoid specifying the same field twice:
-  typedef std::unordered_map<Glib::ustring, bool, std::hash<std::string>> type_map_added;
+  typedef std::unordered_set<Glib::ustring, std::hash<std::string>> type_map_added;
   type_map_added map_added;
   auto params = Gnome::Gda::Set::create();
 
@@ -97,8 +99,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
     const Glib::ustring field_name = layout_item->get_name();
     if(!layout_item->get_has_relationship_name()) //TODO: Allow people to add a related record also by entering new data in a related field of the related record.
     {
-      const auto iterFind = map_added.find(field_name);
-      if(iterFind == map_added.end()) //If it was not added already
+      if (!map_added.count(field_name)) //If it was not added already.
       {
         Gnome::Gda::Value value;
 
@@ -171,7 +172,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
         if(!value.is_null())
         {
           builder->add_field_value(field_name, value);
-          map_added[field_name] = true;
+          map_added.emplace(field_name);
         }
         else
         {
