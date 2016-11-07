@@ -1226,7 +1226,7 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
     records_found = (update_records_count() > 0);
 
     if(!inited)
-      records_found = 0;
+      records_found = false;
   }
 
   std::cout << G_STRFUNC << ": records_found=" << records_found << std::endl;
