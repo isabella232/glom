@@ -224,7 +224,7 @@ void PyGlomRecord::set_fields(const PyGlomRecord::type_map_field_values& field_v
   m_key_field = key_field;
   m_key_field_value = key_field_value;
 
-  if(m_document == 0)
+  if(m_document == nullptr)
     m_document = document;
 
   m_connection = opened_connection;

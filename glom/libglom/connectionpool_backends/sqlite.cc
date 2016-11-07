@@ -202,7 +202,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
 
   Glib::ustring trans_fields;
 
-  for(GSList* item = table->columns; item != 0; item = item->next)
+  for(GSList* item = table->columns; item != nullptr; item = item->next)
   {
     GdaMetaTableColumn* column = GDA_META_TABLE_COLUMN(item->data);
 

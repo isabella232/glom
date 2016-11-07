@@ -649,7 +649,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
         if(field)
         {
           //We need the connection when we run the script, so that the script may use it.
-          auto sharedconnection = connect_to_server(0 /* parent window */);
+          auto sharedconnection = connect_to_server(nullptr /* parent window */);
 
           g_assert(sharedconnection);
 

@@ -246,7 +246,7 @@ void AddDel::setup_menu(Gtk::Widget* /* widget */)
 bool AddDel::on_button_press_event_Popup(GdkEventButton *button_event)
 {
   GdkModifierType mods;
-  gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
+  gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, nullptr, nullptr, &mods );
   if(mods & GDK_BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
@@ -713,7 +713,7 @@ void AddDel::construct_specified_columns()
         }
       }
 
-      pModelColumn = 0;
+      pModelColumn = nullptr;
     }
     else
     {
@@ -1035,7 +1035,7 @@ AddDel::InnerIgnore::~InnerIgnore()
     m_outer->set_ignore_treeview_signals(m_bIgnoreSheetSignals);
   }
 
-  m_outer = 0;
+  m_outer = nullptr;
 }
 
 Glib::ustring AddDel::treeview_get_key(const Gtk::TreeModel::iterator& row)

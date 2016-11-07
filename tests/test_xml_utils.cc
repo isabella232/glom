@@ -27,7 +27,7 @@
 static
 xmlpp::Element* create_element()
 {
-  xmlNodePtr cnode = xmlNewNode(0, (const xmlChar*)"somenodename");
+  xmlNodePtr cnode = xmlNewNode(nullptr, (const xmlChar*)"somenodename");
   return new xmlpp::Element(cnode);
 }
 

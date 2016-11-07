@@ -242,7 +242,7 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::get_pixbuf_for_gda_value(const Gnome::Gda::Va
       else
       {
         buffer_binary_length = 0;
-        buffer_binary = 0;
+        buffer_binary = nullptr;
         std::cerr << G_STRFUNC << ": Failed to read BLOB data\n";
       }
     }

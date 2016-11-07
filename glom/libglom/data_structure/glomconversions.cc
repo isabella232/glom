@@ -103,7 +103,7 @@ static inline const char* glom_get_locale_date_format()
     //each time.
     //Even when the LC_TIME environment variable is not set, we still seem
     //to get a useful value here, based on LC_ALL, for instance.
-    char* lc_time = setlocale(LC_TIME, NULL);
+    char* lc_time = setlocale(LC_TIME, nullptr);
     if(lc_time)
       lc_time = g_strdup(lc_time);
 
@@ -121,7 +121,7 @@ static inline const char* glom_get_locale_date_format()
       //(which uses 2 digits when using %x).
 
       //Get the current LC_MESSAGES value:
-      old_lc_messages = g_strdup(setlocale(LC_MESSAGES, NULL));
+      old_lc_messages = g_strdup(setlocale(LC_MESSAGES, nullptr));
       if(old_lc_messages)
         old_lc_messages = g_strdup(old_lc_messages);
 

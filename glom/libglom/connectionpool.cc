@@ -901,22 +901,22 @@ void ConnectionPool::avahi_start_publishing()
   if(!document)
     return;
 
-  m_epc_publisher = epc_publisher_new(document->get_database_title_original().c_str(), "glom", 0);
+  m_epc_publisher = epc_publisher_new(document->get_database_title_original().c_str(), "glom", nullptr);
   epc_publisher_set_protocol(m_epc_publisher, publish_protocol);
 
-  epc_publisher_add_handler(m_epc_publisher, "document", on_publisher_document_requested, this /* user_data */, 0);
+  epc_publisher_add_handler(m_epc_publisher, "document", on_publisher_document_requested, this /* user_data */, nullptr);
 
   //Password-protect the document,
   //because the document's structure could be considered as a business secret:
   epc_publisher_set_auth_flags(m_epc_publisher, EPC_AUTH_PASSWORD_TEXT_NEEDED);
-  epc_publisher_set_auth_handler(m_epc_publisher, "document", on_publisher_document_authentication, this /* user_data */, 0);
+  epc_publisher_set_auth_handler(m_epc_publisher, "document", on_publisher_document_authentication, this /* user_data */, nullptr);
 
   //Install progress callback, so we can keep the UI responsive while libepc is generating certificates for the first time:
   EpcShellProgressHooks callbacks;
   callbacks.begin = &ConnectionPool::on_epc_progress_begin;
   callbacks.update = &ConnectionPool::on_epc_progress_update;
   callbacks.end = &ConnectionPool::on_epc_progress_end;
-  epc_shell_set_progress_hooks(&callbacks, this, 0);
+  epc_shell_set_progress_hooks(&callbacks, this, nullptr);
 
   //Prevent the consumer from seeing duplicates,
   //if multiple client computers advertize the same document:

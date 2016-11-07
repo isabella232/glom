@@ -55,7 +55,7 @@ void DialogImageSaveProgress::save(const Glib::ustring& uri)
 {
   g_assert(m_data);
 
-  if(m_data->data == 0)
+  if(m_data->data == nullptr)
     return;
 
   if(m_data->binary_length == 0)

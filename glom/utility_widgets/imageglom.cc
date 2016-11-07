@@ -159,7 +159,7 @@ void ImageGlom::set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, 
 bool ImageGlom::on_button_press_event(GdkEventButton *button_event)
 {
   GdkModifierType mods;
-  gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
+  gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, nullptr, nullptr, &mods );
 
   //Enable/Disable items.
   //We did this earlier, but get_appwindow is more likely to work now:
@@ -675,7 +675,7 @@ static void set_file_filter_images(Gtk::FileChooser& file_chooser)
   filter->add_pixbuf_formats();
   file_chooser.add_filter(filter);
 
-  ev_document_factory_add_filters(GTK_WIDGET(file_chooser.gobj()), 0);
+  ev_document_factory_add_filters(GTK_WIDGET(file_chooser.gobj()), nullptr);
 
   //Make Images the currently-selected one:
   file_chooser.set_filter(filter);

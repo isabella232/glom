@@ -434,7 +434,7 @@ std::string sqlbuilder_get_full_query(
           result.raw().data(), result.raw().size(),
           "ISO-8859-1", "UTF-8",
           (char*)"?",
-          0, 0, 0));
+          nullptr, nullptr, nullptr));
 
   const Glib::ustring str = std::string(buf.get());
   if(str.empty())

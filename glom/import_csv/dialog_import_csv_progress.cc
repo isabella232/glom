@@ -106,7 +106,7 @@ void Dialog_Import_CSV_Progress::clear()
   m_progress_connection.disconnect();
   m_ready_connection.disconnect();
 
-  m_data_source = 0;
+  m_data_source = nullptr;
   m_current_row = 0;
 }
 

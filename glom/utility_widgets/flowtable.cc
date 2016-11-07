@@ -126,7 +126,7 @@ void FlowTable::add_widgets(Gtk::Widget& first, Gtk::Widget& second, bool expand
 
 void FlowTable::add_widgets(Gtk::Widget& first, bool expand)
 {
-  insert(&first, 0 /* second */, -1, expand);
+  insert(&first, nullptr /* second */, -1, expand);
 }
 
 void FlowTable::insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool expand)

@@ -694,7 +694,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
     }
 
     g_free(document_contents);
-    document_contents = 0;
+    document_contents = nullptr;
 
     //TODO_Performance: Horribly inefficient, but happens rarely:
     const auto temp_document_contents = document_temp.build_and_get_contents();
@@ -2692,7 +2692,7 @@ Glib::ustring AppWindow::get_current_locale()
     return m_current_locale;
 
   //Get the user's current locale:
-  const auto cLocale = setlocale(LC_ALL, 0); //Passing NULL means query, instead of set.
+  const auto cLocale = setlocale(LC_ALL, nullptr); //Passing NULL means query, instead of set.
   if(cLocale)
   {
     //std::cout << "debug1: " << G_STRFUNC << ": locale=" << cLocale << std::endl;

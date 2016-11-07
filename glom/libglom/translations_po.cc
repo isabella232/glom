@@ -285,7 +285,7 @@ bool import_translations_from_po_file(const std::shared_ptr<Document>& document,
 
   //Look at each domain (could there be more than one?):
   const char* const* domains = po_file_domains(po_file);
-  for (int i = 0; domains[i] != 0; ++i)
+  for (int i = 0; domains[i] != nullptr; ++i)
   {
     //Look at each message:
     auto iter = po_message_iterator(po_file, domains[i]);

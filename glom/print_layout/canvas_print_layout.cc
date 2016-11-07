@@ -731,7 +731,7 @@ void Canvas_PrintLayout::fill_with_data_system_preferences(const Glib::RefPtr<Ca
     field_in_record.m_field = layoutitem_field;
     field_in_record.m_table_name = m_table_name;
     const Gnome::Gda::Value value = get_field_value_in_database(
-     field_in_record, 0 /* TODO: parent window */);
+     field_in_record, nullptr /* TODO: parent window */);
     if(!Glom::Conversions::value_is_empty(value))
     {
       canvas_item->set_db_data(value);
@@ -783,7 +783,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
           const auto document = get_document();
           const auto from_field = DbUtils::get_fields_for_table_one_field(document,
             relationship->get_from_table(), relationship->get_from_field());
-          const Gnome::Gda::Value from_key_value = get_field_value_in_database(from_field, found_set, 0 /* TODO: window */);
+          const Gnome::Gda::Value from_key_value = get_field_value_in_database(from_field, found_set, nullptr /* TODO: window */);
           fill_with_data_portal(canvas_item, from_key_value);
         }
       }

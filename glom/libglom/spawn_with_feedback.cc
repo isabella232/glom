@@ -188,7 +188,7 @@ public:
       std::vector<std::string> arguments = Glib::shell_parse_argv(command_line);
       int child_stdout = 0;
       int child_stderr = 0;
-      Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void()>(), &pid, 0, (redirect & REDIRECT_STDOUT) ? &child_stdout : 0, (redirect & REDIRECT_STDERR) ? &child_stderr : 0);
+      Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void()>(), &pid, nullptr, (redirect & REDIRECT_STDOUT) ? &child_stdout : nullptr, (redirect & REDIRECT_STDERR) ? &child_stderr : nullptr);
       if(redirect & REDIRECT_STDOUT)
         redirect_to_string(child_stdout, stdout_text);
       if(redirect & REDIRECT_STDERR)
@@ -297,7 +297,7 @@ static std::shared_ptr<const SpawnInfo> spawn_async(const Glib::ustring& command
  * @param return_status: The return value of the command.
  * @result Whether we successfully ended the async spawn.
  */
-static bool spawn_async_end(std::shared_ptr<const SpawnInfo> info, std::string* stdout_text = 0, std::string* stderr_text = 0, int* return_status = 0)
+static bool spawn_async_end(std::shared_ptr<const SpawnInfo> info, std::string* stdout_text = nullptr, std::string* stderr_text = nullptr, int* return_status = nullptr)
 {
   if(stdout_text)
     info->get_stdout(*stdout_text);
@@ -371,7 +371,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
   timeout_connection.disconnect();
 
   int return_status = false;
-  const auto returned = Impl::spawn_async_end(info, 0, 0, &return_status);
+  const auto returned = Impl::spawn_async_end(info, nullptr, nullptr, &return_status);
   if(!returned)
     return false; // User closed the dialog prematurely?
 
@@ -472,7 +472,7 @@ namespace
     std::string stdout_output;
     try
     {
-      return_status = Impl::spawn_sync(second_command, &stdout_output, 0);
+      return_status = Impl::spawn_sync(second_command, &stdout_output, nullptr);
     }
     catch(const Impl::SpawnError& ex)
     {
@@ -585,7 +585,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
 
   std::string stderr_text;
   int return_status = 0;
-  const auto success = Impl::spawn_async_end(info, 0, &stderr_text, &return_status);
+  const auto success = Impl::spawn_async_end(info, nullptr, &stderr_text, &return_status);
 
   if(success && (return_status == EXIT_SUCCESS))
   {

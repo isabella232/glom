@@ -24,7 +24,7 @@ bool glom_python_module_is_available()
 
   Py_XDECREF(module_glom);
 
-  return module_glom != 0;
+  return module_glom != nullptr;
 }
 
 bool gda_python_module_is_available()
@@ -44,7 +44,7 @@ bool gda_python_module_is_available()
 
   Py_XDECREF(module_glom);
 
-  return module_glom != 0;
+  return module_glom != nullptr;
 }
 
 }

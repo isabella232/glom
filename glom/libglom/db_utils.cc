@@ -758,7 +758,7 @@ static bool meta_table_column_is_primary_key(GdaMetaTable* meta_table, const Gli
   if(!meta_table)
     return false;
 
-  for(GSList* item = meta_table->columns; item != 0; item = item->next)
+  for(GSList* item = meta_table->columns; item != nullptr; item = item->next)
   {
     GdaMetaTableColumn* column = GDA_META_TABLE_COLUMN(item->data);
     if(!column)
@@ -1313,7 +1313,7 @@ bool create_table_add_missing_fields(const std::shared_ptr<const TableInfo>& tab
   {
     if(!get_field_exists_in_database(table_name, field->get_name()))
     {
-      const auto test = add_column(table_name, field, 0); /* TODO: parent_window */
+      const auto test = add_column(table_name, field, nullptr); /* TODO: parent_window */
       if(!test)
        return test;
     }

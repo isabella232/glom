@@ -161,7 +161,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   // Browse local network
 #ifndef G_OS_WIN32
   gchar* service_type = epc_service_type_new(EPC_PROTOCOL_HTTPS, "glom");
-  m_service_monitor = epc_service_monitor_new_for_types(0, service_type, (void*)0);
+  m_service_monitor = epc_service_monitor_new_for_types(nullptr, service_type, (void*)nullptr);
   g_signal_connect(m_service_monitor, "service-found", G_CALLBACK(on_service_found_static), this);
   g_signal_connect(m_service_monitor, "service-removed", G_CALLBACK(on_service_removed_static), this);
   g_free(service_type);
@@ -718,7 +718,7 @@ void Dialog_ExistingOrNew::on_service_found(const Glib::ustring& name, EpcServic
   gchar* title = g_strdup_printf(_("%s on %s (via %s)"), name.c_str(), epc_service_info_get_host(info), epc_service_info_get_interface(info));
   auto iter = m_existing_model->prepend(m_iter_existing_network->children());
   (*iter)[m_existing_columns.m_col_title] = title;
-  (*iter)[m_existing_columns.m_col_time] = std::time(0); /* sort more recently discovered items above */
+  (*iter)[m_existing_columns.m_col_time] = std::time(nullptr); /* sort more recently discovered items above */
   (*iter)[m_existing_columns.m_col_service_name] = name;
   (*iter)[m_existing_columns.m_col_service_info] = info;
 

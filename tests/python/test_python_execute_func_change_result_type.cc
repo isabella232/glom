@@ -21,7 +21,7 @@ int main()
     //We ask for a text result though the python function actually returns a number.
     value = Glom::glom_evaluate_python_function_implementation(
       result_type, calculation, field_values,
-      0 /* document */, "" /* table name */,
+      nullptr /* document */, "" /* table name */,
       std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
       connection,
       error_message);

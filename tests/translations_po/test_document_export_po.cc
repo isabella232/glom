@@ -47,7 +47,7 @@ static bool check_po_file(const std::string& filepath)
     Glib::shell_quote(filepath));
   try
   {
-    Glib::spawn_command_line_sync(command, &stdout_output, 0, &return_status);
+    Glib::spawn_command_line_sync(command, &stdout_output, nullptr, &return_status);
     //std::cout << " debug: output=" << stdout_output << std::endl;
   }
   catch(const Glib::Error& ex)

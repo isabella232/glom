@@ -394,7 +394,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
             auto rect =
               Goocanvas::Rect::create(0, 0, width, row_height);
             //TODO: Find out why this doesn't work: rect->property_stroke_pattern() = Cairo::RefPtr<Cairo::Pattern>();
-            g_object_set(rect->gobj(), "stroke-pattern", (void*)0, (void*)0);
+            g_object_set(rect->gobj(), "stroke-pattern", (void*)nullptr, (void*)nullptr);
 
             canvas_table->attach(rect,
               col /* left_attach */, col + 1 /* right_attach */,
