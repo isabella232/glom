@@ -31,12 +31,6 @@ LayoutItem_Image::LayoutItem_Image()
   m_translatable_item_type = enumTranslatableItemType::IMAGEOBJECT;
 }
 
-LayoutItem_Image::LayoutItem_Image(const LayoutItem_Image& src)
-: LayoutItem(src),
-  m_image(src.m_image)
-{
-}
-
 LayoutItem* LayoutItem_Image::clone() const
 {
   return new LayoutItem_Image(*this);
@@ -48,16 +42,6 @@ bool LayoutItem_Image::operator==(const LayoutItem_Image& src) const
                 (m_image == src.m_image);
 
   return result;
-}
-
-//Avoid using this, for performance:
-LayoutItem_Image& LayoutItem_Image::operator=(const LayoutItem_Image& src)
-{
-  LayoutItem::operator=(src);
-
-  m_image = src.m_image;
-
-  return *this;
 }
 
 Glib::ustring LayoutItem_Image::get_part_type_name() const

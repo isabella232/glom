@@ -28,17 +28,4 @@ DatabaseTitle::DatabaseTitle()
   m_translatable_item_type = enumTranslatableItemType::DATABASE_TITLE;
 }
 
-DatabaseTitle::DatabaseTitle(const DatabaseTitle& src)
-: TranslatableItem(src)
-{
-}
-
-DatabaseTitle& DatabaseTitle::operator=(const DatabaseTitle& src)
-{
-  TranslatableItem::operator=(src);
-
-  return *this;
-}
-
-
 } //namespace Glom

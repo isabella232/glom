@@ -27,28 +27,12 @@ LayoutItem_WithFormatting::LayoutItem_WithFormatting()
 {
 }
 
-LayoutItem_WithFormatting::LayoutItem_WithFormatting(const LayoutItem_WithFormatting& src)
-: LayoutItem(src),
-  m_formatting(src.m_formatting)
-{
-}
-
 bool LayoutItem_WithFormatting::operator==(const LayoutItem_WithFormatting& src) const
 {
   auto result = LayoutItem::operator==(src) &&
                 (m_formatting == src.m_formatting);
 
   return result;
-}
-
-//Avoid using this, for performance:
-LayoutItem_WithFormatting& LayoutItem_WithFormatting::operator=(const LayoutItem_WithFormatting& src)
-{
-  LayoutItem::operator=(src);
-
-  m_formatting = src.m_formatting;
-
-  return *this;
 }
 
 const Formatting& LayoutItem_WithFormatting::get_formatting_used() const

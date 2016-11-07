@@ -38,9 +38,9 @@ class LayoutItem_Image
 {
 public:
   LayoutItem_Image();
-  LayoutItem_Image(const LayoutItem_Image& src);
+  LayoutItem_Image(const LayoutItem_Image& src) = default;
   LayoutItem_Image(LayoutItem_Image&& src) = delete;
-  LayoutItem_Image& operator=(const LayoutItem_Image& src);
+  LayoutItem_Image& operator=(const LayoutItem_Image& src) = default;
   LayoutItem_Image& operator=(LayoutItem_Image&& src) = delete;
 
   LayoutItem* clone() const override;

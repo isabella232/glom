@@ -30,25 +30,6 @@ TableInfo::TableInfo() noexcept
   m_translatable_item_type = enumTranslatableItemType::TABLE;
 }
 
-TableInfo::TableInfo(const TableInfo& src) noexcept
-: TranslatableItem(src),
-  HasTitleSingular(src),
-  m_hidden(src.m_hidden),
-  m_default(src.m_default)
-{
-}
-
-TableInfo& TableInfo::operator=(const TableInfo& src) noexcept
-{
-  TranslatableItem::operator=(src);
-  HasTitleSingular::operator=(src);
-
-  m_hidden = src.m_hidden;
-  m_default = src.m_default;
-
-  return *this;
-}
-
 bool TableInfo::operator==(const TableInfo& src) const noexcept
 {
   return TranslatableItem::operator==(src) &&

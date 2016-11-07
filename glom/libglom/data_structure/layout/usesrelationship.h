@@ -38,9 +38,9 @@ class UsesRelationship
 public:
 
   UsesRelationship();
-  UsesRelationship(const UsesRelationship& src);
+  UsesRelationship(const UsesRelationship& src) = default;
   UsesRelationship(UsesRelationship&& src) = delete;
-  UsesRelationship& operator=(const UsesRelationship& src);
+  UsesRelationship& operator=(const UsesRelationship& src) = default;
   UsesRelationship& operator=(UsesRelationship&& src) = delete;
 
   bool operator==(const UsesRelationship& src) const;

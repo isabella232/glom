@@ -29,23 +29,9 @@ LayoutItem_CalendarPortal::LayoutItem_CalendarPortal()
 {
 }
 
-LayoutItem_CalendarPortal::LayoutItem_CalendarPortal(const LayoutItem_CalendarPortal& src)
-: LayoutItem_Portal(src),
-  m_date_field(src.m_date_field)
-{
-}
-
 LayoutItem* LayoutItem_CalendarPortal::clone() const
 {
   return new LayoutItem_CalendarPortal(*this);
-}
-
-LayoutItem_CalendarPortal& LayoutItem_CalendarPortal::operator=(const LayoutItem_CalendarPortal& src)
-{
-  LayoutItem_Portal::operator=(src);
-  m_date_field = src.m_date_field;
-
-  return *this;
 }
 
 Glib::ustring LayoutItem_CalendarPortal::get_part_type_name() const

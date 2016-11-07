@@ -32,9 +32,9 @@ class PrintLayout : public TranslatableItem
 {
 public:
   PrintLayout();
-  PrintLayout(const PrintLayout& src);
+  PrintLayout(const PrintLayout& src) = default;
   PrintLayout(PrintLayout&& src) = delete;
-  PrintLayout& operator=(const PrintLayout& src);
+  PrintLayout& operator=(const PrintLayout& src) = default;
   PrintLayout& operator=(PrintLayout&& src) = delete;
 
   bool get_show_table_title() const;

@@ -37,8 +37,8 @@ public:
   TranslatableItem(TranslatableItem&& src) noexcept;
   virtual ~TranslatableItem();
 
-  TranslatableItem& operator=(const TranslatableItem& src) noexcept;
-  TranslatableItem& operator=(TranslatableItem&& src) noexcept;
+  TranslatableItem& operator=(const TranslatableItem& src) = default;
+  TranslatableItem& operator=(TranslatableItem&& src) = default;
 
   bool operator==(const TranslatableItem& src) const noexcept;
   bool operator!=(const TranslatableItem& src) const noexcept;

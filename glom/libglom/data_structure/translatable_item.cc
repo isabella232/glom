@@ -51,26 +51,6 @@ TranslatableItem::~TranslatableItem()
 {
 }
 
-TranslatableItem& TranslatableItem::operator=(const TranslatableItem& src) noexcept
-{
-  m_name = src.m_name;
-  m_title = src.m_title;
-  m_translatable_item_type = src.m_translatable_item_type;
-  m_map_translations = src.m_map_translations;
-
-  return *this;
-}
-
-TranslatableItem& TranslatableItem::operator=(TranslatableItem&& src) noexcept
-{
-  m_name = std::move(src.m_name);
-  m_title = std::move(src.m_title);
-  m_translatable_item_type = std::move(src.m_translatable_item_type);
-  m_map_translations = std::move(src.m_map_translations);
-
-  return *this;
-}
-
 bool TranslatableItem::operator==(const TranslatableItem& src) const noexcept
 {
   bool bResult = (m_name == src.m_name)

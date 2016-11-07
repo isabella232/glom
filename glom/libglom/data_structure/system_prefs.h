@@ -31,10 +31,10 @@ class SystemPrefs
 {
 public:
   SystemPrefs();
-  SystemPrefs(const SystemPrefs& src);
+  SystemPrefs(const SystemPrefs& src) = default;
   SystemPrefs(SystemPrefs&& src);
 
-  SystemPrefs& operator=(const SystemPrefs& src);
+  SystemPrefs& operator=(const SystemPrefs& src) = default;
   SystemPrefs& operator=(SystemPrefs&& src);
 
   bool operator==(const SystemPrefs& src) const;

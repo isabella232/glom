@@ -34,9 +34,9 @@ class DatabaseTitle
 {
 public:
   DatabaseTitle();
-  DatabaseTitle(const DatabaseTitle& src);
+  DatabaseTitle(const DatabaseTitle& src) = default;;
   DatabaseTitle(DatabaseTitle&& src) = delete;
-  DatabaseTitle& operator=(const DatabaseTitle& src);
+  DatabaseTitle& operator=(const DatabaseTitle& src) = default;;
   DatabaseTitle& operator=(DatabaseTitle&& src) = delete;
 };
 

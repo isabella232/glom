@@ -34,9 +34,9 @@ class StaticText
 public:
 
   StaticText();
-  StaticText(const StaticText& src);
+  StaticText(const StaticText& src) = default;
   StaticText(StaticText&& src) = delete;
-  StaticText& operator=(const StaticText& src);
+  StaticText& operator=(const StaticText& src) = default;
   StaticText& operator=(StaticText&& src) = delete;
 
   bool operator==(const StaticText& src) const;

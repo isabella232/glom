@@ -36,9 +36,9 @@ class LayoutItem_WithFormatting
 public:
 
   LayoutItem_WithFormatting();
-  LayoutItem_WithFormatting(const LayoutItem_WithFormatting& src);
+  LayoutItem_WithFormatting(const LayoutItem_WithFormatting& src) = default;
   LayoutItem_WithFormatting(LayoutItem_WithFormatting&& src) = delete;
-  LayoutItem_WithFormatting& operator=(const LayoutItem_WithFormatting& src);
+  LayoutItem_WithFormatting& operator=(const LayoutItem_WithFormatting& src) = default;
   LayoutItem_WithFormatting& operator=(LayoutItem_WithFormatting&& src) = delete;
 
   bool operator==(const LayoutItem_WithFormatting& src) const;

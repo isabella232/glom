@@ -38,10 +38,10 @@ class ChoiceValue : public TranslatableItem
 public:
 
   ChoiceValue();
-  ChoiceValue(const ChoiceValue& src);
+  ChoiceValue(const ChoiceValue& src) = default;
   ChoiceValue(ChoiceValue&& src) = delete;
 
-  ChoiceValue& operator=(const ChoiceValue& src);
+  ChoiceValue& operator=(const ChoiceValue& src) = default;
   ChoiceValue& operator=(ChoiceValue&& src) = delete;
 
   bool operator==(const ChoiceValue& src) const;

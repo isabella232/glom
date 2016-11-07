@@ -28,23 +28,11 @@ StaticText::StaticText()
   m_translatable_item_type = enumTranslatableItemType::STATIC_TEXT;
 }
 
-StaticText::StaticText(const StaticText& src)
-: TranslatableItem(src)
-{
-}
-
 bool StaticText::operator==(const StaticText& src) const
 {
   const auto result = TranslatableItem::operator==(src);
 
   return result;
-}
-
-//Avoid using this, for performance:
-StaticText& StaticText::operator=(const StaticText& src)
-{
-  TranslatableItem::operator=(src);
-  return *this;
 }
 
 } //namespace Glom

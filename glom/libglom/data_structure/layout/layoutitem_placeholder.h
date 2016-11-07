@@ -35,10 +35,11 @@ class LayoutItem_Placeholder: public LayoutItem
 public:
   LayoutItem_Placeholder();
 
-  LayoutItem_Placeholder(const LayoutItem_Placeholder& src);
+  LayoutItem_Placeholder(const LayoutItem_Placeholder& src) = default;
   LayoutItem_Placeholder(LayoutItem_Placeholder&& src) = delete;
 
-  //TODO: Add operator=().
+  LayoutItem_Placeholder& operator=(const LayoutItem_Placeholder& src) = default;
+  LayoutItem_Placeholder& operator=(LayoutItem_Placeholder&& src) = delete;
 
   /** Create a new copied instance.
   * This allows us to deep-copy a list of LayoutItems.

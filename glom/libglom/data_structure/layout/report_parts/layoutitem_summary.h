@@ -33,9 +33,9 @@ class LayoutItem_Summary : public LayoutGroup
 public:
 
   LayoutItem_Summary();
-  LayoutItem_Summary(const LayoutItem_Summary& src);
+  LayoutItem_Summary(const LayoutItem_Summary& src) = default;
   LayoutItem_Summary(const LayoutItem_Summary&& src) = delete;
-  LayoutItem_Summary& operator=(const LayoutItem_Summary& src);
+  LayoutItem_Summary& operator=(const LayoutItem_Summary& src) = default;
   LayoutItem_Summary& operator=(LayoutItem_Summary&& src) = delete;
   virtual ~LayoutItem_Summary();
 

@@ -32,9 +32,9 @@ class CustomTitle
 public:
 
   CustomTitle();
-  CustomTitle(const CustomTitle& src);
+  CustomTitle(const CustomTitle& src) = default;
   CustomTitle(CustomTitle&& src) = delete;
-  CustomTitle& operator=(const CustomTitle& src);
+  CustomTitle& operator=(const CustomTitle& src) = default;
   CustomTitle& operator=(CustomTitle&& src) = delete;
 
   bool operator==(const CustomTitle& src) const;

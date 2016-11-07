@@ -36,9 +36,9 @@ class LayoutItem_Notebook
 public:
 
   LayoutItem_Notebook();
-  LayoutItem_Notebook(const LayoutItem_Notebook& src);
+  LayoutItem_Notebook(const LayoutItem_Notebook& src) = default;
   LayoutItem_Notebook(LayoutItem_Notebook&& src) = delete;
-  LayoutItem_Notebook& operator=(const LayoutItem_Notebook& src);
+  LayoutItem_Notebook& operator=(const LayoutItem_Notebook& src) = default;
   LayoutItem_Notebook& operator=(LayoutItem_Notebook&& src) = delete;
 
   LayoutItem* clone() const override;

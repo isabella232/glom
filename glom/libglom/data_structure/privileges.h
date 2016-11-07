@@ -33,10 +33,10 @@ class Privileges
 {
 public:
   Privileges();
-  Privileges(const Privileges& src);
+  Privileges(const Privileges& src) = default;
   Privileges(Privileges&& src);
 
-  Privileges& operator=(const Privileges& src);
+  Privileges& operator=(const Privileges& src) = default;
   Privileges& operator=(Privileges&& src);
 
   bool operator==(const Privileges& src) const;

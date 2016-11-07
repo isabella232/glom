@@ -29,12 +29,6 @@ CustomTitle::CustomTitle()
   m_translatable_item_type = enumTranslatableItemType::CUSTOM_TITLE;
 }
 
-CustomTitle::CustomTitle(const CustomTitle& src)
-: TranslatableItem(src),
-  m_use_custom_title(src.m_use_custom_title)
-{
-}
-
 bool CustomTitle::operator==(const CustomTitle& src) const
 {
   const auto result = TranslatableItem::operator==(src) &&
@@ -42,17 +36,6 @@ bool CustomTitle::operator==(const CustomTitle& src) const
 
   return result;
 }
-
-//Avoid using this, for performance:
-CustomTitle& CustomTitle::operator=(const CustomTitle& src)
-{
-  TranslatableItem::operator=(src);
-
-  m_use_custom_title = src.m_use_custom_title;
-
-  return *this;
-}
-
 
 bool CustomTitle::get_use_custom_title() const
 {

@@ -35,9 +35,9 @@ class LayoutItem_VerticalGroup
 public:
 
   LayoutItem_VerticalGroup();
-  LayoutItem_VerticalGroup(const LayoutItem_VerticalGroup& src);
+  LayoutItem_VerticalGroup(const LayoutItem_VerticalGroup& src) = default;
   LayoutItem_VerticalGroup(LayoutItem_VerticalGroup&& src) = delete;
-  LayoutItem_VerticalGroup& operator=(const LayoutItem_VerticalGroup& src);
+  LayoutItem_VerticalGroup& operator=(const LayoutItem_VerticalGroup& src) = default;
   LayoutItem_VerticalGroup& operator=(LayoutItem_VerticalGroup&& src) = delete;
 
   LayoutItem* clone() const override;

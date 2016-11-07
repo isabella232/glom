@@ -36,17 +36,6 @@ LayoutItem_Line::LayoutItem_Line()
   m_translatable_item_type = enumTranslatableItemType::INVALID; //There is no text in this to translate.
 }
 
-LayoutItem_Line::LayoutItem_Line(const LayoutItem_Line& src)
-: LayoutItem(src),
-  m_start_x(src.m_start_x),
-  m_start_y(src.m_start_y),
-  m_end_x(src.m_end_x),
-  m_end_y(src.m_end_y),
-  m_line_width(src.m_line_width),
-  m_color(src.m_color)
-{
-}
-
 LayoutItem* LayoutItem_Line::clone() const
 {
   return new LayoutItem_Line(*this);
@@ -63,21 +52,6 @@ bool LayoutItem_Line::operator==(const LayoutItem_Line& src) const
                 (m_color == src.m_color);
 
   return result;
-}
-
-//Avoid using this, for performance:
-LayoutItem_Line& LayoutItem_Line::operator=(const LayoutItem_Line& src)
-{
-  LayoutItem::operator=(src);
-
-  m_start_x = src.m_start_x;
-  m_start_y = src.m_start_y;
-  m_end_x = src.m_end_x;
-  m_end_y = src.m_end_y;
-  m_line_width = src.m_line_width;
-  m_color = src.m_color;
-
-  return *this;
 }
 
 Glib::ustring LayoutItem_Line::get_part_type_name() const

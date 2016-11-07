@@ -28,21 +28,8 @@ HasTitleSingular::HasTitleSingular()
 {
 }
 
-HasTitleSingular::HasTitleSingular(const HasTitleSingular& src)
-: m_title_singular(src.m_title_singular)
-{
-
-}
-
 HasTitleSingular::~HasTitleSingular()
 {
-}
-
-HasTitleSingular& HasTitleSingular::operator=(const HasTitleSingular& src)
-{
-  m_title_singular = src.m_title_singular;
-
-  return *this;
 }
 
 bool HasTitleSingular::operator==(const HasTitleSingular& src) const

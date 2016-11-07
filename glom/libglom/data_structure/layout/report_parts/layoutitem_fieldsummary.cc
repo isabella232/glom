@@ -30,12 +30,6 @@ LayoutItem_FieldSummary::LayoutItem_FieldSummary()
 {
 }
 
-LayoutItem_FieldSummary::LayoutItem_FieldSummary(const LayoutItem_FieldSummary& src)
-: LayoutItem_Field(src),
-  m_summary_type(src.m_summary_type)
-{
-}
-
 LayoutItem* LayoutItem_FieldSummary::clone() const
 {
   return new LayoutItem_FieldSummary(*this);
@@ -45,15 +39,6 @@ bool LayoutItem_FieldSummary::operator==(const LayoutItem_FieldSummary& src) con
 {
   return LayoutItem_Field::operator==(src) &&
     (m_summary_type == src.m_summary_type);
-}
-
-LayoutItem_FieldSummary& LayoutItem_FieldSummary::operator=(const LayoutItem_FieldSummary& src)
-{
-  LayoutItem_Field::operator=(src);
-
-  m_summary_type = src.m_summary_type;
-
-  return *this;
 }
 
 Glib::ustring LayoutItem_FieldSummary::get_title_or_name(const Glib::ustring& locale) const noexcept

@@ -92,9 +92,9 @@ private:
   {
   public:
     PrintLayoutPosition();
-    PrintLayoutPosition(const PrintLayoutPosition& src);
+    PrintLayoutPosition(const PrintLayoutPosition& src) = default;
     PrintLayoutPosition(PrintLayoutPosition&& src) = delete;
-    PrintLayoutPosition& operator=(const PrintLayoutPosition& src);
+    PrintLayoutPosition& operator=(const PrintLayoutPosition& src) = default;
     PrintLayoutPosition& operator=(PrintLayoutPosition&& src) = delete;
 
     bool operator==(const PrintLayoutPosition& src) const;

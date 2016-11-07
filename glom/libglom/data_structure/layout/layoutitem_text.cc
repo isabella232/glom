@@ -57,7 +57,7 @@ LayoutItem_Text& LayoutItem_Text::operator=(const LayoutItem_Text& src)
 {
   LayoutItem_WithFormatting::operator=(src);
 
-  //Copy the underlying TranslatableItem, not the shardptr to it:
+  //Copy the underlying TranslatableItem, not the shardeptr to it:
   const auto src_item = *(src.m_text);
   m_text = std::make_shared<StaticText>(src_item);
 

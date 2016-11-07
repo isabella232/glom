@@ -28,28 +28,11 @@ GroupInfo::GroupInfo()
 {
 }
 
-GroupInfo::GroupInfo(const GroupInfo& src)
-: TranslatableItem(src),
-  m_developer(src.m_developer),
-  m_map_privileges(src.m_map_privileges)
-{
-}
-
 GroupInfo::GroupInfo(GroupInfo&& src)
 : TranslatableItem(src),
   m_developer(std::move(src.m_developer)),
   m_map_privileges(std::move(src.m_map_privileges))
 {
-}
-
-GroupInfo& GroupInfo::operator=(const GroupInfo& src)
-{
-  TranslatableItem::operator=(src);
-
-  m_developer = src.m_developer;
-  m_map_privileges = src.m_map_privileges;
-
-  return *this;
 }
 
 GroupInfo& GroupInfo::operator=(GroupInfo&& src)

@@ -33,9 +33,9 @@ class LayoutItem_Line
 {
 public:
   LayoutItem_Line();
-  LayoutItem_Line(const LayoutItem_Line& src);
+  LayoutItem_Line(const LayoutItem_Line& src) = default;
   LayoutItem_Line(LayoutItem_Line&& src) = delete;
-  LayoutItem_Line& operator=(const LayoutItem_Line& src);
+  LayoutItem_Line& operator=(const LayoutItem_Line& src) = default;
   LayoutItem_Line& operator=(LayoutItem_Line&& src) = delete;
 
   LayoutItem* clone() const override;

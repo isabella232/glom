@@ -29,22 +29,9 @@ LayoutItem_VerticalGroup::LayoutItem_VerticalGroup()
 {
 }
 
-LayoutItem_VerticalGroup::LayoutItem_VerticalGroup(const LayoutItem_VerticalGroup& src)
-: LayoutGroup(src)
-{
-}
-
 LayoutItem* LayoutItem_VerticalGroup::clone() const
 {
   return new LayoutItem_VerticalGroup(*this);
-}
-
-
-LayoutItem_VerticalGroup& LayoutItem_VerticalGroup::operator=(const LayoutItem_VerticalGroup& src)
-{
-  LayoutGroup::operator=(src);
-
-  return *this;
 }
 
 Glib::ustring LayoutItem_VerticalGroup::get_part_type_name() const

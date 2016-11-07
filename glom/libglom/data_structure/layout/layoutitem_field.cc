@@ -34,22 +34,6 @@ LayoutItem_Field::LayoutItem_Field()
 {
 }
 
-LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
-: LayoutItem_WithFormatting(src),
-  UsesRelationship(src),
-  m_priv_view(src.m_priv_view),
-  m_priv_edit(src.m_priv_edit),
-  //m_table_name(src.m_table_name),
-  m_field_cache_valid(src.m_field_cache_valid),
-  m_hidden(src.m_hidden),
-  m_formatting_use_default(src.m_formatting_use_default),
-  m_title_custom(src.m_title_custom)
-{
-//std::cerr << G_STRFUNC << ": m_choices_related_relationship=" << m_choices_related_relationship << ", src.m_choices_related_relationship=" << src.m_choices_related_relationship << std::endl;
-
-  m_field = src.m_field;
-}
-
 LayoutItem* LayoutItem_Field::clone() const
 {
   return new LayoutItem_Field(*this);
@@ -76,27 +60,6 @@ bool LayoutItem_Field::operator==(const LayoutItem_Field& src) const
     result = result && (m_title_custom == src.m_title_custom);
 
   return result;
-}
-
-//Avoid using this, for performance:
-LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
-{
-  LayoutItem_WithFormatting::operator=(src);
-  UsesRelationship::operator=(src);
-
-  m_field = src.m_field;
-  m_field_cache_valid = src.m_field_cache_valid;
-
-  m_priv_view = src.m_priv_view;
-  m_priv_edit = src.m_priv_edit;
-
-  m_hidden = src.m_hidden;
-
-  m_formatting_use_default = src.m_formatting_use_default;
-
-  m_title_custom = src.m_title_custom;
-
-  return *this;
 }
 
 void LayoutItem_Field::set_name(const Glib::ustring& name) noexcept

@@ -38,9 +38,9 @@ class FoundSet
 {
 public:
   FoundSet() noexcept;
-  FoundSet(const FoundSet& src) noexcept;
+  FoundSet(const FoundSet& src) = default;
   FoundSet(FoundSet&& src) noexcept;
-  FoundSet& operator=(const FoundSet& src) noexcept;
+  FoundSet& operator=(const FoundSet& src) = default;
   FoundSet& operator=(FoundSet&& src) noexcept;
 
 private:

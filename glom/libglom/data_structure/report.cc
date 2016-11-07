@@ -30,23 +30,6 @@ Report::Report()
   m_layout_group = std::make_shared<LayoutGroup>();
 }
 
-Report::Report(const Report& src)
-: TranslatableItem(src),
-  m_layout_group(src.m_layout_group),
-  m_show_table_title(src.m_show_table_title)
-{
-}
-
-Report& Report::operator=(const Report& src)
-{
-  TranslatableItem::operator=(src);
-
-  m_layout_group = src.m_layout_group;
-  m_show_table_title = src.m_show_table_title;
-
-  return *this;
-}
-
 bool Report::get_show_table_title() const
 {
   return m_show_table_title;

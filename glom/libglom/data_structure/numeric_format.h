@@ -30,10 +30,10 @@ class NumericFormat
 {
 public:
   NumericFormat();
-  NumericFormat(const NumericFormat& src);
+  NumericFormat(const NumericFormat& src) = default;
   NumericFormat(NumericFormat&& src) = delete;
 
-  NumericFormat& operator=(const NumericFormat& src);
+  NumericFormat& operator=(const NumericFormat& src) = default;
   NumericFormat& operator=(NumericFormat&& src) = delete;
 
   bool operator==(const NumericFormat& src) const;

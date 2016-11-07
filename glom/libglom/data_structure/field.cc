@@ -51,35 +51,6 @@ Field::Field()
   m_translatable_item_type = enumTranslatableItemType::FIELD;
 }
 
-Field::Field(const Field& src)
-: TranslatableItem(src)
-{
-  //TODO_Performance: Implement this properly, without the extra copy.
-  operator=(src);
-}
-
-Field& Field::operator=(const Field& src)
-{
-  TranslatableItem::operator=(src);
-
-  m_glom_type = src.m_glom_type;
-  m_field_info = src.m_field_info->copy();
-
-  m_lookup_relationship = src.m_lookup_relationship;
-  m_strLookupField = src.m_strLookupField;
-
-  m_calculation = src.m_calculation;
-
-  m_visible = src.m_visible;
-
-  m_primary_key = src.m_primary_key;
-  m_unique_key = src.m_unique_key;
-
-  m_default_formatting = src.m_default_formatting;
-
-  return *this;
-}
-
 bool Field::operator==(const Field& src) const
 {
   return TranslatableItem::operator==(src)

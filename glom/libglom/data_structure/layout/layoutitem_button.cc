@@ -30,12 +30,6 @@ LayoutItem_Button::LayoutItem_Button()
   m_translatable_item_type = enumTranslatableItemType::BUTTON;
 }
 
-LayoutItem_Button::LayoutItem_Button(const LayoutItem_Button& src)
-: LayoutItem_WithFormatting(src),
-  m_script(src.m_script)
-{
-}
-
 LayoutItem* LayoutItem_Button::clone() const
 {
   return new LayoutItem_Button(*this);
@@ -47,16 +41,6 @@ bool LayoutItem_Button::operator==(const LayoutItem_Button& src) const
                 (m_script == src.m_script);
 
   return result;
-}
-
-//Avoid using this, for performance:
-LayoutItem_Button& LayoutItem_Button::operator=(const LayoutItem_Button& src)
-{
-  LayoutItem_WithFormatting::operator=(src);
-
-  m_script = src.m_script;
-
-  return *this;
 }
 
 Glib::ustring LayoutItem_Button::get_part_type_name() const

@@ -46,32 +46,6 @@ AddDelColumnInfo::AddDelColumnInfo()
 {
 }
 
-AddDelColumnInfo::AddDelColumnInfo(const AddDelColumnInfo& src)
-: m_style(src.m_style),
-  m_name(src.m_name),
-  m_id(src.m_id),
-  m_field_type(src.m_field_type),
-  m_choices(src.m_choices),
-  m_editable(src.m_editable),
-  m_visible(src.m_visible),
-  m_prevent_duplicates(src.m_prevent_duplicates)
-{
-}
-
-AddDelColumnInfo& AddDelColumnInfo::operator=(const AddDelColumnInfo& src)
-{
-  m_style = src.m_style;;
-  m_name = src.m_name;
-  m_id = src.m_id;
-  m_field_type = src.m_field_type;
-  m_choices = src.m_choices;
-  m_editable = src.m_editable;
-  m_visible = src.m_visible;
-  m_prevent_duplicates = src.m_prevent_duplicates;
-
-  return *this;
-}
-
 AddDel::AddDel()
 : Gtk::Box(Gtk::ORIENTATION_VERTICAL),
   m_col_key(0),

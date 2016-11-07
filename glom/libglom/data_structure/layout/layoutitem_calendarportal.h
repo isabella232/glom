@@ -31,9 +31,9 @@ class LayoutItem_CalendarPortal : public LayoutItem_Portal
 public:
 
   LayoutItem_CalendarPortal();
-  LayoutItem_CalendarPortal(const LayoutItem_CalendarPortal& src);
+  LayoutItem_CalendarPortal(const LayoutItem_CalendarPortal& src) = default;
   LayoutItem_CalendarPortal(LayoutItem_CalendarPortal&& src) = delete;
-  LayoutItem_CalendarPortal& operator=(const LayoutItem_CalendarPortal& src);
+  LayoutItem_CalendarPortal& operator=(const LayoutItem_CalendarPortal& src) = default;
   LayoutItem_CalendarPortal& operator=(LayoutItem_CalendarPortal&& src) = delete;
 
   LayoutItem* clone() const override;

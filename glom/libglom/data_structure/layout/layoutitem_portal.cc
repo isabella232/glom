@@ -36,43 +36,9 @@ LayoutItem_Portal::LayoutItem_Portal()
 {
 }
 
-LayoutItem_Portal::LayoutItem_Portal(const LayoutItem_Portal& src)
-: LayoutGroup(src),
-  UsesRelationship(src),
-  //HasTitleSingular(src),
-  m_navigation_relationship_specific(src.m_navigation_relationship_specific),
-  m_print_layout_row_height(src.m_print_layout_row_height),
-  m_print_layout_row_line_width(src.m_print_layout_row_line_width),
-  m_print_layout_column_line_width(src.m_print_layout_column_line_width),
-  m_print_layout_line_color(src.m_print_layout_line_color),
-  m_navigation_type(src.m_navigation_type),
-  m_rows_count_min(src.m_rows_count_min),
-  m_rows_count_max(src.m_rows_count_max)
-{
-}
-
 LayoutItem* LayoutItem_Portal::clone() const
 {
   return new LayoutItem_Portal(*this);
-}
-
-
-LayoutItem_Portal& LayoutItem_Portal::operator=(const LayoutItem_Portal& src)
-{
-  LayoutGroup::operator=(src);
-  UsesRelationship::operator=(src);
-  //HasTitleSingular::operator=(src);
-
-  m_navigation_relationship_specific = src.m_navigation_relationship_specific;
-  m_print_layout_row_height = src.m_print_layout_row_height;
-  m_print_layout_row_line_width = src.m_print_layout_row_line_width;
-  m_print_layout_column_line_width = src.m_print_layout_column_line_width;
-  m_print_layout_line_color = src.m_print_layout_line_color;
-  m_navigation_type = src.m_navigation_type;
-  m_rows_count_min = src.m_rows_count_min;
-  m_rows_count_max = src.m_rows_count_max;
-
-  return *this;
 }
 
 void LayoutItem_Portal::change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)

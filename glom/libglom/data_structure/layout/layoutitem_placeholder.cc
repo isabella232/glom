@@ -34,12 +34,6 @@ LayoutItem_Placeholder::LayoutItem_Placeholder()
 
 }
 
-LayoutItem_Placeholder::LayoutItem_Placeholder(const LayoutItem_Placeholder& src) :
-  LayoutItem(src)
-{
-
-}
-
 LayoutItem* LayoutItem_Placeholder::clone() const
 {
   return new LayoutItem_Placeholder(*this);

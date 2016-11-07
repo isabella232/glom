@@ -41,9 +41,9 @@ class Formatting : public UsesRelationship //The UsesRelationship base has the r
 public:
 
   Formatting();
-  Formatting(const Formatting& src);
+  Formatting(const Formatting& src) = default;
   Formatting(Formatting&& src) = delete;
-  Formatting& operator=(const Formatting& src);
+  Formatting& operator=(const Formatting& src) = default;
   Formatting& operator=(Formatting&& src) = delete;
 
   bool operator==(const Formatting& src) const;
