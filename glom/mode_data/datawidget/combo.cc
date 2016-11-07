@@ -271,7 +271,7 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
       return;
 
     const Glib::ustring fg_color =
-    layout_item->get_formatting_used().get_text_format_color_foreground_to_use(value);
+      layout_item->get_formatting_used().get_text_format_color_foreground_to_use(value);
     if(fg_color.empty())
     {
       //GtkComboBox doesn't interpret "" as an unset. TODO: Fix that?

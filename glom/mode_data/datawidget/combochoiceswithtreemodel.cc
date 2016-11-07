@@ -361,7 +361,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
       if(type == Field::glom_field_type::NUMERIC)
       {
         const Glib::ustring fg_color =
-        field->get_formatting_used().get_text_format_color_foreground_to_use(value);
+          field->get_formatting_used().get_text_format_color_foreground_to_use(value);
         if(!fg_color.empty())
           pDerived->property_foreground() = fg_color;
         else

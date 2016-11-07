@@ -149,7 +149,7 @@ void Entry::set_value(const Gnome::Gda::Value& value)
   if(layout_item->get_glom_type() == Field::glom_field_type::NUMERIC)
   {
     const Glib::ustring fg_color =
-    layout_item->get_formatting_used().get_text_format_color_foreground_to_use(value);
+      layout_item->get_formatting_used().get_text_format_color_foreground_to_use(value);
     if(!fg_color.empty())
     {
       UiUtils::load_color_into_css_provider(*this, fg_color);
