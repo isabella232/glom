@@ -146,7 +146,7 @@ private:
 #endif // !G_OS_WIN32
 
 public:
-  typedef sigc::signal<void()> SignalFinished;
+  using SignalFinished = sigc::signal<void ()>;
 
   /** TODO: Document the redirect parameter.
    */

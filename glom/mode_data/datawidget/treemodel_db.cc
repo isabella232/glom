@@ -781,8 +781,7 @@ void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::Va
 
     //Cast it to the specific value type.
     //It can't work with anything else anyway.
-    typedef Glib::Value< DbValue > ValueDbValue;
-
+    using ValueDbValue = Glib::Value<DbValue>;
     const auto pDbValue = static_cast<const ValueDbValue*>(&value);
     if(!pDbValue)
       std::cerr << G_STRFUNC << ": value is not a Value< DbValue >.\n";

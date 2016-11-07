@@ -62,7 +62,7 @@ static gboolean EggSpreadTableDnd_signal_widget_drop_possible_callback(EggSpread
     }
   }
 
-  typedef gboolean RType;
+  using RType = gboolean;
   return RType();
 }
 
@@ -90,7 +90,7 @@ static gboolean EggSpreadTableDnd_signal_widget_drop_possible_notify_callback(Eg
     }
   }
 
-  typedef gboolean RType;
+  using RType = gboolean;
   return RType();
 }
 
@@ -177,7 +177,7 @@ gboolean SpreadTableDnd_Class::widget_drop_possible_callback(EggSpreadTableDnd* 
   if(base && base->widget_drop_possible)
     return (*base->widget_drop_possible)(self, p0, drop_possible);
 
-  typedef gboolean RType;
+  using RType = gboolean;
   return RType();
 }
 

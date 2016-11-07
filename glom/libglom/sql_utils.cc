@@ -90,7 +90,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_count_rows(const Glib::Ref
   return result;
 }
 
-typedef std::list< std::shared_ptr<const UsesRelationship> > type_list_relationships;
+using type_list_relationships = std::list<std::shared_ptr<const UsesRelationship> >;
 
 static void add_to_relationships_list(type_list_relationships& list_relationships, const std::shared_ptr<const LayoutItem_Field>& layout_item)
 {

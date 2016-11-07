@@ -536,8 +536,8 @@ void AddDel::construct_specified_columns()
   if(m_column_types.empty())
     return;
 
-  typedef std::vector< Gtk::TreeModelColumnBase* > type_vecModelColumns;
-  type_vecModelColumns vecModelColumns(m_column_types.size(), 0);
+  using type_vecModelColumns = std::vector<Gtk::TreeModelColumnBase*>;
+  type_vecModelColumns vecModelColumns(m_column_types.size());
 
   //Create the Gtk ColumnRecord:
 

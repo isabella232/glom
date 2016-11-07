@@ -267,7 +267,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
   the_stream.imbue(locale); //Make it format things for this locale. (Actually, I don't know if this is necessary, because we mention the locale in the time_put<> constructor.
 
   // Get a time_put face:
-  typedef std::time_put<char> type_time_put;
+  using type_time_put = std::time_put<char>;
   const auto& tp = std::use_facet<type_time_put>(locale);
 
   //type_iterator begin(the_stream);
@@ -730,7 +730,7 @@ tm Conversions::parse_date(const Glib::ustring& text, const std::locale& locale,
   //http://www.roguewave.com/support/docs/sourcepro/stdlibref/time-get.html
 
   //Format it into this stream:
-  typedef std::stringstream type_stream;
+  using type_stream = std::stringstream;
 
 
   //tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -760,8 +760,8 @@ tm Conversions::parse_date(const Glib::ustring& text, const std::locale& locale,
 
     // Get a time_get facet:
 
-    typedef std::time_get<char> type_time_get;
-    typedef type_time_get::iter_type type_iterator;
+    using type_time_get = std::time_get<char>;
+    using type_iterator = type_time_get::iter_type;
 
     const auto& tg = std::use_facet<type_time_get>(locale);
 
@@ -877,7 +877,7 @@ tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale,
   //http://www.roguewave.com/support/docs/sourcepro/stdlibref/time-get.html
 
   //Format it into this stream:
-  typedef std::stringstream type_stream;
+  using type_stream = std::stringstream;
 
    //tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 

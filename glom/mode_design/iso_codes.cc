@@ -111,7 +111,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
   if(map_locales.empty())
   {
     //Get a list of locale IDs:
-    typedef std::vector<std::string> type_list_ids;
+    using type_list_ids = std::vector<std::string>;
     type_list_ids list_ids;
 
     const std::string locales_path = "/usr/share/i18n/locales/";

@@ -25,7 +25,7 @@
 namespace Glom
 {
 
-typedef Glib::Value<Glib::ustring> type_value_string;
+using type_value_string = Glib::Value<Glib::ustring>;
 
 DbTreeModelWithExtraText::DbTreeModelWithExtraText(const FoundSet& found_set, const type_vec_const_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown)
 : Glib::ObjectBase( typeid(DbTreeModel) ), //register a custom GType.

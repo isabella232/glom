@@ -2310,7 +2310,7 @@ type_map_fields get_record_field_values(const std::shared_ptr<const Document>& d
   const auto fields = document->get_table_fields(table_name);
 
   //TODO: This seems silly. We should just have a build_sql_select() that can take this container:
-  typedef std::vector< std::shared_ptr<LayoutItem_Field> > type_vecLayoutFields;
+  using type_vecLayoutFields = std::vector<std::shared_ptr<LayoutItem_Field> >;
   type_vecLayoutFields fieldsToGet;
   for(const auto& field : fields)
   {

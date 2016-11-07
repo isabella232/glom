@@ -1287,7 +1287,7 @@ void Frame_Glom::update_table_in_document_from_database()
   //TODO_performance: There are a lot of temporary Field and Column instances here, with a lot of string copying.
 
   //For instance, changed field details, or new fields, or removed fields.
-  typedef Box_DB_Table::type_vec_fields type_vec_fields;
+  using type_vec_fields = Box_DB_Table::type_vec_fields;
 
   //Get the fields information from the database:
   DbUtils::type_vec_fields fieldsDatabase = DbUtils::get_fields_for_table_from_database(m_table_name);

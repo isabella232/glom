@@ -9,7 +9,7 @@
 
 namespace {
 
-typedef std::vector<std::string> type_encodings;
+using type_encodings = std::vector<std::string>;
 
 guint& get_line_scanned_count_instance()
 {
