@@ -425,6 +425,10 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, bool start_edit
       break;
   }
 
+  if (!layout_item) {
+    return;
+  }
+
   return select_item(iter, *layout_item, start_editing);
 }
 
