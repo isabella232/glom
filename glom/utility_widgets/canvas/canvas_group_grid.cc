@@ -21,7 +21,7 @@
 #include "canvas_group_grid.h"
 #include "canvas_line_movable.h"
 #include <goocanvasmm/canvas.h>
-#include <math.h>
+#include <cmath>
 #include <iostream>
 
 namespace Glom

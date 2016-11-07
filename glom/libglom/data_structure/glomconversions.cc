@@ -32,7 +32,7 @@
 #include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
 #include <iomanip>
-#include <string.h> // for strlen, memset, strcmp
+#include <cstring> // for strlen, memset, strcmp
 
 #include <glibmm/i18n-lib.h>
 

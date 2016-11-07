@@ -31,7 +31,7 @@
 #include <gtkmm/filechooserdialog.h>
 
 #include <glibmm/i18n.h>
-#include <string.h> // for memset
+#include <cstring> // for memset
 
 #include <sstream>
 

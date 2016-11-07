@@ -21,7 +21,7 @@
 #include "canvas_editable.h"
 #include "canvas_group_resizable.h"
 #include "canvas_rect_movable.h"
-#include <math.h>
+#include <cmath>
 #include <iostream>
 
 namespace Glom

@@ -32,7 +32,7 @@
 #include <iostream>
 
 /* For really ugly hacks! */
-#include <setjmp.h>
+#include <csetjmp>
 
 #define GLOM_PO_HEADER \
 "msgid \"\"\n" \

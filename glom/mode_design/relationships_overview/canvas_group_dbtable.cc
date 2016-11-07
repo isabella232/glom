@@ -27,7 +27,7 @@
 #include <goocanvasmm/rect.h>
 #include <goocanvasmm/polyline.h>
 #include <goocanvasmm/text.h>
-#include <math.h>
+#include <cmath>
 #include <iostream>
 #include <goocanvasrect.h>
 #include <goocanvaspolyline.h>

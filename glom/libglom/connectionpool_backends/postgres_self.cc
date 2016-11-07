@@ -40,11 +40,11 @@
 #else
 # include <sys/types.h>
 # include <sys/socket.h>
-# include <errno.h>
+# include <cerrno>
 # include <netinet/in.h> //For sockaddr_in
 #endif
 
-#include <signal.h> //To catch segfaults
+#include <csignal> //To catch segfaults
 
 // Uncomment to see debug messages
 //#define GLOM_CONNECTION_DEBUG

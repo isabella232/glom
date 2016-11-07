@@ -37,7 +37,7 @@
 # include <libepc/publisher.h>
 #endif
 
-#include <signal.h> //To catch segfaults
+#include <csignal> //To catch segfaults
 
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
