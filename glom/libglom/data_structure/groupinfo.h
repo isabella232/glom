@@ -33,10 +33,10 @@ class GroupInfo : public TranslatableItem
 public:
   GroupInfo();
   GroupInfo(const GroupInfo& src) = default;
-  GroupInfo(GroupInfo&& src);
+  GroupInfo(GroupInfo&& src) = default;
 
   GroupInfo& operator=(const GroupInfo& src) = default;
-  GroupInfo& operator=(GroupInfo&& src);
+  GroupInfo& operator=(GroupInfo&& src) = default;
 
   bool operator==(const GroupInfo& src) const;
   bool operator!=(const GroupInfo& src) const;

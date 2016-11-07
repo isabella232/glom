@@ -39,9 +39,9 @@ class FoundSet
 public:
   FoundSet() noexcept;
   FoundSet(const FoundSet& src) = default;
-  FoundSet(FoundSet&& src) noexcept;
+  FoundSet(FoundSet&& src) = default;
   FoundSet& operator=(const FoundSet& src) = default;
-  FoundSet& operator=(FoundSet&& src) noexcept;
+  FoundSet& operator=(FoundSet&& src) = default;
 
 private:
   //We cannot implement this without a way to compare GdaSqlExpr instances,

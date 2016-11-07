@@ -27,34 +27,6 @@ SystemPrefs::SystemPrefs()
 {
 }
 
-SystemPrefs::SystemPrefs(SystemPrefs&& src)
-: m_name(std::move(src.m_name)),
-  m_org_name(std::move(src.m_org_name)),
-  m_org_address_street(std::move(src.m_org_address_street)),
-  m_org_address_street2(std::move(src.m_org_address_street2)),
-  m_org_address_town(std::move(src.m_org_address_town)),
-  m_org_address_county(std::move(src.m_org_address_county)),
-  m_org_address_country(std::move(src.m_org_address_country)),
-  m_org_address_postcode(std::move(src.m_org_address_postcode)),
-  m_org_logo(std::move(src.m_org_logo))
-{
-}
-
-SystemPrefs& SystemPrefs::operator=(SystemPrefs&& src)
-{
-  m_name = std::move(src.m_name);
-  m_org_name = std::move(src.m_org_name);
-  m_org_address_street = std::move(src.m_org_address_street);
-  m_org_address_street2 = std::move(src.m_org_address_street2);
-  m_org_address_town = std::move(src.m_org_address_town);
-  m_org_address_county = std::move(src.m_org_address_county);
-  m_org_address_country = std::move(src.m_org_address_country);
-  m_org_address_postcode = std::move(src.m_org_address_postcode);
-  m_org_logo = std::move(src.m_org_logo);
-
-  return *this;
-}
-
 bool SystemPrefs::operator==(const SystemPrefs& src) const
 {
   return (m_name == src.m_name) &&
