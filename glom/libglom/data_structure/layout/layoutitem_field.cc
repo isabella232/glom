@@ -251,7 +251,7 @@ const Formatting& LayoutItem_Field::get_formatting_used() const
 
 Formatting::HorizontalAlignment LayoutItem_Field::get_formatting_used_horizontal_alignment(bool for_details_view) const
 {
-  const auto format = get_formatting_used();
+  const auto& format = get_formatting_used();
   Formatting::HorizontalAlignment alignment =
     format.get_horizontal_alignment();
 
@@ -273,7 +273,7 @@ Formatting::HorizontalAlignment LayoutItem_Field::get_formatting_used_horizontal
 
 bool LayoutItem_Field::get_formatting_used_has_translatable_choices() const
 {
-  const auto formatting = get_formatting_used();
+  const auto& formatting = get_formatting_used();
   if(!formatting.get_has_custom_choices())
     return false;
 

@@ -1009,7 +1009,7 @@ DbAddDel::type_list_indexes DbAddDel::get_choice_index(const LayoutItem_Field& f
     if(!field)
        continue;
 
-    const auto format = field->get_formatting_used();
+    const auto& format = field->get_formatting_used();
 
     bool choice_show_all = false;
     const auto choice_relationship =

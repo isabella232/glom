@@ -53,7 +53,7 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
 
   auto layout_item =
     std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
-  const auto format = layout_item->get_formatting_used();
+  const auto& format = layout_item->get_formatting_used();
   std::shared_ptr<const Relationship> choice_relationship;
   std::shared_ptr<const LayoutItem_Field> layout_choice_first;
   std::shared_ptr<const LayoutGroup> layout_choice_extra;

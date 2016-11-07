@@ -273,7 +273,7 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
       double this_field_height = field_height;
       if(field)
       {
-        const auto formatting = field->get_formatting_used();
+        const auto& formatting = field->get_formatting_used();
         if(formatting.get_text_format_multiline())
         {
           const auto lines = formatting.get_text_format_multiline_height_lines();

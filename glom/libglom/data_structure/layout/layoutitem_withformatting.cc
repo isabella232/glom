@@ -58,7 +58,7 @@ const Formatting& LayoutItem_WithFormatting::get_formatting_used() const
 
 Formatting::HorizontalAlignment LayoutItem_WithFormatting::get_formatting_used_horizontal_alignment(bool /* for_details_view */) const
 {
-  const auto format = get_formatting_used();
+  const auto& format = get_formatting_used();
   Formatting::HorizontalAlignment alignment =
     format.get_horizontal_alignment();
 

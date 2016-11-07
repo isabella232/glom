@@ -142,7 +142,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const LayoutItem_Wi
     }
   }
 
-  const auto formatting = layout_item.get_formatting_used();
+  const auto& formatting = layout_item.get_formatting_used();
 
   //Use the text formatting:
   const auto font_desc = formatting.get_text_format_font();

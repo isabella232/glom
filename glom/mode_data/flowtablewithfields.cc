@@ -837,7 +837,7 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
     if(!field)
       continue;
 
-    const auto format = field->get_formatting_used();
+    const auto& format = field->get_formatting_used();
 
     bool choice_show_all = false;
     const auto choice_relationship =

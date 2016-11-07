@@ -118,7 +118,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
   //Fill the model with data:
   auto layout_item =
     std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
-  const auto format = layout_item->get_formatting_used();
+  const auto& format = layout_item->get_formatting_used();
   std::shared_ptr<const Relationship> choice_relationship;
   std::shared_ptr<const LayoutItem_Field> layout_choice_first;
   std::shared_ptr<const LayoutGroup> layout_choice_extra;
@@ -237,7 +237,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const std::shared_ptr<const 
     return;
   }
 
-  const auto format = layout_field.get_formatting_used();
+  const auto& format = layout_field.get_formatting_used();
   std::shared_ptr<const Relationship> choice_relationship;
   std::shared_ptr<const LayoutItem_Field> layout_choice_first;
   std::shared_ptr<const LayoutGroup> layout_choice_extra;
@@ -439,7 +439,7 @@ int ComboChoicesWithTreeModel::get_fixed_cell_height(Gtk::Widget& widget)
       const auto item_withformatting = std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(item);
       if(item_withformatting)
       {
-         const auto formatting = item_withformatting->get_formatting_used();
+         const auto& formatting = item_withformatting->get_formatting_used();
          font_name = formatting.get_text_format_font();
       }
 

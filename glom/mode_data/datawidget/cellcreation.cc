@@ -45,7 +45,7 @@ static void apply_formatting(Gtk::CellRenderer* renderer, const std::shared_ptr<
   const float x_align = (alignment == Formatting::HorizontalAlignment::LEFT ? 0.0 : 1.0);
   text_renderer->property_xalign() = x_align;
 
-  const auto formatting = layout_item->get_formatting_used();
+  const auto& formatting = layout_item->get_formatting_used();
 
   const auto font_desc = formatting.get_text_format_font();
   if(!font_desc.empty())
@@ -96,7 +96,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
       }
       default:
       {
-        const auto formatting = item_field->get_formatting_used();
+        const auto& formatting = item_field->get_formatting_used();
         if(formatting.get_has_choices())
         {
           auto rendererList = Gtk::manage( new CellRendererDbList() );
