@@ -557,7 +557,7 @@ bool test_example_musiccollection_data(const std::shared_ptr<const Glom::Documen
   return test_example_musiccollection_data_related(document, album_id);
 }
 
-static bool test_hosting_mode(const SlotTest& slot, Glom::Document::HostingMode hosting_mode, const Glib::ustring name)
+static bool test_hosting_mode(const SlotTest& slot, Glom::Document::HostingMode hosting_mode, const Glib::ustring& name)
 {
   try
   {

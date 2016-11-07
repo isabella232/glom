@@ -1426,7 +1426,7 @@ void Frame_Glom::on_menu_developer_fields()
 
 }
 
-void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name)
+void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring& table_name)
 {
   if(!m_dialog_fields)
   {
@@ -1489,7 +1489,7 @@ void Frame_Glom::on_menu_developer_relationships_overview()
   }
 }
 
-void Frame_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name)
+void Frame_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring& table_name)
 {
   //Create the widget if necessary:
   if(!m_dialog_relationships)
@@ -2082,7 +2082,7 @@ bool Frame_Glom::handle_request_password_connection_error(bool asked_for_passwor
   }
 }
 
-bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_found, const Glib::ustring known_username, const Glib::ustring& known_password, bool confirm_known_user)
+bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_found, const Glib::ustring& known_username, const Glib::ustring& known_password, bool confirm_known_user)
 {
   //Initialize output parameter:
   database_not_found = false;
