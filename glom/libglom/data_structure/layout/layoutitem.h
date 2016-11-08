@@ -36,7 +36,7 @@ public:
   LayoutItem(LayoutItem&& src) = default;
   LayoutItem& operator=(const LayoutItem& src);
   LayoutItem& operator=(LayoutItem&& src) = default;
-  ~LayoutItem() override;
+  ~LayoutItem() override = default;
 
   /** Create a new copied instance.
    * This allows us to deep-copy a list of LayoutItems.

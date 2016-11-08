@@ -36,10 +36,6 @@ Document::Document()
   m_view = nullptr;
 }
 
-Document::~Document()
-{
-}
-
 Glib::ustring Document::get_file_uri() const
 {
   return m_file_uri;

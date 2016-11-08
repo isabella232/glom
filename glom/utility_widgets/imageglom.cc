@@ -142,12 +142,6 @@ void ImageGlom::init()
   add(m_frame);
 }
 
-
-
-ImageGlom::~ImageGlom()
-{
-}
-
 void ImageGlom::set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
 {
   LayoutWidgetField::set_layout_item(layout_item, table_name);

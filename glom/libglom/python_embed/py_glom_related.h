@@ -35,7 +35,7 @@ class PyGlomRelated
 {
 public:
   PyGlomRelated();
-  ~PyGlomRelated();
+  ~PyGlomRelated() = default;
 
   typedef std::unordered_map<Glib::ustring, std::shared_ptr<Relationship> , std::hash<std::string>> type_map_relationships;
   void set_relationships(const PyGlomRelated::type_map_relationships& relationships);

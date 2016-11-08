@@ -36,7 +36,7 @@ class PyGlomRecord
 {
 public:
   PyGlomRecord();
-  ~PyGlomRecord();
+  ~PyGlomRecord() = default;
 
   /* Prevent python code from changing data in the database via this object.
    * For instance, this should be used in a field calculation,

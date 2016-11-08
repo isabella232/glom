@@ -46,8 +46,7 @@ public:
   ImageGlom();
   explicit ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
-
-  virtual ~ImageGlom();
+  ~ImageGlom() override = default;
 
   void set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name) override;
 

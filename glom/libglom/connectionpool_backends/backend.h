@@ -65,7 +65,8 @@ class Backend
 {
   friend class Glom::ConnectionPool;
 public:
-  virtual ~Backend() {}
+  virtual ~Backend() = default;
+
   typedef std::vector<std::shared_ptr<const Field> > type_vec_const_fields;
 
   enum class InitErrors

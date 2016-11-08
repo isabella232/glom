@@ -84,7 +84,7 @@ public:
   //This are public for use by std::make_shared<>().
   //TODO: Does this need to be virtual?
   ConnectionPool();
-  virtual ~ConnectionPool();
+  virtual ~ConnectionPool() = default;
 
   ConnectionPool(const ConnectionPool& src) = delete;
   ConnectionPool(ConnectionPool&& src) = default;

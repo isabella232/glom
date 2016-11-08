@@ -28,10 +28,6 @@ HasTitleSingular::HasTitleSingular()
 {
 }
 
-HasTitleSingular::~HasTitleSingular()
-{
-}
-
 bool HasTitleSingular::operator==(const HasTitleSingular& src) const
 {
   const bool bResult = (m_title_singular == src.m_title_singular);

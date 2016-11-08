@@ -112,10 +112,6 @@ ConnectionPool::ConnectionPool()
 {
 }
 
-ConnectionPool::~ConnectionPool()
-{
-}
-
 //static
 std::shared_ptr<ConnectionPool> ConnectionPool::get_instance()
 {

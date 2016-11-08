@@ -36,7 +36,7 @@ public:
   HasTitleSingular();
   HasTitleSingular(const HasTitleSingular& src) = default;
   HasTitleSingular(HasTitleSingular&& src) = default;
-  virtual ~HasTitleSingular();
+  virtual ~HasTitleSingular() = default;
 
   HasTitleSingular& operator=(const HasTitleSingular& src) = default;
   HasTitleSingular& operator=(HasTitleSingular&& src) = default;

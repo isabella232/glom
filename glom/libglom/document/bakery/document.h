@@ -34,7 +34,7 @@ class Document
 {
 public:
   Document();
-  virtual ~Document();
+  virtual ~Document() = default;
 
   /* Saves the data to disk.
    * Asks the View to update this document before saving to disk,

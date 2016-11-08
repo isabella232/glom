@@ -42,10 +42,6 @@ PyGlomRecord::PyGlomRecord()
 {
 }
 
-PyGlomRecord::~PyGlomRecord()
-{
-}
-
 void PyGlomRecord::set_read_only()
 {
   m_read_only = true;

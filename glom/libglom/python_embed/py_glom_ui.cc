@@ -35,10 +35,6 @@ PyGlomUI::PyGlomUI(const PythonUICallbacks& callbacks)
 {
 }
 
-PyGlomUI::~PyGlomUI()
-{
-}
-
 void PyGlomUI::show_table_details(const std::string& table_name, const boost::python::object& primary_key_value)
 {
   if(!m_callbacks || !(m_callbacks->m_slot_show_table_details))

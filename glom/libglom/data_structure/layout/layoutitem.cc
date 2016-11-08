@@ -58,10 +58,6 @@ LayoutItem::LayoutItem(const LayoutItem& src)
     m_positions = std::make_unique<PrintLayoutPosition>(*(src.m_positions));
 }
 
-LayoutItem::~LayoutItem()
-{
-}
-
 LayoutItem& LayoutItem::operator=(const LayoutItem& src)
 {
   if(this == &src)

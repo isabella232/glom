@@ -32,7 +32,7 @@ class ViewBase : virtual public sigc::trackable
 {
 public:
   ViewBase();
-  virtual ~ViewBase();
+  virtual ~ViewBase() = default;
 
   virtual void load_from_document();
   virtual void save_to_document();

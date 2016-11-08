@@ -31,10 +31,6 @@ TranslatableItem::TranslatableItem() noexcept
 {
 }
 
-TranslatableItem::~TranslatableItem()
-{
-}
-
 bool TranslatableItem::operator==(const TranslatableItem& src) const noexcept
 {
   bool bResult = (m_name == src.m_name)

@@ -36,7 +36,7 @@ public:
   //A default constructor seems to be necessary for boost::python
   PyGlomUI();
   explicit PyGlomUI(const PythonUICallbacks& callbacks);
-  ~PyGlomUI();
+  ~PyGlomUI() = default;
 
   /** Navigate to the named table, showing the details view for the specified record.
    */

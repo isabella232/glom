@@ -34,11 +34,6 @@ PyGlomRelatedRecord::PyGlomRelatedRecord()
 {
 }
 
-PyGlomRelatedRecord::~PyGlomRelatedRecord()
-{
-}
-
-
 static void RelatedRecord_HandlePythonError()
 {
   if(PyErr_Occurred())

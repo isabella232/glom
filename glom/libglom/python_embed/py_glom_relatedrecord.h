@@ -36,7 +36,7 @@ class PyGlomRelatedRecord
 {
 public:
   PyGlomRelatedRecord();
-  ~PyGlomRelatedRecord();
+  ~PyGlomRelatedRecord() = default;
 
   void set_relationship(const std::shared_ptr<const Relationship>& relationship, const Gnome::Gda::Value& from_key_value, const std::shared_ptr<const Document>& document);
 
