@@ -31,22 +31,6 @@ TranslatableItem::TranslatableItem() noexcept
 {
 }
 
-TranslatableItem::TranslatableItem(const TranslatableItem& src) noexcept
-: m_translatable_item_type(src.m_translatable_item_type),
-  m_name(src.m_name),
-  m_title(src.m_title),
-  m_map_translations(src.m_map_translations)
-{
-}
-
-TranslatableItem::TranslatableItem(TranslatableItem&& src) noexcept
-: m_translatable_item_type(std::move(src.m_translatable_item_type)),
-  m_name(std::move(src.m_name)),
-  m_title(std::move(src.m_title)),
-  m_map_translations(std::move(src.m_map_translations))
-{
-}
-
 TranslatableItem::~TranslatableItem()
 {
 }

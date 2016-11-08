@@ -33,8 +33,8 @@ class TranslatableItem
 {
 public:
   TranslatableItem() noexcept;
-  TranslatableItem(const TranslatableItem& src) noexcept;
-  TranslatableItem(TranslatableItem&& src) noexcept;
+  TranslatableItem(const TranslatableItem& src) = default;
+  TranslatableItem(TranslatableItem&& src) = default;
   virtual ~TranslatableItem();
 
   TranslatableItem& operator=(const TranslatableItem& src) = default;
