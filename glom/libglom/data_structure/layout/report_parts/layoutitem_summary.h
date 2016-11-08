@@ -34,9 +34,9 @@ public:
 
   LayoutItem_Summary();
   LayoutItem_Summary(const LayoutItem_Summary& src) = default;
-  LayoutItem_Summary(const LayoutItem_Summary&& src) = delete;
+  LayoutItem_Summary(LayoutItem_Summary&&src) = default;
   LayoutItem_Summary& operator=(const LayoutItem_Summary& src) = default;
-  LayoutItem_Summary& operator=(LayoutItem_Summary&& src) = delete;
+  LayoutItem_Summary& operator=(LayoutItem_Summary&& src) = default;
   virtual ~LayoutItem_Summary();
 
   LayoutItem* clone() const override;

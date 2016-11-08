@@ -33,9 +33,9 @@ public:
 
   CustomTitle();
   CustomTitle(const CustomTitle& src) = default;
-  CustomTitle(CustomTitle&& src) = delete;
+  CustomTitle(CustomTitle&& src) = default;
   CustomTitle& operator=(const CustomTitle& src) = default;
-  CustomTitle& operator=(CustomTitle&& src) = delete;
+  CustomTitle& operator=(CustomTitle&& src) = default;
 
   bool operator==(const CustomTitle& src) const;
 

@@ -34,9 +34,9 @@ class TableInfo
 public:
   TableInfo() noexcept;
   TableInfo(const TableInfo& src) = default;
-  TableInfo(TableInfo&& src) = delete;
+  TableInfo(TableInfo&& src) = default;
   TableInfo& operator=(const TableInfo& src)  = default;
-  TableInfo& operator=(TableInfo&& src) = delete;
+  TableInfo& operator=(TableInfo&& src) = default;
 
   bool operator==(const TableInfo& src) const noexcept;
   bool operator!=(const TableInfo& src) const noexcept;

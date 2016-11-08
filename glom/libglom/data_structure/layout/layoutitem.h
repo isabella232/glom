@@ -33,9 +33,9 @@ public:
 
   LayoutItem();
   explicit LayoutItem(const LayoutItem& src);
-  LayoutItem(LayoutItem&& src) = delete;
+  LayoutItem(LayoutItem&& src) = default;
   LayoutItem& operator=(const LayoutItem& src);
-  LayoutItem& operator=(LayoutItem&& src) = delete;
+  LayoutItem& operator=(LayoutItem&& src) = default;
   ~LayoutItem() override;
 
   /** Create a new copied instance.
@@ -93,9 +93,9 @@ private:
   public:
     PrintLayoutPosition();
     PrintLayoutPosition(const PrintLayoutPosition& src) = default;
-    PrintLayoutPosition(PrintLayoutPosition&& src) = delete;
+    PrintLayoutPosition(PrintLayoutPosition&& src) = default;
     PrintLayoutPosition& operator=(const PrintLayoutPosition& src) = default;
-    PrintLayoutPosition& operator=(PrintLayoutPosition&& src) = delete;
+    PrintLayoutPosition& operator=(PrintLayoutPosition&& src) = default;
 
     bool operator==(const PrintLayoutPosition& src) const;
 

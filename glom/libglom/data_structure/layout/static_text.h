@@ -35,9 +35,9 @@ public:
 
   StaticText();
   StaticText(const StaticText& src) = default;
-  StaticText(StaticText&& src) = delete;
+  StaticText(StaticText&& src) = default;
   StaticText& operator=(const StaticText& src) = default;
-  StaticText& operator=(StaticText&& src) = delete;
+  StaticText& operator=(StaticText&& src) = default;
 
   bool operator==(const StaticText& src) const;
 };

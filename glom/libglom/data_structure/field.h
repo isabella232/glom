@@ -85,10 +85,10 @@ public:
 
   Field();
   Field(const Field& src) = default;
-  Field(Field&& src) = delete;
+  Field(Field&& src) = default;
 
   Field& operator=(const Field& src) = default;
-  Field& operator=(Field&& src) = delete;
+  Field& operator=(Field&& src) = default;
 
   bool operator==(const Field& src) const;
   bool operator!=(const Field& src) const;

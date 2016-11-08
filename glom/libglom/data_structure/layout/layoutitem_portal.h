@@ -47,9 +47,9 @@ public:
 
   LayoutItem_Portal();
   LayoutItem_Portal(const LayoutItem_Portal& src) = default;
-  LayoutItem_Portal(LayoutItem_Portal&& src) = delete;
+  LayoutItem_Portal(LayoutItem_Portal&& src) = default;
   LayoutItem_Portal& operator=(const LayoutItem_Portal& src) = default;
-  LayoutItem_Portal& operator=(LayoutItem_Portal&& src) = delete;
+  LayoutItem_Portal& operator=(LayoutItem_Portal&& src) = default;
 
   LayoutItem* clone() const override;
 

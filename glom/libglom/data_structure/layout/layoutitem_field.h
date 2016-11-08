@@ -48,9 +48,9 @@ public:
 
   LayoutItem_Field();
   LayoutItem_Field(const LayoutItem_Field& src) = default;
-  LayoutItem_Field(LayoutItem_Field&& src) = delete;
+  LayoutItem_Field(LayoutItem_Field&& src) = default;
   LayoutItem_Field& operator=(const LayoutItem_Field& src) = default;
-  LayoutItem_Field& operator=(LayoutItem_Field&& src) = delete;
+  LayoutItem_Field& operator=(LayoutItem_Field&& src) = default;
 
   LayoutItem* clone() const override;
 

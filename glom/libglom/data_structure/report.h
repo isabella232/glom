@@ -33,9 +33,9 @@ class Report : public TranslatableItem
 public:
   Report();
   Report(const Report& src) = default;
-  Report(Report&& src) = delete;
+  Report(Report&& src) = default;
   Report& operator=(const Report& src) = default;
-  Report& operator=(Report&& src) = delete;
+  Report& operator=(Report&& src) = default;
 
   bool get_show_table_title() const;
   void set_show_table_title(bool show_table_title = true);

@@ -33,9 +33,9 @@ public:
 
   LayoutItem_Button();
   LayoutItem_Button(const LayoutItem_Button& src) = default;
-  LayoutItem_Button(LayoutItem_Button&& src) = delete;
+  LayoutItem_Button(LayoutItem_Button&& src) = default;
   LayoutItem_Button& operator=(const LayoutItem_Button& src) = default;
-  LayoutItem_Button& operator=(LayoutItem_Button&& src) = delete;
+  LayoutItem_Button& operator=(LayoutItem_Button&& src) = default;
 
   LayoutItem* clone() const override;
 

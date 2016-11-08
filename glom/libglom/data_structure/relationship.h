@@ -35,10 +35,10 @@ class Relationship
 public:
   Relationship();
   Relationship(const Relationship& src) = default;
-  Relationship(Relationship&& src) = delete;
+  Relationship(Relationship&& src) = default;
 
   Relationship& operator=(const Relationship& src) = default;
-  Relationship& operator=(Relationship&& src) = delete;
+  Relationship& operator=(Relationship&& src) = default;
 
   bool operator==(const Relationship& src) const;
 

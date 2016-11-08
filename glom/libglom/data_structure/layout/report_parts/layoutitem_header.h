@@ -36,9 +36,9 @@ public:
 
   LayoutItem_Header();
   LayoutItem_Header(const LayoutItem_Header& src) = default;
-  LayoutItem_Header(LayoutItem_Header&& src) = delete;
+  LayoutItem_Header(LayoutItem_Header&& src) = default;
   LayoutItem_Header& operator=(const LayoutItem_Header& src) = default;
-  LayoutItem_Header& operator=(LayoutItem_Header&& src) = delete;
+  LayoutItem_Header& operator=(LayoutItem_Header&& src) = default;
 
   LayoutItem* clone() const override;
 

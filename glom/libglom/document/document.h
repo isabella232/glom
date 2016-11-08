@@ -590,9 +590,9 @@ private:
     }
 
     DocumentTableInfo(const DocumentTableInfo& src) = delete;
-    DocumentTableInfo(DocumentTableInfo&& src) = delete;
+    DocumentTableInfo(DocumentTableInfo&& src) = default;
     DocumentTableInfo& operator=(const DocumentTableInfo& src) = delete;
-    DocumentTableInfo& operator=(DocumentTableInfo&& src) = delete;
+    DocumentTableInfo& operator=(DocumentTableInfo&& src) = default;
 
     std::shared_ptr<TableInfo> m_info;
 

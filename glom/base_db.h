@@ -199,8 +199,8 @@ protected:
     LayoutFieldInRecord(const LayoutFieldInRecord& src) = delete;
     LayoutFieldInRecord& operator=(const LayoutFieldInRecord& src) = delete;
 
-    LayoutFieldInRecord(LayoutFieldInRecord&& src) = delete;
-    LayoutFieldInRecord& operator=(LayoutFieldInRecord&& src) = delete;
+    LayoutFieldInRecord(LayoutFieldInRecord&& src) = default;
+    LayoutFieldInRecord& operator=(LayoutFieldInRecord&& src) = default;
 
     FieldInRecord get_fieldinrecord(const std::shared_ptr<const Document>& document) const
     {

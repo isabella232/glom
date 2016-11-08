@@ -42,9 +42,9 @@ public:
 
   Formatting();
   Formatting(const Formatting& src) = default;
-  Formatting(Formatting&& src) = delete;
+  Formatting(Formatting&& src) = default;
   Formatting& operator=(const Formatting& src) = default;
-  Formatting& operator=(Formatting&& src) = delete;
+  Formatting& operator=(Formatting&& src) = default;
 
   bool operator==(const Formatting& src) const;
 

@@ -87,9 +87,9 @@ public:
   virtual ~ConnectionPool();
 
   ConnectionPool(const ConnectionPool& src) = delete;
-  ConnectionPool(ConnectionPool&& src) = delete;
+  ConnectionPool(ConnectionPool&& src) = default;
   ConnectionPool& operator=(const ConnectionPool& src) = delete;
-  ConnectionPool& operator=(ConnectionPool&& src) = delete;
+  ConnectionPool& operator=(ConnectionPool&& src) = default;
 
   typedef ConnectionPoolBackends::Backend Backend;
   typedef Backend::type_vec_const_fields type_vec_const_fields;

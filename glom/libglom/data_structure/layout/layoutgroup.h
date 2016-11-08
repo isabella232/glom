@@ -35,9 +35,9 @@ public:
 
   LayoutGroup();
   LayoutGroup(const LayoutGroup& src);
-  LayoutGroup(LayoutGroup&& src) = delete;
+  LayoutGroup(LayoutGroup&& src) = default;
   LayoutGroup& operator=(const LayoutGroup& src);
-  LayoutGroup& operator=(LayoutGroup&& src) = delete;
+  LayoutGroup& operator=(LayoutGroup&& src) = default;
   ~LayoutGroup() override;
 
   LayoutItem* clone() const override;
