@@ -2170,268 +2170,268 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
 
     //Create the layout item:
     const auto element = dynamic_cast<const xmlpp::Element*>(node_child);
-    if(element)
+    if(!element)
+      continue;
+
+    if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELD)
     {
-      if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELD)
-      {
-        auto item = std::make_shared<LayoutItem_Field>();
-        //item.set_full_field_details_empty();
-        load_after_layout_item_field(element, table_name, item);
+      auto item = std::make_shared<LayoutItem_Field>();
+      //item.set_full_field_details_empty();
+      load_after_layout_item_field(element, table_name, item);
 
-        item_added = item;
+      item_added = item;
+    }
+    else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_BUTTON)
+    {
+      auto item = std::make_shared<LayoutItem_Button>();
+
+      item->set_script( XmlUtils::get_child_text_node(element, GLOM_NODE_BUTTON_SCRIPT) );
+      if(!(item->get_has_script())) //Try the deprecated attribute instead
+         item->set_script( XmlUtils::get_node_attribute_value(element, GLOM_DEPRECATED_ATTRIBUTE_BUTTON_SCRIPT) );
+
+      load_after_translations(element, item);
+
+      item_added = item;
+    }
+    else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_TEXTOBJECT)
+    {
+      auto item = std::make_shared<LayoutItem_Text>();
+      load_after_translations(element, item);
+
+      //The text can be translated too, so it has its own node:
+      const auto element_text = XmlUtils::get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
+      if(element_text)
+      {
+        auto translatable_text = std::make_shared<StaticText>();
+        load_after_translations(element_text, translatable_text);
+        item->m_text = translatable_text;
+        //std::cout << "  DEBUG: text: " << item->m_text->get_title_or_name() << std::endl;
       }
-      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_BUTTON)
+
+      item_added = item;
+    }
+    else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT)
+    {
+      auto item = std::make_shared<LayoutItem_Image>();
+      load_after_translations(element, item);
+
+      Gnome::Gda::Value value_image;
+      const auto nodeValue = XmlUtils::get_node_child_named(element, GLOM_NODE_VALUE);
+      if(nodeValue)
       {
-        auto item = std::make_shared<LayoutItem_Button>();
-
-        item->set_script( XmlUtils::get_child_text_node(element, GLOM_NODE_BUTTON_SCRIPT) );
-        if(!(item->get_has_script())) //Try the deprecated attribute instead
-           item->set_script( XmlUtils::get_node_attribute_value(element, GLOM_DEPRECATED_ATTRIBUTE_BUTTON_SCRIPT) );
-
-        load_after_translations(element, item);
-
-        item_added = item;
+        value_image = XmlUtils::get_node_text_child_as_value(nodeValue, Field::glom_field_type::IMAGE);
       }
-      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_TEXTOBJECT)
-      {
-        auto item = std::make_shared<LayoutItem_Text>();
-        load_after_translations(element, item);
 
-        //The text can be translated too, so it has its own node:
-        const auto element_text = XmlUtils::get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
-        if(element_text)
+      if(value_image.is_null())
+      {
+        //Try the deprecated way:
+        value_image = XmlUtils::get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, Field::glom_field_type::IMAGE);
+      }
+
+      item->set_image(value_image);
+
+      item_added = item;
+    }
+    else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_LINE)
+    {
+      auto item = std::make_shared<LayoutItem_Line>();
+      //Has no translations: load_after_translations(element, item);
+
+      item->set_coordinates(
+        XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_X),
+        XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y),
+        XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X),
+        XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y) );
+
+      item->set_line_width(
+        XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_WIDTH) );
+
+      item->set_line_color(
+        XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_COLOR) );
+
+      item_added = item;
+    }
+    else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY)
+    {
+      auto item = std::make_shared<LayoutItem_FieldSummary>();
+      //item.set_full_field_details_empty();
+      load_after_layout_item_field(element, table_name, item);
+      item->set_full_field_details( get_field(item->get_table_used(table_name), item->get_name()) );
+      item->set_summary_type_from_sql( XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE) );
+
+      item_added = item;
+    }
+    else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_HEADER)
+    {
+      auto child_group = std::make_shared<LayoutItem_Header>();
+      //Recurse:
+      load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
+      item_added = child_group;
+    }
+    else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FOOTER)
+    {
+      auto child_group = std::make_shared<LayoutItem_Footer>();
+      //Recurse:
+      load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
+      item_added = child_group;
+    }
+    else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_GROUP)
+    {
+      auto child_group = std::make_shared<LayoutGroup>();
+      //Recurse:
+      load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
+      item_added = child_group;
+    }
+    else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_NOTEBOOK)
+    {
+      auto notebook = std::make_shared<LayoutItem_Notebook>();
+      load_after_layout_group(element, table_name, notebook, with_print_layout_positions);
+      item_added = notebook;
+    }
+    else if( (element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL) || (element->get_name() == GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL) )
+    {
+      std::shared_ptr<LayoutItem_Portal> portal;
+      std::shared_ptr<LayoutItem_CalendarPortal> calendar_portal;
+
+      if(element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL)
+        portal = std::make_shared<LayoutItem_Portal>();
+      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL)
+      {
+        calendar_portal = std::make_shared<LayoutItem_CalendarPortal>();
+        portal = calendar_portal;
+      }
+
+      load_after_layout_item_usesrelationship(element, table_name, portal);
+
+      if(auto elementNavigationRelationshipSpecific = XmlUtils::get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP))
+      {
+        const Glib::ustring navigation_type_as_string =
+          XmlUtils::get_node_attribute_value(elementNavigationRelationshipSpecific,
+          GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE);
+        if(navigation_type_as_string.empty() ||
+           navigation_type_as_string == GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_AUTOMATIC)
         {
-          auto translatable_text = std::make_shared<StaticText>();
-          load_after_translations(element_text, translatable_text);
-          item->m_text = translatable_text;
-          //std::cout << "  DEBUG: text: " << item->m_text->get_title_or_name() << std::endl;
+          portal->set_navigation_type(LayoutItem_Portal::navigation_type::AUTOMATIC);
         }
-
-        item_added = item;
-      }
-      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT)
-      {
-        auto item = std::make_shared<LayoutItem_Image>();
-        load_after_translations(element, item);
-
-        Gnome::Gda::Value value_image;
-        const auto nodeValue = XmlUtils::get_node_child_named(element, GLOM_NODE_VALUE);
-        if(nodeValue)
+        else if(navigation_type_as_string == GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_NONE)
         {
-          value_image = XmlUtils::get_node_text_child_as_value(nodeValue, Field::glom_field_type::IMAGE);
+          portal->set_navigation_type(LayoutItem_Portal::navigation_type::NONE);
         }
-
-        if(value_image.is_null())
+        else if(navigation_type_as_string == GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_SPECIFIC)
         {
-          //Try the deprecated way:
-          value_image = XmlUtils::get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, Field::glom_field_type::IMAGE);
+          //Read the specified relationship name:
+          auto relationship_navigation_specific = std::make_shared<UsesRelationship>();
+          load_after_layout_item_usesrelationship(elementNavigationRelationshipSpecific, portal->get_table_used(table_name), relationship_navigation_specific);
+          portal->set_navigation_relationship_specific(relationship_navigation_specific);
         }
-
-        item->set_image(value_image);
-
-        item_added = item;
       }
-      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_LINE)
-      {
-        auto item = std::make_shared<LayoutItem_Line>();
-        //Has no translations: load_after_translations(element, item);
 
-        item->set_coordinates(
-          XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_X),
-          XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y),
-          XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X),
-          XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y) );
+      load_after_layout_group(element, portal->get_table_used(table_name), portal, with_print_layout_positions);
 
-        item->set_line_width(
-          XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_WIDTH) );
+      //Get the calendar portal's date field:
+      if(calendar_portal)
+      {
+        const auto date_field_name = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD);
+        auto date_field = get_field(calendar_portal->get_table_used(table_name), date_field_name);
+        calendar_portal->set_date_field(date_field);
+      }
 
-        item->set_line_color(
-          XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_COLOR) );
+      if(!calendar_portal)
+      {
+        const gulong rows_count_min =
+          XmlUtils::get_node_attribute_value_as_decimal_double(element,
+            GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MIN);
+        const gulong rows_count_max =
+          XmlUtils::get_node_attribute_value_as_decimal_double(element,
+            GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MAX);
+        if(rows_count_min || rows_count_max) //Ignore useless 0, 0 values.
+          portal->set_rows_count(rows_count_min, rows_count_max);
 
-        item_added = item;
-      }
-      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY)
-      {
-        auto item = std::make_shared<LayoutItem_FieldSummary>();
-        //item.set_full_field_details_empty();
-        load_after_layout_item_field(element, table_name, item);
-        item->set_full_field_details( get_field(item->get_table_used(table_name), item->get_name()) );
-        item->set_summary_type_from_sql( XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE) );
+        //Print Layout specific stuff:
+        portal->set_print_layout_row_height(
+          XmlUtils::get_node_attribute_value_as_decimal(element,
+            GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT) );
 
-        item_added = item;
+        portal->set_print_layout_row_line_width(
+          XmlUtils::get_node_attribute_value_as_decimal(element,
+            GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_WIDTH) );
+        portal->set_print_layout_column_line_width(
+          XmlUtils::get_node_attribute_value_as_decimal(element,
+            GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_COLUMN_LINE_WIDTH) );
+        portal->set_print_layout_line_color(
+          XmlUtils::get_node_attribute_value(element,
+            GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_LINE_COLOR) );
       }
-      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_HEADER)
-      {
-        auto child_group = std::make_shared<LayoutItem_Header>();
-        //Recurse:
-        load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
-        item_added = child_group;
-      }
-      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FOOTER)
-      {
-        auto child_group = std::make_shared<LayoutItem_Footer>();
-        //Recurse:
-        load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
-        item_added = child_group;
-      }
-      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_GROUP)
-      {
-        auto child_group = std::make_shared<LayoutGroup>();
-        //Recurse:
-        load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
-        item_added = child_group;
-      }
-      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_NOTEBOOK)
-      {
-        auto notebook = std::make_shared<LayoutItem_Notebook>();
-        load_after_layout_group(element, table_name, notebook, with_print_layout_positions);
-        item_added = notebook;
-      }
-      else if( (element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL) || (element->get_name() == GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL) )
-      {
-        std::shared_ptr<LayoutItem_Portal> portal;
-        std::shared_ptr<LayoutItem_CalendarPortal> calendar_portal;
 
-        if(element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL)
-          portal = std::make_shared<LayoutItem_Portal>();
-        else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL)
+      item_added = portal;
+    }
+    else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY)
+    {
+      auto child_group = std::make_shared<LayoutItem_GroupBy>();
+      //Recurse:
+      load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
+
+      //Group-By field:
+      auto field_groupby = std::make_shared<LayoutItem_Field>();
+      auto elementGroupBy = XmlUtils::get_node_child_named(element, GLOM_NODE_REPORT_ITEM_GROUPBY_GROUPBY);
+      if(elementGroupBy)
+      {
+        load_after_layout_item_field(elementGroupBy, table_name, field_groupby);
+        field_groupby->set_full_field_details( get_field(field_groupby->get_table_used(table_name), field_groupby->get_name()) );
+      }
+      child_group->set_field_group_by(field_groupby);
+
+
+      //field_groupby.set_full_field_details_empty();
+
+      //Sort fields:
+      auto elementSortBy = XmlUtils::get_node_child_named(element, GLOM_NODE_REPORT_ITEM_GROUPBY_SORTBY);
+      if(elementSortBy)
+      {
+        LayoutItem_GroupBy::type_list_sort_fields sort_fields;
+        load_after_sort_by(elementSortBy, table_name, sort_fields);
+        child_group->set_fields_sort_by(sort_fields);
+      }
+
+      //Secondary fields:
+      auto elementSecondary = XmlUtils::get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
+      if(elementSecondary)
+      {
+        auto elementGroup = XmlUtils::get_node_child_named(elementSecondary, GLOM_NODE_DATA_LAYOUT_GROUP);
+        if(elementGroup)
         {
-          calendar_portal = std::make_shared<LayoutItem_CalendarPortal>();
-          portal = calendar_portal;
+          load_after_layout_group(elementGroup, table_name, child_group->get_secondary_fields(), with_print_layout_positions);
+          fill_layout_field_details(table_name, child_group->get_secondary_fields()); //Get full field details from the field names.
         }
-
-        load_after_layout_item_usesrelationship(element, table_name, portal);
-
-        if(auto elementNavigationRelationshipSpecific = XmlUtils::get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP))
-        {
-          const Glib::ustring navigation_type_as_string =
-            XmlUtils::get_node_attribute_value(elementNavigationRelationshipSpecific,
-            GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE);
-          if(navigation_type_as_string.empty() ||
-             navigation_type_as_string == GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_AUTOMATIC)
-          {
-            portal->set_navigation_type(LayoutItem_Portal::navigation_type::AUTOMATIC);
-          }
-          else if(navigation_type_as_string == GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_NONE)
-          {
-            portal->set_navigation_type(LayoutItem_Portal::navigation_type::NONE);
-          }
-          else if(navigation_type_as_string == GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_SPECIFIC)
-          {
-            //Read the specified relationship name:
-            auto relationship_navigation_specific = std::make_shared<UsesRelationship>();
-            load_after_layout_item_usesrelationship(elementNavigationRelationshipSpecific, portal->get_table_used(table_name), relationship_navigation_specific);
-            portal->set_navigation_relationship_specific(relationship_navigation_specific);
-          }
-        }
-
-        load_after_layout_group(element, portal->get_table_used(table_name), portal, with_print_layout_positions);
-
-        //Get the calendar portal's date field:
-        if(calendar_portal)
-        {
-          const auto date_field_name = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD);
-          auto date_field = get_field(calendar_portal->get_table_used(table_name), date_field_name);
-          calendar_portal->set_date_field(date_field);
-        }
-
-        if(!calendar_portal)
-        {
-          const gulong rows_count_min =
-            XmlUtils::get_node_attribute_value_as_decimal_double(element,
-              GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MIN);
-          const gulong rows_count_max =
-            XmlUtils::get_node_attribute_value_as_decimal_double(element,
-              GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MAX);
-          if(rows_count_min || rows_count_max) //Ignore useless 0, 0 values.
-            portal->set_rows_count(rows_count_min, rows_count_max);
-
-          //Print Layout specific stuff:
-          portal->set_print_layout_row_height(
-            XmlUtils::get_node_attribute_value_as_decimal(element,
-              GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT) );
-
-          portal->set_print_layout_row_line_width(
-            XmlUtils::get_node_attribute_value_as_decimal(element,
-              GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_WIDTH) );
-          portal->set_print_layout_column_line_width(
-            XmlUtils::get_node_attribute_value_as_decimal(element,
-              GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_COLUMN_LINE_WIDTH) );
-          portal->set_print_layout_line_color(
-            XmlUtils::get_node_attribute_value(element,
-              GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_LINE_COLOR) );
-        }
-
-        item_added = portal;
       }
-      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY)
-      {
-        auto child_group = std::make_shared<LayoutItem_GroupBy>();
-        //Recurse:
-        load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
 
-        //Group-By field:
-        auto field_groupby = std::make_shared<LayoutItem_Field>();
-        auto elementGroupBy = XmlUtils::get_node_child_named(element, GLOM_NODE_REPORT_ITEM_GROUPBY_GROUPBY);
-        if(elementGroupBy)
-        {
-          load_after_layout_item_field(elementGroupBy, table_name, field_groupby);
-          field_groupby->set_full_field_details( get_field(field_groupby->get_table_used(table_name), field_groupby->get_name()) );
-        }
-        child_group->set_field_group_by(field_groupby);
+      item_added = child_group;
+    }
+    else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_VERTICALGROUP)
+    {
+      auto child_group = std::make_shared<LayoutItem_VerticalGroup>();
+      //Recurse:
+      load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
 
+      item_added = child_group;
+    }
+    else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY)
+    {
+      auto child_group = std::make_shared<LayoutItem_Summary>();
+      //Recurse:
+      load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
 
-        //field_groupby.set_full_field_details_empty();
-
-        //Sort fields:
-        auto elementSortBy = XmlUtils::get_node_child_named(element, GLOM_NODE_REPORT_ITEM_GROUPBY_SORTBY);
-        if(elementSortBy)
-        {
-          LayoutItem_GroupBy::type_list_sort_fields sort_fields;
-          load_after_sort_by(elementSortBy, table_name, sort_fields);
-          child_group->set_fields_sort_by(sort_fields);
-        }
-
-        //Secondary fields:
-        auto elementSecondary = XmlUtils::get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
-        if(elementSecondary)
-        {
-          auto elementGroup = XmlUtils::get_node_child_named(elementSecondary, GLOM_NODE_DATA_LAYOUT_GROUP);
-          if(elementGroup)
-          {
-            load_after_layout_group(elementGroup, table_name, child_group->get_secondary_fields(), with_print_layout_positions);
-            fill_layout_field_details(table_name, child_group->get_secondary_fields()); //Get full field details from the field names.
-          }
-        }
-
-        item_added = child_group;
-      }
-      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_VERTICALGROUP)
-      {
-        auto child_group = std::make_shared<LayoutItem_VerticalGroup>();
-        //Recurse:
-        load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
-
-        item_added = child_group;
-      }
-      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY)
-      {
-        auto child_group = std::make_shared<LayoutItem_Summary>();
-        //Recurse:
-        load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
-
-        item_added = child_group;
-      }
+      item_added = child_group;
     }
 
     //Load formatting for any layout type that uses it:
     if(auto withformatting = std::dynamic_pointer_cast<LayoutItem_WithFormatting>(item_added))
     {
-       if(const auto elementFormatting = XmlUtils::get_node_child_named(element, GLOM_NODE_FORMAT))
-       {
-         //TODO: Provide the name of the relationship's table if there is a relationship:
-         load_after_layout_item_formatting(elementFormatting, withformatting, table_name);
-       }
+      if(const auto elementFormatting = XmlUtils::get_node_child_named(element, GLOM_NODE_FORMAT))
+      {
+        //TODO: Provide the name of the relationship's table if there is a relationship:
+        load_after_layout_item_formatting(elementFormatting, withformatting, table_name);
+      }
     }
 
     //Add the new layout item to the group:
