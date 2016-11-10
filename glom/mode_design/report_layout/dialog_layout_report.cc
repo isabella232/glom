@@ -954,19 +954,19 @@ void Dialog_Layout_Report::on_cell_data_part(Gtk::CellRenderer* renderer, const 
 
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
-  if(renderer_text)
-  {
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
+  if(!renderer_text)
+    return;
 
-      std::shared_ptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
-      const auto part = pItem->get_part_type_name();
+  if(!iter)
+    return;
 
-      renderer_text->property_text() = part;
-      renderer_text->property_editable() = false; //Part names can never be edited.
-    }
-  }
+  Gtk::TreeModel::Row row = *iter;
+
+  std::shared_ptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
+  const auto part = pItem->get_part_type_name();
+
+  renderer_text->property_text() = part;
+  renderer_text->property_editable() = false; //Part names can never be edited.
 }
 
 void Dialog_Layout_Report::on_cell_data_details(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, const Glib::WeakRef<type_model>& model_weak)
@@ -977,18 +977,18 @@ void Dialog_Layout_Report::on_cell_data_details(Gtk::CellRenderer* renderer, con
 
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
-  if(renderer_text)
-  {
-    if(iter)
-    {
-      Glib::ustring text;
+  if(!renderer_text)
+    return;
 
-      Gtk::TreeModel::Row row = *iter;
-      std::shared_ptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
-      renderer_text->property_text() = pItem->get_layout_display_name();
-      renderer_text->property_editable() = false;
-    }
-  }
+  if(!iter)
+    return;
+
+  Glib::ustring text;
+
+  Gtk::TreeModel::Row row = *iter;
+  std::shared_ptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
+  renderer_text->property_text() = pItem->get_layout_display_name();
+  renderer_text->property_editable() = false;
 }
 
 
@@ -998,19 +998,19 @@ void Dialog_Layout_Report::on_cell_data_available_part(Gtk::CellRenderer* render
 
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
-  if(renderer_text)
-  {
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
-      auto model = Glib::RefPtr<type_model>::cast_dynamic(m_treeview_available_parts->get_model());
-      std::shared_ptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
-      Glib::ustring part = pItem->get_part_type_name();
+  if(!renderer_text)
+    return;
 
-      renderer_text->property_text() = part;
-      renderer_text->property_editable() = false; //Part names can never be edited.
-    }
-  }
+  if(!iter)
+    return;
+
+  Gtk::TreeModel::Row row = *iter;
+  auto model = Glib::RefPtr<type_model>::cast_dynamic(m_treeview_available_parts->get_model());
+  std::shared_ptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
+  Glib::ustring part = pItem->get_part_type_name();
+
+  renderer_text->property_text() = part;
+  renderer_text->property_editable() = false; //Part names can never be edited.
 }
 
 Glib::ustring Dialog_Layout_Report::get_original_report_name() const

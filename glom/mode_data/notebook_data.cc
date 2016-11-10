@@ -353,30 +353,29 @@ void Notebook_Data::on_switch_page_handler(Gtk::Widget* pPage)
 
   //Remember that currently-viewed layout, so we can show it again when the user comes back to this table from elsewhere:
   auto box = dynamic_cast<Box_Data*>(get_visible_child());
-  if(box)
+  if(!box)
+    return;
+
+  auto document = get_document();
+  if(document)
+    document->set_layout_current(m_table_name, box->get_layout_name());
+
+  //And refresh the list view whenever it is shown, to
+  //a) show any new records that were added via the details view, or via a related portal elsewhere.
+  //b) show changed field contents, changed elsewhere.
+  if(box == &m_Box_List)
   {
-    auto document = get_document();
-    if(document)
-      document->set_layout_current(m_table_name, box->get_layout_name());
-
-    //And refresh the list view whenever it is shown, to
-    //a) show any new records that were added via the details view, or via a related portal elsewhere.
-    //b) show changed field contents, changed elsewhere.
-    if(box == &m_Box_List)
-    {
-      //std::cout << "debug: switching to list\n";
-      const auto primary_key_selected = m_Box_List.get_primary_key_value_selected();
-      m_Box_List.refresh_data_from_database();
-      m_Box_List.set_primary_key_value_selected(primary_key_selected);
-    }
-    else if(box == &m_Box_Details)
-    {
-      //std::cout << "debug: switching to details\n";
-      const auto primary_key_selected = m_Box_List.get_primary_key_value_selected();
-      m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_selected);
-    }
+    //std::cout << "debug: switching to list\n";
+    const auto primary_key_selected = m_Box_List.get_primary_key_value_selected();
+    m_Box_List.refresh_data_from_database();
+    m_Box_List.set_primary_key_value_selected(primary_key_selected);
   }
-
+  else if(box == &m_Box_Details)
+  {
+    //std::cout << "debug: switching to details\n";
+    const auto primary_key_selected = m_Box_List.get_primary_key_value_selected();
+    m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_selected);
+  }
 }
 
 void Notebook_Data::get_record_counts(gulong& total, gulong& found)

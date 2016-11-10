@@ -1304,12 +1304,11 @@ void AddDel::on_treeview_columns_changed()
     for(const auto& item : m_tree_view.get_columns())
     {
       auto pViewColumn = dynamic_cast<TreeViewColumnGlom*>(item);
-      if(pViewColumn)
-      {
-        const auto column_id = pViewColumn->get_column_id();
-        m_column_ids.emplace_back(column_id);
+      if(!pViewColumn)
+        continue;
 
-      }
+      const auto column_id = pViewColumn->get_column_id();
+      m_column_ids.emplace_back(column_id);
     }
 
     //Tell other code that something has changed, so the new column order can be serialized.

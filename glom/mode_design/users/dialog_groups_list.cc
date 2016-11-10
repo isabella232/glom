@@ -596,17 +596,17 @@ void Dialog_GroupsList::on_cell_data_group_name(Gtk::CellRenderer* renderer, con
 {
  //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
-  if(renderer_text)
-  {
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
+  if(!renderer_text)
+    return;
 
-      Glib::ustring name = row[m_model_columns_groups.m_col_name];
+  if(!iter)
+    return;
 
-      renderer_text->property_text() = Privs::get_user_visible_group_name(name);
-    }
-  }
+  Gtk::TreeModel::Row row = *iter;
+
+  Glib::ustring name = row[m_model_columns_groups.m_col_name];
+
+  renderer_text->property_text() = Privs::get_user_visible_group_name(name);
 }
 
 } //namespace Glom

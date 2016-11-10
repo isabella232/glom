@@ -66,10 +66,10 @@ void VariablesMap::connect_widget(const Glib::ustring& widget_name, double& vari
   m_builder->get_widget(widget_name, pWidget);
 
   auto pScale = dynamic_cast<Gtk::Scale*>(pWidget);
-  if(pScale)
-  {
-    m_mapWidgetsToVariables[pScale] = (void*)(&variable);
-  }
+  if(!pScale)
+    return;
+
+  m_mapWidgetsToVariables[pScale] = (void*)(&variable);
 }
 
 void VariablesMap::connect_widget(const Glib::ustring& widget_name, Glib::Date& variable)
@@ -78,10 +78,10 @@ void VariablesMap::connect_widget(const Glib::ustring& widget_name, Glib::Date& 
   m_builder->get_widget(widget_name, pWidget);
 
   auto pCalendar = dynamic_cast<Gtk::Calendar*>(pWidget);
-  if(pCalendar)
-  {
-    m_mapWidgetsToVariables[pCalendar] = (void*)(&variable);
-  }
+  if(!pCalendar)
+    return;
+
+  m_mapWidgetsToVariables[pCalendar] = (void*)(&variable);
 }
 
 void VariablesMap::transfer_widgets_to_variables()

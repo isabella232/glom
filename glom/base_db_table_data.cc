@@ -96,88 +96,88 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   for(const auto& layout_item : fieldsToAdd)
   {
     const Glib::ustring field_name = layout_item->get_name();
-    if(!layout_item->get_has_relationship_name()) //TODO: Allow people to add a related record also by entering new data in a related field of the related record.
+    if(layout_item->get_has_relationship_name()) //TODO: Allow people to add a related record also by entering new data in a related field of the related record.
+      continue;
+
+    if (map_added.count(field_name)) //If it was added already.
+      continue;
+
+    Gnome::Gda::Value value;
+
+    const auto field = layout_item->get_full_field_details();
+    if(!field)
+      continue;
+
+    //Use the specified (generated) primary key value, if there is one:
+    if(primary_key_name == field_name && !Conversions::value_is_empty(primary_key_value))
     {
-      if (!map_added.count(field_name)) //If it was not added already.
+      value = primary_key_value;
+    }
+    else
+    {
+      if(use_entered_data)
+        value = get_entered_field_data(*layout_item);
+    }
+
+    if(Conversions::value_is_empty(value)) //This deals with empty strings too.
+    {
+      //If the default value should be calculated, then calculate it:
+      if(field->get_has_calculation())
       {
-        Gnome::Gda::Value value;
+        const auto calculation = field->get_calculation();
+        const auto field_values = get_record_field_values_for_calculation(m_table_name, fieldPrimaryKey, primary_key_value);
 
-        const auto field = layout_item->get_full_field_details();
-        if(!field)
-          continue;
+        //We need the connection when we run the script, so that the script may use it.
+        // TODO: Is this function supposed to throw an exception?
+        auto sharedconnection = connect_to_server(AppWindow::get_appwindow());
 
-        //Use the specified (generated) primary key value, if there is one:
-        if(primary_key_name == field_name && !Conversions::value_is_empty(primary_key_value))
-        {
-          value = primary_key_value;
-        }
-        else
-        {
-          if(use_entered_data)
-            value = get_entered_field_data(*layout_item);
-        }
-
-        if(Conversions::value_is_empty(value)) //This deals with empty strings too.
-        {
-          //If the default value should be calculated, then calculate it:
-          if(field->get_has_calculation())
-          {
-            const auto calculation = field->get_calculation();
-            const auto field_values = get_record_field_values_for_calculation(m_table_name, fieldPrimaryKey, primary_key_value);
-
-            //We need the connection when we run the script, so that the script may use it.
-            // TODO: Is this function supposed to throw an exception?
-            auto sharedconnection = connect_to_server(AppWindow::get_appwindow());
-
-            Glib::ustring error_message; //TODO: Check this.
-            value =
-              glom_evaluate_python_function_implementation(
-                field->get_glom_type(),
-                calculation,
-                field_values,
-                document,
-                m_table_name,
-                fieldPrimaryKey, primary_key_value,
-                sharedconnection->get_gda_connection(),
-                error_message);
-          }
-        }
-
-        //Use default values (These are also specified in postgres as part of the field definition,
-        //so we could theoretically just not specify it here.)
-        //TODO_Performance: Add has_default_value()?
-        if(Conversions::value_is_empty(value))
-        {
-          value = field->get_default_value();
-        }
-
-        //Use auto-increment values:
-        if(field->get_auto_increment() && Conversions::value_is_empty(value))
-        {
-          value =
-            DbUtils::get_next_auto_increment_value(m_table_name, field->get_name());
-        }
-
-        /* //TODO: This would be too many small queries when adding one record.
-        //Check whether the value meets uniqueness constraints:
-        if(field->get_primary_key() || field->get_unique_key())
-        {
-          if(!get_field_value_is_unique(m_table_name, layout_item, value))
-          {
-            //Ignore this field value. TODO: Warn the user about it.
-          }
-        }
-        */
-        if(!value.is_null())
-        {
-          builder->add_field_value(field_name, value);
-          map_added.emplace(field_name);
-        }
-        else
-        {
-          std::cerr << G_STRFUNC << ": value is null for field: " << field_name << std::endl;
-        }
+        Glib::ustring error_message; //TODO: Check this.
+        value =
+          glom_evaluate_python_function_implementation(
+            field->get_glom_type(),
+            calculation,
+            field_values,
+            document,
+            m_table_name,
+            fieldPrimaryKey, primary_key_value,
+            sharedconnection->get_gda_connection(),
+            error_message);
       }
+    }
+
+    //Use default values (These are also specified in postgres as part of the field definition,
+    //so we could theoretically just not specify it here.)
+    //TODO_Performance: Add has_default_value()?
+    if(Conversions::value_is_empty(value))
+    {
+      value = field->get_default_value();
+    }
+
+    //Use auto-increment values:
+    if(field->get_auto_increment() && Conversions::value_is_empty(value))
+    {
+      value =
+        DbUtils::get_next_auto_increment_value(m_table_name, field->get_name());
+    }
+
+    /* //TODO: This would be too many small queries when adding one record.
+    //Check whether the value meets uniqueness constraints:
+    if(field->get_primary_key() || field->get_unique_key())
+    {
+      if(!get_field_value_is_unique(m_table_name, layout_item, value))
+      {
+        //Ignore this field value. TODO: Warn the user about it.
+      }
+    }
+    */
+    if(!value.is_null())
+    {
+      builder->add_field_value(field_name, value);
+      map_added.emplace(field_name);
+    }
+    else
+    {
+      std::cerr << G_STRFUNC << ": value is null for field: " << field_name << std::endl;
     }
   }
 

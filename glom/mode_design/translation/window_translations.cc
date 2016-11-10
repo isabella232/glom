@@ -177,26 +177,26 @@ void Window_Translations::on_cell_data_original(Gtk::CellRenderer* renderer, con
 {
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
-  if(renderer_text)
-  {
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
+  if(!renderer_text)
+    return;
 
-      Glib::ustring text;
-      std::shared_ptr<TranslatableItem> item = row[m_columns.m_col_item];
-      if(item)
-        text = item->get_title_original();
+    if(!iter)
+      return;
 
-      //Use the name if there is no title:
-      if(text.empty())
-        text = item->get_name();
+  Gtk::TreeModel::Row row = *iter;
 
-      //TODO: Mark non-English originals.
-      renderer_text->property_text() = text;
-      renderer_text->property_editable() = false; //Names can never be edited.
-    }
-  }
+  Glib::ustring text;
+  std::shared_ptr<TranslatableItem> item = row[m_columns.m_col_item];
+  if(item)
+    text = item->get_title_original();
+
+  //Use the name if there is no title:
+  if(text.empty())
+    text = item->get_name();
+
+  //TODO: Mark non-English originals.
+  renderer_text->property_text() = text;
+  renderer_text->property_editable() = false; //Names can never be edited.
 }
 
 void Window_Translations::on_cell_data_item_itemhint(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
@@ -263,11 +263,11 @@ void Window_Translations::save_to_document()
   {
     //We have stored a std::shared_ptr to the original item, so we can just change it directly:
     std::shared_ptr<TranslatableItem> item = row[m_columns.m_col_item];
-    if(item)
-    {
-      const Glib::ustring translation = row[m_columns.m_col_translation];
-      item->set_title(translation, m_translation_locale);
-    }
+    if(!item)
+      continue;
+
+    const Glib::ustring translation = row[m_columns.m_col_translation];
+    item->set_title(translation, m_translation_locale);
   }
 
   m_treeview_modified = false;

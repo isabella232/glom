@@ -1963,22 +1963,22 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
         for(const auto& node_choices : nodeChoiceList->get_children(GLOM_NODE_FORMAT_CUSTOM_CHOICE))
         {
           const auto element_custom_choices = dynamic_cast<const xmlpp::Element*>(node_choices);
-          if(element_custom_choices)
-          {
-            if(field_type == Field::glom_field_type::INVALID)
-            {
-              //Discover the field type, so we can interpret the text as a value.
-              //Not all calling functions know this, so they don't all supply the correct value.
-              //TODO_Performance.
-              const auto field_temp = get_field(table_name, field_name);
-              if(field_temp)
-                field_type = field_temp->get_glom_type();
-            }
+          if (!element_custom_choices)
+            continue;
 
-            auto value = std::make_shared<ChoiceValue>();
-            load_after_choicevalue(element_custom_choices, value, field_type);
-            list_values.emplace_back(value);
+          if(field_type == Field::glom_field_type::INVALID)
+          {
+            //Discover the field type, so we can interpret the text as a value.
+            //Not all calling functions know this, so they don't all supply the correct value.
+            //TODO_Performance.
+            const auto field_temp = get_field(table_name, field_name);
+            if(field_temp)
+              field_type = field_temp->get_glom_type();
           }
+
+          auto value = std::make_shared<ChoiceValue>();
+          load_after_choicevalue(element_custom_choices, value, field_type);
+          list_values.emplace_back(value);
         }
 
         format.set_choices_custom(list_values);
@@ -2130,17 +2130,17 @@ void Document::load_after_sort_by(const xmlpp::Element* node, const Glib::ustrin
   for(const auto& node_item_field : node->get_children(GLOM_NODE_DATA_LAYOUT_ITEM_FIELD))
   {
     const auto element = dynamic_cast<const xmlpp::Element*>(node_item_field);
-    if(element)
-    {
-      auto item = std::make_shared<LayoutItem_Field>();
-      //item.set_full_field_details_empty();
-      load_after_layout_item_field(element, table_name, item);
-      item->set_full_field_details( get_field(item->get_table_used(table_name), item->get_name()) );
+    if(!element)
+      continue;
 
-      const auto ascending = XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_SORT_ASCENDING);
+    auto item = std::make_shared<LayoutItem_Field>();
+    //item.set_full_field_details_empty();
+    load_after_layout_item_field(element, table_name, item);
+    item->set_full_field_details( get_field(item->get_table_used(table_name), item->get_name()) );
 
-      list_fields.emplace_back( LayoutItem_GroupBy::type_pair_sort_field(item, ascending) );
-    }
+    const auto ascending = XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_SORT_ASCENDING);
+
+    list_fields.emplace_back( LayoutItem_GroupBy::type_pair_sort_field(item, ascending) );
   }
 }
 
@@ -2468,16 +2468,16 @@ void Document::load_after_translations(const xmlpp::Element* element, const std:
     for(const auto& node_translation : nodeTranslations->get_children(GLOM_NODE_TRANSLATION))
     {
       const auto element_translation = dynamic_cast<const xmlpp::Element*>(node_translation);
-      if(element_translation)
-      {
-        const auto locale = XmlUtils::get_node_attribute_value(element_translation, GLOM_ATTRIBUTE_TRANSLATION_LOCALE);
-        const auto translation = XmlUtils::get_node_attribute_value(element_translation, GLOM_ATTRIBUTE_TRANSLATION_VALUE);
-        item->set_title(translation, locale);
+      if(!element_translation)
+        continue;
 
-        //Remember any new translation locales in our cached list:
-        //TODO: Use a set instead?
-        Utils::add_unique(m_translation_available_locales, locale);
-      }
+      const auto locale = XmlUtils::get_node_attribute_value(element_translation, GLOM_ATTRIBUTE_TRANSLATION_LOCALE);
+      const auto translation = XmlUtils::get_node_attribute_value(element_translation, GLOM_ATTRIBUTE_TRANSLATION_VALUE);
+      item->set_title(translation, locale);
+
+      //Remember any new translation locales in our cached list:
+      //TODO: Use a set instead?
+      Utils::add_unique(m_translation_available_locales, locale);
     }
   }
 
@@ -2634,176 +2634,172 @@ bool Document::load_after(int& failure_code)
       for(const auto& node_table : list_nodes_tables)
       {
         auto nodeTable = dynamic_cast<xmlpp::Element*>(node_table);
-        if(nodeTable)
+        if(!nodeTable)
+          continue;
+
+        const auto table_name = XmlUtils::get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
+
+        const auto doctableinfo = std::make_shared<DocumentTableInfo>();
+        m_tables[table_name] = doctableinfo;
+
+        auto table_info = std::make_shared<TableInfo>();
+        table_info->set_name(table_name);
+        table_info->set_hidden( XmlUtils::get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN) );
+        table_info->set_default( XmlUtils::get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT) );
+
+        doctableinfo->m_info = table_info;
+
+        doctableinfo->m_overviewx = XmlUtils::get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_X);
+        doctableinfo->m_overviewy = XmlUtils::get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y);
+
+        //Translations:
+        load_after_translations(nodeTable, doctableinfo->m_info);
+
+        //Relationships:
+        //These should be loaded before the fields, because the fields use them.
+        const auto nodeRelationships = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_RELATIONSHIPS);
+        if(nodeRelationships)
         {
-          const auto table_name = XmlUtils::get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
+          for(const auto& item_rel : nodeRelationships->get_children(GLOM_NODE_RELATIONSHIP)) {
+            const auto node_rel = dynamic_cast<xmlpp::Element*>(item_rel);
+            if (!node_rel)
+              continue;
 
-          const auto doctableinfo = std::make_shared<DocumentTableInfo>();
-          m_tables[table_name] = doctableinfo;
+            auto relationship = std::make_shared<Relationship>();
+            const auto relationship_name = XmlUtils::get_node_attribute_value(node_rel, GLOM_ATTRIBUTE_NAME);
 
-          auto table_info = std::make_shared<TableInfo>();
-          table_info->set_name(table_name);
-          table_info->set_hidden( XmlUtils::get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN) );
-          table_info->set_default( XmlUtils::get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT) );
+            relationship->set_from_table(table_name);
+            relationship->set_name(relationship_name);;
 
-          doctableinfo->m_info = table_info;
+            relationship->set_from_field(XmlUtils::get_node_attribute_value(node_rel, GLOM_ATTRIBUTE_KEY));
+            relationship->set_to_table(XmlUtils::get_node_attribute_value(node_rel, GLOM_ATTRIBUTE_OTHER_TABLE));
+            relationship->set_to_field(XmlUtils::get_node_attribute_value(node_rel, GLOM_ATTRIBUTE_OTHER_KEY));
+            relationship->set_auto_create(
+              XmlUtils::get_node_attribute_value_as_bool(node_rel, GLOM_ATTRIBUTE_AUTO_CREATE));
+            relationship->set_allow_edit(
+              XmlUtils::get_node_attribute_value_as_bool(node_rel, GLOM_ATTRIBUTE_ALLOW_EDIT));
 
-          doctableinfo->m_overviewx = XmlUtils::get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_X);
-          doctableinfo->m_overviewy = XmlUtils::get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y);
+            //Translations:
+            load_after_translations(node_rel, relationship);
 
-          //Translations:
-          load_after_translations(nodeTable, doctableinfo->m_info);
-
-          //Relationships:
-          //These should be loaded before the fields, because the fields use them.
-          const auto nodeRelationships = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_RELATIONSHIPS);
-          if(nodeRelationships)
-          {
-            for(const auto& item_rel : nodeRelationships->get_children(GLOM_NODE_RELATIONSHIP))
-            {
-              const auto node_rel = dynamic_cast<xmlpp::Element*>(item_rel);
-              if(node_rel)
-              {
-                auto relationship = std::make_shared<Relationship>();
-                const auto relationship_name = XmlUtils::get_node_attribute_value(node_rel, GLOM_ATTRIBUTE_NAME);
-
-                relationship->set_from_table(table_name);
-                relationship->set_name(relationship_name);;
-
-                relationship->set_from_field( XmlUtils::get_node_attribute_value(node_rel, GLOM_ATTRIBUTE_KEY) );
-                relationship->set_to_table( XmlUtils::get_node_attribute_value(node_rel, GLOM_ATTRIBUTE_OTHER_TABLE) );
-                relationship->set_to_field( XmlUtils::get_node_attribute_value(node_rel, GLOM_ATTRIBUTE_OTHER_KEY) );
-                relationship->set_auto_create( XmlUtils::get_node_attribute_value_as_bool(node_rel, GLOM_ATTRIBUTE_AUTO_CREATE) );
-                relationship->set_allow_edit( XmlUtils::get_node_attribute_value_as_bool(node_rel, GLOM_ATTRIBUTE_ALLOW_EDIT) );
-
-                //Translations:
-                load_after_translations(node_rel, relationship);
-
-                doctableinfo->m_relationships.emplace_back(relationship);
-              }
-            }
+            doctableinfo->m_relationships.emplace_back(relationship);
           }
+        }
 
-          //Fields:
-          const auto nodeFields = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_FIELDS);
-          if(nodeFields)
+        //Fields:
+        const auto nodeFields = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_FIELDS);
+        if(nodeFields)
+        {
+          const auto type_names = Field::get_type_names();
+
+          //Loop through Field child nodes:
+          for(const auto& item_field : nodeFields->get_children(GLOM_NODE_FIELD))
           {
-            const auto type_names = Field::get_type_names();
+            const auto node_field = dynamic_cast<xmlpp::Element*>(item_field);
+            if(!node_field)
+              continue;
 
-            //Loop through Field child nodes:
-            for(const auto& item_field : nodeFields->get_children(GLOM_NODE_FIELD))
+            auto field = std::make_shared<Field>();
+
+            const auto strName = XmlUtils::get_node_attribute_value(node_field, GLOM_ATTRIBUTE_NAME);
+            field->set_name( strName );
+
+            field->set_primary_key( XmlUtils::get_node_attribute_value_as_bool(node_field, GLOM_ATTRIBUTE_PRIMARY_KEY) );
+            field->set_unique_key( XmlUtils::get_node_attribute_value_as_bool(node_field, GLOM_ATTRIBUTE_UNIQUE) );
+            field->set_auto_increment( XmlUtils::get_node_attribute_value_as_bool(node_field, GLOM_ATTRIBUTE_AUTOINCREMENT) );
+
+            //Get lookup information, if present.
+            auto nodeLookup = XmlUtils::get_node_child_named(node_field, GLOM_NODE_FIELD_LOOKUP);
+            if(nodeLookup)
             {
-              const auto node_field = dynamic_cast<xmlpp::Element*>(item_field);
-              if(node_field)
+              const auto lookup_relationship_name = XmlUtils::get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
+              auto lookup_relationship = get_relationship(table_name, lookup_relationship_name);
+              field->set_lookup_relationship(lookup_relationship);
+
+              field->set_lookup_field( XmlUtils::get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_FIELD) );
+            }
+
+            field->set_calculation( XmlUtils::get_child_text_node(node_field, GLOM_NODE_CALCULATION) );
+            if(!(field->get_has_calculation())) //Try the deprecated attribute instead
+              field->set_calculation( XmlUtils::get_node_attribute_value(node_field, GLOM_DEPRECATED_ATTRIBUTE_CALCULATION) );
+
+            //Field Type:
+            const auto field_type = XmlUtils::get_node_attribute_value(node_field, GLOM_ATTRIBUTE_TYPE);
+
+            //Get the type enum for this string representation of the type:
+            auto field_type_enum = Field::glom_field_type::INVALID;
+            for(const auto& type_pair : type_names)
+            {
+              if(type_pair.second == field_type)
               {
-                auto field = std::make_shared<Field>();
-
-                const auto strName = XmlUtils::get_node_attribute_value(node_field, GLOM_ATTRIBUTE_NAME);
-                field->set_name( strName );
-
-                field->set_primary_key( XmlUtils::get_node_attribute_value_as_bool(node_field, GLOM_ATTRIBUTE_PRIMARY_KEY) );
-                field->set_unique_key( XmlUtils::get_node_attribute_value_as_bool(node_field, GLOM_ATTRIBUTE_UNIQUE) );
-                field->set_auto_increment( XmlUtils::get_node_attribute_value_as_bool(node_field, GLOM_ATTRIBUTE_AUTOINCREMENT) );
-
-                //Get lookup information, if present.
-                auto nodeLookup = XmlUtils::get_node_child_named(node_field, GLOM_NODE_FIELD_LOOKUP);
-                if(nodeLookup)
-                {
-                  const auto lookup_relationship_name = XmlUtils::get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
-                  auto lookup_relationship = get_relationship(table_name, lookup_relationship_name);
-                  field->set_lookup_relationship(lookup_relationship);
-
-                  field->set_lookup_field( XmlUtils::get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_FIELD) );
-                }
-
-                field->set_calculation( XmlUtils::get_child_text_node(node_field, GLOM_NODE_CALCULATION) );
-                if(!(field->get_has_calculation())) //Try the deprecated attribute instead
-                  field->set_calculation( XmlUtils::get_node_attribute_value(node_field, GLOM_DEPRECATED_ATTRIBUTE_CALCULATION) );
-
-                //Field Type:
-                const auto field_type = XmlUtils::get_node_attribute_value(node_field, GLOM_ATTRIBUTE_TYPE);
-
-                //Get the type enum for this string representation of the type:
-                auto field_type_enum = Field::glom_field_type::INVALID;
-                for(const auto& type_pair : type_names)
-                {
-                  if(type_pair.second == field_type)
-                  {
-                    field_type_enum = type_pair.first;
-                    break;
-                  }
-                }
-
-
-                //We set this after set_field_info(), because that gets a glom type from the (not-specified) gdatype. Yes, that's strange, and should probably be more explicit.
-                field->set_glom_type(field_type_enum);
-
-                field->set_default_value( XmlUtils::get_node_attribute_value_as_value(node_field, GLOM_ATTRIBUTE_DEFAULT_VALUE, field_type_enum) );
-
-                //Default Formatting:
-                const auto elementFormatting = XmlUtils::get_node_child_named(node_field, GLOM_NODE_FORMAT);
-                if(elementFormatting)
-                  load_after_layout_item_formatting(elementFormatting, field->m_default_formatting, field_type_enum, table_name, strName);
-
-                //Translations:
-                load_after_translations(node_field, field);
-
-                doctableinfo->m_fields.emplace_back(field);
+                field_type_enum = type_pair.first;
+                break;
               }
             }
-          } //Fields
 
-          // Load Example Rows after fields have been loaded, because they
-          // need the fields to be able to associate a value to a named field.
-          // TODO: Allow this to be loaded progressively from disk later,
-          // instead of storing in it all in memory?
-          const auto nodeExampleRows = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_EXAMPLE_ROWS);
-          if(nodeExampleRows)
-          {
-            //Loop through example_row child nodes:
-            for(const auto& item_row : nodeExampleRows->get_children(GLOM_NODE_EXAMPLE_ROW))
-            {
-              const auto node_row = dynamic_cast<xmlpp::Element*>(item_row);
-              if(node_row)
-              {
-                type_row_data field_values(doctableinfo->m_fields.size());
-                //Loop through value child nodes
-                for(const auto& item_value : node_row->get_children(GLOM_NODE_VALUE))
-                {
-                  const auto node_value = dynamic_cast<xmlpp::Element*>(item_value);
-                  if(node_value)
-                  {
-                    const auto column_name = node_value->get_attribute(GLOM_ATTRIBUTE_COLUMN);
-                    if(column_name)
-                    {
-                      //std::cout << "DEBUG: column_name = " << column_name->get_value() << " fields size=" << doctableinfo->m_fields.size() << std::endl;
 
-                      // TODO_Performance: If it's too many rows we could
-                      // consider a map to find the column more quickly.
-                      for(unsigned int i = 0; i < doctableinfo->m_fields.size(); ++i)
-                      {
-                        auto field = doctableinfo->m_fields[i];
-                        //std::cout << "  DEBUG: searching: field i=" << i << " =" << field->get_name() << std::endl;
-                        if(field && (field->get_name() == column_name->get_value()))
-                        {
-                          field_values[i] = XmlUtils::get_node_text_child_as_value(node_value, field->get_glom_type());
-                          //std::cout << "    DEBUG: document example value: field=" << field->get_name() << ", value=" << field_values[i].to_string() << std::endl;
-                          break;
-                        }
-                      }
-                    }
-                  }
+            //We set this after set_field_info(), because that gets a glom type from the (not-specified) gdatype. Yes, that's strange, and should probably be more explicit.
+            field->set_glom_type(field_type_enum);
+
+            field->set_default_value( XmlUtils::get_node_attribute_value_as_value(node_field, GLOM_ATTRIBUTE_DEFAULT_VALUE, field_type_enum) );
+
+            //Default Formatting:
+            const auto elementFormatting = XmlUtils::get_node_child_named(node_field, GLOM_NODE_FORMAT);
+            if(elementFormatting)
+              load_after_layout_item_formatting(elementFormatting, field->m_default_formatting, field_type_enum, table_name, strName);
+
+            //Translations:
+            load_after_translations(node_field, field);
+
+            doctableinfo->m_fields.emplace_back(field);
+          }
+        } //Fields
+
+        // Load Example Rows after fields have been loaded, because they
+        // need the fields to be able to associate a value to a named field.
+        // TODO: Allow this to be loaded progressively from disk later,
+        // instead of storing in it all in memory?
+        const auto nodeExampleRows = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_EXAMPLE_ROWS);
+        if(nodeExampleRows)
+        {
+          //Loop through example_row child nodes:
+          for(const auto& item_row : nodeExampleRows->get_children(GLOM_NODE_EXAMPLE_ROW)) {
+            const auto node_row = dynamic_cast<xmlpp::Element*>(item_row);
+            if (!node_row)
+              continue;
+
+            type_row_data field_values(doctableinfo->m_fields.size());
+            //Loop through value child nodes
+            for (const auto& item_value : node_row->get_children(GLOM_NODE_VALUE)) {
+              const auto node_value = dynamic_cast<xmlpp::Element*>(item_value);
+              if (!node_value)
+                continue;
+
+              const auto column_name = node_value->get_attribute(GLOM_ATTRIBUTE_COLUMN);
+              if (!column_name)
+                continue;
+
+              //std::cout << "DEBUG: column_name = " << column_name->get_value() << " fields size=" << doctableinfo->m_fields.size() << std::endl;
+
+              // TODO_Performance: If it's too many rows we could
+              // consider a map to find the column more quickly.
+              for (unsigned int i = 0; i < doctableinfo->m_fields.size(); ++i) {
+                auto field = doctableinfo->m_fields[i];
+                //std::cout << "  DEBUG: searching: field i=" << i << " =" << field->get_name() << std::endl;
+                if (field && (field->get_name()==column_name->get_value())) {
+                  field_values[i] = XmlUtils::get_node_text_child_as_value(node_value, field->get_glom_type());
+                  //std::cout << "    DEBUG: document example value: field=" << field->get_name() << ", value=" << field_values[i].to_string() << std::endl;
+                  break;
                 }
-
-                // Append line to doctableinfo->m_example_rows
-                doctableinfo->m_example_rows.emplace_back(field_values);
               }
             }
-          } // Example Rows
 
-          //std::cout << "  debug: loading: table=" << table_name << ", m_example_rows.size()=" << doctableinfo->m_example_rows.size() << std::endl;
+            // Append line to doctableinfo->m_example_rows
+            doctableinfo->m_example_rows.emplace_back(field_values);
+          }
+        } // Example Rows
 
-        } //if(table)
+        //std::cout << "  debug: loading: table=" << table_name << ", m_example_rows.size()=" << doctableinfo->m_example_rows.size() << std::endl;
       } //Tables.
 
       //Look at each "table" node.
@@ -2812,254 +2808,254 @@ bool Document::load_after(int& failure_code)
       for(const auto& node_table : list_nodes_tables)
       {
         auto nodeTable = dynamic_cast<xmlpp::Element*>(node_table);
-        if(nodeTable)
+        if(!nodeTable)
+          continue;
+
+        const auto table_name = XmlUtils::get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
+        const auto doctableinfo = m_tables[table_name];
+
+        //Layouts:
+        const auto nodeDataLayouts = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_DATA_LAYOUTS);
+        if(nodeDataLayouts)
         {
-          const auto table_name = XmlUtils::get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
-          const auto doctableinfo = m_tables[table_name];
-
-          //Layouts:
-          const auto nodeDataLayouts = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_DATA_LAYOUTS);
-          if(nodeDataLayouts)
+          for(const auto& item : nodeDataLayouts->get_children(GLOM_NODE_DATA_LAYOUT))
           {
-            for(const auto& item : nodeDataLayouts->get_children(GLOM_NODE_DATA_LAYOUT))
+            auto node_data_layout = dynamic_cast<xmlpp::Element*>(item);
+            if(!node_data_layout)
+              continue;
+
+            const auto layout_name = XmlUtils::get_node_attribute_value(node_data_layout, GLOM_ATTRIBUTE_NAME);
+            const auto layout_platform = XmlUtils::get_node_attribute_value(node_data_layout, GLOM_ATTRIBUTE_LAYOUT_PLATFORM);
+
+            type_list_layout_groups layout_groups;
+
+            const auto node_group = XmlUtils::get_node_child_named(node_data_layout, GLOM_NODE_DATA_LAYOUT_GROUPS);
+            if(!node_group)
+              continue;
+
+            //Look at all its children:
+            for(const auto& item_group : node_group->get_children(GLOM_NODE_DATA_LAYOUT_GROUP))
             {
-              auto node_data_layout = dynamic_cast<xmlpp::Element*>(item);
-              if(node_data_layout)
-              {
-                const auto layout_name = XmlUtils::get_node_attribute_value(node_data_layout, GLOM_ATTRIBUTE_NAME);
-                const auto layout_platform = XmlUtils::get_node_attribute_value(node_data_layout, GLOM_ATTRIBUTE_LAYOUT_PLATFORM);
+              const auto node_layout_group = dynamic_cast<const xmlpp::Element*>(item_group);
+              if(!node_layout_group)
+               continue;
 
-                type_list_layout_groups layout_groups;
+              const auto group_name = XmlUtils::get_node_attribute_value(node_layout_group, GLOM_ATTRIBUTE_NAME);
+              if(group_name.empty())
+                continue;
 
-                const auto node_group = XmlUtils::get_node_child_named(node_data_layout, GLOM_NODE_DATA_LAYOUT_GROUPS);
-                if(node_group)
-                {
-                  //Look at all its children:
-                  for(const auto& item_group : node_group->get_children(GLOM_NODE_DATA_LAYOUT_GROUP))
-                  {
-                    const auto node_layout_group = dynamic_cast<const xmlpp::Element*>(item_group);
-                    if(node_layout_group)
-                    {
-                      const auto group_name = XmlUtils::get_node_attribute_value(node_layout_group, GLOM_ATTRIBUTE_NAME);
-                      if(!group_name.empty())
-                      {
-                        auto group = std::make_shared<LayoutGroup>();
-                        load_after_layout_group(node_layout_group, table_name, group);
+              auto group = std::make_shared<LayoutGroup>();
+              load_after_layout_group(node_layout_group, table_name, group);
 
-                        layout_groups.emplace_back(group);
-                      }
-                    }
-                  }
-                }
-
-                LayoutInfo layout_info;
-                layout_info.m_layout_name = layout_name;
-                layout_info.m_layout_platform = layout_platform;
-                layout_info.m_layout_groups = layout_groups;
-                doctableinfo->m_layouts.emplace_back(layout_info);
-              }
+              layout_groups.emplace_back(group);
             }
-          } //if(nodeDataLayouts)
 
-
-          //Reports:
-          const auto nodeReports = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_REPORTS);
-          if(nodeReports)
-          {
-            for(const auto& item_report : nodeReports->get_children(GLOM_NODE_REPORT))
-            {
-              auto node_report = dynamic_cast<xmlpp::Element*>(item_report);
-              if(node_report)
-              {
-                const auto report_name = XmlUtils::get_node_attribute_value(node_report, GLOM_ATTRIBUTE_NAME);
-                const auto show_table_title = XmlUtils::get_node_attribute_value_as_bool(node_report, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
-
-                //type_list_layout_groups layout_groups;
-
-                auto report = std::make_shared<Report>();
-                report->set_name(report_name);
-                report->set_show_table_title(show_table_title);
-
-                const auto node_group = XmlUtils::get_node_child_named(node_report, GLOM_NODE_DATA_LAYOUT_GROUPS);
-                if(node_group)
-                {
-                  //Look at all its children:
-                  for(const auto& item_group : node_group->get_children(GLOM_NODE_DATA_LAYOUT_GROUP))
-                  {
-                    const auto node_layout_group = dynamic_cast<const xmlpp::Element*>(item_group);
-                    if(node_layout_group)
-                    {
-                      auto group = report->get_layout_group();
-                      group->remove_all_items();
-                      load_after_layout_group(node_layout_group, table_name, group);
-
-                      fill_layout_field_details(table_name, group); //Get full field details from the field names.
-                    }
-                  }
-                }
-
-                //Translations:
-                load_after_translations(node_report, report);
-
-                doctableinfo->m_reports[report->get_name()] = report;
-              }
-            }
-          } //if(nodeReports)
-
-
-          //Print Layouts:
-          const auto nodePrintLayouts = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_PRINT_LAYOUTS);
-          if(nodePrintLayouts)
-          {
-            for(const auto& item_print_layout : nodePrintLayouts->get_children(GLOM_NODE_PRINT_LAYOUT))
-            {
-              auto node_print_layout = dynamic_cast<xmlpp::Element*>(item_print_layout);
-              if(node_print_layout)
-              {
-                const auto name = XmlUtils::get_node_attribute_value(node_print_layout, GLOM_ATTRIBUTE_NAME);
-                const auto show_table_title = XmlUtils::get_node_attribute_value_as_bool(node_print_layout, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
-
-                auto print_layout = std::make_shared<PrintLayout>();
-                print_layout->set_name(name);
-                print_layout->set_show_table_title(show_table_title);
-
-                print_layout->set_show_grid(
-                  XmlUtils::get_node_attribute_value_as_bool(node_print_layout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_GRID) );
-                print_layout->set_show_rules(
-                  XmlUtils::get_node_attribute_value_as_bool(node_print_layout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_RULES) );
-                print_layout->set_show_outlines(
-                  XmlUtils::get_node_attribute_value_as_bool(node_print_layout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_OUTLINES) );
-
-                //Get the horizontal and vertical rules:
-                PrintLayout::type_vec_doubles vec_rules_h;
-                for(const auto& item_rule : node_print_layout->get_children(GLOM_NODE_HORIZONTAL_RULE))
-                {
-                  const auto node_rule = dynamic_cast<const xmlpp::Element*>(item_rule);
-                  if(!node_rule)
-                    continue;
-
-                  const auto pos = XmlUtils::get_node_attribute_value_as_decimal(node_rule, GLOM_ATTRIBUTE_RULE_POSITION);
-                  vec_rules_h.emplace_back(pos);
-                }
-                print_layout->set_horizontal_rules(vec_rules_h);
-
-                PrintLayout::type_vec_doubles vec_rules_v;
-                for(const auto& item_rule : node_print_layout->get_children(GLOM_NODE_VERTICAL_RULE))
-                {
-                  const auto node_rule = dynamic_cast<const xmlpp::Element*>(item_rule);
-                  if(!node_rule)
-                    continue;
-
-                  const auto pos = XmlUtils::get_node_attribute_value_as_decimal(node_rule, GLOM_ATTRIBUTE_RULE_POSITION);
-                  vec_rules_v.emplace_back(pos);
-                }
-                print_layout->set_vertical_rules(vec_rules_v);
-
-
-                //Page Setup:
-                const auto key_file_text = XmlUtils::get_child_text_node(node_print_layout, GLOM_NODE_PAGE_SETUP);
-                print_layout->set_page_setup(key_file_text);
-
-                print_layout->set_page_count(
-                  XmlUtils::get_node_attribute_value_as_decimal(node_print_layout, GLOM_ATTRIBUTE_PRINT_LAYOUT_PAGE_COUNT, 1));
-
-
-                //Layout Groups:
-                const auto nodeGroups = XmlUtils::get_node_child_named(node_print_layout, GLOM_NODE_DATA_LAYOUT_GROUPS);
-                if(nodeGroups)
-                {
-                  //Look at all its children:
-                  for(const auto& item_group : nodeGroups->get_children(GLOM_NODE_DATA_LAYOUT_GROUP))
-                  {
-                    const auto node_layout_group = dynamic_cast<const xmlpp::Element*>(item_group);
-                    if(node_layout_group)
-                    {
-                      auto group = print_layout->get_layout_group();
-                      group->remove_all_items();
-                      load_after_layout_group(node_layout_group, table_name, group, true /* load positions too. */);
-
-                      fill_layout_field_details(table_name, group); //Get full field details from the field names.
-                    }
-                  }
-                }
-
-                //Translations:
-                load_after_translations(node_print_layout, print_layout);
-
-                doctableinfo->m_print_layouts[print_layout->get_name()] = print_layout;
-              }
-            }
-          } //if(nodePrintLayouts)
-
-
-          //Groups:
-          //These are only used when recreating the database, for instance from an example file.
-          m_groups.clear();
-
-          const auto nodeGroups = XmlUtils::get_node_child_named(nodeRoot, GLOM_NODE_GROUPS);
-          if(nodeGroups)
-          {
-            for(const auto& item_group : nodeGroups->get_children(GLOM_NODE_GROUP))
-            {
-              auto node_group = dynamic_cast<xmlpp::Element*>(item_group);
-              if(node_group)
-              {
-                GroupInfo group_info;
-
-                group_info.set_name( XmlUtils::get_node_attribute_value(node_group, GLOM_ATTRIBUTE_NAME) );
-                group_info.m_developer = XmlUtils::get_node_attribute_value_as_bool(node_group, GLOM_ATTRIBUTE_DEVELOPER);
-
-                for(const auto& item_priv : node_group->get_children(GLOM_NODE_TABLE_PRIVS))
-                {
-                  auto node_priv = dynamic_cast<xmlpp::Element*>(item_priv);
-                  if(node_priv)
-                  {
-                    const auto priv_table_name = XmlUtils::get_node_attribute_value(node_priv, GLOM_ATTRIBUTE_TABLE_NAME);
-
-                    Privileges privs;
-                    privs.m_view = XmlUtils::get_node_attribute_value_as_bool(node_priv, GLOM_ATTRIBUTE_PRIV_VIEW);
-                    privs.m_edit = XmlUtils::get_node_attribute_value_as_bool(node_priv, GLOM_ATTRIBUTE_PRIV_EDIT);
-                    privs.m_create = XmlUtils::get_node_attribute_value_as_bool(node_priv, GLOM_ATTRIBUTE_PRIV_CREATE);
-                    privs.m_delete = XmlUtils::get_node_attribute_value_as_bool(node_priv, GLOM_ATTRIBUTE_PRIV_DELETE);
-
-                    group_info.m_map_privileges[priv_table_name] = privs;
-                  }
-                }
-
-                m_groups[group_info.get_name()] = group_info;
-              }
-            }
+            LayoutInfo layout_info;
+            layout_info.m_layout_name = layout_name;
+            layout_info.m_layout_platform = layout_platform;
+            layout_info.m_layout_groups = layout_groups;
+            doctableinfo->m_layouts.emplace_back(layout_info);
           }
+        } //if(nodeDataLayouts)
 
 
-          //Library Modules:
-          m_map_library_scripts.clear();
-
-          const auto nodeModules = XmlUtils::get_node_child_named(nodeRoot, GLOM_NODE_LIBRARY_MODULES);
-          if(nodeModules)
+        //Reports:
+        const auto nodeReports = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_REPORTS);
+        if(nodeReports)
+        {
+          for(const auto& item_report : nodeReports->get_children(GLOM_NODE_REPORT))
           {
-            for(const auto& item : nodeModules->get_children(GLOM_NODE_LIBRARY_MODULE))
+            auto node_report = dynamic_cast<xmlpp::Element*>(item_report);
+            if(!node_report)
+              continue;
+
+            const auto report_name = XmlUtils::get_node_attribute_value(node_report, GLOM_ATTRIBUTE_NAME);
+            const auto show_table_title = XmlUtils::get_node_attribute_value_as_bool(node_report, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
+
+            //type_list_layout_groups layout_groups;
+
+            auto report = std::make_shared<Report>();
+            report->set_name(report_name);
+            report->set_show_table_title(show_table_title);
+
+            const auto node_group = XmlUtils::get_node_child_named(node_report, GLOM_NODE_DATA_LAYOUT_GROUPS);
+            if(!node_group)
+              continue;
+
+            //Look at all its children:
+            for(const auto& item_group : node_group->get_children(GLOM_NODE_DATA_LAYOUT_GROUP))
             {
-              auto node_lib_module = dynamic_cast<xmlpp::Element*>(item);
-              if(node_lib_module)
+              const auto node_layout_group = dynamic_cast<const xmlpp::Element*>(item_group);
+              if(!node_layout_group)
+                continue;
+
+              auto group = report->get_layout_group();
+              group->remove_all_items();
+              load_after_layout_group(node_layout_group, table_name, group);
+
+              fill_layout_field_details(table_name, group); //Get full field details from the field names.
+            }
+
+            //Translations:
+            load_after_translations(node_report, report);
+
+            doctableinfo->m_reports[report->get_name()] = report;
+          }
+        } //if(nodeReports)
+
+
+        //Print Layouts:
+        const auto nodePrintLayouts = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_PRINT_LAYOUTS);
+        if(nodePrintLayouts)
+        {
+          for(const auto& item_print_layout : nodePrintLayouts->get_children(GLOM_NODE_PRINT_LAYOUT))
+          {
+            auto node_print_layout = dynamic_cast<xmlpp::Element*>(item_print_layout);
+            if(!node_print_layout)
+              continue;
+
+            const auto name = XmlUtils::get_node_attribute_value(node_print_layout, GLOM_ATTRIBUTE_NAME);
+            const auto show_table_title = XmlUtils::get_node_attribute_value_as_bool(node_print_layout, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
+
+            auto print_layout = std::make_shared<PrintLayout>();
+            print_layout->set_name(name);
+            print_layout->set_show_table_title(show_table_title);
+
+            print_layout->set_show_grid(
+              XmlUtils::get_node_attribute_value_as_bool(node_print_layout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_GRID) );
+            print_layout->set_show_rules(
+              XmlUtils::get_node_attribute_value_as_bool(node_print_layout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_RULES) );
+            print_layout->set_show_outlines(
+              XmlUtils::get_node_attribute_value_as_bool(node_print_layout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_OUTLINES) );
+
+            //Get the horizontal and vertical rules:
+            PrintLayout::type_vec_doubles vec_rules_h;
+            for(const auto& item_rule : node_print_layout->get_children(GLOM_NODE_HORIZONTAL_RULE))
+            {
+              const auto node_rule = dynamic_cast<const xmlpp::Element*>(item_rule);
+              if(!node_rule)
+                continue;
+
+              const auto pos = XmlUtils::get_node_attribute_value_as_decimal(node_rule, GLOM_ATTRIBUTE_RULE_POSITION);
+              vec_rules_h.emplace_back(pos);
+            }
+            print_layout->set_horizontal_rules(vec_rules_h);
+
+            PrintLayout::type_vec_doubles vec_rules_v;
+            for(const auto& item_rule : node_print_layout->get_children(GLOM_NODE_VERTICAL_RULE))
+            {
+              const auto node_rule = dynamic_cast<const xmlpp::Element*>(item_rule);
+              if(!node_rule)
+                continue;
+
+              const auto pos = XmlUtils::get_node_attribute_value_as_decimal(node_rule, GLOM_ATTRIBUTE_RULE_POSITION);
+              vec_rules_v.emplace_back(pos);
+            }
+            print_layout->set_vertical_rules(vec_rules_v);
+
+
+            //Page Setup:
+            const auto key_file_text = XmlUtils::get_child_text_node(node_print_layout, GLOM_NODE_PAGE_SETUP);
+            print_layout->set_page_setup(key_file_text);
+
+            print_layout->set_page_count(
+              XmlUtils::get_node_attribute_value_as_decimal(node_print_layout, GLOM_ATTRIBUTE_PRINT_LAYOUT_PAGE_COUNT, 1));
+
+
+            //Layout Groups:
+            const auto nodeGroups = XmlUtils::get_node_child_named(node_print_layout, GLOM_NODE_DATA_LAYOUT_GROUPS);
+            if(nodeGroups)
+            {
+              //Look at all its children:
+              for(const auto& item_group : nodeGroups->get_children(GLOM_NODE_DATA_LAYOUT_GROUP))
               {
-                //The name is in an attribute:
-                const auto module_name = XmlUtils::get_node_attribute_value(node_lib_module, GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME);
+                const auto node_layout_group = dynamic_cast<const xmlpp::Element*>(item_group);
+                if(!node_layout_group)
+                  continue;
 
-                //The string is in a child text node:
-                Glib::ustring script;
+                auto group = print_layout->get_layout_group();
+                group->remove_all_items();
+                load_after_layout_group(node_layout_group, table_name, group, true /* load positions too. */);
 
-                const auto text_child = node_lib_module->get_first_child_text();
-                if(text_child)
-                  script = text_child->get_content();
-
-                //Fall back to the deprecated attribute:
-                if(script.empty())
-                  script = XmlUtils::get_node_attribute_value(node_lib_module, GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT);
-
-                m_map_library_scripts[module_name] = script;
+                fill_layout_field_details(table_name, group); //Get full field details from the field names.
               }
             }
+
+            //Translations:
+            load_after_translations(node_print_layout, print_layout);
+
+            doctableinfo->m_print_layouts[print_layout->get_name()] = print_layout;
+          }
+        } //if(nodePrintLayouts)
+
+
+        //Groups:
+        //These are only used when recreating the database, for instance from an example file.
+        m_groups.clear();
+
+        const auto nodeGroups = XmlUtils::get_node_child_named(nodeRoot, GLOM_NODE_GROUPS);
+        if(nodeGroups)
+        {
+          for(const auto& item_group : nodeGroups->get_children(GLOM_NODE_GROUP))
+          {
+            auto node_group = dynamic_cast<xmlpp::Element*>(item_group);
+            if(!node_group)
+              continue;
+
+            GroupInfo group_info;
+
+            group_info.set_name( XmlUtils::get_node_attribute_value(node_group, GLOM_ATTRIBUTE_NAME) );
+            group_info.m_developer = XmlUtils::get_node_attribute_value_as_bool(node_group, GLOM_ATTRIBUTE_DEVELOPER);
+
+            for(const auto& item_priv : node_group->get_children(GLOM_NODE_TABLE_PRIVS))
+            {
+              auto node_priv = dynamic_cast<xmlpp::Element*>(item_priv);
+              if(!node_priv)
+                continue;
+
+              const auto priv_table_name = XmlUtils::get_node_attribute_value(node_priv, GLOM_ATTRIBUTE_TABLE_NAME);
+
+              Privileges privs;
+              privs.m_view = XmlUtils::get_node_attribute_value_as_bool(node_priv, GLOM_ATTRIBUTE_PRIV_VIEW);
+              privs.m_edit = XmlUtils::get_node_attribute_value_as_bool(node_priv, GLOM_ATTRIBUTE_PRIV_EDIT);
+              privs.m_create = XmlUtils::get_node_attribute_value_as_bool(node_priv, GLOM_ATTRIBUTE_PRIV_CREATE);
+              privs.m_delete = XmlUtils::get_node_attribute_value_as_bool(node_priv, GLOM_ATTRIBUTE_PRIV_DELETE);
+
+              group_info.m_map_privileges[priv_table_name] = privs;
+            }
+
+            m_groups[group_info.get_name()] = group_info;
+          }
+        }
+
+
+        //Library Modules:
+        m_map_library_scripts.clear();
+
+        const auto nodeModules = XmlUtils::get_node_child_named(nodeRoot, GLOM_NODE_LIBRARY_MODULES);
+        if(nodeModules)
+        {
+          for(const auto& item : nodeModules->get_children(GLOM_NODE_LIBRARY_MODULE)) {
+            auto node_lib_module = dynamic_cast<xmlpp::Element*>(item);
+            if (!node_lib_module)
+              continue;
+
+            //The name is in an attribute:
+            const auto module_name = XmlUtils::get_node_attribute_value(node_lib_module,
+              GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME);
+
+            //The string is in a child text node:
+            Glib::ustring script;
+
+            const auto text_child = node_lib_module->get_first_child_text();
+            if (text_child)
+              script = text_child->get_content();
+
+            //Fall back to the deprecated attribute:
+            if (script.empty())
+              script = XmlUtils::get_node_attribute_value(node_lib_module, GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT);
+
+            m_map_library_scripts[module_name] = script;
           }
 
         } //root

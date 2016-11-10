@@ -284,80 +284,80 @@ void Dialog_FieldsList::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk
 {
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
-  if(renderer_text)
+  if(!renderer_text)
+    return;
+
+  if(!iter)
+    return;
+
+  Gtk::TreeModel::Row row = *iter;
+
+  std::shared_ptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
+  if(item)
   {
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
-
-      std::shared_ptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
-      if(item)
-      {
-        renderer_text->property_markup() = item->get_layout_display_name();
-      }
-      else
-      {
-        //Though this really shouldn't even be in the model:
-        renderer_text->property_markup() = Glib::ustring();
-      }
-
-      renderer_text->property_editable() = false; //Names can never be edited.
-    }
+    renderer_text->property_markup() = item->get_layout_display_name();
   }
+  else
+  {
+    //Though this really shouldn't even be in the model:
+    renderer_text->property_markup() = Glib::ustring();
+  }
+
+  renderer_text->property_editable() = false; //Names can never be edited.
 }
 
 
 void Dialog_FieldsList::on_button_edit_field()
 {
   auto refTreeSelection = m_treeview_fields->get_selection();
+  if(!refTreeSelection)
+    return;
+
+  //TODO: Handle multiple-selection:
+  auto iter = refTreeSelection->get_selected();
+  if(!iter)
+    return;
+
+  Gtk::TreeModel::Row row = *iter;
+  std::shared_ptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
+
+  //Get the chosen field:
+  auto field_chosen =
+    offer_field_list_select_one_field(field, m_table_name, this);
+
+  //Set the field details in the layout treeview:
+  if(field_chosen)
+    row[m_ColumnsFields.m_col_layout_item] = field_chosen;
+
+  //Scroll to, and select, the new row:
+  /*
+  auto refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
-  {
-    //TODO: Handle multiple-selection:
-    auto iter = refTreeSelection->get_selected();
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
-      std::shared_ptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
+    refTreeSelection->select(iter);
 
-      //Get the chosen field:
-      auto field_chosen =
-        offer_field_list_select_one_field(field, m_table_name, this);
+  m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
 
-      //Set the field details in the layout treeview:
-      if(field_chosen)
-        row[m_ColumnsFields.m_col_layout_item] = field_chosen;
-
-      //Scroll to, and select, the new row:
-      /*
-      auto refTreeSelection = m_treeview_fields->get_selection();
-      if(refTreeSelection)
-        refTreeSelection->select(iter);
-
-      m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
-
-      treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
-      */
-    }
-  }
+  treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
+  */
 }
 
 void Dialog_FieldsList::on_button_formatting()
 {
   auto refTreeSelection = m_treeview_fields->get_selection();
-  if(refTreeSelection)
+  if(!refTreeSelection)
+    return;
+
+  //TODO: Handle multiple-selection:
+  auto iter = refTreeSelection->get_selected();
+  if(!iter)
+    return;
+
+  Gtk::TreeModel::Row row = *iter;
+  std::shared_ptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
+  if(field)
   {
-    //TODO: Handle multiple-selection:
-    auto iter = refTreeSelection->get_selected();
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
-      std::shared_ptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
-      if(field)
-      {
-        field = offer_field_formatting(field, m_table_name, this, false /* no editing options */);
-        row[m_ColumnsFields.m_col_layout_item] = field;
-      }
-    }
+    field = offer_field_formatting(field, m_table_name, this, false /* no editing options */);
+    row[m_ColumnsFields.m_col_layout_item] = field;
   }
 }
 
