@@ -327,8 +327,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
     }
     case(Field::glom_field_type::IMAGE):
     {
-      auto pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(cell);
-      if(pDerived)
+      if(auto pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(cell))
       {
         const auto pixbuf = UiUtils::get_pixbuf_for_gda_value(value);
 
@@ -345,28 +344,28 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
     default:
     {
       //TODO: Maybe we should have custom cellcells for time, date, and numbers.
-      auto pDerived = dynamic_cast<Gtk::CellRendererText*>(cell);
-      if(pDerived)
+      if(auto pDerived = dynamic_cast<Gtk::CellRendererText*>(cell))
       {
         //std::cout << "debug: " << G_STRFUNC << ": field name=" << field->get_name() << ", glom type=" << field->get_glom_type() << std::endl;
         const auto text = Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->get_formatting_used().m_numeric_format);
         pDerived->property_text() = text;
+
+        //Show a different color if the value is numeric, if that's specified:
+        if(type == Field::glom_field_type::NUMERIC)
+        {
+          const Glib::ustring fg_color =
+            field->get_formatting_used().get_text_format_color_foreground_to_use(value);
+          if(!fg_color.empty())
+            pDerived->property_foreground() = fg_color;
+          else
+            pDerived->property_foreground().reset_value();
+        }
       }
       else
       {
          std::cerr << G_STRFUNC << ": cell has an unexpected type: " << typeid(cell).name() << std::endl;
       }
 
-      //Show a different color if the value is numeric, if that's specified:
-      if(type == Field::glom_field_type::NUMERIC)
-      {
-        const Glib::ustring fg_color =
-          field->get_formatting_used().get_text_format_color_foreground_to_use(value);
-        if(!fg_color.empty())
-          pDerived->property_foreground() = fg_color;
-        else
-          pDerived->property_foreground().reset_value();
-      }
 
       break;
     }

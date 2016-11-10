@@ -173,8 +173,7 @@ void Document_XML::add_indenting_white_space_to_node(xmlpp::Node* node, const Gl
     if(!child)
       continue;
 
-    auto text = dynamic_cast<xmlpp::ContentNode*>(child);
-    if(text)
+    if(auto text = dynamic_cast<xmlpp::ContentNode*>(child))
     {
       if(text->is_white_space())
         node->remove_node(text);
@@ -198,8 +197,7 @@ void Document_XML::add_indenting_white_space_to_node(xmlpp::Node* node, const Gl
     if(!child)
       continue;
 
-    auto text = dynamic_cast<xmlpp::ContentNode*>(child);
-    if(text)
+    if(auto text = dynamic_cast<xmlpp::ContentNode*>(child))
     {
       if(!text->is_white_space())
         continue; //Don't change content items.

@@ -2302,8 +2302,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
 
         load_after_layout_item_usesrelationship(element, table_name, portal);
 
-        auto elementNavigationRelationshipSpecific = XmlUtils::get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
-        if(elementNavigationRelationshipSpecific)
+        if(auto elementNavigationRelationshipSpecific = XmlUtils::get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP))
         {
           const Glib::ustring navigation_type_as_string =
             XmlUtils::get_node_attribute_value(elementNavigationRelationshipSpecific,
@@ -2426,11 +2425,9 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
     }
 
     //Load formatting for any layout type that uses it:
-    auto withformatting = std::dynamic_pointer_cast<LayoutItem_WithFormatting>(item_added);
-    if(withformatting)
+    if(auto withformatting = std::dynamic_pointer_cast<LayoutItem_WithFormatting>(item_added))
     {
-       const auto elementFormatting = XmlUtils::get_node_child_named(element, GLOM_NODE_FORMAT);
-       if(elementFormatting)
+       if(const auto elementFormatting = XmlUtils::get_node_child_named(element, GLOM_NODE_FORMAT))
        {
          //TODO: Provide the name of the relationship's table if there is a relationship:
          load_after_layout_item_formatting(elementFormatting, withformatting, table_name);
@@ -2482,9 +2479,7 @@ void Document::load_after_translations(const xmlpp::Element* element, const std:
   }
 
   //If it has a singular title, then load that too:
-  const auto has_title_singular =
-     std::dynamic_pointer_cast<HasTitleSingular>(item);
-  if(has_title_singular)
+  if(const auto has_title_singular = std::dynamic_pointer_cast<HasTitleSingular>(item))
   {
     const auto nodeTitleSingular = XmlUtils::get_node_child_named(element, GLOM_NODE_TABLE_TITLE_SINGULAR);
 

@@ -87,8 +87,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_ScrolledWindow.add(m_FlowTable);
   // The FlowTable does not support native scrolling, so gtkmm adds it to a
   // viewport first that also has some shadow we do not want.
-  auto viewport = dynamic_cast<Gtk::Viewport*>(m_FlowTable.get_parent());
-  if(viewport)
+  if(auto viewport = dynamic_cast<Gtk::Viewport*>(m_FlowTable.get_parent()))
     viewport->set_shadow_type(Gtk::SHADOW_NONE);
 
 

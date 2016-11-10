@@ -179,8 +179,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
   }
 
 
-  auto cell_text = dynamic_cast<Gtk::CellRendererText*>(cell);
-  if(cell_text)
+  if(auto cell_text = dynamic_cast<Gtk::CellRendererText*>(cell))
   {
     //Use an ellipze to indicate excessive text,
     //so that similar values do not look equal,
@@ -196,9 +195,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
   }
 
   //Choices:
-  auto pCellRendererList = dynamic_cast<CellRendererList*>(cell);
-  auto pCellRendererDbList = dynamic_cast<CellRendererDbList*>(cell);
-  if(pCellRendererList) //Used for custom choices:
+  if(auto pCellRendererList = dynamic_cast<CellRendererList*>(cell)) //Used for custom choices:
   {
     pCellRendererList->remove_all_list_items();
 
@@ -215,7 +212,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
       }
     }
   }
-  else if(pCellRendererDbList) //Used for related choices:
+  else if(auto pCellRendererDbList = dynamic_cast<CellRendererDbList*>(cell)) //Used for related choices:
   {
     if(item_field && item_field->get_formatting_used().get_has_related_choices())
     {

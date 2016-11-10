@@ -87,8 +87,7 @@ Gtk::Window* Box_WithButtons::get_app_window()
   while(pWidget)
   {
     //Is this widget a Gtk::Window?:
-    auto pWindow = dynamic_cast<Gtk::Window*>(pWidget);
-    if(pWindow)
+    if(auto pWindow = dynamic_cast<Gtk::Window*>(pWidget))
     {
       //Yes, return it.
       return pWindow;

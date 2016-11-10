@@ -570,8 +570,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const std:
   //Set extra cellrenderer attributes, depending on the type used,
   //to support editing:
 
-  auto pCellRendererText = dynamic_cast<Gtk::CellRendererText*>(pCellRenderer);
-  if(pCellRendererText)
+  if(auto pCellRendererText = dynamic_cast<Gtk::CellRendererText*>(pCellRenderer))
   {
     //Connect to edited signal:
     if(item_field) //Only fields can be edited:
@@ -588,8 +587,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const std:
   }
   else
   {
-    auto pCellRendererToggle = dynamic_cast<Gtk::CellRendererToggle*>(pCellRenderer);
-    if(pCellRendererToggle)
+    if(auto pCellRendererToggle = dynamic_cast<Gtk::CellRendererToggle*>(pCellRenderer))
     {
       pCellRendererToggle->property_activatable() = true;
 
@@ -602,8 +600,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const std:
     }
     else
     {
-      auto pCellRendererPixbuf = dynamic_cast<Gtk::CellRendererPixbuf*>(pCellRenderer);
-      if(pCellRendererPixbuf)
+      if(auto pCellRendererPixbuf = dynamic_cast<Gtk::CellRendererPixbuf*>(pCellRenderer))
       {
         //TODO: Do something when it's clicked, such as show the big image in a window or tooltip?
       }

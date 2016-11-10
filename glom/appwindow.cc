@@ -2104,8 +2104,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
 
   fileChooser_Save->set_do_overwrite_confirmation(); //Ask the user if the file already exists.
 
-  auto pWindow = dynamic_cast<Gtk::Window*>(&app);
-  if(pWindow)
+  if(auto pWindow = dynamic_cast<Gtk::Window*>(&app))
     fileChooser_Save->set_transient_for(*pWindow);
 
   fileChooser_Save->add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
@@ -2874,9 +2873,8 @@ void AppWindow::document_history_remove(const Glib::ustring& file_uri)
 void AppWindow::on_menu_edit_copy_activate()
 {
   auto widget = get_focus();
-  auto editable = dynamic_cast<Gtk::Editable*>(widget);
 
-  if(editable)
+  if(auto editable = dynamic_cast<Gtk::Editable*>(widget))
   {
     editable->copy_clipboard();
     return;
@@ -2884,11 +2882,9 @@ void AppWindow::on_menu_edit_copy_activate()
 
   //GtkTextView does not implement GtkEditable.
   //See GTK+ bug: https://bugzilla.gnome.org/show_bug.cgi?id=667008
-  auto textview = dynamic_cast<Gtk::TextView*>(widget);
-  if(textview)
+  if(auto textview = dynamic_cast<Gtk::TextView*>(widget))
   {
-    auto buffer = textview->get_buffer();
-    if(buffer)
+    if(auto buffer = textview->get_buffer())
     {
       auto clipboard =
         Gtk::Clipboard::get_for_display(get_display());
@@ -2900,9 +2896,8 @@ void AppWindow::on_menu_edit_copy_activate()
 void AppWindow::on_menu_edit_cut_activate()
 {
   auto widget = get_focus();
-  auto editable = dynamic_cast<Gtk::Editable*>(widget);
 
-  if(editable)
+  if(auto editable = dynamic_cast<Gtk::Editable*>(widget))
   {
     editable->cut_clipboard();
     return;
@@ -2910,8 +2905,7 @@ void AppWindow::on_menu_edit_cut_activate()
 
   //GtkTextView does not implement GtkEditable.
   //See GTK+ bug: https://bugzilla.gnome.org/show_bug.cgi?id=667008
-  auto textview = dynamic_cast<Gtk::TextView*>(widget);
-  if(textview)
+  if(auto textview = dynamic_cast<Gtk::TextView*>(widget))
   {
     auto buffer = textview->get_buffer();
     if(buffer)
@@ -2926,9 +2920,8 @@ void AppWindow::on_menu_edit_cut_activate()
 void AppWindow::on_menu_edit_paste_activate()
 {
   auto widget = get_focus();
-  auto editable = dynamic_cast<Gtk::Editable*>(widget);
 
-  if(editable)
+  if(auto editable = dynamic_cast<Gtk::Editable*>(widget))
   {
     editable->paste_clipboard();
     return;
@@ -2936,8 +2929,7 @@ void AppWindow::on_menu_edit_paste_activate()
 
   //GtkTextView does not implement GtkEditable.
   //See GTK+ bug: https://bugzilla.gnome.org/show_bug.cgi?id=667008
-  auto textview = dynamic_cast<Gtk::TextView*>(widget);
-  if(textview)
+  if(auto textview = dynamic_cast<Gtk::TextView*>(widget))
   {
     auto buffer = textview->get_buffer();
     if(buffer)

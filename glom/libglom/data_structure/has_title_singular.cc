@@ -67,8 +67,7 @@ Glib::ustring HasTitleSingular::get_title_singular_with_fallback(const Glib::ust
 
   //If it this is also a regular TranslatableItem (usually it is),
   //then try getting the regular title instead.
-  const auto translatable = dynamic_cast<const TranslatableItem*>(this);
-  if(translatable)
+  if(const auto translatable = dynamic_cast<const TranslatableItem*>(this))
     return translatable->get_title_or_name(locale);
 
   return result;

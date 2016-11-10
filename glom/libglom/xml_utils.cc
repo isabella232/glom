@@ -50,8 +50,7 @@ void set_node_attribute_value(xmlpp::Element* node, const Glib::ustring& strAttr
 {
   if(node)
   {
-    auto attribute = dynamic_cast<xmlpp::AttributeNode*>(node->get_attribute(strAttributeName));
-    if(attribute)
+    if(auto attribute = dynamic_cast<xmlpp::AttributeNode*>(node->get_attribute(strAttributeName)))
       attribute->set_value(strValue);
     else
     {

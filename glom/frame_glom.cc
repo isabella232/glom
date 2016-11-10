@@ -861,8 +861,7 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
   }
 
   //Update the UI:
-  auto pApp = dynamic_cast<AppWindow*>(get_app_window());
-  if(pApp)
+  if(auto pApp = dynamic_cast<AppWindow*>(get_app_window()))
   {
     pApp->update_network_shared_ui();
   }
@@ -1145,8 +1144,7 @@ Gtk::Window* Frame_Glom::get_app_window()
   while(pWidget)
   {
     //Is this widget a Gtk::Window?:
-    auto pWindow = dynamic_cast<Gtk::Window*>(pWidget);
-    if(pWindow)
+    if(auto pWindow = dynamic_cast<Gtk::Window*>(pWidget))
     {
       //Yes, return it.
       return pWindow;
@@ -2355,8 +2353,7 @@ void Frame_Glom::on_dialog_tables_hide()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     if(document->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
-      auto pApp = dynamic_cast<AppWindow*>(get_app_window());
-      if(pApp)
+      if(auto pApp = dynamic_cast<AppWindow*>(get_app_window()))
         pApp->fill_menu_tables();
 
       //Select a different table if the current one no longer exists:

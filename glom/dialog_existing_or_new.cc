@@ -450,7 +450,7 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
 {
   auto pixbuf_renderer = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
   if(!pixbuf_renderer)
-  throw std::logic_error("Renderer not a pixbuf renderer in existing_icon_data_func");
+    throw std::logic_error("Renderer not a pixbuf renderer in existing_icon_data_func");
 
   pixbuf_renderer->property_stock_size() = Gtk::ICON_SIZE_BUTTON;
   pixbuf_renderer->property_icon_name() = "";

@@ -63,14 +63,12 @@ FlowTableWithFields::~FlowTableWithFields()
   //Remove views. The widgets are deleted automatically because they are managed.
   for(const auto& the_pair : m_listFields)
   {
-    auto pViewFirst = dynamic_cast<View_Composite_Glom*>(the_pair.m_first);
-    if(pViewFirst)
+    if(auto pViewFirst = dynamic_cast<View_Composite_Glom*>(the_pair.m_first))
     {
       remove_view(pViewFirst);
     }
 
-    auto pViewSecond = dynamic_cast<View_Composite_Glom*>(the_pair.m_second);
-    if(pViewSecond)
+    if(auto pViewSecond = dynamic_cast<View_Composite_Glom*>(the_pair.m_second))
     {
       remove_view(pViewSecond);
     }
@@ -652,14 +650,12 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
     {
       remove(*(info.m_first));
 
-      auto pViewFirst = dynamic_cast<View_Composite_Glom*>(info.m_first);
-      if(pViewFirst)
+      if(auto pViewFirst = dynamic_cast<View_Composite_Glom*>(info.m_first))
         remove_view(pViewFirst);
 
       delete info.m_first;
 
-      auto pViewSecond = dynamic_cast<View_Composite_Glom*>(info.m_second);
-      if(pViewSecond)
+      if(auto pViewSecond = dynamic_cast<View_Composite_Glom*>(info.m_second))
         remove_view(pViewSecond);
 
       delete info.m_second; //It is removed at the same time.
@@ -965,12 +961,10 @@ void FlowTableWithFields::remove_all()
   //Remove views. The widgets are deleted automatically because they are managed.
   for(const auto& the_pair : m_listFields)
   {
-    auto pViewFirst = dynamic_cast<View_Composite_Glom*>(the_pair.m_first);
-    if(pViewFirst)
+    if(auto pViewFirst = dynamic_cast<View_Composite_Glom*>(the_pair.m_first))
       remove_view(pViewFirst);
 
-   auto pViewSecond = dynamic_cast<View_Composite_Glom*>(the_pair.m_second);
-    if(pViewSecond)
+    if(auto pViewSecond = dynamic_cast<View_Composite_Glom*>(the_pair.m_second))
       remove_view(pViewSecond);
   }
 
