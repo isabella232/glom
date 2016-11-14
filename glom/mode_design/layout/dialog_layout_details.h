@@ -122,7 +122,7 @@ protected:
   Gtk::Button* m_button_formatting;
   Gtk::Button* m_button_edit;
   Gtk::Label* m_label_table_name;
-  
+
   Gtk::Box* m_hbox_rows_count;
   Gtk::SpinButton* m_spinbutton_rows_count_min;
   Gtk::SpinButton* m_spinbutton_rows_count_max;

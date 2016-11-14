@@ -30,22 +30,22 @@ namespace Glom
 /** A base class for all layout items that may have formatting options.
  * See get_formatting_used().
  */
-class LayoutItem_WithFormatting 
+class LayoutItem_WithFormatting
  : public LayoutItem
 {
 public:
 
   LayoutItem_WithFormatting();
-  LayoutItem_WithFormatting(const LayoutItem_WithFormatting& src);
-  LayoutItem_WithFormatting(LayoutItem_WithFormatting&& src) = delete;
-  LayoutItem_WithFormatting& operator=(const LayoutItem_WithFormatting& src);
-  LayoutItem_WithFormatting& operator=(LayoutItem_WithFormatting&& src) = delete;
+  LayoutItem_WithFormatting(const LayoutItem_WithFormatting& src) = default;
+  LayoutItem_WithFormatting(LayoutItem_WithFormatting&& src) = default;
+  LayoutItem_WithFormatting& operator=(const LayoutItem_WithFormatting& src) = default;
+  LayoutItem_WithFormatting& operator=(LayoutItem_WithFormatting&& src) = default;
 
   bool operator==(const LayoutItem_WithFormatting& src) const;
 
   Formatting m_formatting;
 
-  /** Get the field formatting used by this layout item, which 
+  /** Get the field formatting used by this layout item, which
    * may be either custom field formatting or the default field formatting.
    */
   virtual const Formatting& get_formatting_used() const;

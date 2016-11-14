@@ -149,7 +149,7 @@ void Dialog_GroupsList::set_document(const Glib::ustring& layout, const std::sha
     }
 
     //Show the field layout
-    typedef std::list< Glib::ustring > type_listStrings;
+    typedef std::vector< Glib::ustring > type_listStrings;
 
     m_model_groups->clear();
 
@@ -238,7 +238,7 @@ void Dialog_GroupsList::on_button_group_new()
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
-    
+
   dialog->set_transient_for(*this);
   const auto dialog_response = Glom::UiUtils::dialog_run_with_help(dialog);
 
@@ -280,7 +280,7 @@ void Dialog_GroupsList::on_button_group_users()
       Utils::get_glade_widget_derived_with_warning(dialog);
       if(!dialog) //Unlikely and it already warns on stderr.
         return;
-    
+
       dialog->set_transient_for(*this);
       add_view(dialog); //Give it access to the document.
 
@@ -422,7 +422,7 @@ void Dialog_GroupsList::load_from_document()
   //fill_table_list();
 }
 
-void Dialog_GroupsList::treeview_append_bool_column(Gtk::TreeView& treeview, const Glib::ustring& title, Gtk::TreeModelColumn<bool>& model_column, const sigc::slot<void,  const Glib::ustring&>& slot_toggled)
+void Dialog_GroupsList::treeview_append_bool_column(Gtk::TreeView& treeview, const Glib::ustring& title, Gtk::TreeModelColumn<bool>& model_column, const sigc::slot<void(const Glib::ustring&)>& slot_toggled)
 {
   auto pCellRenderer = Gtk::manage( new Gtk::CellRendererToggle() );
 
@@ -596,17 +596,17 @@ void Dialog_GroupsList::on_cell_data_group_name(Gtk::CellRenderer* renderer, con
 {
  //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
-  if(renderer_text)
-  {
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
+  if(!renderer_text)
+    return;
 
-      Glib::ustring name = row[m_model_columns_groups.m_col_name];
+  if(!iter)
+    return;
 
-      renderer_text->property_text() = Privs::get_user_visible_group_name(name);
-    }
-  }
+  Gtk::TreeModel::Row row = *iter;
+
+  Glib::ustring name = row[m_model_columns_groups.m_col_name];
+
+  renderer_text->property_text() = Privs::get_user_visible_group_name(name);
 }
 
 } //namespace Glom

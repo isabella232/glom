@@ -31,15 +31,16 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/toggleaction.h>
 #include <gtkmm/builder.h>
+#include <glibmm/weakref.h>
 #include <goocanvasmm/canvas.h>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 //#include "relationships_canvas.h"
 
 namespace Glom
 {
- 
+
 class Window_RelationshipsOverview
  : public Gtk::ApplicationWindow,
    public View_Composite_Glom
@@ -50,12 +51,12 @@ public:
 
   Window_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Window_RelationshipsOverview();
-  
+
   void load_from_document() override;
 
 private:
   class TableView;
-  
+
   void draw_tables();
   void draw_lines();
   void setup_context_menu();
@@ -68,10 +69,10 @@ private:
   void on_menu_view_showgrid(const Glib::VariantBase& /* parameter */);
 
   void on_table_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset);
-  void on_table_show_context(guint button, guint32 activate_time, Glib::RefPtr<CanvasGroupDbTable> table);
+  void on_table_show_context(guint button, guint32 activate_time, const Glib::WeakRef<CanvasGroupDbTable>& table);
 
-  void on_context_menu_edit_fields(const Glib::VariantBase& parameter, Glib::RefPtr<CanvasGroupDbTable> table);
-  void on_context_menu_edit_relationships(const Glib::VariantBase& parameter, Glib::RefPtr<CanvasGroupDbTable> table);
+  void on_context_menu_edit_fields(const Glib::VariantBase& parameter, const Glib::WeakRef<CanvasGroupDbTable>& table);
+  void on_context_menu_edit_relationships(const Glib::VariantBase& parameter, const Glib::WeakRef<CanvasGroupDbTable>& table);
 
   void on_scroll_value_changed();
 
@@ -84,7 +85,7 @@ private:
   CanvasEditable m_canvas;
   Gtk::ScrolledWindow* m_scrolledwindow_canvas;
 
-  //typedef std::map<Glib::RefPtr<Goocanvas::Item>, TableView*> type_map_item_tables;
+  //typedef std::unordered_map<Glib::RefPtr<Goocanvas::Item>, TableView*> type_map_item_tables;
   //type_map_item_tables m_tables;
 
   static int m_last_size_x, m_last_size_y;
@@ -92,9 +93,6 @@ private:
   Glib::RefPtr<Goocanvas::Group> m_group_tables;
   Glib::RefPtr<Goocanvas::Group> m_group_lines;
 
-  typedef std::list<sigc::connection> type_list_connections;
-  type_list_connections m_list_table_connections;
-  
   //Context menu:
   std::unique_ptr<Gtk::Menu> m_context_menu;
   Glib::RefPtr<Gio::SimpleAction> m_action_edit_fields, m_action_edit_relationships;

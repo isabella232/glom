@@ -279,7 +279,7 @@ void Dialog_FieldDefinition::on_combo_type_changed()
   //m_Frame_TypeDetails.remove();
 
   //Use FieldType static method to categorise field type:
- // glom_field_type fieldType = m_combo_type->get_field_type();
+ // auto fieldType = m_combo_type->get_field_type();
 
 }
 

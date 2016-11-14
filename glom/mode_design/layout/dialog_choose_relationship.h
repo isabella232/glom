@@ -34,7 +34,7 @@ class Dialog_ChooseRelationship : public Gtk::Dialog
 public:
   static const char* glade_id;
   static const bool glade_developer;
-	
+
   Dialog_ChooseRelationship();
   Dialog_ChooseRelationship(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 

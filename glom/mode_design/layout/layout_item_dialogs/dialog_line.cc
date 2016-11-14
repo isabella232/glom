@@ -59,7 +59,7 @@ void Dialog_Line::set_line(const std::shared_ptr<const LayoutItem_Line>& line)
   m_line = glom_sharedptr_clone(line); //Remember it so we save any details that are not in our UI.
 
   m_spinbutton_line_width->set_value(line->get_line_width());
-  
+
   const Gdk::RGBA color( line->get_line_color() );
   m_colorbutton->set_rgba(color);
 
@@ -74,7 +74,7 @@ std::shared_ptr<LayoutItem_Line> Dialog_Line::get_line() const
   {
     std::cerr << G_STRFUNC <<  ": m_line is null\n";
   }
-  
+
   auto result = glom_sharedptr_clone(m_line); //Start with the old details, to preserve anything that is not in our UI.
 
   if(!result)

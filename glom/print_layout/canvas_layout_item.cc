@@ -58,21 +58,18 @@ std::shared_ptr<LayoutItem> CanvasLayoutItem::get_layout_item()
   return m_layout_item;
 }
 
-void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item)
+void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const LayoutItem_WithFormatting& layout_item)
 {
   if(!canvas_item)
     return;
 
-  if(!layout_item)
-    return;
-
   //Horizontal alignment:
   const Formatting::HorizontalAlignment alignment =
-    layout_item->get_formatting_used_horizontal_alignment();
+    layout_item.get_formatting_used_horizontal_alignment();
   const Pango::Alignment x_align = (alignment == Formatting::HorizontalAlignment::LEFT ? Pango::ALIGN_LEFT : Pango::ALIGN_RIGHT);
   canvas_item->property_alignment() = x_align;
 
-  const auto formatting = layout_item->get_formatting_used();
+  const auto formatting = layout_item.get_formatting_used();
 
   Glib::ustring font = formatting.get_text_format_font();
   if(font.empty())
@@ -115,7 +112,7 @@ void CanvasLayoutItem::set_layout_item(const std::shared_ptr<LayoutItem>& layout
   {
     std::cerr << G_STRFUNC << ": get_canvas() returned null. This should not be called before the CanvasLayoutItem is in a canvas due to goocanvas bug https://bugzilla.gnome.org/show_bug.cgi?id=657592#c16 .\n";
   }
-  
+
   //Add the new child:
   m_layout_item = layout_item;
 
@@ -162,7 +159,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
     auto canvas_item = CanvasTextMovable::create();
     canvas_item->property_line_width() = 0;
 
-    apply_formatting(canvas_item, text);
+    apply_formatting(canvas_item, *text);
 
     canvas_item->set_text(text->get_text(AppWindow::get_current_locale()));
     child = canvas_item;
@@ -226,7 +223,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
           {
             auto canvas_item = CanvasTextMovable::create();
             canvas_item->property_line_width() = 0;
-            apply_formatting(canvas_item, field);
+            apply_formatting(canvas_item, *field);
 
             Glib::ustring name = field->get_name();
             if(name.empty())
@@ -308,12 +305,12 @@ Glib::RefPtr<Goocanvas::Item> CanvasLayoutItem::get_canvas_table_cell_child(cons
 void CanvasLayoutItem::add_portal_rows_if_necessary(guint rows_count)
 {
   auto child = get_child();
-  auto canvas_table = 
+  auto canvas_table =
     Glib::RefPtr<CanvasTableMovable>::cast_dynamic(child);
   if(!canvas_table)
     return;
 
-  auto portal = 
+  auto portal =
     std::dynamic_pointer_cast<LayoutItem_Portal>(get_layout_item());
   if(!portal)
   {
@@ -339,7 +336,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
       //std::cout << "  row=" << row << ", col=" << col << std::endl;
 
       //Check if a child already exists:
-      auto existing_child = 
+      auto existing_child =
         get_canvas_table_cell_child(canvas_table, row, col);
       if(existing_child)
       {
@@ -359,7 +356,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
       {
         const auto width = layout_item->get_display_width();
         bool expand = (width == 0);
-        
+
         //If this is the last item, and no other item has expanded,
         //let this one expand,
         //Otherwise, we could allocate less space than the table has left.
@@ -368,7 +365,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
         {
           expand = true;
         }
-        
+
         if(expand)
         {
             //Let the table allocate the width automatically:
@@ -378,7 +375,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
               col /* left_attach */, col + 1 /* right_attach */,
               row /* top_attach */, row + 1 /* right_attach */,
               (Gtk::AttachOptions)(Gtk::FILL | Gtk::EXPAND), (Gtk::AttachOptions)(Gtk::FILL | Gtk::EXPAND));
-  
+
             something_expanded = true;
         }
         else
@@ -392,13 +389,13 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
               col /* left_attach */, col + 1 /* right_attach */,
               row /* top_attach */, row + 1 /* right_attach */,
               (Gtk::FILL), (Gtk::AttachOptions)(Gtk::FILL | Gtk::EXPAND));
-  
+
             //Add a second item (an invisible rect) to make sure that the size is really used:
-            auto rect = 
+            auto rect =
               Goocanvas::Rect::create(0, 0, width, row_height);
             //TODO: Find out why this doesn't work: rect->property_stroke_pattern() = Cairo::RefPtr<Cairo::Pattern>();
-            g_object_set(rect->gobj(), "stroke-pattern", (void*)0, (void*)0);
- 
+            g_object_set(rect->gobj(), "stroke-pattern", (void*)nullptr, (void*)nullptr);
+
             canvas_table->attach(rect,
               col /* left_attach */, col + 1 /* right_attach */,
               row /* top_attach */, row + 1 /* right_attach */,

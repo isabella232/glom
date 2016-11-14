@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #include <libglom/data_structure/system_prefs.h>
 
 namespace Glom
@@ -26,63 +26,6 @@ namespace Glom
 SystemPrefs::SystemPrefs()
 {
 }
-
-SystemPrefs::SystemPrefs(const SystemPrefs& src)
-: m_name(src.m_name),
-  m_org_name(src.m_org_name),
-  m_org_address_street(src.m_org_address_street),
-  m_org_address_street2(src.m_org_address_street2),
-  m_org_address_town(src.m_org_address_town),
-  m_org_address_county(src.m_org_address_county),
-  m_org_address_country(src.m_org_address_country),
-  m_org_address_postcode(src.m_org_address_postcode),
-  m_org_logo(src.m_org_logo)
-{
-}
-
-SystemPrefs::SystemPrefs(SystemPrefs&& src)
-: m_name(std::move(src.m_name)),
-  m_org_name(std::move(src.m_org_name)),
-  m_org_address_street(std::move(src.m_org_address_street)),
-  m_org_address_street2(std::move(src.m_org_address_street2)),
-  m_org_address_town(std::move(src.m_org_address_town)),
-  m_org_address_county(std::move(src.m_org_address_county)),
-  m_org_address_country(std::move(src.m_org_address_country)),
-  m_org_address_postcode(std::move(src.m_org_address_postcode)),
-  m_org_logo(std::move(src.m_org_logo))
-{
-}
-
-SystemPrefs& SystemPrefs::operator=(const SystemPrefs& src)
-{
-  m_name = src.m_name;
-  m_org_name =src.m_org_name;
-  m_org_address_street = src.m_org_address_street;
-  m_org_address_street2 = src.m_org_address_street2;
-  m_org_address_town = src.m_org_address_town;
-  m_org_address_county = src.m_org_address_county;
-  m_org_address_country = src.m_org_address_country;
-  m_org_address_postcode = src.m_org_address_postcode;
-  m_org_logo = src.m_org_logo;
-
-  return *this;
-}
-
-SystemPrefs& SystemPrefs::operator=(SystemPrefs&& src)
-{
-  m_name = std::move(src.m_name);
-  m_org_name = std::move(src.m_org_name);
-  m_org_address_street = std::move(src.m_org_address_street);
-  m_org_address_street2 = std::move(src.m_org_address_street2);
-  m_org_address_town = std::move(src.m_org_address_town);
-  m_org_address_county = std::move(src.m_org_address_county);
-  m_org_address_country = std::move(src.m_org_address_country);
-  m_org_address_postcode = std::move(src.m_org_address_postcode);
-  m_org_logo = std::move(src.m_org_logo);
-
-  return *this;
-}
-
 
 bool SystemPrefs::operator==(const SystemPrefs& src) const
 {

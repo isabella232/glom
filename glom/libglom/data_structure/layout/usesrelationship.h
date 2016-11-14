@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #ifndef GLOM_DATASTRUCTURE_LAYOUT_USESRELATIONSHIP_H
 #define GLOM_DATASTRUCTURE_LAYOUT_USESRELATIONSHIP_H
 
@@ -30,7 +30,7 @@ namespace Glom
 
 class Field;
 
-/* Base class for classes that need to store a relationship name 
+/* Base class for classes that need to store a relationship name
 * and a cache of the actual relationship information.
 */
 class UsesRelationship
@@ -38,10 +38,10 @@ class UsesRelationship
 public:
 
   UsesRelationship();
-  UsesRelationship(const UsesRelationship& src);
-  UsesRelationship(UsesRelationship&& src) = delete;
-  UsesRelationship& operator=(const UsesRelationship& src);
-  UsesRelationship& operator=(UsesRelationship&& src) = delete;
+  UsesRelationship(const UsesRelationship& src) = default;
+  UsesRelationship(UsesRelationship&& src) = default;
+  UsesRelationship& operator=(const UsesRelationship& src) = default;
+  UsesRelationship& operator=(UsesRelationship&& src) = default;
 
   bool operator==(const UsesRelationship& src) const;
 
@@ -57,17 +57,17 @@ public:
   Glib::ustring get_related_relationship_name() const;
 
   /** Return the relationship used by this item, if any, or a null std::shared_ptr.
-   * See also get_has_relationship_name() which can prevent the need for your  
+   * See also get_has_relationship_name() which can prevent the need for your
    * own null std::shared_ptr check.
-   */ 
+   */
   std::shared_ptr<const Relationship> get_relationship() const;
 
   void set_relationship(const std::shared_ptr<const Relationship>& relationship);
 
   /** Return the related relationship used by this item, if any, or a null std::shared_ptr.
-   * See also get_has_related_relationship_name() which can prevent the need for your  
+   * See also get_has_related_relationship_name() which can prevent the need for your
    * own null std::shared_ptr check.
-   */ 
+   */
   std::shared_ptr<const Relationship> get_related_relationship() const;
 
   void set_related_relationship(const std::shared_ptr<const Relationship>& relationship);
@@ -81,7 +81,7 @@ public:
    * @param parent_table_title The title of table to which the item (or its relatinoships) belong.
    */
   Glib::ustring get_title_used(const Glib::ustring& parent_table_title, const Glib::ustring& locale) const;
-  
+
   /** Get the singular title of the relationship that is actually used,
    * falling back to the regular (plural) title, and then to the relationship's name.
    * @param parent_table_title The title of table to which the item (or its relatinoships) belong.
@@ -90,28 +90,28 @@ public:
 
   Glib::ustring get_to_field_used() const;
 
-  /** Get the name of the related relationship used, if any, or the relationship 
-   * if there is no related relationship, or an empty string if neither are 
+  /** Get the name of the related relationship used, if any, or the relationship
+   * if there is no related relationship, or an empty string if neither are
    * used by this item.
-   */ 
+   */
   Glib::ustring get_relationship_name_used() const;
 
-  /** Discover whether the relationship used allows the user to edit values 
+  /** Discover whether the relationship used allows the user to edit values
    * in its to table.
    */
   bool get_relationship_used_allows_edit() const;
 
   /** Get a name to use as an alias in SQL statements.
    * This will always be the same string for items that have the same definition.
-   */ 
+   */
   Glib::ustring get_sql_join_alias_name() const;
-  
+
   /** Get the item's alias name, if it uses a relationship, or just get its table name.
    * @param parent_table The table to which the item (or its relatinoships) belong.
-   */ 
+   */
   Glib::ustring get_sql_table_or_join_alias_name(const Glib::ustring& parent_table) const;
-  
-  
+
+
   /** Get a human-readable representation of th relationship.
    * This just concatenates the chain of relationships, separating them by ":".
    */

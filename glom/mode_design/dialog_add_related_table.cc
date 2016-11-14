@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #include "dialog_add_related_table.h"
 #include <glom/frame_glom.h> //For show_ok_dialog.h
 #include <libglom/db_utils.h>
@@ -88,7 +88,7 @@ void Dialog_AddRelatedTable::on_entry_table_name()
   //Guess a possible relationship name, based on the table name:
   Glib::ustring possible_relationship_name = table_name;
 
-  //Discover whether a table with this name exists already, 
+  //Discover whether a table with this name exists already,
   //and append a numerical prefix until we find one that doesn't exist.
   //TODO: A numerical prefix would look pretty stupid, but I suppose must do something. murrayc
   bool exists_already = true;
@@ -119,14 +119,14 @@ void Dialog_AddRelatedTable::on_combo_field_name()
 
   //Guess a possible related table name, based on the from key:
   Glib::ustring possible_table_name = field_name;
-  
+
   //If the field has an _id prefix then remove that:
   possible_table_name = Utils::string_remove_suffix(possible_table_name, "_id", false /* not case sensitive */);
 
   //Add a "s" to the end, though this probably only makes sense in English. TODO: Don't do this?
   possible_table_name += 's';
 
-  //Discover whether a table with this name exists already, 
+  //Discover whether a table with this name exists already,
   //and append a numerical prefix until we find one that doesn't exist:
   bool exists_already = true;
   Glib::ustring name_to_try = possible_table_name;

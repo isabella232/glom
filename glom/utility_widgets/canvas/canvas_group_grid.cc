@@ -21,7 +21,7 @@
 #include "canvas_group_grid.h"
 #include "canvas_line_movable.h"
 #include <goocanvasmm/canvas.h>
-#include <math.h>
+#include <cmath>
 #include <iostream>
 
 namespace Glom
@@ -74,7 +74,7 @@ double CanvasGroupGrid::snap_position_rules(const type_vec_doubles& rules, doubl
     if(is_close(a, rule_a))
     {
       if(result == a) //Prefer some snap to no snap
-        result = rule_a; 
+        result = rule_a;
       else if(std::abs((long)(a - rule_a)) < std::abs((long)(a - result))) //Use the closest one.
         result = rule_a;
     }
@@ -107,11 +107,11 @@ double CanvasGroupGrid::snap_position_grid(double a) const
     double distance_after_grid_line_before = 0;
     division_and_remainder(a, m_grid_gap, grid_line_num_before, distance_after_grid_line_before);
     //printf("grid_line_num_before=%f, distance_after_grid_line_before=%f\n", grid_line_num_before, distance_after_grid_line_before);
-    
+
     if(is_close(0, distance_after_grid_line_before))
     {
       //Snap to the grid line:
-      result = grid_line_num_before * m_grid_gap; 
+      result = grid_line_num_before * m_grid_gap;
     }
     else
     {
@@ -119,7 +119,7 @@ double CanvasGroupGrid::snap_position_grid(double a) const
       if(is_close(m_grid_gap, distance_to_next_grid_line))
       {
         //Snap to the grid line:
-        result = (grid_line_num_before + 1) * m_grid_gap; 
+        result = (grid_line_num_before + 1) * m_grid_gap;
       }
     }
   }
@@ -139,7 +139,7 @@ void CanvasGroupGrid::snap_position(double& x, double& y) const
     //Try snapping to the grid:
     double temp_x = snap_position_grid(x);
     double temp_y = snap_position_grid(y);
-   
+
     offset_x = temp_x - x;
     offset_y = temp_y - y;
 
@@ -299,10 +299,10 @@ void CanvasGroupGrid::create_grid_lines()
   auto canvas = get_canvas();
   if(canvas)
     canvas->get_bounds(left, top, right, bottom);
- 
+
   const double width = right - left;
   const double height = bottom - top;
-  
+
   //Vertical and horizontal grid lines:
   if(m_grid_gap > 0) //0 steps cause a crash in older versions of goocanvas.
   {

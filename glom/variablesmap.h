@@ -22,7 +22,7 @@
 
 #include <gtkmm/builder.h>
 #include <glibmm/date.h>
-#include <map>
+#include <unordered_map>
 
 namespace Glom
 {
@@ -76,8 +76,7 @@ private:
 
   void transfer_one_widget(Gtk::Widget* pWidget, bool to_variable);
 
-  typedef std::map<Gtk::Widget*, void*> type_mapWidgetsToVariables;
-  type_mapWidgetsToVariables m_mapWidgetsToVariables;
+  std::unordered_map<Gtk::Widget*, void*> m_mapWidgetsToVariables;
 
   Glib::RefPtr<Gtk::Builder> m_builder;
 };

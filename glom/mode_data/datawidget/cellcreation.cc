@@ -45,7 +45,7 @@ static void apply_formatting(Gtk::CellRenderer* renderer, const std::shared_ptr<
   const float x_align = (alignment == Formatting::HorizontalAlignment::LEFT ? 0.0 : 1.0);
   text_renderer->property_xalign() = x_align;
 
-  const auto formatting = layout_item->get_formatting_used();
+  const auto& formatting = layout_item->get_formatting_used();
 
   const auto font_desc = formatting.get_text_format_font();
   if(!font_desc.empty())
@@ -60,6 +60,9 @@ static void apply_formatting(Gtk::CellRenderer* renderer, const std::shared_ptr<
     text_renderer->property_background() = bg;
 }
 
+//This really needs to take the layout_item as a std::shared_ptr<>,
+//because we might need to call set_layout_item(layout_item) on the newly-created cell.
+//TODO: And it should be non-const too.
 Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_item, const Glib::ustring& table_name, const std::shared_ptr<const Document>& document, guint fixed_cell_height)
 {
   Gtk::CellRenderer* cell = nullptr;
@@ -93,7 +96,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
       }
       default:
       {
-        const auto formatting = item_field->get_formatting_used();
+        const auto& formatting = item_field->get_formatting_used();
         if(formatting.get_has_choices())
         {
           auto rendererList = Gtk::manage( new CellRendererDbList() );
@@ -176,8 +179,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
   }
 
 
-  auto cell_text = dynamic_cast<Gtk::CellRendererText*>(cell);
-  if(cell_text)
+  if(auto cell_text = dynamic_cast<Gtk::CellRendererText*>(cell))
   {
     //Use an ellipze to indicate excessive text,
     //so that similar values do not look equal,
@@ -193,9 +195,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
   }
 
   //Choices:
-  auto pCellRendererList = dynamic_cast<CellRendererList*>(cell);
-  auto pCellRendererDbList = dynamic_cast<CellRendererDbList*>(cell);
-  if(pCellRendererList) //Used for custom choices:
+  if(auto pCellRendererList = dynamic_cast<CellRendererList*>(cell)) //Used for custom choices:
   {
     pCellRendererList->remove_all_list_items();
 
@@ -212,7 +212,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
       }
     }
   }
-  else if(pCellRendererDbList) //Used for related choices:
+  else if(auto pCellRendererDbList = dynamic_cast<CellRendererDbList*>(cell)) //Used for related choices:
   {
     if(item_field && item_field->get_formatting_used().get_has_related_choices())
     {
@@ -230,7 +230,7 @@ Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_i
         //TODO: Update this when the relationship's field value changes:
         if(choice_show_all) //Otherwise it must change whenever the relationships's ID value changes.
         {
-          pCellRendererDbList->set_choices_related(document, item_field, Gnome::Gda::Value() /* TODO: Makes no sense */);
+          pCellRendererDbList->set_choices_related(document, *item_field, Gnome::Gda::Value() /* TODO: Makes no sense */);
         }
       }
     }

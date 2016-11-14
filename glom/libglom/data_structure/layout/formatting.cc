@@ -39,27 +39,6 @@ Formatting::Formatting()
 {
 }
 
-Formatting::Formatting(const Formatting& src)
-: UsesRelationship(src),
-  m_numeric_format(src.m_numeric_format),
-  m_choices_custom_list(src.m_choices_custom_list),
-  m_choices_restricted(src.m_choices_restricted),
-  m_choices_restricted_as_radio_buttons(src.m_choices_restricted_as_radio_buttons),
-  m_choices_custom(src.m_choices_custom),
-  m_choices_related(src.m_choices_related),
-  m_text_format_multiline(src.m_text_format_multiline),
-  m_text_multiline_height_lines(src.m_text_multiline_height_lines),
-  m_text_font(src.m_text_font),
-  m_text_color_foreground(src.m_text_color_foreground),
-  m_text_color_background(src.m_text_color_background),
-  m_horizontal_alignment(src.m_horizontal_alignment),
-  m_choices_related_field(src.m_choices_related_field),
-  m_choices_extra_layout_group(src.m_choices_extra_layout_group),
-  m_choices_related_sort_fields(src.m_choices_related_sort_fields),
-  m_choices_related_show_all(src.m_choices_related_show_all)
-{
-}
-
 bool Formatting::operator==(const Formatting& src) const
 {
   return UsesRelationship::operator==(src) &&
@@ -79,34 +58,6 @@ bool Formatting::operator==(const Formatting& src) const
     (m_text_color_background == src.m_text_color_background) &&
     (m_horizontal_alignment == src.m_horizontal_alignment) &&
     (m_choices_related_show_all == src.m_choices_related_show_all);
-}
-
-
-Formatting& Formatting::operator=(const Formatting& src)
-{
-  UsesRelationship::operator=(src);
-
-  m_numeric_format = src.m_numeric_format;
-
-  m_choices_custom_list = src.m_choices_custom_list;
-  m_choices_restricted = src.m_choices_restricted;
-  m_choices_restricted_as_radio_buttons = src.m_choices_restricted_as_radio_buttons;
-  m_choices_custom = src.m_choices_custom;
-  m_choices_related = src.m_choices_related;
-  m_choices_related_field = src.m_choices_related_field;
-  m_choices_extra_layout_group = src.m_choices_extra_layout_group;
-  m_choices_related_sort_fields = src.m_choices_related_sort_fields;
-  m_choices_related_show_all = src.m_choices_related_show_all;
-
-  m_text_format_multiline = src.m_text_format_multiline;
-  m_text_multiline_height_lines = src.m_text_multiline_height_lines;
-  m_text_font = src.m_text_font;
-  m_text_color_foreground = src.m_text_color_foreground;
-  m_text_color_background = src.m_text_color_background;
-  m_horizontal_alignment = src.m_horizontal_alignment;
-
-  //std::cerr << G_STRFUNC << ": m_choices_related_relationship=" << m_choices_related_relationship << ", src.m_choices_related_relationship=" << src.m_choices_related_relationship << std::endl;
-  return *this;
 }
 
 bool Formatting::get_text_format_multiline() const
@@ -312,8 +263,8 @@ bool Formatting::change_field_item_name(const Glib::ustring& table_name, const G
     return false; //Nothing changed.
 
   auto relationship = get_relationship();
-  
-  const Glib::ustring field_table = 
+
+  const Glib::ustring field_table =
     m_choices_related_field->get_table_used( relationship->get_to_table() );
 
   if((field_table == table_name) &&
@@ -323,10 +274,10 @@ bool Formatting::change_field_item_name(const Glib::ustring& table_name, const G
     m_choices_related_field->set_name(field_name_new);
     return true; //something changed.
   }
-  
+
   if(m_choices_extra_layout_group)
   {
-    m_choices_extra_layout_group->change_field_item_name(table_name, 
+    m_choices_extra_layout_group->change_field_item_name(table_name,
       field_name_old, field_name_new);
   }
 

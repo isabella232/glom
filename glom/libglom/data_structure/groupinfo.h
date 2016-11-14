@@ -23,7 +23,7 @@
 
 #include <libglom/data_structure/translatable_item.h>
 #include <libglom/data_structure/privileges.h>
-#include <map>
+#include <unordered_map>
 
 namespace Glom
 {
@@ -32,19 +32,18 @@ class GroupInfo : public TranslatableItem
 {
 public:
   GroupInfo();
-  GroupInfo(const GroupInfo& src);
-  GroupInfo(GroupInfo&& src);
+  GroupInfo(const GroupInfo& src) = default;
+  GroupInfo(GroupInfo&& src) = default;
 
-  GroupInfo& operator=(const GroupInfo& src);
-  GroupInfo& operator=(GroupInfo&& src);
+  GroupInfo& operator=(const GroupInfo& src) = default;
+  GroupInfo& operator=(GroupInfo&& src) = default;
 
   bool operator==(const GroupInfo& src) const;
   bool operator!=(const GroupInfo& src) const;
 
   bool m_developer; //m_privs is ignored if this is true.
 
-  typedef std::map<Glib::ustring, Privileges> type_map_table_privileges;
-  type_map_table_privileges m_map_privileges;
+  std::unordered_map<Glib::ustring, Privileges, std::hash<std::string>> m_map_privileges;
 
   //typedef std::vector<Glib::ustring> type_users;
   //type_users m_users;

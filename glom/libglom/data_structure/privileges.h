@@ -31,13 +31,13 @@ namespace Glom
 
 class Privileges
 {
-public: 
+public:
   Privileges();
-  Privileges(const Privileges& src);
-  Privileges(Privileges&& src);
+  Privileges(const Privileges& src) = default;
+  Privileges(Privileges&& src) = default;
 
-  Privileges& operator=(const Privileges& src);
-  Privileges& operator=(Privileges&& src);
+  Privileges& operator=(const Privileges& src) = default;
+  Privileges& operator=(Privileges&& src) = default;
 
   bool operator==(const Privileges& src) const;
 

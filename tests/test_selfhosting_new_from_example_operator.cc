@@ -53,7 +53,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //Create and self-host the document:
   {
     auto document = std::make_shared<Glom::Document>();
-    const bool recreated = 
+    const bool recreated =
       test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
     if(!recreated)
     {
@@ -77,7 +77,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
     //Add an operator user:
     const Glib::ustring operator_group_name = "personnel_department";
-    const auto group_list = 
+    const auto group_list =
       Glom::Privs::get_database_groups();
     if(!contains(group_list, operator_group_name))
     {
@@ -93,7 +93,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     }
 
     //Check that the developer user has access to database metadata:
-    const auto tables = 
+    const auto tables =
       Glom::DbUtils::get_table_names_from_database(true /* ignore system tables */);
     if(tables.empty())
     {
@@ -103,7 +103,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
     test_selfhosting_cleanup(false /* do not delete the file. */);
   }
-  
+
   //Self-host the document again, this time as operator:
   {
     auto document = std::make_shared<Glom::Document>();
@@ -142,7 +142,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
     //std::cout << "field_types count=" << field_types->get_types_count() << std::endl;
 
-    const auto tables = 
+    const auto tables =
       Glom::DbUtils::get_table_names_from_database(true /* ignore system tables */);
     if(tables.empty())
     {
@@ -159,8 +159,8 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
     test_selfhosting_cleanup(); //Delete the file this time.
   }
- 
-  return true; 
+
+  return true;
 }
 
 int main()

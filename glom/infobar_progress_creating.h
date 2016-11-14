@@ -30,7 +30,7 @@ namespace Glom
 {
 
 /** Use this to show the user that something is happening.
- * Call pulse() repeatedly to show that we are still working. 
+ * Call pulse() repeatedly to show that we are still working.
  */
 class Infobar_ProgressCreating
   : public Gtk::InfoBar

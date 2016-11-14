@@ -29,28 +29,6 @@ Relationship::Relationship()
    m_translatable_item_type = enumTranslatableItemType::RELATIONSHIP;
 }
 
-Relationship::Relationship(const Relationship& src)
-: TranslatableItem(src),
-  HasTitleSingular(src)
-{
-  operator=(src); //TODO_Performance: Implement properly.
-}
-
-Relationship& Relationship::operator=(const Relationship& src)
-{
-  TranslatableItem::operator=(src);
-  HasTitleSingular::operator=(src);
-
-  m_strFrom_Table = src.m_strFrom_Table;
-  m_strFrom_Field = src.m_strFrom_Field;
-  m_strTo_Table = src.m_strTo_Table;
-  m_strTo_Field = src.m_strTo_Field;
-  m_allow_edit = src.m_allow_edit;
-  m_auto_create = src.m_auto_create;
-
-  return *this;
-}
-
 bool Relationship::operator==(const Relationship& src) const
 {
   return TranslatableItem::operator==(src)

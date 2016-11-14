@@ -129,7 +129,7 @@ void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& ite
   // TODO: Why was this done by converting the field's gtype to a glom type
   // instead of using the glom type directly? This breaks numerical types in
   // sqlite which we store as double.
-  Field::glom_field_type fieldType = field->get_glom_type();
+  auto fieldType = field->get_glom_type();
 
   const auto strType = Field::get_type_name_ui( fieldType );
   m_AddDel.set_value(iter, m_colType, strType);
@@ -309,7 +309,7 @@ bool Box_DB_Table_Definition::check_field_change(const std::shared_ptr<const Fie
   //Refuse to have no primary key set:
   if(field_old->get_primary_key() && !field_new->get_primary_key()) //Was the primary key column unchecked?
   {
-    UiUtils::show_ok_dialog(_("Primary key required"), 
+    UiUtils::show_ok_dialog(_("Primary key required"),
       _("You may not unset the primary key because the table must have a primary key. You may set another field as the primary key instead."), parent_window, Gtk::MESSAGE_ERROR);
 
       return false;
@@ -354,7 +354,7 @@ bool Box_DB_Table_Definition::check_field_change(const std::shared_ptr<const Fie
     std::cout << "get_field_exists_in_database(" << m_table_name << ", " << field_new->get_name() << ") returned true\n";
 
     //Warn the user and refuse to make the change:
-    UiUtils::show_ok_dialog(_("Field Name Already Exists"), 
+    UiUtils::show_ok_dialog(_("Field Name Already Exists"),
       _("This field already exists. Please choose a different field name"), parent_window, Gtk::MESSAGE_ERROR);
 
     return false;
@@ -394,7 +394,7 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
         {
           auto fieldNewWithModifications = change_definition(m_Field_BeingEdited, fieldNew);
 
-          //Update the row to show any extra changes (such as unique being set/unset whenever the primary key is set/unset) 
+          //Update the row to show any extra changes (such as unique being set/unset whenever the primary key is set/unset)
 	  // TODO: When change_definition decides to unset another column from
 	  // being primary key, then we also need to refill that row, so that
 	  // the user interface does not show two primary keys.
@@ -473,7 +473,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::
 
   //Start with original definitions, so that we preserve things like UNSIGNED.
   //TODO maybe use document's fieldinfo instead of m_vecFields.
-  auto field_temp = 
+  auto field_temp =
     DbUtils::get_fields_for_table_one_field(pDoc, m_table_name, strFieldNameBeforeEdit);
   if(field_temp)
   {
@@ -490,7 +490,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::
     //Type:
     const auto strType = m_AddDel.get_value(row, m_colType);
 
-    const Field::glom_field_type glom_type =  Field::get_type_for_ui_name(strType);
+    const auto glom_type =  Field::get_type_for_ui_name(strType);
     GType fieldType = Field::get_gda_type_for_glom_type(glom_type);
 
     //Unique:
@@ -570,7 +570,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::sha
   //DB field definition:
 
   std::shared_ptr<Field> result;
-  
+
   if(!fieldOld || !field)
     return result;
 
@@ -595,7 +595,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::sha
       }
     }
 
-    //Forget the remembered currently-viewed primary key value, 
+    //Forget the remembered currently-viewed primary key value,
     //because it will be useless with a different field as the primary key, or with no field as primary key:
     auto document = get_document();
     document->forget_layout_record_viewed(m_table_name);
@@ -715,7 +715,7 @@ bool Box_DB_Table_Definition::field_has_null_values(const std::shared_ptr<const 
     std::cerr << G_STRFUNC << ": query failed.\n";
   }
 
-  return null_count > 0; 
+  return null_count > 0;
 }
 
 bool Box_DB_Table_Definition::field_has_non_unique_values(const std::shared_ptr<const Field>& field)
@@ -723,7 +723,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const std::shared_ptr<
   long count_distinct = 0;
   long count_all = 0;
 
-  //Count the distinct rows:  
+  //Count the distinct rows:
   auto builder_query_distinct = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
   builder_query_distinct->select_set_distinct();
   builder_query_distinct->set_table(m_table_name);
@@ -745,7 +745,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const std::shared_ptr<
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder_query_all->select_add_field(field->get_name(), m_table_name);
   builder_query_all->select_add_target(m_table_name);
-      
+
   datamodel = DbUtils::query_execute_select(builder_query_all);
   if(datamodel)
   {

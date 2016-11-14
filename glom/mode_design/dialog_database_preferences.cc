@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #include "dialog_database_preferences.h"
 #include <glom/python_embed/glom_python.h>
 #include <libglom/standard_table_prefs_fields.h>
@@ -79,7 +79,7 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
   builder->get_widget("textview_calculation",  m_text_view_script);
   builder->get_widget("button_test",  m_button_test_script);
 
-  m_button_test_script->signal_clicked().connect( 
+  m_button_test_script->signal_clicked().connect(
     sigc::mem_fun(*this, &Dialog_Database_Preferences::on_button_test_script) );
 
   // Set a monospace font
@@ -88,10 +88,10 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
   //Dialog_Properties::set_modified(false);
 
   //Tell the SourceView to do syntax highlighting for Python:
-  auto languages_manager = 
+  auto languages_manager =
     Gsv::LanguageManager::get_default();
 
-  auto language = 
+  auto language =
     languages_manager->get_language("python"); //This is the GtkSourceView language ID.
   if(language)
   {
@@ -125,7 +125,7 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
     const Glib::ustring field_name = row[m_columns.m_col_field];
 
     const Gnome::Gda::Value next_value = Conversions::parse_value(new_value);
-               
+
     auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
     builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
     builder->add_field_value_as_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE, next_value);
@@ -178,7 +178,7 @@ void Dialog_Database_Preferences::load_from_document()
   builder->select_add_field(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE,
     GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   builder->select_add_target(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
-  
+
   NumericFormat numeric_format; //ignored
 
   auto datamodel = DbUtils::query_execute_select(builder);

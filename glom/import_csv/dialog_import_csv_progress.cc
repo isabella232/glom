@@ -36,8 +36,8 @@ const char* Dialog_Import_CSV_Progress::glade_id("dialog_import_csv_progress");
 const bool Dialog_Import_CSV_Progress::glade_developer(false);
 
 Dialog_Import_CSV_Progress::Dialog_Import_CSV_Progress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
-: Gtk::Dialog(cobject), 
-  m_data_source(nullptr), 
+: Gtk::Dialog(cobject),
+  m_data_source(nullptr),
   m_current_row(0)
 {
   builder->get_widget("import_csv_progress_progress_bar", m_progress_bar);
@@ -72,7 +72,7 @@ void Dialog_Import_CSV_Progress::import(Dialog_Import_CSV& data_source)
     // Wait for the parsing to finish. We do not start importing before the file has been
     // parsed completely since we would not to rollback our changes in case of a
     // parsing error.
-    
+
     std::string filename;
     try
     {
@@ -106,7 +106,7 @@ void Dialog_Import_CSV_Progress::clear()
   m_progress_connection.disconnect();
   m_ready_connection.disconnect();
 
-  m_data_source = 0;
+  m_data_source = nullptr;
   m_current_row = 0;
 }
 
@@ -155,7 +155,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   m_progress_bar->pulse();
 
   std::cout << "debug: status_text=" << status_text << std::endl;
-  
+
   //Allow GTK+ to process events, so that the UI is responsive.
   //TODO: This does not seem to actually work.
   //TODO: Make sure that gtkmm has some non-Gtk::Main API for this:
@@ -258,18 +258,18 @@ void Dialog_Import_CSV_Progress::on_response(int /* response_id */)
   clear();
 }
 
-Gnome::Gda::Value Dialog_Import_CSV_Progress::get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const
+Gnome::Gda::Value Dialog_Import_CSV_Progress::get_entered_field_data(const LayoutItem_Field& field) const
 {
-  const auto iter = m_current_row_values.find(field->get_name());
+  const auto iter = m_current_row_values.find(field.get_name());
   if(iter == m_current_row_values.end())
     return Gnome::Gda::Value();
 
   return iter->second;
 }
 
-void Dialog_Import_CSV_Progress::set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value&  value)
+void Dialog_Import_CSV_Progress::set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value&  value)
 {
-  m_current_row_values[field->get_name()] = value;
+  m_current_row_values[field.get_name()] = value;
 }
 
 std::shared_ptr<Field> Dialog_Import_CSV_Progress::get_field_primary_key() const

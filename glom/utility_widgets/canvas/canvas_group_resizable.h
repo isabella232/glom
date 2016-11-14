@@ -44,13 +44,13 @@ public:
 
   /** This should only be called after this CanvasGroupResizable has already been added to a canvas.
    * The position (x, y, width, height) of the child will match the position of the CanvasGroupResizable,
-   * overriding any previous position of the child. 
+   * overriding any previous position of the child.
    */
   void set_child(const Glib::RefPtr<CanvasItemMovable>& child);
-  
+
   /// Get the only child:
   Glib::RefPtr<CanvasItemMovable> get_child();
-  
+
   /// Get the only child:
   Glib::RefPtr<const CanvasItemMovable> get_child() const;
 
@@ -64,7 +64,7 @@ public:
 
   void set_outline_visible(bool visible = true);
 
-  typedef sigc::signal<void> type_signal_resized;
+  typedef sigc::signal<void()> type_signal_resized;
 
   /// This signal is emitted when the canvas item is resized by the user.
   type_signal_resized signal_resized();

@@ -42,9 +42,9 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
-  
+
   const Glib::ustring table_name = "invoice_lines";
- 
+
   const auto field_with_choice =
     get_field_on_layout(document, table_name, table_name, "product_id");
   if(!field_with_choice)
@@ -54,13 +54,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   const auto values_with_second =
-    Glom::DbUtils::get_choice_values_all(document, field_with_choice);
+    Glom::DbUtils::get_choice_values_all(document, *field_with_choice);
   if(values_with_second.size() != 3)
   {
     std::cerr << G_STRFUNC << ": Failure: There were an unexpected number of choices.\n";
     return false;
   }
-  
+
   const auto pair_values
     = *(values_with_second.begin());
   if(pair_values.second.size() != 1)
@@ -70,14 +70,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   test_selfhosting_cleanup();
- 
-  return true; 
+
+  return true;
 }
 
 int main()
 {
   Glom::libglom_init();
-  
+
   const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();

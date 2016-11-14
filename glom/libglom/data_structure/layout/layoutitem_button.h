@@ -26,16 +26,16 @@
 namespace Glom
 {
 
-class LayoutItem_Button 
+class LayoutItem_Button
  : public LayoutItem_WithFormatting
 {
 public:
 
   LayoutItem_Button();
-  LayoutItem_Button(const LayoutItem_Button& src);
-  LayoutItem_Button(LayoutItem_Button&& src) = delete;
-  LayoutItem_Button& operator=(const LayoutItem_Button& src);
-  LayoutItem_Button& operator=(LayoutItem_Button&& src) = delete;
+  LayoutItem_Button(const LayoutItem_Button& src) = default;
+  LayoutItem_Button(LayoutItem_Button&& src) = default;
+  LayoutItem_Button& operator=(const LayoutItem_Button& src) = default;
+  LayoutItem_Button& operator=(LayoutItem_Button&& src) = default;
 
   LayoutItem* clone() const override;
 

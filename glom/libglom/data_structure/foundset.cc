@@ -27,40 +27,4 @@ FoundSet::FoundSet() noexcept
 {
 }
 
-FoundSet::FoundSet(const FoundSet& src) noexcept
-:  m_table_name(src.m_table_name),
-   m_extra_join(src.m_extra_join),
-   m_where_clause(src.m_where_clause),
-   m_sort_clause(src.m_sort_clause)
-{
-}
-
-FoundSet::FoundSet(FoundSet&& src) noexcept
-:  m_table_name(std::move(src.m_table_name)),
-   m_extra_join(std::move(src.m_extra_join)),
-   m_where_clause(std::move(src.m_where_clause)),
-   m_sort_clause(std::move(src.m_sort_clause))
-{
-}
-
-FoundSet& FoundSet::operator=(const FoundSet& src) noexcept
-{
-  m_table_name = src.m_table_name;
-  m_extra_join = src.m_extra_join;
-  m_where_clause = src.m_where_clause;
-  m_sort_clause = src.m_sort_clause;
-
-  return *this;
-}
-
-FoundSet& FoundSet::operator=(FoundSet&& src) noexcept
-{
-  m_table_name = std::move(src.m_table_name);
-  m_extra_join = std::move(src.m_extra_join);
-  m_where_clause = std::move(src.m_where_clause);
-  m_sort_clause = std::move(src.m_sort_clause);
-
-  return *this;
-}
-
 } //namespace Glom

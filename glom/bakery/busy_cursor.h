@@ -21,14 +21,14 @@
 
 #include <gtkmm/window.h>
 #include <gdkmm/cursor.h>
-#include <map>
+#include <unordered_map>
 
 namespace Glom
 {
 
 /** Changes the cursor for as long as this instance lives.
  * For instance, put it at the start of code in a { and } block.
- */ 
+ */
 class BusyCursor
 {
 public:
@@ -50,7 +50,7 @@ private:
   Gtk::Window* m_window;
   Glib::RefPtr<Gdk::Window> m_gdk_window;
 
-  typedef std::map<Gtk::Window*, Glib::RefPtr<Gdk::Cursor> > type_map_cursors;
+  typedef std::unordered_map<Gtk::Window*, Glib::RefPtr<Gdk::Cursor> > type_map_cursors;
   static type_map_cursors m_map_cursors;
   Glib::RefPtr<Gdk::Cursor> m_old_cursor;
 };

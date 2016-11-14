@@ -46,8 +46,8 @@ Dialog_Relationships::~Dialog_Relationships()
 }
 
 /**
- * 
- * @param table_name 
+ *
+ * @param table_name
  */
 bool Dialog_Relationships::init_db_details(const Glib::ustring& table_name)
 {

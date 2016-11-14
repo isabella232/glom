@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #include <glom/glade_utils.h>
 #include <glom/appwindow.h>
 #include <glom/dialog_existing_or_new.h>
@@ -90,7 +90,7 @@ bool instantiate_widget()
     exit(EXIT_FAILURE); //Make sure that our test case fails.
     return false;
   }
-  
+
   //Also check that it is not too big for our target minimum screen size.
   //Note that this is not testing all .glade files, or all windows (some not using glade),
   //and doesn't even reliably check all uses of .glade files,
@@ -105,20 +105,20 @@ bool instantiate_widget()
     dialog->set_transient_for(*parent_window);
     parent_window->show();
   }
-   
+
   widget->show();
   const auto allocation = widget->get_allocation();
- 
+
   if( (allocation.get_height() > GLOM_MAX_WINDOW_HEIGHT) ||
     (allocation.get_width() > GLOM_MAX_WINDOW_WIDTH))
   {
     std::cerr << G_STRFUNC << ": Test: The window/widget is too big: " << T_Widget::glade_id << std::endl;
-    std::cerr << G_STRFUNC << ":   height=" << allocation.get_height() << std::endl; 
+    std::cerr << G_STRFUNC << ":   height=" << allocation.get_height() << std::endl;
     std::cerr << G_STRFUNC << ":   width=" << allocation.get_width() << std::endl;
-    std::cerr << G_STRFUNC << ":   (Ignored, though it should be fixed.)\n"; 
+    std::cerr << G_STRFUNC << ":   (Ignored, though it should be fixed.)\n";
     //TODO: Uncomment this when all the windows are small enough: exit(EXIT_FAILURE); //Make sure that our test case fails.
   }
-  
+
   delete widget;
 
   if(parent_window)
@@ -129,7 +129,7 @@ bool instantiate_widget()
 
 int main(int argc, char *argv[])
 {
-  auto app = 
+  auto app =
     Gtk::Application::create(argc, argv, "org.glom.test_glade_derived_instantiation");
   Gsv::init(); //Our .glade files contain gtksourceview widgets too.
 

@@ -84,7 +84,7 @@ void Box_Data_ManyRecords::print_layout()
     //TODO: Find a way to get a full locale name from the simplified locale name from AppWindow::get_current_locale():
     ReportBuilder report_builder(std::locale("") /* the user's current locale */);
     report_builder.set_document(document);
-    const auto filepath = 
+    const auto filepath =
       report_builder.report_build_and_save(m_found_set, report_temp);
     UiUtils::show_report_in_browser(filepath, get_app_window());
   }

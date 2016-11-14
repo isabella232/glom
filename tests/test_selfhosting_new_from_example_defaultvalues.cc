@@ -29,7 +29,7 @@
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   auto document = std::make_shared<Glom::Document>();
-  const bool recreated = 
+  const bool recreated =
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
@@ -100,19 +100,19 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
 
   test_selfhosting_cleanup();
- 
-  return true; 
+
+  return true;
 }
 
 int main()
 {
   Glom::libglom_init();
 
-  //We run this test in several locales via 
+  //We run this test in several locales via
   //test_selfhosting_new_from_example_in_locales.sh,
   //so we do this so the locale will really be used:
   setlocale(LC_ALL, "");
-  
+
   const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();

@@ -31,7 +31,7 @@
 #include <gtkmm/filechooserdialog.h>
 
 #include <glibmm/i18n.h>
-#include <string.h> // for memset
+#include <cstring> // for memset
 
 #include <sstream>
 
@@ -177,26 +177,26 @@ void Window_Translations::on_cell_data_original(Gtk::CellRenderer* renderer, con
 {
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
-  if(renderer_text)
-  {
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
+  if(!renderer_text)
+    return;
 
-      Glib::ustring text;
-      std::shared_ptr<TranslatableItem> item = row[m_columns.m_col_item];
-      if(item)
-        text = item->get_title_original();
+    if(!iter)
+      return;
 
-      //Use the name if there is no title:
-      if(text.empty())
-        text = item->get_name(); 
+  Gtk::TreeModel::Row row = *iter;
 
-      //TODO: Mark non-English originals.
-      renderer_text->property_text() = text;
-      renderer_text->property_editable() = false; //Names can never be edited.
-    }
-  }
+  Glib::ustring text;
+  std::shared_ptr<TranslatableItem> item = row[m_columns.m_col_item];
+  if(item)
+    text = item->get_title_original();
+
+  //Use the name if there is no title:
+  if(text.empty())
+    text = item->get_name();
+
+  //TODO: Mark non-English originals.
+  renderer_text->property_text() = text;
+  renderer_text->property_editable() = false; //Names can never be edited.
 }
 
 void Window_Translations::on_cell_data_item_itemhint(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
@@ -241,7 +241,7 @@ void Window_Translations::load_from_document()
 
     if(item->get_title_original().empty())
       continue;
-      
+
     auto iterTree = m_model->append();
     Gtk::TreeModel::Row row = *iterTree;
 
@@ -263,11 +263,11 @@ void Window_Translations::save_to_document()
   {
     //We have stored a std::shared_ptr to the original item, so we can just change it directly:
     std::shared_ptr<TranslatableItem> item = row[m_columns.m_col_item];
-    if(item)
-    {
-      const Glib::ustring translation = row[m_columns.m_col_translation];
-      item->set_title(translation, m_translation_locale);
-    }
+    if(!item)
+      continue;
+
+    const Glib::ustring translation = row[m_columns.m_col_translation];
+    item->set_title(translation, m_translation_locale);
   }
 
   m_treeview_modified = false;
@@ -338,12 +338,12 @@ void Window_Translations::on_treeview_edited(const Glib::ustring& /* path */, co
 }
 
 void Window_Translations::on_button_export()
-{ 
+{
   //Show the file-chooser dialog, to select an output .po file:
   Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FILE_CHOOSER_ACTION_SAVE);
   file_dlg.set_transient_for(*this);
   file_dlg.set_do_overwrite_confirmation();
-  
+
   // Only po files
   auto filter = Gtk::FileFilter::create();
   filter->set_name(_("Po files"));
@@ -351,8 +351,8 @@ void Window_Translations::on_button_export()
   file_dlg.add_filter(filter);
 
   file_dlg.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  file_dlg.add_button(_("Export"), Gtk::RESPONSE_OK); 
-  
+  file_dlg.add_button(_("Export"), Gtk::RESPONSE_OK);
+
   const auto result = file_dlg.run();
   if(result != Gtk::RESPONSE_OK)
     return;
@@ -362,7 +362,7 @@ void Window_Translations::on_button_export()
     return;
 
   save_to_document();
-  
+
   //Enforce the file extension:
   const Glib::ustring extension = ".po";
   bool add_extension = false;
@@ -391,9 +391,9 @@ void Window_Translations::on_button_import()
 
   file_dlg.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
 
-  //Note to translators: "Import" here is an action verb - it's a button. 
+  //Note to translators: "Import" here is an action verb - it's a button.
   file_dlg.add_button(_("Import"), Gtk::RESPONSE_OK);
-  
+
   const auto result = file_dlg.run();
   if(result != Gtk::RESPONSE_OK)
     return;
@@ -403,7 +403,7 @@ void Window_Translations::on_button_import()
     return;
 
   Glom::import_translations_from_po_file(get_document(), uri, m_translation_locale);
-  
+
   //Show the changed document in the UI:
   load_from_document();
 }

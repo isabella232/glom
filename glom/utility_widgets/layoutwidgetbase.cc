@@ -80,7 +80,7 @@ void LayoutWidgetBase::set_read_only(bool /* read_only */)
 {
 }
 
-void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item)
+void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const LayoutItem_WithFormatting& layout_item)
 {
   auto widget_to_change = &widget;
 
@@ -103,15 +103,12 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_p
     return;
   }
 
-  if(!layout_item)
-    return;
-
   //Set justification on labels and text views:
-  //Assume that people want left/right justification of multi-line text if they chose 
+  //Assume that people want left/right justification of multi-line text if they chose
   //left/right alignment of the text itself.
   {
     const Formatting::HorizontalAlignment alignment =
-     layout_item->get_formatting_used_horizontal_alignment(true /* for details view */);
+     layout_item.get_formatting_used_horizontal_alignment(true /* for details view */);
     const Gtk::Justification justification =
       (alignment == Formatting::HorizontalAlignment::LEFT ? Gtk::JUSTIFY_LEFT : Gtk::JUSTIFY_RIGHT);
     const Gtk::Align x_align =
@@ -145,7 +142,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_p
     }
   }
 
-  const auto formatting = layout_item->get_formatting_used();
+  const auto& formatting = layout_item.get_formatting_used();
 
   //Use the text formatting:
   const auto font_desc = formatting.get_text_format_font();
@@ -154,7 +151,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_p
     UiUtils::load_font_into_css_provider(*widget_to_change, font_desc);
   }
 
-  
+
   const auto fg = formatting.get_text_format_color_foreground();
   if(!fg.empty())
   {
@@ -168,8 +165,8 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_p
     {
       UiUtils::load_background_color_into_css_provider(*widget_to_change, bg);
     }
-    //According to the gtk_widget_override_background_color() documentation, 
-    //a GtkLabel can only have a background color by, for instance, placing it 
+    //According to the gtk_widget_override_background_color() documentation,
+    //a GtkLabel can only have a background color by, for instance, placing it
     //in a GtkEventBox. Luckily Label is actually derived from EventBox.
     else if(labelglom)
     {

@@ -30,15 +30,15 @@ class NumericFormat
 {
 public:
   NumericFormat();
-  NumericFormat(const NumericFormat& src);
-  NumericFormat(NumericFormat&& src) = delete;
+  NumericFormat(const NumericFormat& src) = default;
+  NumericFormat(NumericFormat&& src) = default;
 
-  NumericFormat& operator=(const NumericFormat& src);
-  NumericFormat& operator=(NumericFormat&& src) = delete;
+  NumericFormat& operator=(const NumericFormat& src) = default;
+  NumericFormat& operator=(NumericFormat&& src) = default;
 
   bool operator==(const NumericFormat& src) const;
   bool operator!=(const NumericFormat& src) const;
-  
+
   /** The foreground color to use for negative values, if
    * m_alt_foreground_color_for_negatives is true.
    * @returns the foreground color, in a format recognised by XParseColor
@@ -74,7 +74,7 @@ public:
    * m_decimal_places_restricted is false.
    */
   guint m_decimal_places;
-  
+
   /** Whether to use an alternative foreground color for negative values. */
   bool m_alt_foreground_color_for_negatives;
 };

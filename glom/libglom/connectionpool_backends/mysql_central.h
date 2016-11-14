@@ -53,8 +53,7 @@ private:
   bool create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password) override;
 
 private:
-  typedef std::vector<Glib::ustring> type_list_ports;
-  type_list_ports m_list_ports;
+  std::vector<Glib::ustring> m_list_ports;
 
   bool m_try_other_ports;
 };

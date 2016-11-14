@@ -34,9 +34,9 @@ static bool check_get_extra_rows(const Glib::ustring& quote_char)
   //Try to get more rows than intended:
   const Gnome::Gda::Value value("Born To Run" + quote_char + " OR " + quote_char + "x" + quote_char + "=" + quote_char + "x");
   auto where_field = document->get_field("albums", "name");
-  const Gnome::Gda::SqlExpr where_clause = 
+  const Gnome::Gda::SqlExpr where_clause =
     Glom::SqlUtils::build_simple_where_expression("albums", where_field, value);
-  
+
   Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto field = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
@@ -47,10 +47,10 @@ static bool check_get_extra_rows(const Glib::ustring& quote_char)
   layoutitem->set_full_field_details(field);
   fieldsToGet.emplace_back(layoutitem);
 
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =
     Glom::SqlUtils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
-  auto data_model = 
+  auto data_model =
     Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 2, 0)) //No rows should be returned because the match value was stupid, if escaped properly.
   {
@@ -65,11 +65,11 @@ static bool check_drop_table(const Glib::ustring& quote_char)
 {
   //Try to drop the table in a second SQL statement:
   const Gnome::Gda::Value value("True Blue" + quote_char + "; DROP TABLE songs; --");
-  auto where_field = 
+  auto where_field =
     document->get_field("albums", "name");
-  const Gnome::Gda::SqlExpr where_clause = 
+  const Gnome::Gda::SqlExpr where_clause =
     Glom::SqlUtils::build_simple_where_expression("albums", where_field, value);
-  
+
   Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto field = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
@@ -80,10 +80,10 @@ static bool check_drop_table(const Glib::ustring& quote_char)
   layoutitem->set_full_field_details(field);
   fieldsToGet.emplace_back(layoutitem);
 
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =
     Glom::SqlUtils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
-  auto data_model = 
+  auto data_model =
     Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 2, 0)) //No rows should be returned because the match value was stupid, if escaped properly.
   {
@@ -105,11 +105,11 @@ static bool check_avoid_quotes_and_drop_table_with_false_value_type()
   //Try to drop the table in a second SQL statement,
   //by using a text value for a field whose type should not need quoting:
   const Gnome::Gda::Value value("1;DROP TABLE songs");
-  auto where_field = 
+  auto where_field =
     document->get_field("albums", "album_id");
-  const Gnome::Gda::SqlExpr where_clause = 
+  const Gnome::Gda::SqlExpr where_clause =
     Glom::SqlUtils::build_simple_where_expression("albums", where_field, value);
-  
+
   Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto field = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
@@ -120,12 +120,12 @@ static bool check_avoid_quotes_and_drop_table_with_false_value_type()
   layoutitem->set_full_field_details(field);
   fieldsToGet.emplace_back(layoutitem);
 
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =
     Glom::SqlUtils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
 
   std::cout << "This test expects some std::cerr output about exceptions now:\n";
-  
+
   //Glom::ConnectionPool::get_instance()->set_show_debug_output(true);
 
   bool result = false;
@@ -162,14 +162,14 @@ static bool check_avoid_quotes_and_drop_table_with_false_field_type()
   const Gnome::Gda::Value value("\"Born To Run\";DROP TABLE songs");
 
   //Specify a field with incorrect type information:
-  auto where_field = 
+  auto where_field =
     document->get_field("albums", "name");
   where_field->set_glom_type(Glom::Field::glom_field_type::NUMERIC);
-  //const GType gda_type = Glom::Field::get_gda_type_for_glom_type(Glom::TYPE_NUMERIC); 
+  //const GType gda_type = Glom::Field::get_gda_type_for_glom_type(Glom::TYPE_NUMERIC);
 
-  const Gnome::Gda::SqlExpr where_clause = 
+  const Gnome::Gda::SqlExpr where_clause =
     Glom::SqlUtils::build_simple_where_expression("albums", where_field, value);
- 
+
   Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto field = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
@@ -180,7 +180,7 @@ static bool check_avoid_quotes_and_drop_table_with_false_field_type()
   layoutitem->set_full_field_details(field);
   fieldsToGet.emplace_back(layoutitem);
 
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =
     Glom::SqlUtils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
 
@@ -203,7 +203,7 @@ static bool check_avoid_quotes_and_drop_table_with_false_field_type()
 
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
-  const bool recreated = 
+  const bool recreated =
     test_create_and_selfhost_from_example("example_music_collection.glom", document, hosting_mode);
   if(!recreated)
   {
@@ -216,7 +216,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     std::cerr << G_STRFUNC << ": Failure: check_get_extra_rows() failed.\n";
     return false;
   }
-  
+
   if(!check_get_extra_rows("'"))
   {
     std::cerr << G_STRFUNC << ": Failure: check_get_extra_rows() failed.\n";
@@ -228,7 +228,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     std::cerr << G_STRFUNC << ": Failure: check_drop_table() failed.\n";
     return false;
   }
-  
+
   if(!check_drop_table("'"))
   {
     std::cerr << G_STRFUNC << ": Failure: check_drop_table() failed.\n";

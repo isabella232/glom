@@ -41,7 +41,7 @@ public:
   virtual void set_modified(bool modified = true);
 
   //int page_number
-  typedef sigc::signal<void> type_signal_apply;
+  typedef sigc::signal<void()> type_signal_apply;
   type_signal_apply signal_apply();
 
 protected:
@@ -79,7 +79,7 @@ protected:
 
   bool m_modified;
 
-  //typedef std::list<sigc::connection> type_listConnections; //Store the connections so that we can remove them later.
+  //typedef std::vector<sigc::connection> type_listConnections; //Store the connections so that we can remove them later.
 };
 
 } //namespace Glom

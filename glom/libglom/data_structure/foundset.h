@@ -30,7 +30,7 @@
 namespace Glom
 {
 
-/** A grouping of information about a view of a table, 
+/** A grouping of information about a view of a table,
  * including what records are viewed (the where clause),
  * how the are  sorted (the sort clause).
  */
@@ -38,10 +38,10 @@ class FoundSet
 {
 public:
   FoundSet() noexcept;
-  FoundSet(const FoundSet& src) noexcept;
-  FoundSet(FoundSet&& src) noexcept;
-  FoundSet& operator=(const FoundSet& src) noexcept;
-  FoundSet& operator=(FoundSet&& src) noexcept;
+  FoundSet(const FoundSet& src) = default;
+  FoundSet(FoundSet&& src) = default;
+  FoundSet& operator=(const FoundSet& src) = default;
+  FoundSet& operator=(FoundSet&& src) = default;
 
 private:
   //We cannot implement this without a way to compare GdaSqlExpr instances,
@@ -56,8 +56,7 @@ public:
   //TODO: Avoid duplication with types in Formatting.
   ///field, ascending
   typedef std::pair< std::shared_ptr<const LayoutItem_Field>, bool> type_pair_sort_field;
-  typedef std::vector<type_pair_sort_field> type_sort_clause;
-  type_sort_clause m_sort_clause;
+ std::vector<type_pair_sort_field> m_sort_clause;
 };
 
 } //namespace Glom

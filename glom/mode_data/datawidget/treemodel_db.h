@@ -42,8 +42,7 @@ public:
   //Field Values. We store them here after reading them from the database,
   //so that we can change them without changing them in the database immediately.
   //This is a duplication of data but at least we are still only getting the _rows_ that will be displayed. //TODO_Performance?
-  typedef std::map<int, DbValue > type_vec_values;
-  type_vec_values m_db_values;
+  std::unordered_map<int, DbValue > m_db_values;
 
   ///Gets the values from the database if necessary.
   DbValue get_value(DbTreeModel& model, int column, int row);
@@ -75,7 +74,7 @@ public:
 public:
   typedef std::vector< std::shared_ptr<LayoutItem> > type_vec_layout_items;
   typedef std::vector< std::shared_ptr<const LayoutItem> > type_vec_const_layout_items;
-  
+
 protected:
 
   /**
@@ -90,7 +89,7 @@ protected:
   virtual ~DbTreeModel();
 
 public:
- 
+
   /** A convenience method, creating the model from a list of LayoutItems,
    * instead of a list of LayoutItem_Fields.
    *
@@ -122,7 +121,7 @@ public:
   DbValue get_key_value(const TreeModel::iterator& iter) const;
 
   /** Get the last row.
-   * This will never return the placeholder row. 
+   * This will never return the placeholder row.
    */
   TreeModel::iterator get_last_row();
 
@@ -205,8 +204,7 @@ private:
    guint m_data_model_columns_count; //1 less than m_columns_count, which also has a model column for the key.
 
    //TODO: Performance:
-   typedef std::map<type_datamodel_row_index, DbTreeModelRow> type_map_rows;
-   mutable type_map_rows m_map_rows; //mutable because getting fills the internal cache.
+   mutable std::unordered_map<type_datamodel_row_index, DbTreeModelRow> m_map_rows; //mutable because getting fills the internal cache.
    int m_count_extra_rows; //Rows that are not from the database.
    int m_count_removed_rows; //A cache, instead of searching through the map.
    int get_internal_rows_count() const;

@@ -17,13 +17,13 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_GROUPBY_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_GROUPBY_H
 
 #include <libglom/data_structure/layout/layoutgroup.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
-#include <map>
+#include <unordered_map>
 
 namespace Glom
 {
@@ -39,10 +39,10 @@ class LayoutItem_GroupBy : public LayoutGroup
 public:
 
   LayoutItem_GroupBy();
-  LayoutItem_GroupBy(const LayoutItem_GroupBy& src);
-  LayoutItem_GroupBy(LayoutItem_GroupBy&& src) = delete;
-  LayoutItem_GroupBy& operator=(const LayoutItem_GroupBy& src);
-  LayoutItem_GroupBy& operator=(LayoutItem_GroupBy&& src) = delete;
+  LayoutItem_GroupBy(const LayoutItem_GroupBy& src) = default;
+  LayoutItem_GroupBy(LayoutItem_GroupBy&& src) = default;
+  LayoutItem_GroupBy& operator=(const LayoutItem_GroupBy& src) = default;
+  LayoutItem_GroupBy& operator=(LayoutItem_GroupBy&& src) = default;
   ~LayoutItem_GroupBy() override;
 
   LayoutItem* clone() const override;
@@ -72,7 +72,7 @@ public:
 
   std::shared_ptr<LayoutGroup> get_secondary_fields();
   std::shared_ptr<const LayoutGroup> get_secondary_fields() const;
-  
+
 private:
 
   std::shared_ptr<LayoutItem_Field> m_field_group_by;

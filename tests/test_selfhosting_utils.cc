@@ -70,7 +70,7 @@ static bool check_directory_exists()
     std::cerr << G_STRFUNC << ": temp_filepath_dir is empty.\n";
     return false;
   }
-  
+
   auto file = Gio::File::create_for_path(temp_filepath_dir);
   return file->query_exists();
 }
@@ -133,7 +133,7 @@ void test_selfhosting_cleanup(bool delete_file)
   if(!temp_filepath_dir.empty())
   {
     Glib::ustring uri;
-    
+
     try
     {
       uri = Glib::filename_to_uri(temp_filepath_dir);
@@ -146,7 +146,7 @@ void test_selfhosting_cleanup(bool delete_file)
     if(!uri.empty())
       delete_directory(uri);
   }
-  
+
   temp_filepath_dir.clear();
   temp_file_uri.clear(); //Forget this too.
 }
@@ -186,7 +186,7 @@ bool test_create_and_selfhost_new_empty(const std::shared_ptr<Glom::Document>& d
   //Save a copy, specifying the path to file in a directory:
   //For instance, /tmp/testglom/testglom.glom");
   const std::string temp_filename = "testglom";
-  temp_filepath_dir = 
+  temp_filepath_dir =
     Glom::FileUtils::get_temp_directory_path(temp_filename);
   if(!subdirectory_path.empty())
     temp_filepath_dir = Glib::build_filename(temp_filepath_dir, subdirectory_path);
@@ -223,7 +223,7 @@ bool test_create_and_selfhost_new_empty(const std::shared_ptr<Glom::Document>& d
   const auto initialized_errors =
     connection_pool->initialize( sigc::ptr_fun(&on_initialize_progress) );
   g_assert(initialized_errors == Glom::ConnectionPool::Backend::InitErrors::NONE);
-  
+
   if(!check_directory_exists())
   {
     std::cerr << G_STRFUNC << ": Failure: The data directory does not exist after calling initialize().\n";
@@ -245,7 +245,7 @@ bool test_create_and_selfhost_new_database(const std::shared_ptr<Glom::Document>
   {
     std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_empty() failed.\n";
     return false;
-  } 
+  }
 
   const auto db_name = Glom::DbUtils::get_unused_database_name(database_name);
   if(db_name.empty())
@@ -262,7 +262,7 @@ bool test_create_and_selfhost_new_database(const std::shared_ptr<Glom::Document>
     std::cerr << G_STRFUNC << ": DbUtils::create_database() failed.\n";
     return false;
   }
-  
+
   return true;
 }
 
@@ -285,7 +285,7 @@ static bool test_create_and_selfhost_from_example_full_path(const std::string& e
 bool test_create_and_selfhost_from_example(const std::string& example_filename, const std::shared_ptr<Glom::Document>& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
 {
   Glib::ustring uri;
-  
+
   // Get a URI for the example file:
   std::string path;
   try
@@ -306,7 +306,7 @@ bool test_create_and_selfhost_from_example(const std::string& example_filename, 
 bool test_create_and_selfhost_from_test_example(const std::string& example_filename, const std::shared_ptr<Glom::Document>& document, Glom::Document::HostingMode hosting_mode)
 {
   Glib::ustring uri;
-  
+
   // Get a URI for the example file:
   std::string path;
   try
@@ -432,10 +432,10 @@ bool test_table_exists(const Glib::ustring& table_name, const std::shared_ptr<Gl
   layoutitem->set_full_field_details(field);
   fieldsToGet.emplace_back(layoutitem);
 
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =
     Glom::SqlUtils::build_sql_select_with_where_clause(table_name,
       fieldsToGet);
-  const Glib::RefPtr<const Gnome::Gda::DataModel> data_model = 
+  const Glib::RefPtr<const Gnome::Gda::DataModel> data_model =
     Glom::DbUtils::query_execute_select(builder);
   if(!data_model || !(data_model->get_n_columns()))
   {
@@ -491,15 +491,15 @@ static bool test_example_musiccollection_data_related(const std::shared_ptr<cons
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =
     Glom::SqlUtils::build_sql_select_with_key("albums", fieldsToGet, field_album_id, album_id);
-  const Glib::RefPtr<const Gnome::Gda::DataModel> data_model = 
+  const Glib::RefPtr<const Gnome::Gda::DataModel> data_model =
     Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 3, 1))
   {
-    std::cerr << G_STRFUNC << ": Failure: Unexpected data model size with query: " << 
+    std::cerr << G_STRFUNC << ": Failure: Unexpected data model size with query: " <<
       Glom::SqlUtils::sqlbuilder_get_full_query(builder) << std::endl;
     return false;
   }
-  
+
   return true;
 }
 
@@ -510,12 +510,12 @@ bool test_example_musiccollection_data(const std::shared_ptr<const Glom::Documen
     std::cerr << G_STRFUNC << ": document is null\n";
     return false;
   }
-  
+
   //Check that some data is as expected:
   const Gnome::Gda::Value value("Born To Run");
-  const Gnome::Gda::SqlExpr where_clause = 
+  const Gnome::Gda::SqlExpr where_clause =
     Glom::SqlUtils::get_find_where_clause_quick(document, "albums", value);
-  
+
   Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto field = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
@@ -532,14 +532,14 @@ bool test_example_musiccollection_data(const std::shared_ptr<const Glom::Documen
   layoutitem->set_full_field_details(field);
   fieldsToGet.emplace_back(layoutitem);
 
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =
     Glom::SqlUtils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
-  const Glib::RefPtr<const Gnome::Gda::DataModel> data_model = 
+  const Glib::RefPtr<const Gnome::Gda::DataModel> data_model =
     Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 2, 1))
   {
-    std::cerr << G_STRFUNC << "Failure: Unexpected data model size with query: " << 
+    std::cerr << G_STRFUNC << "Failure: Unexpected data model size with query: " <<
       Glom::SqlUtils::sqlbuilder_get_full_query(builder) << std::endl;
     return false;
   }
@@ -557,7 +557,7 @@ bool test_example_musiccollection_data(const std::shared_ptr<const Glom::Documen
   return test_example_musiccollection_data_related(document, album_id);
 }
 
-static bool test_hosting_mode(const SlotTest& slot, Glom::Document::HostingMode hosting_mode, const Glib::ustring name)
+static bool test_hosting_mode(const SlotTest& slot, Glom::Document::HostingMode hosting_mode, const Glib::ustring& name)
 {
   try
   {

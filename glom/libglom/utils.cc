@@ -48,7 +48,7 @@ Glib::ustring Utils::locale_simplify(const Glib::ustring& locale_id)
   //Look for LC_ALL or LC_COLLATE
   //(We use the locale name only to identify translations
   //Otherwise just start with the whole string.
-  Glib::ustring::size_type posCategory = result.find("LC_ALL=");
+  auto posCategory = result.find("LC_ALL=");
   if(posCategory != Glib::ustring::npos)
   {
     result = result.substr(posCategory);
@@ -63,21 +63,21 @@ Glib::ustring Utils::locale_simplify(const Glib::ustring& locale_id)
   }
 
   //Get everything before the .:
-  const Glib::ustring::size_type posDot = result.find('.');
+  const auto posDot = result.find('.');
   if(posDot != Glib::ustring::npos)
   {
     result = result.substr(0, posDot);
   }
 
   //Get everything before the @:
-  const Glib::ustring::size_type posAt = result.find('@');
+  const auto posAt = result.find('@');
   if(posAt != Glib::ustring::npos)
   {
     result = result.substr(0, posAt);
   }
 
   //Get everything after the =, if any:
-  const Glib::ustring::size_type posEquals = result.find('=');
+  const auto posEquals = result.find('=');
   if(posEquals != Glib::ustring::npos)
   {
     result = result.substr(posEquals + 1);
@@ -88,7 +88,7 @@ Glib::ustring Utils::locale_simplify(const Glib::ustring& locale_id)
 
 Glib::ustring Utils::locale_language_id(const Glib::ustring& locale_id)
 {
-  const Glib::ustring::size_type posUnderscore = locale_id.find('_');
+  const auto posUnderscore = locale_id.find('_');
   if(posUnderscore != Glib::ustring::npos)
   {
     return locale_id.substr(0, posUnderscore);

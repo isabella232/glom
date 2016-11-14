@@ -28,14 +28,14 @@ namespace Glom
 
 class LayoutWidgetField : public LayoutWidgetMenu
 {
-public: 
+public:
   LayoutWidgetField();
 
   virtual void set_value(const Gnome::Gda::Value& value) = 0;
 
   virtual Gnome::Gda::Value get_value() const = 0;
 
-  typedef sigc::signal<void> type_signal_edited;
+  typedef sigc::signal<void()> type_signal_edited;
   type_signal_edited signal_edited();
 
 protected:

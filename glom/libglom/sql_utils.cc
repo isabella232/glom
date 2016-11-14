@@ -90,7 +90,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_count_rows(const Glib::Ref
   return result;
 }
 
-typedef std::list< std::shared_ptr<const UsesRelationship> > type_list_relationships;
+using type_list_relationships = std::list<std::shared_ptr<const UsesRelationship> >;
 
 static void add_to_relationships_list(type_list_relationships& list_relationships, const std::shared_ptr<const LayoutItem_Field>& layout_item)
 {
@@ -210,8 +210,7 @@ void build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::SqlBuilde
     const Glib::ustring parent = layout_item->get_sql_table_or_join_alias_name(table_name);
 
     //TODO: Use std::dynamic_pointer_cast?
-    const auto fieldsummary = dynamic_cast<const LayoutItem_FieldSummary*>(layout_item.get());
-    if(fieldsummary)
+    if(const auto fieldsummary = dynamic_cast<const LayoutItem_FieldSummary*>(layout_item.get()))
     {
       const Gnome::Gda::SqlBuilder::Id id_function = builder->add_function(
               fieldsummary->get_summary_type_sql(),
@@ -434,7 +433,7 @@ std::string sqlbuilder_get_full_query(
           result.raw().data(), result.raw().size(),
           "ISO-8859-1", "UTF-8",
           (char*)"?",
-          0, 0, 0));
+          nullptr, nullptr, nullptr));
 
   const Glib::ustring str = std::string(buf.get());
   if(str.empty())

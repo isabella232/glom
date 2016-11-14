@@ -37,7 +37,7 @@ MySQLCentralHosted::MySQLCentralHosted()
     "5434", //Earlier versions of Ubuntu Feisty defaulted to this for MySQL 8.2.
     "5435", //In case Ubuntu increases the port number again in future.
     "5436"} ), //In case Ubuntu increases the port number again in future.
-  m_try_other_ports(true)  
+  m_try_other_ports(true)
 {
 }
 
@@ -123,7 +123,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQLCentralHosted::connect(const Glib::ust
       }
       catch(const ExceptionConnection& ex)
       {
-        //Don't set this, because we might have previously set it to true to 
+        //Don't set this, because we might have previously set it to true to
         //show that a connection was possible with a previously-tried port: connection_possible = false;
 
         // Remember port if only the database was missing

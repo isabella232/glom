@@ -66,14 +66,14 @@ public:
    *
    *   void on_moved(bool group_select, double x_offset, double y_offset);
    */
-  typedef sigc::signal<void, const Glib::RefPtr<CanvasItemMovable>&, double, double> type_signal_moved;
+  typedef sigc::signal<void(const Glib::RefPtr<CanvasItemMovable>&, double, double)> type_signal_moved;
 
   /// This signal is emitted when the canvas item is moved by the user.
   type_signal_moved signal_moved();
 
   /** void on_show_context(guint button, guint32 activate_time);
    */
-  typedef sigc::signal<void, guint, guint32> type_signal_show_context;
+  typedef sigc::signal<void(guint, guint32)> type_signal_show_context;
   type_signal_show_context signal_show_context();
 
   /** For instance,
@@ -83,9 +83,9 @@ public:
    *
    *   void on_selected(bool group_select);
    */
-  typedef sigc::signal<void, const Glib::RefPtr<CanvasItemMovable>&, bool> type_signal_selected;
+  typedef sigc::signal<void(const Glib::RefPtr<CanvasItemMovable>&, bool)> type_signal_selected;
 
-  /** This signal is emitted if the user causes the item 
+  /** This signal is emitted if the user causes the item
    * to be selected or deselected. See get_selected().
    */
   type_signal_selected signal_selected();

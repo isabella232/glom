@@ -28,16 +28,16 @@ namespace Glom
 
 /** This reuses the title concept of the TranslatableItem base class to give us translatable text.
  */
-class StaticText 
+class StaticText
  : public TranslatableItem
 {
 public:
 
   StaticText();
-  StaticText(const StaticText& src);
-  StaticText(StaticText&& src) = delete;
-  StaticText& operator=(const StaticText& src);
-  StaticText& operator=(StaticText&& src) = delete;
+  StaticText(const StaticText& src) = default;
+  StaticText(StaticText&& src) = default;
+  StaticText& operator=(const StaticText& src) = default;
+  StaticText& operator=(StaticText&& src) = default;
 
   bool operator==(const StaticText& src) const;
 };

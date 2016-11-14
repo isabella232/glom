@@ -57,11 +57,11 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_check_button_show_hidden->signal_toggled().connect(sigc::mem_fun(*this, &Box_Tables::on_show_hidden_toggled));
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_Add));
-  m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_Delete));
+  m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_add));
+  m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_delete));
   m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_changed));
 #endif //GLOM_ENABLE_CLIENT_ONLY
-  m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_Edit));
+  m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_edit));
 
   show_all_children();
 }
@@ -73,7 +73,7 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const std:
     std::cerr << G_STRFUNC << ": table_info was null.\n";
     return;
   }
-  
+
   if(iter)
   {
     const auto developer_mode = (get_userlevel() == AppState::userlevels::DEVELOPER);
@@ -211,7 +211,7 @@ bool Box_Tables::fill_from_database()
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
+void Box_Tables::on_adddel_add(const Gtk::TreeModel::iterator& row)
 {
   //TODO: Handle cell renderer changes to prevent illegal table names (e.g. starting with numbers.).
 
@@ -219,7 +219,19 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
   if(table_name.empty())
     return;
 
-  bool created = false; 
+  bool created = false;
+
+  // Validate the name:
+  // TODO: Remove this check when the libgda bug has been fixed:
+  // https://bugzilla.gnome.org/show_bug.cgi?id=763534
+  if (std::find(std::begin(table_name), std::end(table_name), ' ') != std::end(table_name)) {
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Table Names Cannot Contain Spaces")), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+    dialog.set_secondary_text(_("Unfortunately, Glom tables cannot have names that contain spaces. Please enter a different name for the table."));
+    dialog.set_transient_for(*AppWindow::get_appwindow());
+    dialog.run();
+    dialog.hide();
+    return;
+  }
 
   //Check whether it exists already. (Maybe it is somehow in the database but not in the document. That shouldn't happen.)
   const auto exists_in_db = DbUtils::get_table_exists_in_database(table_name);
@@ -243,11 +255,11 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
   {
     created = DbUtils::create_table_with_default_fields(get_document(), table_name);
   }
-  
+
   if(created)
   {
     //Show the new information for this whole row:
-    
+
     auto document = get_document();
     if(document)
     {
@@ -268,7 +280,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
   }
 }
 
-void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd)
+void Box_Tables::on_adddel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd)
 {
   auto iterAfter = rowEnd;
   ++iterAfter;
@@ -303,7 +315,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
           dialog.add_button(_("Delete Table"), Gtk::RESPONSE_OK);
           const auto iButtonClicked = dialog.run();
-          
+
           //Get a list of autoincrementing fields in the table:
           const auto fields = document->get_table_fields(table_name);
 
@@ -317,19 +329,19 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
             {
               //Forget about it in the document too.
               get_document()->remove_table(table_name);
-              
+
               something_changed = true;
             }
-            
+
             //Remove the auto-increment rows.
             //Otherwise it would not start at 0 if a table with the same name, and same field, is added again later.
             for(const auto& field : fields)
             {
               if(!field || !field->get_auto_increment())
                 continue;
-                
+
               const auto field_name = field->get_name();
-            
+
               if(!field_name.empty())
                 DbUtils::remove_auto_increment(table_name, field_name);
               else
@@ -388,6 +400,17 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
     else if(column == m_col_table_name)
     {
       Glib::ustring table_name = m_AddDel.get_value_key(row);
+
+      // Check that the table really already exists.
+      // It could be left over from a failed attempt to add a table.
+      // In that case, try to add it again.
+      auto document = get_document();
+      if(!document->get_table_is_known(table_name))
+      {
+        on_adddel_add(row);
+        return;
+      }
+
       Glib::ustring table_name_new = m_AddDel.get_value(row, m_col_table_name);
       if(!table_name.empty() && !table_name_new.empty())
       {
@@ -410,7 +433,6 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
             set_modified();
 
             //Tell the document that this table's name has changed:
-            auto document = get_document();
             if(document)
               document->change_table_name(table_name, table_name_new);
 
@@ -423,7 +445,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
-void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
+void Box_Tables::on_adddel_edit(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring table_name = m_AddDel.get_value_key(row);
 
@@ -442,7 +464,7 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
     else
     {
        //Go ahead:
- 
+
        save_to_document();
 
        //Emit the signal:

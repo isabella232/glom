@@ -32,10 +32,10 @@ class Report : public TranslatableItem
 {
 public:
   Report();
-  Report(const Report& src);
-  Report(Report&& src) = delete;
-  Report& operator=(const Report& src);
-  Report& operator=(Report&& src) = delete;
+  Report(const Report& src) = default;
+  Report(Report&& src) = default;
+  Report& operator=(const Report& src) = default;
+  Report& operator=(Report&& src) = default;
 
   bool get_show_table_title() const;
   void set_show_table_title(bool show_table_title = true);

@@ -30,12 +30,12 @@ namespace Glom
 
 class GlomCellRenderer_ButtonText : public Gtk::CellRendererText
 {
-public: 
+public:
   GlomCellRenderer_ButtonText();
 
-  typedef sigc::signal<void, const Gtk::TreeModel::Path&> type_signal_clicked;
+  typedef sigc::signal<void(const Gtk::TreeModel::Path&)> type_signal_clicked;
   type_signal_clicked signal_clicked();
-  
+
 private:
 
   bool activate_vfunc(GdkEvent* event, Gtk::Widget& widget, const Glib::ustring& path, const Gdk::Rectangle& background_area, const Gdk::Rectangle& cell_area, Gtk::CellRendererState flags) override;

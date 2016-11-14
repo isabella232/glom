@@ -58,26 +58,19 @@ namespace Glom
  */
 template
 <typename T_Container>
-auto find_if_layout_item_is_equal(T_Container& container, const typename T_Container::value_type& layout_item) -> decltype(container.begin())
+auto find_if_layout_item_is_equal(T_Container& container, const typename T_Container::value_type::element_type& layout_item) -> decltype(container.begin())
 {
+  // TODO: Try to capture layout_item in the lambda as const &.
   return Utils::find_if(container,
     [&layout_item](const typename T_Container::value_type& element)
     {
       //Assume that element is a shared_ptr<>.
 
-      if(!layout_item && !element)
-        return true;
+      if(!element)
+        return false; //layout_item cannot (should not) be null because it is a reference.
 
-      if(element && layout_item)
-      {
-        return layout_item->is_same_field(element);
-        //std::cout << "          debug: name1=" << layout_item->get_name() << ", name2=" << element->get_name() << ", result=" << result << std::endl;
-        //return result;
-      }
-      else
-        return false;
-    }
-  );
+      return layout_item.is_same_field(*element);
+    });
 }
 
 Base_DB::Base_DB()
@@ -656,7 +649,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
         if(field)
         {
           //We need the connection when we run the script, so that the script may use it.
-          auto sharedconnection = connect_to_server(0 /* parent window */);
+          auto sharedconnection = connect_to_server(nullptr /* parent window */);
 
           g_assert(sharedconnection);
 
@@ -678,7 +671,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
           layout_item->set_full_field_details(field);
 
           //show it:
-          set_entered_field_data(layout_item, calc_progress_refreshed.m_value ); //TODO: If this record is shown.
+          set_entered_field_data(*layout_item, calc_progress_refreshed.m_value ); //TODO: If this record is shown.
 
           //Add it to the database (even if it is not shown in the view)
           //Using true for the last parameter means we use existing calculations where possible,
@@ -703,13 +696,13 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
   return DbUtils::get_record_field_values(document, table_name, primary_key, primary_key_value);
 }
 
-void Base_DB::set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& /* field */, const Gnome::Gda::Value& /* value */)
+void Base_DB::set_entered_field_data(const LayoutItem_Field& /* field */, const Gnome::Gda::Value& /* value */)
 {
   //Override this.
 }
 
 
-void Base_DB::set_entered_field_data(const Gtk::TreeModel::iterator& /* row */, const std::shared_ptr<const LayoutItem_Field>& /* field */, const Gnome::Gda::Value& /* value */)
+void Base_DB::set_entered_field_data(const Gtk::TreeModel::iterator& /* row */, const LayoutItem_Field& /* field */, const Gnome::Gda::Value& /* value */)
 {
   //Override this.
 }
@@ -742,10 +735,10 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   const auto field_name = field_in_record.m_field->get_name();
   if(!field_name.empty()) //This should not happen.
   {
-    const Gnome::Gda::SqlExpr where_clause = 
+    const Gnome::Gda::SqlExpr where_clause =
       SqlUtils::build_simple_where_expression(field_in_record.m_table_name,
         field_in_record.m_key, field_in_record.m_key_value);
-    const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+    const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =
       SqlUtils::build_sql_update_with_where_clause(field_in_record.m_table_name,
         field_in_record.m_field, field_value, where_clause);
 
@@ -810,14 +803,14 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
     {
       to_field = field_in_record.m_field->get_relationship()->get_to_field();
     }
-      
+
     if(!to_field.empty())
     {
       std::cerr << G_STRFUNC << ": field_in_record.m_key is empty.\n";
       return result;
     }
   }
-  
+
 
   type_vecConstLayoutFields list_fields;
   auto layout_item = field_in_record.m_field;
@@ -897,25 +890,29 @@ void Base_DB::do_calculations(const LayoutFieldInRecord& field_changed, bool fir
 
   //Recalculate fields that are triggered by a change of this field's value, not including calculations that these calculations use.
 
-  for(const auto& field : get_calculated_fields(field_changed.m_table_name, field_changed.m_field))
+  const auto field_info_changed = field_changed.m_field;
+  if(field_info_changed)
   {
-    if(field)
-    {
-      //std::cout << "debug: recalcing field: " << field->get_name() << std::endl;
-      //TODO: What if the field is in another table?
-      LayoutFieldInRecord triggered_field(field, field_changed.m_table_name, field_changed.m_key, field_changed.m_key_value);
-      calculate_field(triggered_field); //And any dependencies.
+      for(const auto& field : get_calculated_fields(field_changed.m_table_name, *field_info_changed))
+      {
+        if(field)
+        {
+          //std::cout << "debug: recalcing field: " << field->get_name() << std::endl;
+          //TODO: What if the field is in another table?
+          LayoutFieldInRecord triggered_field(field, field_changed.m_table_name, field_changed.m_key, field_changed.m_key_value);
+          calculate_field(triggered_field); //And any dependencies.
 
-      //Calculate anything that depends on this.
-      do_calculations(triggered_field, false /* recurse, reusing m_FieldsCalculationInProgress */);
-    }
+          //Calculate anything that depends on this.
+          do_calculations(triggered_field, false /* recurse, reusing m_FieldsCalculationInProgress */);
+        }
+      }
   }
 
   if(first_calc_field)
     clear_fields_calculation_in_progress();
 }
 
-Base_DB::type_list_const_field_items Base_DB::get_calculated_fields(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& field)
+Base_DB::type_list_const_field_items Base_DB::get_calculated_fields(const Glib::ustring& table_name, const LayoutItem_Field& field)
 {
   //std::cout << "debug: Base_DB::get_calculated_fields field=" << field->get_name() << std::endl;
 
@@ -981,13 +978,13 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
 
   while(index < count)
   {
-    Glib::ustring::size_type pos_find = calculation.find(prefix, index);
+    auto pos_find = calculation.find(prefix, index);
     if(pos_find != Glib::ustring::npos)
     {
-      Glib::ustring::size_type pos_find_end = calculation.find("\"]", pos_find);
+      auto pos_find_end = calculation.find("\"]", pos_find);
       if(pos_find_end  != Glib::ustring::npos)
       {
-        Glib::ustring::size_type pos_start = pos_find + prefix_size;
+        auto pos_start = pos_find + prefix_size;
         const auto field_name = calculation.substr(pos_start, pos_find_end - pos_start);
 
         auto field_found = document->get_field(table_name, field_name);
@@ -1059,7 +1056,7 @@ void Base_DB::do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::
         LayoutFieldInRecord field_in_record_to_set(layout_item, field_in_record.m_table_name /* parent table */, field_in_record.m_key, field_in_record.m_key_value);
 
         //Add it to the view:
-        set_entered_field_data(row, layout_item, value_converted);
+        set_entered_field_data(row, *layout_item, value_converted);
         //m_AddDel.set_value(row, layout_item, value_converted);
 
         //Add it to the database (even if it is not shown in the view)

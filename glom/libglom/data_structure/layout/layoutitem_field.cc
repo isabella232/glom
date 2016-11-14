@@ -34,22 +34,6 @@ LayoutItem_Field::LayoutItem_Field()
 {
 }
 
-LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
-: LayoutItem_WithFormatting(src),
-  UsesRelationship(src),
-  m_priv_view(src.m_priv_view),
-  m_priv_edit(src.m_priv_edit),
-  //m_table_name(src.m_table_name),
-  m_field_cache_valid(src.m_field_cache_valid),
-  m_hidden(src.m_hidden),
-  m_formatting_use_default(src.m_formatting_use_default),
-  m_title_custom(src.m_title_custom)
-{
-//std::cerr << G_STRFUNC << ": m_choices_related_relationship=" << m_choices_related_relationship << ", src.m_choices_related_relationship=" << src.m_choices_related_relationship << std::endl;
-
-  m_field = src.m_field;
-}
-
 LayoutItem* LayoutItem_Field::clone() const
 {
   return new LayoutItem_Field(*this);
@@ -76,27 +60,6 @@ bool LayoutItem_Field::operator==(const LayoutItem_Field& src) const
     result = result && (m_title_custom == src.m_title_custom);
 
   return result;
-}
-
-//Avoid using this, for performance:
-LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
-{
-  LayoutItem_WithFormatting::operator=(src);
-  UsesRelationship::operator=(src);
-
-  m_field = src.m_field;
-  m_field_cache_valid = src.m_field_cache_valid;
-
-  m_priv_view = src.m_priv_view;
-  m_priv_edit = src.m_priv_edit;
-
-  m_hidden = src.m_hidden;
-
-  m_formatting_use_default = src.m_formatting_use_default;
-
-  m_title_custom = src.m_title_custom;
-
-  return *this;
 }
 
 void LayoutItem_Field::set_name(const Glib::ustring& name) noexcept
@@ -251,10 +214,10 @@ const Formatting& LayoutItem_Field::get_formatting_used() const
 
 Formatting::HorizontalAlignment LayoutItem_Field::get_formatting_used_horizontal_alignment(bool for_details_view) const
 {
-  const auto format = get_formatting_used();
-  Formatting::HorizontalAlignment alignment = 
+  const auto& format = get_formatting_used();
+  Formatting::HorizontalAlignment alignment =
     format.get_horizontal_alignment();
-  
+
   if(alignment == Formatting::HorizontalAlignment::AUTO)
   {
     //By default, right-align numbers on list views, unless they are ID fields.
@@ -267,13 +230,13 @@ Formatting::HorizontalAlignment LayoutItem_Field::get_formatting_used_horizontal
     else
       alignment = Formatting::HorizontalAlignment::LEFT;
   }
-  
+
   return alignment;
 }
 
 bool LayoutItem_Field::get_formatting_used_has_translatable_choices() const
 {
-  const auto formatting = get_formatting_used();
+  const auto& formatting = get_formatting_used();
   if(!formatting.get_has_custom_choices())
     return false;
 
@@ -334,16 +297,16 @@ void LayoutItem_Field::set_title_custom(const std::shared_ptr<CustomTitle>& titl
   m_title_custom = title;
 }
 
-bool LayoutItem_Field::is_same_field(const std::shared_ptr<const LayoutItem_Field>& field) const
+bool LayoutItem_Field::is_same_field(const LayoutItem_Field& field) const
 {
   //Don't use auto here because we really want to call
   //UsesRelationship::operator==(), not LayoutItem_Field::operator==().
   const UsesRelationship* uses_a = this;
-  const UsesRelationship* uses_b = &(*field);
+  const UsesRelationship* uses_b = &field; //TODO: Avoid this.
   if(!uses_a || !uses_b)
     return false; //Shouldn't happen.
-    
-  return (get_name() == field->get_name()) &&
+ 
+  return (get_name() == field.get_name()) &&
          (*uses_a == *uses_b);
 }
 

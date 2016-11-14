@@ -50,14 +50,14 @@ bool CheckButton::on_button_press_event(GdkEventButton *button_event)
     pApp->add_developer_action(m_context_add_related_records);
     pApp->add_developer_action(m_context_add_group);
 
-    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+    pApp->update_userlevel_ui(); //Update our action's sensitivity.
 
     //Only show this popup in developer mode, so operators still see the default GtkCheckButton context menu.
     //TODO: It would be better to add it somehow to the standard context menu.
     if(pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
       GdkModifierType mods;
-      gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
+      gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, nullptr, nullptr, &mods );
       if(mods & GDK_BUTTON3_MASK)
       {
         //Give user choices of actions on this item:

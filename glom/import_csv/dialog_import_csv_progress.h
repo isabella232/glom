@@ -37,7 +37,7 @@ class Dialog_Import_CSV_Progress
 public:
   static const char* glade_id;
   static const bool glade_developer;
-  
+
   Dialog_Import_CSV_Progress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   bool init_db_details(const Glib::ustring& table_name);
@@ -57,8 +57,8 @@ private:
 
   void on_response(int response_id) override; // From Gtk::Dialog
 
-  Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const override; // from Base_DB_Table_Data
-  void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value&  value) override; // from Base_DB
+  Gnome::Gda::Value get_entered_field_data(const LayoutItem_Field& field) const override; // from Base_DB_Table_Data
+  void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value&  value) override; // from Base_DB
 
   std::shared_ptr<Field> get_field_primary_key() const override; // from Base_DB_Table_Data
   Gnome::Gda::Value get_primary_key_value_selected() const override; // from Base_DB_Table_Data
@@ -72,8 +72,7 @@ private:
   // We use this for implementing get_entered_field_data and
   // set_entered_field_data, required by Base_DB_Table_Data::record_new().
   // It just holds the values for the fields in the current row.
-  typedef std::map<Glib::ustring, Gnome::Gda::Value> type_mapValues;
-  type_mapValues m_current_row_values;
+  std::unordered_map<Glib::ustring, Gnome::Gda::Value, std::hash<std::string>> m_current_row_values;
 
   Gtk::ProgressBar* m_progress_bar;
   Gtk::TextView* m_text_view;

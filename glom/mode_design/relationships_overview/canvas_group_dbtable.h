@@ -35,7 +35,7 @@ private:
 
 public:
   static Glib::RefPtr<CanvasGroupDbTable> create(const Glib::ustring& table_name, const Glib::ustring& table_title, const Document::type_vec_fields& fields, double x = 0.0, double y = 0.0);
- 
+
   //TODO: Use bounds instead?
   double get_table_height() const;
   double get_table_width() const;
@@ -48,8 +48,7 @@ private:
    double m_table_height;
    static double m_table_width;
 
-   typedef std::map <Glib::ustring, double> type_map_fields_y;
-   type_map_fields_y m_map_fields_y;
+   std::unordered_map <Glib::ustring, double> m_map_fields_y;
 };
 
 } //namespace Glom

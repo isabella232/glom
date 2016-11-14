@@ -80,40 +80,6 @@ bool delete_file(const std::string& uri)
   return true;
 }
 
-/** For instance, to find the first file in the directory with a .glom extension.
- */
-static Glib::ustring get_directory_child_with_suffix(const Glib::ustring& uri_directory, const std::string& suffix, bool recursive)
-{
-  auto directory = Gio::File::create_for_uri(uri_directory);
-  auto enumerator = directory->enumerate_children();
-
-  auto info = enumerator->next_file();
-  while(info)
-  {
-    Glib::RefPtr<const Gio::File> child = directory->get_child(info->get_name());
-
-    const Gio::FileType file_type = child->query_file_type();
-    if(file_type == Gio::FILE_TYPE_REGULAR)
-    {
-      //Check the filename:
-      const auto basename = child->get_basename();
-      if(Utils::string_remove_suffix(basename, suffix) != basename)
-        return child->get_uri();
-    }
-    else if(recursive && file_type == Gio::FILE_TYPE_DIRECTORY)
-    {
-      //Look in sub-directories too:
-      const Glib::ustring result = get_directory_child_with_suffix(child->get_uri(), suffix, recursive);
-      if(!result.empty())
-        return result;
-    }
-
-    info = enumerator->next_file();
-  }
-
-  return Glib::ustring();
-}
-
 Glib::ustring get_file_uri_without_extension(const Glib::ustring& uri)
 {
   if(uri.empty())
@@ -125,7 +91,7 @@ Glib::ustring get_file_uri_without_extension(const Glib::ustring& uri)
 
   const Glib::ustring filename_part = file->get_basename();
 
-  const Glib::ustring::size_type pos_dot = filename_part.rfind(".");
+  const auto pos_dot = filename_part.rfind(".");
   if(pos_dot == Glib::ustring::npos)
     return uri; //There was no extension, so just return the existing URI.
   else
@@ -151,7 +117,7 @@ std::string get_file_path_without_extension(const std::string& filepath)
 
   const Glib::ustring filename_part = file->get_basename();
 
-  const Glib::ustring::size_type pos_dot = filename_part.rfind(".");
+  const auto pos_dot = filename_part.rfind(".");
   if(pos_dot == Glib::ustring::npos)
     return filepath; //There was no extension, so just return the existing URI.
   else

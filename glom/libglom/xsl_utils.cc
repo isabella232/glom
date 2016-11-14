@@ -73,7 +73,7 @@ static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std
   Glib::ustring result;
 
   //Use libxslt to transform the XML:
-  xmlDocPtr style = xmlReadDoc((xmlChar*)xslt_data, 0, 0, 0);
+  xmlDocPtr style = xmlReadDoc((xmlChar*)xslt_data, nullptr, nullptr, 0);
   if(style)
   {
     //We need this to be able to use the exsl: functions, even if we declare the namespace at the start of the xsl.
@@ -85,14 +85,14 @@ static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std
     if(cur)
     {
       //Use the parsed stylesheet on the XML:
-      xmlDocPtr pDocOutput = xsltApplyStylesheet(cur, const_cast<xmlDoc*>(xml_document.cobj()), 0);
+      xmlDocPtr pDocOutput = xsltApplyStylesheet(cur, const_cast<xmlDoc*>(xml_document.cobj()), nullptr);
       xsltFreeStylesheet(cur);
 
       //Get the output text:
       xmlChar* buffer = nullptr;
       int length = 0;
       xmlIndentTreeOutput = 1; //Format the output with extra white space. TODO: Is there a better way than this global variable?
-      xmlDocDumpFormatMemoryEnc(pDocOutput, &buffer, &length, 0, 0);
+      xmlDocDumpFormatMemoryEnc(pDocOutput, &buffer, &length, nullptr, 0);
 
       if(buffer)
       {

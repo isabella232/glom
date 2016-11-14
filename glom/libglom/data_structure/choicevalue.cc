@@ -28,22 +28,6 @@ ChoiceValue::ChoiceValue()
   m_translatable_item_type = enumTranslatableItemType::CHOICEVALUE;
 }
 
-ChoiceValue::ChoiceValue(const ChoiceValue& src)
-: TranslatableItem(src)
-{
-  //TODO_Performance: Implement this properly, without the extra copy.
-  operator=(src);
-}
-
-ChoiceValue& ChoiceValue::operator=(const ChoiceValue& src)
-{
-  TranslatableItem::operator=(src);
-
-  m_value = src.m_value;
-
-  return *this;
-}
-
 bool ChoiceValue::operator==(const ChoiceValue& src) const
 {
   return TranslatableItem::operator==(src)

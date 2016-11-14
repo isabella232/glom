@@ -31,19 +31,18 @@ class SystemPrefs
 {
 public:
   SystemPrefs();
-  SystemPrefs(const SystemPrefs& src);
-  SystemPrefs(SystemPrefs&& src);
+  SystemPrefs(const SystemPrefs& src) = default;
+  SystemPrefs(SystemPrefs&& src) = default;
 
-  SystemPrefs& operator=(const SystemPrefs& src);
-  SystemPrefs& operator=(SystemPrefs&& src);
+  SystemPrefs& operator=(const SystemPrefs& src) = default;
+  SystemPrefs& operator=(SystemPrefs&& src) = default;
 
   bool operator==(const SystemPrefs& src) const;
   bool operator!=(const SystemPrefs& src) const;
- 
 
   //TODO: Add getters and setters:
   Glib::ustring m_name, m_org_name,
-    m_org_address_street, m_org_address_street2, m_org_address_town, 
+    m_org_address_street, m_org_address_street2, m_org_address_town,
     m_org_address_county, m_org_address_country, m_org_address_postcode;
   Gnome::Gda::Value m_org_logo; //enumType::IMAGE.
 };

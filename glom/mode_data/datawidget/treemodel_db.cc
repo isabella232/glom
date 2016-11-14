@@ -129,7 +129,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
 
             //We don't just create a Gda::Value of the column's gda type,
             //because we should use a NULL-type Gda::Value as the initial value for some fields:
-            const Field::glom_field_type glom_type = Field::get_glom_type_for_gda_type(column->get_g_type());
+            const auto glom_type = Field::get_glom_type_for_gda_type(column->get_g_type());
             m_db_values[col] = Glom::Conversions::get_empty_value(glom_type);
           }
         }
@@ -253,12 +253,12 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
         if(layout_item)
           std::cerr << G_STRFUNC << ":   field: " << layout_item->get_name() << std::endl;
       }
-      
+
       return;
     }
-      
+
     m_column_index_key = column_index_key;
-      
+
     //The Column information that can be used with TreeView::append(), TreeModel::iterator[], etc.
     m_columns_count = m_column_fields.size();
     refresh_from_database(m_found_set);
@@ -733,7 +733,7 @@ int DbTreeModel::get_internal_rows_count() const
 
 DbTreeModel::iterator DbTreeModel::append()
 {
-  //const size_type existing_size = m_data_model_rows_count;
+  //const auto existing_size = m_data_model_rows_count;
   //std::cerr << G_STRFUNC << ": existing_size = " << existing_size << std::endl;
   //m_rows.resize(existing_size + 1);
 
@@ -781,8 +781,7 @@ void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::Va
 
     //Cast it to the specific value type.
     //It can't work with anything else anyway.
-    typedef Glib::Value< DbValue > ValueDbValue;
-
+    using ValueDbValue = Glib::Value<DbValue>;
     const auto pDbValue = static_cast<const ValueDbValue*>(&value);
     if(!pDbValue)
       std::cerr << G_STRFUNC << ": value is not a Value< DbValue >.\n";
@@ -914,10 +913,10 @@ Gtk::TreeModel::iterator DbTreeModel::get_last_row()
   if(rows_count)
   {
     auto row = rows_count - 1;
-    
+
     if(row > 0) //This should always be true, because there is always a placeholder.
       --row; //Ignore the placeholder.
-   
+
     //Step backwards until we find one that is not removed.
     while((m_map_rows.find(row) != m_map_rows.end()) && m_map_rows[row].m_removed)
     {

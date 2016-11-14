@@ -30,7 +30,7 @@ namespace Glom
 CanvasTableMovable::CanvasTableMovable()
 : m_row_line_width(0),
   m_column_line_width(0)
-  
+
 {
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));
   signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_press_event));
@@ -185,13 +185,13 @@ void CanvasTableMovable::set_lines_details(double row_line_width, double column_
   m_column_line_width = row_line_width;
   m_row_line_width = column_line_width;
   m_line_color = color;
-  
+
   set_lines_visibility(false);
 }
 
 void CanvasTableMovable::set_lines_visibility(bool show)
 {
-  if(show && 
+  if(show &&
     (m_line_color.empty() || ((m_row_line_width == 0) && (m_column_line_width == 0))))
   {
     //TODO: Use constants or function calls from somewhere else:

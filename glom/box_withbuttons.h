@@ -33,14 +33,14 @@
 namespace Glom
 {
 
-/** A Gtk::Box base widget class, 
- * with some extra signals to allow derived classes to be used generically in 
+/** A Gtk::Box base widget class,
+ * with some extra signals to allow derived classes to be used generically in
  * Window_BoxHolder, allowing the dialog to respond to buttons in the box.
  */
 class Box_WithButtons :
   public Gtk::Box
 {
-public: 
+public:
   Box_WithButtons();
 
   Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
@@ -56,8 +56,8 @@ public:
   void set_button_cancel(Gtk::Button& button);
 
   //Signals:
-  sigc::signal<void, Glib::ustring> signal_selected; //When an item is selected.
-  sigc::signal<void> signal_cancelled; //When the cancel button is clicked.
+  sigc::signal<void(Glib::ustring)> signal_selected; //When an item is selected.
+  sigc::signal<void()> signal_cancelled; //When the cancel button is clicked.
 
   virtual Gtk::Widget* get_default_button();
 

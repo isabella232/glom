@@ -27,7 +27,7 @@
 #include <glibmm/miscutils.h>
 
 #include <iostream>
- 
+
 int main()
 {
   Glom::libglom_init();
@@ -69,7 +69,7 @@ int main()
   g_assert(document->get_database_title_original() == "Project Manager Example");
 
   //Check a layout:
-  const auto groups = 
+  const auto groups =
     document->get_data_layout_groups("details", "projects");
   g_assert(groups.size() == 3);
   const auto group =
@@ -77,7 +77,7 @@ int main()
   g_assert(group);
   g_assert(group->get_name() == "overview");
 
-  const auto items = 
+  const auto items =
     group->get_items();
   //std::cout << "size: " << items.size() << std::endl;
   g_assert(items.size() == 3);

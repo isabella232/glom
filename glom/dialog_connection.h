@@ -46,8 +46,8 @@ public:
   ///Disable irrelevant fields:
   void set_connect_to_browsed();
 
-  /** Change the main message text of the dialog, so we can use the dialog 
-   * to confirm that the user knows a password before disconnecting, when 
+  /** Change the main message text of the dialog, so we can use the dialog
+   * to confirm that the user knows a password before disconnecting, when
    * switching to network sharing.
    */
   void set_confirm_existing_user_note();

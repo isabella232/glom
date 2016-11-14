@@ -49,9 +49,9 @@ bool import_translations_from_po_file(const std::shared_ptr<Document>& document,
 
 /** Get a hint about what the text is for.
  * This is also necessary to uniquely identify the item,
- * because not all text with the same contents should be translated the same 
+ * because not all text with the same contents should be translated the same
  * way in all languages - the context might change the translation.
- */ 
+ */
 Glib::ustring get_po_context_for_item(const std::shared_ptr<const TranslatableItem>& item, const Glib::ustring& hint);
 
 } //namespace Glom

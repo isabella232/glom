@@ -33,10 +33,10 @@ public:
 
   LayoutItem();
   explicit LayoutItem(const LayoutItem& src);
-  LayoutItem(LayoutItem&& src) = delete;
+  LayoutItem(LayoutItem&& src) = default;
   LayoutItem& operator=(const LayoutItem& src);
-  LayoutItem& operator=(LayoutItem&& src) = delete;
-  ~LayoutItem() override;
+  LayoutItem& operator=(LayoutItem&& src) = default;
+  ~LayoutItem() override = default;
 
   /** Create a new copied instance.
    * This allows us to deep-copy a list of LayoutItems.
@@ -64,7 +64,7 @@ public:
 
   /// This is used only for the print layouts.
   void set_print_layout_position(double x, double y, double width, double height);
-  
+
   /// This is used only for the print layouts.
   void set_print_layout_position_y(double y);
 
@@ -92,10 +92,10 @@ private:
   {
   public:
     PrintLayoutPosition();
-    PrintLayoutPosition(const PrintLayoutPosition& src);
-    PrintLayoutPosition(PrintLayoutPosition&& src) = delete;
-    PrintLayoutPosition& operator=(const PrintLayoutPosition& src);
-    PrintLayoutPosition& operator=(PrintLayoutPosition&& src) = delete;
+    PrintLayoutPosition(const PrintLayoutPosition& src) = default;
+    PrintLayoutPosition(PrintLayoutPosition&& src) = default;
+    PrintLayoutPosition& operator=(const PrintLayoutPosition& src) = default;
+    PrintLayoutPosition& operator=(PrintLayoutPosition&& src) = default;
 
     bool operator==(const PrintLayoutPosition& src) const;
 
@@ -109,7 +109,7 @@ private:
     //(A split will happen anyway if it is too big for a whole page):
     bool m_split_across_pages;
   };
-  
+
   mutable std::unique_ptr<PrintLayoutPosition> m_positions;
 };
 

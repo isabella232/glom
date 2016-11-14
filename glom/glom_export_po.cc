@@ -51,7 +51,7 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
 : Glib::OptionGroup("glom_export_po", _("Glom options"), _("Command-line options")),
   m_arg_version(false)
 {
-  Glib::OptionEntry entry; 
+  Glib::OptionEntry entry;
   entry.set_long_name("output-path");
   entry.set_short_name('o');
   entry.set_description(_("The path at which to save the created .po file, such as /home/someuser/somefile.po ."));
@@ -66,7 +66,7 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
   entry.set_short_name('t');
   entry.set_description(_("Generate a .pot template file instead of a .po file for a locale."));
   add_entry(entry, m_arg_template);
-  
+
   entry.set_long_name("version");
   entry.set_short_name('V');
   entry.set_description(_("The version of this application."));
@@ -95,10 +95,10 @@ int main(int argc, char* argv[])
     std::cerr << G_STRFUNC << ": exception from std::locale::global(std::locale(\"\")): " << ex.what() << std::endl;
     std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
   }
-  
+
 
   Glom::libglom_init();
-  
+
   Glib::OptionContext context;
   GlomCreateOptionGroup group;
   context.set_main_group(group);
@@ -174,7 +174,7 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  //Check the output path: 
+  //Check the output path:
   if(group.m_arg_filepath_output.empty())
   {
     std::cerr << _("Please specify an output path.") << std::endl;
@@ -213,7 +213,7 @@ int main(int argc, char* argv[])
 
   if(group.m_arg_template)
   {
-    const bool succeeded = 
+    const bool succeeded =
       Glom::write_pot_file(document, output_uri);
     if(!succeeded)
     {
@@ -225,7 +225,7 @@ int main(int argc, char* argv[])
   }
   else
   {
-    const bool succeeded = 
+    const bool succeeded =
       Glom::write_translations_to_po_file(document, output_uri, group.m_arg_locale_id);
     if(!succeeded)
     {

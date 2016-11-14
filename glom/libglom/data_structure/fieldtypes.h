@@ -23,7 +23,7 @@
 #define GLOM_DATASTRUCTURE_FIELDTYPES_H
 
 #include <libgdamm/connection.h>
-#include <map>
+#include <unordered_map>
 
 namespace Glom
 {
@@ -40,7 +40,7 @@ public:
   GType get_fallback_type_for_gdavaluetype(GType field_type) const;
 
   guint get_types_count() const;
-  
+
 private:
   /** Use some default mappings,
    * if, for some reason, we cannot get it from the database server at runtime.
@@ -48,12 +48,10 @@ private:
   void fill_with_default_data();
 
   //Duplicate information, to make searching easier:
-  typedef std::map<GType, Glib::ustring> type_mapGdaTypesToSchemaStrings;
-  type_mapGdaTypesToSchemaStrings m_mapGdaTypesToSchemaStrings;
+  std::unordered_map<GType, Glib::ustring> m_mapGdaTypesToSchemaStrings;
 
   //Fallback types used if the database system does not support a type natively
-  typedef std::map<GType, GType> type_mapFallbackTypes;
-  type_mapFallbackTypes m_mapFallbackTypes;
+  std::unordered_map<GType, GType> m_mapFallbackTypes;
 };
 
 } //namespace Glom

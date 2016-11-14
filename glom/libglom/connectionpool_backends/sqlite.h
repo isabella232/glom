@@ -47,7 +47,7 @@ private:
 
   typedef std::vector<Glib::ustring> type_vec_strings;
   //typedef std::vector<std::shared_ptr<const Field> > type_vec_fields;
-  typedef std::map<Glib::ustring, std::shared_ptr<const Field> > type_mapFieldChanges;
+  typedef std::unordered_map<Glib::ustring, std::shared_ptr<const Field>, std::hash<std::string>> type_mapFieldChanges;
 
   bool recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_strings& fields_removed, const type_vec_const_fields& fields_added, const type_mapFieldChanges& fields_changed) noexcept;
 

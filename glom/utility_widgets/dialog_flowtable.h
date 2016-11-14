@@ -40,22 +40,22 @@ class Dialog_FlowTable
 public:
   static const char* glade_id;
   static const bool glade_developer;
-	
+
   Dialog_FlowTable(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   void set_flowtable(FlowTableWithFields* flowtable);
-  
+
   gint get_columns_count() const;
 
   //TODO: Isn't this the same as Window::get_title()?
   //  Probably, yes, at least when it is properly const.
   //  so, TODO: find out what calls it.
   Glib::ustring get_title();
-    
+
 private:
   Gtk::Entry* m_entry_title;
   Gtk::SpinButton* m_spin_columns;
-   
+
   FlowTableWithFields* m_flowtable;
   std::shared_ptr<LayoutGroup> m_layoutgroup;
 };

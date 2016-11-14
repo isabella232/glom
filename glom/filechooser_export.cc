@@ -57,7 +57,7 @@ FileChooser_Export::FileChooser_Export()
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog)
     return;
-  
+
   m_dialog_layout = dialog;
   //add_view(m_dialog_layout); //Give it access to the document.
   m_dialog_layout->signal_hide().connect( sigc::mem_fun(*this, &FileChooser_Export::on_dialog_layout_hide) );
@@ -81,7 +81,7 @@ void FileChooser_Export::set_export_layout(const Document::type_list_const_layou
     std::cerr << G_STRFUNC << ": FileChooser_Export::set_export_layout() document is NULL.\n";
 }
 
-//We only allow a full export in client-only mode, 
+//We only allow a full export in client-only mode,
 //to avoid building a large part of the layout definition code.
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void FileChooser_Export::on_button_define_layout()

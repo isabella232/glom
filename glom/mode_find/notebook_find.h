@@ -30,7 +30,7 @@ namespace Glom
 
 class Notebook_Find : public Notebook_Glom
 {
-public: 
+public:
   Notebook_Find();
   virtual ~Notebook_Find();
 
@@ -42,15 +42,13 @@ public:
    * should be used to find and display records.
    * @param find_criteria The SQL where clause.
    */
-  sigc::signal<void, Gnome::Gda::SqlExpr> signal_find_criteria;
+  sigc::signal<void(Gnome::Gda::SqlExpr)> signal_find_criteria;
 
 private:
 
-  static const Glib::ustring m_pagename_details, m_pagename_list;
-
   //Member widgets:
   Box_Data_List_Find m_Box_List;
-  
+
   Box_Data_Details_Find m_Box_Details;
 };
 

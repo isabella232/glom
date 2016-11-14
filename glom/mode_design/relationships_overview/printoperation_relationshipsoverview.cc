@@ -44,13 +44,13 @@ void PrintOperationRelationshipsOverview::on_draw_page(
 
   //Get a Cairo Context, which is used as a drawing board:
   Cairo::RefPtr<Cairo::Context> cairo_context = print_context->get_cairo_context();
-  
+
   //Set a drawing scale (before drawing) so that the cairo context fits on the page:
   const auto print_height = print_context->get_height();
   const auto print_width = print_context->get_width();
   //std::cout << "print_height=" << print_height << ", print_width=" << print_width << std::endl;
 
-  //TODO: Get the total size of the drawn objects instead of the bounds (which includes extra whitespace): 
+  //TODO: Get the total size of the drawn objects instead of the bounds (which includes extra whitespace):
   double canvas_left = 0;
   double canvas_top = 0;
   double canvas_right = 0;

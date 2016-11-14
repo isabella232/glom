@@ -167,7 +167,7 @@ void Dialog_UsersList::on_button_user_delete()
             fill_list();
           }
         }
-  
+
         //m_modified = true;
       }
     }
@@ -233,7 +233,7 @@ void Dialog_UsersList::on_button_user_new()
 
   dialog->set_transient_for(*this);
   dialog->m_combo_group->set_sensitive(false); //It is being added to the current group, so don't offer a different group.
- 
+
   int dialog_response = Gtk::RESPONSE_OK;
   bool keep_trying = true;
   while(keep_trying)

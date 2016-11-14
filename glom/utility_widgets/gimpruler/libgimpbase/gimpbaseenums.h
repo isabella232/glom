@@ -171,7 +171,7 @@ GType gimp_foreground_extract_mode_get_type (void) G_GNUC_CONST;
 typedef enum
 {
   GIMP_FOREGROUND_EXTRACT_SIOX,
-  GIMP_FOREGROUND_EXTRACT_MATTING 
+  GIMP_FOREGROUND_EXTRACT_MATTING
 } GimpForegroundExtractMode;
 
 

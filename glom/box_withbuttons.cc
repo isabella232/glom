@@ -77,7 +77,7 @@ const Gtk::Window* Box_WithButtons::get_app_window() const
   auto nonconst = const_cast<Box_WithButtons*>(this);
   return nonconst->get_app_window();
 }
-  
+
 Gtk::Window* Box_WithButtons::get_app_window()
 {
   return dynamic_cast<Gtk::Window*>(get_toplevel());
@@ -87,8 +87,7 @@ Gtk::Window* Box_WithButtons::get_app_window()
   while(pWidget)
   {
     //Is this widget a Gtk::Window?:
-    auto pWindow = dynamic_cast<Gtk::Window*>(pWidget);
-    if(pWindow)
+    if(auto pWindow = dynamic_cast<Gtk::Window*>(pWidget))
     {
       //Yes, return it.
       return pWindow;

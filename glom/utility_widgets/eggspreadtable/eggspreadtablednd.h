@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2011 Openismus GmbH
  *
  * Authors:
@@ -43,7 +43,7 @@ typedef struct _EggSpreadTableDndClass       EggSpreadTableDndClass;
 /**
  * EggDragEnableMode:
  * @EGG_DRAG_DISABLED: Children cannot be dragged.
- * @EGG_DRAG_ENABLED:  Children can be dragged if the needed mouse events 
+ * @EGG_DRAG_ENABLED:  Children can be dragged if the needed mouse events
  *                     are not handled by those said children.
  * @EGG_DRAG_FULL:     All mouse events on children are consumed for the
  *                     purpose of starting drag and drop operations on children.

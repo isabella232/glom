@@ -34,14 +34,14 @@ class Notebook_Glom :
   public NotebookNoFrame,
   public Base_DB
 {
-public: 
+public:
   Notebook_Glom();
 
   //virtual void show_hint();
 
   //Signals:
   //Page number
-  //typedef sigc::signal<void, guint> type_signal_leave_page;
+  //typedef sigc::signal<void(guint)> type_signal_leave_page;
   // type_signal_leave_page signal_leave_page();
 
   //Overridden by derived classes:

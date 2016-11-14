@@ -111,9 +111,9 @@ Glib::ustring string_replace(const Glib::ustring& src, const Glib::ustring& sear
   //TODO_Performance:
 
   Glib::ustring result;
-  const size_t src_length = src.size();
-  const size_t search_for_length = search_for.size();
-  //const size_t replace_with_length = replace_with.size();
+  const auto src_length = src.size();
+  const auto search_for_length = search_for.size();
+  //const auto replace_with_length = replace_with.size();
 
   size_t src_index = 0;
   size_t src_index_section_start = 0;
@@ -175,14 +175,14 @@ Glib::ustring string_trim(const Glib::ustring& str, const Glib::ustring& to_remo
   Glib::ustring result = str;
 
   //Remove from the start:
-  Glib::ustring::size_type posOpenBracket = result.find(to_remove);
+  auto posOpenBracket = result.find(to_remove);
   if(posOpenBracket == 0)
   {
     result = result.substr(to_remove.size());
   }
 
   //Remove from the end:
-  Glib::ustring::size_type posCloseBracket = result.rfind(to_remove);
+  auto posCloseBracket = result.rfind(to_remove);
   if(posCloseBracket == (result.size() - to_remove.size()))
   {
     result = result.substr(0, posCloseBracket);
@@ -195,8 +195,8 @@ Glib::ustring string_remove_suffix(const Glib::ustring& str, const Glib::ustring
 {
   //There is also g_string_has_suffix(), but I assume that is case sensitive. murrayc.
 
-  const Glib::ustring::size_type size = str.size();
-  const Glib::ustring::size_type suffix_size = suffix.size();
+  const auto size = str.size();
+  const auto suffix_size = suffix.size();
   if(size < suffix_size)
     return str;
 
@@ -262,19 +262,18 @@ type_vec_strings string_separate(const Glib::ustring& str, const Glib::ustring& 
 
   type_vec_strings result;
 
-  const Glib::ustring::size_type size = str.size();
-  const Glib::ustring::size_type size_separator = separator.size();
+  const auto size = str.size();
+  const auto size_separator = separator.size();
 
   //A stack of quotes, so that we can handle nested quotes, whether they are " or ':
-  typedef std::stack<Glib::ustring> type_queue_quotes;
-  type_queue_quotes m_current_quotes;
+  std::stack<Glib::ustring> m_current_quotes;
 
   Glib::ustring::size_type unprocessed_start = 0;
   Glib::ustring::size_type item_start = 0;
   while(unprocessed_start < size)
   {
     //std::cout << "while unprocessed: un_processed_start=" << unprocessed_start << std::endl;
-    Glib::ustring::size_type posComma = str.find(separator, unprocessed_start);
+    auto posComma = str.find(separator, unprocessed_start);
 
     Glib::ustring item;
     if(posComma != Glib::ustring::npos)
@@ -286,7 +285,7 @@ type_vec_strings string_separate(const Glib::ustring& str, const Glib::ustring& 
       {
         //std::cout << "  debug: attempting to ignore quoted separators: " << separator << std::endl;
 
-        Glib::ustring::size_type posLastQuote = unprocessed_start;
+        auto posLastQuote = unprocessed_start;
 
         //std::cout << "    debug: posLastQuote=" << posLastQuote << std::endl;
         //std::cout << "    debug: posComma=" << posComma << std::endl;
@@ -301,13 +300,13 @@ type_vec_strings string_separate(const Glib::ustring& str, const Glib::ustring& 
             closing_quote = m_current_quotes.top();
 
           //std::cout << "   posLastQuote=" << posLastQuote << std::endl;
-          const Glib::ustring::size_type posSingleQuote = str.find("'", posLastQuote);
-          const Glib::ustring::size_type posDoubleQuote = str.find("\"", posLastQuote);
+          const auto posSingleQuote = str.find("'", posLastQuote);
+          const auto posDoubleQuote = str.find("\"", posLastQuote);
 
           // std::cout << "   posSingleQuote=" << posSingleQuote << "posDoubleQuote=" << posDoubleQuote << std::endl;
 
           //Which quote, if any, is first:
-          Glib::ustring::size_type posFirstQuote = posSingleQuote;
+          auto posFirstQuote = posSingleQuote;
           if( (posDoubleQuote != Glib::ustring::npos) && (posDoubleQuote < posFirstQuote) )
             posFirstQuote = posDoubleQuote;
 

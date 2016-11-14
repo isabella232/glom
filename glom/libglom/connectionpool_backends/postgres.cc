@@ -45,7 +45,7 @@ static Glib::ustring create_auth_string(const Glib::ustring& username, const Gli
   if(username.empty() and password.empty())
     return Glib::ustring();
   else
-    return "USERNAME=" + Glom::DbUtils::gda_cnc_string_encode(username) + 
+    return "USERNAME=" + Glom::DbUtils::gda_cnc_string_encode(username) +
       ";PASSWORD=" + Glom::DbUtils::gda_cnc_string_encode(password);
 }
 
@@ -174,7 +174,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
     std::cerr << G_STRFUNC << ": begin_transaction failed: " << ex.what() << std::endl;
   }
 
-  //Do this all in one big try/catch, block, 
+  //Do this all in one big try/catch, block,
   //reverting the transaction if anything fails:
   try
   {
@@ -211,7 +211,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 		      http://groups.google.de/groups?hl=en&lr=&ie=UTF-8&frame=right&th=a7a62337ad5a8f13&seekm=23739.1073660245%40sss.pgh.pa.us#link5
 		      UPDATE _table
 		      SET _bbb = to_number(substring(_aaa from 1 for 5), '99999')
-		      WHERE _aaa <> '     ';  
+		      WHERE _aaa <> '     ';
 		      */
 
 		      switch(new_fields[i]->get_glom_type())
@@ -242,7 +242,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 		          else
 		          {
 		            //We use to_number, with textcat() so that to_number always has usable data.
-		            //Otherwise, it says 
+		            //Otherwise, it says
 		            //invalid input syntax for type numeric: " "
 		            //
 		            //We must use single quotes with the 0, otherwise it says "column 0 does not exist.".
@@ -365,7 +365,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 		    }
 		  }
 		}
-		
+
 		connection->commit_transaction(TRANSACTION_NAME);
 		return true;
   }
@@ -373,7 +373,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
   {
     std::cerr << G_STRFUNC << ": Exception: " << ex.what() << std::endl;
     std::cerr << G_STRFUNC << ": Reverting the transaction.\n";
-    
+
     try
     {
       connection->rollback_transaction(TRANSACTION_NAME);
@@ -383,7 +383,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
       std::cerr << G_STRFUNC << ": Could not rollback the transaction: Exception: " << ex_rollback.what() << std::endl;
     }
   }
-  
+
   return false;
 }
 
@@ -392,10 +392,10 @@ bool Postgres::attempt_create_database(const SlotProgress& slot_progress, const 
   if(slot_progress)
     slot_progress();
 
-  auto op = 
+  auto op =
     Gnome::Gda::ServerOperation::prepare_create_database("PostgreSQL", database_name);
 
-  if(slot_progress)  
+  if(slot_progress)
     slot_progress();
 
   g_assert(op);

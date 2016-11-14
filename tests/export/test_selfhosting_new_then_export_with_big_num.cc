@@ -29,14 +29,14 @@
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   auto document = std::make_shared<Glom::Document>();
-  const bool recreated = 
+  const bool recreated =
     test_create_and_selfhost_from_test_example("export/test_example_music_collection_with_big_num.glom", document, hosting_mode);
   if(!recreated)
   {
     std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
-  
+
   Glom::FoundSet found_set; //TODO: Test a where clause.
   found_set.m_table_name = "artists";
   Glom::Document::type_list_const_layout_groups layout_groups;
@@ -45,7 +45,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   auto field = std::make_shared<Glom::LayoutItem_Field>();
   field->set_name("testnum");
   group->add_item(field);
-  
+
   std::stringstream the_stream;
   Glom::DbUtilsExport::export_data_to_stream(document, the_stream, found_set, layout_groups);
   const auto text = the_stream.str();
@@ -64,14 +64,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   test_selfhosting_cleanup();
-    
+
   return true;
 }
 
 int main()
 {
   Glom::libglom_init();
-  
+
   const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();

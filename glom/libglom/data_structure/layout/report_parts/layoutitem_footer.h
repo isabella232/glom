@@ -27,7 +27,7 @@
 namespace Glom
 {
 
-/** 
+/**
  */
 class LayoutItem_Footer
 : public LayoutGroup
@@ -35,10 +35,10 @@ class LayoutItem_Footer
 public:
 
   LayoutItem_Footer();
-  LayoutItem_Footer(const LayoutItem_Footer& src);
-  LayoutItem_Footer(LayoutItem_Footer&& src) = delete;
-  LayoutItem_Footer& operator=(const LayoutItem_Footer& src);
-  LayoutItem_Footer& operator=(LayoutItem_Footer&& src) = delete;
+  LayoutItem_Footer(const LayoutItem_Footer& src) = default;
+  LayoutItem_Footer(LayoutItem_Footer&& src) = default;
+  LayoutItem_Footer& operator=(const LayoutItem_Footer& src) = default;
+  LayoutItem_Footer& operator=(LayoutItem_Footer&& src) = default;
 
   LayoutItem* clone() const override;
 

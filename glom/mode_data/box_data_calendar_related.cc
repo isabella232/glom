@@ -40,7 +40,7 @@ Box_Data_Calendar_Related::Box_Data_Calendar_Related()
 
   m_Frame.add(m_calendar);
   m_calendar.set_margin_start(Utils::to_utype(UiUtils::DefaultSpacings::LARGE));
-  m_calendar.set_margin_top(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));   
+  m_calendar.set_margin_top(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
   m_calendar.show();
 
   //m_calendar.set_show_details();
@@ -517,7 +517,7 @@ void Box_Data_Calendar_Related::on_calendar_button_press_event(GdkEventButton *b
 #endif
 
   GdkModifierType mods;
-  gdk_window_get_device_position( gtk_widget_get_window(Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
+  gdk_window_get_device_position( gtk_widget_get_window(Gtk::Widget::gobj()), button_event->device, nullptr, nullptr, &mods );
   if(mods & GDK_BUTTON3_MASK)
   {
     //Give user choices of actions on this item:

@@ -28,23 +28,9 @@ namespace Glom
 LayoutItem_Header::LayoutItem_Header()
 {
 }
-
-LayoutItem_Header::LayoutItem_Header(const LayoutItem_Header& src)
-: LayoutGroup(src)
-{
-}
-
 LayoutItem* LayoutItem_Header::clone() const
 {
   return new LayoutItem_Header(*this);
-}
-
-
-LayoutItem_Header& LayoutItem_Header::operator=(const LayoutItem_Header& src)
-{
-  LayoutGroup::operator=(src);
-
-  return *this;
 }
 
 Glib::ustring LayoutItem_Header::get_part_type_name() const

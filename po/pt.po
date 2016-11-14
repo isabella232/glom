@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-05-20 13:44+0000\n"
+"POT-Creation-Date: 2016-07-17 16:25+0000\n"
 "PO-Revision-Date: 2016-06-08 10:02+0100\n"
 "Last-Translator: Tiago Santos <tiagofsantos81@sapo.pt>\n"
 "Language-Team: Português <palbuquerque73@gmail.com>\n"
@@ -165,14 +165,13 @@ msgstr ""
 "O ficheiro é só de leitura, portanto não será capaz de aceder ao modo de "
 "programador para fazer alterações."
 
-#: ../glom/appwindow.cc:984 ../glom/appwindow.cc:2111
-#: ../glom/appwindow.cc:2390 ../glom/appwindow.cc:2427
-#: ../glom/appwindow.cc:2802 ../glom/base_db_table_data.cc:378
-#: ../glom/box_withbuttons.cc:37 ../glom/box_withbuttons.cc:51
-#: ../glom/box_withbuttons.cc:65 ../glom/dialog_existing_or_new.cc:785
-#: ../glom/filechooser_export.cc:40 ../glom/frame_glom.cc:516
-#: ../glom/frame_glom.cc:602 ../glom/frame_glom.cc:689
-#: ../glom/frame_glom.cc:795 ../glom/utils_ui.cc:461
+#: ../glom/appwindow.cc:984 ../glom/appwindow.cc:2111 ../glom/appwindow.cc:2390
+#: ../glom/appwindow.cc:2427 ../glom/appwindow.cc:2802
+#: ../glom/base_db_table_data.cc:378 ../glom/box_withbuttons.cc:37
+#: ../glom/box_withbuttons.cc:51 ../glom/box_withbuttons.cc:65
+#: ../glom/dialog_existing_or_new.cc:785 ../glom/filechooser_export.cc:40
+#: ../glom/frame_glom.cc:516 ../glom/frame_glom.cc:602
+#: ../glom/frame_glom.cc:689 ../glom/frame_glom.cc:795 ../glom/utils_ui.cc:461
 #: ../glom/onlineglom_strings.cc:40 ../glom/bakery/dialog_offersave.cc:57
 #: ../glom/main.cc:266 ../glom/main.cc:322
 #: ../glom/mode_design/fields/box_db_table_definition.cc:293
@@ -576,7 +575,6 @@ msgid "The details view showing records from a related table"
 msgstr "A vista Detalhes, mostrando registos de uma tabela relacionada"
 
 #: ../glom.desktop.in.in.h:2
-#| msgid "A user-friendly database environment."
 msgid "A user-friendly database environment"
 msgstr "Um ambiente de base de dados amigável"
 

@@ -48,19 +48,19 @@ public:
 
 
   //Signals:
-  typedef sigc::signal<void> type_signal_void;
+  typedef sigc::signal<void()> type_signal_void;
   type_signal_void signal_nav_first();
   type_signal_void signal_nav_prev();
   type_signal_void signal_nav_next();
   type_signal_void signal_nav_last();
 
-  typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_record_deleted; //arg is PrimaryKey.
+  typedef sigc::signal<void(const Gnome::Gda::Value&)> type_signal_record_deleted; //arg is PrimaryKey.
   type_signal_record_deleted signal_record_deleted();
 
    /** For instance,
     * void on_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
     */
-  typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_requested_related_details;
+  typedef sigc::signal<void(const Glib::ustring&, Gnome::Gda::Value)> type_signal_requested_related_details;
   type_signal_requested_related_details signal_requested_related_details();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -68,7 +68,7 @@ public:
 #endif
 
   void do_new_record();
-  
+
   void set_enable_drag_and_drop(bool enabled = true);
 
 protected:
@@ -82,9 +82,9 @@ protected:
   void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) override;
   Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const override; //Actual primary key value of this record.
 
-  Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const override;
-  void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
-  void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
+  Gnome::Gda::Value get_entered_field_data(const LayoutItem_Field& field) const override;
+  void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value) override;
+  void set_entered_field_data(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field, const Gnome::Gda::Value& value) override;
 
 
   bool fill_from_database() override;
@@ -119,14 +119,14 @@ protected:
   //void on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring table_name);
 
   //This is virtual so it can be overriden in Box_Data_Details_Find.
-  virtual void on_flowtable_field_edited(const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& value);
+  virtual void on_flowtable_field_edited(const std::weak_ptr<const LayoutItem_Field>& layout_field_weak, const Gnome::Gda::Value& value);
 
-  void on_flowtable_field_choices_changed(const std::shared_ptr<const LayoutItem_Field>& layout_field);
-  void on_flowtable_field_open_details_requested(const std::shared_ptr<const LayoutItem_Field>& id, const Gnome::Gda::Value& value);
+  void on_flowtable_field_choices_changed(const std::weak_ptr<const LayoutItem_Field>& layout_field_weak);
+  void on_flowtable_field_open_details_requested(const std::weak_ptr<const LayoutItem_Field>& id_weak, const Gnome::Gda::Value& value);
   void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
   void on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
 
-  void on_flowtable_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item);
+  void on_flowtable_script_button_clicked(const std::weak_ptr<const LayoutItem_Button>& layout_item_weak);
 
   void recalculate_fields_for_related_records(const Glib::ustring& relationship_name);
 

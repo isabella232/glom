@@ -42,7 +42,7 @@ static bool field_is_on_a_layout(const std::shared_ptr<Glom::Document>& document
       }
     }
   }
-  
+
   return false;
 }
 
@@ -141,7 +141,7 @@ int main()
     const Glib::ustring table_name_invoices = "invoices";
     const Glib::ustring relationship_name_original = "contacts";
     const Glib::ustring relationship_name_new = "newrelationshipname";
-    document->change_relationship_name(table_name_invoices, 
+    document->change_relationship_name(table_name_invoices,
       relationship_name_original, relationship_name_new);
     if(document->get_relationship(table_name, relationship_name_original))
     {
@@ -156,7 +156,7 @@ int main()
     }
 
     //Check that the old relationship name is not used.
-    auto field_on_layout = 
+    auto field_on_layout =
       get_field_on_layout(document, table_name, "contacts", "name_full");
     g_assert(field_on_layout);
     if(field_on_layout->get_relationship_name() != relationship_name_new)
@@ -173,7 +173,7 @@ int main()
     std::cerr << G_STRFUNC << ": Failure: The removed field name is still used on a layout.\n";
     return false;
   }
-  
+
   //Remove a relationship:
   document->remove_relationship(relationship);
   relationship = document->get_relationship("invoice_lines", "products");
@@ -182,7 +182,7 @@ int main()
     std::cerr << G_STRFUNC << ": Failure: The removed relationship still exists.\n";
     return false;
   }
-  
+
   //Change a table name:
   const Glib::ustring table_renamed = "invoiceslinesrenamed";
   document->change_table_name("invoice_lines", table_renamed);
@@ -191,7 +191,7 @@ int main()
     std::cerr << G_STRFUNC << ": Failure: The renamed table still exists.\n";
     return false;
   }
-  
+
   relationship = document->get_relationship("invoices", "invoice_lines");
   if(!relationship)
   {
@@ -204,7 +204,7 @@ int main()
     std::cerr << G_STRFUNC << ": Failure: The relationship's to_table does have been renamed.\n";
     return false;
   }
-  
+
   document->remove_table("products");
   if(document->get_table("products"))
   {
@@ -212,35 +212,35 @@ int main()
     return false;
   }
 
- 
+
   //Remove a print layout:
-  auto print_layout = 
+  auto print_layout =
     document->get_print_layout("contacts", "contact_details");
   if(!print_layout)
   {
     std::cerr << G_STRFUNC << ": Failure: Could not get an expected print layout.\n";
     return false;
   }
-  
+
   document->remove_print_layout("contacts", "contact_details");
-  print_layout = 
+  print_layout =
     document->get_print_layout("contacts", "contact_details");
   if(print_layout)
   {
     std::cerr << G_STRFUNC << ": Failure: The removed print layotu still exists.\n";
     return false;
   }
-  
+
   //Test user groups:
   Glom::Document::type_list_groups groups = document->get_groups();
   g_assert(groups_contain_named(groups, "glom_developer"));
-  
+
   const Glib::ustring group_name = "accounts";
   g_assert(groups_contain_named(groups, group_name));
   document->remove_group(group_name);
   groups = document->get_groups();
   g_assert(!groups_contain_named(groups, group_name));
-  
+
   Glom::libglom_deinit();
 
   return EXIT_SUCCESS;

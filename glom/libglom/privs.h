@@ -87,15 +87,15 @@ public:
 private:
   static bool on_privs_privileges_cache_timeout(const Glib::ustring& table_name);
 
-  typedef std::map<Glib::ustring, Privileges> type_map_privileges;
+  typedef std::unordered_map<Glib::ustring, Privileges, std::hash<std::string>> type_map_privileges;
 
-  //A map of table names to cached privileges: 
+  //A map of table names to cached privileges:
   static type_map_privileges m_privileges_cache;
 
-  // Store the cache for a few seconds in case it 
-  // is immediately requested again, to avoid 
-  // introspecting again, which is slow. 
-  typedef std::map<Glib::ustring, sigc::connection> type_map_cache_timeouts;
+  // Store the cache for a few seconds in case it
+  // is immediately requested again, to avoid
+  // introspecting again, which is slow.
+  typedef std::unordered_map<Glib::ustring, sigc::connection, std::hash<std::string>> type_map_cache_timeouts;
   static type_map_cache_timeouts m_map_cache_timeouts;
 };
 

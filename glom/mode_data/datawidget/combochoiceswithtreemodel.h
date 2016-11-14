@@ -43,7 +43,7 @@ public:
   void set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted = false) override;
 
   //This creates a db-based tree model, with appropriate cell renderers:
-  void set_choices_related(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value) override;
+  void set_choices_related(const std::shared_ptr<const Document>& document, const LayoutItem_Field& layout_field, const Gnome::Gda::Value& foreign_key_value) override;
 
 
   //Not named get_model(), to avoid clashing with ComboBox::get_model().
@@ -56,25 +56,22 @@ protected:
    * This caches the result to avoid repeated recalculation.
    */
   int get_fixed_cell_height(Gtk::Widget& widget);
-  
+
 
   typedef Gtk::TreeModelColumn<Glib::ustring> type_model_column_string_fixed;
-  typedef std::vector<std::unique_ptr<type_model_column_string_fixed>> type_vec_model_columns_string_fixed;
-  type_vec_model_columns_string_fixed m_vec_model_columns_string_fixed; //If set_choices_fixed() was used.
+  std::vector<std::unique_ptr<type_model_column_string_fixed>> m_vec_model_columns_string_fixed; //If set_choices_fixed() was used.
 
   typedef Gtk::TreeModelColumn<Gnome::Gda::Value> type_model_column_value_fixed;
-  typedef std::vector<std::unique_ptr<type_model_column_value_fixed>> type_vec_model_columns_value_fixed;
-  type_vec_model_columns_value_fixed m_vec_model_columns_value_fixed; //If set_choices_fixed() was used.
+  std::vector<std::unique_ptr<type_model_column_value_fixed>> m_vec_model_columns_value_fixed; //If set_choices_fixed() was used.
 
-  /** Get the index of the extra column, at the end, that is just a 
+  /** Get the index of the extra column, at the end, that is just a
    * text representation of the first column, for use by GtkCombo with has-entry=true,
    * which accepts only a text column.
    */
   int get_fixed_model_text_column() const;
 
 
-  typedef std::vector< std::shared_ptr<const LayoutItem_Field> > type_vec_const_layout_items;
-  type_vec_const_layout_items m_db_layout_items; //If set_choices_related() was used.
+  std::vector< std::shared_ptr<const LayoutItem_Field> > m_db_layout_items; //If set_choices_related() was used.
 
   //This avoids us making on_cell_data() public just so that derived classes can use it,
   //though that shouldn't be necessary anyway.
@@ -91,7 +88,7 @@ private:
   Glib::RefPtr<Gtk::TreeModel> m_model;
 
   void delete_model();
-  
+
   int m_fixed_cell_height;
 };
 

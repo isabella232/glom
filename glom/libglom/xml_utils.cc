@@ -50,8 +50,7 @@ void set_node_attribute_value(xmlpp::Element* node, const Glib::ustring& strAttr
 {
   if(node)
   {
-    auto attribute = dynamic_cast<xmlpp::AttributeNode*>(node->get_attribute(strAttributeName));
-    if(attribute)
+    if(auto attribute = dynamic_cast<xmlpp::AttributeNode*>(node->get_attribute(strAttributeName)))
       attribute->set_value(strValue);
     else
     {
@@ -72,18 +71,18 @@ const xmlpp::Element* get_node_child_named(const xmlpp::Element* node, const Gli
   const xmlpp::Element* nodeResult = nullptr;
 
   if(node)
-  { 
+  {
     const auto list = node->get_children(strName);
 
     //We check all of them, instead of just the first, until we find one,
-    //because get_children() returns, for instance, TextNodes (which are not Elements) for "text", 
+    //because get_children() returns, for instance, TextNodes (which are not Elements) for "text",
     //as well as Elements with the name "text".
     for(const auto& item : list)
     {
       nodeResult = dynamic_cast<const xmlpp::Element*>(item);
       if(nodeResult)
         return nodeResult;
-    }                       
+    }
   }
 
   return nodeResult;
@@ -261,7 +260,7 @@ Gnome::Gda::Value get_node_text_child_as_value(const xmlpp::Element* node, Field
   const auto format = get_node_attribute_value(node, GLOM_ATTRIBUTE_IMAGE_DATA_FORMAT);
   if(format.empty()) //We previously used the GDA format, before we even specified it.
     old_image_format = true;
-    
+
   bool success = false;
   const auto result = Field::from_file_format(value_string, field_type, success, old_image_format);
   if(success)

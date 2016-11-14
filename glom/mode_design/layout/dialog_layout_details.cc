@@ -80,13 +80,13 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   box_calendar->hide();
 
   builder->get_widget("label_table_name", m_label_table_name);
-  
+
   //This is only shown in Dialog_Layout_List_Related:
   builder->get_widget("hbox_rows_count", m_hbox_rows_count);
   builder->get_widget("spinbutton_rows_count_min", m_spinbutton_rows_count_min);
   builder->get_widget("spinbutton_rows_count_max", m_spinbutton_rows_count_max);
   m_hbox_rows_count->hide();
-  
+
   builder->get_widget("treeview_fields", m_treeview_fields);
   if(m_treeview_fields)
   {
@@ -351,7 +351,7 @@ void Dialog_Layout_Details::init(const Glib::ustring& layout_name, const Glib::u
     }
 
     //Show the field layout
-    //typedef std::list< Glib::ustring > type_listStrings;
+    //typedef std::vector< Glib::ustring > type_listStrings;
 
     m_model_items->clear();
 
@@ -1096,254 +1096,254 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
 
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
-  if(renderer_text)
+  if(!renderer_text)
+    return;
+
+  if(!iter)
+    return;
+
+  Gtk::TreeModel::Row row = *iter;
+
+  std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+
+  //Use the markup property instead of the text property, so that we can give the text some style:
+  Glib::ustring markup;
+
+  bool is_group = false;
+
+  auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+  if(layout_portal)
   {
-    if(iter)
+    auto layout_calendar = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(layout_portal);
+    if(layout_calendar)
+      markup = Glib::ustring::compose(_("Related Calendar: %1"), layout_portal->get_relationship_name());
+    else
+      markup = Glib::ustring::compose(_("Related List: %1"), layout_portal->get_relationship_name());
+  }
+  else
+  {
+    auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+    if(layout_group)
     {
-      Gtk::TreeModel::Row row = *iter;
+      is_group = true;
 
-      std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-
-      //Use the markup property instead of the text property, so that we can give the text some style:
-      Glib::ustring markup;
-
-      bool is_group = false;
-
-      auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
-      if(layout_portal)
+      //Make group names bold:
+      markup = UiUtils::bold_message( layout_item->get_name() );
+    }
+    else
+    {
+      auto layout_item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
+      if(layout_item_field)
       {
-        auto layout_calendar = std::dynamic_pointer_cast<LayoutItem_CalendarPortal>(layout_portal);
-        if(layout_calendar)
-          markup = Glib::ustring::compose(_("Related Calendar: %1"), layout_portal->get_relationship_name());
-        else
-          markup = Glib::ustring::compose(_("Related List: %1"), layout_portal->get_relationship_name());
+        markup = Glib::ustring::compose(_("Field: %1"), layout_item_field->get_layout_display_name());
+
+        //Just for debugging:
+        //if(!row[m_model_items->m_columns.m_col_editable])
+        // markup += " *";
       }
       else
       {
-        auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
-        if(layout_group)
+        auto layout_item_button = std::dynamic_pointer_cast<LayoutItem_Button>(layout_item);
+        if(layout_item_button)
         {
-          is_group = true;
-
-          //Make group names bold:
-          markup = UiUtils::bold_message( layout_item->get_name() );
+          markup = _("Button"); //Buttons don't have names - just titles. TODO: Would they be useful?
         }
         else
         {
-          auto layout_item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
-          if(layout_item_field)
+          auto layout_item_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
+          if(layout_item_text)
           {
-            markup = Glib::ustring::compose(_("Field: %1"), layout_item_field->get_layout_display_name());
-
-            //Just for debugging:
-            //if(!row[m_model_items->m_columns.m_col_editable])
-            // markup += " *";
+            markup = _("Text"); //Text objects don't have names - just titles. TODO: Would they be useful?
           }
           else
           {
-            auto layout_item_button = std::dynamic_pointer_cast<LayoutItem_Button>(layout_item);
-            if(layout_item_button)
+            auto layout_item_image = std::dynamic_pointer_cast<LayoutItem_Image>(layout_item);
+            if(layout_item_image)
             {
-              markup = _("Button"); //Buttons don't have names - just titles. TODO: Would they be useful?
+              markup = _("Image"); //Image objects don't have names - just titles. TODO: Would they be useful?
             }
+            else if(layout_item)
+              markup = layout_item->get_name();
             else
-            {
-              auto layout_item_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
-              if(layout_item_text)
-              {
-                markup = _("Text"); //Text objects don't have names - just titles. TODO: Would they be useful?
-              }
-              else
-              {
-                auto layout_item_image = std::dynamic_pointer_cast<LayoutItem_Image>(layout_item);
-                if(layout_item_image)
-                {
-                  markup = _("Image"); //Image objects don't have names - just titles. TODO: Would they be useful?
-                }
-                else if(layout_item)
-                  markup = layout_item->get_name();
-                else
-                  markup = Glib::ustring();
-              }
-            }
+              markup = Glib::ustring();
           }
         }
       }
-
-      renderer_text->property_markup() = markup;
-
-      if(is_group)
-        renderer_text->property_editable() = true; //Group names can be changed.
-      else
-        renderer_text->property_editable() = false; //Field names can never be edited.
     }
   }
+
+  renderer_text->property_markup() = markup;
+
+  if(is_group)
+    renderer_text->property_editable() = true; //Group names can be changed.
+  else
+    renderer_text->property_editable() = false; //Field names can never be edited.
 }
 
 void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
-  if(renderer_text)
-  {
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
-      std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-      auto layout_notebook = std::dynamic_pointer_cast<LayoutItem_Notebook>(layout_item);
-      if(layout_notebook)
-        renderer_text->property_text() = _("(Notebook)");
-      else if(layout_item)
-        renderer_text->property_text() = item_get_title(layout_item);
-      else
-        renderer_text->property_text() = Glib::ustring();
+  if(!renderer_text)
+    return;
 
-      auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
-      auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
-      auto layout_button = std::dynamic_pointer_cast<LayoutItem_Button>(layout_item);
-      auto layout_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
-      const bool editable = (layout_group && !layout_portal) || layout_button || layout_text; //Only groups, buttons, and text objects have titles that can be edited.
-      renderer_text->property_editable() = editable;
-    }
-  }
+  if(!iter)
+    return;
+
+  Gtk::TreeModel::Row row = *iter;
+  std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+  auto layout_notebook = std::dynamic_pointer_cast<LayoutItem_Notebook>(layout_item);
+  if(layout_notebook)
+    renderer_text->property_text() = _("(Notebook)");
+  else if(layout_item)
+    renderer_text->property_text() = item_get_title(layout_item);
+  else
+    renderer_text->property_text() = Glib::ustring();
+
+  auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+  auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+  auto layout_button = std::dynamic_pointer_cast<LayoutItem_Button>(layout_item);
+  auto layout_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
+  const bool editable = (layout_group && !layout_portal) || layout_button || layout_text; //Only groups, buttons, and text objects have titles that can be edited.
+  renderer_text->property_editable() = editable;
 }
 
 void Dialog_Layout_Details::on_cell_data_column_width(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
-  if(renderer_text)
+  if(!renderer_text)
+    return;
+
+  if(iter)
+    return;
+
+  Gtk::TreeModel::Row row = *iter;
+  std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+
+  guint column_width = 0;
+  if(layout_item)
   {
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
-      std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+    auto layout_button = std::dynamic_pointer_cast<LayoutItem_Button>(layout_item);
+    auto layout_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
+    auto layout_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
+    const bool editable = (layout_field || layout_button || layout_text); //Only these have column widths that can be edited.
+    renderer_text->property_editable() = editable;
 
-      guint column_width = 0;
-      if(layout_item)
-      {
-        auto layout_button = std::dynamic_pointer_cast<LayoutItem_Button>(layout_item);
-        auto layout_text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
-        auto layout_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
-        const bool editable = (layout_field || layout_button || layout_text); //Only these have column widths that can be edited.
-        renderer_text->property_editable() = editable;
-
-        column_width = layout_item->get_display_width();
-      }
-
-      Glib::ustring text;
-      if(column_width) //Show nothing if no width has been specified, meaning that it's automatic.
-        text = Utils::string_from_decimal(column_width);
-
-      renderer_text->property_text() = text;
-    }
+    column_width = layout_item->get_display_width();
   }
+
+  Glib::ustring text;
+  if(column_width) //Show nothing if no width has been specified, meaning that it's automatic.
+    text = Utils::string_from_decimal(column_width);
+
+  renderer_text->property_text() = text;
 }
 
 void Dialog_Layout_Details::on_cell_data_group_columns(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
-  if(renderer_text)
+  if(!renderer_text)
+   return;
+
+  if(!iter)
+    return;
+
+  Gtk::TreeModel::Row row = *iter;
+  std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+
+  auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+  auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+
+  const bool is_group = layout_group && !layout_portal; //Only groups have column_counts.
+
+  //Get a text representation of the number:
+  Glib::ustring text;
+  if(is_group)
   {
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
-      std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-
-      auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
-      auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
-
-      const bool is_group = layout_group && !layout_portal; //Only groups have column_counts.
-
-      //Get a text representation of the number:
-      Glib::ustring text;
-      if(is_group)
-      {
-        text = Utils::string_from_decimal(layout_group->get_columns_count());
-      }
-      else
-      {
-        //Show nothing in the columns_count columns for fields.
-      }
-      renderer_text->property_text() = text;
-
-      renderer_text->property_editable() = is_group;
-    }
+    text = Utils::string_from_decimal(layout_group->get_columns_count());
   }
+  else
+  {
+    //Show nothing in the columns_count columns for fields.
+  }
+  renderer_text->property_text() = text;
+
+  renderer_text->property_editable() = is_group;
 }
 
 void Dialog_Layout_Details::on_treeview_cell_edited_title(const Glib::ustring& path_string, const Glib::ustring& new_text)
 {
-  if(!path_string.empty())
-  {
-    Gtk::TreeModel::Path path(path_string);
+  if(path_string.empty())
+    return;
 
-    //Get the row from the path:
-    auto iter = m_model_items->get_iter(path);
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
-      std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-      if(layout_item)
-      {
-        //Store the user's new text in the model:
-        layout_item->set_title(new_text, AppWindow::get_current_locale());
+  Gtk::TreeModel::Path path(path_string);
 
-        m_modified = true;
-      }
-    }
-  }
+  //Get the row from the path:
+  auto iter = m_model_items->get_iter(path);
+  if(!iter)
+    return;
+
+  Gtk::TreeModel::Row row = *iter;
+  std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+  if(!layout_item)
+    return;
+
+  //Store the user's new text in the model:
+  layout_item->set_title(new_text, AppWindow::get_current_locale());
+
+  m_modified = true;
 }
 
 
 void Dialog_Layout_Details::on_treeview_cell_edited_name(const Glib::ustring& path_string, const Glib::ustring& new_text)
 {
-  if(!path_string.empty())
-  {
-    Gtk::TreeModel::Path path(path_string);
+  if(path_string.empty())
+    return;
 
-    //Get the row from the path:
-    auto iter = m_model_items->get_iter(path);
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
-      std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-      if(layout_item)
-      {
-        //Store the user's new text in the model:
-        layout_item->set_name(new_text);
+  Gtk::TreeModel::Path path(path_string);
 
-        m_modified = true;
-      }
-    }
-  }
+  //Get the row from the path:
+  auto iter = m_model_items->get_iter(path);
+  if(!iter)
+    return;
+
+  Gtk::TreeModel::Row row = *iter;
+  std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+  if(!layout_item)
+    return;
+
+  //Store the user's new text in the model:
+  layout_item->set_name(new_text);
+
+  m_modified = true;
 }
 
 void Dialog_Layout_Details::on_treeview_cell_edited_column_width(const Glib::ustring& path_string, const Glib::ustring& new_text)
 {
-  if(!path_string.empty())
-  {
-    Gtk::TreeModel::Path path(path_string);
+  if(path_string.empty())
+    return;
 
-    //Get the row from the path:
-    auto iter = m_model_items->get_iter(path);
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
-      std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-      if(layout_item)
-      {
-        //Convert the text to a number, using the same logic used by GtkCellRendererText when it stores numbers.
-        const auto new_value = static_cast<guint>( std::stod(new_text) );
+  Gtk::TreeModel::Path path(path_string);
 
-        //Store the user's new value in the model:
-        layout_item->set_display_width(new_value);
+  //Get the row from the path:
+  auto iter = m_model_items->get_iter(path);
+  if(!iter)
+    return;
 
-        m_modified = true;
-      }
-    }
-  }
+  Gtk::TreeModel::Row row = *iter;
+  std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+  if(!layout_item)
+    return;
+
+  //Convert the text to a number, using the same logic used by GtkCellRendererText when it stores numbers.
+  const auto new_value = static_cast<guint>( std::stod(new_text) );
+
+  //Store the user's new value in the model:
+  layout_item->set_display_width(new_value);
+
+  m_modified = true;
 }
 
 void Dialog_Layout_Details::on_treeview_cell_edited_group_columns(const Glib::ustring& path_string, const Glib::ustring& new_text)
@@ -1356,30 +1356,30 @@ void Dialog_Layout_Details::on_treeview_cell_edited_group_columns(const Glib::us
 
   //Get the row from the path:
   auto iter = m_model_items->get_iter(path);
-  if(iter)
+  if(!iter)
+    return;
+
+  Gtk::TreeModel::Row row = *iter;
+  std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+  auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
+  auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
+  if(layout_group && !layout_portal)
   {
-    Gtk::TreeModel::Row row = *iter;
-    std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-    auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
-    auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
-    if(layout_group && !layout_portal)
-    {
-      //std::istringstream astream(new_text); //Put it in a stream.
-      //ColumnType new_value = ColumnType();
-      //new_value << astream; //Get it out of the stream as the numerical type.
+    //std::istringstream astream(new_text); //Put it in a stream.
+    //ColumnType new_value = ColumnType();
+    //new_value << astream; //Get it out of the stream as the numerical type.
 
-      //Convert the text to a number, using the same logic used by GtkCellRendererText when it stores numbers.
-      auto new_value = static_cast<guint>( std::stod(new_text) );
+    //Convert the text to a number, using the same logic used by GtkCellRendererText when it stores numbers.
+    auto new_value = static_cast<guint>( std::stod(new_text) );
 
-      //Don't allow a 0 columns_count:
-      if(new_value == 0)
-        new_value = 1;
+    //Don't allow a 0 columns_count:
+    if(new_value == 0)
+      new_value = 1;
 
-      //Store the user's new text in the model:
-      layout_group->set_columns_count(new_value);
+    //Store the user's new text in the model:
+    layout_group->set_columns_count(new_value);
 
-      m_modified = true;
-    }
+    m_modified = true;
   }
 }
 

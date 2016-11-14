@@ -56,22 +56,22 @@ public:
   };
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  typedef sigc::signal<void> type_signal_layout_changed;
+  typedef sigc::signal<void()> type_signal_layout_changed;
 
   /// Signals that the layout has changed, so it should be saved to the document again.
   type_signal_layout_changed signal_layout_changed();
 
-  typedef sigc::signal<void, enumType> type_signal_layout_item_added;
+  typedef sigc::signal<void(enumType)> type_signal_layout_item_added;
 
   ///Requests the addition of an item:
   type_signal_layout_item_added signal_layout_item_added();
 
   //Allow a child widget to delegate to a parent widget:
-  typedef sigc::signal<void> type_signal_user_requested_layout;
+  typedef sigc::signal<void()> type_signal_user_requested_layout;
   type_signal_user_requested_layout signal_user_requested_layout();
 
   //Allow a child widget to delegate to a parent widget:
-  typedef sigc::signal<void> type_signal_user_requested_layout_properties;
+  typedef sigc::signal<void()> type_signal_user_requested_layout_properties;
   type_signal_user_requested_layout_properties signal_user_requested_layout_properties();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -81,7 +81,7 @@ protected:
   virtual AppWindow* get_appwindow() const; // = 0;
 
 
-  static void apply_formatting(Gtk::Widget& widget, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item);
+  static void apply_formatting(Gtk::Widget& widget, const LayoutItem_WithFormatting& layout_item);
 
 protected: //TODO: Add accessor?
   std::shared_ptr<LayoutItem> m_layout_item;

@@ -40,11 +40,11 @@
 #else
 # include <sys/types.h>
 # include <sys/socket.h>
-# include <errno.h>
+# include <cerrno>
 # include <netinet/in.h> //For sockaddr_in
 #endif
 
-#include <signal.h> //To catch segfaults
+#include <csignal> //To catch segfaults
 
 // Uncomment to see debug messages
 //#define GLOM_CONNECTION_DEBUG
@@ -358,16 +358,16 @@ void PostgresSelfHosted::show_active_connections()
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_field("*", "pg_stat_activity");
   builder->select_add_target("pg_stat_activity");
- 
+
   auto gda_connection = connect(m_saved_database_name, m_saved_username, m_saved_password);
   if(!gda_connection)
     std::cerr << G_STRFUNC << ": connection failed.\n";
-  
+
   auto datamodel = DbUtils::query_execute_select(builder);
   if(!datamodel)
     std::cerr << G_STRFUNC << ": pg_stat_activity SQL query failed.\n";
-  
-  const auto rows_count = datamodel->get_n_rows(); 
+
+  const auto rows_count = datamodel->get_n_rows();
   if(datamodel->get_n_rows() < 1)
     std::cerr << G_STRFUNC << ": pg_stat_activity SQL query returned no rows.\n";
 
@@ -379,13 +379,13 @@ void PostgresSelfHosted::show_active_connections()
     {
       if(col != 0)
         std::cout << ", ";
-        
+
       std::cout << datamodel->get_value_at(col, row).to_string();
     }
-    
+
     std::cout << std::endl;
   }
-  
+
   //Make sure that this connection does not stop a further attempt to stop the server.
   gda_connection->close();
 }
@@ -432,7 +432,7 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
   if(!Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress))
   {
     std::cerr << G_STRFUNC << ": Error while attempting to stop self-hosting of the database. Trying again."  << std::endl;
-    
+
     //Show open connections for debugging:
     try
     {
@@ -442,7 +442,7 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
     {
       std::cerr << G_STRFUNC << ": exception while trying to show active connections: " << ex.what() << std::endl;
     }
-    
+
     //I've seen it fail when running under valgrind, and there are reports of failures in bug #420962.
     //Maybe it will help to try again:
     if(!Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress))
@@ -468,7 +468,7 @@ bool PostgresSelfHosted::set_network_shared(const SlotProgress& /* slot_progress
   const std::string dbdir_uri_config = m_database_directory_uri + "/config";
   const char* default_conf_contents = nullptr;
 
-  // Choose the configuration contents based on 
+  // Choose the configuration contents based on
   // whether we want to be network-shared:
   //const auto postgresql_version = get_postgresql_utils_version_as_number(slot_progress);
   //std::cout << "DEBUG: postgresql_version=" << postgresql_version << std::endl;
@@ -551,7 +551,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
   }
 
   //Save the connection details _only_ for later debug use:
-  
+
   m_saved_database_name = database;
   m_saved_username = username;
   m_saved_password = password;

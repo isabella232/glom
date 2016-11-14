@@ -95,7 +95,7 @@ public:
    * It is up to the caller to indicate in the menu that find mode is not active.
    */
   void set_mode_data();
-  
+
   void on_menu_add_record();
 
   void on_menu_report_selected(const Glib::ustring& report_name);
@@ -116,10 +116,10 @@ public:
   void on_menu_developer_database_preferences();
   void on_menu_developer_fields();
   void do_menu_developer_fields(Gtk::Window& parent);
-  void do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name);
+  void do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring& table_name);
   void on_menu_developer_relationships_overview();
   void on_menu_developer_relationships();
-  void do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name);
+  void do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring& table_name);
   void on_menu_developer_users();
   void on_menu_developer_layout();
   void on_menu_developer_reports();
@@ -158,7 +158,7 @@ public:
    * @param confirm_existing_user If true then an alternative message text will be shown.
    * @result true if the connection succeeded and the database was found on the server.
    */
-  bool connection_request_password_and_attempt(bool& database_not_found, const Glib::ustring known_username = Glib::ustring(), const Glib::ustring& known_password = Glib::ustring(), bool confirm_existing_user = false);
+  bool connection_request_password_and_attempt(bool& database_not_found, const Glib::ustring& known_username = Glib::ustring(), const Glib::ustring& known_password = Glib::ustring(), bool confirm_existing_user = false);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Show the dialog to request the password, and choose an unused database name.
@@ -166,7 +166,7 @@ public:
 
   ///Create the database for new documents, showing the Connection dialog
   bool create_database(const Glib::ustring& database_name, const Glib::ustring& title);
-  
+
   void set_enable_layout_drag_and_drop(bool enable = true);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

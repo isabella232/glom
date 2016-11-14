@@ -28,15 +28,15 @@ namespace Glom
 {
 
 /// This is only used on print layouts.
-class LayoutItem_Line 
+class LayoutItem_Line
  : public LayoutItem
 {
 public:
   LayoutItem_Line();
-  LayoutItem_Line(const LayoutItem_Line& src);
-  LayoutItem_Line(LayoutItem_Line&& src) = delete;
-  LayoutItem_Line& operator=(const LayoutItem_Line& src);
-  LayoutItem_Line& operator=(LayoutItem_Line&& src) = delete;
+  LayoutItem_Line(const LayoutItem_Line& src) = default;
+  LayoutItem_Line(LayoutItem_Line&& src) = default;
+  LayoutItem_Line& operator=(const LayoutItem_Line& src) = default;
+  LayoutItem_Line& operator=(LayoutItem_Line&& src) = default;
 
   LayoutItem* clone() const override;
 
@@ -52,10 +52,10 @@ public:
   /** Set the coordinates.
    */
   void set_coordinates(double start_x, double start_y, double end_x, double end_y);
-  
+
   double get_line_width() const;
   void set_line_width(double line_width);
-  
+
   /** Get the line color in CSS3 format.
    */
   Glib::ustring get_line_color() const;

@@ -29,31 +29,14 @@ LayoutItem_Summary::LayoutItem_Summary()
 {
 }
 
-LayoutItem_Summary::LayoutItem_Summary(const LayoutItem_Summary& src)
-: LayoutGroup(src)
-{
-}
-
 LayoutItem_Summary::~LayoutItem_Summary()
 {
   remove_all_items();
 }
 
-
 LayoutItem* LayoutItem_Summary::clone() const
 {
   return new LayoutItem_Summary(*this);
-}
-
-
-LayoutItem_Summary& LayoutItem_Summary::operator=(const LayoutItem_Summary& src)
-{
-  if(this != &src)
-  {
-    LayoutGroup::operator=(src);
-  }
-
-  return *this;
 }
 
 Glib::ustring LayoutItem_Summary::get_part_type_name() const

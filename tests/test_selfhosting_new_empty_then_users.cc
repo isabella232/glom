@@ -130,8 +130,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
 
-  typedef std::vector<Glib::ustring> type_vec_strings;
-  type_vec_strings table_names( {
+  std::vector<Glib::ustring> table_names( {
     "sometable",
     "SomeTableWithUpperCase",
     "sometable with space characters",
@@ -179,7 +178,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
 
   //Add groups:
-  type_vec_strings group_names( {
+  std::vector<Glib::ustring> group_names( {
     "somegroup1",
     "somegroup with space characters",
     "somegroup with a \" doublequote character",
@@ -199,7 +198,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   //Add users:
   //TODO: Test strange passwords.
-  type_vec_strings user_names( {
+  std::vector<Glib::ustring> user_names( {
     "someuser1",
     "someuser with space characters",
     "someuser with a \" doublequote character",
@@ -268,12 +267,12 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   //Test get_table_privileges().
- 
+
 
 
   test_selfhosting_cleanup(false /* do not delete the file. */);
 
-  return true; 
+  return true;
 }
 
 int main()

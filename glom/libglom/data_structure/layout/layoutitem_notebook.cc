@@ -29,21 +29,9 @@ LayoutItem_Notebook::LayoutItem_Notebook()
 {
 }
 
-LayoutItem_Notebook::LayoutItem_Notebook(const LayoutItem_Notebook& src)
-: LayoutGroup(src)
-{
-}
-
 LayoutItem* LayoutItem_Notebook::clone() const
 {
   return new LayoutItem_Notebook(*this);
-}
-
-LayoutItem_Notebook& LayoutItem_Notebook::operator=(const LayoutItem_Notebook& src)
-{
-  LayoutGroup::operator=(src);
-
-  return *this;
 }
 
 Glib::ustring LayoutItem_Notebook::get_part_type_name() const

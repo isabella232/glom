@@ -211,7 +211,7 @@ void Dialog_SortFields::on_button_add_field()
 {
   //Get the chosen fields:
   const auto fields_list = offer_field_list(m_table_name, this);
-  for(const auto& field : fields_list) 
+  for(const auto& field : fields_list)
   {
     if(!field)
       continue;
@@ -258,53 +258,54 @@ void Dialog_SortFields::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk
 {
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
-  if(renderer_text)
-  {
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
+  if(!renderer_text)
+    return;
 
-      std::shared_ptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
-      renderer_text->property_markup() = item->get_layout_display_name();
-      renderer_text->property_editable() = false; //Names can never be edited.
-    }
-  }
+  if(!iter)
+    return;
+
+  Gtk::TreeModel::Row row = *iter;
+
+  std::shared_ptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
+  renderer_text->property_markup() = item->get_layout_display_name();
+  renderer_text->property_editable() = false; //Names can never be edited.
 }
 
 
 void Dialog_SortFields::on_button_edit_field()
 {
   auto refTreeSelection = m_treeview_fields->get_selection();
+  if(!refTreeSelection)
+    return;
+
+  //TODO: Handle multiple-selection:
+  auto iter = refTreeSelection->get_selected();
+  if(!iter)
+    return;
+
+  Gtk::TreeModel::Row row = *iter;
+  std::shared_ptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
+
+  //Get the chosen field:
+  auto field_chosen =
+    offer_field_list_select_one_field(field, m_table_name, this);
+  if(!field_chosen)
+    return;
+
+  //Set the field details in the layout treeview:
+
+  row[m_ColumnsFields.m_col_layout_item] = field_chosen;
+
+  //Scroll to, and select, the new row:
+  /*
+  auto refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
-  {
-    //TODO: Handle multiple-selection:
-    auto iter = refTreeSelection->get_selected();
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
-      std::shared_ptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
+    refTreeSelection->select(iter);
 
-      //Get the chosen field:
-      auto field_chosen = 
-        offer_field_list_select_one_field(field, m_table_name, this);
-      if(field_chosen)
+  m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
 
-      //Set the field details in the layout treeview:
-
-      row[m_ColumnsFields.m_col_layout_item] = field_chosen;
-
-      //Scroll to, and select, the new row:
-      /*
-      auto refTreeSelection = m_treeview_fields->get_selection();
-      if(refTreeSelection)
-        refTreeSelection->select(iter);
-
-      m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
-
-      treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
-      */
-    }
-  }
+  treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
+  */
 }
 
 } //namespace Glom

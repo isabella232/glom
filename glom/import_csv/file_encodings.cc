@@ -73,7 +73,7 @@ type_list_encodings get_list_of_encodings()
   add_encoding(_("Unicode"), "UTF-7");
   add_encoding(_("Unicode"), "UCS-2");
   add_encoding(_("Unicode"), "UCS-4");
-  add_encoding(0, 0); // This just adds a separator in the combo box
+  add_encoding(nullptr, nullptr); // This just adds a separator in the combo box
   add_encoding(_("Western"), "ISO-8859-1");
   add_encoding(_("Central European"), "ISO-8859-2");
   add_encoding(_("South European"), "ISO-8859-3");
@@ -89,7 +89,7 @@ type_list_encodings get_list_of_encodings()
   add_encoding(_("Celtic"), "ISO-8859-14");
   add_encoding(_("Western"), "ISO-8859-15");
   add_encoding(_("Romanian"), "ISO-8859-16");
-  add_encoding(0, 0); // This just adds a separator in the combo box
+  add_encoding(nullptr, nullptr); // This just adds a separator in the combo box
   add_encoding(_("Central European"), "WINDOWS-1250");
   add_encoding(_("Cyrillic"), "WINDOWS-1251");
   add_encoding(_("Western"), "WINDOWS-1252");

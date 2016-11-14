@@ -28,23 +28,6 @@ HasTitleSingular::HasTitleSingular()
 {
 }
 
-HasTitleSingular::HasTitleSingular(const HasTitleSingular& src)
-: m_title_singular(src.m_title_singular)
-{
-
-}
-
-HasTitleSingular::~HasTitleSingular()
-{
-}
-
-HasTitleSingular& HasTitleSingular::operator=(const HasTitleSingular& src)
-{
-  m_title_singular = src.m_title_singular;
-
-  return *this;
-}
-
 bool HasTitleSingular::operator==(const HasTitleSingular& src) const
 {
   const bool bResult = (m_title_singular == src.m_title_singular);
@@ -81,11 +64,10 @@ Glib::ustring HasTitleSingular::get_title_singular_with_fallback(const Glib::ust
   const auto result = get_title_singular(locale);
   if(!result.empty())
     return result;
-  
-  //If it this is also a regular TranslatableItem (usually it is), 
+
+  //If it this is also a regular TranslatableItem (usually it is),
   //then try getting the regular title instead.
-  const auto translatable = dynamic_cast<const TranslatableItem*>(this);
-  if(translatable)
+  if(const auto translatable = dynamic_cast<const TranslatableItem*>(this))
     return translatable->get_title_or_name(locale);
 
   return result;

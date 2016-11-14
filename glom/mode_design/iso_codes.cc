@@ -39,7 +39,7 @@ namespace IsoCodes
 static type_list_currencies list_currencies;
 static type_list_locales list_locales;
 
-typedef std::map<Glib::ustring, Locale> type_map_locales; //ID to locale.
+typedef std::unordered_map<Glib::ustring, Locale, std::hash<std::string>> type_map_locales; //ID to locale.
 static type_map_locales map_locales; //For quick lookup.
 
 type_list_currencies get_list_of_currency_symbols()
@@ -62,27 +62,27 @@ type_list_currencies get_list_of_currency_symbols()
         for(const auto& node : nodeRoot->get_children("iso_4217_entry"))
         {
           auto nodeEntry = dynamic_cast<xmlpp::Element*>(node);
-          if(nodeEntry)
+          if(!nodeEntry)
+            continue;
+
+          Currency currency;
+
+          const auto attribute_code = nodeEntry->get_attribute("letter_code");
+          if(attribute_code)
+            currency.m_symbol = attribute_code->get_value();
+
+          const auto attribute_name = nodeEntry->get_attribute("currency_name");
+          if(attribute_name)
           {
-            Currency currency;
+            Glib::ustring name = _(attribute_name->get_value().c_str());
+            const auto pchTranslatedName = dgettext("iso_4217", name.c_str());
+            if(pchTranslatedName)
+              name = pchTranslatedName;
 
-            const auto attribute_code = nodeEntry->get_attribute("letter_code");
-            if(attribute_code)
-              currency.m_symbol = attribute_code->get_value();
-
-            const auto attribute_name = nodeEntry->get_attribute("currency_name");
-            if(attribute_name)
-            {
-              Glib::ustring name = _(attribute_name->get_value().c_str());
-              const auto pchTranslatedName = dgettext("iso_4217", name.c_str());
-              if(pchTranslatedName)
-                name = pchTranslatedName;
-
-              currency.m_name = name;
-            }
-
-            list_currencies.emplace_back(currency);
+            currency.m_name = name;
           }
+
+          list_currencies.emplace_back(currency);
         }
       }
     }
@@ -111,7 +111,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
   if(map_locales.empty())
   {
     //Get a list of locale IDs:
-    typedef std::list<std::string> type_list_ids;
+    using type_list_ids = std::vector<std::string>;
     type_list_ids list_ids;
 
     const std::string locales_path = "/usr/share/i18n/locales/";
@@ -142,9 +142,9 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
       Utils::add_unique(list_ids, id);
     }
 
-    //Get the (translated) language names:
-    typedef std::map<Glib::ustring, Glib::ustring> type_map_language; //ID to language name.
-    type_map_language map_languages;
+    // Get the (translated) language names:
+    // ID to language name.
+    std::unordered_map<Glib::ustring, Glib::ustring, std::hash<std::string>> map_languages;
 
     const std::string filename_languages = ISO_CODES_PREFIX "/share/xml/iso-codes/iso_639.xml";
 
@@ -162,25 +162,25 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
         for(const auto& node : nodeRoot->get_children("iso_639_entry"))
         {
           auto nodeEntry = dynamic_cast<xmlpp::Element*>(node);
-          if(nodeEntry)
-          {
-            //TODO: There are 3 codes (not each entry has each code). Is this the correct one to identify a language?
-            const auto attribute_code = nodeEntry->get_attribute("iso_639_1_code");
-            if(attribute_code)
-            {
-              const auto identifier = attribute_code->get_value();
-              if(!identifier.empty())
-              {
-                const auto attribute_name = nodeEntry->get_attribute("name");
-                if(attribute_name)
-                {
-                  Glib::ustring name = attribute_name->get_value();
-                  const auto pchTranslatedName = dgettext("iso_639", name.c_str());
-                  if(pchTranslatedName)
-                    name = pchTranslatedName;
+          if(!nodeEntry)
+            continue;
 
-                  map_languages[identifier] = name;
-                }
+          //TODO: There are 3 codes (not each entry has each code). Is this the correct one to identify a language?
+          const auto attribute_code = nodeEntry->get_attribute("iso_639_1_code");
+          if(attribute_code)
+          {
+            const auto identifier = attribute_code->get_value();
+            if(!identifier.empty())
+            {
+              const auto attribute_name = nodeEntry->get_attribute("name");
+              if(attribute_name)
+              {
+                Glib::ustring name = attribute_name->get_value();
+                const auto pchTranslatedName = dgettext("iso_639", name.c_str());
+                if(pchTranslatedName)
+                  name = pchTranslatedName;
+
+                map_languages[identifier] = name;
               }
             }
           }
@@ -192,9 +192,9 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
       std::cerr << G_STRFUNC << ": Exception while parsing iso codes (locales): " << ex.what() << std::endl;
     }
 
-    //Get the (translated) country names:
-    typedef std::map<Glib::ustring, Glib::ustring> type_map_country; //ID to country name.
-    type_map_country map_country;
+    // Get the (translated) country names:
+    // ID to country name.
+    std::unordered_map<Glib::ustring, Glib::ustring, std::hash<std::string>> map_country;
 
     const Glib::ustring filename_countries = ISO_CODES_PREFIX "/share/xml/iso-codes/iso_3166.xml";
 
@@ -212,27 +212,27 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
         for(const auto& node : nodeRoot->get_children("iso_3166_entry"))
         {
           auto nodeEntry = dynamic_cast<xmlpp::Element*>(node);
-          if(nodeEntry)
-          {
-            const auto attribute_code = nodeEntry->get_attribute("alpha_2_code");
-            if(attribute_code)
-            {
-              const auto identifier = attribute_code->get_value();
-              if(!identifier.empty())
-              {
-                const auto attribute_name = nodeEntry->get_attribute("name");
-                if(attribute_name)
-                {
-                  Glib::ustring name = attribute_name->get_value();
-                  const auto pchTranslatedName = dgettext("iso_3166", name.c_str());
-                  if(pchTranslatedName)
-                    name = pchTranslatedName;
+          if(!nodeEntry)
+            continue;
 
-                  map_country[identifier] = name;
-                }
-              }
-            }
-          }
+          const auto attribute_code = nodeEntry->get_attribute("alpha_2_code");
+          if(!attribute_code)
+           continue;
+
+          const auto identifier = attribute_code->get_value();
+          if(identifier.empty())
+            continue;
+
+          const auto attribute_name = nodeEntry->get_attribute("name");
+          if(!attribute_name)
+            continue;
+
+          Glib::ustring name = attribute_name->get_value();
+          const auto pchTranslatedName = dgettext("iso_3166", name.c_str());
+          if(pchTranslatedName)
+            name = pchTranslatedName;
+
+          map_country[identifier] = name;
         }
       }
     }

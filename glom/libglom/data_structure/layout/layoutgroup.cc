@@ -22,7 +22,7 @@
 #include <libglom/data_structure/layout/layoutgroup.h>
 #include <libglom/algorithms_utils.h>
 #include <glibmm/i18n-lib.h>
-#include <iostream> 
+#include <iostream>
 
 namespace Glom
 {
@@ -172,7 +172,7 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive() const
   type_list_const_items result;
 
   for(const auto& item : m_list_items)
-  {    
+  {
     auto group = std::dynamic_pointer_cast<const LayoutGroup>(item);
     if(group)
     {
@@ -191,7 +191,7 @@ LayoutGroup::type_list_items LayoutGroup::get_items_recursive()
   type_list_items result;
 
   for(const auto& item : m_list_items)
-  {    
+  {
     auto group = std::dynamic_pointer_cast<LayoutGroup>(item);
     if(group)
     {
@@ -210,10 +210,10 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive_with_groups(
   type_list_const_items result;
 
   for(const auto& item : m_list_items)
-  {    
+  {
     //Add the item itself:
     result.emplace_back(item);
-    
+
     auto group = std::dynamic_pointer_cast<const LayoutGroup>(item);
     if(group)
     {
@@ -319,9 +319,9 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
   //Look at each item:
   for(const auto& item : m_list_items)
   {
-    auto field_item = 
+    auto field_item =
       std::dynamic_pointer_cast<LayoutItem_Field>(item);
-    
+
     //Field layout items:
     if(field_item)
     {
@@ -346,14 +346,14 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
     else
     {
       //Formatting:
-      auto with_formatting = 
+      auto with_formatting =
         std::dynamic_pointer_cast<LayoutItem_WithFormatting>(item);
       if(with_formatting)
       {
         auto formatting = with_formatting->m_formatting;
         formatting.change_field_item_name(table_name, field_name, field_name_new);
       }
-   
+
       //Recurse into sub-groups:
       auto sub_group = std::dynamic_pointer_cast<LayoutGroup>(item);
       if(sub_group)

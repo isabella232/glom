@@ -37,7 +37,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
     COMMENTS = 2,
     SYNONYMS = 3
   };
-  
+
   if(gda_connection && gda_connection->is_opened())
   {
     //Read the Types information, so that we can map the string representation of the type (returned by CONNECTION_META_FIELDS) to
@@ -74,7 +74,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
         Glib::ustring schema_type_string;
         if(value_name.get_value_type() == G_TYPE_STRING)
           schema_type_string = value_name.get_string();
-        
+
         if(!schema_type_string.empty())
         {
           const auto value_gdatype = data_model_tables->get_value_at(Utils::to_utype(GlomGdaDataModelTypesColumns::GTYPE), i);
@@ -87,15 +87,15 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
 
             //Save it for later:
             //const auto gdatypestring = gda_g_type_to_string(gdatype);
-           
+
             //std::cout << "schema type: " << schema_type_string << " = gdatype " << (guint)gdatype << "(" << gdatypestring << ")\n";
-            
+
             m_mapGdaTypesToSchemaStrings[gdatype] = schema_type_string; //We save it twice, to just to make searching easier, without using std::find.
-            
+
             //g_warning("debug: schema type: %s = gdatype %d", schema_type_string.c_str(), gdatype);
           }
         }
-          
+
       }
     }
   }
@@ -167,7 +167,7 @@ guint FieldTypes::get_types_count() const
 
 Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) const
 {
-  //Special-case gchararray (G_TYPE_STRING) because Gda reports this GType for several 
+  //Special-case gchararray (G_TYPE_STRING) because Gda reports this GType for several
   //postgres field types (xml, inet, tinterval, etc),
   //though we only care about varchar:
   if(field_type == G_TYPE_STRING)
@@ -187,7 +187,7 @@ Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) con
     {
       std::cerr << G_STRFUNC << ":     gdatype=" << item.first << " (" << g_type_name(item.first) << "), sqltype=" << item.second << std::endl;
     }
-    
+
     return "unknowntype";
   }
   else

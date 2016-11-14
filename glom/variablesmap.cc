@@ -45,16 +45,14 @@ void VariablesMap::connect_widget(const Glib::ustring& widget_name, bool& variab
 void VariablesMap::connect_widget(const Glib::ustring& widget_name, Glib::ustring& variable)
 {
   Gtk::Widget* pWidget = nullptr;
-  m_builder->get_widget(widget_name, pWidget); 
+  m_builder->get_widget(widget_name, pWidget);
 
-  auto pEntry = dynamic_cast<Gtk::Entry*>(pWidget); //it mange both Gtk::entry and Gtk::SpinButton
-  auto pComboBox = dynamic_cast<Gtk::ComboBox*>(pWidget);
-  if(pEntry)
+  if(auto pEntry = dynamic_cast<Gtk::Entry*>(pWidget)) //it mange both Gtk::entry and Gtk::SpinButton
   {
     m_mapWidgetsToVariables[pEntry] = (void*)(&variable);
   }
 
-  if(pComboBox)
+  if(auto pComboBox = dynamic_cast<Gtk::ComboBox*>(pWidget))
   {
     m_mapWidgetsToVariables[pComboBox] = (void*)(&variable);
   }
@@ -63,25 +61,25 @@ void VariablesMap::connect_widget(const Glib::ustring& widget_name, Glib::ustrin
 void VariablesMap::connect_widget(const Glib::ustring& widget_name, double& variable)
 {
   Gtk::Widget* pWidget = nullptr;
-  m_builder->get_widget(widget_name, pWidget); 
+  m_builder->get_widget(widget_name, pWidget);
 
-  auto pScale = dynamic_cast<Gtk::Scale*>(pWidget); 
-  if(pScale)
-  {
-    m_mapWidgetsToVariables[pScale] = (void*)(&variable);
-  }
+  auto pScale = dynamic_cast<Gtk::Scale*>(pWidget);
+  if(!pScale)
+    return;
+
+  m_mapWidgetsToVariables[pScale] = (void*)(&variable);
 }
 
 void VariablesMap::connect_widget(const Glib::ustring& widget_name, Glib::Date& variable)
 {
   Gtk::Widget* pWidget = nullptr;
-  m_builder->get_widget(widget_name, pWidget); 
+  m_builder->get_widget(widget_name, pWidget);
 
-  auto pCalendar = dynamic_cast<Gtk::Calendar*>(pWidget); 
-  if(pCalendar)
-  {
-    m_mapWidgetsToVariables[pCalendar] = (void*)(&variable);
-  }
+  auto pCalendar = dynamic_cast<Gtk::Calendar*>(pWidget);
+  if(!pCalendar)
+    return;
+
+  m_mapWidgetsToVariables[pCalendar] = (void*)(&variable);
 }
 
 void VariablesMap::transfer_widgets_to_variables()
@@ -108,81 +106,74 @@ void VariablesMap::transfer_one_widget(Gtk::Widget* pWidget, bool to_variable)
 {
   //Find the widget in the map:
   auto iterFind = m_mapWidgetsToVariables.find(pWidget);
-  if(iterFind != m_mapWidgetsToVariables.end())
+  if(iterFind == m_mapWidgetsToVariables.end())
+    return;
+
+  //Get the variable for the widget:
+  auto pVariable = iterFind->second;
+  if(!pVariable)
+    return;
+
+  //Cast the variable appropriately and set it appropriately:
+  if(auto pEntry = dynamic_cast<Gtk::Entry*>(pWidget))
   {
-    //Get the variable for the widget:
-    auto pVariable = iterFind->second;
-    if(pVariable)
+    auto pVar = static_cast<Glib::ustring*>(pVariable);
+
+    if(to_variable)
+      (*pVar) = pEntry->get_text();
+    else
+      pEntry->set_text(*pVar);
+  }
+
+  if(auto pComboBox = dynamic_cast<Gtk::ComboBox*>(pWidget))
+  {
+    auto pVar = static_cast<Glib::ustring*>(pVariable);
+    auto pIEntry = dynamic_cast<Gtk::Entry*>(pComboBox->get_child());
+
+    if(!to_variable)
     {
-      //Cast the variable appropriately and set it appropriately:
-      auto pEntry = dynamic_cast<Gtk::Entry*>(pWidget);
-      auto pComboBox = dynamic_cast<Gtk::ComboBox*>(pWidget);
+      if(pIEntry)
+          (*pVar) = pIEntry->get_text();
+      } else {
+        if(pIEntry)
+          pIEntry->set_text(*pVar);
+    }
+  }
 
-      auto pToggleButton = dynamic_cast<Gtk::ToggleButton*>(pWidget); //CheckButtons and RadioButtons.
-      auto pScale = dynamic_cast<Gtk::Scale*>(pWidget); 
-      auto pCalendar = dynamic_cast<Gtk::Calendar*>(pWidget); 
+  if(auto pToggleButton = dynamic_cast<Gtk::ToggleButton*>(pWidget)) //CheckButtons and RadioButtons.
+  {
+    auto pVar = static_cast<bool*>(pVariable);
 
-      if(pEntry)
-      {
-        auto pVar = static_cast<Glib::ustring*>(pVariable);
+    if(to_variable)
+      (*pVar) = pToggleButton->get_active();
+    else
+      pToggleButton->set_active(*pVar);
+  }
 
-        if(to_variable)
-          (*pVar) = pEntry->get_text();
-        else
-          pEntry->set_text(*pVar);
-      }
-      
-      if(pComboBox)
-      {
-        auto pVar = static_cast<Glib::ustring*>(pVariable);
-	auto pIEntry = dynamic_cast<Gtk::Entry*>(pComboBox->get_child());
+  if(auto pScale = dynamic_cast<Gtk::Scale*>(pWidget))
+  {
+    auto pVar = static_cast<double*>(pVariable);
 
-        if(to_variable)
-        {
-	      if(pIEntry) 
-          	(*pVar) = pIEntry->get_text();
-        } else {
-	      if(pIEntry) 
-	          pIEntry->set_text(*pVar);
-	    }
-      }
-      
-      if(pToggleButton)
-      {
-        auto pVar = static_cast<bool*>(pVariable);
+    if(to_variable)
+      (*pVar) = pScale->get_value();
+    else
+      pScale->set_value(*pVar);
+  }
 
-        if(to_variable)
-          (*pVar) = pToggleButton->get_active();
-        else
-          pToggleButton->set_active(*pVar);
-      }
-      
-      if(pScale)
-      {
-        auto pVar = static_cast<double*>(pVariable);
+  if(auto pCalendar = dynamic_cast<Gtk::Calendar*>(pWidget))
+  {
+    auto pVar = static_cast<Glib::Date*>(pVariable);
 
-        if(to_variable)
-          (*pVar) = pScale->get_value();
-        else
-          pScale->set_value(*pVar);
-      }
-      
-      if(pCalendar)
-      {
-        auto pVar = static_cast<Glib::Date*>(pVariable);
-
-        if(to_variable)
-        {
-	       guint year,month,day;
-	       pCalendar->get_date(year,month,day);
-           (*pVar) = Glib::Date(day,(Glib::Date::Month)month,year);
-        }
-	    else
-        {
-          pCalendar->select_day(pVar->get_day());
-          pCalendar->select_month(pVar->get_month(), pVar->get_year());
-	    }
-      }
+    if(to_variable)
+    {
+      guint year,month,day;
+      pCalendar->get_date(year, month, day);
+      (*pVar) = Glib::Date(day, (Glib::Date::Month)month, year);
+    }
+    else
+    {
+      pCalendar->select_day(pVar->get_day());
+      pCalendar->select_month(pVar->get_month(), pVar->get_year());
     }
   }
 }

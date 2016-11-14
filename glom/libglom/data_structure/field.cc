@@ -51,35 +51,6 @@ Field::Field()
   m_translatable_item_type = enumTranslatableItemType::FIELD;
 }
 
-Field::Field(const Field& src)
-: TranslatableItem(src)
-{
-  //TODO_Performance: Implement this properly, without the extra copy.
-  operator=(src);
-}
-
-Field& Field::operator=(const Field& src)
-{
-  TranslatableItem::operator=(src);
-
-  m_glom_type = src.m_glom_type;
-  m_field_info = src.m_field_info->copy();
-
-  m_lookup_relationship = src.m_lookup_relationship;
-  m_strLookupField = src.m_strLookupField;
-
-  m_calculation = src.m_calculation;
-
-  m_visible = src.m_visible;
-
-  m_primary_key = src.m_primary_key;
-  m_unique_key = src.m_unique_key;
-
-  m_default_formatting = src.m_default_formatting;
-
-  return *this;
-}
-
 bool Field::operator==(const Field& src) const
 {
   return TranslatableItem::operator==(src)
@@ -243,10 +214,10 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnom
   {
     std::cerr << G_STRFUNC << ": The ServerProvider was null.\n";
     return Glib::ustring();
-  } 
+  }
 
   const auto gda_type = get_gda_type_for_glom_type(m_glom_type);
-  Glib::RefPtr<const Gnome::Gda::DataHandler> datahandler = 
+  Glib::RefPtr<const Gnome::Gda::DataHandler> datahandler =
     provider->get_data_handler_g_type(connection, gda_type);
   if(datahandler)
   {
@@ -274,7 +245,7 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
   {
     if(!value.gobj())
       return Glib::ustring();
- 
+
     gchar* str = nullptr;
     const auto value_type = value.get_value_type();
     if(value_type == GDA_TYPE_BINARY)
@@ -332,10 +303,10 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
     result = Utils::string_replace(result, "\r", "\\015");
     return Utils::string_replace(result, "\"", "\\042");
   }
-  
+
   NumericFormat format_ignored; //Because we use ISO format.
   const auto result = Conversions::get_text_for_gda_value(glom_type, value, std::locale::classic() /* SQL uses the C locale */, format_ignored, true /* ISO standard */);
-  
+
   //Escape " as "", as specified by the CSV RFC:
   return Utils::string_replace(result, GLOM_QUOTE_FOR_FILE_FORMAT, GLOM_QUOTE_FOR_FILE_FORMAT GLOM_QUOTE_FOR_FILE_FORMAT);
 }
@@ -370,7 +341,7 @@ Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, glom_field_t
   }
   else
   {
-    string_unescaped = 
+    string_unescaped =
       Utils::string_replace(str, GLOM_QUOTE_FOR_FILE_FORMAT GLOM_QUOTE_FOR_FILE_FORMAT, GLOM_QUOTE_FOR_FILE_FORMAT);
   }
 
@@ -421,7 +392,7 @@ Glib::ustring Field::sql_find(const Gnome::Gda::Value& value, const Glib::RefPtr
     case(glom_field_type::TEXT):
     {
       //% means 0 or more characters.
-      
+
       if(value.is_null())
         return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
       else
@@ -578,14 +549,14 @@ bool Field::field_info_from_database_is_equal(const Glib::RefPtr<const Gnome::Gd
 
   //TODO_gda: temp->set_primary_key( field->get_primary_key() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
 
-  return temp->equal(field); 
+  return temp->equal(field);
 }
 
 Field::glom_field_type Field::get_glom_type_for_gda_type(GType gda_type)
 {
   init_map();
 
-  Field::glom_field_type result = glom_field_type::INVALID;
+  auto result = glom_field_type::INVALID;
 
   //Get the glom type used for this gda type:
   {
@@ -617,7 +588,7 @@ GType Field::get_gda_type_for_glom_type(Field::glom_field_type glom_type)
   }
 
   //std::cout << "debug: " << G_STRFUNC << ": returning: " << g_type_name(ideal_gda_type) << std::endl;
-  
+
   return ideal_gda_type;
 }
 
@@ -654,22 +625,22 @@ void Field::init_map()
 
     // Translators: This means an unknown or unnacceptable value type in a database.
     m_map_type_names_ui[glom_field_type::INVALID] = _("Invalid");
-    
+
     // Translators: This means a numeric value type in a database.
     m_map_type_names_ui[glom_field_type::NUMERIC] = _("Number");
-    
+
     // Translators: This means a text/string value type in a database.
     m_map_type_names_ui[glom_field_type::TEXT] = _("Text");
-    
+
     // Translators: This means a time value type in a database.
     m_map_type_names_ui[glom_field_type::TIME] = _("Time");
-    
+
     // Translators: This means a time value type in a database.
     m_map_type_names_ui[glom_field_type::DATE] = _("Date");
-    
+
     // Translators: This means a true/false value type in a database.
     m_map_type_names_ui[glom_field_type::BOOLEAN] = _("Boolean");
-    
+
     // Translators: This means a picture value type in a database.
     m_map_type_names_ui[glom_field_type::IMAGE] = _("Image");
 
@@ -739,7 +710,7 @@ bool Field::get_conversion_possible(glom_field_type field_type_src, glom_field_t
     if(Utils::find_exists(list_conversions, field_type_dest))
       return true; //Success: conversion found.
   }
-  
+
   return false; //failed.
 }
 
@@ -788,7 +759,7 @@ Glib::ustring Field::get_type_name_ui(glom_field_type glom_type)
 //static:
 Field::glom_field_type Field::get_type_for_ui_name(const Glib::ustring& glom_type)
 {
-  glom_field_type result = glom_field_type::INVALID;
+  auto result = glom_field_type::INVALID;
 
   for(const auto& the_pair : m_map_type_names_ui)
   {

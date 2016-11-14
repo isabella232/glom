@@ -48,7 +48,7 @@ void CellRendererDbList::set_choices_fixed(const Formatting::type_list_values& l
   //The other cells are added in on_editing_started().
 }
 
-void CellRendererDbList::set_choices_related(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
+void CellRendererDbList::set_choices_related(const std::shared_ptr<const Document>& document, const LayoutItem_Field& layout_field, const Gnome::Gda::Value& foreign_key_value)
 {
   ComboChoicesWithTreeModel::set_choices_related(document, layout_field, foreign_key_value);
 
@@ -97,8 +97,7 @@ void CellRendererDbList::repack_cells_fixed(Gtk::CellLayout* combobox)
   if(!m_repacked_first_cell)
   {
     //Get the default column, created by set_text_column():
-    auto cell = dynamic_cast<Gtk::CellRendererText*>(combobox->get_first_cell());
-    if (cell)
+    if (auto cell = dynamic_cast<Gtk::CellRendererText*>(combobox->get_first_cell()))
     {
       //Unpack and repack it with expand=false instead of expand=true:
       //We don't expand the first column, so we can align the other columns.

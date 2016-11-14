@@ -38,7 +38,7 @@ void PrintOperationPrintLayout::on_begin_print(
 {
   //Call base class:
   Gtk::PrintOperation::on_begin_print(print_context);
-  
+
   set_n_pages( m_canvas->get_page_count() );
   //std::cout << G_STRFUNC << ": n pages =" <<  m_canvas->get_page_count() << std::endl;
 }
@@ -80,7 +80,7 @@ void PrintOperationPrintLayout::on_draw_page(
 
   //Shift the renderer context up into the page:
   cairo_context->translate(0, - bounds.get_y1());
-  
+
   m_canvas->render(cairo_context, bounds);
 
   //Call base class:

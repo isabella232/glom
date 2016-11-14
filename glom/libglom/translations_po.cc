@@ -32,7 +32,7 @@
 #include <iostream>
 
 /* For really ugly hacks! */
-#include <setjmp.h>
+#include <csetjmp>
 
 #define GLOM_PO_HEADER \
 "msgid \"\"\n" \
@@ -63,7 +63,7 @@ static void show_gettext_error(int severity, const char* filename, const gchar* 
 
   switch(severity)
   {
-    #ifdef PO_SEVERITY_WARNING //This was introduced in libgettext-po some time after gettext version 0.14.5 
+    #ifdef PO_SEVERITY_WARNING //This was introduced in libgettext-po some time after gettext version 0.14.5
     case PO_SEVERITY_WARNING:
     {
       // Show only debug output
@@ -73,11 +73,11 @@ static void show_gettext_error(int severity, const char* filename, const gchar* 
     #endif //PO_SEVERITY_WARNING
 
 
-    #ifdef PO_SEVERITY_ERROR //This was introduced in libgettext-po some time after gettext version 0.14.5 
+    #ifdef PO_SEVERITY_ERROR //This was introduced in libgettext-po some time after gettext version 0.14.5
     case PO_SEVERITY_ERROR:
     #endif //PO_SEVERITY_ERROR
 
-    #ifdef PO_SEVERITY_FATAL_ERROR //This was introduced in libgettext-po some time after gettext version 0.14.5 
+    #ifdef PO_SEVERITY_FATAL_ERROR //This was introduced in libgettext-po some time after gettext version 0.14.5
     case PO_SEVERITY_FATAL_ERROR:
     #endif //PO_SEVERITY_FATAL_ERROR
 
@@ -88,7 +88,7 @@ static void show_gettext_error(int severity, const char* filename, const gchar* 
       //dlg.run();
       break;
     }
-  }   
+  }
 }
 
 /*
@@ -102,7 +102,7 @@ static void on_gettextpo_xerror (int severity, po_message_t /* message */, const
 {
   show_gettext_error(severity, filename, message_text);
 
-  #ifdef PO_SEVERITY_FATAL_ERROR  //This was introduced in libgettext-po some time after gettext version 0.14.5 
+  #ifdef PO_SEVERITY_FATAL_ERROR  //This was introduced in libgettext-po some time after gettext version 0.14.5
   if(severity == PO_SEVERITY_FATAL_ERROR)
     longjmp(jump, 1);
   #endif //PO_SEVERITY_FATAL_ERROR
@@ -114,8 +114,8 @@ static void on_gettextpo_xerror2 (int severity, po_message_t /* message1 */, con
   int /* multiline_p2 */, const char * /* message_text2 */)
 {
   show_gettext_error(severity, filename1, message_text1);
-  
-  #ifdef PO_SEVERITY_FATAL_ERROR  //This was introduced in libgettext-po some time after gettext version 0.14.5 
+
+  #ifdef PO_SEVERITY_FATAL_ERROR  //This was introduced in libgettext-po some time after gettext version 0.14.5
   if(severity == PO_SEVERITY_FATAL_ERROR)
     longjmp(jump, 1);
   #endif //PO_SEVERITY_FATAL_ERROR
@@ -179,13 +179,13 @@ Glib::ustring get_po_context_for_item(const std::shared_ptr<const TranslatableIt
       remaining = remaining.substr(part.size());
     }
   }
-  
+
   return result;
 }
 
 bool write_pot_file(const std::shared_ptr<Document>& document, const Glib::ustring& pot_file_uri)
 {
-  //A .pot file 
+  //A .pot file
   return write_translations_to_po_file(document, pot_file_uri, Glib::ustring() /* no locale */);
 }
 
@@ -204,9 +204,9 @@ bool write_translations_to_po_file(const std::shared_ptr<Document>& document, co
   }
 
   //We do not use gettext-po.h and its po_file_write() function for this,
-  //because that does not allow us to specify UTF-8, so it drops non-ASCII 
+  //because that does not allow us to specify UTF-8, so it drops non-ASCII
   //characters such as U with umlaut.
-  //It also has no obvious API for setting the header, so we would have to 
+  //It also has no obvious API for setting the header, so we would have to
   //do that manually anyway.
   Glib::ustring data;
 
@@ -224,11 +224,11 @@ bool write_translations_to_po_file(const std::shared_ptr<Document>& document, co
     // Add "context" comments, to uniquely identify similar strings, used in different places,
     // and to provide a hint for translators.
     Glib::ustring msg = "msgctxt \"" + get_po_context_for_item(item, hint) + "\"\n";
-    
+
     //The original and its translation:
     msg += "msgid \"" + item->get_title_original() + "\"\n";
     msg += "msgstr \"" + item->get_title_translation(translation_locale, false) + "\"";
-    
+
     data += msg + "\n\n";
   }
 
@@ -237,7 +237,7 @@ bool write_translations_to_po_file(const std::shared_ptr<Document>& document, co
   const auto revision_date_str = revision_date.format("%F %R%z");
   const auto header = Glib::ustring::compose(GLOM_PO_HEADER,
     document->get_database_title_original(), revision_date_str, locale_name);
-  
+
   const Glib::ustring full = header + "\n\n" + data;
   Glib::file_set_contents(filename, full);
 
@@ -263,7 +263,7 @@ bool import_translations_from_po_file(const std::shared_ptr<Document>& document,
     return false;
 
   if(setjmp(jump) != 0)
-    return false;  
+    return false;
 
   #ifdef HAVE_GETTEXTPO_XERROR
   po_xerror_handler error_handler;
@@ -276,7 +276,7 @@ bool import_translations_from_po_file(const std::shared_ptr<Document>& document,
   error_handler.error = &on_gettextpo_error;
   #endif //HAVE_GETTEXTPO_XERROR
 
-  po_file_t po_file = po_file_read(filename.c_str(), &error_handler);
+  auto po_file = po_file_read(filename.c_str(), &error_handler);
   if(!po_file)
   {
     // error message is already given by error_handle.
@@ -285,10 +285,10 @@ bool import_translations_from_po_file(const std::shared_ptr<Document>& document,
 
   //Look at each domain (could there be more than one?):
   const char* const* domains = po_file_domains(po_file);
-  for (int i = 0; domains[i] != 0; ++i)
+  for (int i = 0; domains[i] != nullptr; ++i)
   {
     //Look at each message:
-    po_message_iterator_t iter = po_message_iterator(po_file, domains[i]);
+    auto iter = po_message_iterator(po_file, domains[i]);
     po_message_t msg;
     while ((msg = po_next_message(iter)))
     {
@@ -308,7 +308,7 @@ bool import_translations_from_po_file(const std::shared_ptr<Document>& document,
 
         const auto& hint = the_pair.second;
 
-        if( (item->get_title_original() == msgid) && 
+        if( (item->get_title_original() == msgid) &&
           (get_po_context_for_item(item, hint) == msgcontext) ) // This is not efficient, but it should be reliable.
         {
           item->set_title(msgstr, translation_locale);

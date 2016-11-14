@@ -31,9 +31,9 @@ namespace Glom
 
 class LayoutWidgetMenu : public LayoutWidgetBase
 {
-public: 
+public:
   LayoutWidgetMenu();
-  
+
   //Popup-menu:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   /**
@@ -45,10 +45,10 @@ public:
   virtual void on_menupopup_activate_layout_properties();
   void on_menupopup_add_item(enumType item);
   void on_menupopup_activate_delete();
-#endif // !GLOM_ENABLE_CLIENT_ONLY  
-    
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
 protected:
-#ifndef GLOM_ENABLE_CLIENT_ONLY    
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   std::unique_ptr<Gtk::Menu> m_menu_popup;
 
   //TODO_Performance: //Presumably we waste lots of memory by having this in each layout widget. Maybe we can use one shared menu.

@@ -53,7 +53,7 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
 
   auto layout_item =
     std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
-  const auto format = layout_item->get_formatting_used();
+  const auto& format = layout_item->get_formatting_used();
   std::shared_ptr<const Relationship> choice_relationship;
   std::shared_ptr<const LayoutItem_Field> layout_choice_first;
   std::shared_ptr<const LayoutGroup> layout_choice_extra;
@@ -142,7 +142,7 @@ void ComboAsRadioButtons::set_choices_fixed(const Formatting::type_list_values& 
   }
 }
 
-void ComboAsRadioButtons::set_choices_related(const std::shared_ptr<const Document>& document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
+void ComboAsRadioButtons::set_choices_related(const std::shared_ptr<const Document>& document, const LayoutItem_Field& layout_field, const Gnome::Gda::Value& foreign_key_value)
 {
   const auto list_values =
     DbUtils::get_choice_values(document, layout_field, foreign_key_value);
@@ -268,7 +268,7 @@ void ComboAsRadioButtons::show_context_menu(GdkEventButton *button_event)
     if(pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
       GdkModifierType mods;
-      gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
+      gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, nullptr, nullptr, &mods );
       if(mods & GDK_BUTTON3_MASK)
       {
         //Give user choices of actions on this item:

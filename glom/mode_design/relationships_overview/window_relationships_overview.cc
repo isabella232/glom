@@ -120,16 +120,6 @@ Window_RelationshipsOverview::~Window_RelationshipsOverview()
 {
   get_size(m_last_size_x, m_last_size_y);
 
-  //Disconnect signal handlers for all current items,
-  //so sigc::bind()ed RefPtrs can be released.
-  while(m_list_table_connections.size())
-  {
-     auto iter = m_list_table_connections.begin();
-     sigc::connection the_connection = *iter;
-     the_connection.disconnect();
-     m_list_table_connections.erase(iter);
-  }
-
   //Remove all current items:
   //while(m_group_tables->get_n_children() > 0)
   //  m_group_tables->remove_child(0);
@@ -138,16 +128,6 @@ Window_RelationshipsOverview::~Window_RelationshipsOverview()
 
 void Window_RelationshipsOverview::draw_tables()
 {
-  //Disconnect signal handlers for all current items,
-  //so sigc::bind()ed RefPtrs can be released.
-  while(!m_list_table_connections.empty())
-  {
-     auto iter = m_list_table_connections.begin();
-     sigc::connection the_connection = *iter;
-     the_connection.disconnect();
-     m_list_table_connections.erase(iter);
-  }
-
   //Remove all current items:
   while(m_group_tables->get_n_children() > 0)
     m_group_tables->remove_child(0);
@@ -186,10 +166,9 @@ void Window_RelationshipsOverview::draw_tables()
       table_group->signal_moved().connect(
         sigc::mem_fun(*this, &Window_RelationshipsOverview::on_table_moved));
 
-      sigc::connection the_connection = table_group->signal_show_context().connect( sigc::bind(
+      table_group->signal_show_context().connect( sigc::bind(
         sigc::mem_fun(*this, &Window_RelationshipsOverview::on_table_show_context),
         table_group) );
-      m_list_table_connections.emplace_back(the_connection);
 
       //tv->x2 = tv->x1 + table_width;
       //tv->y2 = tv->y1 + table_height;
@@ -406,7 +385,7 @@ Glib::RefPtr<CanvasGroupDbTable> Window_RelationshipsOverview::get_table_group(c
 
 void Window_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasItemMovable>& item, double /* x_offset */, double /* y_offset */)
 {
-  auto table = 
+  auto table =
     Glib::RefPtr<CanvasGroupDbTable>::cast_dynamic(item);
   if(!table)
     return;
@@ -427,8 +406,12 @@ void Window_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasItemM
   draw_lines();
 }
 
-void Window_RelationshipsOverview::on_table_show_context(guint button, guint32 activate_time, Glib::RefPtr<CanvasGroupDbTable> table)
+void Window_RelationshipsOverview::on_table_show_context(guint button, guint32 activate_time, const Glib::WeakRef<CanvasGroupDbTable>& table_weak)
 {
+  const auto table = table_weak.get();
+  if (!table)
+    return;
+
   if(m_action_edit_fields)
   {
     // Disconnect the previous handler,
@@ -467,8 +450,12 @@ void Window_RelationshipsOverview::setup_context_menu()
   m_context_menu->attach_to_widget(*this);
 }
 
-void Window_RelationshipsOverview::on_context_menu_edit_fields(const Glib::VariantBase& /* parameter */, Glib::RefPtr<CanvasGroupDbTable> table)
+void Window_RelationshipsOverview::on_context_menu_edit_fields(const Glib::VariantBase& /* parameter */, const Glib::WeakRef<CanvasGroupDbTable>& table_weak)
 {
+  const auto table = table_weak.get();
+  if (!table)
+    return;
+
   auto pApp = AppWindow::get_appwindow();
   if(pApp && table)
   {
@@ -478,8 +465,12 @@ void Window_RelationshipsOverview::on_context_menu_edit_fields(const Glib::Varia
   }
 }
 
-void Window_RelationshipsOverview::on_context_menu_edit_relationships(const Glib::VariantBase& /* parameter */, Glib::RefPtr<CanvasGroupDbTable> table)
+void Window_RelationshipsOverview::on_context_menu_edit_relationships(const Glib::VariantBase& /* parameter */, const Glib::WeakRef<CanvasGroupDbTable>& table_weak)
 {
+  const auto table = table_weak.get();
+  if (!table)
+    return;
+
   auto pApp = AppWindow::get_appwindow();
   if(pApp && table)
   {

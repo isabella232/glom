@@ -35,7 +35,6 @@
 #include <glom/mode_data/box_data_list_related.h>
 #include <glom/mode_design/layout/dialog_choose_relationship.h>
 #include <glom/utils_ui.h> //For bold_message()).
-#include <libglom/data_structure/layout/layoutitem_placeholder.h>
 #include <glom/signal_reemitter.h>
 
 #include <glibmm/i18n.h>
@@ -53,7 +52,6 @@ FlowTableWithFields::Info::Info()
 
 FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
 :
-  m_placeholder(nullptr),
   m_table_name(table_name),
   m_find_mode(false)
 {
@@ -65,14 +63,12 @@ FlowTableWithFields::~FlowTableWithFields()
   //Remove views. The widgets are deleted automatically because they are managed.
   for(const auto& the_pair : m_listFields)
   {
-    auto pViewFirst = dynamic_cast<View_Composite_Glom*>(the_pair.m_first);
-    if(pViewFirst)
+    if(auto pViewFirst = dynamic_cast<View_Composite_Glom*>(the_pair.m_first))
     {
       remove_view(pViewFirst);
     }
 
-    auto pViewSecond = dynamic_cast<View_Composite_Glom*>(the_pair.m_second);
-    if(pViewSecond)
+    if(auto pViewSecond = dynamic_cast<View_Composite_Glom*>(the_pair.m_second))
     {
       remove_view(pViewSecond);
     }
@@ -106,9 +102,9 @@ void FlowTableWithFields::add_layout_item(const std::shared_ptr<LayoutItem>& ite
     if(field_details)
     {
       if(field_details->get_auto_increment())
-        set_field_editable(field, false);
+        set_field_editable(*field, false);
       else
-        set_field_editable(field, field->get_editable_and_allowed());
+        set_field_editable(*field, field->get_editable_and_allowed());
     }
   }
   else
@@ -159,7 +155,7 @@ void FlowTableWithFields::add_layout_group_or_derived(const std::shared_ptr<Layo
     }
   }
 }
-          
+
 void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& group, bool with_indent)
 {
   if(!group)
@@ -209,11 +205,11 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
       //Add some indenting just to avoid the out-denting caused by this GtkFrame bug:
       //https://bugzilla.gnome.org/show_bug.cgi?id=644199
       const int BASE_INDENT = 3;
-      
+
       //std::cout << "title= " << group_title << ", with_indent=" << with_indent << std::endl;
       event_box->set_margin_top(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
 
-      if(with_indent) 
+      if(with_indent)
       {
         event_box->set_margin_start(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL) + BASE_INDENT);
       }
@@ -511,8 +507,7 @@ void FlowTableWithFields::add_field(const std::shared_ptr<LayoutItem_Field>& lay
 
   add_widgets(*eventbox, *(info.m_second), true);
 
-  info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
-
+  info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  );
   info.m_second->signal_choices_changed().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_choices_changed), layoutitem_field)  );
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -564,7 +559,7 @@ void FlowTableWithFields::add_button(const std::shared_ptr<LayoutItem_Button>& l
 
   add_widgets(*widget_to_add, expand);
 
-  apply_formatting(*button, layoutitem_button);
+  apply_formatting(*button, *layoutitem_button);
 }
 
 void FlowTableWithFields::add_textobject(const std::shared_ptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name)
@@ -581,7 +576,7 @@ void FlowTableWithFields::add_textobject(const std::shared_ptr<LayoutItem_Text>&
   label->set_valign(Gtk::ALIGN_CENTER);
   label->show();
 
-  apply_formatting(*label, layoutitem_text);
+  apply_formatting(*label, *layoutitem_text);
 
   add_layoutwidgetbase(label);
 
@@ -655,14 +650,12 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
     {
       remove(*(info.m_first));
 
-      auto pViewFirst = dynamic_cast<View_Composite_Glom*>(info.m_first);
-      if(pViewFirst)
+      if(auto pViewFirst = dynamic_cast<View_Composite_Glom*>(info.m_first))
         remove_view(pViewFirst);
 
       delete info.m_first;
 
-      auto pViewSecond = dynamic_cast<View_Composite_Glom*>(info.m_second);
-      if(pViewSecond)
+      if(auto pViewSecond = dynamic_cast<View_Composite_Glom*>(info.m_second))
         remove_view(pViewSecond);
 
       delete info.m_second; //It is removed at the same time.
@@ -672,12 +665,12 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
   }
 }
 
-void FlowTableWithFields::set_field_value(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void FlowTableWithFields::set_field_value(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
   set_field_value(field, value, true);
 }
 
-void FlowTableWithFields::set_field_value(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, bool set_specified_field_layout)
+void FlowTableWithFields::set_field_value(const LayoutItem_Field& field, const Gnome::Gda::Value& value, bool set_specified_field_layout)
 {
   //Set widgets which should show the value of this field:
   for(const auto& item : get_field(field, set_specified_field_layout))
@@ -710,12 +703,12 @@ void FlowTableWithFields::set_field_value(const std::shared_ptr<const LayoutItem
   }
 }
 
-void FlowTableWithFields::set_other_field_value(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void FlowTableWithFields::set_other_field_value(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
   set_field_value(field, value, false);
 }
 
-Gnome::Gda::Value FlowTableWithFields::get_field_value(const std::shared_ptr<const LayoutItem_Field>& field) const
+Gnome::Gda::Value FlowTableWithFields::get_field_value(const LayoutItem_Field& field) const
 {
   const auto list_widgets = get_field(field, true);
   for(const auto& list_widget : list_widgets)
@@ -733,7 +726,7 @@ Gnome::Gda::Value FlowTableWithFields::get_field_value(const std::shared_ptr<con
   return Gnome::Gda::Value(); //null.
 }
 
-void FlowTableWithFields::set_field_editable(const std::shared_ptr<const LayoutItem_Field>& field, bool editable)
+void FlowTableWithFields::set_field_editable(const LayoutItem_Field& field, bool editable)
 {
   for(const auto& item : get_field(field, true))
   {
@@ -745,7 +738,7 @@ void FlowTableWithFields::set_field_editable(const std::shared_ptr<const LayoutI
   }
 }
 
-void FlowTableWithFields::update_choices(const std::shared_ptr<const LayoutItem_Field>& field)
+void FlowTableWithFields::update_choices(const LayoutItem_Field& field)
 {
   for(const auto& item : get_field(field, true))
   {
@@ -759,7 +752,7 @@ void FlowTableWithFields::update_choices(const std::shared_ptr<const LayoutItem_
       continue;
 
     const auto layout_item = combo->get_layout_item();
-    const auto layout_item_field = 
+    const auto layout_item_field =
       std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
     if(!layout_item_field || !layout_item_field->get_formatting_used().get_has_related_choices())
       continue;
@@ -772,11 +765,11 @@ void FlowTableWithFields::update_choices(const std::shared_ptr<const LayoutItem_
 }
 
 
-FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const std::shared_ptr<const LayoutItem_Field>& from_key)
+FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const LayoutItem_Field& from_key)
 {
   type_portals result;
 
-  const auto from_key_name = from_key->get_name();
+  const auto from_key_name = from_key.get_name();
 
   //Check the single-item widgets:
   for(const auto& pPortalUI : m_portals)
@@ -815,13 +808,11 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const std::sh
   return result;
 }
 
-FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets(const std::shared_ptr<const LayoutItem_Field>& from_key)
+FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets(const LayoutItem_Field& from_key)
 {
   type_choice_widgets result;
-  if(!from_key)
-    return result;
 
-  const auto from_key_name = from_key->get_name();
+  const auto from_key_name = from_key.get_name();
 
   //Check the single-item widgets:
   for(const auto& the_pair : m_listFields)
@@ -842,7 +833,7 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
     if(!field)
       continue;
 
-    const auto format = field->get_formatting_used();
+    const auto& format = field->get_formatting_used();
 
     bool choice_show_all = false;
     const auto choice_relationship =
@@ -876,11 +867,11 @@ namespace
   // Get the direct widgets represesenting a given layout item
   // from a flowtable, without considering subflowtables:
   template<typename InputIterator, typename OutputIterator>
-  static void get_direct_fields(InputIterator begin, InputIterator end, OutputIterator out, const std::shared_ptr<const LayoutItem_Field>& layout_item, bool include_item)
+  static void get_direct_fields(InputIterator begin, InputIterator end, OutputIterator out, const LayoutItem_Field& layout_item, bool include_item)
   {
     for(InputIterator iter = begin; iter != end; ++iter)
     {
-      if(iter->m_field->is_same_field(layout_item) && (include_item || iter->m_field != layout_item))
+      if(iter->m_field->is_same_field(layout_item) && (include_item || *(iter->m_field) != layout_item))
       {
         if(iter->m_checkbutton)
           *out++ = iter->m_checkbutton;
@@ -891,7 +882,7 @@ namespace
   }
 }
 
-FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const std::shared_ptr<const LayoutItem_Field>& layout_item, bool include_item) const
+FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const LayoutItem_Field& layout_item, bool include_item) const
 {
   type_list_const_widgets result;
 
@@ -914,7 +905,7 @@ FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(cons
   return result;
 }
 
-FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const std::shared_ptr<const LayoutItem_Field>& layout_item, bool include_item)
+FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const LayoutItem_Field& layout_item, bool include_item)
 {
   type_list_widgets result;
 
@@ -970,12 +961,10 @@ void FlowTableWithFields::remove_all()
   //Remove views. The widgets are deleted automatically because they are managed.
   for(const auto& the_pair : m_listFields)
   {
-    auto pViewFirst = dynamic_cast<View_Composite_Glom*>(the_pair.m_first);
-    if(pViewFirst)
+    if(auto pViewFirst = dynamic_cast<View_Composite_Glom*>(the_pair.m_first))
       remove_view(pViewFirst);
 
-   auto pViewSecond = dynamic_cast<View_Composite_Glom*>(the_pair.m_second);
-    if(pViewSecond)
+    if(auto pViewSecond = dynamic_cast<View_Composite_Glom*>(the_pair.m_second))
       remove_view(pViewSecond);
   }
 
@@ -1012,23 +1001,39 @@ FlowTableWithFields::type_signal_script_button_clicked FlowTableWithFields::sign
   return m_signal_script_button_clicked;
 }
 
-void FlowTableWithFields::on_script_button_clicked(const std::shared_ptr< LayoutItem_Button>& layout_item)
+void FlowTableWithFields::on_script_button_clicked(const std::weak_ptr< LayoutItem_Button>& layout_item_weak)
 {
+  const auto layout_item = layout_item_weak.lock();
+  if(!layout_item)
+    return;
+
   m_signal_script_button_clicked.emit(layout_item);
 }
 
-void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field)
+void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, const std::weak_ptr<const LayoutItem_Field>& field_weak)
 {
+  const auto field = field_weak.lock();
+  if (!field)
+    return;
+
   m_signal_field_edited.emit(field, value);
 }
 
-void FlowTableWithFields::on_entry_choices_changed(const std::shared_ptr<const LayoutItem_Field>& field)
+void FlowTableWithFields::on_entry_choices_changed(const std::weak_ptr<const LayoutItem_Field>& field_weak)
 {
+  const auto field = field_weak.lock();
+  if (!field)
+    return;
+
   m_signal_field_choices_changed.emit(field);
 }
 
-void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field)
+void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::weak_ptr<const LayoutItem_Field>& field_weak)
 {
+  const auto field = field_weak.lock();
+  if (!field)
+    return;
+
   m_signal_field_open_details_requested.emit(field, value);
 }
 
@@ -1309,7 +1314,7 @@ bool FlowTableWithFields::on_button_press_event(GdkEventButton *button_event)
   if(pApp && pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
   {
     GdkModifierType mods;
-    gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
+    gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, nullptr, nullptr, &mods );
     if(mods & GDK_BUTTON3_MASK)
     {
       //Give user choices of actions on this item:
@@ -1373,7 +1378,7 @@ void FlowTableWithFields::set_find_mode(bool val)
 
 void FlowTableWithFields::set_enable_drag_and_drop(bool enabled)
 {
-  const EggDragEnableMode drag_mode = 
+  const EggDragEnableMode drag_mode =
     (enabled ? EGG_DRAG_FULL : EGG_DRAG_DISABLED);
 
   //Only enable dragging of the sub-tables.
@@ -1381,18 +1386,18 @@ void FlowTableWithFields::set_enable_drag_and_drop(bool enabled)
   //though there would be nowhere to drop it:
   set_drag_enabled(EGG_DRAG_DISABLED);
   set_drop_enabled(enabled);
-  
+
   for(const auto& child : m_sub_flow_tables)
   {
     if(child)
     {
       //std::cout << G_STRFUNC << ": child\n";
       child->set_drag_enabled(drag_mode);
-      child->set_drop_enabled(enabled);  
+      child->set_drop_enabled(enabled);
     }
   }
 }
-  
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } //namespace Glom

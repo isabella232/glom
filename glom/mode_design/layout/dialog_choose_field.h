@@ -37,7 +37,7 @@ class Dialog_ChooseField : public Gtk::Dialog
 public:
   static const char* glade_id;
   static const bool glade_developer;
-  
+
   Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   /**
@@ -52,8 +52,8 @@ public:
   //void select_item(const std::shared_ptr<const Field>& field);
 
   std::shared_ptr<LayoutItem_Field> get_field_chosen() const;
-  
-  typedef std::list< std::shared_ptr<LayoutItem_Field> > type_list_field_items;
+
+  typedef std::vector<std::shared_ptr<LayoutItem_Field>> type_list_field_items;
   type_list_field_items get_fields_chosen() const;
 
 private:

@@ -44,7 +44,7 @@ double get_page_height(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk
   margin_bottom = 0;
 
   const auto paper_size = page_setup->get_paper_size();
-  
+
   double page_height = 0;
   if(page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
   {
@@ -68,22 +68,22 @@ static void get_page_y_start_and_end(const Glib::RefPtr<const Gtk::PageSetup>& p
 {
   y1 = 0;
   y2 = 0;
-  
+
   const auto paper_size = page_setup->get_paper_size();
-  
+
   double margin_top = 0;
   double margin_bottom = 0;
-  const auto page_height = get_page_height(page_setup, units, 
+  const auto page_height = get_page_height(page_setup, units,
     margin_top, margin_bottom);
-    
+
   //y1:
-  y1 = page_height * (page_number);  
+  y1 = page_height * (page_number);
   double y_border = margin_top;
   while(y1 <= y_border)
     y1 += GRID_GAP;
-  
+
   //y2:
-  y2 = page_height * (page_number + 1);  
+  y2 = page_height * (page_number + 1);
   y2 -= margin_bottom;
 
   //std::cout << G_STRFUNC << "page_number=" << page_number << ", y1=" << y1 << "y2=" << y2 << std::endl;
@@ -136,12 +136,12 @@ bool needs_move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_set
   double x = 0;
   double y = 0;
   item->get_xy(x, y);
-  
+
   double width = 0;
   double height = 0;
   item->get_width_height(width, height);
-  
-  //We don't actually move it, because items would then group together 
+
+  //We don't actually move it, because items would then group together
   //at the top of pages.
   //Instead, the caller will discover an offset to apply to all items:
   const auto y_new = move_fully_to_page(page_setup, units, y, height);
@@ -159,11 +159,11 @@ static double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_
   double width = 0;
   double height = 0;
   item->get_print_layout_position(x, y, width, height);
-  
+
   const auto y_new = move_fully_to_page(page_setup, units, y, height);
   if(y_new != y)
     item->set_print_layout_position(x, y_new, width, height);
-    
+
   return y_new;
 }
 */
@@ -200,8 +200,8 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
     print_layout_group->add_item(text);
   }
 
-  //Deal with a portal group: 
-  const auto portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(layout_group); 
+  //Deal with a portal group:
+  const auto portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(layout_group);
   if(portal)
   {
     auto portal_clone = glom_sharedptr_clone(portal);
@@ -209,14 +209,14 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
 
     //We ignore the rows count for the details layout's portal,
     //because that is only suitable for the on-screen layout,
-    //and because, on the print layout, we want to show (almost) all rows: 
+    //and because, on the print layout, we want to show (almost) all rows:
     portal_clone->set_rows_count(1 /* min */, 100 /* max */);
 
     //Set an initial default height, though this will be changed
     //when we fill it with data:
     if(avoid_page_margins)
       y = move_fully_to_page(page_setup, units, y, field_height);
-    
+
     portal_clone->set_print_layout_position(x, y, item_width, field_height);
     y += field_height + gap; //padding.
 
@@ -249,7 +249,7 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
         text_title = std::make_shared<LayoutItem_Text>();
         const auto field_title = item_get_title_or_name(field);
         text_title->set_text(field_title + ":", AppWindow::get_current_locale());
-        
+
         if(avoid_page_margins)
           y = move_fully_to_page(page_setup, units, y, field_height);
 
@@ -273,7 +273,7 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
       double this_field_height = field_height;
       if(field)
       {
-        const auto formatting = field->get_formatting_used();
+        const auto& formatting = field->get_formatting_used();
         if(formatting.get_text_format_multiline())
         {
           const auto lines = formatting.get_text_format_multiline_height_lines();
@@ -284,13 +284,13 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
 
       if(avoid_page_margins)
         y = move_fully_to_page(page_setup, units, y, this_field_height); //TODO: Move the title down too, if this was moved.
-        
+
       clone->set_print_layout_position(item_x, y, field_width, this_field_height); //TODO: Enough and no more.
-      
+
       //Make sure that the title is still aligned, even if this was moved by move_fully_to_page().
       if(text_title)
         text_title->set_print_layout_position_y(y);
-      
+
       y += this_field_height + gap; //padding.
 
       print_layout_group->add_item(clone);
@@ -313,20 +313,20 @@ guint get_page_for_y(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::
 std::shared_ptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, const Glib::ustring& table_name, const std::shared_ptr<const Document>& document, bool avoid_page_margins)
 {
   const Gtk::Unit units = Gtk::UNIT_MM;
-  auto print_layout = std::make_shared<PrintLayout>();  
-  
+  auto print_layout = std::make_shared<PrintLayout>();
+
   //Start inside the border, on the next grid line:
   double y = 0;
   double max_y = 0; //ignored
   get_page_y_start_and_end(page_setup, units, 0, y, max_y);
-  
+
   double x = 0;
   double x_border = 0;
   if(page_setup)
     x_border = page_setup->get_left_margin(units);
   while(x <= x_border)
     x += GRID_GAP;
-  
+
   //The table title:
   const auto title = document->get_table_title_singular(table_name, AppWindow::get_current_locale());
   if(!title.empty())
@@ -361,7 +361,7 @@ std::shared_ptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageS
   {
     print_layout->set_page_count(page_number + 1);
   }
-  
+
   return print_layout;
 }
 
@@ -372,13 +372,13 @@ void do_print_layout(const std::shared_ptr<const PrintLayout>& print_layout, con
     std::cerr << G_STRFUNC << ": print_layout was null\n";
     return;
   }
-  
+
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document was null\n";
     return;
   }
-  
+
   //TODO: All this to be null when we allow that in Gtk::PrintOperation::run().
   if(!transient_for)
   {
@@ -389,7 +389,7 @@ void do_print_layout(const std::shared_ptr<const PrintLayout>& print_layout, con
   Canvas_PrintLayout canvas;
   canvas.set_document(std::const_pointer_cast<Document>(document)); //We const_cast because, for this use, it will not be changed.
 
-  //We cast to unconst because we know that the layout will not be changed by this use: 
+  //We cast to unconst because we know that the layout will not be changed by this use:
   auto unconst = std::const_pointer_cast<PrintLayout>(print_layout);
   canvas.set_print_layout(found_set.m_table_name, unconst);
 

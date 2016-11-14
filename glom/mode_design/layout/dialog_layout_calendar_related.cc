@@ -68,7 +68,7 @@ Dialog_Layout_Calendar_Related::Dialog_Layout_Calendar_Related(BaseObjectType* c
   builder->get_widget("radiobutton_navigation_specify", m_radio_navigation_specify);
   builder->get_widget_derived("combobox_navigation_specify", m_combo_navigation_specify);
   if(m_radio_navigation_specify && m_combo_navigation_specify)
-  { 
+  {
     make_sensitivity_depend_on_toggle_button(*m_radio_navigation_specify, *m_combo_navigation_specify);
     m_combo_navigation_specify->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_Calendar_Related::on_combo_navigation_specific_changed));
   }
@@ -172,7 +172,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
     }
 
     //Show the field layout
-    //typedef std::list< Glib::ustring > type_listStrings;
+    //typedef std::vector< Glib::ustring > type_listStrings;
 
     m_model_items->clear();
 
@@ -228,7 +228,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
   //Describe the automatic navigation:
   std::shared_ptr<const UsesRelationship> relationship_navigation_automatic
     = m_portal->get_portal_navigation_relationship_automatic(document);
-  Glib::ustring automatic_navigation_description = 
+  Glib::ustring automatic_navigation_description =
     m_portal->get_relationship_name_used(); //TODO: Use get_relationship_display_name() instead?
   if(relationship_navigation_automatic) //This is a relationship in the related table.
   {

@@ -31,7 +31,6 @@
 #include <libglom/data_structure/layout/layoutitem_calendarportal.h>
 #include <libglom/data_structure/layout/layoutitem_button.h>
 #include <libglom/data_structure/layout/layoutitem_text.h>
-#include <libglom/data_structure/layout/layoutitem_placeholder.h>
 #include <libglom/data_structure/field.h>
 #include <libglom/document/document.h>
 #include <glom/utility_widgets/layoutwidgetbase.h>
@@ -44,8 +43,8 @@
 #include <gtkmm/sizegroup.h>
 #include <gtkmm/eventbox.h>
 #include <gtkmm/box.h>
-#include <map>
-#include <list>
+#include <unordered_map>
+#include <vector>
 
 namespace Glom
 {
@@ -91,25 +90,25 @@ public:
    */
   void add_layout_group_or_derived(const std::shared_ptr<LayoutGroup>& group, bool with_indent = true);
 
-  void set_field_editable(const std::shared_ptr<const LayoutItem_Field>& field, bool editable = true);
+  void set_field_editable(const LayoutItem_Field& field, bool editable = true);
 
-  Gnome::Gda::Value get_field_value(const std::shared_ptr<const LayoutItem_Field>& field) const;
+  Gnome::Gda::Value get_field_value(const LayoutItem_Field& field) const;
 
   /** Set the displayed @a value in any instances of the specified @a field.
    */
-  void set_field_value(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  void set_field_value(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
 
   /** Set the displayed @a value in any instances of the field other than the specified @a layout_field.
    */
-  void set_other_field_value(const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& value);
+  void set_other_field_value(const LayoutItem_Field& layout_field, const Gnome::Gda::Value& value);
 
-  /** Refresh the list of related records in choice combo boxes, 
+  /** Refresh the list of related records in choice combo boxes,
    * in any instance of the specified field.
    */
-  void update_choices(const std::shared_ptr<const LayoutItem_Field>& field);
+  void update_choices(const LayoutItem_Field& field);
 
-  typedef std::list<Gtk::Widget*> type_list_widgets;
-  typedef std::list<const Gtk::Widget*> type_list_const_widgets;
+  typedef std::vector<Gtk::Widget*> type_list_widgets;
+  typedef std::vector<const Gtk::Widget*> type_list_const_widgets;
 
   void set_design_mode(bool value = true) override;
 
@@ -136,65 +135,65 @@ public:
    */
   void get_layout_groups(Document::type_list_layout_groups& groups);
   std::shared_ptr<LayoutGroup> get_layout_group();
-  
+
   void set_enable_drag_and_drop(bool enabled = true);
 
   /** For instance,
    * void on_flowtable_field_edited(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
    */
-  typedef sigc::signal<void, const std::shared_ptr<const LayoutItem_Field>&, const Gnome::Gda::Value&> type_signal_field_edited;
+  typedef sigc::signal<void(const std::shared_ptr<const LayoutItem_Field>&, const Gnome::Gda::Value&)> type_signal_field_edited;
   type_signal_field_edited signal_field_edited();
 
   /** For instance,
    * void on_flowtable_field_choices_changed(const std::shared_ptr<const LayoutItem_Field>& field);
    */
-  typedef sigc::signal<void, const std::shared_ptr<const LayoutItem_Field>&> type_signal_field_choices_changed;
+  typedef sigc::signal<void(const std::shared_ptr<const LayoutItem_Field>&)> type_signal_field_choices_changed;
   type_signal_field_choices_changed signal_field_choices_changed();
 
 
   /** For instance,
    * void on_flowtable_field_open_details_requested(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
    */
-  typedef sigc::signal<void, const std::shared_ptr<const LayoutItem_Field>&, const Gnome::Gda::Value&> type_signal_field_open_details_requested;
+  typedef sigc::signal<void(const std::shared_ptr<const LayoutItem_Field>&, const Gnome::Gda::Value&)> type_signal_field_open_details_requested;
   type_signal_field_open_details_requested signal_field_open_details_requested();
 
   /** For instance,
    * void on_related_record_changed(const Glib::ustring& relationship_name);
    */
-  typedef sigc::signal<void, const Glib::ustring&> type_signal_related_record_changed;
+  typedef sigc::signal<void(const Glib::ustring&)> type_signal_related_record_changed;
   type_signal_related_record_changed signal_related_record_changed();
 
   /** For instance,
    * void on_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
    */
-  typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_requested_related_details;
+  typedef sigc::signal<void(const Glib::ustring&, Gnome::Gda::Value)> type_signal_requested_related_details;
   type_signal_requested_related_details signal_requested_related_details();
 
  /** For instance,
-   * void on_script_button_clicked(const std::shared_ptr<LayoutItem_Button>& layout_item>);
+   * void on_script_button_clicked(const std::weak_ptr<LayoutItem_Button>& layout_item_weak>);
    */
-  typedef sigc::signal<void, const std::shared_ptr<LayoutItem_Button>&> type_signal_script_button_clicked;
+  typedef sigc::signal<void(const std::shared_ptr<LayoutItem_Button>&)> type_signal_script_button_clicked;
   type_signal_script_button_clicked signal_script_button_clicked();
 
 private:
 
-  void set_field_value(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, bool set_specified_field_layout);
+  void set_field_value(const LayoutItem_Field& field, const Gnome::Gda::Value& value, bool set_specified_field_layout);
 
   // If include_item is set, then the output list will contain field's widget,
   // otherwise not.
-  type_list_widgets get_field(const std::shared_ptr<const LayoutItem_Field>& field, bool include_item);
-  type_list_const_widgets get_field(const std::shared_ptr<const LayoutItem_Field>& field, bool include_item) const;
+  type_list_widgets get_field(const LayoutItem_Field& field, bool include_item);
+  type_list_const_widgets get_field(const LayoutItem_Field& field, bool include_item) const;
 
-  typedef std::list<Box_Data_Portal*> type_portals;
+  typedef std::vector<Box_Data_Portal*> type_portals;
 
   /// Get portals whose relationships have @a from_key as the from_key.
-  type_portals get_portals(const std::shared_ptr<const LayoutItem_Field>& from_key);
+  type_portals get_portals(const LayoutItem_Field& from_key);
 
 
-  typedef std::list<DataWidgetChildren::ComboChoices*> type_choice_widgets;
+  typedef std::vector<DataWidgetChildren::ComboChoices*> type_choice_widgets;
 
   /// Get choice widgets with !show_all relationships that have @a from_key as the from_key.
-  type_choice_widgets get_choice_widgets(const std::shared_ptr<const LayoutItem_Field>& from_key);
+  type_choice_widgets get_choice_widgets(const LayoutItem_Field& from_key);
 
   /** Examine this flow table and all child flow tables, discovering which
    * has the most columns.
@@ -203,11 +202,11 @@ private:
 
   //int get_suitable_width(Field::glom_field_type field_type);
 
-  void on_entry_edited(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field);
-  void on_entry_choices_changed(const std::shared_ptr<const LayoutItem_Field>& field);
-  void on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::shared_ptr<const LayoutItem_Field>& field);
+  void on_entry_edited(const Gnome::Gda::Value& value, const std::weak_ptr<const LayoutItem_Field>& field);
+  void on_entry_choices_changed(const std::weak_ptr<const LayoutItem_Field>& field);
+  void on_entry_open_details_requested(const Gnome::Gda::Value& value, const std::weak_ptr<const LayoutItem_Field>& field);
 
-  void on_script_button_clicked(const std::shared_ptr<LayoutItem_Button>& layout_item);
+  void on_script_button_clicked(const std::weak_ptr<LayoutItem_Button>& layout_item_weak);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_datawidget_layout_item_added(LayoutWidgetBase::enumType item_type, DataWidget* pDataWidget);
@@ -229,18 +228,16 @@ private:
     Gtk::CheckButton* m_checkbutton; //Used instead of first and second if it's a bool.
   };
 
-  typedef std::list<Info> type_listFields; //Map of IDs to full info.
-  type_listFields m_listFields;
+  //Map of IDs to full info.
+  std::vector<Info> m_listFields;
 
   //Remember the nested FlowTables, so that we can search them for fields too:
-  typedef std::list< FlowTableWithFields* > type_sub_flow_tables;
-  type_sub_flow_tables m_sub_flow_tables;
+  std::vector<FlowTableWithFields*> m_sub_flow_tables;
 
   type_portals m_portals;
 
   //Remember the sequence of LayoutWidgetBase widgets, so we can iterate over them later:
-  typedef std::list< LayoutWidgetBase* > type_list_layoutwidgets;
-  type_list_layoutwidgets m_list_layoutwidgets;
+  std::vector<LayoutWidgetBase*> m_list_layoutwidgets;
 
   void add_button(const std::shared_ptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& table_name);
   void add_textobject(const std::shared_ptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name);
@@ -266,8 +263,6 @@ private:
 
   Box_Data_List_Related* create_related(const std::shared_ptr<LayoutItem_Portal>& portal, bool show_title = true);
   Box_Data_Calendar_Related* create_related_calendar(const std::shared_ptr<LayoutItem_CalendarPortal>& portal, bool show_title = true);
-
-  Gtk::Bin* m_placeholder;
 
   Glib::ustring m_table_name;
   bool m_find_mode;

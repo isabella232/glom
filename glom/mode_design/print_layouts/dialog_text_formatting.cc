@@ -42,7 +42,7 @@ Dialog_TextFormatting::Dialog_TextFormatting(BaseObjectType* cobject, const Glib
   //Formatting:
   //Get the place to put the Formatting stuff:
   builder->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
- 
+
   Utils::box_pack_start_glade_child_widget_derived_with_warning(m_box_formatting_placeholder, m_box_formatting);
   if(m_box_formatting)
   {

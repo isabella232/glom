@@ -31,7 +31,7 @@ class Dialog_Layout_List : public Dialog_Layout_Details
 public:
   static const char* glade_id;
   static const bool glade_developer;
-  
+
   Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 };
 

@@ -27,7 +27,7 @@
 #include <goocanvasmm/rect.h>
 #include <goocanvasmm/polyline.h>
 #include <goocanvasmm/text.h>
-#include <math.h>
+#include <cmath>
 #include <iostream>
 #include <goocanvasrect.h>
 #include <goocanvaspolyline.h>
@@ -40,16 +40,16 @@ double CanvasGroupDbTable::m_table_width = 200; //TODO: Calculate based on the t
 double margin = 5.0;
 
 CanvasGroupDbTable::CanvasGroupDbTable(const Glib::ustring& table_name, const Glib::ustring& table_title, const Document::type_vec_fields& fields, double x, double y)
-: m_table_height(0) 
+: m_table_height(0)
 {
   m_table_name = table_name;
 
   //double max_table_height = 0;
-  
+
   const double field_height = 20;
   m_table_height = field_height * (fields.size() + 1);
 
-  
+
   auto rect = CanvasRectMovable::create(x, y, m_table_width, m_table_height);
   rect->property_line_width() = 2.0;
   rect->property_radius_x() = 4.0,
@@ -89,14 +89,14 @@ CanvasGroupDbTable::CanvasGroupDbTable(const Glib::ustring& table_name, const Gl
     else
       title_field = item_get_title_or_name(field);
 
-    auto text_item = CanvasTextMovable::create(title_field, 
+    auto text_item = CanvasTextMovable::create(title_field,
       x + margin, y + margin + field_y, m_table_width - margin*2,
       Goocanvas::ANCHOR_NORTH_WEST);
     text_item->property_font() = "Sans 12"; //TODO: Let the user specify this.
     text_item->property_use_markup() = true;
     text_item->set_movement_allowed(false, false); //Move only as part of the parent group.
     add_child(text_item);
-    
+
     //Remember the postion for later, for drawing relationships lines:
     m_map_fields_y[field->get_name()] = field_y;
 

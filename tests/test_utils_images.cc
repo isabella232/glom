@@ -34,7 +34,7 @@ bool check_value_is_an_image(const Gnome::Gda::Value& value)
   //Check that it can be interpreted as an image:
   //Luckily, the use of GdkPixbufLoader here does not seem to require an X display.
   Gdk::wrap_init();
-  Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;      
+  Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;
   try
   {
     refPixbufLoader = Gdk::PixbufLoader::create();

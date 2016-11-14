@@ -185,7 +185,7 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
     std::cerr << G_STRFUNC << ": begin_transaction failed: " << ex.what() << std::endl;
   }
 
-  //Do this all in one big try/catch, block, 
+  //Do this all in one big try/catch, block,
   //reverting the transaction if anything fails:
   try
   {
@@ -222,7 +222,7 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
 		      http://groups.google.de/groups?hl=en&lr=&ie=UTF-8&frame=right&th=a7a62337ad5a8f13&seekm=23739.1073660245%40sss.pgh.pa.us#link5
 		      UPDATE _table
 		      SET _bbb = to_number(substring(_aaa from 1 for 5), '99999')
-		      WHERE _aaa <> '     ';  
+		      WHERE _aaa <> '     ';
 		      */
 
 		      switch(new_fields[i]->get_glom_type())
@@ -253,7 +253,7 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
 		          else
 		          {
 		            //We use to_number, with textcat() so that to_number always has usable data.
-		            //Otherwise, it says 
+		            //Otherwise, it says
 		            //invalid input syntax for type numeric: " "
 		            //
 		            //We must use single quotes with the 0, otherwise it says "column 0 does not exist.".
@@ -378,7 +378,7 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
 		    }
 		  }
 		}
-		
+
 		connection->commit_transaction(TRANSACTION_NAME);
 		return true;
   }
@@ -386,7 +386,7 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
   {
     std::cerr << G_STRFUNC << "Exception: " << ex.what() << std::endl;
     std::cerr << G_STRFUNC << ":   Reverting the transaction.\n";
-    
+
     try
     {
       connection->rollback_transaction(TRANSACTION_NAME);
@@ -396,7 +396,7 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
       std::cerr << G_STRFUNC << "Could not rollback the transaction: Exception: " << ex_rollback.what() << std::endl;
     }
   }
-  
+
   return false;
 }
 
@@ -405,7 +405,7 @@ bool MySQL::attempt_create_database(const SlotProgress& slot_progress, const Gli
   if(slot_progress)
     slot_progress();
 
-  auto op = 
+  auto op =
     Gnome::Gda::ServerOperation::prepare_create_database("MySQL", database_name);
 
   if(slot_progress)

@@ -31,7 +31,7 @@ namespace Glom
 
 class Combo_FieldType : public Gtk::ComboBox
 {
-public: 
+public:
   Combo_FieldType();
   Combo_FieldType(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 

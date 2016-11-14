@@ -37,7 +37,7 @@
 # include <libepc/publisher.h>
 #endif
 
-#include <signal.h> //To catch segfaults
+#include <csignal> //To catch segfaults
 
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
@@ -104,16 +104,11 @@ std::shared_ptr<ConnectionPool> ConnectionPool::m_instance;
 ConnectionPool::ConnectionPool()
 :
   m_epc_publisher(nullptr),
-  m_dialog_epc_progress(nullptr),
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
   m_show_debug_output(false),
   m_auto_server_shutdown(true),
   m_fake_connection(false)
-{
-}
-
-ConnectionPool::~ConnectionPool()
 {
 }
 
@@ -502,7 +497,7 @@ void ConnectionPool::invalidate_connection()
 
   if(m_gda_connection)
     m_gda_connection->close();
-    
+
   m_gda_connection.reset();
   m_sharedconnection_refcount = 0;
 
@@ -637,7 +632,7 @@ bool ConnectionPool::cleanup(const SlotProgress& slot_progress)
   //Otherwise database shutdown could fail.
   //And make sure that connect() tries to make a new connection:
   invalidate_connection();
-      
+
   if(m_backend)
     result = m_backend->cleanup(slot_progress);
 
@@ -680,7 +675,7 @@ bool ConnectionPool::connect_nothrow()
     }
   }
 
-  return (m_gda_connection != 0);
+  return (bool)m_gda_connection;
 }
 
 //TODO: Why do we use noexcept here and on change_columns()?
@@ -752,7 +747,7 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
 
   //Add or remove any auto-increment rows:
   //The new auto-increment row would actually be added automatically,
-  //but this makes it available even before a record has been added. 
+  //but this makes it available even before a record has been added.
   auto iter_old = old_fields.begin();
   auto iter_new = new_fields.begin();
   while( (iter_old != old_fields.end()) && (iter_new != new_fields.end()) )
@@ -771,7 +766,7 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
     ++iter_old;
     ++iter_new;
   }
- 
+
   return result;
 }
 
@@ -787,7 +782,7 @@ std::shared_ptr<Document> ConnectionPool::get_document()
 {
   if(!m_slot_get_document)
   {
-    //Don't bother warning because all the code that calls get_document() checks 
+    //Don't bother warning because all the code that calls get_document() checks
     //for 0 and responds reasonably.
     //std::cerr << G_STRFUNC << ": m_slot_get_document is null.\n";
     return nullptr;
@@ -902,22 +897,22 @@ void ConnectionPool::avahi_start_publishing()
   if(!document)
     return;
 
-  m_epc_publisher = epc_publisher_new(document->get_database_title_original().c_str(), "glom", 0);
+  m_epc_publisher = epc_publisher_new(document->get_database_title_original().c_str(), "glom", nullptr);
   epc_publisher_set_protocol(m_epc_publisher, publish_protocol);
 
-  epc_publisher_add_handler(m_epc_publisher, "document", on_publisher_document_requested, this /* user_data */, 0);
+  epc_publisher_add_handler(m_epc_publisher, "document", on_publisher_document_requested, this /* user_data */, nullptr);
 
   //Password-protect the document,
   //because the document's structure could be considered as a business secret:
   epc_publisher_set_auth_flags(m_epc_publisher, EPC_AUTH_PASSWORD_TEXT_NEEDED);
-  epc_publisher_set_auth_handler(m_epc_publisher, "document", on_publisher_document_authentication, this /* user_data */, 0);
+  epc_publisher_set_auth_handler(m_epc_publisher, "document", on_publisher_document_authentication, this /* user_data */, nullptr);
 
   //Install progress callback, so we can keep the UI responsive while libepc is generating certificates for the first time:
   EpcShellProgressHooks callbacks;
   callbacks.begin = &ConnectionPool::on_epc_progress_begin;
   callbacks.update = &ConnectionPool::on_epc_progress_update;
   callbacks.end = &ConnectionPool::on_epc_progress_end;
-  epc_shell_set_progress_hooks(&callbacks, this, 0);
+  epc_shell_set_progress_hooks(&callbacks, this, nullptr);
 
   //Prevent the consumer from seeing duplicates,
   //if multiple client computers advertize the same document:

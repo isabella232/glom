@@ -97,7 +97,7 @@ void ImageGlom::init_widgets(bool use_evince)
 
       //gtk_widget_add_events(GTK_WIDGET(m_ev_view), GDK_BUTTON_PRESS_MASK);
 
-      //Connect the the EvView's button-press-event signal, 
+      //Connect the the EvView's button-press-event signal,
       //because we don't get it otherwise.
       //For some reason this is not necessary with the GtkImage.
       auto cppEvView = Glib::wrap(GTK_WIDGET(m_ev_view));
@@ -142,24 +142,18 @@ void ImageGlom::init()
   add(m_frame);
 }
 
-
-
-ImageGlom::~ImageGlom()
-{
-}
-
 void ImageGlom::set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
 {
   LayoutWidgetField::set_layout_item(layout_item, table_name);
 #ifdef GTKMM_ATKMM_ENABLED
   get_accessible()->set_name(layout_item->get_name());
-#endif  
+#endif
 }
 
 bool ImageGlom::on_button_press_event(GdkEventButton *button_event)
 {
   GdkModifierType mods;
-  gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
+  gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, nullptr, nullptr, &mods );
 
   //Enable/Disable items.
   //We did this earlier, but get_appwindow is more likely to work now:
@@ -184,7 +178,7 @@ bool ImageGlom::on_button_press_event(GdkEventButton *button_event)
       {
         //Give user choices of actions on this item:
         popup_menu(button_event->button, button_event->time);
-       
+
         return true; //We handled this event.
       }
     }
@@ -231,7 +225,7 @@ void ImageGlom::set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
 
 void ImageGlom::set_value(const Gnome::Gda::Value& value)
 {
-  // Remember original data 
+  // Remember original data
   clear_original_data();
   m_original_data = value;
   show_image_data();
@@ -257,13 +251,13 @@ void ImageGlom::on_size_allocate(Gtk::Allocation& allocation)
 static void image_glom_ev_job_finished(EvJob* job, void* user_data)
 {
   g_assert(job);
-  
+
   auto self = static_cast<ImageGlom*>(user_data);
   g_assert(self);
-  
+
   self->on_ev_job_finished(job);
 }
-  
+
 void ImageGlom::on_ev_job_finished(EvJob* job)
 {
   if(ev_job_is_failed (job)) {
@@ -276,7 +270,7 @@ void ImageGlom::on_ev_job_finished(EvJob* job)
   ev_document_model_set_document(m_ev_document_model, job->document);
   ev_document_model_set_page(m_ev_document_model, 1);
   g_object_unref (job);
-  
+
   //TODO: Show that we are no longer loading.
   //ev_view_set_loading(m_ev_view, FALSE);
 }
@@ -292,7 +286,7 @@ const GdaBinary* ImageGlom::get_binary() const
     if(gda_blob && gda_blob_op_read_all(gda_blob->op, const_cast<GdaBlob*>(gda_blob)))
       gda_binary = &(gda_blob->data);
   }
-  
+
   return gda_binary;
 }
 
@@ -302,7 +296,7 @@ Glib::ustring ImageGlom::get_mime_type() const
 
   if(!gda_binary)
     return Glib::ustring();
-    
+
   if(!gda_binary->data)
     return Glib::ustring();
 
@@ -312,7 +306,7 @@ Glib::ustring ImageGlom::get_mime_type() const
     uncertain);
 
   //std::cout << G_STRFUNC << ": mime_type=" << result << ", uncertain=" << uncertain << std::endl;
-  return result;  
+  return result;
 }
 
 void ImageGlom::fill_evince_supported_mime_types()
@@ -323,13 +317,13 @@ void ImageGlom::fill_evince_supported_mime_types()
 
   //Discover what mime types libevview can support.
   //Older versions supported image types too, via GdkPixbuf,
-  //but that support was then removed.  
+  //but that support was then removed.
   auto types_list = ev_backends_manager_get_all_types_info();
   if(!types_list)
   {
     return;
   }
-  
+
   for(GList* l = types_list; l; l = g_list_next(l))
   {
     EvTypeInfo *info = (EvTypeInfo *)l->data;
@@ -342,9 +336,9 @@ void ImageGlom::fill_evince_supported_mime_types()
     {
       if(mime_type)
         m_evince_supported_mime_types.emplace_back(mime_type);
-      //std::cout << "evince supported mime_type=" << mime_type << std::endl; 
+      //std::cout << "evince supported mime_type=" << mime_type << std::endl;
     }
-  }  
+  }
 }
 
 void ImageGlom::fill_gdkpixbuf_supported_mime_types()
@@ -365,17 +359,17 @@ void ImageGlom::fill_gdkpixbuf_supported_mime_types()
 void ImageGlom::show_image_data()
 {
   bool use_evince = false;
-  
+
   const auto mime_type = get_mime_type();
 
-  //std::cout << "mime_type=" << mime_type << std::endl; 
-  
+  //std::cout << "mime_type=" << mime_type << std::endl;
+
   fill_evince_supported_mime_types();
   if(Utils::find_exists(m_evince_supported_mime_types, mime_type))
   {
     use_evince = true;
   }
-  
+
   init_widgets(use_evince);
 
   //Clear all possible display widgets:
@@ -392,20 +386,20 @@ void ImageGlom::show_image_data()
        std::cerr << G_STRFUNC << "Data was null or empty.\n";
       return;
     }
-    
+
     EvJob *job = ev_job_load_new_with_data(
       (char*)gda_binary->data, gda_binary->binary_length);
     */
     //TODO: Test failure asynchronously.
-    
+
     const auto uri = save_to_temp_file(false /* don't show progress */);
     if(uri.empty())
     {
       std::cerr << G_STRFUNC << "Could not save temp file to show in the EvView.\n";
     }
-  
+
     EvJob *job = ev_job_load_new(uri.c_str());
-  
+
     m_ev_document_model = ev_document_model_new();
     ev_view_set_model(m_ev_view, m_ev_document_model);
     ev_document_model_set_continuous(m_ev_document_model, FALSE); //Show only one page.
@@ -421,14 +415,14 @@ void ImageGlom::show_image_data()
   {
     //Use GtkImage instead:
     Glib::RefPtr<const Gio::Icon> icon;
-      
+
     bool use_gdkpixbuf = false;
     fill_gdkpixbuf_supported_mime_types();
     if(Utils::find_exists(m_gdkpixbuf_supported_mime_types, mime_type))
     {
       use_gdkpixbuf = true;
     }
-    
+
     if(use_gdkpixbuf)
     {
       //Try to use GdkPixbuf's loader:
@@ -439,7 +433,7 @@ void ImageGlom::show_image_data()
       //Get an icon for the file type;
       icon = Gio::content_type_get_icon(mime_type);
     }
-    
+
     if(m_pixbuf_original)
     {
       auto pixbuf_scaled = get_scaled_image();
@@ -462,14 +456,14 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
 
   if(!pixbuf)
     return pixbuf;
- 
+
   const auto allocation = m_image->get_allocation();
   const auto pixbuf_height = pixbuf->get_height();
   const auto pixbuf_width = pixbuf->get_width();
-    
+
   const auto allocation_height = allocation.get_height();
   const auto allocation_width = allocation.get_width();
-      
+
   //std::cout << "pixbuf_height=" << pixbuf_height << ", pixbuf_width=" << pixbuf_width << std::endl;
   //std::cout << "allocation_height=" << allocation.get_height() << ", allocation_width=" << allocation.get_width() << std::endl;
 
@@ -479,7 +473,7 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
     if(true) //allocation_height > 10 || allocation_width > 10)
     {
       auto pixbuf_scaled = UiUtils::image_scale_keeping_ratio(pixbuf, allocation_height, allocation_width);
-      
+
       //Don't set a new pixbuf if the dimensions have not changed:
       Glib::RefPtr<Gdk::Pixbuf> pixbuf_in_image;
 
@@ -495,19 +489,19 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
           std::cout << "scaled height=" << pixbuf_scaled->get_height() << ", scaled width=" << pixbuf_scaled->get_width() << std::endl;
         }
         */
-        
+
         return pixbuf_scaled;
       }
       else
       {
-        //Return the existing one, 
+        //Return the existing one,
         //instead of a new one with the same contents,
         //so no unnecessary changes will be triggered.
         return pixbuf_in_image;
       }
     }
   }
-  
+
   //std::cout << "get_scaled(): returning original\n";
   return pixbuf;
 }
@@ -527,20 +521,20 @@ void ImageGlom::on_menupopup_activate_open_file_with()
   {
     std::cerr << G_STRFUNC << ": mime_type is empty.\n";
   }
-  
+
   Gtk::AppChooserDialog dialog(mime_type);
   if(pApp)
     dialog.set_transient_for(*pApp);
 
   if(dialog.run() != Gtk::RESPONSE_OK)
     return;
-  
+
   auto app_info = dialog.get_app_info();
   if(!app_info)
   {
     std::cerr << G_STRFUNC << ": app_info was null.\n";
   }
-  
+
   open_with(app_info);
 }
 
@@ -557,18 +551,18 @@ static void make_file_read_only(const Glib::ustring& uri)
     std::cerr << G_STRFUNC << "Exception: " << ex.what() << std::endl;
     return;
   }
-  
+
   if(filepath.empty())
   {
     std::cerr << G_STRFUNC << ": filepath is empty.\n";
   }
-  
+
   const auto result = chmod(filepath.c_str(), S_IRUSR);
   if(result != 0)
   {
     std::cerr << G_STRFUNC << ": chmod() failed.\n";
   }
-  
+
   //Setting the attribute via gio gives us this exception:
   //"Setting attribute access::can-write not supported"
   /*
@@ -585,20 +579,20 @@ static void make_file_read_only(const Glib::ustring& uri)
     std::cerr << G_STRFUNC << ": query_info() failed: " << ex.what() << std::endl;
     return;
   }
-  
+
   if(!file_info)
   {
     std::cerr << G_STRFUNC << ": : file_info is null\n";
     return;
   }
-  
+
   const bool can_write =
     file_info->get_attribute_boolean(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
   if(!can_write)
     return;
-    
+
   file_info->set_attribute_boolean(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, false);
-  
+
   try
   {
     file->set_attributes_from_info(file_info);
@@ -617,13 +611,13 @@ Glib::ustring ImageGlom::save_to_temp_file(bool show_progress)
   {
     std::cerr << G_STRFUNC << ": : uri is empty.\n";
   }
-  
+
   bool saved = false;
   if(show_progress)
     saved = save_file(uri);
   else
     saved = save_file_sync(uri);
-  
+
   if(!saved)
   {
     uri = Glib::ustring();
@@ -652,7 +646,7 @@ void ImageGlom::open_with(const Glib::RefPtr<Gio::AppInfo>& app_info)
   }
   else
   {
-    //TODO: Avoid duplication in xsl_utils.cc, by moving this into a utility function:  
+    //TODO: Avoid duplication in xsl_utils.cc, by moving this into a utility function:
 #ifdef G_OS_WIN32
     // gtk_show_uri doesn't seem to work on Win32, at least not for local files
     // We use Windows API instead.
@@ -674,12 +668,12 @@ static void set_file_filter_images(Gtk::FileChooser& file_chooser)
   filter->set_name(_("Images"));
   filter->add_pixbuf_formats();
   file_chooser.add_filter(filter);
-  
-  ev_document_factory_add_filters(GTK_WIDGET(file_chooser.gobj()), 0);
-  
+
+  ev_document_factory_add_filters(GTK_WIDGET(file_chooser.gobj()), nullptr);
+
   //Make Images the currently-selected one:
   file_chooser.set_filter(filter);
-  
+
   /*  ev_document_factory_add_filters() add this already:
   filter = Gtk::FileFilter::create();
   filter->set_name(_("All Files"));
@@ -695,7 +689,7 @@ void ImageGlom::on_menupopup_activate_save_file()
   Gtk::FileChooserDialog dialog(_("Save Image"), Gtk::FILE_CHOOSER_ACTION_SAVE);
   if(pApp)
     dialog.set_transient_for(*pApp);
-          
+
   set_file_filter_images(dialog);
 
   dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
@@ -704,28 +698,28 @@ void ImageGlom::on_menupopup_activate_save_file()
   dialog.hide();
   if(response != Gtk::RESPONSE_OK)
     return;
-    
+
   const auto uri = dialog.get_uri();
   if(uri.empty())
     return;
-    
+
   save_file(uri);
 }
 
 bool ImageGlom::save_file_sync(const Glib::ustring& uri)
 {
-  //TODO: We should still do this asynchronously, 
+  //TODO: We should still do this asynchronously,
   //even when we don't use the dialog's run() to do that
   //because we don't want to offer feedback.
   //Ideally, EvView would just load from data anyway.
-  
+
   const auto gda_binary = get_binary();
   if(!gda_binary)
   {
     std::cerr << G_STRFUNC << ": GdaBinary is null\n";
     return false;
   }
-    
+
   if(!gda_binary->data)
   {
     std::cerr << G_STRFUNC << ": GdaBinary::data is null\n";
@@ -742,7 +736,7 @@ bool ImageGlom::save_file_sync(const Glib::ustring& uri)
     std::cerr << G_STRFUNC << "Exception: " << ex.what() << std::endl;
     return false;
   }
-  
+
   return true;
 }
 
@@ -752,7 +746,7 @@ bool ImageGlom::save_file(const Glib::ustring& uri)
   Utils::get_glade_widget_derived_with_warning(dialog_save);
   if(!dialog_save)
     return false;
-    
+
   // Automatically delete the dialog when we no longer need it:
   std::shared_ptr<Gtk::Dialog> dialog_keeper(dialog_save);
 
@@ -776,13 +770,13 @@ void ImageGlom::on_menupopup_activate_select_file()
 {
   if(m_read_only)
     return;
-    
+
   auto pApp = get_appwindow();
 
   Gtk::FileChooserDialog dialog(_("Choose Image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
   if(pApp)
     dialog.set_transient_for(*pApp);
-          
+
   set_file_filter_images(dialog);
 
   dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
@@ -815,7 +809,7 @@ void ImageGlom::on_menupopup_activate_select_file()
           bin->binary_length = image_data->binary_length;
 
           clear_original_data();
-          
+
           g_value_unset(m_original_data.gobj());
           g_value_init(m_original_data.gobj(), GDA_TYPE_BINARY);
           gda_value_take_binary(m_original_data.gobj(), bin);
@@ -838,23 +832,23 @@ void ImageGlom::on_clipboard_get(Gtk::SelectionData& selection_data, guint /* in
   //info is meant to indicate the target, but it seems to be always 0,
   //so we use the selection_data's target instead.
 
-  const auto target = selection_data.get_target(); 
+  const auto target = selection_data.get_target();
 
   const auto mime_type = get_mime_type();
   if(mime_type.empty())
   {
     std::cerr << G_STRFUNC << ": mime_type is empty.\n";
   }
-  
+
   if(target == mime_type)
   {
     const auto gda_binary = get_binary();
     if(!gda_binary)
       return;
-    
+
     if(!gda_binary->data)
       return;
-    
+
     selection_data.set(mime_type, 8, gda_binary->data, gda_binary->binary_length);
 
     // This set() override uses an 8-bit text format for the data.
@@ -892,7 +886,7 @@ void ImageGlom::on_menupopup_activate_copy()
   {
     std::cerr << G_STRFUNC << ": mime_type is empty.\n";
   }
-  
+
   std::vector<Gtk::TargetEntry> listTargets;
   listTargets.emplace_back( Gtk::TargetEntry(mime_type) );
 
@@ -948,10 +942,10 @@ void ImageGlom::setup_menu_usermode()
 
   m_action_open_file_with = m_action_group_user_mode_popup->add_action("open-fil-ewith",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_open_file_with) );
-    
+
   m_action_save_file = m_action_group_user_mode_popup->add_action("save-file",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_save_file) );
-    
+
   m_action_select_file = m_action_group_user_mode_popup->add_action("select-file",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_select_file) );
 

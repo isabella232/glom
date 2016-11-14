@@ -146,7 +146,7 @@ void export_data_to_stream(const std::shared_ptr<Document>& document, std::ostre
               // though we believe that all these problems are now fixed in File::to_file_format():
 
               const char* newline_to_find = "\r\n";
-              size_t pos = field_text.find_first_of(newline_to_find);
+              auto pos = field_text.find_first_of(newline_to_find);
               if(pos != std::string::npos)
               {
                 std::cerr << G_STRFUNC << ": export: binary data field text contains an unexpected newline: " << field_text << std::endl;

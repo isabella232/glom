@@ -86,7 +86,7 @@ int main()
   {
     Glom::glom_execute_python_function_implementation(
       script, field_values,
-      0 /* document */, table_name_input,
+      nullptr /* document */, table_name_input,
       std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
       connection,
       callbacks,

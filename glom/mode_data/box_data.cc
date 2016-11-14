@@ -101,7 +101,7 @@ Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
   //Look at each field entry and build e.g. 'Name = "Bob"'
   for(const auto& item : m_FieldsShown)
   {
-    const auto data = get_entered_field_data(item);
+    const auto data = get_entered_field_data(*item);
 
     if(!Conversions::value_is_empty(data))
     {
@@ -361,7 +361,7 @@ void Box_Data::execute_button_script(const std::shared_ptr<const LayoutItem_Butt
   const auto field_values = get_record_field_values_for_calculation(m_table_name, field_primary_key, primary_key_value);
 
   //We need the connection when we run the script, so that the script may use it.
-  auto sharedconnection = connect_to_server(0 /* parent window */);
+  auto sharedconnection = connect_to_server(nullptr /* parent window */);
 
   //Allow this UI to respond to UI change requests from the Python code:
   AppPythonUICallbacks callbacks;

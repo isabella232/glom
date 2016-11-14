@@ -24,7 +24,7 @@
 #include <goocanvasmm/canvas.h>
 #include <glom/utility_widgets/canvas/canvas_group_grid.h>
 #include <glom/utility_widgets/canvas/canvas_item_movable.h>
-#include <map>
+#include <unordered_map>
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 namespace Glom
@@ -43,7 +43,7 @@ public:
   void remove_all_items();
   void remove_all_items(const Glib::RefPtr<Goocanvas::Group>& group);
 
-  /** Set the distance between grid lines, 
+  /** Set the distance between grid lines,
    * used to snap to the grid lines when moving or resizing items.
    */
   virtual void set_grid_gap(double gap = 20.0);
@@ -84,26 +84,23 @@ public:
   //TODO: Actually emit this, so we actually show the context menu when clicking on blank space:
   /** void on_show_context(guint button, guint32 activate_time);
    */
-  typedef sigc::signal<void, guint, guint32> type_signal_show_context;
+  typedef sigc::signal<void(guint, guint32)> type_signal_show_context;
   type_signal_show_context signal_show_context();
 
 
   /** For instance,
    *   void on_selection_changed();
    */
-  typedef sigc::signal<void> type_signal_selection_changed;
+  typedef sigc::signal<void()> type_signal_selection_changed;
 
-  /** This signal is emitted if the user causes items 
+  /** This signal is emitted if the user causes items
    * to be selected or deselected. See get_selected_items().
    */
   type_signal_selection_changed signal_selection_changed();
 
 private:
-  
-  void on_item_selected(const Glib::RefPtr<CanvasItemMovable>& item, bool group_select);
 
-  bool m_dragging;
-  double m_drag_x, m_drag_y;
+  void on_item_selected(const Glib::RefPtr<CanvasItemMovable>& item, bool group_select);
 
   class ItemInfo
   {

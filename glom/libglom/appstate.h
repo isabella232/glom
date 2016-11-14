@@ -53,7 +53,7 @@ public:
   /// Use this to set the initial UI state:
   void emit_userlevel_changed();
 
-  typedef sigc::signal<void, userlevels> type_signal_userlevel_changed;
+  typedef sigc::signal<void(userlevels)> type_signal_userlevel_changed;
 
   /// The user interface should handle this signal and alter itself accordingly.
   type_signal_userlevel_changed signal_userlevel_changed();

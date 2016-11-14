@@ -87,8 +87,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_ScrolledWindow.add(m_FlowTable);
   // The FlowTable does not support native scrolling, so gtkmm adds it to a
   // viewport first that also has some shadow we do not want.
-  auto viewport = dynamic_cast<Gtk::Viewport*>(m_FlowTable.get_parent());
-  if(viewport)
+  if(auto viewport = dynamic_cast<Gtk::Viewport*>(m_FlowTable.get_parent()))
     viewport->set_shadow_type(Gtk::SHADOW_NONE);
 
 
@@ -307,7 +306,7 @@ bool Box_Data_Details::fill_from_database()
         bool index_primary_key_found = false;
         unsigned int index_primary_key = 0; //Arbitrary default.
         //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
-        if(!Utils::find_if_layout_item_field_is_same_field_exists(fieldsToGet, layout_item_pk))
+        if(!Utils::find_if_layout_item_field_is_same_field_exists(fieldsToGet, *layout_item_pk))
         {
           fieldsToGet.emplace_back(layout_item_pk);
           index_primary_key = fieldsToGet.size() - 1;
@@ -390,7 +389,7 @@ bool Box_Data_Details::fill_from_database()
                 value = Conversions::get_empty_value(layout_item->get_glom_type());
               }
 
-              m_FlowTable.set_field_value(layout_item, value);
+              m_FlowTable.set_field_value(*layout_item, value);
             }
           }
         }
@@ -494,17 +493,17 @@ void Box_Data_Details::on_button_nav_last()
     signal_nav_last().emit();
 }
 
-Gnome::Gda::Value Box_Data_Details::get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const
+Gnome::Gda::Value Box_Data_Details::get_entered_field_data(const LayoutItem_Field& field) const
 {
   return m_FlowTable.get_field_value(field);
 }
 
-void Box_Data_Details::set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_Details::set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
   m_FlowTable.set_field_value(field, value);
 }
 
-void Box_Data_Details::set_entered_field_data(const Gtk::TreeModel::iterator& /* row */, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_Details::set_entered_field_data(const Gtk::TreeModel::iterator& /* row */, const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
   set_entered_field_data(field, value);
 }
@@ -645,8 +644,12 @@ void Box_Data_Details::on_flowtable_related_record_changed(const Glib::ustring& 
   recalculate_fields_for_related_records(relationship_name);
 }
 
-void Box_Data_Details::on_flowtable_field_open_details_requested(const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value)
+void Box_Data_Details::on_flowtable_field_open_details_requested(const std::weak_ptr<const LayoutItem_Field>& layout_field_weak, const Gnome::Gda::Value& field_value)
 {
+  const auto layout_field = layout_field_weak.lock();
+  if(!layout_field)
+    return;
+
   if(Conversions::value_is_empty(field_value))
     return; //Ignore empty ID fields.
 
@@ -655,12 +658,12 @@ void Box_Data_Details::on_flowtable_field_open_details_requested(const std::shar
   ////auto unconst_field = std::const_pointer_cast<LayoutItem_Field>(layout_field); //A hack, because layout_field_should_have_navigation() needs to get full field details.
   //unconst_field->set_full_field_details(
   //  document->get_field(field->get_table_used(table_name), field->get_name()) ); //Otherwise get_primary_key() returns false always.
-      
+
   std::shared_ptr<Relationship> field_used_in_relationship_to_one;
-  const bool has_open_button = 
-    DbUtils::layout_field_should_have_navigation(m_table_name, layout_field, get_document(), 
+  const bool has_open_button =
+    DbUtils::layout_field_should_have_navigation(m_table_name, layout_field, get_document(),
     field_used_in_relationship_to_one);
-         
+
   //If it's a simple field that is part of a relationship,
   //identifying a related record.
   if(field_used_in_relationship_to_one)
@@ -677,14 +680,15 @@ void Box_Data_Details::on_flowtable_field_open_details_requested(const std::shar
   }
 }
 
-void Box_Data_Details::on_flowtable_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item)
+void Box_Data_Details::on_flowtable_script_button_clicked(const std::weak_ptr<const LayoutItem_Button>& layout_item_weak)
 {
+  const auto layout_item = layout_item_weak.lock();
   if(!layout_item)
   {
     std::cerr << G_STRFUNC << ": layout_item is null\n";
     return;
   }
-  
+
   const auto primary_key_value = get_primary_key_value_selected();
   const Glib::ustring table_name_before = m_table_name;
   execute_button_script(layout_item, primary_key_value);
@@ -706,9 +710,13 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const std::shared_ptr<
   }
 }
 
-void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value)
+void Box_Data_Details::on_flowtable_field_edited(const std::weak_ptr<const LayoutItem_Field>& layout_field_weak, const Gnome::Gda::Value& field_value)
 {
   if(m_ignore_signals)
+    return;
+
+  const auto layout_field = layout_field_weak.lock();
+  if (!layout_field)
     return;
 
   const auto strFieldName = layout_field->get_name();
@@ -748,7 +756,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
           auto layout_item = std::make_shared<LayoutItem_Field>();
           layout_item->set_full_field_details( document->get_field(relationship->get_from_table(), relationship->get_from_field()) );
 
-          primary_key_value = get_entered_field_data(layout_item);
+          primary_key_value = get_entered_field_data(*layout_item);
 
           //Note: This just uses an existing record if one already exists:
           Gnome::Gda::Value primary_key_value_used;
@@ -776,14 +784,14 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
     {
       //Revert to the value in the database:
       const auto value_old = get_field_value_in_database(field_in_record, window);
-      set_entered_field_data(layout_field, value_old);
+      set_entered_field_data(*layout_field, value_old);
 
       return;
     }
 
     //Set the value in all instances of this field in the layout (The field might be on the layout more than once):
     //We don't need to set the value in the layout_field itself, as this is where the value comes from.
-    m_FlowTable.set_other_field_value(layout_field, field_value);
+    m_FlowTable.set_other_field_value(*layout_field, field_value);
 
     //Update the field in the record (the record with this primary key):
 
@@ -808,7 +816,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
         //Update failed.
         //Replace with correct values.
         const auto value_old = get_field_value_in_database(field_in_record, window);
-        set_entered_field_data(layout_field, value_old);
+        set_entered_field_data(*layout_field, value_old);
       }
       else
       {
@@ -874,7 +882,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
         {
           //Revert to a blank value:
           const auto value_old = Conversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());
-          set_entered_field_data(layout_field, value_old);
+          set_entered_field_data(*layout_field, value_old);
         }
         else
         {
@@ -896,12 +904,16 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
   } //if(get_primary_key_value_selected().size())
 }
 
-void Box_Data_Details::on_flowtable_field_choices_changed(const std::shared_ptr<const LayoutItem_Field>& layout_field)
+void Box_Data_Details::on_flowtable_field_choices_changed(const std::weak_ptr<const LayoutItem_Field>& layout_field_weak)
 {
   if(m_ignore_signals)
     return;
 
-  m_FlowTable.update_choices(layout_field);
+  const auto layout_field = layout_field_weak.lock();
+  if (!layout_field)
+    return;
+
+  m_FlowTable.update_choices(*layout_field);
 }
 
 void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)
@@ -927,7 +939,7 @@ void Box_Data_Details::print_layout()
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)
     return;  //TODO: Warn the user.
-   
+
   const auto document = std::dynamic_pointer_cast<const Document>(get_document());
   if(!document)
   {
@@ -942,14 +954,14 @@ void Box_Data_Details::print_layout()
     return;
   }
 
-  //Note that we initially create the page layout without spaces for page 
+  //Note that we initially create the page layout without spaces for page
   //breaks because those spaces would be empty space on the page after
   //we have moved items down when expanding:
   //TODO: Squash that space when expanding custom layouts.
-  auto layout = 
+  auto layout =
     PrintLayoutUtils::create_standard(page_setup, m_table_name, document,
       false /* do not avoid page margins */);
-  
+
   //Show the print preview window:
   auto app = AppWindow::get_appwindow();
   PrintLayoutUtils::do_print_layout(layout, m_found_set,

@@ -36,7 +36,7 @@ class Dialog_Layout_Calendar_Related;
 
 class Box_Data_Calendar_Related : public Box_Data_Portal
 {
-public: 
+public:
   Box_Data_Calendar_Related();
   virtual ~Box_Data_Calendar_Related();
 
@@ -49,7 +49,7 @@ private:
 
   //Implementations of pure virtual methods from Base_DB_Table_Data:
   void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) override;
-    
+
 
   void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row) override; //Not a signal handler.
 
@@ -58,7 +58,7 @@ private:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   void enable_buttons();
-    
+
   //Implementations of pure virtual methods from Base_DB_Table_Data:
   Gnome::Gda::Value get_primary_key_value_selected() const override;
   Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const override;
@@ -70,21 +70,21 @@ private:
 
   Glib::ustring on_calendar_details(guint year, guint month, guint day);
   void on_calendar_month_changed();
-    
+
   void setup_menu(Gtk::Widget* widget);
   void on_calendar_button_press_event(GdkEventButton *event);
- 
+
   void on_MenuPopup_activate_Edit();
-    
+
   #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_MenuPopup_activate_layout();
   #endif
-  
+
   void clear_cached_database_values();
-    
+
 private:
   Gtk::Calendar m_calendar;
-    
+
   //TODO: Avoid repeating these in so many widgets:
   std::unique_ptr<Gtk::Menu> m_menu_popup;
   Glib::RefPtr<Gio::SimpleActionGroup> m_action_group;
@@ -93,13 +93,20 @@ private:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gio::SimpleAction> m_context_layout;
 #endif
-    
+
   //The cached data for the month:
   //For each date we have a list of rows (vectors):
   typedef std::vector<Gnome::Gda::Value> type_vector_values;
-  typedef std::list<type_vector_values*> type_list_vectors;
-  typedef std::map<Glib::Date, type_list_vectors> type_map_values;
-  type_map_values m_map_values;
+  typedef std::vector<type_vector_values*> type_list_vectors;
+
+  // TODO: Use std::unordered_map, maybe like this:
+  //static constexpr auto date_hash = [](const Glib::Date& date) {
+  //  std::tm ctm;
+  //  return std::hash<std::tm>()(ctm);
+  //};
+  //std::unordered_map<Glib::Date, type_list_vectors, decltype(date_hash)> m_map_values;
+  std::map<Glib::Date, type_list_vectors> m_map_values;
+
   mutable int m_query_column_date_field;
 };
 

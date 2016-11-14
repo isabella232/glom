@@ -54,8 +54,8 @@ public:
    * @result The filepath of a temporary file containing the generated HTML file.
    */
   std::string report_build_and_save(const FoundSet& found_set, const std::shared_ptr<const Report>& report);
- 
- 
+
+
 private:
 
   bool report_build_groupby(const FoundSet& found_set_parent, xmlpp::Element& parent_node, const std::shared_ptr<LayoutItem_GroupBy>& group_by);

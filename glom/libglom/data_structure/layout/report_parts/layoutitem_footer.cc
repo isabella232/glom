@@ -29,22 +29,9 @@ LayoutItem_Footer::LayoutItem_Footer()
 {
 }
 
-LayoutItem_Footer::LayoutItem_Footer(const LayoutItem_Footer& src)
-: LayoutGroup(src)
-{
-}
-
 LayoutItem* LayoutItem_Footer::clone() const
 {
   return new LayoutItem_Footer(*this);
-}
-
-
-LayoutItem_Footer& LayoutItem_Footer::operator=(const LayoutItem_Footer& src)
-{
-  LayoutGroup::operator=(src);
-
-  return *this;
 }
 
 Glib::ustring LayoutItem_Footer::get_part_type_name() const

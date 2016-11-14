@@ -22,7 +22,7 @@
 #define GLOM_DATASTRUCTURE_TRANSLATABLE_ITEM_H
 
 #include <glibmm/ustring.h>
-#include <map>
+#include <unordered_map>
 #include <libglom/sharedptr.h>
 
 namespace Glom
@@ -33,12 +33,12 @@ class TranslatableItem
 {
 public:
   TranslatableItem() noexcept;
-  TranslatableItem(const TranslatableItem& src) noexcept;
-  TranslatableItem(TranslatableItem&& src) noexcept;
-  virtual ~TranslatableItem();
+  TranslatableItem(const TranslatableItem& src) = default;
+  TranslatableItem(TranslatableItem&& src) = default;
+  virtual ~TranslatableItem() = default;
 
-  TranslatableItem& operator=(const TranslatableItem& src) noexcept;
-  TranslatableItem& operator=(TranslatableItem&& src) noexcept;
+  TranslatableItem& operator=(const TranslatableItem& src) = default;
+  TranslatableItem& operator=(TranslatableItem&& src) = default;
 
   bool operator==(const TranslatableItem& src) const noexcept;
   bool operator!=(const TranslatableItem& src) const noexcept;
@@ -72,12 +72,12 @@ public:
   virtual Glib::ustring get_title_original() const noexcept;
 
   /** Get the title's translation for the specified @a locale, optionally
-   * falling back to a locale of the same language, and then falling back to 
+   * falling back to a locale of the same language, and then falling back to
    * the original.
    * Calling this with the current locale is the same as calling get_title_original().
    */
   Glib::ustring get_title_translation(const Glib::ustring& locale, bool fallback = true) const noexcept;
-  
+
 
   /** Set the title's translation for the specified locale.
    * @param title The text of the title.
@@ -94,7 +94,7 @@ public:
   /// Clear the original title and any translations of the title.
   void clear_title_in_all_locales() noexcept;
 
-  typedef std::map<Glib::ustring, Glib::ustring> type_map_locale_to_translations;
+  typedef std::unordered_map<Glib::ustring, Glib::ustring, std::hash<std::string>> type_map_locale_to_translations;
 
   bool get_has_translations() const noexcept;
 

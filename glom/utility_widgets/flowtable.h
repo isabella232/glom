@@ -38,7 +38,7 @@ public:
 
   void add_widgets(Gtk::Widget& first, Gtk::Widget& second, bool expand_second = false);
   void add_widgets(Gtk::Widget& first, bool expand = false);
- 
+
   /** Show extra UI that is useful in RAD tools:
    */
   virtual void set_design_mode(bool value = true);
@@ -56,7 +56,7 @@ protected:
 
   void insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool expand);
 
-  typedef std::list<const Gtk::Widget*> type_const_list_widgets;
+  typedef std::vector<const Gtk::Widget*> type_const_list_widgets;
 
   bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
 
@@ -71,8 +71,7 @@ private:
   Glib::RefPtr<Gdk::Window> m_gdk_window;
 
   //We remember the Boxes so we can delete them when the are no longer used.
-  typedef std::list<Gtk::Box*> type_list_hboxes;
-  type_list_hboxes m_list_hboxes;
+  std::vector<Gtk::Box*> m_list_hboxes;
 
   type_const_list_widgets m_list_first_widgets;
 };

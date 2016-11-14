@@ -29,7 +29,7 @@ namespace GlomBakery
  *
  * This is an abstract class. You must use a class such as AppWindow_WithDoc_Gtk, which implements
  * the ui_* methods for a particular GUI toolkit.
- 
+
  * Features:
  * - 1 document per application instance. Uses Document-derived class polymorphically.
  * - Override init_create_document() to create new blank document.
@@ -54,7 +54,7 @@ namespace GlomBakery
  */
 class AppWindow_WithDoc : public AppWindow
 {
-public: 
+public:
   ///Don't forget to call init() too.
   explicit AppWindow_WithDoc(const Glib::ustring& appname = ""); //TODO: appname when using get_derived_widget()
 
@@ -108,7 +108,7 @@ protected:
   virtual void document_history_remove(const Glib::ustring& file_uri);
 
 public:
-  // We can not take function pointers of these methods in 
+  // We can not take function pointers of these methods in
   // a derived class if they are protected - for instance, with sigc::mem_fun()
   //Signal handlers:
 
@@ -131,7 +131,7 @@ protected:
 
   ///override this to show document contents.
   virtual bool on_document_load();
-  
+
   ///override this to do extra cleanup.
   virtual void on_document_close();
 
@@ -147,7 +147,7 @@ protected:
   virtual void ui_warning(const Glib::ustring& text, const Glib::ustring& secondary_text) = 0;
 
   /** Warn the user about a failure while loading a document.
-   * Override this to show a specific message in response to your application's 
+   * Override this to show a specific message in response to your application's
    * custom @a failure_code.
    */
   virtual void ui_warning_load_failed(int failure_code = 0);
@@ -169,7 +169,7 @@ protected:
   bool m_close_after_save;
 
   //Mime types which this application can load and save:
-  typedef std::list<Glib::ustring> type_list_strings;
+  typedef std::vector<Glib::ustring> type_list_strings;
   static type_list_strings m_mime_types;
 };
 

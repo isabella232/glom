@@ -65,7 +65,7 @@ private:
   void snap_position_one_corner(Corners corner, double& x, double& y) const;
 
   void snap_position(double& x, double& y) const override;
-  
+
   double m_row_line_width, m_column_line_width;
   Glib::ustring m_line_color;
 };

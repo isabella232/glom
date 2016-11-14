@@ -39,9 +39,9 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //Note: We avoid using a path that is longer than 107 characters to avoid a PostgreSQL error.
   //(107 == sizeof(struct sockaddr_un.sun_path) at least here). murrayc.
   //See http://lists.debian.org/debian-wb-team/2013/05/msg00015.html
-  //TODO: Fail with long paths meaningfully in the libglom API too, and check for that? 
-  const bool recreated = 
-    test_create_and_selfhost_from_example("example_music_collection.glom", document, 
+  //TODO: Fail with long paths meaningfully in the libglom API too, and check for that?
+  const bool recreated =
+    test_create_and_selfhost_from_example("example_music_collection.glom", document,
       hosting_mode, "path w space and \" and ' and $ and / and \\ ");
       //hosting_mode, "path with space and \" quote and single ' quote and $ dollar sign and / forward slash and \\ backwards slash ");
   if(!recreated)
@@ -49,7 +49,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
-  
+
   if(!test_example_musiccollection_data(document))
   {
     std::cerr << G_STRFUNC << ": test_example_musiccollection_data() failed.\n";
@@ -67,8 +67,8 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   test_selfhosting_cleanup();
- 
-  return true; 
+
+  return true;
 }
 
 int main()

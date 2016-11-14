@@ -36,7 +36,7 @@ class Box_DB_Table
 : public Box_WithButtons,
   public Base_DB_Table
 {
-public: 
+public:
   Box_DB_Table();
   Box_DB_Table(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 

@@ -35,7 +35,7 @@ class Dialog_Layout_List_Related : public Dialog_Layout_List
 public:
   static const char* glade_id;
   static const bool glade_developer;
-  
+
   Dialog_Layout_List_Related(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   /**
@@ -62,9 +62,9 @@ protected:
   //signal handlers:
   void on_button_add_field() override;
   void on_button_edit() override;
- 
+
   void on_combo_relationship_changed();
-  
+
   void on_combo_navigation_specific_changed();
   void on_checkbutton_show_child_relationships();
   void on_spinbutton_changed();
@@ -78,11 +78,11 @@ protected:
   Gtk::RadioButton* m_radio_navigation_specify;
   Gtk::Label* m_label_navigation_automatic;
   ComboBox_Relationship* m_combo_navigation_specify;
-  
+
   Gtk::SpinButton* m_spinbutton_row_line_width;
   Gtk::SpinButton* m_spinbutton_column_line_width;
   Gtk::ColorButton* m_colorbutton_line;
-  
+
   bool m_for_print_layout;
 };
 

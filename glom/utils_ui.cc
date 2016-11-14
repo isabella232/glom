@@ -49,13 +49,20 @@
 namespace
 {
 
-static void on_css_parsing_error(const Glib::RefPtr<const Gtk::CssSection>& section, const Glib::Error& error)
+static void on_css_parsing_error(const Glib::RefPtr<const Gtk::CssSection>& section, const Glib::Error& error,
+    const Glib::ustring& error_clue)
 {
   std::cerr << G_STRFUNC << ": Parsing error: " << error.what() << std::endl;
+  std::cerr << "  css: " << error_clue << std::endl;
 
   if(section)
   {
-    std::cerr << " URI = " << section->get_file()->get_uri() << std::endl;
+    const auto file = section->get_file();
+    if (file)
+    {
+      std::cerr << " URI = " << file->get_uri() << std::endl;
+    }
+
     std::cerr << " start_line = " << section->get_start_line()+1
       << ", end_line = " << section->get_end_line()+1 << std::endl;
     std::cerr << " start_position = " << section->get_start_position()
@@ -63,7 +70,7 @@ static void on_css_parsing_error(const Glib::RefPtr<const Gtk::CssSection>& sect
   }
 }
 
-static Glib::RefPtr<Gtk::CssProvider> create_css_provider(Gtk::Widget& widget)
+static Glib::RefPtr<Gtk::CssProvider> create_css_provider(Gtk::Widget& widget, const Glib::ustring& error_clue)
 {
   // Add a StyleProvider so we can change the color, background color, and font.
   // This was easier before Gtk::Widget::override_color() was deprecated.
@@ -74,9 +81,34 @@ static Glib::RefPtr<Gtk::CssProvider> create_css_provider(Gtk::Widget& widget)
     refStyleContext->add_provider(css_provider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
   css_provider->signal_parsing_error().connect(
-    sigc::ptr_fun(&on_css_parsing_error));
+    sigc::bind(
+      sigc::ptr_fun(&on_css_parsing_error),
+      error_clue));
 
   return css_provider;
+}
+
+
+static void load_into_css_provider(Gtk::Widget& widget, const Glib::ustring& css)
+{
+  auto css_provider = create_css_provider(widget, css);
+
+  try
+  {
+    css_provider->load_from_data(css);
+  }
+  catch(const Gtk::CssProviderError& ex)
+  {
+    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed with CssProviderError: "
+      << ex.what() << std::endl;
+    std::cerr << "  with css: " << css << std::endl;
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed with Error: "
+      << ex.what() << std::endl;
+    std::cerr << "  with css: " << css << std::endl;
+  }
 }
 
 } //anonymous namespace
@@ -88,7 +120,7 @@ namespace Glom
 int UiUtils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
 {
   int result = dialog->run();
-  
+
   while (result == Gtk::RESPONSE_HELP)
   {
     show_help(dialog, id);
@@ -111,7 +143,7 @@ void UiUtils::show_help(Gtk::Window* parent_window, const Glib::ustring& id)
   Glib::ustring uri = "help:glom";
   if (!id.empty())
     uri += "/" + id;
-    
+
   try
   {
     //Use the GNOME help browser:
@@ -175,12 +207,12 @@ void UiUtils::show_window_until_hide(Gtk::Window* window)
 
   //Stop the main_loop when the window is hidden:
   sigc::connection handler_connection; //TODO: There seems to be a crash if this is on the same line.
-  handler_connection = window->signal_hide().connect( 
+  handler_connection = window->signal_hide().connect(
     sigc::bind(
       sigc::ptr_fun(&on_window_hide),
       main_loop, handler_connection
     ) );
-  
+
   window->show();
   main_loop->run(); //Run and block until it is stopped by the hide signal handler.
 }
@@ -210,7 +242,7 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::get_pixbuf_for_gda_value(const Gnome::Gda::Va
       else
       {
         buffer_binary_length = 0;
-        buffer_binary = 0;
+        buffer_binary = nullptr;
         std::cerr << G_STRFUNC << ": Failed to read BLOB data\n";
       }
     }
@@ -222,7 +254,7 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::get_pixbuf_for_gda_value(const Gnome::Gda::Va
     /* Note that this is regular binary data, not escaped text representing the binary data: */
     if(buffer_binary && buffer_binary_length)
     {
-      //typedef std::list<Gdk::PixbufFormat> type_list_formats;
+      //typedef std::vector<Gdk::PixbufFormat> type_list_formats;
       //const auto formats = Gdk::Pixbuf::get_formats();
       //std::cout << "Debug: Supported pixbuf formats:\n";
       //for(const auto& item : formats)
@@ -230,7 +262,7 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::get_pixbuf_for_gda_value(const Gnome::Gda::Va
       //  std::cout << " name=" << iter->get_name() << ", writable=" << iter->is_writable() << std::endl;
       //}
 
-      Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;      
+      Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;
       try
       {
         refPixbufLoader = Gdk::PixbufLoader::create();
@@ -316,7 +348,7 @@ int UiUtils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const std:
         example_text = "EUR 999.99";
       else
         example_text = "EUR 9999999999";
-        
+
       break;
     }
     case(Field::glom_field_type::TEXT):
@@ -425,7 +457,7 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::image_scale_keeping_ratio(const Glib::RefPtr<
     return pixbuf;
   else if(scale_mode == enum_scale_mode::HEIGHT)
   {
-    const float ratio = (float)target_height / (float)pixbuf_height; 
+    const float ratio = (float)target_height / (float)pixbuf_height;
     target_width = (int)((float)pixbuf_width * ratio);
   }
   else if(scale_mode == enum_scale_mode::WIDTH)
@@ -569,55 +601,29 @@ void UiUtils::container_remove_all(Gtk::Container& container)
   }
 }
 
-void UiUtils::load_font_into_css_provider(Gtk::Widget& widget, const Glib::ustring& font)
+void UiUtils::load_font_into_css_provider(Gtk::Widget& widget, const Glib::ustring& pango_font_name)
 {
-  auto css_provider = create_css_provider(widget);
+  const Pango::FontDescription font_desc(pango_font_name);
+  const auto font_family = font_desc.get_family();
+  const auto font_size = font_desc.get_size();
+  const auto css =
+    "* {\n" +
+    (font_family.empty() ? "" : "    font-family: " + font_desc.get_family() + ";\n") +
+    (font_size == 0 ? "" : "    font-size: " + std::to_string(font_size / PANGO_SCALE) + "pt;\n") +
+    "}";
 
-  try
-  {
-    css_provider->load_from_data("* { font: " + font + "; }");
-  }
-  catch(const Gtk::CssProviderError& ex)
-  {
-    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
-      << ex.what() << std::endl;
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
-      << ex.what() << std::endl;
-  }
+  load_into_css_provider(widget, css);
 }
 
 void UiUtils::load_color_into_css_provider(Gtk::Widget& widget, const Glib::ustring& color)
 {
-  auto css_provider = create_css_provider(widget);
-
-  try
-  {
-    css_provider->load_from_data("* { color: " + color + "; }");
-  }
-  catch(const Gtk::CssProviderError& ex)
-  {
-    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
-      << ex.what() << std::endl;
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
-      << ex.what() << std::endl;
-  }
+  const auto css = "* { color: " + color + "; }";
+  load_into_css_provider(widget, css);
 }
 
 void UiUtils::load_background_color_into_css_provider(Gtk::Widget& widget, const Glib::ustring& color)
 {
-  auto css_provider = create_css_provider(widget);
-
-  try
-  {
-    css_provider->load_from_data(
-      "* { background-color: " + color + "; }"
-      );
+  auto css = "* { background-color: " + color + "; }";
 /*
       "GtkTextView {\n"
       "  background-color: " + color + "; }\n"
@@ -629,17 +635,7 @@ void UiUtils::load_background_color_into_css_provider(Gtk::Widget& widget, const
       "  background-color: " + color + "; }"
 */
 
-  }
-  catch(const Gtk::CssProviderError& ex)
-  {
-    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
-      << ex.what() << std::endl;
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
-      << ex.what() << std::endl;
-  }
+  load_into_css_provider(widget, css);
 }
 
 } //namespace Glom

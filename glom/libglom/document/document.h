@@ -88,7 +88,7 @@ public:
 
   bool get_is_example_file() const;
   void set_is_example_file(bool value = true);
-  
+
   bool get_is_backup_file() const;
   void set_is_backup_file(bool value = true);
 
@@ -217,11 +217,11 @@ public:
    * so that it is not used anymore in relationships, layouts, reports, etc.
    */
   void remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name);
-  
-  
+
+
   typedef std::pair< std::shared_ptr<LayoutItem_Field>, std::shared_ptr<Relationship> > type_pairFieldTrigger;
   typedef std::vector<type_pairFieldTrigger> type_list_lookups;
-  
+
   /** Get the fields whose values should be looked up when @a field_name changes, with
    * the relationship used to lookup the value.
    */
@@ -438,7 +438,7 @@ public:
    */
   bool set_userlevel(AppState::userlevels userlevel);
 
-  typedef sigc::signal<void, AppState::userlevels> type_signal_userlevel_changed;
+  typedef sigc::signal<void(AppState::userlevels)> type_signal_userlevel_changed;
   type_signal_userlevel_changed signal_userlevel_changed();
 
   //TODO: This is a rather indirect way for application.cc to request the UI to update for the userlevel.
@@ -463,14 +463,14 @@ public:
    * For instance, a pulsing ProgressBar.
    */
   typedef std::function<void()> SlotProgress;
-  
+
   /** Save a copy of the document as a backup.
    * This document (and its URI) will not be changed.
    * @param uri The location at which to save the backup Glom file.
    * @result The URI of the .tar.gz tarball.
    */
   Glib::ustring save_backup_file(const Glib::ustring& uri, const SlotProgress& slot_progress);
-  
+
   /** Extract the .glom file and backup data from a .tar.gz archive.
    * The backup data must be stored temporarily on disk because pg_restore requires a file on disk.
    *
@@ -479,7 +479,7 @@ public:
    * @result The contents of the .glom file from the .tar.gz file.
    */
   static Glib::ustring extract_backup_file(const Glib::ustring& backup_uri, std::string& backup_path, const SlotProgress& slot_progress);
-  
+
 
 private:
 
@@ -491,7 +491,7 @@ public:
   static std::shared_ptr<TableInfo> create_table_system_preferences();
   static std::shared_ptr<TableInfo> create_table_system_preferences(type_vec_fields& fields);
   static std::shared_ptr<Relationship> create_relationship_system_preferences(const Glib::ustring& table_name);
-  static bool get_relationship_is_system_properties(const std::shared_ptr<const Relationship>& relationship);
+  static bool get_relationship_is_system_properties(const Relationship& relationship);
 #endif //SWIG
 
   /// Failure codes that could be returned by load_after()
@@ -551,7 +551,7 @@ private:
     Glib::RefPtr<Gio::FileInputStream> stream;
 
     struct archive* a;
-    
+
   private:
     //Prevent copying:
     FileReadWriteToArchiveData(const FileReadWriteToArchiveData& src);
@@ -590,30 +590,29 @@ private:
     }
 
     DocumentTableInfo(const DocumentTableInfo& src) = delete;
-    DocumentTableInfo(DocumentTableInfo&& src) = delete;
+    DocumentTableInfo(DocumentTableInfo&& src) = default;
     DocumentTableInfo& operator=(const DocumentTableInfo& src) = delete;
-    DocumentTableInfo& operator=(DocumentTableInfo&& src) = delete;
+    DocumentTableInfo& operator=(DocumentTableInfo&& src) = default;
 
     std::shared_ptr<TableInfo> m_info;
 
     type_vec_fields m_fields;
     type_vec_relationships m_relationships;
 
-    typedef std::vector< LayoutInfo > type_layouts;
-    type_layouts m_layouts;
+    std::vector< LayoutInfo > m_layouts;
 
-    typedef std::map< Glib::ustring, std::shared_ptr<Report> > type_reports; //map of report names to reports
-    type_reports m_reports;
+    // map of report names to reports
+    std::unordered_map<Glib::ustring, std::shared_ptr<Report>> m_reports;
 
-    typedef std::map< Glib::ustring, std::shared_ptr<PrintLayout> > type_print_layouts; //map of print layout names to print layouts
-    type_print_layouts m_print_layouts;
+    // map of print layout names to print layouts
+    std::unordered_map< Glib::ustring, std::shared_ptr<PrintLayout>> m_print_layouts;
 
     //Example data, used when creating a database from an example.
     type_example_rows m_example_rows;
 
-    //Per-session, not saved in document:
-    typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_layout_primarykeys;
-    type_map_layout_primarykeys m_map_current_record; //The record last viewed in each layout.
+    // Per-session, not saved in document:
+    // The record last viewed in each layout.
+    std::unordered_map<Glib::ustring, Gnome::Gda::Value, std::hash<std::string>> m_map_current_record;
     Glib::ustring m_layout_current;
     FoundSet m_foundset_current;
 
@@ -625,20 +624,17 @@ private:
   std::shared_ptr<DocumentTableInfo> get_table_info(const Glib::ustring& table_name);
   std::shared_ptr<const DocumentTableInfo> get_table_info(const Glib::ustring& table_name) const;
 
-  typedef std::map<Glib::ustring, std::shared_ptr<DocumentTableInfo> > type_tables;
-  type_tables m_tables;
+  std::map<Glib::ustring, std::shared_ptr<DocumentTableInfo> > m_tables;
 
 
   //User groups:
-  typedef std::map<Glib::ustring, GroupInfo> type_map_groups;
-  type_map_groups m_groups;
+  std::map<Glib::ustring, GroupInfo> m_groups;
 
   std::shared_ptr<DatabaseTitle> m_database_title;
   Glib::ustring m_translation_original_locale;
   std::vector<Glib::ustring> m_translation_available_locales; //Just a cache, based on other data.
 
-  typedef std::map<Glib::ustring, Glib::ustring> type_map_library_scripts;
-  type_map_library_scripts m_map_library_scripts;
+  std::map<Glib::ustring, Glib::ustring> m_map_library_scripts;
 
   Glib::ustring m_startup_script;
 

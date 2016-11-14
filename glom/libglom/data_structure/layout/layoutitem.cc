@@ -32,26 +32,6 @@ LayoutItem::PrintLayoutPosition::PrintLayoutPosition()
 {
 }
 
-LayoutItem::PrintLayoutPosition::PrintLayoutPosition(const LayoutItem::PrintLayoutPosition& src)
-: m_x(src.m_x),
-  m_y(src.m_y),
-  m_width(src.m_width),
-  m_height(src.m_height),
-  m_split_across_pages(src.m_split_across_pages)
-{
-}
-
-LayoutItem::PrintLayoutPosition& LayoutItem::PrintLayoutPosition::operator=(const LayoutItem::PrintLayoutPosition& src)
-{
-  m_x = src.m_x;
-  m_y = src.m_y;
-  m_width = src.m_width;
-  m_height = src.m_height;
-  m_split_across_pages = src.m_split_across_pages;
-
-  return *this;
-}
-
 bool LayoutItem::PrintLayoutPosition::operator==(const LayoutItem::PrintLayoutPosition& src) const
 {
   return (m_x == src.m_x) &&
@@ -76,10 +56,6 @@ LayoutItem::LayoutItem(const LayoutItem& src)
 {
   if(src.m_positions)
     m_positions = std::make_unique<PrintLayoutPosition>(*(src.m_positions));
-}
-
-LayoutItem::~LayoutItem()
-{
 }
 
 LayoutItem& LayoutItem::operator=(const LayoutItem& src)

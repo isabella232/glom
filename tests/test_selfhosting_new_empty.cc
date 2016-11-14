@@ -34,7 +34,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_database() failed\n";
     return false;
   }
-  
+
   //Test some simple changes to the database:
   try
   {

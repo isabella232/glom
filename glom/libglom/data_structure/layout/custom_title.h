@@ -26,16 +26,16 @@
 namespace Glom
 {
 
-class CustomTitle 
+class CustomTitle
  : public TranslatableItem
 {
 public:
 
   CustomTitle();
-  CustomTitle(const CustomTitle& src);
-  CustomTitle(CustomTitle&& src) = delete;
-  CustomTitle& operator=(const CustomTitle& src);
-  CustomTitle& operator=(CustomTitle&& src) = delete;
+  CustomTitle(const CustomTitle& src) = default;
+  CustomTitle(CustomTitle&& src) = default;
+  CustomTitle& operator=(const CustomTitle& src) = default;
+  CustomTitle& operator=(CustomTitle&& src) = default;
 
   bool operator==(const CustomTitle& src) const;
 

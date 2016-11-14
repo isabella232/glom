@@ -32,16 +32,16 @@ namespace Glom
  * The base class TranslatableItem holds the title,
  * and the actual (translatable) text is in the m_text member.
  */
-class LayoutItem_Text 
+class LayoutItem_Text
  : public LayoutItem_WithFormatting
 {
 public:
 
   LayoutItem_Text();
   LayoutItem_Text(const LayoutItem_Text& src);
-  LayoutItem_Text(LayoutItem_Text&& src) = delete;
+  LayoutItem_Text(LayoutItem_Text&& src) = default;
   LayoutItem_Text& operator=(const LayoutItem_Text& src);
-  LayoutItem_Text& operator=(LayoutItem_Text&& src) = delete;
+  LayoutItem_Text& operator=(LayoutItem_Text&& src) = default;
 
   LayoutItem* clone() const override;
 

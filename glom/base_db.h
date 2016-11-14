@@ -87,8 +87,8 @@ protected:
 
   void clear_fields_calculation_in_progress();
 
-  typedef std::list< std::shared_ptr<LayoutItem_Field> > type_list_field_items;
-  typedef std::list< std::shared_ptr<const LayoutItem_Field> > type_list_const_field_items;
+  typedef std::vector< std::shared_ptr<LayoutItem_Field> > type_list_field_items;
+  typedef std::vector< std::shared_ptr<const LayoutItem_Field> > type_list_const_field_items;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   /** Allow the user to select a field from the list of fields for the table.
@@ -122,8 +122,8 @@ protected:
   std::shared_ptr<Field> get_field_primary_key_for_table(const Glib::ustring& table_name) const;
 
   //Methods to be overridden by derived classes:
-  virtual void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value&  value);
-  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  virtual void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value&  value);
+  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field, const Gnome::Gda::Value& value);
 
 
   class FieldInRecord
@@ -199,8 +199,8 @@ protected:
     LayoutFieldInRecord(const LayoutFieldInRecord& src) = delete;
     LayoutFieldInRecord& operator=(const LayoutFieldInRecord& src) = delete;
 
-    LayoutFieldInRecord(LayoutFieldInRecord&& src) = delete;
-    LayoutFieldInRecord& operator=(LayoutFieldInRecord&& src) = delete;
+    LayoutFieldInRecord(LayoutFieldInRecord&& src) = default;
+    LayoutFieldInRecord& operator=(LayoutFieldInRecord&& src) = default;
 
     FieldInRecord get_fieldinrecord(const std::shared_ptr<const Document>& document) const
     {
@@ -224,12 +224,12 @@ protected:
    */
   void do_calculations(const LayoutFieldInRecord& field_changed, bool first_calc_field);
 
-  typedef std::map<Glib::ustring, CalcInProgress> type_field_calcs;
+  typedef std::unordered_map<Glib::ustring, CalcInProgress, std::hash<std::string>> type_field_calcs;
 
 
   /** Get the fields whose values should be recalculated when @a field_name changes.
    */
-  type_list_const_field_items get_calculated_fields(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& field);
+  type_list_const_field_items get_calculated_fields(const Glib::ustring& table_name, const LayoutItem_Field& field);
 
   /** Get the fields used, if any, in the calculation of this field.
    */
@@ -240,7 +240,7 @@ protected:
   void calculate_field_in_all_records(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field);
   void calculate_field_in_all_records(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field, const std::shared_ptr<const Field>& primary_key);
 
-  typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
+  typedef std::unordered_map<Glib::ustring, Gnome::Gda::Value, std::hash<std::string>> type_map_fields;
   //TODO: Performance: This is massively inefficient:
   type_map_fields get_record_field_values_for_calculation(const Glib::ustring& table_name, const std::shared_ptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
 

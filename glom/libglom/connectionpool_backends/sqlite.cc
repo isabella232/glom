@@ -71,9 +71,9 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
       // Convert URI to path, for GDA connection string
       const auto database_directory = db_dir->get_path();
 
-      const auto cnc_string = "DB_DIR=" + DbUtils::gda_cnc_string_encode(database_directory) + 
+      const auto cnc_string = "DB_DIR=" + DbUtils::gda_cnc_string_encode(database_directory) +
         ";DB_NAME=" + DbUtils::gda_cnc_string_encode(database);
-      const auto auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", 
+      const auto auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2",
         DbUtils::gda_cnc_string_encode(username), DbUtils::gda_cnc_string_encode(password));
 
       if(fake_connection)
@@ -114,16 +114,16 @@ bool Sqlite::create_database(const SlotProgress& slot_progress, const Glib::ustr
     std::cerr << G_STRFUNC << ": m_database_directory_uri was empty.\n";
     return false;
   }
- 
-  if(slot_progress)  
+
+  if(slot_progress)
     slot_progress();
- 
+
   auto file = Gio::File::create_for_uri(m_database_directory_uri);
   const auto database_directory = file->get_path();
-  const auto cnc_string = Glib::ustring::compose("DB_DIR=%1;DB_NAME=%2", 
+  const auto cnc_string = Glib::ustring::compose("DB_DIR=%1;DB_NAME=%2",
     DbUtils::gda_cnc_string_encode(database_directory), DbUtils::gda_cnc_string_encode(database_name));
 
-  if(slot_progress)  
+  if(slot_progress)
     slot_progress();
 
   auto cnc =
@@ -131,7 +131,7 @@ bool Sqlite::create_database(const SlotProgress& slot_progress, const Glib::ustr
       cnc_string, "",
       Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
 
-  if(slot_progress)  
+  if(slot_progress)
     slot_progress();
 
   return true;
@@ -202,7 +202,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
 
   Glib::ustring trans_fields;
 
-  for(GSList* item = table->columns; item != 0; item = item->next)
+  for(GSList* item = table->columns; item != nullptr; item = item->next)
   {
     GdaMetaTableColumn* column = GDA_META_TABLE_COLUMN(item->data);
 

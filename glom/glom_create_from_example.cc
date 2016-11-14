@@ -58,7 +58,7 @@ public:
   std::string m_arg_filepath_dir_output;
   std::string m_arg_filepath_name_output;
   bool m_arg_version;
-  
+
   //If not using self-hosting:
   Glib::ustring m_arg_server_hostname;
   double m_arg_server_port;
@@ -84,12 +84,12 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
   entry.set_short_name('i');
   entry.set_description(_("The example .glom file to open."));
   add_entry_filename(entry, m_arg_filename_input);
-  
+
   entry.set_long_name("output-path");
   entry.set_short_name('o');
   entry.set_description(_("The directory in which to save the created .glom file, or sub-directory if necessary, such as /home/someuser/ ."));
   add_entry_filename(entry, m_arg_filepath_dir_output);
-  
+
   entry.set_long_name("output-name");
   entry.set_short_name('n');
   entry.set_description(_("The name for the created .glom file, such as something.glom ."));
@@ -105,12 +105,12 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
   entry.set_short_name('h');
   entry.set_description(_("The hostname of the PostgreSQL server, such as localhost. If this is not specified then a self-hosted database will be created."));
   add_entry(entry, m_arg_server_hostname);
-  
+
   entry.set_long_name("server-port");
   entry.set_short_name('p');
   entry.set_description(_("The port of the PostgreSQL server, such as 5434."));
   add_entry(entry, m_arg_server_port);
-  
+
   entry.set_long_name("server-username");
   entry.set_short_name('u');
   entry.set_description(_("The username for the PostgreSQL server."));
@@ -244,13 +244,13 @@ int main(int argc, char* argv[])
     std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
   }
 
-  
+
   Glom::libglom_init();
-  
+
   Glib::OptionContext context;
   GlomCreateOptionGroup group;
   context.set_main_group(group);
-  
+
   try
   {
     context.parse(argc, argv);
@@ -284,7 +284,7 @@ int main(int argc, char* argv[])
      if(pch)
        input_uri = pch;
   }
-  
+
   if(!input_uri.empty())
   {
     //Get a URI (file://something) from the filepath:
@@ -310,7 +310,7 @@ int main(int argc, char* argv[])
     input_uri = file->get_uri();
 
   }
-  
+
   if(input_uri.empty())
   {
     std::cerr << G_STRFUNC << ": Please specify a glom example file.\n";
@@ -319,7 +319,7 @@ int main(int argc, char* argv[])
   }
 
 
-  //Check the output directory path: 
+  //Check the output directory path:
   if(group.m_arg_filepath_dir_output.empty())
   {
     std::cerr << G_STRFUNC << ": Please specify an output directory path.\n";
@@ -348,8 +348,8 @@ int main(int argc, char* argv[])
       return EXIT_FAILURE;
     }
   }
-  
-  //Check the output name path: 
+
+  //Check the output name path:
   if(group.m_arg_filepath_name_output.empty())
   {
     std::cerr << G_STRFUNC << ": Please specify an output name.\n";
@@ -376,7 +376,7 @@ int main(int argc, char* argv[])
   auto connection_pool = Glom::ConnectionPool::get_instance();
 
   //Save a copy, specifying the path to file in a directory:
-  filepath_dir = 
+  filepath_dir =
     Glom::FileUtils::get_file_path_without_extension(
       Glib::build_filename(
         group.m_arg_filepath_dir_output,
@@ -389,7 +389,7 @@ int main(int argc, char* argv[])
     const auto uri = convert_filepath_to_uri(filepath_dir);
     if(uri.empty())
       return EXIT_FAILURE;
-        
+
     auto file = Gio::File::create_for_commandline_arg(uri);
     if(file->query_exists())
     {
@@ -432,7 +432,7 @@ int main(int argc, char* argv[])
       document->set_hosting_mode(Glom::Document::HostingMode::POSTGRES_CENTRAL);
     }
   }
-   
+
   document->set_is_example_file(false);
   document->set_network_shared(false);
   const auto saved = document->save();
@@ -468,13 +468,13 @@ int main(int argc, char* argv[])
     //Central hosting:
     connection_pool->set_user(group.m_arg_server_username);
     connection_pool->set_password(password); //TODO: Take this from stdin instead.
-    
+
     auto backend = connection_pool->get_backend();
     auto central = std::dynamic_pointer_cast<Glom::ConnectionPoolBackends::PostgresCentralHosted>(backend);
     g_assert(central);
 
     central->set_host(group.m_arg_server_hostname);
-    
+
     if(group.m_arg_server_port)
     {
       central->set_port(group.m_arg_server_port);
@@ -485,7 +485,7 @@ int main(int argc, char* argv[])
       //Try all ports:
       central->set_try_other_ports(false);
     }
-    
+
     const Glib::ustring database_name =
       Glom::DbUtils::get_unused_database_name(document->get_connection_database());
     if(database_name.empty())
@@ -495,7 +495,7 @@ int main(int argc, char* argv[])
     else
       document->set_connection_database(database_name);
   }
-        
+
   //Startup. For instance, create the self-hosting files if necessary:
   const auto initialized_errors =
     connection_pool->initialize( sigc::ptr_fun(&on_initialize_progress) );
@@ -526,7 +526,7 @@ int main(int argc, char* argv[])
   {
     std::cerr << G_STRFUNC << ": Could not convert URI to output filepath: " << document->get_file_uri() << std::endl;
   }
-   
+
   std::cout << "Glom file created at: " << output_path_used << std::endl;
 
 

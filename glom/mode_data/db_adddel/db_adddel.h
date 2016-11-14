@@ -32,7 +32,7 @@
 #include <giomm/simpleactiongroup.h>
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
@@ -87,7 +87,7 @@ public:
 
   void remove_item(const Gtk::TreeModel::iterator& iter);
 
-  Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const LayoutItem_Field>& layout_item) const;
+  Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item) const;
 
   /** Get the row's hidden key
    */
@@ -100,7 +100,7 @@ public:
   /** @param col A value returned from add_column().
    * @result The value on the selected row.
    */
-  Gnome::Gda::Value get_value_selected(const std::shared_ptr<const LayoutItem_Field>& layout_item) const;
+  Gnome::Gda::Value get_value_selected(const LayoutItem_Field& layout_item) const;
   Gnome::Gda::Value get_value_key_selected() const;
 
   Gtk::TreeModel::iterator get_item_selected();
@@ -112,7 +112,7 @@ public:
    * @param start_editing Whether editing should start in the cell.
    * @result Whether the row was successfully selected.
    */
-  bool select_item(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const LayoutItem>& layout_item, bool start_editing = false);  //bool indicates success.
+  bool select_item(const Gtk::TreeModel::iterator& iter, const LayoutItem& layout_item, bool start_editing = false);  //bool indicates success.
   bool select_item(const Gtk::TreeModel::iterator& iter, bool start_editing = false);
 
   guint get_count() const;
@@ -122,13 +122,13 @@ public:
    * @param layout_item Describes the column(s) whose values should be changed.
    * @param value The new value.
    */
-  virtual void set_value(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value);
+  virtual void set_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value);
 
   /**
    * @param col A value returned from add_column().
    * @param value The new value.
    */
-  virtual void set_value_selected(const std::shared_ptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value);
+  virtual void set_value_selected(const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value);
 
   bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
 
@@ -204,21 +204,21 @@ public:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   /** Emitted when the user wants to edit the layout of the items in this widget.
    */
-  typedef sigc::signal<void> type_signal_user_requested_layout;
+  typedef sigc::signal<void()> type_signal_user_requested_layout;
   type_signal_user_requested_layout signal_user_requested_layout();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   /** Emitted when the user request a view/edit of the details of the record.
    * @param row
    */
-  typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_requested_edit;
+  typedef sigc::signal<void(const Gtk::TreeModel::iterator&)> type_signal_user_requested_edit;
   type_signal_user_requested_edit signal_user_requested_edit();
 
   /** Emitted when the user clicks on a script button.
    * @param layout_button The layout item for the script button that was clicked.
    * @param row
    */
-  typedef sigc::signal<void, const std::shared_ptr<const LayoutItem_Button>&, const Gtk::TreeModel::iterator&> type_signal_script_button_clicked;
+  typedef sigc::signal<void(const std::shared_ptr<const LayoutItem_Button>&, const Gtk::TreeModel::iterator&)> type_signal_script_button_clicked;
   type_signal_script_button_clicked signal_script_button_clicked();
 
   /** Allow a parent widget to set the foreign key when a record is added,
@@ -227,27 +227,27 @@ public:
    * @param row Row number
    * @param primary_key_value The value of the primary key of the new related record.
    */
-  typedef sigc::signal<void, const Gtk::TreeModel::iterator&, const Gnome::Gda::Value&> type_signal_record_added;
+  typedef sigc::signal<void(const Gtk::TreeModel::iterator&, const Gnome::Gda::Value&)> type_signal_record_added;
   type_signal_record_added signal_record_added();
 
   /** Emitted when the user changed the sort order,
    * for instance by clicking on a column header.
    */
-  typedef sigc::signal<void> type_signal_sort_clause_changed;
+  typedef sigc::signal<void()> type_signal_sort_clause_changed;
   type_signal_sort_clause_changed signal_sort_clause_changed();
-  
+
   /** Emitted when the user selected (or deselected) a record.
    */
-  typedef sigc::signal<void> type_signal_record_selection_changed;
+  typedef sigc::signal<void()> type_signal_record_selection_changed;
   type_signal_record_selection_changed signal_record_selection_changed();
 
   /** Get the last row.
-   * This will never return the placeholder row. 
+   * This will never return the placeholder row.
    */
   Gtk::TreeModel::iterator get_last_row();
-  
+
   /** Get the last row.
-   * This will never return the placeholder row. 
+   * This will never return the placeholder row.
    */
   Gtk::TreeModel::iterator get_last_row() const;
 
@@ -258,21 +258,21 @@ public:
    * adding the generated primary key if necessary.
    */
   bool start_new_record();
-  
+
   /** Request a height for this widget, based on the number of rows to show.
-   * The widget will change its requested height if it is filled with enough 
+   * The widget will change its requested height if it is filled with enough
    * data to need more than the @a rows_count_min, if @a rows_count_max allows that.
    */
   void set_height_rows(gulong rows_count_min, gulong rows_count_max);
 
 private:
 
-  void set_value(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value, bool set_specified_field_layout);
+  void set_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value, bool set_specified_field_layout);
 
   //Overrides of Base_DB/Base_DB_Table methods:
-  void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
-  void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value) override;
-  Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const override;
+  void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value) override;
+  void set_entered_field_data(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field, const Gnome::Gda::Value& value) override;
+  Gnome::Gda::Value get_entered_field_data(const LayoutItem_Field& field) const override;
   Gtk::TreeModel::iterator get_row_selected() override;
 
   //Implementations of pure virtual methods from Base_DB_Table_Data:
@@ -286,17 +286,18 @@ private:
   bool get_model_column_index(guint view_column_index, guint& model_column_index);
 
 
-  typedef std::list<guint> type_list_indexes;
+  typedef std::vector<guint> type_list_indexes;
   ///Return the column indexes of any columns that display this field.
-  type_list_indexes get_column_index(const std::shared_ptr<const LayoutItem>& layout_item) const;
+  type_list_indexes get_column_index(const LayoutItem& layout_item) const;
 
+  //TODO: Make this const?
   /// Get indexes of any columns with choices with !show_all relationships that have @a from_key as the from_key.
-  type_list_indexes get_choice_index(const std::shared_ptr<const LayoutItem_Field>& from_key);
+  type_list_indexes get_choice_index(const LayoutItem_Field& from_key);
 
   /** Return the query column index of any columns that display this field:
    * @param including_specified_field_layout If false, then don't return the actual layout item itself.
    */
-  type_list_indexes get_data_model_column_index(const std::shared_ptr<const LayoutItem_Field>& layout_item_field, bool including_specified_field_layout = true) const;
+  type_list_indexes get_data_model_column_index(const LayoutItem_Field& layout_item_field, bool including_specified_field_layout = true) const;
 
 protected:
   void setup_menu(Gtk::Widget* widget);

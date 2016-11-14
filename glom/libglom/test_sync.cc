@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #include <libglom/spawn_with_feedback.h>
 #include <iostream>
 
@@ -26,7 +26,7 @@ main(int argc, char* argv[])
 {
   Glib::init();
 
- 
+
   const Glib::ustring command = "sh `LANG=C;LANGUAGE=C;echo $LANG;echo $LANGUAGE`";
   std::cout << "command=" << command << std::endl;
   try

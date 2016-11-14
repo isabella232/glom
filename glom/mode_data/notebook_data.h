@@ -75,11 +75,11 @@ public:
   dataview get_current_view() const;
   void set_current_view(dataview view);
 
-  typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_record_details_requested;
+  typedef sigc::signal<void(const Glib::ustring&, Gnome::Gda::Value)> type_signal_record_details_requested;
   type_signal_record_details_requested signal_record_details_requested();
 
-  typedef sigc::signal<void> type_signal_record_selection_changed;
-  
+  typedef sigc::signal<void()> type_signal_record_selection_changed;
+
   /** This signal is emitted when the a record is selected, or deselected,
    * in the list view.
    */
@@ -101,7 +101,6 @@ protected:
   Box_Data_List m_Box_List;
   Box_Data_Details m_Box_Details;
 
-  static const Glib::ustring m_pagename_details, m_pagename_list;
   Glib::ustring m_table_name;
 
   type_signal_record_details_requested m_signal_record_details_requested;

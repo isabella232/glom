@@ -34,7 +34,7 @@ namespace Glom
   * allowing the user to select a table,
   * or add or delete a table.
   */
-class Box_Tables 
+class Box_Tables
 : public Box_WithButtons,
   public Base_DB
 {
@@ -53,16 +53,16 @@ private:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void save_to_document() override;
 
-  void on_adddel_Add(const Gtk::TreeModel::iterator& row);
-  void on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
+  void on_adddel_add(const Gtk::TreeModel::iterator& row);
+  void on_adddel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
   void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column);
 #endif //GLOM_ENABLE_CLIENT_ONLY
-  void on_adddel_Edit(const Gtk::TreeModel::iterator& row);
+  void on_adddel_edit(const Gtk::TreeModel::iterator& row);
 
   void on_show_hidden_toggled();
 
   void on_userlevel_changed(AppState::userlevels userlevel) override;
-      
+
   Gtk::CheckButton* m_check_button_show_hidden;
   guint m_col_table_name;
   guint m_col_hidden;

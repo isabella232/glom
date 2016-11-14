@@ -49,7 +49,7 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
 : Glib::OptionGroup("glom_export_po_all", _("Glom options"), _("Command-line options")),
   m_arg_version(false)
 {
-  Glib::OptionEntry entry; 
+  Glib::OptionEntry entry;
   entry.set_long_name("output-path");
   entry.set_short_name('o');
   entry.set_description(_("The directory path at which to save the created .po files, such as /home/someuser/po_files/ ."));
@@ -84,9 +84,9 @@ int main(int argc, char* argv[])
     std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured.\n";
   }
 
-  
+
   Glom::libglom_init();
-  
+
   Glib::OptionContext context;
   GlomCreateOptionGroup group;
   context.set_main_group(group);
@@ -155,7 +155,7 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  //Check the output path: 
+  //Check the output path:
   if(group.m_arg_filepath_output.empty())
   {
     std::cerr << _("Please specify an output path.") << std::endl;
@@ -165,7 +165,7 @@ int main(int argc, char* argv[])
 
   //Get a URI (file://something) from the filepath:
   auto file_output = Gio::File::create_for_commandline_arg(group.m_arg_filepath_output);
-  
+
   //Create the directory, if necessary:
   if(!(file_output->query_exists()))
   {
@@ -214,7 +214,7 @@ int main(int argc, char* argv[])
     const Glib::RefPtr<const Gio::File> file_output_full = file_output->get_child(locale_id + ".po");
     const auto output_uri = file_output_full->get_uri();
 
-    const bool succeeded = 
+    const bool succeeded =
       Glom::write_translations_to_po_file(document, output_uri, locale_id);
     if(!succeeded)
     {

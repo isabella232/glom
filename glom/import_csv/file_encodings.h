@@ -22,7 +22,7 @@
 #define GLOM_IMPORT_CSV_FILE_ENCODINGS_H
 
 #include <glibmm/ustring.h>
-#include <list>
+#include <vector>
 
 namespace Glom
 {
@@ -43,13 +43,13 @@ private:
   const char* m_charset;
 };
 
-typedef std::list<Encoding> type_list_encodings;
+typedef std::vector<Encoding> type_list_encodings;
 
 /** Get a list of file encodings to offer to the user.
  */
 type_list_encodings get_list_of_encodings();
 
-/** Discover the human-readable name (such as "Western") of a charset 
+/** Discover the human-readable name (such as "Western") of a charset
  * (such as "ISO-8859-1")
  */
 Glib::ustring get_name_of_charset(const Glib::ustring& charset);

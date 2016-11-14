@@ -238,7 +238,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
     if(!datamodel)
     {
       std::cerr << G_STRFUNC << ": The SQL query failed.\n";
-      return false; 
+      return false;
     }
     else
     {
@@ -386,7 +386,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
     if(!datamodel)
     {
       std::cerr << G_STRFUNC << ": The SLQ query failed.\n";
-      return false; 
+      return false;
     }
     else
     {
@@ -624,7 +624,7 @@ std::string ReportBuilder::report_build_and_save(const FoundSet& found_set, cons
 
   return file->get_path();
 }
- 
+
 
 Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::shared_ptr<const Report>& report)
 {
@@ -743,7 +743,7 @@ std::shared_ptr<Report> ReportBuilder::create_standard_list_report(const std::sh
   //Translators: This is a noun. It is the title of a report.
   result->set_title_original(_("List"));
 
-  const Document::type_list_layout_groups layout_groups = 
+  const Document::type_list_layout_groups layout_groups =
     document->get_data_layout_groups("list", table_name); //TODO: layout_platform.
   for(const auto& group : layout_groups)
   {

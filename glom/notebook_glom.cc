@@ -64,28 +64,27 @@ void Notebook_Glom::on_switch_page_handler(Gtk::Widget* /* page */)
 
   //Load the page as we enter it:
   auto pChild = get_visible_child();
-  if(pChild)
-  {
-    auto pBox = dynamic_cast<Box_WithButtons*>(pChild);
-    if(pBox)
-    {
-      //pBox->load_from_document();
+  if(!pChild)
+    return;
 
-      //Set the default button, if there is one:
-      auto pAppGlom = dynamic_cast<AppWindow*>(pApp);
-      if(pAppGlom)
-      {
-        auto default_button = pBox->get_default_button();
-        if(default_button)
-        {
-          default_button->grab_default();
-          pAppGlom->set_default(*default_button);
-        }
-        else
-          pAppGlom->unset_default();
-      }
-    }
+  auto pBox = dynamic_cast<Box_WithButtons*>(pChild);
+  if(!pBox)
+    return;
+
+  //pBox->load_from_document();
+
+  //Set the default button, if there is one:
+  auto pAppGlom = dynamic_cast<AppWindow*>(pApp);
+  if(!pAppGlom)
+    return;
+
+  if(auto default_button = pBox->get_default_button())
+  {
+    default_button->grab_default();
+    pAppGlom->set_default(*default_button);
   }
+  else
+    pAppGlom->unset_default();
 }
 
 /* TODO: What this ever necessary?
@@ -100,10 +99,10 @@ void Notebook_Glom::on_leave_page(guint uiPageNumber)
     for(const auto& pChild : get_page_children())
     {
       auto pBox = dynamic_cast<Base_DB*>(pChild);
-      if(pBox)
-      {
-        pBox->save_to_document();
-      }
+      if(!pBox)
+        continue;
+
+      pBox->save_to_document();
     }
   }
 }
@@ -123,8 +122,10 @@ void Notebook_Glom::show_hint()
   if(pChild)
   {
     auto pBox = dynamic_cast<Box_WithButtons*>(pChild);
-    if(pBox)
-      pBox->show_hint();
+    if(!pBox)
+      continue;
+
+    pBox->show_hint();
   }
 }
 */

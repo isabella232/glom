@@ -108,7 +108,11 @@ void treeview_delete_all_columns(Gtk::TreeView* treeview);
 
 void container_remove_all(Gtk::Container& container);
 
-void load_font_into_css_provider(Gtk::Widget& widget, const Glib::ustring& font);
+/**
+ * @param pango_font_name A font description in the syntax accepted by the Pango::FontDescription constructor.
+ */
+void load_font_into_css_provider(Gtk::Widget& widget, const Glib::ustring& pango_font_name);
+
 void load_color_into_css_provider(Gtk::Widget& widget, const Glib::ustring& color);
 void load_background_color_into_css_provider(Gtk::Widget& widget, const Glib::ustring& color);
 

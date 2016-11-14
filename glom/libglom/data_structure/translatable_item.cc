@@ -31,46 +31,6 @@ TranslatableItem::TranslatableItem() noexcept
 {
 }
 
-TranslatableItem::TranslatableItem(const TranslatableItem& src) noexcept
-: m_translatable_item_type(src.m_translatable_item_type),
-  m_name(src.m_name),
-  m_title(src.m_title),
-  m_map_translations(src.m_map_translations)
-{
-}
-
-TranslatableItem::TranslatableItem(TranslatableItem&& src) noexcept
-: m_translatable_item_type(std::move(src.m_translatable_item_type)),
-  m_name(std::move(src.m_name)),
-  m_title(std::move(src.m_title)),
-  m_map_translations(std::move(src.m_map_translations))
-{
-}
-
-TranslatableItem::~TranslatableItem()
-{
-}
-
-TranslatableItem& TranslatableItem::operator=(const TranslatableItem& src) noexcept
-{
-  m_name = src.m_name;
-  m_title = src.m_title;
-  m_translatable_item_type = src.m_translatable_item_type;
-  m_map_translations = src.m_map_translations;
-
-  return *this;
-}
-
-TranslatableItem& TranslatableItem::operator=(TranslatableItem&& src) noexcept
-{
-  m_name = std::move(src.m_name);
-  m_title = std::move(src.m_title);
-  m_translatable_item_type = std::move(src.m_translatable_item_type);
-  m_map_translations = std::move(src.m_map_translations);
-
-  return *this;
-}
-
 bool TranslatableItem::operator==(const TranslatableItem& src) const noexcept
 {
   bool bResult = (m_name == src.m_name)
@@ -191,7 +151,7 @@ void TranslatableItem::set_title_original(const Glib::ustring& title) noexcept
 void TranslatableItem::clear_title_in_all_locales() noexcept
 {
   m_title.clear();
-  
+
   for(const auto& the_pair : m_map_translations)
   {
     auto translation = the_pair.second;

@@ -30,38 +30,14 @@ LayoutItem_GroupBy::LayoutItem_GroupBy()
   m_group_secondary_fields = std::make_shared<LayoutGroup>(); //So that we dont need to create it from outside.
 }
 
-LayoutItem_GroupBy::LayoutItem_GroupBy(const LayoutItem_GroupBy& src)
-: LayoutGroup(src),
-  m_field_group_by(src.m_field_group_by),
-  m_group_secondary_fields(src.m_group_secondary_fields),
-  m_fields_sort_by(src.m_fields_sort_by)
-{
-}
-
 LayoutItem_GroupBy::~LayoutItem_GroupBy()
 {
   remove_all_items();
 }
 
-
 LayoutItem* LayoutItem_GroupBy::clone() const
 {
   return new LayoutItem_GroupBy(*this);
-}
-
-
-LayoutItem_GroupBy& LayoutItem_GroupBy::operator=(const LayoutItem_GroupBy& src)
-{
-  if(this != &src)
-  {
-    LayoutGroup::operator=(src);
-
-    m_group_secondary_fields = src.m_group_secondary_fields;
-    m_field_group_by = src.m_field_group_by;
-    m_fields_sort_by = src.m_fields_sort_by;
-  }
-
-  return *this;
 }
 
 std::shared_ptr<LayoutItem_Field> LayoutItem_GroupBy::get_field_group_by()

@@ -83,14 +83,14 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
         return false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
 
       auto item = target;
-    
+
       m_drag_start_cursor_x = event->x;
       m_drag_start_cursor_y = event->y;
 
       get_xy(m_drag_start_position_x, m_drag_start_position_y);
       m_drag_latest_position_x = m_drag_start_position_x;
-      m_drag_latest_position_y = m_drag_start_position_y; 
-    
+      m_drag_latest_position_y = m_drag_start_position_y;
+
       auto canvas = get_parent_canvas_widget();
       if(canvas)
       {
@@ -118,7 +118,7 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
       break;
   }
 
-  
+
   return false; // Not handled. Pass it to an item lower in the z order, if any.
 }
 
@@ -128,13 +128,13 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
     return false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
 
   auto item = target;
-  
+
   if(item && m_dragging && (event->state & Gdk::BUTTON1_MASK))
   {
     const double offset_x = event->x - m_drag_start_cursor_x;
     const double offset_y = event->y - m_drag_start_cursor_y;
 
-    // Inkscape uses the Ctrl key to restrict movement to horizontal or vertical, 
+    // Inkscape uses the Ctrl key to restrict movement to horizontal or vertical,
     // so let's do that too.
     if( (event->state & Gdk::CONTROL_MASK) && !m_dragging_vertical_only && !m_dragging_horizontal_only )
     {
@@ -282,7 +282,7 @@ void CanvasItemMovable::set_cursor(const Glib::RefPtr<Gdk::Cursor>& cursor)
    auto canvas = get_parent_canvas_widget();
    if(!canvas)
      return;
-     
+
    auto window = canvas->get_window();
    if(window)
      window->set_cursor(cursor);

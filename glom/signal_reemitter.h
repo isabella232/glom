@@ -44,8 +44,8 @@ void reemit_2args(T_arg1 arg1, T_arg2 arg2, const T_sig_to_emit& sig_to_emit)
   sig_to_emit.emit(arg1, arg2);
 }
 
-//Note that sig_to_catch is by-value instead of const-reference, 
-//because connect() is a non-const method, 
+//Note that sig_to_catch is by-value instead of const-reference,
+//because connect() is a non-const method,
 //and a non-const-reference could not be used with a temporary instance.
 
 /** Emit a signal when another signal is emitted.

@@ -38,7 +38,7 @@ public:
   ComboBox_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   typedef std::vector< std::shared_ptr<Field> > type_vec_fields;
-    
+
   /** Fill the combo box with fields.
    * @param fields The fields to show in the combo box.
    * @param with_none_type Whether to show an extra None item.
@@ -51,7 +51,7 @@ public:
    * @param field_type Show only fields of this type.
    */
   void set_fields(const std::shared_ptr<Document>& document, const Glib::ustring parent_table_name);
-    
+
   /** Fill the combo box with fields, but only fields of a certain type.
    * @param document The Document, used to get the list of fields.
    * @param parent_table_name The table whose fields should be shown.
@@ -61,7 +61,7 @@ public:
 
   void set_selected_field(const std::shared_ptr<const Field>& field);
   void set_selected_field(const Glib::ustring& field_name);
- 
+
   std::shared_ptr<Field> get_selected_field() const;
   Glib::ustring get_selected_field_name() const;
 
@@ -72,7 +72,7 @@ private:
   void on_cell_data_title(const Gtk::TreeModel::const_iterator& iter);
   bool on_row_separator(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::const_iterator& iter);
 
- 
+
   //Tree model columns:
   //These columns are used by the model that is created by the default constructor
   class ModelColumns : public Gtk::TreeModel::ColumnRecord

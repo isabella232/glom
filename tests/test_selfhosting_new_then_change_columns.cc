@@ -35,14 +35,14 @@
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   auto document = std::make_shared<Glom::Document>();
-  const bool recreated = 
+  const bool recreated =
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
     std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
-  
+
   const Glib::ustring table_name = "contacts";
   const Glib::ustring field_name_original = "date_of_birth";
   auto field_original = document->get_field(table_name, field_name_original);
@@ -80,7 +80,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     }
   }
   catch(const Glib::Error& ex)
-  { 
+  {
     std::cerr << G_STRFUNC << ": Failure: change_column() threw an exception: " << ex.what() << std::endl;
     return false;
   }
@@ -98,7 +98,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     }
   }
   catch(const Glib::Error& ex)
-  { 
+  {
     std::cerr << G_STRFUNC << ": Failure: change_column() threw an exception: " << ex.what() << std::endl;
     return false;
   }
@@ -116,7 +116,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     }
   }
   catch(const Glib::Error& ex)
-  { 
+  {
     std::cerr << G_STRFUNC << ": Failure: change_column() threw an exception: " << ex.what() << std::endl;
     return false;
   }
@@ -134,7 +134,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     }
   }
   catch(const Glib::Error& ex)
-  { 
+  {
     std::cerr << G_STRFUNC << ": Failure: change_column() threw an exception: " << ex.what() << std::endl;
     return false;
   }
@@ -142,7 +142,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //Check that the auto-increment works:
   //Actually checking for a 0 here is not very useful,
   //but at least we are running some of the relevant code:
-  const Gnome::Gda::Value value_next = 
+  const Gnome::Gda::Value value_next =
     Glom::DbUtils::get_next_auto_increment_value(table_name, field_new->get_name());
   const auto value_next_as_double = Glom::Conversions::get_double_for_gda_value_numeric(value_next);
   if(value_next_as_double != 0)
@@ -151,7 +151,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  
+
   //Add a field:
   try
   {
@@ -162,7 +162,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     auto field_info = field_numeric->get_field_info();
     field_info->set_g_type( Glom::Field::get_gda_type_for_glom_type(field_numeric->get_glom_type()) );
     field_numeric->set_field_info(field_info);
-    
+
     Gnome::Gda::Numeric numeric;
     numeric.set_double(123);
     field_numeric->set_default_value( Gnome::Gda::Value(numeric) );
@@ -175,25 +175,25 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     }
   }
   catch(const Glib::Error& ex)
-  { 
+  {
     std::cerr << G_STRFUNC << ": Failure: add_column() threw an exception: " << ex.what() << std::endl;
     return false;
   }
-  
+
 
   //Anything using this code would then update the Glom::Document,
   //for instance by calling Document::set_table_fields(),
   //but we are not testing that here.
 
   test_selfhosting_cleanup();
- 
-  return true; 
+
+  return true;
 }
 
 int main()
 {
   Glom::libglom_init();
-  
+
   const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();

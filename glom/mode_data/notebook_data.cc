@@ -30,17 +30,17 @@
 namespace Glom
 {
 
-const Glib::ustring Notebook_Data::m_pagename_details = "details";
-const Glib::ustring Notebook_Data::m_pagename_list = "list";
+constexpr auto PAGENAME_DETAILS= "details";
+constexpr auto PAGENAME_LIST = "list";
 
 Notebook_Data::Notebook_Data()
 {
   //Add Pages:
   //Translators: This is a noun. It is a notebook tab title.
-  append_page(m_Box_List, m_pagename_list, _("List"));
+  append_page(m_Box_List, PAGENAME_LIST, _("List"));
 
   //Translators: This is a noun. It is a notebook tab title.
-  append_page(m_Box_Details, m_pagename_details, _("Details"));
+  append_page(m_Box_Details, PAGENAME_DETAILS, _("Details"));
 
   // Set accessible name for the notebook, to be able to access it via LDTP
 #ifdef GTKMM_ATKMM_ENABLED
@@ -54,7 +54,7 @@ Notebook_Data::Notebook_Data()
   //Allow List to ask Details to show a record.
   m_Box_List.signal_user_requested_details().connect(sigc::mem_fun(*this,
     &Notebook_Data::on_list_user_requested_details));
-  
+
   //Allow the parent widget to detect list selection changes:
   m_Box_List.signal_record_selection_changed().connect(m_signal_record_selection_changed.make_slot());
 
@@ -69,7 +69,7 @@ Notebook_Data::Notebook_Data()
 
   //Allow Details to ask to show a different record in a different table:
   signal_connect_for_reemit_2args(m_Box_Details.signal_requested_related_details(), m_signal_record_details_requested);
-  
+
 
   //Fill composite view:
   add_view(&m_Box_List);
@@ -240,8 +240,8 @@ FoundSet Notebook_Data::get_found_set_selected() const
   {
     //Start with something sensible:
     FoundSet found_set = m_Box_List.get_found_set();
-    
-    const Gnome::Gda::Value primary_key_value_selected = 
+
+    const Gnome::Gda::Value primary_key_value_selected =
       m_Box_List.get_primary_key_value_selected();
     if(Conversions::value_is_empty(primary_key_value_selected))
     {
@@ -257,7 +257,7 @@ FoundSet Notebook_Data::get_found_set_selected() const
       found_set.m_where_clause = Gnome::Gda::SqlExpr();
       return found_set;
     }
-    
+
     auto primary_key_field =
       document->get_field_primary_key(m_table_name);
     found_set.m_where_clause = SqlUtils::build_simple_where_expression(
@@ -271,20 +271,20 @@ FoundSet Notebook_Data::get_found_set_selected() const
 void Notebook_Data::set_current_view(dataview view)
 {
   if(view == dataview::LIST)
-    set_visible_child(m_pagename_list);
+    set_visible_child(PAGENAME_LIST);
   else
-    set_visible_child(m_pagename_details);
+    set_visible_child(PAGENAME_DETAILS);
 }
 
 void Notebook_Data::select_page_for_find_results()
 {
   if(m_Box_List.get_showing_multiple_records())
   {
-    set_visible_child(m_pagename_list);
+    set_visible_child(PAGENAME_LIST);
   }
   else
   {
-    set_visible_child(m_pagename_details);
+    set_visible_child(PAGENAME_DETAILS);
   }
 }
 
@@ -330,7 +330,7 @@ Notebook_Data::dataview Notebook_Data::get_current_view() const
   const auto current_page = get_visible_child_name();
 
   dataview result = dataview::DETAILS;
-  if(current_page == m_pagename_list)
+  if(current_page == PAGENAME_LIST)
     result = dataview::LIST;
 
   return result;
@@ -353,30 +353,29 @@ void Notebook_Data::on_switch_page_handler(Gtk::Widget* pPage)
 
   //Remember that currently-viewed layout, so we can show it again when the user comes back to this table from elsewhere:
   auto box = dynamic_cast<Box_Data*>(get_visible_child());
-  if(box)
+  if(!box)
+    return;
+
+  auto document = get_document();
+  if(document)
+    document->set_layout_current(m_table_name, box->get_layout_name());
+
+  //And refresh the list view whenever it is shown, to
+  //a) show any new records that were added via the details view, or via a related portal elsewhere.
+  //b) show changed field contents, changed elsewhere.
+  if(box == &m_Box_List)
   {
-    auto document = get_document();
-    if(document)
-      document->set_layout_current(m_table_name, box->get_layout_name());
-
-    //And refresh the list view whenever it is shown, to
-    //a) show any new records that were added via the details view, or via a related portal elsewhere.
-    //b) show changed field contents, changed elsewhere.
-    if(box == &m_Box_List)
-    {
-      //std::cout << "debug: switching to list\n";
-      const auto primary_key_selected = m_Box_List.get_primary_key_value_selected();
-      m_Box_List.refresh_data_from_database();
-      m_Box_List.set_primary_key_value_selected(primary_key_selected);
-    }
-    else if(box == &m_Box_Details)
-    {
-      //std::cout << "debug: switching to details\n";
-      const auto primary_key_selected = m_Box_List.get_primary_key_value_selected();
-      m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_selected);
-    }
+    //std::cout << "debug: switching to list\n";
+    const auto primary_key_selected = m_Box_List.get_primary_key_value_selected();
+    m_Box_List.refresh_data_from_database();
+    m_Box_List.set_primary_key_value_selected(primary_key_selected);
   }
-
+  else if(box == &m_Box_Details)
+  {
+    //std::cout << "debug: switching to details\n";
+    const auto primary_key_selected = m_Box_List.get_primary_key_value_selected();
+    m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_selected);
+  }
 }
 
 void Notebook_Data::get_record_counts(gulong& total, gulong& found)

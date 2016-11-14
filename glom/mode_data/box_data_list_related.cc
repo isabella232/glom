@@ -187,7 +187,7 @@ void Box_Data_List_Related::on_adddel_user_requested_edit(const Gtk::TreeModel::
   //Note that this is really an Open rather than an Edit.
 
   const auto primary_key_value = m_AddDel.get_value_key(row); //The primary key is in the key.
-  
+
   if(!Conversions::value_is_empty(primary_key_value))
   {
     //std::cout << "debug: " << G_STRFUNC << ": Requesting edit for primary_key=" << primary_key_value.to_string() << std::endl;
@@ -218,9 +218,6 @@ void Box_Data_List_Related::on_adddel_user_requested_layout()
 
 void Box_Data_List_Related::on_adddel_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row)
 {
-  if(!layout_item)
-    return;
-
   const auto primary_key_value = get_primary_key_value(row);
 
   // TODO: Calling refresh_data_from_database(),
@@ -277,7 +274,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
     //m_key_field is the field in this table that must match another field in the parent table.
     auto layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_full_field_details(m_key_field);
-    key_value = m_AddDel.get_value(row, layout_item);
+    key_value = m_AddDel.get_value(row, *layout_item);
   }
 
 
@@ -309,7 +306,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
 
       //TODO: Although the to-field value is visible on the new related record, get_value() returns NULL so you can't immediately navigate to the new record:
       //std::cout << "debug: " << G_STRFUNC << ": setting field=" << layout_item->get_name() << "m_key_value=" << m_key_value.to_string() << std::endl;
-      m_AddDel.set_value(row, layout_item, m_key_value);
+      m_AddDel.set_value(row, *layout_item, m_key_value);
     }
     else
       std::cerr << G_STRFUNC << ": m_key_field is NULL\n";
@@ -454,7 +451,7 @@ void Box_Data_List_Related::create_layout()
         child_item->set_editable(false);
 
       auto child_field = std::dynamic_pointer_cast<const LayoutItem_Field>(child_item);
-      
+
       //This check has already happened in Frame_Glom::update_table_in_document_from_database().
       //It is inefficient and unnecessary to do it here too.
       /*
@@ -489,7 +486,7 @@ void Box_Data_List_Related::create_layout()
 
   const auto table_privs = Privs::get_current_privs(m_found_set.m_table_name);
   m_AddDel.set_allow_view(table_privs.m_view);
-  
+
   m_AddDel.set_found_set(m_found_set);
   m_AddDel.set_columns(items_to_use);
 

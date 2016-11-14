@@ -12,7 +12,7 @@
 namespace
 {
 
-typedef std::vector<std::string> type_tokens;
+using type_tokens = std::vector<std::string>;
 
 type_tokens& get_tokens_instance()
 {

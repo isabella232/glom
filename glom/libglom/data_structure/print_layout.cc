@@ -34,37 +34,6 @@ PrintLayout::PrintLayout()
   m_layout_group = std::make_shared<LayoutGroup>();
 }
 
-PrintLayout::PrintLayout(const PrintLayout& src)
-: TranslatableItem(src),
-  m_layout_group(src.m_layout_group),
-  m_show_table_title(src.m_show_table_title),
-  m_show_grid(src.m_show_grid),
-  m_show_rules(src.m_show_rules),
-  m_show_outlines(src.m_show_outlines),
-  m_page_count(src.m_page_count)
-{
-  m_page_setup = src.m_page_setup;
-  m_horizontal_rules = src.m_horizontal_rules;
-  m_vertical_rules = src.m_vertical_rules;
-}
-
-PrintLayout& PrintLayout::operator=(const PrintLayout& src)
-{
-  TranslatableItem::operator=(src);
-
-  m_layout_group = src.m_layout_group;
-  m_show_table_title = src.m_show_table_title;
-  m_show_grid = src.m_show_grid;
-  m_show_rules = src.m_show_rules;
-  m_show_outlines = src.m_show_outlines;
-  m_page_setup = src.m_page_setup;
-  m_page_count = src.m_page_count;
-  m_horizontal_rules = src.m_horizontal_rules;
-  m_vertical_rules = src.m_vertical_rules;
-  
-  return *this;
-}
-
 bool PrintLayout::get_show_table_title() const
 {
   return m_show_table_title;

@@ -491,7 +491,7 @@ main(int argc, char* argv[])
     //Create the app here,
     //so we can use UI, for instance with Gtk::MessageDialog,
     //even before calling run().
-    auto application = 
+    auto application =
       Glom::Application::create();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

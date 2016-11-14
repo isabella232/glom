@@ -41,20 +41,20 @@ public:
   static Glib::RefPtr<CanvasImageMovable> create(double x = 0.0, double y = 0.0);
   static Glib::RefPtr<CanvasImageMovable> create(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, double x = 0.0, double y = 0.0);
 
-  /** Use this instead of property_pixbuf(), 
+  /** Use this instead of property_pixbuf(),
    * to make sure that m_image_empty is set to false.
    *
-   * This also scales the image (maintaining the aspect ratio) to fit the current width and 
+   * This also scales the image (maintaining the aspect ratio) to fit the current width and
    * height if they are not 0.
    */
   void set_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, bool scale = true);
 
-  /// Show the no-image picture. 
+  /// Show the no-image picture.
   void set_image_empty();
   bool get_image_empty() const;
 
   /** Scale the pixbuf to the current height and width, keeping the aspect ratio.
-   * This uses the original pixbuf provided to set_image(), so this should not 
+   * This uses the original pixbuf provided to set_image(), so this should not
    * result in a loss of quality if the original was large enough.
    */
   void scale_to_size();

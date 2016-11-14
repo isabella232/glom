@@ -88,15 +88,15 @@ void Dialog_ChooseField::set_document(const std::shared_ptr<Document>& document,
     m_combo_relationship->set_selected_relationship( field->get_relationship(), field->get_related_relationship());
   }
   else
-    m_combo_relationship->set_selected_parent_table(table_name, document->get_table_title(table_name, AppWindow::get_current_locale())); 
+    m_combo_relationship->set_selected_parent_table(table_name, document->get_table_title(table_name, AppWindow::get_current_locale()));
 
-  //If one start field was specified, then multiple selection would not make 
+  //If one start field was specified, then multiple selection would not make
   //much sense. The caller probably wants single selection.
   //Make this explicit in the API if that is not always suitable.
   auto selection = m_treeview->get_selection();
   selection->set_mode((field && !(field->get_name().empty()))
-    ? Gtk::SELECTION_SINGLE : Gtk::SELECTION_MULTIPLE); 
-   
+    ? Gtk::SELECTION_SINGLE : Gtk::SELECTION_MULTIPLE);
+
   //Select the current field at the start:
   if(field)
   {
@@ -115,7 +115,7 @@ void Dialog_ChooseField::set_document(const std::shared_ptr<Document>& document,
 
     if(iterFound != m_model->children().end())
     {
-      
+
       selection->select(iterFound);
 
       //Make sure that it is scrolled into view:
@@ -139,10 +139,10 @@ void Dialog_ChooseField::set_document(const std::shared_ptr<Document>& document,
   {
     std::cerr << G_STRFUNC << ": table_name is empty\n";
   }
-  
+
   auto selection = m_treeview->get_selection();
-  selection->set_mode(Gtk::SELECTION_MULTIPLE); 
-   
+  selection->set_mode(Gtk::SELECTION_MULTIPLE);
+
 
   //Update the tree models from the document
   if(document)
@@ -201,7 +201,7 @@ std::shared_ptr<LayoutItem_Field> Dialog_ChooseField::get_field_chosen() const
   const auto list_fields = get_fields_chosen();
   if(!(list_fields.empty()))
   {
-    field = *(list_fields.begin()); 
+    field = *(list_fields.begin());
   }
 
   if(!field)
@@ -218,7 +218,7 @@ std::shared_ptr<LayoutItem_Field> Dialog_ChooseField::get_field_chosen() const
     m_start_field->set_full_field_details( field->get_full_field_details() );
     m_start_field->set_relationship( field->get_relationship() );
     m_start_field->set_related_relationship( field->get_related_relationship() );
-  
+
     return m_start_field;
   }
 }
@@ -231,7 +231,7 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
   auto refTreeSelection = m_treeview->get_selection();
   if(!refTreeSelection)
     return list_fields;
-    
+
   //Relationship:
   //Note that a null relationship means that the parent table was selected instead.
   std::shared_ptr<Relationship> related_relationship;
@@ -242,22 +242,22 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
     auto tree_iter = m_model->get_iter(path);
     if(!tree_iter)
       continue;
-      
 
-    // Setup a LayoutItem_Field for the Field, 
+
+    // Setup a LayoutItem_Field for the Field,
     // so is_same_field() can work:
     auto field = std::make_shared<LayoutItem_Field>();
     field->set_relationship(relationship);
     field->set_related_relationship(related_relationship);
-      
+
     Gtk::TreeModel::Row row = *tree_iter;
     std::shared_ptr<Field> field_details = row[m_ColumnsFields.m_col_field];
-    field->set_full_field_details(field_details); 
-      
-    // Start with the original LayoutItem_Field, 
+    field->set_full_field_details(field_details);
+
+    // Start with the original LayoutItem_Field,
     // to preserve extra information such as Translations:
-    if(m_start_field && m_start_field->is_same_field(field))
-      field = m_start_field; 
+    if(m_start_field && m_start_field->is_same_field(*field))
+      field = m_start_field;
     else
       field = std::make_shared<LayoutItem_Field>();
 
@@ -267,7 +267,7 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
     field->set_full_field_details(field_details); //So is_same_field() can work.
 
     field->set_name(row[m_ColumnsFields.m_col_name]);
-    
+
     list_fields.emplace_back(field);
   }
 

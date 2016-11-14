@@ -44,7 +44,7 @@ private:
 
   AppWindow* get_appwindow() const override;
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY    
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_menu_properties_activate() override;
   bool on_button_press_event(GdkEventButton *event) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY

@@ -29,23 +29,9 @@ LayoutItem_CalendarPortal::LayoutItem_CalendarPortal()
 {
 }
 
-LayoutItem_CalendarPortal::LayoutItem_CalendarPortal(const LayoutItem_CalendarPortal& src)
-: LayoutItem_Portal(src),
-  m_date_field(src.m_date_field)
-{
-}
-
 LayoutItem* LayoutItem_CalendarPortal::clone() const
 {
   return new LayoutItem_CalendarPortal(*this);
-}
-
-LayoutItem_CalendarPortal& LayoutItem_CalendarPortal::operator=(const LayoutItem_CalendarPortal& src)
-{
-  LayoutItem_Portal::operator=(src);
-  m_date_field = src.m_date_field;
-
-  return *this;
 }
 
 Glib::ustring LayoutItem_CalendarPortal::get_part_type_name() const
@@ -63,9 +49,9 @@ void LayoutItem_CalendarPortal::change_related_field_item_name(const Glib::ustri
 void LayoutItem_CalendarPortal::change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
 {
   LayoutItem_Portal::change_field_item_name(table_name, field_name, field_name_new);
-  
+
   auto relationship = get_relationship();
-        
+
   if(relationship && (relationship->get_to_table() == table_name) && (m_date_field->get_name() == field_name))
       m_date_field->set_name(field_name_new); //Change it.
 }

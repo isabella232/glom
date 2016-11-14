@@ -41,8 +41,7 @@ void on_drag_data_get_entry(const Glib::RefPtr<Gdk::DragContext>&, Gtk::Selectio
 }
 */
 
-typedef std::list<Gtk::Widget*> type_vec_widgets;
-type_vec_widgets vec_child_widgets;
+std::vector<Gtk::Widget*> vec_child_widgets;
 
 static void fill_flowtable(Glom::FlowTable& flowtable)
 {
@@ -90,7 +89,7 @@ static void clear_flowtable(Glom::FlowTable& flowtable)
   for(const auto& widget : vec_child_widgets)
   {
     //std::cout << "  loop: widget=" << widget << std::endl;
-    delete widget; //TODO: This crashes 
+    delete widget; //TODO: This crashes
   }
 
   vec_child_widgets.clear();
@@ -99,7 +98,7 @@ static void clear_flowtable(Glom::FlowTable& flowtable)
 int
 main(int argc, char* argv[])
 {
-  auto app = 
+  auto app =
     Gtk::Application::create(argc, argv, "org.glom.test_flowtable");
 
   Gtk::Window window;

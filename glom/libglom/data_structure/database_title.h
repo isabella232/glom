@@ -26,7 +26,7 @@
 namespace Glom
 {
 
-/** This is a separate class, instead of just deriving Document from 
+/** This is a separate class, instead of just deriving Document from
  * TranslatableItem, to avoid the need to use Document via std::shared_ptr.
  */
 class DatabaseTitle
@@ -34,10 +34,10 @@ class DatabaseTitle
 {
 public:
   DatabaseTitle();
-  DatabaseTitle(const DatabaseTitle& src);
-  DatabaseTitle(DatabaseTitle&& src) = delete;
-  DatabaseTitle& operator=(const DatabaseTitle& src);
-  DatabaseTitle& operator=(DatabaseTitle&& src) = delete;
+  DatabaseTitle(const DatabaseTitle& src) = default;;
+  DatabaseTitle(DatabaseTitle&& src) = default;
+  DatabaseTitle& operator=(const DatabaseTitle& src) = default;;
+  DatabaseTitle& operator=(DatabaseTitle&& src) = default;
 };
 
 } //namespace Glom

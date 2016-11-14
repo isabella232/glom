@@ -19,7 +19,7 @@ void execute_func_with_date_return_value()
   Glib::ustring error_message;
   const auto value = Glom::glom_evaluate_python_function_implementation(
     Glom::Field::glom_field_type::DATE, calculation, field_values,
-    0 /* document */, "" /* table name */,
+    nullptr /* document */, "" /* table name */,
     std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
     connection,
     error_message);
@@ -31,7 +31,7 @@ void execute_func_with_date_return_value()
     std::cerr << "Unexpected error message: " << error_message << "\n";
   }
   g_assert(error_message.empty());
-  
+
   //Check that the return value is of the expected type:
   g_assert(value.get_value_type() == G_TYPE_DATE);
 
@@ -43,7 +43,7 @@ void execute_func_with_date_return_value()
 
   //std::cout << "value=" << value.to_string() << std::endl;
 }
-                            
+
 void execute_func_with_date_input_value()
 {
   const char* calculation = "import datetime\n"
@@ -57,7 +57,7 @@ void execute_func_with_date_input_value()
   Glib::ustring error_message;
   const auto value = Glom::glom_evaluate_python_function_implementation(
     Glom::Field::glom_field_type::NUMERIC, calculation, field_values,
-    0 /* document */, "" /* table name */,
+    nullptr /* document */, "" /* table name */,
     std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
     connection,
     error_message);
@@ -69,7 +69,7 @@ void execute_func_with_date_input_value()
     std::cerr << "Unexpected error message: " << error_message << "\n";
   }
   g_assert(error_message.empty());
-  
+
   //Check that the return value is of the expected type:
   g_assert(value.get_value_type() == GDA_TYPE_NUMERIC);
 

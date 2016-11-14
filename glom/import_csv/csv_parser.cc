@@ -40,8 +40,7 @@ bool CsvParser::next_char_is_quote(const Glib::ustring::const_iterator& iter, co
     return false;
 
   // Look at the next character to see if it's really "" (an escaped "):
-  auto iter_next = iter;
-  ++iter_next;
+  const auto iter_next = std::next(iter);
   if(iter_next != end)
   {
     const auto c_next = *iter_next;
@@ -72,7 +71,7 @@ void CsvParser::set_file_and_start_parsing(const std::string& file_uri)
   auto file = Gio::File::create_for_uri(file_uri);
 
   set_state(CsvParser::State::PARSING);
-  
+
   //TODO Get a rough estimate of the number of rows (for showing progress),
   //by counting the number of lines:
   //guint lines_count = 0;
@@ -378,7 +377,7 @@ bool CsvParser::on_idle_parse()
         m_in_quotes = false;
 
         /*
-        const size_t len = pos - prev;
+        const auto len = pos - prev;
         std::string quoted_text;
         if(len)
           quoted_text = std::string(prev, len);
@@ -498,8 +497,12 @@ void CsvParser::ensure_idle_handler_connection()
   }
 }
 
-void CsvParser::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source)
+void CsvParser::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::WeakRef<Gio::File>& source_weak)
 {
+  const auto source = source_weak.get();
+  if (!source)
+    return;
+
   ensure_idle_handler_connection();
 
   try
@@ -550,11 +553,15 @@ void CsvParser::on_buffer_read(const Glib::RefPtr<Gio::AsyncResult>& result)
   }
 }
 
-void CsvParser::on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source) const
+void CsvParser::on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::WeakRef<Gio::File>& source_weak) const
 {
+  const auto source = source_weak.get();
+  if (!source)
+    return;
+
   try
   {
-    auto info = source->query_info_finish(result);
+    const auto info = source->query_info_finish(result);
     if(info)
       signal_have_display_name().emit(info->get_display_name());
   }

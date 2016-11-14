@@ -80,11 +80,11 @@ private:
   Glib::ustring get_mysqlql_utils_version(const SlotProgress& slot_progress);
 
   float get_mysqlql_utils_version_as_number(const SlotProgress& slot_progress);
-  
+
   void show_active_connections();
 
   bool m_network_shared;
-  
+
   //These are remembered in order to use them to issue the shutdown command via mysqladmin:
   Glib::ustring m_saved_username, m_saved_password;
 

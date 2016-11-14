@@ -32,13 +32,13 @@ class Relationship
  : public TranslatableItem,
    public HasTitleSingular
 {
-public: 
+public:
   Relationship();
-  Relationship(const Relationship& src);
-  Relationship(Relationship&& src) = delete;
+  Relationship(const Relationship& src) = default;
+  Relationship(Relationship&& src) = default;
 
-  Relationship& operator=(const Relationship& src);
-  Relationship& operator=(Relationship&& src) = delete;
+  Relationship& operator=(const Relationship& src) = default;
+  Relationship& operator=(Relationship&& src) = default;
 
   bool operator==(const Relationship& src) const;
 

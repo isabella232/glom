@@ -28,9 +28,9 @@ namespace Glom
 {
 
 LayoutToolbar::LayoutToolbar()
-:  m_group_items(_("Items")), 
+:  m_group_items(_("Items")),
    m_group_containers(_("Containers")),
-   m_drag_group("glom-group.png", LayoutWidgetBase::enumType::GROUP, 
+   m_drag_group("glom-group.png", LayoutWidgetBase::enumType::GROUP,
      _("Group"), _("Drag this to the layout to add a new group.")),
    m_drag_notebook("glom-notebook.png", LayoutWidgetBase::enumType::NOTEBOOK,
      _("Notebook"), _("Drag this to the layout to add a new notebook.")),
@@ -49,7 +49,7 @@ LayoutToolbar::LayoutToolbar()
   set_size_request(100, 200);
 
   //TODO: Add a drag item for the related records item.
-  
+
   //Note for translators: These are container layout items, containing child layout items, like container widgets in GTK+.
   m_group_containers.add(m_drag_group);
   m_group_containers.add(m_drag_notebook);
@@ -60,12 +60,12 @@ LayoutToolbar::LayoutToolbar()
   m_group_items.add(m_drag_button);
   m_group_items.add(m_drag_text);
   m_group_items.add(m_drag_image);
-  
+
   add(m_group_containers);
   add(m_group_items);
 
   set_drag_source();
-  
+
   show_all_children();
 }
 

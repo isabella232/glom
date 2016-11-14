@@ -38,7 +38,7 @@ static bool check_po_file(const std::string& filepath)
   if(filepath.empty())
     return false;
 
-  //We could use the gettext-po po_file_check_all() function to check 
+  //We could use the gettext-po po_file_check_all() function to check
   //the file, but the gettext-po error handling is very awkward,
   //so let's keep it simple:
   int return_status = EXIT_FAILURE;
@@ -46,8 +46,8 @@ static bool check_po_file(const std::string& filepath)
   const auto command = Glib::ustring::compose(GLOM_MSGFMT " %1",
     Glib::shell_quote(filepath));
   try
-  {    
-    Glib::spawn_command_line_sync(command, &stdout_output, 0, &return_status);
+  {
+    Glib::spawn_command_line_sync(command, &stdout_output, nullptr, &return_status);
     //std::cout << " debug: output=" << stdout_output << std::endl;
   }
   catch(const Glib::Error& ex)
@@ -110,7 +110,7 @@ int main()
   //std::cout << "po file URI: " << po_file_uri << std::endl;
 
   const Glib::ustring locale = "de";
-  const bool success = 
+  const bool success =
     Glom::write_translations_to_po_file(document, po_file_uri, locale);
   if(!success)
   {
@@ -145,7 +145,7 @@ int main()
   bool text_found =
     (data.find("Stabliste") != std::string::npos);
   g_assert(text_found);
-  
+
   text_found =
     (data.find("\u00DCbersicht") != std::string::npos);
   g_assert(text_found);

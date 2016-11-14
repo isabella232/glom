@@ -33,14 +33,14 @@
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   auto document = std::make_shared<Glom::Document>();
-  const bool recreated = 
+  const bool recreated =
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
     std::cerr << G_STRFUNC << ": Recreation failed.\n";
     return false;
   }
-  
+
   const Glib::ustring table_name = "products";
   auto primary_key_field = document->get_field_primary_key(table_name);
   if(!primary_key_field)
@@ -51,23 +51,23 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   //Check that some data is as expected:
   const auto pk_value = Gnome::Gda::Value::create_as_double(2.0l);
-  const Gnome::Gda::SqlExpr where_clause = 
+  const Gnome::Gda::SqlExpr where_clause =
     Glom::SqlUtils::build_simple_where_expression(table_name, primary_key_field, pk_value);
-  
+
   Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto field = document->get_field(table_name, "price");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.emplace_back(layoutitem);
 
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =
     Glom::SqlUtils::build_sql_select_with_where_clause(table_name,
       fieldsToGet, where_clause);
-  const Glib::RefPtr<const Gnome::Gda::DataModel> data_model = 
+  const Glib::RefPtr<const Gnome::Gda::DataModel> data_model =
     Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 1, 1))
   {
-    std::cerr << G_STRFUNC << "Failure: Unexpected data model size with query: " << 
+    std::cerr << G_STRFUNC << "Failure: Unexpected data model size with query: " <<
       Glom::SqlUtils::sqlbuilder_get_full_query(builder) << std::endl;
     return false;
   }
@@ -85,7 +85,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   if(!test_check_numeric_value_type(hosting_mode, value))
   {
-    std::cerr << G_STRFUNC << ": Failure: The value has an unexpected type: " << 
+    std::cerr << G_STRFUNC << ": Failure: The value has an unexpected type: " <<
       g_type_name(value.get_value_type()) << std::endl;
     return false;
   }
@@ -100,13 +100,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   test_selfhosting_cleanup();
 
-  return true; 
+  return true;
 }
 
 int main()
 {
   Glom::libglom_init();
-  
+
   const auto result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();

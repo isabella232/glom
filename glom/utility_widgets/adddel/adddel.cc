@@ -46,32 +46,6 @@ AddDelColumnInfo::AddDelColumnInfo()
 {
 }
 
-AddDelColumnInfo::AddDelColumnInfo(const AddDelColumnInfo& src)
-: m_style(src.m_style),
-  m_name(src.m_name),
-  m_id(src.m_id),
-  m_field_type(src.m_field_type),
-  m_choices(src.m_choices),
-  m_editable(src.m_editable),
-  m_visible(src.m_visible),
-  m_prevent_duplicates(src.m_prevent_duplicates)
-{
-}
-
-AddDelColumnInfo& AddDelColumnInfo::operator=(const AddDelColumnInfo& src)
-{
-  m_style = src.m_style;;
-  m_name = src.m_name;
-  m_id = src.m_id;
-  m_field_type = src.m_field_type;
-  m_choices = src.m_choices;
-  m_editable = src.m_editable;
-  m_visible = src.m_visible;
-  m_prevent_duplicates = src.m_prevent_duplicates;
-
-  return *this;
-}
-
 AddDel::AddDel()
 : Gtk::Box(Gtk::ORIENTATION_VERTICAL),
   m_col_key(0),
@@ -246,7 +220,7 @@ void AddDel::setup_menu(Gtk::Widget* /* widget */)
 bool AddDel::on_button_press_event_Popup(GdkEventButton *button_event)
 {
   GdkModifierType mods;
-  gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
+  gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, nullptr, nullptr, &mods );
   if(mods & GDK_BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
@@ -536,8 +510,8 @@ void AddDel::construct_specified_columns()
   if(m_column_types.empty())
     return;
 
-  typedef std::vector< Gtk::TreeModelColumnBase* > type_vecModelColumns;
-  type_vecModelColumns vecModelColumns(m_column_types.size(), 0);
+  using type_vecModelColumns = std::vector<Gtk::TreeModelColumnBase*>;
+  type_vecModelColumns vecModelColumns(m_column_types.size());
 
   //Create the Gtk ColumnRecord:
 
@@ -713,7 +687,7 @@ void AddDel::construct_specified_columns()
         }
       }
 
-      pModelColumn = 0;
+      pModelColumn = nullptr;
     }
     else
     {
@@ -1035,7 +1009,7 @@ AddDel::InnerIgnore::~InnerIgnore()
     m_outer->set_ignore_treeview_signals(m_bIgnoreSheetSignals);
   }
 
-  m_outer = 0;
+  m_outer = nullptr;
 }
 
 Glib::ustring AddDel::treeview_get_key(const Gtk::TreeModel::iterator& row)
@@ -1197,7 +1171,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
       {
         bool do_signal = true;
 
-        const Field::glom_field_type field_type = m_column_types[model_column_index].m_field_type;
+        const auto field_type = m_column_types[model_column_index].m_field_type;
         if(field_type != Field::glom_field_type::INVALID) //If a field type was specified for this column.
         {
           //Make sure that the entered data is suitable for this field type:
@@ -1330,12 +1304,11 @@ void AddDel::on_treeview_columns_changed()
     for(const auto& item : m_tree_view.get_columns())
     {
       auto pViewColumn = dynamic_cast<TreeViewColumnGlom*>(item);
-      if(pViewColumn)
-      {
-        const auto column_id = pViewColumn->get_column_id();
-        m_column_ids.emplace_back(column_id);
+      if(!pViewColumn)
+        continue;
 
-      }
+      const auto column_id = pViewColumn->get_column_id();
+      m_column_ids.emplace_back(column_id);
     }
 
     //Tell other code that something has changed, so the new column order can be serialized.

@@ -33,7 +33,7 @@ namespace GlomBakery
 
 class Document_XML : public GlomBakery::Document
 {
-public: 
+public:
   Document_XML();
   ~Document_XML() override;
 
@@ -43,14 +43,14 @@ public:
   void set_dtd_name(const std::string& strVal); //e.g. "glom.dtd"
   std::string get_dtd_name() const;
 
-  /** Set the root node name and (optionally) the xmlns ID to be written 
+  /** Set the root node name and (optionally) the xmlns ID to be written
    * when writing the document.
    * The root node name is also used when reading documents.
    */
   void set_dtd_root_node_name(const Glib::ustring& strVal, const Glib::ustring& xmlns = Glib::ustring());
-  
+
   Glib::ustring get_dtd_root_node_name() const;
-  
+
   Glib::ustring get_xml() const; //Get the text for the XML.
 
 protected:
@@ -72,7 +72,7 @@ protected:
   //XML Parsing bits:
   xmlpp::DomParser m_dom_parser; //Could be mutable to allow us to guarantee a root node.
   xmlpp::Document* m_dom_document; //1-to-1 with the m_dom_parser.
-  
+
   std::string m_dtd_name;
   Glib::ustring m_root_node_name, m_root_xmlns;
   bool m_write_formatted;

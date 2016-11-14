@@ -27,25 +27,10 @@ UsesRelationship::UsesRelationship()
 {
 }
 
-UsesRelationship::UsesRelationship(const UsesRelationship& src)
-: m_relationship(src.m_relationship),
-  m_related_relationship(src.m_related_relationship)
-{
-}
-
 bool UsesRelationship::operator==(const UsesRelationship& src) const
 {
   return (m_relationship == src.m_relationship)
          && (m_related_relationship == src.m_related_relationship);
-}
-
-
-UsesRelationship& UsesRelationship::operator=(const UsesRelationship& src)
-{
-  m_relationship = src.m_relationship;
-  m_related_relationship = src.m_related_relationship;
-
-  return *this;
 }
 
 bool UsesRelationship::get_has_relationship_name() const
@@ -216,13 +201,13 @@ Glib::ustring UsesRelationship::get_sql_join_alias_name() const
 Glib::ustring UsesRelationship::get_relationship_display_name() const
 {
   Glib::ustring result;
-  
+
   if(get_has_relationship_name())
     result = get_relationship_name();
 
   if(get_has_related_relationship_name())
     result += ("::" + get_related_relationship_name());
-  
+
   return result;
 }
 

@@ -47,7 +47,7 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
 
 
   Py_Finalize();
-  
+
 }
 
 int main ()
@@ -55,6 +55,6 @@ int main ()
   Glib::ustring func_impl = "import time\nreturn time.clock()";
   evaluate_function_implementation(func_impl);
 
-   
+
   return EXIT_SUCCESS;
 }

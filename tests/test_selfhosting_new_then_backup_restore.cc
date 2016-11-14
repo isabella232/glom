@@ -19,7 +19,7 @@
  */
 
 #include "tests/test_selfhosting_utils.h"
-#include <libglom/init.h> 
+#include <libglom/init.h>
 #include <libglom/file_utils.h>
 #include <glib.h> //For g_assert()
 #include <iostream>
@@ -39,7 +39,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   Glib::ustring backup_uri_tarball;
   {
     auto document = std::make_shared<Glom::Document>();
-    const bool recreated = 
+    const bool recreated =
       test_create_and_selfhost_from_example("example_music_collection.glom", document, hosting_mode);
     if(!recreated)
     {
@@ -59,11 +59,11 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
     test_selfhosting_cleanup();
   }
-  
+
   //Create a new document from the backup:
   {
     std::string backup_data_file_path;
-    const Glib::ustring backup_glom_file_contents = 
+    const Glib::ustring backup_glom_file_contents =
       Glom::Document::extract_backup_file(
         backup_uri_tarball,
         backup_data_file_path,
@@ -73,11 +73,11 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       std::cerr << G_STRFUNC << ": Extraction from the backup file failed.\n";
       return false;
     }
-    
+
     //Create a document from the backup:
     //std::cout << "debug: recreated_uri=" << recreated_uri << std::endl;
     auto document = std::make_shared<Glom::Document>();
-    const bool recreated = 
+    const bool recreated =
       test_create_and_selfhost_from_data(backup_glom_file_contents, document, hosting_mode);
     if(!recreated)
     {
@@ -94,7 +94,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       return false;
     }
     */
-  
+
     test_selfhosting_cleanup();
   }
 
@@ -111,7 +111,7 @@ int main()
     test_selfhosting_cleanup();
     return EXIT_FAILURE;
   }
-  
+
   /* TODO: Make this work with sqlite too:
   if(!test(Glom::Document::HostingMode::SQLITE))
   {

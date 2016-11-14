@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_SUMMARY_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_SUMMARY_H
 
@@ -33,10 +33,10 @@ class LayoutItem_Summary : public LayoutGroup
 public:
 
   LayoutItem_Summary();
-  LayoutItem_Summary(const LayoutItem_Summary& src);
-  LayoutItem_Summary(const LayoutItem_Summary&& src) = delete;
-  LayoutItem_Summary& operator=(const LayoutItem_Summary& src);
-  LayoutItem_Summary& operator=(LayoutItem_Summary&& src) = delete;
+  LayoutItem_Summary(const LayoutItem_Summary& src) = default;
+  LayoutItem_Summary(LayoutItem_Summary&&src) = default;
+  LayoutItem_Summary& operator=(const LayoutItem_Summary& src) = default;
+  LayoutItem_Summary& operator=(LayoutItem_Summary&& src) = default;
   virtual ~LayoutItem_Summary();
 
   LayoutItem* clone() const override;

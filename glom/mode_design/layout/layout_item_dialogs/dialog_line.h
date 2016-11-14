@@ -39,7 +39,7 @@ class Dialog_Line
 public:
   static const char* glade_id;
   static const bool glade_developer;
-  
+
   Dialog_Line(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   void set_line(const std::shared_ptr<const LayoutItem_Line>& line);

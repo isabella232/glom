@@ -34,7 +34,7 @@ protected:
 
 public:
   static Glib::RefPtr<Application> create();
-    
+
 protected:
   //Overrides of default signal handlers:
   void on_activate() override;
@@ -47,7 +47,7 @@ private:
   void create_window(const Glib::RefPtr<Gio::File>& file = Glib::RefPtr<Gio::File>());
 
   void on_window_hide(Gtk::Window* window);
-  
+
   RemoteOptionGroup m_remote_option_group;
 };
 

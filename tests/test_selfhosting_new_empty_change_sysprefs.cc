@@ -34,7 +34,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_database() failed\n";
     return false;
   }
-  
+
   //Test some simple changes to the database:
   try
   {
@@ -48,7 +48,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     prefs_in.m_org_address_country = "test country";
     Glom::DbUtils::set_database_preferences(document, prefs_in);
 
-    const auto prefs_out = 
+    const auto prefs_out =
       Glom::DbUtils::get_database_preferences(document);
     if(prefs_out != prefs_in)
     {

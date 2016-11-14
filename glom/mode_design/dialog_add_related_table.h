@@ -45,7 +45,7 @@ public:
   //Get the user input:
   void get_input(Glib::ustring& table_name, Glib::ustring& relationship_name, Glib::ustring& from_key_name);
 
-  typedef sigc::signal<void> type_signal_request_edit_fields;
+  typedef sigc::signal<void()> type_signal_request_edit_fields;
   type_signal_request_edit_fields signal_request_edit_fields();
 
 private:

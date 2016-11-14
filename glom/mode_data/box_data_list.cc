@@ -177,9 +177,6 @@ void Box_Data_List::set_primary_key_value(const Gtk::TreeModel::iterator& row, c
 
 void Box_Data_List::on_adddel_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row)
 {
-  if(!layout_item)
-    return;
-
   const auto primary_key_value = get_primary_key_value(row);
 
   // TODO: Calling refresh_data_from_database(),
@@ -195,8 +192,12 @@ void Box_Data_List::on_adddel_script_button_clicked(const std::shared_ptr<const 
       primary_key_value));
 }
 
-bool Box_Data_List::on_script_button_idle(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key)
+bool Box_Data_List::on_script_button_idle(const std::weak_ptr<const LayoutItem_Button>& layout_item_weak, const Gnome::Gda::Value& primary_key)
 {
+  const auto layout_item = layout_item_weak.lock();
+  if(!layout_item)
+    return false;
+
   execute_button_script(layout_item, primary_key);
 
   // Refill view from database as the script might have changed arbitrary records
@@ -249,8 +250,7 @@ void Box_Data_List::on_details_nav_next()
     {
       //std::cout << "debug: " << G_STRFUNC << ": The current row was not the last row.\n";
 
-      iter++;
-      m_AddDel.select_item(iter);
+      m_AddDel.select_item(std::next(iter));
 
       signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
     }
@@ -343,17 +343,17 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_first() const
   return Gnome::Gda::Value();
 }
 
-Gnome::Gda::Value Box_Data_List::get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const
+Gnome::Gda::Value Box_Data_List::get_entered_field_data(const LayoutItem_Field& field) const
 {
   return m_AddDel.get_value_selected(field);
 }
 
-void Box_Data_List::set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_List::set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
   m_AddDel.set_value_selected(field, value);
 }
 
-void Box_Data_List::set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_List::set_entered_field_data(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
   m_AddDel.set_value(row, field, value);
 }
@@ -449,7 +449,7 @@ void Box_Data_List::create_layout()
 
   const auto table_privs = Privs::get_current_privs(m_found_set.m_table_name);
   m_AddDel.set_allow_view(table_privs.m_view);
-    
+
   m_AddDel.set_found_set(m_found_set);
   m_AddDel.set_columns(items_to_use); //TODO: Use LayoutGroup::type_list_const_items instead?
 

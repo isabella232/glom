@@ -36,43 +36,9 @@ LayoutItem_Portal::LayoutItem_Portal()
 {
 }
 
-LayoutItem_Portal::LayoutItem_Portal(const LayoutItem_Portal& src)
-: LayoutGroup(src),
-  UsesRelationship(src),
-  //HasTitleSingular(src),
-  m_navigation_relationship_specific(src.m_navigation_relationship_specific),
-  m_print_layout_row_height(src.m_print_layout_row_height),
-  m_print_layout_row_line_width(src.m_print_layout_row_line_width),
-  m_print_layout_column_line_width(src.m_print_layout_column_line_width),
-  m_print_layout_line_color(src.m_print_layout_line_color),
-  m_navigation_type(src.m_navigation_type),
-  m_rows_count_min(src.m_rows_count_min),
-  m_rows_count_max(src.m_rows_count_max)
-{
-}
-
 LayoutItem* LayoutItem_Portal::clone() const
 {
   return new LayoutItem_Portal(*this);
-}
-
-
-LayoutItem_Portal& LayoutItem_Portal::operator=(const LayoutItem_Portal& src)
-{
-  LayoutGroup::operator=(src);
-  UsesRelationship::operator=(src);
-  //HasTitleSingular::operator=(src);
-
-  m_navigation_relationship_specific = src.m_navigation_relationship_specific;
-  m_print_layout_row_height = src.m_print_layout_row_height;
-  m_print_layout_row_line_width = src.m_print_layout_row_line_width;
-  m_print_layout_column_line_width = src.m_print_layout_column_line_width;
-  m_print_layout_line_color = src.m_print_layout_line_color;
-  m_navigation_type = src.m_navigation_type;
-  m_rows_count_min = src.m_rows_count_min;
-  m_rows_count_max = src.m_rows_count_max;
-
-  return *this;
 }
 
 void LayoutItem_Portal::change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
@@ -173,7 +139,7 @@ void LayoutItem_Portal::get_rows_count(gulong& rows_count_min, gulong& rows_coun
   rows_count_min = m_rows_count_min;
   rows_count_max = m_rows_count_max;
 }
-  
+
 void LayoutItem_Portal::set_rows_count(gulong rows_count_min, gulong rows_count_max)
 {
   m_rows_count_min = rows_count_min;
@@ -198,7 +164,7 @@ double LayoutItem_Portal::get_print_layout_column_line_width() const
 {
   return m_print_layout_column_line_width;
 }
-  
+
 void LayoutItem_Portal::set_print_layout_column_line_width(double width)
 {
   m_print_layout_column_line_width = width;
@@ -251,7 +217,7 @@ void LayoutItem_Portal::get_suitable_table_to_view_details(Glib::ustring& table_
   }
   else if(get_navigation_type() != LayoutItem_Portal::navigation_type::NONE)
   {
-    //An empty result from get_portal_navigation_relationship_automatic() or 
+    //An empty result from get_portal_navigation_relationship_automatic() or
     //get_navigation_relationship_specific() means we should use the directly related table:
     navigation_table_name = directly_related_table_name;
   }
@@ -261,13 +227,13 @@ void LayoutItem_Portal::get_suitable_table_to_view_details(Glib::ustring& table_
     //std::cerr << G_STRFUNC << ": navigation_table_name is empty.\n";
     return;
   }
-  
+
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document is null\n";
     return;
   }
-  
+
   if(document->get_table_is_hidden(navigation_table_name))
   {
     std::cerr << G_STRFUNC << ": navigation_table_name indicates a hidden table: " << navigation_table_name << std::endl;
@@ -339,7 +305,7 @@ std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_is_from_non
     std::cerr << G_STRFUNC << ": document is null\n";
     return result;
   }
-  
+
   const auto parent_table_name = get_table_used(Glib::ustring() /* parent table - not relevant */);
 
   auto items = get_items();
@@ -404,7 +370,7 @@ Glib::ustring LayoutItem_Portal::get_title_or_name(const Glib::ustring& locale) 
   auto title = get_title_used(Glib::ustring() /* parent table - not relevant */, locale);
   if(title.empty())
     title = get_relationship_name_used();
-  
+
   if(title.empty()) //TODO: This prevents "" as a real title.
    title = _("Undefined Table");
 

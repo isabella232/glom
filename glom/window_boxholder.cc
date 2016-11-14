@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 #include <glom/window_boxholder.h>
 #include <glom/utils_ui.h>
 #include <libglom/utils.h>

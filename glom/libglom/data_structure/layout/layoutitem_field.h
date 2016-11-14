@@ -32,25 +32,25 @@ namespace Glom
 {
 
 /** A LayoutItem that shows the data from a table field.
- * The field may be in a known table, or in a to table of a relationship 
- * or related relatinoship. See UsesRelationship::get_relationship() and 
+ * The field may be in a known table, or in a to table of a relationship
+ * or related relatinoship. See UsesRelationship::get_relationship() and
  * UsesRelationship::get_related_relationship() in the base class.
  *
  * get_title() returns either the title of the Field or the CustomTitle.
  * You should not call get/set_title_original() or get/set_title_translation()
  * on items of this type.
  */
-class LayoutItem_Field 
+class LayoutItem_Field
  : public LayoutItem_WithFormatting,
    public UsesRelationship
 {
 public:
 
   LayoutItem_Field();
-  LayoutItem_Field(const LayoutItem_Field& src);
-  LayoutItem_Field(LayoutItem_Field&& src) = delete;
-  LayoutItem_Field& operator=(const LayoutItem_Field& src);
-  LayoutItem_Field& operator=(LayoutItem_Field&& src) = delete;
+  LayoutItem_Field(const LayoutItem_Field& src) = default;
+  LayoutItem_Field(LayoutItem_Field&& src) = default;
+  LayoutItem_Field& operator=(const LayoutItem_Field& src) = default;
+  LayoutItem_Field& operator=(LayoutItem_Field&& src) = default;
 
   LayoutItem* clone() const override;
 
@@ -109,17 +109,17 @@ public:
   bool m_priv_view;
   bool m_priv_edit;
 
-  /** Discover whether to use the default formatting for this field, 
+  /** Discover whether to use the default formatting for this field,
    * instead of some custom per-layout-item field formatting.
    */
   bool get_formatting_use_default() const;
 
-  /** Specify whether to use the default formatting for this field, 
+  /** Specify whether to use the default formatting for this field,
    * instead of some custom per-layout-item field formatting.
    */
   void set_formatting_use_default(bool use_default = true);
 
-  /** Get the field formatting used by this layout item, which 
+  /** Get the field formatting used by this layout item, which
    * may be either custom field formatting or the default field formatting.
    */
   const Formatting& get_formatting_used() const override;
@@ -140,7 +140,7 @@ public:
 
   /** Compare the name, relationship, and related_relationship.
    */
-  bool is_same_field(const std::shared_ptr<const LayoutItem_Field>& field) const;
+  bool is_same_field(const LayoutItem_Field& field) const;
 
 private:
 

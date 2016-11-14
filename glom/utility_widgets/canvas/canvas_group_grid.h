@@ -40,16 +40,16 @@ private:
 
 public:
   static Glib::RefPtr<CanvasGroupGrid> create();
- 
+
   /** Snap a coordinate position to any nearby grid or rule line, if the coordinate is close enough to one.
    */
   void snap_position(double& x, double& y) const;
 
-  /** Set the distance between grid lines, 
+  /** Set the distance between grid lines,
    * used to snap to the grid lines when moving or resizing items.
    */
   void set_grid_gap(double gap);
-  
+
   /** Recreate the grid lines if this item has changed size.
    * TODO: Just do this in response to some property change?
    */

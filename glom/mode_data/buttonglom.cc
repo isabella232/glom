@@ -63,7 +63,7 @@ void ButtonGlom::on_menu_properties_activate()
   if(!dialog) //Unlikely and it already warns on stderr.
     return;
 
-  auto layout_item = 
+  auto layout_item =
     std::dynamic_pointer_cast<LayoutItem_Button>(get_layout_item());
   dialog->set_script(layout_item, m_table_name);
   const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
@@ -83,7 +83,7 @@ bool ButtonGlom::on_button_press_event(GdkEventButton *button_event)
   if(pApp && pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
   {
     GdkModifierType mods;
-    gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
+    gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, nullptr, nullptr, &mods );
     if(mods & GDK_BUTTON3_MASK)
     {
       //Give user choices of actions on this item:

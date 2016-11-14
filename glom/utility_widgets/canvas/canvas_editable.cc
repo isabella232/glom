@@ -21,15 +21,13 @@
 #include "canvas_editable.h"
 #include "canvas_group_resizable.h"
 #include "canvas_rect_movable.h"
-#include <math.h>
+#include <cmath>
 #include <iostream>
 
 namespace Glom
 {
 
 CanvasEditable::CanvasEditable()
-: m_dragging(false),
-  m_drag_x(0.0), m_drag_y(0.0)
 {
   m_grid = CanvasGroupGrid::create();
   add_item(m_grid);
@@ -219,7 +217,7 @@ CanvasEditable::type_vec_items CanvasEditable::get_selected_items()
 
 void CanvasEditable::set_rules_visibility(bool visible)
 {
-  m_grid->set_rules_visibility(visible);  
+  m_grid->set_rules_visibility(visible);
 }
 
 

@@ -25,10 +25,6 @@ ViewBase::ViewBase()
 {
 }
 
-ViewBase::~ViewBase()
-{
-}
-
 void ViewBase::load_from_document()
 {
 }

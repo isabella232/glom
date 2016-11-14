@@ -31,7 +31,7 @@ namespace Glom
 
 class Box_Data_ManyRecords : public Box_Data
 {
-public: 
+public:
   Box_Data_ManyRecords();
 
   void refresh_data_from_database_blank();
@@ -40,10 +40,10 @@ public:
   virtual void set_primary_key_value_selected(const Gnome::Gda::Value& primary_key_value);
 
   //Primary Key value:
-  typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_user_requested_details;
+  typedef sigc::signal<void(const Gnome::Gda::Value&)> type_signal_user_requested_details;
   type_signal_user_requested_details signal_user_requested_details();
-  
-  typedef sigc::signal<void> type_signal_record_selection_changed;
+
+  typedef sigc::signal<void()> type_signal_record_selection_changed;
   type_signal_record_selection_changed signal_record_selection_changed();
 protected:
   void print_layout() override;

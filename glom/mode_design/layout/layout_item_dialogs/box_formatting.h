@@ -71,7 +71,7 @@ public:
    */
   void set_is_for_non_editable();
 
-  typedef sigc::signal<void> type_signal_modified;
+  typedef sigc::signal<void()> type_signal_modified;
   type_signal_modified signal_modified();
 
 private:

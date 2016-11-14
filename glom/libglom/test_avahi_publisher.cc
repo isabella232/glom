@@ -53,7 +53,7 @@ void TestWindow::on_button_start()
     return;
 
   std::cout << "Starting\n";
- 
+
   m_avahi_publisher = std::make_unique<Glom::AvahiPublisher>("testservice", "_testthing._tcp", 1234 /* port */);
 }
 

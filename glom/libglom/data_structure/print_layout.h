@@ -32,10 +32,10 @@ class PrintLayout : public TranslatableItem
 {
 public:
   PrintLayout();
-  PrintLayout(const PrintLayout& src);
-  PrintLayout(PrintLayout&& src) = delete;
-  PrintLayout& operator=(const PrintLayout& src);
-  PrintLayout& operator=(PrintLayout&& src) = delete;
+  PrintLayout(const PrintLayout& src) = default;
+  PrintLayout(PrintLayout&& src) = default;
+  PrintLayout& operator=(const PrintLayout& src) = default;
+  PrintLayout& operator=(PrintLayout&& src) = default;
 
   bool get_show_table_title() const;
   void set_show_table_title(bool show_table_title = true);
@@ -47,10 +47,10 @@ public:
    */
   void set_page_setup(const std::string& page_setup);
 
-  /** Returns the Page Setup as it would be created by a Gtk::PageSetup.   
+  /** Returns the Page Setup as it would be created by a Gtk::PageSetup.
    */
   std::string get_page_setup() const;
-  
+
   void set_page_count(guint count);
   guint get_page_count() const;
 

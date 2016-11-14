@@ -67,9 +67,9 @@ int main()
   //Build a SQL query and get the string for it:
   const Gnome::Gda::Value value("Born To Run");
   auto where_field = document->get_field("albums", "name");
-  const Gnome::Gda::SqlExpr where_clause = 
+  const Gnome::Gda::SqlExpr where_clause =
     Glom::SqlUtils::build_simple_where_expression("albums", where_field, value);
-  
+
   Glom::SqlUtils::type_vecLayoutFields fieldsToGet;
   auto field = document->get_field("albums", "album_id");
   auto layoutitem = std::make_shared<Glom::LayoutItem_Field>();
@@ -80,7 +80,7 @@ int main()
   layoutitem->set_full_field_details(field);
   fieldsToGet.emplace_back(layoutitem);
 
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =
     Glom::SqlUtils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
   const auto query = Glom::SqlUtils::sqlbuilder_get_full_query(builder);

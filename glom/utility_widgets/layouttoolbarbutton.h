@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA.
  */
- 
+
 
 #ifndef GLOM_UTILITY_WIDGETS_LAYOUTTOOLBARBUTTON_H
 #define GLOM_UTILITY_WIDGETS_LAYOUTTOOLBARBUTTON_H
@@ -44,7 +44,7 @@ private:
   {
     return "glom_print_layout_palette";
   };
-  
+
 private:
   LayoutWidgetBase::enumType m_type;
 };

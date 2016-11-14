@@ -172,7 +172,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
           if(data_model_user && data_model_user->get_n_rows() && data_model_user->get_n_columns())
           {
             const auto value_user = data_model_user->get_value_at(0, 0);
-            //std::cout << G_STRFUNC << "DEBUG:  username=" << value.get_string() << std::endl; 
+            //std::cout << G_STRFUNC << "DEBUG:  username=" << value.get_string() << std::endl;
             result.emplace_back(value_user.get_string());
           }
           else
@@ -372,7 +372,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
   result.m_create = value.get_boolean();
   value = data_model->get_value_at(3, 0);
   result.m_delete = value.get_boolean();
-  
+
   //std::cout << G_STRFUNC << ": group_name=" << group_name << ", table_name=" << table_name << ", returning create=" << result.m_create << std::endl;
   return result;
 }
@@ -439,7 +439,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
     std::cerr << G_STRFUNC << ": table_name is empty.\n";
     return Privileges();
   }
-  
+
   //TODO_Performance: There's lots of database access here.
   //We could maybe replace some with the postgres has_table_* function().
 

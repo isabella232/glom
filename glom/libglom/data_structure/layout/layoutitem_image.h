@@ -33,15 +33,15 @@ namespace Glom
   const char GLOM_IMAGE_FORMAT[] = "png";
   const char GLOM_IMAGE_FORMAT_MIME_TYPE[] = "image/png";
 
-class LayoutItem_Image 
+class LayoutItem_Image
  : public LayoutItem
 {
 public:
   LayoutItem_Image();
-  LayoutItem_Image(const LayoutItem_Image& src);
-  LayoutItem_Image(LayoutItem_Image&& src) = delete;
-  LayoutItem_Image& operator=(const LayoutItem_Image& src);
-  LayoutItem_Image& operator=(LayoutItem_Image&& src) = delete;
+  LayoutItem_Image(const LayoutItem_Image& src) = default;
+  LayoutItem_Image(LayoutItem_Image&& src) = default;
+  LayoutItem_Image& operator=(const LayoutItem_Image& src) = default;
+  LayoutItem_Image& operator=(LayoutItem_Image&& src) = default;
 
   LayoutItem* clone() const override;
 

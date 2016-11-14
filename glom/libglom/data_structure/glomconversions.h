@@ -45,7 +45,7 @@ namespace Conversions
   Glib::ustring format_date(const tm& tm_data);
   Glib::ustring format_date(const tm& tm_data, const std::locale& locale, bool iso_format = false);
 
-  Gnome::Gda::Value parse_value(double number);  
+  Gnome::Gda::Value parse_value(double number);
   Gnome::Gda::Value parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, bool& success, bool iso_format = false);
   Gnome::Gda::Value parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, const NumericFormat& numeric_format, bool& success, bool iso_format = false);
 
@@ -54,7 +54,7 @@ namespace Conversions
   tm parse_time(const Glib::ustring& text, bool& success);
   tm parse_time(const Glib::ustring& text, const std::locale& locale, bool& success);
 
-  /** Check that Glom can parse text representations of dates for which is has 
+  /** Check that Glom can parse text representations of dates for which is has
    * itself created the text representation.
    * This may fail in some locales if a translation of the date format is missing.
    *
@@ -64,7 +64,7 @@ namespace Conversions
 
   /** Check that Glom uses 4 digits to show years in text representations of dates.
    * This may fail in some locales if a translation of the date format is missing.
-   * If it fails then Glom will default to using a dd/mm/yy format, which 
+   * If it fails then Glom will default to using a dd/mm/yy format, which
    * might be incorrect for the locale.
    *
    * @result true if 4 digits are used.
@@ -84,7 +84,7 @@ namespace Conversions
    * ignoring the current locale.
    */
   Gnome::Gda::Value convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type);
-  
+
 } //namespace Conversions
 
 } //namespace Glom

@@ -55,7 +55,7 @@ populate_spread_table_wrappy(Egg::SpreadTableDnd* spread_table)
     "These are", "some wrappy label", "texts", "of various", "lengths.",
     "They should always be", "shown", "consecutively. Except it's",
     "hard to say", "where exactly the", "label", "will wrap", "and where exactly",
-    "the actual", "container", "will wrap.", "This label is really really really long !", 
+    "the actual", "container", "will wrap.", "This label is really really really long !",
     "Let's add some more", "labels to the",
     "mix. Just to", "make sure we", "got something to work", "with here."
   };
@@ -166,11 +166,11 @@ create_window()
 
   auto swindow = Gtk::manage(new Gtk::ScrolledWindow());
   swindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  
+
   swindow->show();
   frame->add(*swindow);
 
-  paper = 
+  paper =
     Gtk::manage(new Egg::SpreadTableDnd(
       Gtk::ORIENTATION_VERTICAL,
       INITIAL_LINES));
@@ -323,11 +323,11 @@ create_window()
   populate_spread_table_wrappy(paper);
 
   /* Embed another dnd spread table */
-  auto spreadtable_inner = 
+  auto spreadtable_inner =
     Gtk::manage(new Egg::SpreadTableDnd(
       Gtk::ORIENTATION_VERTICAL,
       INITIAL_LINES));
-  
+
   spreadtable_inner->set_vertical_spacing(INITIAL_VSPACING);
   spreadtable_inner->set_horizontal_spacing(INITIAL_HSPACING);
 
@@ -354,7 +354,7 @@ create_window()
 int
 main(int argc, char *argv[])
 {
-  auto app = 
+  auto app =
     Gtk::Application::create(argc, argv, "org.glom.test_spreadtablednd");
 
   auto window = create_window();

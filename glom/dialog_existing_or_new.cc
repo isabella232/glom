@@ -161,7 +161,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   // Browse local network
 #ifndef G_OS_WIN32
   gchar* service_type = epc_service_type_new(EPC_PROTOCOL_HTTPS, "glom");
-  m_service_monitor = epc_service_monitor_new_for_types(0, service_type, (void*)0);
+  m_service_monitor = epc_service_monitor_new_for_types(nullptr, service_type, (void*)nullptr);
   g_signal_connect(m_service_monitor, "service-found", G_CALLBACK(on_service_found_static), this);
   g_signal_connect(m_service_monitor, "service-removed", G_CALLBACK(on_service_removed_static), this);
   g_free(service_type);
@@ -198,7 +198,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 #endif
 
   m_select_button->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_select_clicked));
- 
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_notebook->signal_switch_page().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_switch_page));
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */
@@ -262,7 +262,7 @@ bool Dialog_ExistingOrNew::list_examples()
   {
     const char* examples_dir = "/org/gnome/glom/examples/";
     const auto examples = Gio::Resource::enumerate_children_global(examples_dir);
-    
+
     bool example_found = false;
     for(const auto& example_name : examples)
     {
@@ -450,7 +450,7 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
 {
   auto pixbuf_renderer = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
   if(!pixbuf_renderer)
-  throw std::logic_error("Renderer not a pixbuf renderer in existing_icon_data_func");
+    throw std::logic_error("Renderer not a pixbuf renderer in existing_icon_data_func");
 
   pixbuf_renderer->property_stock_size() = Gtk::ICON_SIZE_BUTTON;
   pixbuf_renderer->property_icon_name() = "";
@@ -641,7 +641,7 @@ Glib::ustring Dialog_ExistingOrNew::get_title_from_example(const std::string& re
   {
     auto stream =
       Gio::Resource::open_stream_global(resource_name);
-    
+
     //TODO: Really do this asynchronously?
     m_current_buffer.reset(new buffer);
     const auto bytes_read = stream->read(m_current_buffer->buf, buffer::SIZE);
@@ -718,7 +718,7 @@ void Dialog_ExistingOrNew::on_service_found(const Glib::ustring& name, EpcServic
   gchar* title = g_strdup_printf(_("%s on %s (via %s)"), name.c_str(), epc_service_info_get_host(info), epc_service_info_get_interface(info));
   auto iter = m_existing_model->prepend(m_iter_existing_network->children());
   (*iter)[m_existing_columns.m_col_title] = title;
-  (*iter)[m_existing_columns.m_col_time] = std::time(0); /* sort more recently discovered items above */
+  (*iter)[m_existing_columns.m_col_time] = std::time(nullptr); /* sort more recently discovered items above */
   (*iter)[m_existing_columns.m_col_service_name] = name;
   (*iter)[m_existing_columns.m_col_service_info] = info;
 

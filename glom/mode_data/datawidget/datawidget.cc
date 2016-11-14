@@ -68,13 +68,13 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
 {
   const auto glom_type = field->get_glom_type();
   set_layout_item(field, table_name);
-  
+
   //The GNOME HIG says that labels should have ":" at the end:
   //http://library.gnome.org/devel/hig-book/stable/design-text-labels.html.en
   const auto title = Glib::ustring::compose(_("%1:"), item_get_title_or_name(field));
 
-  m_child = 0;
-  LayoutWidgetField* pFieldWidget = nullptr;  
+  m_child = nullptr;
+  LayoutWidgetField* pFieldWidget = nullptr;
   if(glom_type == Field::glom_field_type::BOOLEAN)
   {
     auto checkbutton = Gtk::manage( new DataWidgetChildren::CheckButton() );
@@ -132,7 +132,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
         combo = create_combo_widget_for_field(field);
         combo->set_layout_item( get_layout_item(), table_name);
 
-        combo->set_choices_related(document, field, Gnome::Gda::Value() /* no ID means show all related records */);
+        combo->set_choices_related(document, *field, Gnome::Gda::Value() /* no ID means show all related records */);
       }
       else
       {
@@ -179,7 +179,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
   if(m_child)
   {
     //Use the text formatting:
-    apply_formatting(*m_child, field);
+    apply_formatting(*m_child, *field);
 
     bool child_added = false; //Don't use an extra container unless necessary.
 
@@ -188,8 +188,8 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
       document->get_field(field->get_table_used(table_name), field->get_name()) ); //Otherwise get_primary_key() returns false always.
 
     std::shared_ptr<Relationship> field_used_in_relationship_to_one;
-    const bool add_open_button = 
-       DbUtils::layout_field_should_have_navigation(table_name, field, document, 
+    const bool add_open_button =
+       DbUtils::layout_field_should_have_navigation(table_name, field, document,
          field_used_in_relationship_to_one);
 
     Gtk::Box* hbox_parent = nullptr; //Only used if there are extra widgets.
@@ -390,20 +390,20 @@ void DataWidget::set_editable(bool editable)
     gtkeditable->set_editable(editable);
     return;
   }
-  
+
   //GtkTextView does not implement GtkEditable:
   //See https://bugzilla.gnome.org/show_bug.cgi?id=667008
   //and our TextView class actually derives from ScrolledView anyway,
   //and out LayoutWidgetBase::set_read_only() override takes care of it instead.
   //But let's leave this here just in case:
-  auto textview = 
+  auto textview =
     dynamic_cast<Gtk::TextView*>(child);
   if(textview)
   {
     textview->set_editable(editable);
     return;
   }
-  
+
   auto base = dynamic_cast<LayoutWidgetBase*>(child);
   if(base)
   {
@@ -439,7 +439,7 @@ bool DataWidget::on_button_press_event(GdkEventButton *button_event)
     if(pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
       GdkModifierType mods;
-      gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, 0, 0, &mods );
+      gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, nullptr, nullptr, &mods );
       if(mods & GDK_BUTTON3_MASK)
       {
         //Give user choices of actions on this item:

@@ -21,7 +21,7 @@
 #include <glom/bakery/dialog_offersave.h>
 #include <glom/appwindow.h>
 #include <libglom/utils.h>
-#include <glibmm/convert.h> 
+#include <glibmm/convert.h>
 #include <glibmm/i18n.h>
 
 namespace
@@ -50,7 +50,7 @@ Dialog_OfferSave::Dialog_OfferSave(const Glib::ustring& file_uri)
 : Gtk::MessageDialog( Glom::AppWindow::util_bold_message(_("Close without Saving")), true /* use markup */, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE)
 {
   set_title(""); //The HIG says that alert dialogs should not have titles. The default comes from the message type.
-  
+
   set_secondary_text(get_confirmation_message(file_uri));
 
   add_button(_("Discard"), Glom::Utils::to_utype(enumButtons::Discard));

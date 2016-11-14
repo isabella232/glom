@@ -38,11 +38,11 @@ class ChoiceValue : public TranslatableItem
 public:
 
   ChoiceValue();
-  ChoiceValue(const ChoiceValue& src);
-  ChoiceValue(ChoiceValue&& src) = delete;
+  ChoiceValue(const ChoiceValue& src) = default;
+  ChoiceValue(ChoiceValue&& src) = default;
 
-  ChoiceValue& operator=(const ChoiceValue& src);
-  ChoiceValue& operator=(ChoiceValue&& src) = delete;
+  ChoiceValue& operator=(const ChoiceValue& src) = default;
+  ChoiceValue& operator=(ChoiceValue&& src) = default;
 
   bool operator==(const ChoiceValue& src) const;
   bool operator!=(const ChoiceValue& src) const;
@@ -63,7 +63,7 @@ public:
    * This means that it must be a text type.
    */
   bool is_translatable() const;
-  
+
 
 private:
   Gnome::Gda::Value m_value;
