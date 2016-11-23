@@ -48,7 +48,7 @@ private:
    double m_table_height;
    static double m_table_width;
 
-   std::unordered_map <Glib::ustring, double> m_map_fields_y;
+   std::unordered_map<Glib::ustring, double, std::hash<std::string>> m_map_fields_y;
 };
 
 } //namespace Glom

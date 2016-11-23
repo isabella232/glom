@@ -602,10 +602,10 @@ private:
     std::vector< LayoutInfo > m_layouts;
 
     // map of report names to reports
-    std::unordered_map<Glib::ustring, std::shared_ptr<Report>> m_reports;
+    std::unordered_map<Glib::ustring, std::shared_ptr<Report>, std::hash<std::string>> m_reports;
 
     // map of print layout names to print layouts
-    std::unordered_map< Glib::ustring, std::shared_ptr<PrintLayout>> m_print_layouts;
+    std::unordered_map<Glib::ustring, std::shared_ptr<PrintLayout>, std::hash<std::string>> m_print_layouts;
 
     //Example data, used when creating a database from an example.
     type_example_rows m_example_rows;
