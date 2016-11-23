@@ -598,13 +598,13 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const std:
           sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited_bool), model_column_index, data_model_column_index ) );
       }
     }
-    else
-    {
-      if(auto pCellRendererPixbuf = dynamic_cast<Gtk::CellRendererPixbuf*>(pCellRenderer))
+    /*
+    else if(auto pCellRendererPixbuf = dynamic_cast<Gtk::CellRendererPixbuf*>(pCellRenderer))
       {
         //TODO: Do something when it's clicked, such as show the big image in a window or tooltip?
       }
     }
+    */
   }
 
   auto pCellButton = Gtk::manage( new GlomCellRenderer_ButtonText() );
