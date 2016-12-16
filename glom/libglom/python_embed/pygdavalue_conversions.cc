@@ -201,15 +201,25 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
         ret = boost::python::object(g_value_get_uint64(boxed));
     } else if(value_type == GDA_TYPE_BINARY) {
         const auto gdabinary = gda_value_get_binary(boxed);
-        if(gdabinary)
-          ret = boost::python::object((const char*)gdabinary->data); /* TODO: Use the size. TODO: Check for null GdaBinary. */
+        if(gdabinary) {
+          const auto data = gda_binary_get_data(gdabinary);
+          ret = boost::python::object((const char*)data); /* TODO: Use the size. TODO: Check for null GdaBinary. */
+        }
     } else if(value_type == GDA_TYPE_BLOB) {
         const auto gdablob = gda_value_get_blob (boxed);
-        if(gdablob && gdablob->op)
-        {
-          if(gda_blob_op_read_all(gdablob->op, const_cast<GdaBlob*>(gdablob)))
+        if(gdablob) {
+          const auto op = gda_blob_get_op(const_cast<GdaBlob*>(gdablob));
+          if (op)
           {
-            ret = boost::python::object((const char*)gdablob->data.data); /* TODO: Use the size. TODO: Check for null GdaBinary. */
+            if(gda_blob_op_read_all(op, const_cast<GdaBlob*>(gdablob)))
+            {
+              const auto gdabinary = gda_blob_get_binary(const_cast<GdaBlob*>(gdablob));
+              if (gdabinary)
+              {
+                const auto data = gda_binary_get_data(gdabinary);
+                ret = boost::python::object((const char*)data); /* TODO: Use the size. TODO: Check for null GdaBinary. */
+              }
+            }
           }
         }
     } else if(value_type == G_TYPE_BOOLEAN) {
