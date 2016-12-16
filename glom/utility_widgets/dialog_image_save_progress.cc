@@ -55,10 +55,12 @@ void DialogImageSaveProgress::save(const Glib::ustring& uri)
 {
   g_assert(m_data);
 
-  if(m_data->data == nullptr)
+  const auto data = gda_binary_get_data(const_cast<GdaBinary*>(m_data));
+  if(!data)
     return;
 
-  if(m_data->binary_length == 0)
+  const auto data_len = gda_binary_get_size(const_cast<GdaBinary*>(m_data));
+  if(data_len == 0)
     return;
 
   m_file = Gio::File::create_for_uri(uri);
@@ -89,8 +91,8 @@ void DialogImageSaveProgress::save(const Glib::ustring& uri)
   //Write the data to the output uri
   try
   {
-    m_stream->write_async(m_data->data,
-      std::min<gsize>(CHUNK_SIZE, m_data->binary_length),
+    m_stream->write_async(data,
+      std::min<gsize>(CHUNK_SIZE, data_len),
       sigc::bind(sigc::mem_fun(*this, &DialogImageSaveProgress::on_stream_write), 0));
   }
   catch(const Gio::Error& ex)
@@ -109,10 +111,11 @@ void DialogImageSaveProgress::on_stream_write(const Glib::RefPtr<Gio::AsyncResul
     g_assert(size >= 0); // Would have thrown an exception otherwise
 
     // Set progress
-    m_progress_bar->set_fraction(static_cast<double>(offset + size) / m_data->binary_length);
+    const auto data_len = gda_binary_get_size(const_cast<GdaBinary*>(m_data));
+    m_progress_bar->set_fraction(static_cast<double>(offset + size) / data_len);
 
     // Write next chunk, if any
-    if(  static_cast<gssize>(offset + size) < static_cast<gssize>(m_data->binary_length))
+    if(  static_cast<gssize>(offset + size) < static_cast<gssize>(data_len))
       // Even if choose a priority lower than GDK_PRIORITY_REDRAW + 10 for the
       // write_async we don't see the progressbar progressing while the image
       // is loading. Therefore we put an idle inbetween.
@@ -140,14 +143,17 @@ void DialogImageSaveProgress::error(const Glib::ustring& error_message)
 
 void DialogImageSaveProgress::on_write_next(unsigned int at)
 {
-  g_assert(at < static_cast<gsize>(m_data->binary_length));
+  const auto data_len = gda_binary_get_size(const_cast<GdaBinary*>(m_data));
+  g_assert(at < static_cast<gsize>(data_len));
 
-  m_stream->write_async(m_data->data + at, std::min<gsize>(CHUNK_SIZE, m_data->binary_length - at), sigc::bind(sigc::mem_fun(*this, &DialogImageSaveProgress::on_stream_write), at));
+  const auto data = gda_binary_get_data(const_cast<GdaBinary*>(m_data));
+  m_stream->write_async(static_cast<const guchar*>(data) + at, std::min<gsize>(CHUNK_SIZE, data_len - at),
+    sigc::bind(sigc::mem_fun(*this, &DialogImageSaveProgress::on_stream_write), at));
 }
 
-void DialogImageSaveProgress::set_image_data(const GdaBinary& data)
+void DialogImageSaveProgress::set_image_data(const GdaBinary* data)
 {
-  m_data = &data;
+  m_data = data;
 }
 
 } // namespace Glom

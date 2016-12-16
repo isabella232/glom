@@ -283,8 +283,10 @@ const GdaBinary* ImageGlom::get_binary() const
   else if(m_original_data.get_value_type() == GDA_TYPE_BLOB)
   {
     const auto gda_blob = gda_value_get_blob(m_original_data.gobj());
-    if(gda_blob && gda_blob_op_read_all(gda_blob->op, const_cast<GdaBlob*>(gda_blob)))
-      gda_binary = &(gda_blob->data);
+    const auto op = gda_blob ? gda_blob_get_op(const_cast<GdaBlob*>(gda_blob)) : nullptr;
+    if(gda_blob && op && gda_blob_op_read_all(op, const_cast<GdaBlob*>(gda_blob))) {
+      gda_binary = gda_blob_get_binary(const_cast<GdaBlob*>(gda_blob));
+    }
   }
 
   return gda_binary;
@@ -297,12 +299,14 @@ Glib::ustring ImageGlom::get_mime_type() const
   if(!gda_binary)
     return Glib::ustring();
 
-  if(!gda_binary->data)
+  const auto data = gda_binary_get_data(const_cast<GdaBinary*>(gda_binary)); 
+  if(!data)
     return Glib::ustring();
 
   bool uncertain = false;
+  const auto datalen = gda_binary_get_size(const_cast<GdaBinary*>(gda_binary));
   const auto result = Gio::content_type_guess(std::string(),
-    gda_binary->data, gda_binary->binary_length,
+    static_cast<const guchar*>(data), datalen,
     uncertain);
 
   //std::cout << G_STRFUNC << ": mime_type=" << result << ", uncertain=" << uncertain << std::endl;
@@ -720,7 +724,8 @@ bool ImageGlom::save_file_sync(const Glib::ustring& uri)
     return false;
   }
 
-  if(!gda_binary->data)
+  const auto data = gda_binary_get_data(const_cast<GdaBinary*>(gda_binary));
+  if(!data)
   {
     std::cerr << G_STRFUNC << ": GdaBinary::data is null\n";
     return false;
@@ -729,7 +734,8 @@ bool ImageGlom::save_file_sync(const Glib::ustring& uri)
   try
   {
     const auto filepath = Glib::filename_from_uri(uri);
-    Glib::file_set_contents(filepath, (const char*)gda_binary->data, gda_binary->binary_length);
+    const auto datalen = gda_binary_get_size(const_cast<GdaBinary*>(gda_binary));
+    Glib::file_set_contents(filepath, static_cast<const char*>(data), datalen);
   }
   catch(const Glib::Error& ex)
   {
@@ -758,7 +764,7 @@ bool ImageGlom::save_file(const Glib::ustring& uri)
   if(!gda_binary)
     return false;
 
-  dialog_save->set_image_data(*gda_binary);
+  dialog_save->set_image_data(gda_binary);
   dialog_save->save(uri);
 
   dialog_save->run();
@@ -803,16 +809,14 @@ void ImageGlom::on_menupopup_activate_select_file()
 
         if(dialog_progress->run() == Gtk::RESPONSE_ACCEPT)
         {
-          GdaBinary* bin = g_new(GdaBinary, 1);
+          // This takes ownership of the GdaBinary from the dialog:
           auto image_data = dialog_progress->get_image_data();
-          bin->data = image_data->data;
-          bin->binary_length = image_data->binary_length;
 
           clear_original_data();
 
           g_value_unset(m_original_data.gobj());
           g_value_init(m_original_data.gobj(), GDA_TYPE_BINARY);
-          gda_value_take_binary(m_original_data.gobj(), bin);
+          gda_value_take_binary(m_original_data.gobj(), image_data.get());
 
           show_image_data();
           signal_edited().emit();
@@ -846,10 +850,12 @@ void ImageGlom::on_clipboard_get(Gtk::SelectionData& selection_data, guint /* in
     if(!gda_binary)
       return;
 
-    if(!gda_binary->data)
+    const auto data = gda_binary_get_data(const_cast<GdaBinary*>(gda_binary));
+    if(!data)
       return;
 
-    selection_data.set(mime_type, 8, gda_binary->data, gda_binary->binary_length);
+    const auto datalen = gda_binary_get_size(const_cast<GdaBinary*>(gda_binary));
+    selection_data.set(mime_type, 8, static_cast<guchar*>(data), datalen);
 
     // This set() override uses an 8-bit text format for the data.
     //selection_data.set_pixbuf(m_pixbuf_clipboard);

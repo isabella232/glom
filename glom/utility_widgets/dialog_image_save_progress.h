@@ -41,7 +41,7 @@ public:
 
   void save(const Glib::ustring& uri);
 
-  void set_image_data(const GdaBinary& data);
+  void set_image_data(const GdaBinary* data);
 
 private:
   void on_stream_write(const Glib::RefPtr<Gio::AsyncResult>& result, unsigned int offset);
