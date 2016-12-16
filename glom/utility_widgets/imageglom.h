@@ -31,7 +31,7 @@
 #include <gtkmm/scrolledwindow.h>
 #include <giomm/appinfo.h>
 #include <giomm/simpleactiongroup.h>
-#include <evince-view.h>
+//#include <evince-view.h>
 
 namespace Glom
 {
@@ -60,7 +60,7 @@ public:
 
   void set_read_only(bool read_only = true) override;
 
-  void on_ev_job_finished(EvJob* job);
+  //void on_ev_job_finished(EvJob* job);
 
 private:
   void init();
@@ -111,8 +111,8 @@ private:
 
   //For anything supported by Evince:
   std::unique_ptr<Gtk::ScrolledWindow> m_ev_scrolled_window;
-  EvView* m_ev_view;
-  EvDocumentModel* m_ev_document_model;
+  //EvView* m_ev_view;
+  //EvDocumentModel* m_ev_document_model;
 
   //For anything supported by GdkPixbuf,
   //or for representative thumbnails and icons:
