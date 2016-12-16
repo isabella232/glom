@@ -52,9 +52,9 @@ void AddDel_WithButtons::init()
   m_ButtonBox.set_layout(Gtk::BUTTONBOX_END);
   m_ButtonBox.set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
-  //m_Button_Add.set_border_width(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
-  //m_Button_Del.set_border_width(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
-  //m_Button_Edit.set_border_width(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
+  //m_Button_Add.set_margin(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
+  //m_Button_Del.set_margin(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
+  //m_Button_Edit.set_margin(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   setup_buttons();
   pack_start(m_ButtonBox, Gtk::PACK_SHRINK);

@@ -155,7 +155,7 @@ create_window()
   auto vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 6));
   vbox->show();
 
-  window->set_border_width (8);
+  window->set_margin (8);
 
   window->add (*hbox);
   hbox->pack_start(*vbox, false, false, 0);
