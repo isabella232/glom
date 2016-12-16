@@ -38,7 +38,7 @@ Box_WithButtons::Box_WithButtons()
 {
   //m_document = nullptr;
 
-  //set_border_width(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
+  //set_margin(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
   set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   //Connect signals:
@@ -52,7 +52,7 @@ Box_WithButtons::Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk
 {
   //m_document = nullptr;
 
-  //set_border_width(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
+  //set_margin(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
   set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   //Connect signals:
