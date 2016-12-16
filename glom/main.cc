@@ -62,7 +62,7 @@
 #include <glom/application.h>
 #include <glom/utils_ui.h>
 
-#include <evince-view.h>
+//#include <evince-view.h>>
 
 #include <gtkmm/main.h>
 
@@ -499,7 +499,7 @@ main(int argc, char* argv[])
     Goocanvas::init();
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
-    ev_init();
+    //ev_init();
 
 #ifdef GLOM_ENABLE_POSTGRESQL
 

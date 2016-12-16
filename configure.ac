@@ -169,7 +169,7 @@ AS_IF([test "x$glom_host_win32" != xyes],
       [REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS libepc-2.0 >= 0.4.0"])
 
 # Libraries used by Glom:
-REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS gtkmm-4.0 >= 3.18.0 goocanvasmm-3.0 >= 1.90.11 evince-view-3.0"
+REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS gtkmm-4.0 >= 3.18.0 goocanvasmm-3.0 >= 1.90.11"
 
 # Do not require iso-codes in client-only mode, or on Windows:
 # TODO: Package iso-codes for Windows?

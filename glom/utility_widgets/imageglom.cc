@@ -49,16 +49,16 @@ ImageGlom::type_vec_ustrings ImageGlom::m_evince_supported_mime_types;
 ImageGlom::type_vec_ustrings ImageGlom::m_gdkpixbuf_supported_mime_types;
 
 ImageGlom::ImageGlom()
-: m_ev_view(nullptr),
-  m_ev_document_model(nullptr)
+//: m_ev_view(nullptr),
+  //m_ev_document_model(nullptr)
 {
   init();
 }
 
 ImageGlom::ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
-: Gtk::EventBox(cobject),
+: Gtk::EventBox(cobject) /*,
   m_ev_view(nullptr),
-  m_ev_document_model(nullptr)
+  m_ev_document_model(nullptr) */
 {
   init();
 }
@@ -70,14 +70,16 @@ void ImageGlom::clear_image_from_widgets()
     m_image->set(Glib::RefPtr<Gdk::Pixbuf>()); //TODO: Add an unset() to gtkmm.
   }
 
+  /*
   if(m_ev_document_model)
   {
     g_object_unref(m_ev_document_model);
     m_ev_document_model = nullptr;
   }
+  */
 }
 
-void ImageGlom::init_widgets(bool use_evince)
+void ImageGlom::init_widgets(bool /* use_evince */)
 {
   clear_image_from_widgets();
 
@@ -85,6 +87,7 @@ void ImageGlom::init_widgets(bool use_evince)
 
   Gtk::Widget* widget = nullptr;
 
+  /*
   if(use_evince)
   {
     if(!m_ev_view)
@@ -110,14 +113,17 @@ void ImageGlom::init_widgets(bool use_evince)
     widget = m_ev_scrolled_window.get();
   }
   else
+  */
   {
     m_image = std::make_unique<Gtk::Image>();
+    /*
     if(m_ev_view)
     {
       gtk_widget_destroy(GTK_WIDGET(m_ev_view));
       m_ev_view = nullptr;
       m_ev_scrolled_window.reset();
     }
+    */
 
     widget = m_image.get();
   }
@@ -248,6 +254,7 @@ void ImageGlom::on_size_allocate(Gtk::Allocation& allocation)
   }
 }
 
+/*
 static void image_glom_ev_job_finished(EvJob* job, void* user_data)
 {
   g_assert(job);
@@ -274,6 +281,7 @@ void ImageGlom::on_ev_job_finished(EvJob* job)
   //TODO: Show that we are no longer loading.
   //ev_view_set_loading(m_ev_view, FALSE);
 }
+*/
 
 const GdaBinary* ImageGlom::get_binary() const
 {
@@ -319,6 +327,7 @@ void ImageGlom::fill_evince_supported_mime_types()
   if(!m_evince_supported_mime_types.empty())
     return;
 
+/*
   //Discover what mime types libevview can support.
   //Older versions supported image types too, via GdkPixbuf,
   //but that support was then removed.
@@ -343,6 +352,7 @@ void ImageGlom::fill_evince_supported_mime_types()
       //std::cout << "evince supported mime_type=" << mime_type << std::endl;
     }
   }
+*/
 }
 
 void ImageGlom::fill_gdkpixbuf_supported_mime_types()
@@ -396,7 +406,8 @@ void ImageGlom::show_image_data()
     */
     //TODO: Test failure asynchronously.
 
-    const auto uri = save_to_temp_file(false /* don't show progress */);
+    /*
+    const auto uri = save_to_temp_file(false / don't show progress /);
     if(uri.empty())
     {
       std::cerr << G_STRFUNC << "Could not save temp file to show in the EvView.\n";
@@ -414,6 +425,7 @@ void ImageGlom::show_image_data()
     g_signal_connect (job, "finished",
       G_CALLBACK (image_glom_ev_job_finished), this);
     ev_job_scheduler_push_job (job, EV_JOB_PRIORITY_NONE);
+    */
   }
   else
   {
@@ -673,7 +685,7 @@ static void set_file_filter_images(Gtk::FileChooser& file_chooser)
   filter->add_pixbuf_formats();
   file_chooser.add_filter(filter);
 
-  ev_document_factory_add_filters(GTK_WIDGET(file_chooser.gobj()), nullptr);
+  //ev_document_factory_add_filters(GTK_WIDGET(file_chooser.gobj()), nullptr);
 
   //Make Images the currently-selected one:
   file_chooser.set_filter(filter);
