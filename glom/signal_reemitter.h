@@ -63,7 +63,7 @@ void signal_connect_for_reemit_0args(T_sig_to_catch sig_to_catch, const T_sig_to
  * @param sig_to_emit The signal to emit when @a sig_to_catch is handled.
  */
 template<class T_arg1, class T_sig_to_emit>
-void signal_connect_for_reemit_1arg(sigc::signal1<void, T_arg1> sig_to_catch, const T_sig_to_emit& sig_to_emit)
+void signal_connect_for_reemit_1arg(sigc::signal<void(T_arg1)> sig_to_catch, const T_sig_to_emit& sig_to_emit)
 {
   sig_to_catch.connect( sigc::bind( sigc::ptr_fun(&reemit_1arg<T_sig_to_emit, T_arg1>), sig_to_emit) );
 }
@@ -73,7 +73,7 @@ void signal_connect_for_reemit_1arg(sigc::signal1<void, T_arg1> sig_to_catch, co
  * @param sig_to_emit The signal to emit when @a sig_to_catch is handled.
  */
 template<class T_arg1, class T_arg2, class T_sig_to_emit>
-void signal_connect_for_reemit_2args(sigc::signal2<void, T_arg1, T_arg2> sig_to_catch, const T_sig_to_emit& sig_to_emit)
+void signal_connect_for_reemit_2args(sigc::signal<void(T_arg1, T_arg2)> sig_to_catch, const T_sig_to_emit& sig_to_emit)
 {
   sig_to_catch.connect( sigc::bind( sigc::ptr_fun(&reemit_2args<T_sig_to_emit, T_arg1, T_arg2>), sig_to_emit) );
 }
