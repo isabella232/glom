@@ -37,7 +37,7 @@ Window_BoxHolder::Window_BoxHolder(Box_WithButtons* pBox, const Glib::ustring& t
 
   pBox->signal_cancelled.connect(sigc::mem_fun(*this, &Window_BoxHolder::on_box_cancelled));
 
-  set_border_width(Utils::to_utype(UiUtils::DefaultSpacings::LARGE));
+  property_margin() = Utils::to_utype(UiUtils::DefaultSpacings::LARGE);
   add(*pBox);
 
   pBox->show();
