@@ -40,7 +40,8 @@ const char* DialogImageLoadProgress::glade_id("dialog_image_load_progress");
 const bool DialogImageLoadProgress::glade_developer(false);
 
 DialogImageLoadProgress::DialogImageLoadProgress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
-: Gtk::Dialog(cobject)
+: Gtk::Dialog(cobject),
+  m_data(nullptr, &gda_binary_free)
 {
   builder->get_widget("progress_bar", m_progress_bar);
 
@@ -53,7 +54,7 @@ DialogImageLoadProgress::DialogImageLoadProgress(BaseObjectType* cobject, const 
 DialogImageLoadProgress::~DialogImageLoadProgress()
 {
   if(m_data)
-    g_free(m_data->data);
+    gda_binary_free(m_data.get());
 
   // TODO: Cancel outstanding async operations in destructor?
 }
@@ -63,9 +64,7 @@ void DialogImageLoadProgress::load(const Glib::ustring& uri)
   // Can only load one file with data
   g_assert(!m_data.get());
 
-  m_data = std::make_unique<GdaBinary>();
-  m_data->data = nullptr;
-  m_data->binary_length = 0;
+  m_data = UniquePtr(gda_binary_new(), &gda_binary_free);
 
   m_file = Gio::File::create_for_uri(uri);
   m_progress_bar->set_text(Glib::ustring::compose("Loading %1...", m_file->get_parse_name()));
@@ -100,15 +99,17 @@ void DialogImageLoadProgress::on_query_info(const Glib::RefPtr<Gio::AsyncResult>
   try
   {
     auto info = m_stream->query_info_finish(result);
-    m_data->binary_length = info->get_size();
 
     // We need to use the glib allocator here:
-    m_data->data = static_cast<guchar*>(g_try_malloc(m_data->binary_length));
-    if(!m_data->data)
+    const auto data_len = info->get_size();
+    const auto data = static_cast<guchar*>(g_try_malloc(data_len));
+    gda_binary_set_data(m_data.get(), data, data_len);
+    if(!data)
       error(_("Not enough memory available to load the image"));
 
     // Read the first chunk from the file
-    m_stream->read_async(m_data->data, std::min<gsize>(CHUNK_SIZE, m_data->binary_length), sigc::bind(sigc::mem_fun(*this, &DialogImageLoadProgress::on_stream_read), 0));
+    m_stream->read_async(data, std::min<gsize>(CHUNK_SIZE, data_len),
+      sigc::bind(sigc::mem_fun(*this, &DialogImageLoadProgress::on_stream_read), 0));
   }
   catch(const Glib::Error& ex)
   {
@@ -124,13 +125,14 @@ void DialogImageLoadProgress::on_stream_read(const Glib::RefPtr<Gio::AsyncResult
     g_assert(size >= 0); // Would have thrown an exception otherwise
 
     // Cannot read more data than there is available in the file:
-    g_assert( static_cast<gssize>(offset + size) <= static_cast<gssize>(m_data->binary_length));
+    const auto data_len = gda_binary_get_size(m_data.get());
+    g_assert( static_cast<gssize>(offset + size) <= static_cast<gssize>(data_len));
 
     // Set progress
-    m_progress_bar->set_fraction(static_cast<double>(offset + size) / m_data->binary_length);
+    m_progress_bar->set_fraction(static_cast<double>(offset + size) / data_len);
 
     // Read next chunk, if any
-    if( static_cast<gssize>(offset + size) < static_cast<gssize>(m_data->binary_length) )
+    if( static_cast<gssize>(offset + size) < static_cast<gssize>(data_len) )
     {
       // Even if choose a priority lower than GDK_PRIORITY_REDRAW + 10 for the
       // read_async we don't see the progressbar progressing while the image
@@ -150,9 +152,12 @@ void DialogImageLoadProgress::on_stream_read(const Glib::RefPtr<Gio::AsyncResult
 
 void DialogImageLoadProgress::on_read_next(unsigned int at)
 {
-  g_assert(at < static_cast<gsize>(m_data->binary_length));
+  const auto data_len = gda_binary_get_size(m_data.get());
+  g_assert(at < static_cast<gsize>(data_len));
 
-  m_stream->read_async(m_data->data + at, std::min<gsize>(CHUNK_SIZE, m_data->binary_length - at), sigc::bind(sigc::mem_fun(*this, &DialogImageLoadProgress::on_stream_read), at));
+  const auto data = gda_binary_get_data(m_data.get());
+  m_stream->read_async(static_cast<guchar*>(data) + at, std::min<gsize>(CHUNK_SIZE, data_len - at),
+    sigc::bind(sigc::mem_fun(*this, &DialogImageLoadProgress::on_stream_read), at));
 }
 
 void DialogImageLoadProgress::error(const Glib::ustring& error_message)
@@ -165,7 +170,7 @@ void DialogImageLoadProgress::error(const Glib::ustring& error_message)
   response(Gtk::RESPONSE_REJECT);
 }
 
-std::unique_ptr<GdaBinary> DialogImageLoadProgress::get_image_data()
+DialogImageLoadProgress::UniquePtr DialogImageLoadProgress::get_image_data()
 {
   //This will not be as if it was reset.
   //Not every std::move() does that, but std::move() with std::unique_ptr<> does.
