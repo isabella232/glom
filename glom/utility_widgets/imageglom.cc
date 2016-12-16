@@ -49,16 +49,16 @@ ImageGlom::type_vec_ustrings ImageGlom::m_evince_supported_mime_types;
 ImageGlom::type_vec_ustrings ImageGlom::m_gdkpixbuf_supported_mime_types;
 
 ImageGlom::ImageGlom()
-: m_ev_view(nullptr),
-  m_ev_document_model(nullptr)
+//: m_ev_view(nullptr),
+  //m_ev_document_model(nullptr)
 {
   init();
 }
 
 ImageGlom::ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
-: Gtk::EventBox(cobject),
+: Gtk::EventBox(cobject) /*,
   m_ev_view(nullptr),
-  m_ev_document_model(nullptr)
+  m_ev_document_model(nullptr) */
 {
   init();
 }
@@ -70,11 +70,13 @@ void ImageGlom::clear_image_from_widgets()
     m_image->set(Glib::RefPtr<Gdk::Pixbuf>()); //TODO: Add an unset() to gtkmm.
   }
 
+  /*
   if(m_ev_document_model)
   {
     g_object_unref(m_ev_document_model);
     m_ev_document_model = nullptr;
   }
+  */
 }
 
 void ImageGlom::init_widgets(bool use_evince)
@@ -85,6 +87,7 @@ void ImageGlom::init_widgets(bool use_evince)
 
   Gtk::Widget* widget = nullptr;
 
+  /*
   if(use_evince)
   {
     if(!m_ev_view)
@@ -110,6 +113,7 @@ void ImageGlom::init_widgets(bool use_evince)
     widget = m_ev_scrolled_window.get();
   }
   else
+  */
   {
     m_image = std::make_unique<Gtk::Image>();
     if(m_ev_view)
