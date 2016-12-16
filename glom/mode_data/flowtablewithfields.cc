@@ -377,7 +377,7 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
       {
         //Add a Related Records list for this portal:
         auto portal_box = create_related(portal, false /* no label, because it's in the tab instead. */);
-        //portal_box->set_border_width(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL)); It has margins around the frame's child widget instead.
+        //portal_box->set_margin(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL)); It has margins around the frame's child widget instead.
         portal_box->show();
         notebook_widget->append_page(*portal_box, *tab_label);
 

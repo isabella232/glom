@@ -32,7 +32,7 @@ TestWindow::TestWindow()
   m_button_start("Start"),
   m_button_stop("Stop")
 {
-  set_border_width(10);
+  set_margin(10);
   add(m_box);
   m_box.pack_start(m_button_start);
   m_box.pack_start(m_button_stop);

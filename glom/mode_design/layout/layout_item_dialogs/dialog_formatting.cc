@@ -29,7 +29,7 @@ Dialog_Formatting::Dialog_Formatting()
 : m_box_formatting(nullptr)
 {
   set_title(_("Formatting"));
-  set_border_width(6);
+  set_margin(6);
 
   //Get the formatting stuff:
   Utils::box_pack_start_glade_child_widget_derived_with_warning(get_content_area(), m_box_formatting);
