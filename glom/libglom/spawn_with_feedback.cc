@@ -18,7 +18,6 @@
  * Boston, MA 02110-1301 USA.
  */
 
-#include <glibmm/thread.h>
 #include <libglom/spawn_with_feedback.h>
 #include <glibmm/main.h>
 #include <glibmm/spawn.h>
