@@ -234,10 +234,15 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::get_pixbuf_for_gda_value(const Gnome::Gda::Va
     if(value.get_value_type() == GDA_TYPE_BLOB)
     {
       const auto blob = value.get_blob();
-      if(gda_blob_op_read_all(blob->op, const_cast<GdaBlob*>(blob)))
+      const auto op = blob ? gda_blob_get_op(const_cast<GdaBlob*>(blob)) : nullptr;
+      if(op && gda_blob_op_read_all(op, const_cast<GdaBlob*>(blob)))
       {
-        buffer_binary_length = blob->data.binary_length;
-        buffer_binary = blob->data.data;
+        const auto binary = gda_blob_get_binary(const_cast<GdaBlob*>(blob));
+        if (binary)
+        {
+          buffer_binary_length = gda_binary_get_size(binary);
+          buffer_binary = gda_binary_get_data(binary);
+        }
       }
       else
       {

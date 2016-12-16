@@ -255,7 +255,9 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
         return Glib::ustring();
       else
       {
-        auto base64 = g_base64_encode(gdabinary->data, gdabinary->binary_length);
+        const auto data = gda_binary_get_data(gdabinary);
+        const auto data_len = gda_binary_get_size(gdabinary);
+        auto base64 = g_base64_encode(static_cast<const guchar*>(data), data_len);
         if(!base64)
           return Glib::ustring();
         else
@@ -268,18 +270,24 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
     {
       const auto gdablob = gda_value_get_blob(value.gobj());
 
-      if(!gdablob || !gdablob->op)
+      if(!gdablob)
         return Glib::ustring();
       else
       {
-        if(!gda_blob_op_read_all(gdablob->op, const_cast<GdaBlob*>(gdablob)))
+        const auto op = gda_blob_get_op(const_cast<GdaBlob*>(gdablob));
+        if (!op)
+          return Glib::ustring();
+
+        if(!gda_blob_op_read_all(op, const_cast<GdaBlob*>(gdablob)))
         {
           return Glib::ustring();
         }
         else
         {
-          const auto gdabinary = &(gdablob->data);
-          auto base64 = g_base64_encode(gdabinary->data, gdabinary->binary_length);
+          const auto gdabinary = gda_blob_get_binary(const_cast<GdaBlob*>(gdablob));
+          const auto data = gda_binary_get_data(gdabinary);
+          const auto data_len = gda_binary_get_size(gdabinary);
+          auto base64 = g_base64_encode(static_cast<const guchar*>(data), data_len);
           if(!base64)
             return Glib::ustring();
           else
@@ -367,10 +375,10 @@ Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, glom_field_t
     } else {
       //What we use now in new files:
 
-      auto gdabinary = g_new(GdaBinary, 1);
+      auto gdabinary = gda_binary_new();
       gsize len = 0;
-      gdabinary->data = g_base64_decode(string_unescaped.c_str(), &len);
-      gdabinary->binary_length = len;
+      const auto data = g_base64_decode(string_unescaped.c_str(), &len);
+      gda_binary_set_data(gdabinary, data, len);
 
       Gnome::Gda::Value value;
       value_reinit(value.gobj(), GDA_TYPE_BINARY);
