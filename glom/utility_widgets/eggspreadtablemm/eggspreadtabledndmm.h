@@ -106,7 +106,7 @@ public:
    * <tt>void on_my_%widget_drop_possible()</tt>
    */
 
-  Glib::SignalProxy2< bool, Gtk::Widget*, bool& > signal_widget_drop_possible();
+  Glib::SignalProxy<bool(Gtk::Widget*, bool)> signal_widget_drop_possible();
 };
 
 } // namespace Egg
