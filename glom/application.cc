@@ -58,7 +58,7 @@ void Application::create_window(const Glib::RefPtr<Gio::File>& file)
   add_window(*window);
 
   //Delete the window when it is hidden:
-  window->signal_hide().connect(sigc::bind<Gtk::Window*>(sigc::mem_fun(*this,
+  window->signal_hide().connect(sigc::bind(sigc::mem_fun(*this,
     &Application::on_window_hide), window));
 
   Glib::ustring input_uri;
