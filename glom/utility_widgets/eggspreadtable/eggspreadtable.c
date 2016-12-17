@@ -77,20 +77,13 @@ static void egg_spread_table_set_property         (GObject             *object,
 
 /* GtkWidgetClass */
 static GtkSizeRequestMode egg_spread_table_get_request_mode (GtkWidget *widget);
-static void egg_spread_table_get_width            (GtkWidget           *widget,
-						   gint                *minimum_size,
-						   gint                *natural_size);
-static void egg_spread_table_get_height           (GtkWidget           *widget,
-						   gint                *minimum_size,
-						   gint                *natural_size);
-static void egg_spread_table_get_height_for_width (GtkWidget           *widget,
-						   gint                 width,
-						   gint                *minimum_height,
-						   gint                *natural_height);
-static void egg_spread_table_get_width_for_height (GtkWidget           *widget,
-						   gint                 width,
-						   gint                *minimum_height,
-						   gint                *natural_height);
+static void egg_spread_table_measure (GtkWidget      *widget,
+                                      GtkOrientation  orientation,
+                                      int             for_size,
+                                      int            *minimum,
+                                      int            *natural,
+                                      int            *minimum_baseline,
+                                      int            *natural_baseline);
 static void egg_spread_table_size_allocate        (GtkWidget           *widget,
 						   GtkAllocation       *allocation);
 
@@ -153,10 +146,7 @@ egg_spread_table_class_init (EggSpreadTableClass *class)
   gobject_class->set_property         = egg_spread_table_set_property;
 
   widget_class->get_request_mode               = egg_spread_table_get_request_mode;
-  widget_class->get_preferred_width            = egg_spread_table_get_width;
-  widget_class->get_preferred_height           = egg_spread_table_get_height;
-  widget_class->get_preferred_height_for_width = egg_spread_table_get_height_for_width;
-  widget_class->get_preferred_width_for_height = egg_spread_table_get_width_for_height;
+  widget_class->measure                        = egg_spread_table_measure;
   widget_class->size_allocate                  = egg_spread_table_size_allocate;
 
   container_class->add                = egg_spread_table_add;
@@ -169,7 +159,7 @@ egg_spread_table_class_init (EggSpreadTableClass *class)
   class->build_segments_for_size = egg_spread_table_build_segments;
   class->insert_child = egg_spread_table_real_insert_child;
 
-  gtk_container_class_handle_border_width (container_class);
+  // TODO: Replace this for gtk4? gtk_container_class_handle_border_width (container_class);
 
   /* GObjectClass properties */
   g_object_class_override_property (gobject_class, PROP_ORIENTATION, "orientation");
@@ -351,6 +341,7 @@ get_widget_size (GtkWidget      *widget,
 /* This gets the widest child, it is used to reserve
  * enough space for (columns * widest_child)
  */
+/* TODO: Should we still use this with gtk4?
 static void
 get_largest_line_thickness (EggSpreadTable *table,
 			    gint           *min_thickness,
@@ -380,6 +371,7 @@ get_largest_line_thickness (EggSpreadTable *table,
   *min_thickness = min_size;
   *nat_thickness = nat_size;
 }
+*/
 
 /* Gets the column width for a given width */
 static gint
@@ -507,151 +499,79 @@ egg_spread_table_get_request_mode (GtkWidget *widget)
 }
 
 static void
-egg_spread_table_get_width (GtkWidget           *widget,
-			    gint                *minimum_size,
-			    gint                *natural_size)
-{
+egg_spread_table_measure (GtkWidget      *widget,
+                          GtkOrientation  orientation,
+                          int             for_size,
+                          int            *minimum,
+                          int            *natural,
+                          int            *minimum_baseline,
+                          int            *natural_baseline) {
   EggSpreadTable         *table = EGG_SPREAD_TABLE (widget);
   EggSpreadTablePrivate  *priv  = table->priv;
-  gint                    min_width, nat_width;
 
-  if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
-    {
-      /* Get the width for minimum height */
-      gint min_height;
+  /* TODO? */
+  *minimum_baseline = -1;
+  *natural_baseline = -1;
 
-      GTK_WIDGET_GET_CLASS (widget)->get_preferred_height (widget, &min_height, NULL);
-      GTK_WIDGET_GET_CLASS (widget)->get_preferred_width_for_height (widget, min_height,
-								     &min_width, &nat_width);
-    }
-  else /* GTK_ORIENTATION_VERTICAL */
-    {
-      gint min_thickness, nat_thickness;
+  if (orientation == GTK_ORIENTATION_HORIZONTAL) {
+    gint                    min_width = 0, nat_width = 0;
 
-      get_largest_line_thickness (table, &min_thickness, &nat_thickness);
-
-      min_width = min_thickness * priv->lines + LINE_SPACING (table) * (priv->lines - 1);
-      nat_width = nat_thickness * priv->lines + LINE_SPACING (table) * (priv->lines - 1);
-    }
-
-#if 0
-  g_print ("get_width() called; returning min %d and nat %d\n",
-	   min_width, nat_width);
-#endif
-
-  if (minimum_size)
-    *minimum_size = min_width;
-
-  if (natural_size)
-    *natural_size = nat_width;
-}
-
-static void
-egg_spread_table_get_height (GtkWidget           *widget,
-			     gint                *minimum_size,
-			     gint                *natural_size)
-{
-  EggSpreadTable         *table = EGG_SPREAD_TABLE (widget);
-  EggSpreadTablePrivate  *priv  = table->priv;
-  gint                    min_height, nat_height;
-
-  if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
-    {
-      gint min_thickness, nat_thickness;
-
-      get_largest_line_thickness (table, &min_thickness, &nat_thickness);
-
-      min_height = min_thickness * priv->lines + LINE_SPACING (table) * (priv->lines - 1);
-      nat_height = nat_thickness * priv->lines + LINE_SPACING (table) * (priv->lines - 1);
-    }
-  else /* GTK_ORIENTATION_VERTICAL */
-    {
-      /* Return the height for the minimum width */
-      gint min_width;
-
-      GTK_WIDGET_GET_CLASS (widget)->get_preferred_width (widget, &min_width, NULL);
-      GTK_WIDGET_GET_CLASS (widget)->get_preferred_height_for_width (widget, min_width,
-								     &min_height, &nat_height);
-    }
+    if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
+      {
+        /* This will segment the lines evenly and return the overall
+         * lengths of the split segments */
+        nat_width = min_width = egg_spread_table_build_segments_for_size (table, for_size, NULL);
+      }
+    else /* GTK_ORIENTATION_VERTICAL */
+      {
+        /* Just return the minimum/natural height */
+        GTK_WIDGET_GET_CLASS (widget)->measure (widget,
+            GTK_ORIENTATION_HORIZONTAL,
+            -1,
+            &min_width, &nat_width,
+            NULL, NULL);
+      }
 
 #if 0
-  g_print ("get_height() called; returning min %d and nat %d\n",
-	   min_height, nat_height);
+    g_print ("measure() called for height %d; returning min %d and nat %d\n",
+             height, min_width, nat_width);
 #endif
 
-  if (minimum_size)
-    *minimum_size = min_height;
+    if (minimum)
+      *minimum = min_width;
 
-  if (natural_size)
-    *natural_size = nat_height;
-}
+    if (natural)
+      *natural = nat_width;
+  } else {  // VERTICAL
+    gint                    min_height = 0, nat_height = 0;
 
-static void
-egg_spread_table_get_height_for_width (GtkWidget           *widget,
-				       gint                 width,
-				       gint                *minimum_height,
-				       gint                *natural_height)
-{
-  EggSpreadTable         *table = EGG_SPREAD_TABLE (widget);
-  EggSpreadTablePrivate  *priv  = table->priv;
-  gint                    min_height = 0, nat_height = 0;
-
-  if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
-    {
-      /* Just return the minimum/natural height */
-      GTK_WIDGET_GET_CLASS (widget)->get_preferred_height (widget, &min_height, &nat_height);
-    }
-  else /* GTK_ORIENTATION_VERTICAL */
-    {
-      /* This will segment the lines evenly and return the overall
-       * lengths of the split segments */
-      nat_height = min_height = egg_spread_table_build_segments_for_size (table, width, NULL);
-    }
+    if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
+      {
+        /* Just return the minimum/natural height */
+        GTK_WIDGET_GET_CLASS (widget)->measure (widget,
+            GTK_ORIENTATION_VERTICAL,
+            -1,
+            &min_height, &nat_height,
+            NULL, NULL);
+      }
+    else /* GTK_ORIENTATION_VERTICAL */
+      {
+        /* This will segment the lines evenly and return the overall
+         * lengths of the split segments */
+        nat_height = min_height = egg_spread_table_build_segments_for_size (table, for_size, NULL);
+      }
 
 #if 0
-  g_print ("get_height_for_width() called for width %d; returning min %d and nat %d\n",
-	   width, min_height, nat_height);
+    g_print ("measure() called for width %d; returning min %d and nat %d\n",
+             width, min_height, nat_height);
 #endif
 
-  if (minimum_height)
-    *minimum_height = min_height;
+    if (minimum)
+      *minimum = min_height;
 
-  if (natural_height)
-    *natural_height = nat_height;
-}
-
-static void
-egg_spread_table_get_width_for_height (GtkWidget           *widget,
-				       gint                 height,
-				       gint                *minimum_width,
-				       gint                *natural_width)
-{
-  EggSpreadTable         *table = EGG_SPREAD_TABLE (widget);
-  EggSpreadTablePrivate  *priv      = table->priv;
-  gint                    min_width = 0, nat_width = 0;
-
-  if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
-    {
-      /* This will segment the lines evenly and return the overall
-       * lengths of the split segments */
-      nat_width = min_width = egg_spread_table_build_segments_for_size (table, height, NULL);
-    }
-  else /* GTK_ORIENTATION_VERTICAL */
-    {
-      /* Just return the minimum/natural height */
-      GTK_WIDGET_GET_CLASS (widget)->get_preferred_width (widget, &min_width, &nat_width);
-    }
-
-#if 0
-  g_print ("get_width_for_height() called for height %d; returning min %d and nat %d\n",
-	   height, min_width, nat_width);
-#endif
-
-  if (minimum_width)
-    *minimum_width = min_width;
-
-  if (natural_width)
-    *natural_width = nat_width;
+    if (natural)
+      *natural = nat_height;
+  }
 }
 
 static void
