@@ -30,7 +30,7 @@
 #include <gtkmm/applicationwindow.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
-#include <glom/utility_widgets/gimpruler/gimpruler.h>
+//#include <glom/utility_widgets/gimpruler/gimpruler.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/spinbutton.h>
 #include <gtkmm/button.h>
@@ -181,8 +181,8 @@ private:
   type_list_items m_layout_items_to_paste;
 
   std::vector<Gtk::TargetEntry> m_drag_targets_rule;
-  GimpRuler* m_vruler;
-  GimpRuler* m_hruler;
+  //GimpRuler* m_vruler;
+  //GimpRuler* m_hruler;
 
   //Main menu:
   Glib::RefPtr<Gtk::Builder> m_builder;
