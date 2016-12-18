@@ -5,12 +5,13 @@
 static void      egg_placeholder_finalize             (GObject    *object);
 
 /* GtkWidgetClass */
-static void      egg_placeholder_get_preferred_width  (GtkWidget  *widget,
-						       gint       *min_width,
-						       gint       *nat_width);
-static void      egg_placeholder_get_preferred_height (GtkWidget  *widget,
-						       gint       *min_height,
-						       gint       *nat_height);
+static void      egg_placeholder_measure (GtkWidget      *widget,
+                                          GtkOrientation  orientation,
+                                          int             for_size,
+                                          int            *minimum,
+                                          int            *natural,
+                                          int            *minimum_baseline,
+                                          int            *natural_baseline);
 
 #define ANIMATION_STEP 0.12F  /* How much percentage of the size to animate per iteration */
 #define ANIMATION_FREQ 20    /* At what frequency in millisecs to animate */
@@ -42,8 +43,7 @@ static void egg_placeholder_class_init (EggPlaceholderClass * klass)
 
   object_class->finalize = egg_placeholder_finalize;
 
-  widget_class->get_preferred_width  = egg_placeholder_get_preferred_width;
-  widget_class->get_preferred_height = egg_placeholder_get_preferred_height;
+  widget_class->measure  = egg_placeholder_measure;
 
   placeholder_signals[SIGNAL_ANIMATION_DONE] = 
     g_signal_new ("animation-done",
@@ -85,38 +85,36 @@ egg_placeholder_finalize (GObject * object)
 }
 
 static void
-egg_placeholder_get_preferred_width (GtkWidget  *widget,
-				     gint       *min_width,
-				     gint       *nat_width)
-{
+egg_placeholder_measure (GtkWidget      *widget,
+                         GtkOrientation  orientation,
+                         G_GNUC_UNUSED int           for_size,
+                         int            *minimum,
+                         int            *natural,
+                         int            *minimum_baseline,
+                         int            *natural_baseline) {
   EggPlaceholder *placeholder = EGG_PLACEHOLDER (widget);
-  gint            width;
 
-  if (placeholder->priv->animation_orientation == GTK_ORIENTATION_HORIZONTAL)
-    width = placeholder->priv->width * placeholder->priv->animation_percent;
-  else
-    width = placeholder->priv->width;
+  /* TODO: Use for_size? */
 
-  *min_width = *nat_width = width;
+  if (orientation == GTK_ORIENTATION_HORIZONTAL) {
+    if (placeholder->priv->animation_orientation == GTK_ORIENTATION_HORIZONTAL)
+      *natural = placeholder->priv->width * placeholder->priv->animation_percent;
+    else
+      *natural = placeholder->priv->width;
+  } else {
+    if (placeholder->priv->animation_orientation == GTK_ORIENTATION_VERTICAL)
+      *natural = placeholder->priv->height * placeholder->priv->animation_percent;
+    else
+      *natural = placeholder->priv->height;
+
+  }
+
+  *minimum = *natural;
+  *minimum_baseline = 0;
+  *natural_baseline = 0;
 }
 
-static void
-egg_placeholder_get_preferred_height (GtkWidget  *widget,
-				      gint       *min_height,
-				      gint       *nat_height)
-{
-  EggPlaceholder *placeholder = EGG_PLACEHOLDER (widget);
-  gint            height;
-
-  if (placeholder->priv->animation_orientation == GTK_ORIENTATION_VERTICAL)
-    height = placeholder->priv->height * placeholder->priv->animation_percent;
-  else
-    height = placeholder->priv->height;
-
-  *min_height = *nat_height = height;
-}
-
-static gboolean 
+static gboolean
 placeholder_animate (EggPlaceholder *placeholder)
 {
   if (placeholder->priv->animation_direction == EGG_PLACEHOLDER_ANIM_IN)
