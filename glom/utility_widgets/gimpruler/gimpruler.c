@@ -120,12 +120,13 @@ static void          gimp_ruler_map                   (GtkWidget      *widget);
 static void          gimp_ruler_unmap                 (GtkWidget      *widget);
 static void          gimp_ruler_size_allocate         (GtkWidget      *widget,
                                                        GtkAllocation  *allocation);
-static void          gimp_ruler_get_preferred_width   (GtkWidget      *widget,
-                                                       gint           *minimum_width,
-                                                       gint           *natural_width);
-static void          gimp_ruler_get_preferred_height  (GtkWidget      *widget,
-                                                       gint           *minimum_height,
-                                                       gint           *natural_height);
+static void          gimp_ruler_measure               (GtkWidget      *widget,
+                                                       GtkOrientation  orientation,
+                                                       int             for_size,
+                                                       int            *minimum,
+                                                       int            *natural,
+                                                       int            *minimum_baseline,
+                                                       int            *natural_baseline);
 static void          gimp_ruler_style_updated         (GtkWidget      *widget);
 static gboolean      gimp_ruler_motion_notify         (GtkWidget      *widget,
                                                        GdkEventMotion *event);
@@ -164,8 +165,7 @@ gimp_ruler_class_init (GimpRulerClass *klass)
   widget_class->unrealize            = gimp_ruler_unrealize;
   widget_class->map                  = gimp_ruler_map;
   widget_class->unmap                = gimp_ruler_unmap;
-  widget_class->get_preferred_width  = gimp_ruler_get_preferred_width;
-  widget_class->get_preferred_height = gimp_ruler_get_preferred_height;
+  widget_class->measure              = gimp_ruler_measure;
   widget_class->size_allocate        = gimp_ruler_size_allocate;
   widget_class->style_updated        = gimp_ruler_style_updated;
   widget_class->motion_notify_event  = gimp_ruler_motion_notify;
@@ -924,27 +924,33 @@ gimp_ruler_size_request (GtkWidget      *widget,
 }
 
 static void
-gimp_ruler_get_preferred_width (GtkWidget *widget,
-                                gint      *minimum_width,
-                                gint      *natural_width)
+gimp_ruler_measure (GtkWidget      *widget,
+                    GtkOrientation  orientation,
+                    G_GNUC_UNUSED int             for_size,
+                    int            *minimum,
+                    int            *natural,
+                    int            *minimum_baseline,
+                    int            *natural_baseline)
 {
   GtkRequisition requisition;
+  /* TODO: Use for_size? */
 
   gimp_ruler_size_request (widget, &requisition);
 
-  *minimum_width = *natural_width = requisition.width;
-}
+  if (orientation == GTK_ORIENTATION_HORIZONTAL)
+    {
+      *minimum = requisition.width;
+    }
+  else
+    {
+      *minimum = requisition.height;
+    }
 
-static void
-gimp_ruler_get_preferred_height (GtkWidget *widget,
-                                 gint      *minimum_height,
-                                 gint      *natural_height)
-{
-  GtkRequisition requisition;
+  *natural = *minimum;
 
-  gimp_ruler_size_request (widget, &requisition);
-
-  *minimum_height = *natural_height = requisition.height;
+  /* TODO? */
+  *minimum_baseline = 0;
+  *natural_baseline = 0;
 }
 
 static void
