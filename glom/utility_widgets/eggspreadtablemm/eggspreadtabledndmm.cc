@@ -297,9 +297,9 @@ bool SpreadTableDnd::on_widget_drop_possible(Gtk::Widget* widget, bool& drop_pos
     return false;
 }
 
-Glib::SignalProxy2< bool, Gtk::Widget*, bool& > SpreadTableDnd::signal_widget_drop_possible()
+Glib::SignalProxy<bool(Gtk::Widget*, bool&)> SpreadTableDnd::signal_widget_drop_possible()
 {
-  return Glib::SignalProxy2< bool, Gtk::Widget*, bool& >(this, &SpreadTableDnd_signal_widget_drop_possible_info);
+  return Glib::SignalProxy<bool(Gtk::Widget*, bool&)>(this, &SpreadTableDnd_signal_widget_drop_possible_info);
 }
 
 } // namespace Egg
