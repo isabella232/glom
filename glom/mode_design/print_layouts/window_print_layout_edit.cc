@@ -59,8 +59,8 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_ignore_spinbutton_signals(false),
   m_drag_preview_requested(false),
   m_temp_rule_horizontal(false),
-  m_vruler(nullptr),
-  m_hruler(nullptr),
+  //m_vruler(nullptr),
+  //m_hruler(nullptr),
   m_builder(builder),
   m_context_menu(nullptr)
 {
