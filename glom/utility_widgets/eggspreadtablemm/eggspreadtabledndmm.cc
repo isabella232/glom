@@ -41,7 +41,7 @@ namespace
 static gboolean EggSpreadTableDnd_signal_widget_drop_possible_callback(EggSpreadTableDnd* self, GtkWidget* p0, gboolean* drop_possible, void* data)
 {
   using namespace Egg;
-  typedef sigc::slot< bool, Gtk::Widget*, bool& > SlotType;
+  typedef sigc::slot<bool(Gtk::Widget*, bool&)> SlotType;
 
   // Do not try to call a signal on a disassociated wrapper.
   if(Glib::ObjectBase::_get_current_wrapper((GObject*) self))
@@ -69,7 +69,7 @@ static gboolean EggSpreadTableDnd_signal_widget_drop_possible_callback(EggSpread
 static gboolean EggSpreadTableDnd_signal_widget_drop_possible_notify_callback(EggSpreadTableDnd* self, GtkWidget* p0, gboolean* drop_possible, void* data)
 {
   using namespace Egg;
-  typedef sigc::slot< bool, Gtk::Widget*, bool& > SlotType;
+  typedef sigc::slot<bool(Gtk::Widget*, bool&)> SlotType;
 
   // Do not try to call a signal on a disassociated wrapper.
   if(Glib::ObjectBase::_get_current_wrapper((GObject*) self))
