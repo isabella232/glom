@@ -101,6 +101,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
 
   //The rulers are not in the glade file because they use an unusual widget
   //that Glade wouldn't usually know about:
+  /*
   m_vruler = GIMP_RULER(gimp_ruler_new(GTK_ORIENTATION_VERTICAL));
   gtk_widget_show(GTK_WIDGET(m_vruler));
   Glib::wrap(GTK_WIDGET(m_vruler))->drag_source_set(m_drag_targets_rule);
@@ -133,6 +134,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
 
   gimp_ruler_set_unit(m_hruler, GIMP_UNIT_MM);
   gimp_ruler_set_unit(m_vruler, GIMP_UNIT_MM);
+  */
 
   builder->get_widget("toolpalette_box", m_palette_box);
 
@@ -322,8 +324,8 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
   canvas_convert_from_drag_pixels(item_x, item_y, true /* adjust for scrolling */);
 
   //Show the position in the rulers:
-  gimp_ruler_set_position(m_hruler, item_x);
-  gimp_ruler_set_position(m_vruler, item_y);
+  //gimp_ruler_set_position(m_hruler, item_x);
+  //gimp_ruler_set_position(m_vruler, item_y);
 
   //Handle dragging of the rule from the GimpRuler widget:
   if(target == DRAG_TARGET_NAME_RULE)
@@ -720,8 +722,8 @@ bool Window_PrintLayout_Edit::on_canvas_motion_notify_event(GdkEventMotion* moti
   double y = motion_event->y;
   canvas_convert_from_drag_pixels(x, y, false /* do not adjust for scrolling */);
 
-  gimp_ruler_set_position(m_hruler, x);
-  gimp_ruler_set_position(m_vruler, y);
+  //gimp_ruler_set_position(m_hruler, x);
+  //gimp_ruler_set_position(m_vruler, y);
 
   return false;
 }
@@ -934,6 +936,7 @@ void Window_PrintLayout_Edit::do_menu_view_show_rules(bool active)
 
   m_canvas.set_rules_visibility(active);
 
+  /*
   auto hruler = Glib::wrap(GTK_WIDGET(m_hruler));
   auto vruler = Glib::wrap(GTK_WIDGET(m_vruler));
 
@@ -947,6 +950,7 @@ void Window_PrintLayout_Edit::do_menu_view_show_rules(bool active)
     hruler->drag_source_unset();
     vruler->drag_source_unset();
   }
+  */
 }
 
 
@@ -1305,8 +1309,8 @@ void Window_PrintLayout_Edit::set_ruler_sizes()
   double y2 = 0;
   m_canvas.get_bounds(x1, y1, x2, y2);
 
-  gimp_ruler_set_range(m_hruler, x1, x2, x2);
-  gimp_ruler_set_range(m_vruler, y1, y2, x2);
+  //gimp_ruler_set_range(m_hruler, x1, x2, x2);
+  //gimp_ruler_set_range(m_vruler, y1, y2, x2);
 
   //Set the limits for the SpinButtons too:
   spinbutton_set_max(*m_spinbutton_x, x2);
@@ -1329,8 +1333,8 @@ void Window_PrintLayout_Edit::on_scroll_value_changed()
 
   //std::cout << "DEBUG: Calling m_hruler->set_range(" << x << ", " << x + width << ", 0, " <<  x + width << std::endl;
 
-  gimp_ruler_set_range(m_hruler, x, x + width, x + width);
-  gimp_ruler_set_range(m_vruler, y, y + height, y + height);
+  //gimp_ruler_set_range(m_hruler, x, x + width, x + width);
+  //gimp_ruler_set_range(m_vruler, y, y + height, y + height);
 }
 
 bool Window_PrintLayout_Edit::on_configure_event(GdkEventConfigure* configure_event)
@@ -1483,8 +1487,8 @@ void Window_PrintLayout_Edit::on_selected_item_moved(const Glib::RefPtr<CanvasIt
   double width = 0;
   double height = 0;
   get_dimensions_of_multiple_selected_items(x, y, width, height);
-  gimp_ruler_set_position(m_hruler, x);
-  gimp_ruler_set_position(m_vruler, y);
+  //gimp_ruler_set_position(m_hruler, x);
+  //gimp_ruler_set_position(m_vruler, y);
 }
 
 void Window_PrintLayout_Edit::on_spinbutton_x()
