@@ -36,7 +36,7 @@ public:
   Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   //Add a widget (probably a container) to the top half of the dialog:
-  void add(Gtk::Widget& widget) override;
+  void add(Gtk::Widget& widget);
 
   virtual void set_modified(bool modified = true);
 

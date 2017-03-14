@@ -168,7 +168,7 @@ public:
   static AppWindow* get_appwindow();
 
   /// Overidden to add a widget in the middle, under the menu, instead of replacing the whole contents.
-  void add(Gtk::Widget& child) override;
+  void add(Gtk::Widget& child);
 
   /// For instance, to create bold primary text for a dialog box, without marking the markup for translation.
   static Glib::ustring util_bold_message(const Glib::ustring& message);
