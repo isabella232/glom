@@ -136,7 +136,6 @@ protected:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   std::shared_ptr<Field> m_field_primary_key;
- void show_all_vfunc() override;
 
   Gnome::Gda::Value m_primary_key_value;
 

@@ -189,18 +189,5 @@ void AddDel_WithButtons::set_edit_button_label(const Glib::ustring& label)
   m_Button_Edit.set_use_underline();
 }
 
-//We override this so we can avoid showing an empty Extra button:
-void AddDel_WithButtons::show_all_vfunc()
-{
-  //Call the base class:
-  Gtk::Box::show_all_vfunc();
-
-  if(!m_label_extra.empty())
-    m_Button_Extra.show();
-  else
-    m_Button_Extra.hide();
-}
-
-
 } //namespace Glom
 

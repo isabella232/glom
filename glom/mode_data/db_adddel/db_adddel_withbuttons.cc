@@ -112,15 +112,6 @@ void DbAddDel_WithButtons::setup_buttons()
   m_ButtonBox.show();
 }
 
-void DbAddDel_WithButtons::show_all_vfunc()
-{
-  //Call the base class:
-  Gtk::Box::show_all_vfunc();
-
-  //Hide some stuff:
-  setup_buttons();
-}
-
 void DbAddDel_WithButtons::set_allow_view_details(bool val)
 {
   DbAddDel::set_allow_view_details(val);

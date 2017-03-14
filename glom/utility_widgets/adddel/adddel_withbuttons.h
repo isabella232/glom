@@ -58,8 +58,6 @@ private:
   void on_button_edit();
   void on_button_extra();
 
-  void show_all_vfunc() override;
-
   //member widgets:
   Gtk::ButtonBox m_ButtonBox;
   Gtk::Button m_Button_Add;
