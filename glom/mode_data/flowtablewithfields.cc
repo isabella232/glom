@@ -458,7 +458,6 @@ void FlowTableWithFields::add_field(const std::shared_ptr<LayoutItem_Field>& lay
   add_view(pDataWidget); //So it can get the document.
 
   info.m_second = pDataWidget;
-  info.m_second->show_all();
 
   //Add a label, if one is necessary:
   //We put it inside a box so that halign works as we want.
@@ -503,7 +502,6 @@ void FlowTableWithFields::add_field(const std::shared_ptr<LayoutItem_Field>& lay
   info.m_first_eventbox = eventbox; //Remember it so we can retrieve the column number later from FlowTable.
   eventbox->set_visible_window(false);
   eventbox->set_events(Gdk::ALL_EVENTS_MASK);
-  eventbox->show_all();
 
   add_widgets(*eventbox, *(info.m_second), true);
 

@@ -172,8 +172,6 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
 
     m_child = dynamic_cast<Gtk::Widget*>(pFieldWidget);
     set_child_size_by_field(field);
-
-    m_child->show_all();
   }
 
   if(m_child)

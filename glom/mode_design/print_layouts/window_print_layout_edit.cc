@@ -144,7 +144,6 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
 
   m_scrolled_window.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   m_scrolled_window.add(m_canvas);
-  m_scrolled_window.show_all();
   m_box_canvas->pack_start(m_scrolled_window);
   m_canvas.show();
 
