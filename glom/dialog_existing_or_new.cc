@@ -739,12 +739,13 @@ void Dialog_ExistingOrNew::on_service_removed(const Glib::ustring& name, const G
   auto children = m_iter_existing_network->children();
   for(auto iter = children.begin(); iter != children.end(); ++ iter)
   {
-    if((*iter)[m_existing_columns.m_col_service_name] == name)
+    auto& row = *iter;
+    if(row[m_existing_columns.m_col_service_name] == name)
     {
       const auto was_expanded = m_existing_view->row_expanded(m_existing_model->get_path(iter));
 
       // Remove from store
-      epc_service_info_unref((*iter)[m_existing_columns.m_col_service_info]);
+      epc_service_info_unref(row[m_existing_columns.m_col_service_info]);
       m_existing_model->erase(iter);
 
       // Reinsert dummy, if necessary
