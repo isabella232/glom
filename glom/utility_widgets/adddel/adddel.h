@@ -99,7 +99,11 @@ public:
 
   void remove_all();
 
+  Glib::ustring get_value(const Gtk::TreeModel::Row& iter, guint col);
+
+  // TODO: Remove this one?
   Glib::ustring get_value(const Gtk::TreeModel::iterator& iter, guint col);
+
   bool get_value_as_bool(const Gtk::TreeModel::iterator& iter, guint col);
 
   /** Get the row's hidden key

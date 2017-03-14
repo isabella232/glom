@@ -297,34 +297,37 @@ void AddDel::remove_all()
 }
 
 
-Glib::ustring AddDel::get_value(const Gtk::TreeModel::iterator& iter, guint col)
+Glib::ustring AddDel::get_value(const Gtk::TreeModel::Row& row, guint col)
 {
   Glib::ustring value;
 
   if(m_list_store)
   {
-    Gtk::TreeModel::Row treerow = *iter;
-
-    if(treerow)
+    if(row)
     {
       const guint col_real = col;
       //Get different types of data, depending on the column:
       if(m_column_types[col_real].m_style == AddDelColumnInfo::enumStyles::Boolean)
       {
         bool bool_value = false;
-        treerow.get_value(col_real, bool_value);
+        row.get_value(col_real, bool_value);
 
         //Create a string representation of the value:
         value = bool_value  ? "true" : "false";
       }
       else
       {
-        treerow.get_value(col_real, value);
+        row.get_value(col_real, value);
       }
     }
   }
 
   return value;
+}
+
+Glib::ustring AddDel::get_value(const Gtk::TreeModel::iterator& iter, guint col)
+{
+  return get_value(*iter, col);
 }
 
 bool AddDel::get_value_as_bool(const Gtk::TreeModel::iterator& iter, guint col)
