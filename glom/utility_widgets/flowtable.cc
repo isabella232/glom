@@ -29,6 +29,8 @@ namespace Glom
 {
 
 FlowTable::FlowTable()
+: Glib::ObjectBase("flowtable"),
+  Gtk::WidgetCustomDraw();
 : m_design_mode(false)
 {
   //Default to disabling drag and drop:
