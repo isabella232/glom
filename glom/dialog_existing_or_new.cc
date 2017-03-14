@@ -736,7 +736,7 @@ void Dialog_ExistingOrNew::on_service_found(const Glib::ustring& name, EpcServic
 void Dialog_ExistingOrNew::on_service_removed(const Glib::ustring& name, const Glib::ustring& /* type */)
 {
   // Find the entry with the given name
-  const auto children = m_iter_existing_network->children();
+  auto children = m_iter_existing_network->children();
   for(auto iter = children.begin(); iter != children.end(); ++ iter)
   {
     auto& row = *iter;
