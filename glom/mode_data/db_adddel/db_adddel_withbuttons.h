@@ -47,8 +47,6 @@ private:
   void on_button_edit();
   void on_selection_changed(bool selection) override;
 
-  void show_all_vfunc() override;
-
   //member widgets:
   Gtk::ButtonBox m_ButtonBox;
 

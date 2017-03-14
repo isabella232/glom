@@ -1005,13 +1005,4 @@ void Box_Data_Details::set_enable_drag_and_drop(bool enabled)
   m_FlowTable.set_enable_drag_and_drop(enabled);
 }
 
-void Box_Data_Details::show_all_vfunc()
-{
-  //Call the base class:
-  Box_Data::show_all_vfunc();
-
-  //Hide some stuff:
-  show_layout_toolbar(m_show_toolbar);
-}
-
 } //namespace Glom
