@@ -174,9 +174,6 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
   builder->get_widget("treeview_parts_main", m_treeview_parts_main);
   setup_model(*m_treeview_parts_main, m_model_parts_main);
 
-
-  show_all_children();
-
   //We save the connection, so we can disconnect it in the destructor,
   //because, for some reason, this signal handler is still called _after_ the destructor.
   //TODO: Fix that problem in GTK+ or gtkmm?

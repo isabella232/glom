@@ -47,8 +47,6 @@ Dialog_ImageObject::Dialog_ImageObject(BaseObjectType* cobject, const Glib::RefP
   //connect_each_widget(this);
 
   //Dialog_Properties::set_modified(false);
-
-  show_all_children();
 }
 
 void Dialog_ImageObject::on_button_choose()

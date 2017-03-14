@@ -203,8 +203,6 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
 
   builder->get_widget("button_edit", m_button_edit);
   m_button_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_edit) );
-
-  //show_all_children();
 }
 
 void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, std::shared_ptr<LayoutGroup>& group)

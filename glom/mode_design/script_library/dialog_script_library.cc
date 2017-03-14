@@ -67,8 +67,6 @@ Dialog_ScriptLibrary::Dialog_ScriptLibrary(BaseObjectType* cobject, const Glib::
      buffer->set_highlight_syntax();
      m_text_view->set_buffer(buffer);
   }
-
-  show_all_children();
 }
 
 void Dialog_ScriptLibrary::on_button_check()

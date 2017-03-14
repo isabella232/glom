@@ -60,8 +60,6 @@ Dialog_GroupBy::Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_button_formatting_group_by->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_GroupBy::on_button_formatting_group_by));
   m_button_field_sort_by->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_GroupBy::on_button_field_sort_by));
   m_button_secondary_fields->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_GroupBy::on_button_secondary_fields));
-
-  show_all_children();
 }
 
 Dialog_GroupBy::~Dialog_GroupBy()

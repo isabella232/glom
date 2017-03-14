@@ -102,8 +102,6 @@ void AddDel::init()
   set_ignore_treeview_signals(false);
 
   remove_all_columns(); //set up the default columns.
-
-  show_all_children();
 }
 
 void AddDel::set_treeview_accessible_name(const Glib::ustring& name)

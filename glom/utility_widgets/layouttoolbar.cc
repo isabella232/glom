@@ -65,8 +65,6 @@ LayoutToolbar::LayoutToolbar()
   add(m_group_items);
 
   set_drag_source();
-
-  show_all_children();
 }
 
 } // namespace Glom

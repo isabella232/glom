@@ -191,8 +191,6 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_canvas.signal_selection_changed().connect(
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_selection_changed));
   on_canvas_selection_changed(); //Disable relevant widgets or actions by default.
-
-  show_all_children();
 }
 
 void Window_PrintLayout_Edit::init_menu()

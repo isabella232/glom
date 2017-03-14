@@ -69,8 +69,6 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
       refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_ChooseField::on_treeview_selection_changed) );
     }
   }
-
-  show_all_children();
 }
 
 void Dialog_ChooseField::set_document(const std::shared_ptr<Document>& document, const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& field)

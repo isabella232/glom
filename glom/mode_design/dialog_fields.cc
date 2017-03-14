@@ -36,8 +36,6 @@ Dialog_Fields::Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Bu
 
   //Fill composite view:
   add_view(m_box);
-
-  show_all_children();
 }
 
 Dialog_Fields::~Dialog_Fields()

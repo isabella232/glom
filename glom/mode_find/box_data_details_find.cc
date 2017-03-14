@@ -41,8 +41,6 @@ Box_Data_Details_Find::Box_Data_Details_Find()
 #endif
 
   m_FlowTable.set_find_mode();
-
-  show_all_children();
 }
 
 bool Box_Data_Details_Find::init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform)

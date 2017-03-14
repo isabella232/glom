@@ -87,8 +87,6 @@ Dialog_SortFields::Dialog_SortFields(BaseObjectType* cobject, const Glib::RefPtr
 
   builder->get_widget("button_field_edit", m_button_field_edit);
   m_button_field_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_SortFields::on_button_edit_field) );
-
-  show_all_children();
 }
 
 void Dialog_SortFields::set_fields(const Glib::ustring& table_name, const LayoutItem_GroupBy::type_list_sort_fields& fields)

@@ -64,8 +64,6 @@ Dialog_FieldCalculation::Dialog_FieldCalculation(BaseObjectType* cobject, const 
   }
 
   //Dialog_Properties::set_modified(false);
-
-  show_all_children();
 }
 
 void Dialog_FieldCalculation::set_field(const std::shared_ptr<const Field>& field, const Glib::ustring& table_name)

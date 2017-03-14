@@ -57,8 +57,6 @@ Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefP
   add_view(m_box_formatting);
 
   m_radiobutton_custom_formatting->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_FieldLayout::on_radiobutton_custom_formatting));
-
-  show_all_children();
 }
 
 Dialog_FieldLayout::~Dialog_FieldLayout()

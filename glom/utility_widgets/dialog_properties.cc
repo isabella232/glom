@@ -41,9 +41,7 @@ Dialog_Properties::Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr
 
   //Connect signal handlers:
   m_button_cancel->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Properties::on_button_cancel) );
-  m_button_save->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Properties::on_button_save) );
-
-  show_all_children();
+  m_button_save->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Properties::on_button_save) );;
 }
 
 Dialog_Properties::type_signal_apply Dialog_Properties::signal_apply()

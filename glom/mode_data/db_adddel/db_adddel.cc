@@ -103,8 +103,6 @@ DbAddDel::DbAddDel()
 
   remove_all_columns(); //set up the default columns.
 
-  show_all_children();
-
   auto refSelection = m_tree_view.get_selection();
   if(refSelection)
   {

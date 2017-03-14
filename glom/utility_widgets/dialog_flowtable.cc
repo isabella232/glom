@@ -44,8 +44,6 @@ Dialog_FlowTable::Dialog_FlowTable(BaseObjectType* cobject, const Glib::RefPtr<G
   m_spin_columns->set_range(0, 10);
   m_spin_columns->set_increments(1, 2);
   m_spin_columns->set_value(3); //A sensible default.
-
-  show_all_children();
 }
 
 void Dialog_FlowTable::set_flowtable(FlowTableWithFields* flowtable)

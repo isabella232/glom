@@ -42,8 +42,6 @@ Dialog_Line::Dialog_Line(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   //connect_each_widget(this);
 
   //Dialog_Properties::set_modified(false);
-
-  show_all_children();
 }
 
 void Dialog_Line::set_line(const std::shared_ptr<const LayoutItem_Line>& line)

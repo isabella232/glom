@@ -108,8 +108,6 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
   m_button_group_users->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupsList::on_button_group_users) );
 
   enable_buttons();
-
-  show_all_children();
 }
 
 /*

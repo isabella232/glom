@@ -65,8 +65,6 @@ Dialog_ButtonScript::Dialog_ButtonScript(BaseObjectType* cobject, const Glib::Re
      buffer->set_highlight_syntax();
      m_text_view_script->set_buffer(buffer);
   }
-
-  show_all_children();
 }
 
 void Dialog_ButtonScript::set_script(const std::shared_ptr<const LayoutItem_Button>& script, const Glib::ustring& table_name)

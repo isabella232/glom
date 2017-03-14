@@ -115,8 +115,6 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
 
   m_modified = false;
 
-  //show_all_children();
-
   //This entry must be in the Glade file, because it's used by the base class,
   //but we don't want it here, because it is confusing when dealing with relationships:
   if(m_entry_table_title)

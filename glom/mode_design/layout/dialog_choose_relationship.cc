@@ -55,8 +55,6 @@ Dialog_ChooseRelationship::Dialog_ChooseRelationship(BaseObjectType* cobject, co
     m_treeview->append_column( _("Name"), m_ColumnsRelationships.m_col_name );
     //m_treeview->append_column( _("Title"), m_ColumnsRelationships.m_col_title );
   }
-
-  show_all_children();
 }
 
 void Dialog_ChooseRelationship::set_document(const std::shared_ptr<Document>& document, const Glib::ustring& table_name)

@@ -47,9 +47,6 @@ Notebook_Find::Notebook_Find()
 
 
   add_view(&m_Box_Details);
-
-  show_all_children();
-
 }
 
 Notebook_Find::~Notebook_Find()

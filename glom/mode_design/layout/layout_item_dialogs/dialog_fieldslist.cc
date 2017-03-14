@@ -90,8 +90,6 @@ Dialog_FieldsList::Dialog_FieldsList(BaseObjectType* cobject, const Glib::RefPtr
 
   builder->get_widget("button_field_formatting", m_button_field_formatting);
   m_button_field_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_FieldsList::on_button_formatting) );
-
-  show_all_children();
 }
 
 void Dialog_FieldsList::set_fields(const Glib::ustring& table_name, const LayoutGroup::type_list_items& fields)

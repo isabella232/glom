@@ -51,8 +51,6 @@ Dialog_TextFormatting::Dialog_TextFormatting(BaseObjectType* cobject, const Glib
   }
 
   set_modal(); //We don't want people to edit the main window while we are changing structure.
-
-  show_all_children();
 }
 
 Dialog_TextFormatting::~Dialog_TextFormatting()

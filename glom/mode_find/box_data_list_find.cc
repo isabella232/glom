@@ -39,8 +39,6 @@ Box_Data_List_Find::Box_Data_List_Find()
 
   //Prevent the widget from trying to add or change records:
   m_AddDel.set_find_mode();
-
-  show_all_children();
 }
 
 void Box_Data_List_Find::create_layout()

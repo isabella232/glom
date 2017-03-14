@@ -42,8 +42,6 @@ Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Bu
 
     builder->get_widget("label_title", m_label_table_title);
   }
-
-  show_all_children();
 }
 
 void Dialog_Layout::init(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, const std::shared_ptr<Document>& /* document */, const Glib::ustring& table_name, const type_vecConstLayoutFields& /* table_fields */)
