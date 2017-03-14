@@ -228,7 +228,6 @@ bool AppWindow::init_with_document(const Glib::ustring& document_uri, bool resto
   }
 
   return true;
-  //show_all();
 }
 
 bool AppWindow::get_show_sql_debug() const

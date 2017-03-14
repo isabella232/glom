@@ -141,7 +141,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
     *Gtk::manage(new Gtk::Label(_("Found:"))), Gtk::PACK_SHRINK);
   m_box_records_count.pack_start(m_label_found_count, Gtk::PACK_SHRINK);
   m_box_records_count.pack_start(m_button_find_all, Gtk::PACK_SHRINK);
-  m_box_records_count.show_all();
   m_notebook_data.set_action_widget(&m_box_records_count, Gtk::PACK_END);
   m_button_find_all.signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_find_all) );
@@ -431,8 +430,6 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
     pApp->fill_menu_reports(table_name);
     pApp->fill_menu_print_layouts(table_name);
   }
-
-  //show_all();
 }
 
 void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details)
@@ -1104,7 +1101,6 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
       m_dialog_tables->set_transient_for(*pWindow);
 
     m_dialog_tables->set_default_size(300, 400);
-    m_box_tables->show_all();
     add_view(m_box_tables);
 
     //Connect signals:
@@ -1584,7 +1580,6 @@ void Frame_Glom::on_menu_developer_reports()
     m_dialog_layout_report->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_report_hide) );
 
     m_dialog_reports->set_default_size(300, 400);
-    m_box_reports->show_all();
 
     m_box_reports->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_reports_selected));
     add_view(m_box_reports);
@@ -1616,7 +1611,6 @@ void Frame_Glom::on_menu_developer_print_layouts()
     m_dialog_print_layouts->set_transient_for(*get_app_window());
     m_dialog_print_layouts->set_title(_("Print Layouts"));
     m_dialog_print_layouts->set_default_size(300, 400);
-    m_box_print_layouts->show_all();
     add_view(m_box_print_layouts);
 
     m_box_print_layouts->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_print_layouts_selected));
