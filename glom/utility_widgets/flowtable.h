@@ -24,11 +24,14 @@
 #include <glom/utility_widgets/eggspreadtablemm/eggspreadtabledndmm.h>
 #include "layoutwidgetbase.h"
 #include <gtkmm/box.h>
+#include <gtkmm/widgetcustomdraw.h>
 
 namespace Glom
 {
 
-class FlowTable : public Egg::SpreadTableDnd
+class FlowTable
+: public Gtk::WidgetCustomDraw,
+  public Egg::SpreadTableDnd
 {
 public:
   FlowTable();
