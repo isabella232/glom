@@ -104,12 +104,6 @@ private:
   void on_button_new_id();
   void on_button_choose_date();
 
-  // Don't call it on_style_changed, otherwise we would override a virtual
-  // function from Gtk::Widget. We could indeed do that, but we do it with
-  // a normal signal handler, because we have to do it this way anyway in
-  // case default signal handlers have been disabled in glibmm.
-  void on_self_style_changed(const Glib::RefPtr<Gtk::Style>& style);
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_menupopup_activate_layout() override;
   void on_menupopup_activate_layout_properties() override;

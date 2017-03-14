@@ -105,12 +105,6 @@ DbAddDel::DbAddDel()
 
   show_all_children();
 
-#ifdef GLOM_ENABLE_CLIENT_ONLY //Actually this has only been necessary for Maemo.
-  // Adjust sizing when style changed
-
-  signal_style_changed().connect(sigc::mem_fun(*this, &DbAddDel::on_self_style_changed));
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
   auto refSelection = m_tree_view.get_selection();
   if(refSelection)
   {
@@ -1993,18 +1987,6 @@ bool DbAddDel::get_allow_view_details() const
 {
   return m_allow_view_details;
 }
-
-#ifdef GLOM_ENABLE_CLIENT_ONLY
-void DbAddDel::on_self_style_changed(const Glib::RefPtr<Gtk::Style>& /* style */)
-{
-  // Reset fixed cell height because the font might have changed due to the new style:
-  m_fixed_cell_height = 0;
-
-  // Reconstruct columns because sizes might have changed:
-  // (TODO: But don't get the data again because that would be inefficient).
-  construct_specified_columns();
-}
-#endif
 
 void DbAddDel::set_open_button_title(const Glib::ustring& title)
 {

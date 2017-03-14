@@ -251,7 +251,6 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
 #endif // GLOM_ENABLE_CLIENT_ONLY
 
   set_events(Gdk::BUTTON_PRESS_MASK);
-  //TODO: signal_style_changed().connect(sigc::mem_fun(*this, &DataWidget::on_self_style_changed));
 }
 
 void DataWidget::on_widget_edited()
@@ -650,12 +649,6 @@ void DataWidget::on_button_choose_date()
 
     delete dialog;
   }
-}
-
-void DataWidget::on_self_style_changed(const Glib::RefPtr<Gtk::Style>& /* style */)
-{
-  auto layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
-  set_child_size_by_field(layoutField);
 }
 
 bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
