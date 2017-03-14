@@ -88,8 +88,6 @@ Dialog_Layout_Export::Dialog_Layout_Export(BaseObjectType* cobject, const Glib::
 
   builder->get_widget("button_field_edit", m_button_field_edit);
   m_button_field_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Export::on_button_edit_field) );
-
-  show_all_children();
 }
 
 void Dialog_Layout_Export::set_layout_groups(Document::type_list_const_layout_groups& mapGroups, const std::shared_ptr<Document>& document, const Glib::ustring& table_name)

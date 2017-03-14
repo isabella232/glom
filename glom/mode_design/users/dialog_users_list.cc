@@ -83,8 +83,6 @@ Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<G
   m_button_user_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_user_edit) );
 
   enable_buttons();
-
-  show_all_children();
 }
 
 void Dialog_UsersList::enable_buttons()

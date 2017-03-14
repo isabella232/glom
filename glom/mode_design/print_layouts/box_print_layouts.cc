@@ -51,8 +51,6 @@ Box_Print_Layouts::Box_Print_Layouts(BaseObjectType* cobject, const Glib::RefPtr
   m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_user_requested_delete));
   m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_user_requested_edit));
   m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_user_changed));
-
-  show_all_children();
 }
 
 void Box_Print_Layouts::fill_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const PrintLayout>& item)

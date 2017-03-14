@@ -43,8 +43,6 @@ Dialog_User::Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   m_entry_password->set_max_length(Privs::MAX_ROLE_SIZE); //Let's assume that this has a similar (undocumented in PostgreSQL) max size as the user.
   builder->get_widget("entry_password_confirm", m_entry_password_confirm);
   m_entry_password_confirm->set_max_length(Privs::MAX_ROLE_SIZE);
-
-  show_all_children();
 }
 
 bool Dialog_User::check_password()

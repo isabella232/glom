@@ -145,8 +145,6 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   pack_start(m_hbox_buttons, Gtk::PACK_SHRINK);
 
   m_ignore_signals = false;
-
-  show_all_children();
 }
 
 Box_Data_Details::~Box_Data_Details()

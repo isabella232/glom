@@ -65,8 +65,6 @@ void Box_DB_Table_Relationships::init()
   m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_changed));
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_added));
   m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_requested_delete));
-
-  show_all_children();
 }
 
 bool Box_DB_Table_Relationships::fill_from_database()

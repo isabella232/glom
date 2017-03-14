@@ -36,8 +36,6 @@ Dialog_Relationships::Dialog_Relationships(BaseObjectType* cobject, const Glib::
 
   //Fill composite view:
   add_view(m_box);
-
-  show_all_children();
 }
 
 Dialog_Relationships::~Dialog_Relationships()

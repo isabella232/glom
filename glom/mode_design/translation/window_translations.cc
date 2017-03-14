@@ -125,8 +125,6 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
     m_button_export->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_export) );
   }
 
-  show_all_children();
-
   //Start with the currently-used/tested translation, if appropriate:
   if(AppWindow::get_current_locale_not_original())
   {

@@ -50,8 +50,6 @@ Dialog_DefaultFormatting::Dialog_DefaultFormatting(BaseObjectType* cobject, cons
   }
 
   Dialog_Properties::set_modified(false);
-
-  show_all_children();
 }
 
 Dialog_DefaultFormatting::~Dialog_DefaultFormatting()

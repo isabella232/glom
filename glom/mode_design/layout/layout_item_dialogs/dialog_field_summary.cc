@@ -39,8 +39,6 @@ Dialog_FieldSummary::Dialog_FieldSummary(BaseObjectType* cobject, const Glib::Re
 
   //Connect signals:
   m_button_field->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_FieldSummary::on_button_field));
-
-  show_all_children();
 }
 
 void Dialog_FieldSummary::set_item(const std::shared_ptr<const LayoutItem_FieldSummary>& item, const Glib::ustring& table_name)

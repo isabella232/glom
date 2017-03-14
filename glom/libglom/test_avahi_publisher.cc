@@ -39,8 +39,6 @@ TestWindow::TestWindow()
 
   m_button_start.signal_clicked().connect(sigc::mem_fun(*this, &TestWindow::on_button_start));
   m_button_stop.signal_clicked().connect(sigc::mem_fun(*this, &TestWindow::on_button_stop));
-
-  show_all_children();
 }
 
 TestWindow::~TestWindow()

@@ -64,8 +64,6 @@ Box_Reports::Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Reports::on_adddel_Delete));
   m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Reports::on_adddel_Edit));
   m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_Reports::on_adddel_changed));
-
-  show_all_children();
 }
 
 void Box_Reports::fill_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const Report>& report)

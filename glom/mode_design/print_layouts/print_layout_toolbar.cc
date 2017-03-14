@@ -62,8 +62,6 @@ PrintLayoutToolbar::PrintLayoutToolbar()
   add(m_group_records);
 
   set_drag_source();
-
-  show_all_children();
 }
 
 

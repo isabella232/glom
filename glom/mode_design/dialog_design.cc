@@ -38,8 +38,6 @@ Dialog_Design::Dialog_Design(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Bu
   builder->get_widget("label_table_name", m_label_table);
 
   set_modal(); //We don't want people to edit the main window while we are changing structure.
-
-  show_all_children();
 }
 
 bool Dialog_Design::init_db_details(const Glib::ustring& table_name)

@@ -37,8 +37,6 @@ Dialog_Formatting::Dialog_Formatting()
 
   add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   add_button(_("_Save"), Gtk::RESPONSE_OK);
-
-  show_all_children();
 }
 
 Dialog_Formatting::~Dialog_Formatting()

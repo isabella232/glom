@@ -175,8 +175,6 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
     add_view(m_dialog_choices_sortby); //Give it access to the document.
     m_dialog_choices_sortby->set_title(_("Sort Order"));
   }
-
-  show_all_children();
 }
 
 Box_Formatting::~Box_Formatting()

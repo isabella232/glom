@@ -82,7 +82,6 @@ void Dialog_ChooseID::setup()
 
   //Fill composite view:
   add_view(&m_box_find);
-  //m_box_select.show_all_children();
   add_view(&m_box_select);
   m_box_select.set_open_button_title(_("Select"));
 

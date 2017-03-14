@@ -44,8 +44,6 @@ Dialog_TextObject::Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr
   //connect_each_widget(this);
 
   //Dialog_Properties::set_modified(false);
-
-  show_all_children();
 }
 
 void Dialog_TextObject::set_textobject(const std::shared_ptr<const LayoutItem_Text>& textobject, const Glib::ustring& table_name, bool show_title)

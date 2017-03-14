@@ -81,8 +81,6 @@ Dialog_Layout_Calendar_Related::Dialog_Layout_Calendar_Related(BaseObjectType* c
 
   m_modified = false;
 
-  //show_all_children();
-
   //The base class hid this, but we do want it here:
   //(We share one glade definition for several dialogs.)
   Gtk::Frame* box_calendar = nullptr;

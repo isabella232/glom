@@ -101,8 +101,6 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
 
   //This is mostly just to exercise some widgets during simple tests:
   enforce_constraints();
-
-  show_all_children();
 }
 
 void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field, const Glib::ustring& table_name)

@@ -126,8 +126,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_button_quick_find->signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) );
   m_box_quick_find->pack_start(*m_button_quick_find, Gtk::PACK_SHRINK);
-
-  m_box_quick_find->show_all_children();
   m_box_quick_find->hide();
 
   PlaceHolder* placeholder_quickfind = nullptr;
