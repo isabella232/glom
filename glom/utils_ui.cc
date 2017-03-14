@@ -148,11 +148,8 @@ void UiUtils::show_help(Gtk::Window* parent_window, const Glib::ustring& id)
   {
     //Use the GNOME help browser:
     GError* gerror = nullptr;
-    Glib::RefPtr<Gdk::Screen> screen;
-    if(parent_window)
-      screen = parent_window->get_screen();
 
-    if(!gtk_show_uri(screen ? screen->gobj() : nullptr,
+    if(!gtk_show_uri_on_window(parent_window ? parent_window->gobj() : nullptr,
       uri.c_str(), GDK_CURRENT_TIME, &gerror))
     {
       std::cerr << G_STRFUNC << ": " << gerror->message << std::endl;
@@ -524,11 +521,8 @@ void UiUtils::show_report_in_browser(const std::string& filepath, Gtk::Window* p
 
   //Use the GNOME browser:
   GError* gerror = nullptr;
-  Glib::RefPtr<Gdk::Screen> screen;
-  if(parent_window)
-    screen = parent_window->get_screen();
 
-  if(!gtk_show_uri(screen ? screen->gobj() : nullptr,
+  if(!gtk_show_uri_on_window(parent_window ? parent_window->gobj() : nullptr,
     uri.c_str(), GDK_CURRENT_TIME, &gerror))
   {
     std::cerr << G_STRFUNC << ": " << gerror->message << std::endl;
