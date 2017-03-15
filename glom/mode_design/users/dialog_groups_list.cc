@@ -590,7 +590,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_delete(const Glib::ustring& p
   }
 }
 
-void Dialog_GroupsList::on_cell_data_group_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Dialog_GroupsList::on_cell_data_group_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter)
 {
  //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);

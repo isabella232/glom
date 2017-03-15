@@ -83,8 +83,8 @@ private:
   std::unique_ptr<Gtk::CellRendererCombo> create_sample_cell(guint index);
 
   //CellRenderer cell_data_func callbacks:
-  void line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
-  void field_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, unsigned int column_number);
+  void line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter);
+  void field_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter, unsigned int column_number);
   void on_field_edited(const Glib::ustring& path, const Glib::ustring& new_text, unsigned int column_number);
 
   void encoding_data_func(const Gtk::TreeModel::const_iterator& iter, Gtk::CellRendererText& renderer);

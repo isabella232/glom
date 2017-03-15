@@ -1088,7 +1088,7 @@ void Dialog_Layout_Details::on_treeview_fields_selection_changed()
   enable_buttons();
 }
 
-void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter)
 {
   //TODO: If we ever use this a real layout tree, then let's add icons for each type.
 
@@ -1178,7 +1178,7 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
     renderer_text->property_editable() = false; //Field names can never be edited.
 }
 
-void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
@@ -1206,7 +1206,7 @@ void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, cons
   renderer_text->property_editable() = editable;
 }
 
-void Dialog_Layout_Details::on_cell_data_column_width(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Dialog_Layout_Details::on_cell_data_column_width(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
@@ -1238,7 +1238,7 @@ void Dialog_Layout_Details::on_cell_data_column_width(Gtk::CellRenderer* rendere
   renderer_text->property_text() = text;
 }
 
-void Dialog_Layout_Details::on_cell_data_group_columns(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Dialog_Layout_Details::on_cell_data_group_columns(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);

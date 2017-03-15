@@ -1843,7 +1843,7 @@ void DbAddDel::set_key_field(const std::shared_ptr<Field>& field)
   m_key_field = field;
 }
 
-void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index)
+void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter, int model_column_index, int data_model_column_index)
 {
   //std::cout << "debug: DbAddDel::treeviewcolumn_on_cell_data()\n";
 

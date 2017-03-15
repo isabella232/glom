@@ -56,7 +56,7 @@ private:
   void on_button_delete();
   void on_button_edit_field();
   void on_treeview_fields_selection_changed();
-  void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter);
 
   //Tree model columns:
   class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord

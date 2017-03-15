@@ -546,7 +546,7 @@ std::unique_ptr<Gtk::CellRendererCombo> Dialog_Import_CSV::create_sample_cell(gu
   return cell;
 }
 
-void Dialog_Import_CSV::line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Dialog_Import_CSV::line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter)
 {
   const auto row = (*iter)[m_sample_columns.m_col_row];
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
@@ -559,7 +559,7 @@ void Dialog_Import_CSV::line_data_func(Gtk::CellRenderer* renderer, const Gtk::T
     renderer_text->property_text() = Glib::ustring::compose("%1", row + 1);
 }
 
-void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, guint column_number)
+void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter, guint column_number)
 {
   const auto row = (*iter)[m_sample_columns.m_col_row];
   auto renderer_combo = dynamic_cast<Gtk::CellRendererCombo*>(renderer);

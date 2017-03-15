@@ -55,8 +55,8 @@ private:
 
   //signal handlers:
   void on_button_identify();
-  void on_cell_data_original(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
-  void on_cell_data_item_itemhint(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_cell_data_original(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter);
+  void on_cell_data_item_itemhint(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter);
   void on_treeview_edited(const Glib::ustring& path, const Glib::ustring& new_text);
 
   void on_combo_target_locale_changed();

@@ -92,10 +92,10 @@ private:
   void on_treeview_parts_selection_changed();
   void on_treeview_available_parts_selection_changed();
 
-  void on_cell_data_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, const Glib::WeakRef<type_model>& model);
-  void on_cell_data_details(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, const Glib::WeakRef<type_model>& model);
+  void on_cell_data_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter, const Glib::WeakRef<type_model>& model);
+  void on_cell_data_details(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter, const Glib::WeakRef<type_model>& model);
 
-  void on_cell_data_available_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_cell_data_available_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter);
 
   void on_notebook_switch_page(Gtk::Widget*, guint);
 

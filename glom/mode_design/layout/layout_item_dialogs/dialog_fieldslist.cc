@@ -278,7 +278,7 @@ void Dialog_FieldsList::on_button_delete()
 }
 
 
-void Dialog_FieldsList::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Dialog_FieldsList::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);

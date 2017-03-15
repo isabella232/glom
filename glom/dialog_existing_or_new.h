@@ -73,8 +73,8 @@ private:
   std::shared_ptr<Gtk::TreeModel::iterator> create_dummy_item_existing(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text);
 
 
-  void existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
-  void existing_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter);
+  void existing_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter);
 
   void on_switch_page(Gtk::Widget* page, guint page_num);
   void on_existing_selection_changed();
@@ -87,8 +87,8 @@ private:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   std::shared_ptr<Gtk::TreeModel::iterator> create_dummy_item_new(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text);
   void on_new_selection_changed();
-  void new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
-  void new_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter);
+  void new_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter);
   bool on_new_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected);
   void on_new_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
 

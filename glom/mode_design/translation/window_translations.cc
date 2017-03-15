@@ -171,7 +171,7 @@ void Window_Translations::on_button_identify()
 }
 
 
-void Window_Translations::on_cell_data_original(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Window_Translations::on_cell_data_original(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
@@ -197,7 +197,7 @@ void Window_Translations::on_cell_data_original(Gtk::CellRenderer* renderer, con
   renderer_text->property_editable() = false; //Names can never be edited.
 }
 
-void Window_Translations::on_cell_data_item_itemhint(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Window_Translations::on_cell_data_item_itemhint(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
   auto renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);

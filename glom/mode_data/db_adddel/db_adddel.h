@@ -314,7 +314,7 @@ private:
   //Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
 
   //Signal handlers:
-  void treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index);
+  void treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter, int model_column_index, int data_model_column_index);
   void on_treeview_cell_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path);
 
 

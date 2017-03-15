@@ -85,10 +85,10 @@ protected:
   virtual void on_button_edit(); //overridden in derived class
   void on_treeview_fields_selection_changed();
 
-  void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
-  void on_cell_data_title(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
-  void on_cell_data_group_columns(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
-  void on_cell_data_column_width(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter);
+  void on_cell_data_title(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter);
+  void on_cell_data_group_columns(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter);
+  void on_cell_data_column_width(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter);
 
   void on_treeview_cell_edited_name(const Glib::ustring& path_string, const Glib::ustring& new_text);
   void on_treeview_cell_edited_title(const Glib::ustring& path_string, const Glib::ustring& new_text);

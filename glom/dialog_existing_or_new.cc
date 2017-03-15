@@ -446,7 +446,7 @@ std::shared_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_ite
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
-void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter)
 {
   auto pixbuf_renderer = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
   if(!pixbuf_renderer)
@@ -499,7 +499,7 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
   }
 }
 
-void Dialog_ExistingOrNew::existing_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Dialog_ExistingOrNew::existing_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter)
 {
   auto text_renderer = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(!text_renderer)
@@ -523,7 +523,7 @@ void Dialog_ExistingOrNew::existing_title_data_func(Gtk::CellRenderer* renderer,
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter)
 {
   auto pixbuf_renderer = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
   if(!pixbuf_renderer)
@@ -552,7 +552,7 @@ void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const
   }
 }
 
-void Dialog_ExistingOrNew::new_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Dialog_ExistingOrNew::new_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter)
 {
   auto text_renderer = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(!text_renderer)

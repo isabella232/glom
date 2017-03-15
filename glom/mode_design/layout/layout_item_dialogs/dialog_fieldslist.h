@@ -57,7 +57,7 @@ private:
   void on_button_edit_field();
   void on_button_formatting();
   void on_treeview_fields_selection_changed();
-  void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter);
 
   Gtk::TreeModel::iterator append_appropriate_row();
 
