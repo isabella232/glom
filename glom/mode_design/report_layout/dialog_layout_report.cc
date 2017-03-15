@@ -230,7 +230,7 @@ void Dialog_Layout_Report::setup_model(Gtk::TreeView& treeview, Glib::RefPtr<typ
   //m_model_parts_main->signal_row_changed().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_treemodel_row_changed) );
 }
 
-std::shared_ptr<LayoutGroup> Dialog_Layout_Report::fill_group(const Gtk::TreeModel::iterator& iter, const Glib::RefPtr<const type_model> model)
+std::shared_ptr<LayoutGroup> Dialog_Layout_Report::fill_group(const Gtk::TreeModel::const_iterator& iter, const Glib::RefPtr<const type_model> model)
 {
   if(iter)
   {
@@ -250,7 +250,7 @@ std::shared_ptr<LayoutGroup> Dialog_Layout_Report::fill_group(const Gtk::TreeMod
   return  std::shared_ptr<LayoutGroup>();
 }
 
-void Dialog_Layout_Report::fill_group_children(const std::shared_ptr<LayoutGroup>& group, const Gtk::TreeModel::iterator& iter, const Glib::RefPtr<const type_model> model)
+void Dialog_Layout_Report::fill_group_children(const std::shared_ptr<LayoutGroup>& group, const Gtk::TreeModel::const_iterator& iter, const Glib::RefPtr<const type_model> model)
 {
   if(iter)
   {

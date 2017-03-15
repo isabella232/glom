@@ -57,8 +57,8 @@ private:
 
   void add_group_children(const Glib::RefPtr<type_model>& model_parts, const Gtk::TreeModel::iterator& parent, const std::shared_ptr<const LayoutGroup>& group);
 
-  void fill_group_children(const std::shared_ptr<LayoutGroup>& group, const Gtk::TreeModel::iterator& iter, const Glib::RefPtr<const type_model> model);
-  std::shared_ptr<LayoutGroup> fill_group(const Gtk::TreeModel::iterator& iter, const Glib::RefPtr<const type_model> model);
+  void fill_group_children(const std::shared_ptr<LayoutGroup>& group, const Gtk::TreeModel::const_iterator& iter, const Glib::RefPtr<const type_model> model);
+  std::shared_ptr<LayoutGroup> fill_group(const Gtk::TreeModel::const_iterator& iter, const Glib::RefPtr<const type_model> model);
 
   //Enable/disable buttons, depending on treeview selection:
   void enable_buttons() override;
