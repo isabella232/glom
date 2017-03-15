@@ -99,16 +99,16 @@ public:
 
   void remove_all();
 
-  Glib::ustring get_value(const Gtk::TreeModel::Row& iter, guint col);
+  Glib::ustring get_value(const Gtk::TreeModel::ConstRow& iter, guint col);
 
   // TODO: Remove this one?
-  Glib::ustring get_value(const Gtk::TreeModel::iterator& iter, guint col);
+  Glib::ustring get_value(const Gtk::TreeModel::const_iterator& iter, guint col);
 
-  bool get_value_as_bool(const Gtk::TreeModel::iterator& iter, guint col);
+  bool get_value_as_bool(const Gtk::TreeModel::const_iterator& iter, guint col);
 
   /** Get the row's hidden key
    */
-  Glib::ustring get_value_key(const Gtk::TreeModel::iterator& iter);
+  Glib::ustring get_value_key(const Gtk::TreeModel::const_iterator& iter);
 
   /** Set the row's hidden key
    */
@@ -119,8 +119,8 @@ public:
 
   Gtk::TreeModel::iterator get_item_selected();
 
-  bool select_item(const Gtk::TreeModel::iterator& iter, guint column, bool start_editing = false);  //bool indicates success.
-  bool select_item(const Gtk::TreeModel::iterator& iter);
+  bool select_item(const Gtk::TreeModel::const_iterator& iter, guint column, bool start_editing = false);  //bool indicates success.
+  bool select_item(const Gtk::TreeModel::const_iterator& iter);
 
   //Select row with this key value:
   bool select_item(const Glib::ustring& strItemText, guint column, bool start_editing = false);
@@ -134,12 +134,12 @@ public:
 
   //void set_value_selected(guint col, const Gnome::Gda::Value& value);
 
-  bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
-  bool get_is_last_row(const Gtk::TreeModel::iterator& iter) const;
+  bool get_is_first_row(const Gtk::TreeModel::const_iterator& iter) const;
+  bool get_is_last_row(const Gtk::TreeModel::const_iterator& iter) const;
 
   /** @result Whether this is a blank row where date for a new row should be entered
    */
-  bool get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const;
+  bool get_is_placeholder_row(const Gtk::TreeModel::const_iterator& iter) const;
 
 
   guint add_column(const AddDelColumnInfo& column_info);
@@ -242,7 +242,7 @@ private:
    */
   Gtk::TreeModel::iterator add_item_placeholder(); //Return index of new row.
 
-  Glib::ustring treeview_get_key(const Gtk::TreeModel::iterator& row);
+  Glib::ustring treeview_get_key(const Gtk::TreeModel::const_iterator& row);
 
   ///Add a blank row, or return the existing blank row if there already is one.
   Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
@@ -261,7 +261,7 @@ private:
 
   void on_treeview_button_press_event(GdkEventButton* button_event);
 
-  bool row_has_duplicates(const Gtk::TreeModel::iterator& iter) const;
+  bool row_has_duplicates(const Gtk::TreeModel::const_iterator& iter) const;
   void warn_about_duplicate();
 
   bool get_prevent_user_signals() const;

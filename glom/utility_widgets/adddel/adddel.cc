@@ -297,7 +297,7 @@ void AddDel::remove_all()
 }
 
 
-Glib::ustring AddDel::get_value(const Gtk::TreeModel::Row& row, guint col)
+Glib::ustring AddDel::get_value(const Gtk::TreeModel::ConstRow& row, guint col)
 {
   Glib::ustring value;
 
@@ -325,12 +325,12 @@ Glib::ustring AddDel::get_value(const Gtk::TreeModel::Row& row, guint col)
   return value;
 }
 
-Glib::ustring AddDel::get_value(const Gtk::TreeModel::iterator& iter, guint col)
+Glib::ustring AddDel::get_value(const Gtk::TreeModel::const_iterator& iter, guint col)
 {
   return get_value(*iter, col);
 }
 
-bool AddDel::get_value_as_bool(const Gtk::TreeModel::iterator& iter, guint col)
+bool AddDel::get_value_as_bool(const Gtk::TreeModel::const_iterator& iter, guint col)
 {
 //TODO: I doubt that this works. It should really get the value from the treeview as a bool. murrayc
   Glib::ustring strValue = get_value(iter, col);
@@ -374,14 +374,14 @@ Gtk::TreeModel::iterator AddDel::get_row(const Glib::ustring& key)
   return  m_list_store->children().end();
 }
 
-bool AddDel::select_item(const Gtk::TreeModel::iterator& iter)
+bool AddDel::select_item(const Gtk::TreeModel::const_iterator& iter)
 {
   guint col_first = 0;
   get_model_column_index(0, col_first);
   return select_item(iter, col_first);
 }
 
-bool AddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, bool start_editing)
+bool AddDel::select_item(const Gtk::TreeModel::const_iterator& iter, guint column, bool start_editing)
 {
   if(!m_list_store)
     return false;
@@ -1096,7 +1096,7 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
     {
       //Existing item changed:
 
-      m_signal_user_changed.emit(row, model_column_index);
+      m_signal_user_changed.emit(iter, model_column_index);
     }
 
   }
@@ -1161,7 +1161,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
     if(is_add)
     {
         //Signal that a new key was added"
-        m_signal_user_added.emit(row);
+        m_signal_user_added.emit(iter);
     }
     else if(is_change)
     {
@@ -1194,9 +1194,9 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
                 auto refTreeSelection = m_tree_view.get_selection();
                 if(refTreeSelection)
                 {
-                  refTreeSelection->select(row); //TODO: This does not seem to work.
+                  refTreeSelection->select(iter); //TODO: This does not seem to work.
 
-                 Gtk::TreeModel::Path path_to_activate = m_list_store->get_path(row);
+                 Gtk::TreeModel::Path path_to_activate = m_list_store->get_path(iter);
                  auto pColumn = m_tree_view.get_column(model_column_index); //TODO: This might the the view column index, not the model column index.
                  m_tree_view.set_cursor(path_to_activate, *pColumn, true /* start_editing */); //This highlights the cell, but does not seem to actually start the editing.
                }
@@ -1213,7 +1213,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
         }
 
         if(do_signal)
-          m_signal_user_changed.emit(row, model_column_index);
+          m_signal_user_changed.emit(iter, model_column_index);
       }
     }
   }
@@ -1330,12 +1330,12 @@ Glib::RefPtr<const Gtk::TreeModel> AddDel::get_model() const
   return m_list_store;
 }
 
-bool AddDel::get_is_first_row(const Gtk::TreeModel::iterator& iter) const
+bool AddDel::get_is_first_row(const Gtk::TreeModel::const_iterator& iter) const
 {
   return iter == get_model()->children().begin();
 }
 
-bool AddDel::get_is_last_row(const Gtk::TreeModel::iterator& iter) const
+bool AddDel::get_is_last_row(const Gtk::TreeModel::const_iterator& iter) const
 {
   return iter == get_last_row();
 }
@@ -1415,7 +1415,7 @@ Gtk::TreeModel::iterator AddDel::get_last_row()
   return iter;
 }
 
-Glib::ustring AddDel::get_value_key(const Gtk::TreeModel::iterator& iter)
+Glib::ustring AddDel::get_value_key(const Gtk::TreeModel::const_iterator& iter)
 {
   return get_value(iter, m_col_key);
 }
@@ -1432,7 +1432,7 @@ void AddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ust
   iter->set_value(m_col_key, strValue);
 }
 
-bool AddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const
+bool AddDel::get_is_placeholder_row(const Gtk::TreeModel::const_iterator& iter) const
 {
   if(!iter)
     return false;
