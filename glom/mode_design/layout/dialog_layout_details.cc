@@ -245,7 +245,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, std
         {
           //Recurse:
           auto group_child = glom_sharedptr_clone(layout_group);
-          fill_group(rowChild, group_child);
+          fill_group(rowChild.get_iter(), group_child);
           group->add_item(group_child);
         }
         else if(layout_item)
@@ -1070,7 +1070,7 @@ void Dialog_Layout_Details::save_to_document()
         group = std::make_shared<LayoutGroup>();
       }
 
-      fill_group(row, group);
+      fill_group(row.get_iter(), group);
 
       list_groups.emplace_back(group);
     }

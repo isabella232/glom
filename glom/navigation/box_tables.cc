@@ -389,7 +389,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
         auto model = m_AddDel.get_model();
         for(const auto& child_row : model->children())
         {
-          m_AddDel.set_value(child_row, m_col_default, false);
+          m_AddDel.set_value(child_row.get_iter(), m_col_default, false);
         }
       }
 
@@ -487,15 +487,16 @@ void Box_Tables::save_to_document()
       auto table_info = document->get_table(table_name); //Start with the existing table_info, to preserve extra information, such as translations.
       if(table_info)
       {
-        table_info->set_name( m_AddDel.get_value(row, m_col_table_name) );
+        const auto iter = row.get_iter();
+        table_info->set_name( m_AddDel.get_value(iter, m_col_table_name) );
 
         if(!table_info->get_name().empty())
         {
-          table_info->set_hidden( m_AddDel.get_value_as_bool(row, m_col_hidden) );
-          table_info->set_title( m_AddDel.get_value(row, m_col_title) , AppWindow::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
-          table_info->set_title_singular( m_AddDel.get_value(row, m_col_title_singular), AppWindow::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
+          table_info->set_hidden( m_AddDel.get_value_as_bool(iter, m_col_hidden) );
+          table_info->set_title( m_AddDel.get_value(iter, m_col_title) , AppWindow::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
+          table_info->set_title_singular( m_AddDel.get_value(iter, m_col_title_singular), AppWindow::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
           //std::cout << "debug: " << G_STRFUNC << ": title=" << item_get_title(table_info) << std::endl;
-          table_info->set_default( m_AddDel.get_value_as_bool(row, m_col_default) );
+          table_info->set_default( m_AddDel.get_value_as_bool(iter, m_col_default) );
 
           listTables.emplace_back(table_info);
         }

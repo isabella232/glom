@@ -1329,7 +1329,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
     {
       //Existing item changed:
 
-      user_changed(row, model_column_index);
+      user_changed(iter, model_column_index);
     }
   }
 }
@@ -1340,7 +1340,8 @@ void DbAddDel::on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& ro
   if(!refTreeSelection)
     return;
 
-  refTreeSelection->select(row); //TODO: This does not seem to work.
+  const auto iter = row.get_iter();
+  refTreeSelection->select(iter); //TODO: This does not seem to work.
 
   guint view_column_index = 0;
   get_view_column_index(model_column_index, view_column_index);
@@ -1358,7 +1359,7 @@ void DbAddDel::on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& ro
     return;
   }
 
-  const auto path = get_model()->get_path(row);
+  const auto path = get_model()->get_path(iter);
 
   //Highlights the cell, and start the editing:
   m_tree_view.set_cursor(path, *pColumn, *pCell, true /* start_editing */);
@@ -1493,7 +1494,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       {
         //Signal that a new key was added:
         if(m_allow_add)
-          user_added(row);
+          user_added(iter);
       }
       else if(is_change)
       {
@@ -1502,7 +1503,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
         if(value != valOld)
         {
           if(do_change)
-            user_changed(row, model_column_index);
+            user_changed(iter, model_column_index);
         }
       }
     }

@@ -88,7 +88,8 @@ void ComboBox_Fields::set_selected_field(const Glib::ustring& field_name)
       //(An empty name means Select the parent table item.)
       if(this_name == field_name)
       {
-        set_active(row);
+        const auto iter = row.get_iter();
+        set_active(iter);
         return; //success
       }
     }

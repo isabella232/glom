@@ -264,7 +264,7 @@ void Dialog_Layout_Report::fill_group_children(const std::shared_ptr<LayoutGroup
       //Recurse:
       auto child_group = std::dynamic_pointer_cast<LayoutGroup>(item);
       if(child_group)
-        fill_group_children(child_group, child_row, model);
+        fill_group_children(child_group, child_row.get_iter(), model);
 
       //std::cout << "debug: " << G_STRFUNC << ": Adding group child: parent part type=" << group->get_part_type_name() << ", child part type=" << item->get_part_type_name() << std::endl;
       group->add_item(item);
@@ -1047,7 +1047,7 @@ void Dialog_Layout_Report::fill_report_parts(std::shared_ptr<LayoutGroup>& group
   for(const auto& row : parts_model->children())
   {
     //Recurse into a group if necessary:
-    auto group_child = fill_group(row, parts_model);
+    auto group_child = fill_group(row.get_iter(), parts_model);
     if(group_child)
     {
       //Add the group:

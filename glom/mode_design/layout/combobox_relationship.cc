@@ -117,7 +117,8 @@ void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relat
       {
         if(related_relationship_name.empty())
         {
-           set_active(row);
+           const auto iter = row.get_iter();
+           set_active(iter);
            return; //success
         }
         else
@@ -128,7 +129,8 @@ void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relat
             const auto rel_name = glom_get_sharedptr_name(sub_relationship);
             if(rel_name == related_relationship_name)
             {
-              set_active(sub_row);
+              const auto iter = sub_row.get_iter();
+              set_active(iter);
               return; //success
             }
           }

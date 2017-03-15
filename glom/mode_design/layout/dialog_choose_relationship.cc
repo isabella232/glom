@@ -103,7 +103,8 @@ void Dialog_ChooseRelationship::select_item(const std::shared_ptr<const Relation
       if(glom_get_sharedptr_name(relationship_item) == relationship_name)
       {
         //Select the item:
-        refTreeSelection->select(row);
+        const auto iter = row.get_iter();
+        refTreeSelection->select(iter);
       }
     }
   }

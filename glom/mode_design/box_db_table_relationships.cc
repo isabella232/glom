@@ -138,9 +138,10 @@ void Box_DB_Table_Relationships::save_to_document()
 
   for(const auto& item : m_AddDel.get_model()->children())
   {
-    const auto old_name = m_AddDel.get_value_key(item);
+    const auto iter = item.get_iter();
+    const auto old_name = m_AddDel.get_value_key(iter);
 
-    const auto name = m_AddDel.get_value(item, m_colName);
+    const auto name = m_AddDel.get_value(iter, m_colName);
     if(!name.empty())
     {
       //If it is a rename:
@@ -154,14 +155,14 @@ void Box_DB_Table_Relationships::save_to_document()
           relationship = std::make_shared<Relationship>();
 
         relationship->set_name(name);
-        relationship->set_title(m_AddDel.get_value(item, m_colTitle), AppWindow::get_current_locale());
-        relationship->set_title_singular(m_AddDel.get_value(item, m_colTitleSingular), AppWindow::get_current_locale());
+        relationship->set_title(m_AddDel.get_value(iter, m_colTitle), AppWindow::get_current_locale());
+        relationship->set_title_singular(m_AddDel.get_value(iter, m_colTitleSingular), AppWindow::get_current_locale());
         relationship->set_from_table(m_table_name);
-        relationship->set_from_field(m_AddDel.get_value(item, m_colFromField));
-        relationship->set_to_table(m_AddDel.get_value(item, m_colToTable));
-        relationship->set_to_field(m_AddDel.get_value(item, m_colToField));
-        relationship->set_allow_edit(m_AddDel.get_value_as_bool(item, m_colAllowEdit));
-        relationship->set_auto_create(m_AddDel.get_value_as_bool(item, m_colAutoCreate));
+        relationship->set_from_field(m_AddDel.get_value(iter, m_colFromField));
+        relationship->set_to_table(m_AddDel.get_value(iter, m_colToTable));
+        relationship->set_to_field(m_AddDel.get_value(iter, m_colToField));
+        relationship->set_allow_edit(m_AddDel.get_value_as_bool(iter, m_colAllowEdit));
+        relationship->set_auto_create(m_AddDel.get_value_as_bool(iter, m_colAutoCreate));
 
         vecRelationships.emplace_back(relationship);
       }

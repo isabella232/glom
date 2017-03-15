@@ -250,7 +250,7 @@ void Box_Formatting::set_formatting_for_non_field(const Formatting& format, bool
   {
     if(row[m_columns_alignment.m_col_alignment] == alignment)
     {
-      m_combo_format_text_horizontal_alignment->set_active(row);
+      m_combo_format_text_horizontal_alignment->set_active(row.get_iter());
       break;
     }
   }

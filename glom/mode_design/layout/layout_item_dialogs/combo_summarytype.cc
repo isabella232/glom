@@ -56,7 +56,7 @@ void Combo_SummaryType::set_summary_type(LayoutItem_FieldSummary::summaryType su
 
     if(this_value == summary_type)
     {
-      set_active(row);
+      set_active(row.get_iter());
       return; //success
     }
   }

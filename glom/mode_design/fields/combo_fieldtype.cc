@@ -68,7 +68,8 @@ void Combo_FieldType::set_field_type(Field::glom_field_type fieldType)
    {
      if( row[m_columns.m_col_type] == fieldType )
      {
-       set_active(row);
+       const auto iter = row.get_iter();
+       set_active(iter);
 
        //TODO: What was this?
        //Glib::ustring temp = row[m_columns.m_col_name];

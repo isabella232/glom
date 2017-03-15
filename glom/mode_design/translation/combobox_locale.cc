@@ -79,7 +79,7 @@ void ComboBox_Locale::set_selected_locale(const Glib::ustring& locale)
 
       if(this_text == locale)
       {
-        set_active(row);
+        set_active(row.get_iter());
         return; //success
       }
     }
