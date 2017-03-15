@@ -80,7 +80,7 @@ public:
 
 protected:
   void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) override;
-  Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const override; //Actual primary key value of this record.
+  Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::const_iterator& row) const override; //Actual primary key value of this record.
 
   Gnome::Gda::Value get_entered_field_data(const LayoutItem_Field& field) const override;
   void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value) override;

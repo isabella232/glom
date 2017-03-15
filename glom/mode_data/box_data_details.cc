@@ -152,7 +152,7 @@ Box_Data_Details::~Box_Data_Details()
   remove_view(&m_FlowTable);
 }
 
-Gnome::Gda::Value Box_Data_Details::get_primary_key_value(const Gtk::TreeModel::iterator& /* row */) const
+Gnome::Gda::Value Box_Data_Details::get_primary_key_value(const Gtk::TreeModel::const_iterator& /* row */) const
 {
   return get_primary_key_value_selected();
 }

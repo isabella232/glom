@@ -63,7 +63,7 @@ private:
   std::shared_ptr<Field> get_field_primary_key() const override; // from Base_DB_Table_Data
   Gnome::Gda::Value get_primary_key_value_selected() const override; // from Base_DB_Table_Data
   void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) override; // from Base_DB_Table_Data
-  Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const override; // from Base_DB_Table_Data
+  Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::const_iterator& row) const override; // from Base_DB_Table_Data
 
   std::shared_ptr<Field> m_field_primary_key;
   Dialog_Import_CSV* m_data_source;

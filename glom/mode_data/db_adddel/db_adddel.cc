@@ -2350,7 +2350,7 @@ void DbAddDel::set_primary_key_value(const Gtk::TreeModel::iterator& row, const 
   set_value_key(row, value);
 }
 
-Gnome::Gda::Value DbAddDel::get_primary_key_value(const Gtk::TreeModel::iterator& row) const
+Gnome::Gda::Value DbAddDel::get_primary_key_value(const Gtk::TreeModel::const_iterator& row) const
 {
   return get_value_key(row);
 }

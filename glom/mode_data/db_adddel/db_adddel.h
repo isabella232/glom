@@ -279,7 +279,7 @@ private:
   std::shared_ptr<Field> get_field_primary_key() const override;
   Gnome::Gda::Value get_primary_key_value_selected() const override;
   void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) override;
-  Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const override;
+  Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::const_iterator& row) const override;
 
   Gtk::CellRenderer* construct_specified_columns_cellrenderer(const std::shared_ptr<LayoutItem>& layout_item, int model_column_index, int data_model_column_index);
 

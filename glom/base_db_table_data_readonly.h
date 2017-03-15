@@ -48,7 +48,7 @@ protected:
   //or the primary key value as it is entered in the UI, even before a record exists,
   //or both.
   virtual Gnome::Gda::Value get_primary_key_value_selected() const = 0;
-  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const = 0;
+  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::const_iterator& row) const = 0;
 
   FoundSet m_found_set;
 

@@ -295,7 +295,7 @@ void Dialog_Import_CSV_Progress::set_primary_key_value(const Gtk::TreeModel::ite
   //throw std::logic_error("Dialog_Import_CSV_Progress::set_primary_key_value() called");
 }
 
-Gnome::Gda::Value Dialog_Import_CSV_Progress::get_primary_key_value(const Gtk::TreeModel::iterator& /* row */) const
+Gnome::Gda::Value Dialog_Import_CSV_Progress::get_primary_key_value(const Gtk::TreeModel::const_iterator& /* row */) const
 {
   throw std::logic_error("Dialog_Import_CSV_Progress::get_primary_key_value() called");
 }

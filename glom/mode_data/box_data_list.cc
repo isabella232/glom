@@ -305,7 +305,7 @@ void Box_Data_List::on_details_record_deleted(const Gnome::Gda::Value& primary_k
   }
 }
 
-Gnome::Gda::Value Box_Data_List::get_primary_key_value(const Gtk::TreeModel::iterator& row) const
+Gnome::Gda::Value Box_Data_List::get_primary_key_value(const Gtk::TreeModel::const_iterator& row) const
 {
   return m_AddDel.get_value_key(row);
 }

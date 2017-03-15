@@ -77,7 +77,7 @@ public:
 protected:
 
   //Implementations of pure virtual methods from Base_DB_Table_Data:
-  Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const override;
+  Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::const_iterator& row) const override;
 
   //Overrides of functions from Box_Data:
   void create_layout() override;

@@ -67,7 +67,7 @@ protected:
   std::shared_ptr<Field> get_field_primary_key() const override; //TODO: Already in base class?
   Gnome::Gda::Value get_primary_key_value_selected() const override;
   void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) override;
-  Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const override;
+  Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::const_iterator& row) const override;
 
   //Overrides of functions from Box_Data:
   Document::type_list_layout_groups create_layout_get_layout() override;

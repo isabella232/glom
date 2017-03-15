@@ -177,7 +177,7 @@ bool Box_Data_List_Related::fill_from_database()
   return result;
 }
 
-Gnome::Gda::Value Box_Data_List_Related::get_primary_key_value(const Gtk::TreeModel::iterator& row) const
+Gnome::Gda::Value Box_Data_List_Related::get_primary_key_value(const Gtk::TreeModel::const_iterator& row) const
 {
   return m_AddDel.get_value_key(row);
 }

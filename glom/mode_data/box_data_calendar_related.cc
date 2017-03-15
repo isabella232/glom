@@ -555,7 +555,7 @@ void Box_Data_Calendar_Related::on_MenuPopup_activate_layout()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Gnome::Gda::Value Box_Data_Calendar_Related::get_primary_key_value(const Gtk::TreeModel::iterator& /* row */) const
+Gnome::Gda::Value Box_Data_Calendar_Related::get_primary_key_value(const Gtk::TreeModel::const_iterator& /* row */) const
 {
   return Gnome::Gda::Value(); //TODO: m_AddDel.get_value_key(row);
 }
