@@ -50,7 +50,7 @@ ComboGlom::ComboGlom(bool has_entry)
   set_popup_fixed_width(false);
 }
 
-void ComboGlom::on_fixed_cell_data(const Gtk::TreeModel::iterator& iter, Gtk::CellRenderer* cell, guint model_column_index)
+void ComboGlom::on_fixed_cell_data(const Gtk::TreeModel::const_iterator& iter, Gtk::CellRenderer* cell, guint model_column_index)
 {
   if(!cell)
   {

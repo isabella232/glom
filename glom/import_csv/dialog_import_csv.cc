@@ -275,7 +275,7 @@ void Dialog_Import_CSV::show_error_dialog(const Glib::ustring&, const Glib::ustr
      secondary, *this, Gtk::MESSAGE_ERROR);
 }
 
-void Dialog_Import_CSV::encoding_data_func(const Gtk::TreeModel::iterator& iter, Gtk::CellRendererText& renderer)
+void Dialog_Import_CSV::encoding_data_func(const Gtk::TreeModel::const_iterator& iter, Gtk::CellRendererText& renderer)
 {
   const auto name = (*iter)[m_encoding_columns.m_col_name];
   const auto charset = (*iter)[m_encoding_columns.m_col_charset];
@@ -283,7 +283,7 @@ void Dialog_Import_CSV::encoding_data_func(const Gtk::TreeModel::iterator& iter,
   renderer.property_text() = encoding_display(name, charset);
 }
 
-bool Dialog_Import_CSV::row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& /* model */, const Gtk::TreeModel::iterator& iter) const
+bool Dialog_Import_CSV::row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& /* model */, const Gtk::TreeModel::const_iterator& iter) const
 {
   return (*iter)[m_encoding_columns.m_col_name] == "";
 }

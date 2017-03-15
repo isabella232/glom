@@ -206,7 +206,7 @@ void Dialog_Database_Preferences::load_from_document()
   m_text_view_script->get_buffer()->set_text(script);
 }
 
-int Dialog_Database_Preferences::on_autoincrements_sort(const Gtk::TreeModel::iterator& a, const Gtk::TreeModel::iterator& b)
+int Dialog_Database_Preferences::on_autoincrements_sort(const Gtk::TreeModel::const_iterator& a, const Gtk::TreeModel::const_iterator& b)
 {
   const Glib::ustring a_full = (*a)[m_columns.m_col_table] + ", " + (*a)[m_columns.m_col_field];
   const Glib::ustring b_full = (*b)[m_columns.m_col_table] + ", " + (*b)[m_columns.m_col_field];

@@ -372,7 +372,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
   }
 }
 
-void ComboChoicesWithTreeModel::on_cell_data(const Gtk::TreeModel::iterator& iter, Gtk::CellRenderer* cell, guint model_column_index)
+void ComboChoicesWithTreeModel::on_cell_data(const Gtk::TreeModel::const_iterator& iter, Gtk::CellRenderer* cell, guint model_column_index)
 {
   //std::cout << G_STRFUNC << ": DEBUG: model_column_index=" << model_column_index << std::endl;
   if(model_column_index >= m_db_layout_items.size())

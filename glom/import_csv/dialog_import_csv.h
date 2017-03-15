@@ -87,8 +87,8 @@ private:
   void field_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, unsigned int column_number);
   void on_field_edited(const Glib::ustring& path, const Glib::ustring& new_text, unsigned int column_number);
 
-  void encoding_data_func(const Gtk::TreeModel::iterator& iter, Gtk::CellRendererText& renderer);
-  bool row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::iterator& iter) const;
+  void encoding_data_func(const Gtk::TreeModel::const_iterator& iter, Gtk::CellRendererText& renderer);
+  bool row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::const_iterator& iter) const;
 
   void on_parser_file_read_error(const Glib::ustring& error_message);
   void on_parser_have_display_name(const Glib::ustring& display_name);
