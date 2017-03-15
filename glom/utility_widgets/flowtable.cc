@@ -30,8 +30,8 @@ namespace Glom
 
 FlowTable::FlowTable()
 : Glib::ObjectBase("flowtable"),
-  Gtk::WidgetCustomDraw();
-: m_design_mode(false)
+  Gtk::WidgetCustomDraw(),
+  m_design_mode(false)
 {
   //Default to disabling drag and drop:
   set_drag_enabled(EGG_DRAG_DISABLED);
@@ -243,9 +243,9 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
 
 bool FlowTable::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-  const auto result = Egg::SpreadTableDnd::on_draw(cr);
+  // TODO ? const auto result = Egg::SpreadTableDnd::on_draw(cr);
   if(!m_design_mode)
-    return result;
+    return true;
 
   cr->set_line_width(1);
   cr->set_line_cap(Cairo::LINE_CAP_SQUARE);
@@ -285,7 +285,7 @@ bool FlowTable::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
     //cr->stroke();
   }
 
-  return result;
+  return true;
 }
 
 } //namespace Glom
