@@ -221,7 +221,7 @@ public:
 
   /** Get the last row. This will generally be the placeholder row.
    */
-  Gtk::TreeModel::iterator get_last_row() const;
+  Gtk::TreeModel::const_iterator get_last_row() const;
 
 
 protected:

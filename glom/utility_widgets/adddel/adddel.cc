@@ -1384,7 +1384,7 @@ Gtk::TreeModel::iterator AddDel::get_next_available_row_with_add_if_necessary()
   return result;
 }
 
-Gtk::TreeModel::iterator AddDel::get_last_row() const
+Gtk::TreeModel::const_iterator AddDel::get_last_row() const
 {
   //TODO_performance: Hopefully there is a better way to do this.
   auto iter = get_model()->children().begin();
