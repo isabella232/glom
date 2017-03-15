@@ -704,13 +704,13 @@ bool DbTreeModel::get_iter_vfunc(const Path& path, iterator& iter) const
    return iter_nth_root_child_vfunc(path[0], iter);
 }
 
-DbTreeModel::type_datamodel_row_index DbTreeModel::get_datamodel_row_index_from_tree_row_iter(const iterator& iter) const
+DbTreeModel::type_datamodel_row_index DbTreeModel::get_datamodel_row_index_from_tree_row_iter(const const_iterator& iter) const
 {
   return GPOINTER_TO_INT(iter.gobj()->user_data);
 }
 
 
-bool DbTreeModel::check_treeiter_validity(const iterator& iter) const
+bool DbTreeModel::check_treeiter_validity(const const_iterator& iter) const
 {
   if(!(iter->get_model_gobject()))
     return false;
@@ -848,7 +848,7 @@ void DbTreeModel::set_key_value(const TreeModel::iterator& iter, const DbValue& 
   }
 }
 
-DbTreeModel::DbValue DbTreeModel::get_key_value(const TreeModel::iterator& iter) const
+DbTreeModel::DbValue DbTreeModel::get_key_value(const TreeModel::const_iterator& iter) const
 {
   if(check_treeiter_validity(iter))
   {
@@ -867,7 +867,7 @@ DbTreeModel::DbValue DbTreeModel::get_key_value(const TreeModel::iterator& iter)
   return DbValue();
 }
 
-bool DbTreeModel::get_is_placeholder(const TreeModel::iterator& iter) const
+bool DbTreeModel::get_is_placeholder(const TreeModel::const_iterator& iter) const
 {
   //g_warning("DbTreeModel::g et_is_placeholder()");
   if(check_treeiter_validity(iter))
@@ -904,6 +904,12 @@ bool DbTreeModel::row_was_removed(const type_datamodel_row_index& datamodel_row)
     return false; //If it was never accessed before then it has never been removed.
 }
 
+Gtk::TreeModel::const_iterator DbTreeModel::get_last_row() const
+{
+  auto non_const = const_cast<DbTreeModel*>(this);
+  return non_const->get_last_row();
+}
+
 Gtk::TreeModel::iterator DbTreeModel::get_last_row()
 {
   iterator result;
@@ -931,6 +937,12 @@ Gtk::TreeModel::iterator DbTreeModel::get_last_row()
   }
 
   return result;
+}
+
+Gtk::TreeModel::const_iterator DbTreeModel::get_placeholder_row() const
+{
+  auto non_const = const_cast<DbTreeModel*>(this);
+  return non_const->get_placeholder_row();
 }
 
 Gtk::TreeModel::iterator DbTreeModel::get_placeholder_row()

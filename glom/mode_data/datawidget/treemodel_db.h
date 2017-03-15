@@ -110,7 +110,7 @@ public:
   typedef DbTreeModelRow::DbValue DbValue;
 
   void set_is_not_placeholder(const TreeModel::iterator& iter);
-  bool get_is_placeholder(const TreeModel::iterator& iter) const;
+  bool get_is_placeholder(const TreeModel::const_iterator& iter) const;
 
   /** Set the value of the primary key for the specified row.
    */
@@ -118,16 +118,25 @@ public:
 
   /** Get the value of the primary key for the specified row.
    */
-  DbValue get_key_value(const TreeModel::iterator& iter) const;
+  DbValue get_key_value(const TreeModel::const_iterator& iter) const;
 
   /** Get the last row.
    * This will never return the placeholder row.
    */
   TreeModel::iterator get_last_row();
 
+  /** Get the last row.
+   * This will never return the placeholder row.
+   */
+  TreeModel::const_iterator get_last_row() const;
+
   /** Get the placeholder row.
    */
   TreeModel::iterator get_placeholder_row();
+
+  /** Get the placeholder row.
+   */
+  TreeModel::const_iterator get_placeholder_row() const;
 
   /** Removes the given row from the list store.
    * @param iter The iterator to the row to be removed.
@@ -187,9 +196,9 @@ private:
    void invalidate_iter(iterator& iter) const;
    bool row_was_removed(const type_datamodel_row_index& row_iter) const;
 
-   type_datamodel_row_index get_datamodel_row_index_from_tree_row_iter(const iterator& iter) const;
+   type_datamodel_row_index get_datamodel_row_index_from_tree_row_iter(const const_iterator& iter) const;
 
-   bool check_treeiter_validity(const iterator& iter) const;
+   bool check_treeiter_validity(const const_iterator& iter) const;
 
    //Structure:
    unsigned int m_columns_count;

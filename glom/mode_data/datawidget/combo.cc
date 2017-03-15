@@ -246,7 +246,8 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
     if(this_value == value)
     {
       found = true;
-      set_active(row);
+      const auto iter = row.get_iter();
+      set_active(iter);
       break;
     }
   }
