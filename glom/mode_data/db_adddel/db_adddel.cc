@@ -1857,7 +1857,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
       const guint col_real = data_model_column_index + get_count_hidden_system_columns();
       auto treerow = *iter;
       Gnome::Gda::Value value;
-      treerow->get_value(col_real, value);
+      treerow.get_value(col_real, value);
 
       /*
       GType debug_type = value.get_value_type();

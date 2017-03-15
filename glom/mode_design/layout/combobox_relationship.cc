@@ -235,7 +235,7 @@ void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_itera
   std::shared_ptr<Relationship> relationship = row[m_model_columns.m_relationship];
   if(relationship)
   {
-    auto iterParent = row->parent();
+    auto iterParent = row.parent();
     if(iterParent)
     {
       //related relationship:

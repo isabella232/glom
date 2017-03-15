@@ -712,7 +712,7 @@ DbTreeModel::type_datamodel_row_index DbTreeModel::get_datamodel_row_index_from_
 
 bool DbTreeModel::check_treeiter_validity(const const_iterator& iter) const
 {
-  if(!(iter->get_model_gobject()))
+  if(!(iter.get_model_gobject()))
     return false;
 
   // Anything that modifies the model's structure should change the model's stamp,
