@@ -406,7 +406,7 @@ Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
   return  m_list_store->children().end();
 }
 
-bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, bool start_editing)
+bool DbAddDel::select_item(const Gtk::TreeModel::const_iterator& iter, bool start_editing)
 {
   //Find the first column with a layout_item:
   std::shared_ptr<const LayoutItem> layout_item;
@@ -424,7 +424,7 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, bool start_edit
   return select_item(iter, *layout_item, start_editing);
 }
 
-bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const LayoutItem& layout_item, bool start_editing)
+bool DbAddDel::select_item(const Gtk::TreeModel::const_iterator& iter, const LayoutItem& layout_item, bool start_editing)
 {
   if(!m_list_store)
     return false;
@@ -1188,7 +1188,7 @@ DbAddDel::InnerIgnore::~InnerIgnore()
   m_pOuter = nullptr;
 }
 
-Gnome::Gda::Value DbAddDel::treeview_get_key(const Gtk::TreeModel::iterator& row) const
+Gnome::Gda::Value DbAddDel::treeview_get_key(const Gtk::TreeModel::const_iterator& row) const
 {
   Gnome::Gda::Value value;
 
@@ -1721,7 +1721,7 @@ Glib::RefPtr<const Gtk::TreeModel> DbAddDel::get_model() const
   return m_list_store;
 }
 
-bool DbAddDel::get_is_first_row(const Gtk::TreeModel::iterator& iter) const
+bool DbAddDel::get_is_first_row(const Gtk::TreeModel::const_iterator& iter) const
 {
   if(iter)
     return iter == get_model()->children().begin();
@@ -1729,7 +1729,7 @@ bool DbAddDel::get_is_first_row(const Gtk::TreeModel::iterator& iter) const
     return false;
 }
 
-bool DbAddDel::get_is_last_row(const Gtk::TreeModel::iterator& iter) const
+bool DbAddDel::get_is_last_row(const Gtk::TreeModel::const_iterator& iter) const
 {
   if(iter)
   {
@@ -1756,7 +1756,7 @@ Gtk::TreeModel::iterator DbAddDel::get_last_row()
     return Gtk::TreeModel::iterator();
 }
 
-Gnome::Gda::Value DbAddDel::get_value_key(const Gtk::TreeModel::iterator& iter) const
+Gnome::Gda::Value DbAddDel::get_value_key(const Gtk::TreeModel::const_iterator& iter) const
 {
   return treeview_get_key(iter);
 }
@@ -1777,7 +1777,7 @@ void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::
   }
 }
 
-bool DbAddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const
+bool DbAddDel::get_is_placeholder_row(const Gtk::TreeModel::const_iterator& iter) const
 {
   //g_warning("DbAddDel::get_is_placeholder_row()");
 

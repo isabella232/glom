@@ -87,11 +87,11 @@ public:
 
   void remove_item(const Gtk::TreeModel::iterator& iter);
 
-  Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item) const;
+  Gnome::Gda::Value get_value(const Gtk::TreeModel::const_iterator& iter, const LayoutItem_Field& layout_item) const;
 
   /** Get the row's hidden key
    */
-  Gnome::Gda::Value get_value_key(const Gtk::TreeModel::iterator& iter) const;
+  Gnome::Gda::Value get_value_key(const Gtk::TreeModel::const_iterator& iter) const;
 
   /** Set the row's hidden key
    */
@@ -112,8 +112,8 @@ public:
    * @param start_editing Whether editing should start in the cell.
    * @result Whether the row was successfully selected.
    */
-  bool select_item(const Gtk::TreeModel::iterator& iter, const LayoutItem& layout_item, bool start_editing = false);  //bool indicates success.
-  bool select_item(const Gtk::TreeModel::iterator& iter, bool start_editing = false);
+  bool select_item(const Gtk::TreeModel::const_iterator& iter, const LayoutItem& layout_item, bool start_editing = false);  //bool indicates success.
+  bool select_item(const Gtk::TreeModel::const_iterator& iter, bool start_editing = false);
 
   guint get_count() const;
 
@@ -130,18 +130,18 @@ public:
    */
   virtual void set_value_selected(const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value);
 
-  bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
+  bool get_is_first_row(const Gtk::TreeModel::const_iterator& iter) const;
 
   /** Check whether the row is the last (non-placeholder) row.
    * This will also return true if @a iter is the placeholder row,
    * but this should be used to identify the last real row.
    * @see get_is_placeholder_row()
    */
-  bool get_is_last_row(const Gtk::TreeModel::iterator& iter) const;
+  bool get_is_last_row(const Gtk::TreeModel::const_iterator& iter) const;
 
   /** @result Whether this is a blank row where date for a new row should be entered
    */
-  bool get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const;
+  bool get_is_placeholder_row(const Gtk::TreeModel::const_iterator& iter) const;
 
   std::shared_ptr<Field> get_key_field() const;
   void set_key_field(const std::shared_ptr<Field>& field);
@@ -308,7 +308,7 @@ protected:
   virtual void on_selection_changed(bool selection);
 
 private:
-  Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::iterator& row) const;
+  Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::const_iterator& row) const;
 
   ///Add a blank row, or return the existing blank row if there already is one.
   //Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
