@@ -42,7 +42,7 @@ private:
 
   void fill_field_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const Field>& field);
 
-  std::shared_ptr<Field> get_field_definition(const Gtk::TreeModel::iterator& row);
+  std::shared_ptr<Field> get_field_definition(const Gtk::TreeModel::const_iterator& row);
 
   std::shared_ptr<Field> change_definition(const std::shared_ptr<const Field>& fieldOld, const std::shared_ptr<const Field>& field);
 

@@ -205,7 +205,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_button_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_edit) );
 }
 
-void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, std::shared_ptr<LayoutGroup>& group)
+void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::const_iterator& iter, std::shared_ptr<LayoutGroup>& group)
 {
   auto portal = std::dynamic_pointer_cast<LayoutItem_Portal>(group);
   if(portal)

@@ -49,7 +49,7 @@ public:
 protected:
 
   void add_group(const Gtk::TreeModel::iterator& parent, const std::shared_ptr<const LayoutGroup>& group);
-  void fill_group(const Gtk::TreeModel::iterator& iter, std::shared_ptr<LayoutGroup>& group);
+  void fill_group(const Gtk::TreeModel::const_iterator& iter, std::shared_ptr<LayoutGroup>& group);
 
   //Enable/disable buttons, depending on treeview selection:
   void enable_buttons() override;

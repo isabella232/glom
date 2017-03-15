@@ -442,7 +442,7 @@ void Box_DB_Table_Definition::on_adddel_extra(const Gtk::TreeModel::iterator& ro
   m_dialog_default_formatting->show();
 }
 
-std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterator& row)
+std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::const_iterator& row)
 {
   std::shared_ptr<Field> fieldResult;
 
