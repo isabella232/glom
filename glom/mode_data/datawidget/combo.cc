@@ -67,8 +67,8 @@ void ComboGlom::on_fixed_cell_data(const Gtk::TreeModel::iterator& iter, Gtk::Ce
     return;
 
   Gnome::Gda::Value value;
-  Gtk::TreeModel::Row treerow = *iter;
-  treerow->get_value(model_column_index, value);
+  const auto treerow = *iter;
+  treerow.get_value(model_column_index, value);
 
   set_cell_for_field_value(cell, field, value);
 }
@@ -289,7 +289,7 @@ Gnome::Gda::Value ComboGlom::get_value() const
 
    if(iter)
    {
-     const Gtk::TreeModel::Row row = *iter;
+     const auto row = *iter;
      Gnome::Gda::Value value;
      row.get_value(0, value);
      return value;

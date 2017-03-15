@@ -58,7 +58,7 @@ std::shared_ptr<Relationship> ComboBox_Relationship::get_selected_relationship()
   auto iter = get_active();
   if(iter)
   {
-    Gtk::TreeModel::Row row = *iter;
+    const auto row = *iter;
     return row[m_model_columns.m_relationship];
   }
   else
@@ -70,7 +70,7 @@ std::shared_ptr<Relationship> ComboBox_Relationship::get_selected_relationship(s
   auto iter = get_active();
   if(iter)
   {
-    Gtk::TreeModel::Row row = *iter;
+    const auto row = *iter;
     auto iterParent = row.parent();
     if(iterParent)
     {
@@ -208,7 +208,7 @@ void ComboBox_Relationship::set_relationships_excluding_triggered_by(const type_
 /*
 void ComboBox_Relationship::on_cell_data_name(const Gtk::TreeModel::const_iterator& iter)
 {
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
   std::shared_ptr<Relationship> relationship = row[m_model_columns.m_relationship];
   if(relationship)
     m_renderer_name->property_text() = relationship->get_name();
@@ -227,7 +227,7 @@ bool ComboBox_Relationship::get_cell_is_sensitive(const std::shared_ptr<const Re
 
 void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_iterator& iter)
 {
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
   Glib::ustring title;
   bool sensitive = true;
   std::shared_ptr<Relationship> relationship = row[m_model_columns.m_relationship];
@@ -265,14 +265,14 @@ void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_itera
 
 bool ComboBox_Relationship::on_row_separator(const Glib::RefPtr<Gtk::TreeModel>& /* model */, const Gtk::TreeModel::const_iterator& iter)
 {
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
   const bool separator = row[m_model_columns.m_separator];
   return separator;
 }
 
 void ComboBox_Relationship::on_cell_data_fromfield(const Gtk::TreeModel::const_iterator& iter)
 {
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
   Glib::ustring text;
   bool sensitive = true;
   std::shared_ptr<Relationship> relationship = row[m_model_columns.m_relationship];

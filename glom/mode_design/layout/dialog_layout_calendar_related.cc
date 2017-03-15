@@ -189,7 +189,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
           {
             //Add the item to the treeview:
             auto iter = m_model_items->append();
-            Gtk::TreeModel::Row row = *iter;
+            auto row = *iter;
             row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(item);
           }
         }
@@ -377,7 +377,7 @@ void Dialog_Layout_Calendar_Related::on_button_add_field()
     auto iter =  m_model_items->append();
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
+      auto row = *iter;
       row[m_model_items->m_columns.m_col_layout_item] = field;
 
       //Scroll to, and select, the new row:
@@ -399,7 +399,7 @@ void Dialog_Layout_Calendar_Related::on_button_edit()
     auto iter = refTreeSelection->get_selected();
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
+      auto row = *iter;
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
       auto field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
 

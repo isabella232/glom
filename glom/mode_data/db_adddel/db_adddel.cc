@@ -318,13 +318,13 @@ Gtk::TreeModel::iterator DbAddDel::get_item_placeholder()
    return Gtk::TreeModel::iterator();
 }
 
-Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item) const
+Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::const_iterator& iter, const LayoutItem_Field& layout_item) const
 {
   Gnome::Gda::Value value;
 
   if(m_list_store)
   {
-    Gtk::TreeModel::Row treerow = *iter;
+    const auto treerow = *iter;
 
     if(treerow)
     {
@@ -395,7 +395,7 @@ Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
 
   for(auto iter = m_list_store->children().begin(); iter != m_list_store->children().end(); ++iter)
   {
-    //Gtk::TreeModel::Row row = *iter;
+    //auto row = *iter;
     const auto valTemp = get_value_key(iter);
     if(valTemp == key)
     {
@@ -816,7 +816,7 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_
   }
 
   //Show the value in any columns:
-  Gtk::TreeModel::Row treerow = *iter;
+  auto treerow = *iter;
   if(treerow)
   {
     const auto list_indexes = get_data_model_column_index(layout_item, set_specified_field_layout);
@@ -1266,7 +1266,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
   auto iter = m_list_store->get_iter(path);
   if(iter)
   {
-    Gtk::TreeModel::Row row = *iter;
+    auto row = *iter;
 
     const int tree_model_column_index = data_model_column_index + get_count_hidden_system_columns();
 
@@ -1385,7 +1385,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
   auto iter = m_list_store->get_iter(path);
   if(iter != get_model()->children().end())
   {
-    Gtk::TreeModel::Row row = *iter;
+    auto row = *iter;
 
     const int treemodel_column_index = data_model_column_index + get_count_hidden_system_columns();
 
@@ -1793,7 +1793,7 @@ bool DbAddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) cons
   }
 
   return  m_list_store->get_is_placeholder(iter);
-  //Gtk::TreeModel::Row row = *iter;
+  //auto row = *iter;
   //return row[*m_modelcolumn_placeholder];
 }
 
@@ -1854,7 +1854,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
     if(field)
     {
       const guint col_real = data_model_column_index + get_count_hidden_system_columns();
-      Gtk::TreeModel::Row treerow = *iter;
+      auto treerow = *iter;
       Gnome::Gda::Value value;
       treerow->get_value(col_real, value);
 

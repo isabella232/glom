@@ -116,7 +116,7 @@ void Dialog_FieldsList::set_fields(const Glib::ustring& table_name, const Layout
         continue;
 
       auto iterTree = m_model_fields->append();
-      Gtk::TreeModel::Row row = *iterTree;
+      auto row = *iterTree;
 
       row[m_ColumnsFields.m_col_layout_item] = item;
       row[m_ColumnsFields.m_col_sequence] = field_sequence;
@@ -246,7 +246,7 @@ void Dialog_FieldsList::on_button_add_field()
 
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
+      auto row = *iter;
       row[m_ColumnsFields.m_col_layout_item] = field;
 
       //Scroll to, and select, the new row:
@@ -288,7 +288,7 @@ void Dialog_FieldsList::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
 
   std::shared_ptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
   if(item)
@@ -316,7 +316,7 @@ void Dialog_FieldsList::on_button_edit_field()
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  auto row = *iter;
   std::shared_ptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
   //Get the chosen field:
@@ -350,7 +350,7 @@ void Dialog_FieldsList::on_button_formatting()
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  auto row = *iter;
   std::shared_ptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
   if(field)
   {

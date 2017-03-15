@@ -73,7 +73,7 @@ LayoutItem_FieldSummary::summaryType Combo_SummaryType::get_summary_type() const
   auto active_row = get_active();
   if(active_row)
   {
-    Gtk::TreeModel::Row row = *active_row;
+    const auto row = *active_row;
     return row[m_model_columns.m_summary_type];
   }
 

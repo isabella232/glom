@@ -67,8 +67,8 @@ void Dialog_Layout::move_treeview_selection_up(Gtk::TreeView* treeview, const Gt
         auto iterBefore = iter;
         --iterBefore;
 
-        Gtk::TreeModel::Row row = *iter;
-        Gtk::TreeModel::Row rowBefore = **iterBefore;
+        auto row = *iter;
+        auto rowBefore = *iterBefore;
 
         //Swap the sequence values, so that the one before will be after:
         guint tempBefore = rowBefore[sequence_column];
@@ -101,8 +101,8 @@ void Dialog_Layout::move_treeview_selection_down(Gtk::TreeView* treeview, const 
       auto model = treeview->get_model();
       if(iterNext != model->children().end()) //If it is not the last one.
       {
-        Gtk::TreeModel::Row row = *iter;
-        Gtk::TreeModel::Row rowNext = *iterNext;
+        auto row = *iter;
+        auto rowNext = *iterNext;
 
         //Swap the sequence values, so that the one before will be after:
         guint tempNext = rowNext[sequence_column];

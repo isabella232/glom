@@ -139,7 +139,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
   for(const auto& the_pair : list_values)
   {
     auto iterTree = list_store->append();
-    Gtk::TreeModel::Row row = *iterTree;
+    auto row = *iter;Tree;
 
     if(layout_choice_first)
     {
@@ -194,7 +194,7 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const Formatting::type_list_va
   for(const auto& choicevalue : list_values)
   {
     auto iterTree = list_store->append();
-    Gtk::TreeModel::Row row = *iterTree;
+    auto row = *iterTree;
 
     auto layout_item = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
     if(!layout_item)
@@ -396,8 +396,8 @@ void ComboChoicesWithTreeModel::on_cell_data(const Gtk::TreeModel::iterator& ite
     return;
 
   Gnome::Gda::Value value;
-  Gtk::TreeModel::Row treerow = *iter;
-  treerow->get_value(model_column_index, value);
+  const auto treerow = *iter;
+  treerow.get_value(model_column_index, value);
 
   set_cell_for_field_value(cell, field, value);
 }

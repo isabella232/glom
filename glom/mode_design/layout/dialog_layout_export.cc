@@ -141,7 +141,7 @@ void Dialog_Layout_Export::set_layout_groups(Document::type_list_const_layout_gr
         if(item)
         {
           auto iterTree = m_model_fields->append();
-          Gtk::TreeModel::Row row = *iterTree;
+          auto row = *iterTree;
 
           auto layout_item = glom_sharedptr_clone(item);
           if(document)
@@ -259,7 +259,7 @@ void Dialog_Layout_Export::on_button_add_field()
 
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
+      auto row = *iter;
       row[m_ColumnsFields.m_col_layout_item] = field;
 
       //Scroll to, and select, the new row:
@@ -305,7 +305,7 @@ void Dialog_Layout_Export::on_cell_data_name(Gtk::CellRenderer* renderer, const 
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
 
   //Indicate that it's a field in another table.
   std::shared_ptr<LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item];
@@ -326,7 +326,7 @@ void Dialog_Layout_Export::on_button_edit_field()
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  auto row = *iter;
   std::shared_ptr<LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
   //Get the chosen field:

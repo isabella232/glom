@@ -59,7 +59,7 @@ Glib::ustring ComboBox_Locale::get_selected_locale() const
   auto iter = get_active();
   if(iter)
   {
-    Gtk::TreeModel::Row row = *iter;
+    const auto row = *iter;
     return row[m_model_columns.m_identifier];
   }
   else

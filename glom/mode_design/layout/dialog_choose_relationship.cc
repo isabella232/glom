@@ -73,7 +73,7 @@ void Dialog_ChooseRelationship::set_document(const std::shared_ptr<Document>& do
     for(const auto& relationship : document->get_relationships(table_name))
     {
       auto iterRow = m_model->append();
-      Gtk::TreeModel::Row row = *iterRow;
+      auto row = *iterRow;
 
       if(relationship)
         row[m_ColumnsRelationships.m_col_name] = glom_get_sharedptr_name(relationship);
@@ -119,7 +119,7 @@ std::shared_ptr<Relationship> Dialog_ChooseRelationship::get_relationship_chosen
     auto iter = refTreeSelection->get_selected();
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
+      const auto row = *iter;
       result =  row[m_ColumnsRelationships.m_col_relationship];
     }
   }

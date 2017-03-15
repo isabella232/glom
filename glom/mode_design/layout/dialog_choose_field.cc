@@ -162,7 +162,7 @@ void Dialog_ChooseField::set_document(const std::shared_ptr<Document>& document,
     for(const auto& field : document->get_table_fields(table_name))
     {
       auto iterRow = m_model->append();
-      Gtk::TreeModel::Row row = *iterRow;
+      auto row = *iterRow;
 
       row[m_ColumnsFields.m_col_name] = field->get_name();
       row[m_ColumnsFields.m_col_title] = item_get_title(field);
@@ -179,7 +179,7 @@ void Dialog_ChooseField::select_item(const Field& field)
   //Find any items with the same name:
   auto iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
   {
-    Gtk::TreeModel::Row row = *iter;
+    const auto row = *iter;
     const Field& field_item = row[m_ColumnsFields.m_col_field];
     if(field_item.get_name() == field.get_name())
     {
@@ -315,7 +315,7 @@ void Dialog_ChooseField::on_combo_relationship_changed()
     for(const auto& field : vecFields)
     {
       auto iterRow = m_model->append();
-      Gtk::TreeModel::Row row = *iterRow;
+      auto row = *iterRow;
 
       row[m_ColumnsFields.m_col_name] = field->get_name();
       row[m_ColumnsFields.m_col_title] = item_get_title(field);
@@ -335,7 +335,7 @@ void Dialog_ChooseField::on_treeview_selection_changed()
     if(iter)
     {
       /*
-      Gtk::TreeModel::Row row = *iter;
+      const auto row = *iter;
       const Field& field = row[m_ColumnsFields.m_col_field];
       const auto is_numeric = (field.get_glom_type() == Field::glom_field_type::NUMERIC);
       if(is_numeric)

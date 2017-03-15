@@ -201,7 +201,7 @@ void Dialog_GroupsList::on_button_group_delete()
     auto iter = refTreeSelection->get_selected();
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
+      const auto row = *iter;
 
       const Glib::ustring group = row[m_model_columns_groups.m_col_name];
       if(!group.empty())
@@ -271,7 +271,7 @@ void Dialog_GroupsList::on_button_group_users()
     auto iter = refTreeSelection->get_selected();
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
+      const auto row = *iter;
       const Glib::ustring group_name = row[m_model_columns_groups.m_col_name];
 
       Dialog_UsersList* dialog = nullptr;
@@ -318,7 +318,7 @@ Glib::ustring Dialog_GroupsList::get_selected_group() const
     auto iter = refSelection->get_selected();
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
+      const auto row = *iter;
       return row[m_model_columns_groups.m_col_name];
     }
   }
@@ -344,7 +344,7 @@ void Dialog_GroupsList::fill_group_list()
   for(const auto& group : Privs::get_database_groups())
   {
     auto iterTree = m_model_groups->append();
-    Gtk::TreeModel::Row row = *iterTree;
+    auto row = *iterTree;
 
     row[m_model_columns_groups.m_col_name] = group;
 
@@ -390,7 +390,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
     for(const auto& table : table_list)
     {
       auto iterTree = m_model_tables->append();
-      Gtk::TreeModel::Row row = *iterTree;
+      auto row = *iterTree;
 
       const auto table_name = table->get_name();
 
@@ -600,7 +600,7 @@ void Dialog_GroupsList::on_cell_data_group_name(Gtk::CellRenderer* renderer, con
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
 
   Glib::ustring name = row[m_model_columns_groups.m_col_name];
 

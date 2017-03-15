@@ -53,7 +53,7 @@ std::shared_ptr<Field> ComboBox_Fields::get_selected_field() const
   auto iter = get_active();
   if(iter)
   {
-    Gtk::TreeModel::Row row = *iter;
+    const auto row = *iter;
     return row[m_model_columns.m_field];
   }
   else
@@ -187,7 +187,7 @@ void ComboBox_Fields::set_fields(const type_vec_fields& fields, bool with_none_i
 
 void ComboBox_Fields::on_cell_data_title(const Gtk::TreeModel::const_iterator& iter)
 {
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
   std::shared_ptr<Field> field = row[m_model_columns.m_field];
   if(field)
   {
@@ -208,7 +208,7 @@ void ComboBox_Fields::on_cell_data_title(const Gtk::TreeModel::const_iterator& i
 
 bool ComboBox_Fields::on_row_separator(const Glib::RefPtr<Gtk::TreeModel>& /* model */, const Gtk::TreeModel::const_iterator& iter)
 {
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
   const bool separator = row[m_model_columns.m_separator];
   return separator;
 }

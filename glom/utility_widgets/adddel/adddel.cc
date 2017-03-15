@@ -730,7 +730,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gl
     std::cerr << G_STRFUNC << ": No model.\n";
   else
   {
-    Gtk::TreeModel::Row treerow = *iter;
+    auto treerow = *iter;
     if(treerow)
     {
       //Different model columns have different types of data:
@@ -780,7 +780,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, bool val
     std::cerr << G_STRFUNC << ": No model.\n";
   else
   {
-    Gtk::TreeModel::Row treerow = *iter;
+    auto treerow = *iter;
     if(treerow)
     {
       //Different model columns have different types of data:
@@ -1013,14 +1013,13 @@ AddDel::InnerIgnore::~InnerIgnore()
   m_outer = nullptr;
 }
 
-Glib::ustring AddDel::treeview_get_key(const Gtk::TreeModel::iterator& row)
+Glib::ustring AddDel::treeview_get_key(const Gtk::TreeModel::const_iterator& row)
 {
   Glib::ustring value;
 
   if(m_list_store)
   {
-    Gtk::TreeModel::Row treerow = *row;
-
+    const auto treerow = *row;
     if(treerow)
       treerow.get_value(m_col_key, value);
   }
@@ -1039,7 +1038,7 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
   auto iter = m_list_store->get_iter(path);
   if(iter)
   {
-    Gtk::TreeModel::Row row = *iter;
+    auto row = *iter;
 
     bool value_old = false;
     row.get_value(model_column_index, value_old);
@@ -1114,7 +1113,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
   auto iter = m_list_store->get_iter(path);
   if(iter != get_model()->children().end())
   {
-    Gtk::TreeModel::Row row = *iter;
+    auto row = *iter;
 
     Glib::ustring strTextOld;
     row.get_value(model_column_index, strTextOld);
@@ -1507,14 +1506,14 @@ void AddDel::set_prevent_duplicates_warning(const Glib::ustring& warning_text)
   m_prevent_duplicates_warning = warning_text;
 }
 
-bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
+bool AddDel::row_has_duplicates(const Gtk::TreeModel::const_iterator& iter) const
 {
   const auto cols_count = m_column_types.size();
   for(type_ColumnTypes::size_type col = 0; col < cols_count; ++col)
   {
     if(m_column_types[col].m_prevent_duplicates)
     {
-      Gtk::TreeModel::Row row = *iter;
+      const auto row = *iter;
 
       //We can't just use Value, because Gnome::Gda::Value has no operator==, because there is no g_value_equal
       //Gnome::Gda::Value value_this_row;
@@ -1539,7 +1538,7 @@ bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
       {
         if(iterCheck != iter) //Don't compare the row with itself
         {
-          Gtk::TreeModel::Row check_row = *iterCheck;
+          const auto check_row = *iterCheck;
           ////Gnome::Gda::Value has no operator==, because there is no g_value_equal
           //Gnome::Gda::Value value_check_row;
           //TODO: Actually, Gnome::Gda::Value has an operator==

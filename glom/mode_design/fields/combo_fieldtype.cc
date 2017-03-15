@@ -47,7 +47,7 @@ void Combo_FieldType::init()
     auto iterModel = m_tree_model->append();
     if(iterModel)
     {
-      Gtk::TreeModel::Row row = *iterModel;
+      auto row = *iterModel;
       row[m_columns.m_col_name] = the_pair.second;
       row[m_columns.m_col_type] = the_pair.first;
 
@@ -85,10 +85,11 @@ Field::glom_field_type Combo_FieldType::get_field_type() const
   auto active_row  = get_active();
   if(active_row)
   {
-    Gtk::TreeModel::Row row = *active_row;
+    const auto row = *active_row;
     result = row[m_columns.m_col_type];
 
-    Glib::ustring temp = row[m_columns.m_col_name];
+    // TODO: What was this?
+    // Glib::ustring temp = row[m_columns.m_col_name];
   }
 
   return result;

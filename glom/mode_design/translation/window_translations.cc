@@ -181,7 +181,7 @@ void Window_Translations::on_cell_data_original(Gtk::CellRenderer* renderer, con
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
 
   Glib::ustring text;
   std::shared_ptr<TranslatableItem> item = row[m_columns.m_col_item];
@@ -207,7 +207,7 @@ void Window_Translations::on_cell_data_item_itemhint(Gtk::CellRenderer* renderer
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
 
   Glib::ustring item_type_name;
   std::shared_ptr<TranslatableItem> item = row[m_columns.m_col_item];
@@ -241,7 +241,7 @@ void Window_Translations::load_from_document()
       continue;
 
     auto iterTree = m_model->append();
-    Gtk::TreeModel::Row row = *iterTree;
+    auto row = *iterTree;
 
     row[m_columns.m_col_item] = item;
     row[m_columns.m_col_translation] = item->get_title_translation(m_translation_locale, false);

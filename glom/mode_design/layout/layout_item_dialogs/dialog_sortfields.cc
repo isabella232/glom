@@ -111,7 +111,7 @@ void Dialog_SortFields::set_fields(const Glib::ustring& table_name, const Layout
       auto item = std::dynamic_pointer_cast<const LayoutItem_Field>(the_pair.first);
 
       auto iterTree = m_model_fields->append();
-      Gtk::TreeModel::Row row = *iterTree;
+      auto row = *iterTree;
 
       row[m_ColumnsFields.m_col_layout_item] = item;
       row[m_ColumnsFields.m_col_ascending] = the_pair.second;
@@ -219,7 +219,7 @@ void Dialog_SortFields::on_button_add_field()
 
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
+      auto row = *iter;
       row[m_ColumnsFields.m_col_layout_item] = field;
       row[m_ColumnsFields.m_col_ascending] = true; //Default to this so that alphabetical searches go from A to Z by default.
 
@@ -262,7 +262,7 @@ void Dialog_SortFields::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
 
   std::shared_ptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
   renderer_text->property_markup() = item->get_layout_display_name();
@@ -281,7 +281,7 @@ void Dialog_SortFields::on_button_edit_field()
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  auto row = *iter;
   std::shared_ptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
   //Get the chosen field:

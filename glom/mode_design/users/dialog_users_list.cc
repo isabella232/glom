@@ -120,7 +120,7 @@ void Dialog_UsersList::on_button_user_remove()
     {
       if(warn_about_empty_standard_group())
       {
-        Gtk::TreeModel::Row row = *iter;
+        const auto row = *iter;
 
         const Glib::ustring user = row[m_model_columns_users.m_col_name];
         if(!user.empty())
@@ -147,7 +147,7 @@ void Dialog_UsersList::on_button_user_delete()
     {
       if(warn_about_empty_standard_group())
       {
-        Gtk::TreeModel::Row row = *iter;
+        const auto row = *iter;
 
         const Glib::ustring user = row[m_model_columns_users.m_col_name];
         if(!user.empty())
@@ -274,7 +274,7 @@ void Dialog_UsersList::on_button_user_edit()
     auto iter = refTreeSelection->get_selected();
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
+      const auto row = *iter;
 
       Dialog_User* dialog = nullptr;
       Utils::get_glade_widget_derived_with_warning(dialog);

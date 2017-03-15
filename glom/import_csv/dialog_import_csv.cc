@@ -107,7 +107,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
       continue;
 
     iter = m_encoding_model->append();
-    Gtk::TreeModel::Row row = *iter;
+    auto row = *iter;
     row[m_encoding_columns.m_col_name] = encoding.get_name();
     row[m_encoding_columns.m_col_charset] = encoding.get_charset();
   }

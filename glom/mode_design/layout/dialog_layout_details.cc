@@ -213,7 +213,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, std
 
   if(iter)
   {
-    Gtk::TreeModel::Row row = *iter;
+    auto row = *iter;
     std::shared_ptr<LayoutItem> layout_item_top = row[m_model_items->m_columns.m_col_layout_item];
     auto group_row = std::dynamic_pointer_cast<LayoutGroup>(layout_item_top);
     if(!group_row)
@@ -284,7 +284,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
 
   if(iterNewGroup)
   {
-    Gtk::TreeModel::Row rowGroup = *iterNewGroup;
+    auto rowGroup = *iterNewGroup;
 
     auto group_inserted = glom_sharedptr_clone(group);
     group_inserted->remove_all_items();
@@ -299,7 +299,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
       {
         //Handle this differently to regular groups, so we do not also add its children:
         auto iter = m_model_items->append(iterNewGroup->children());
-        Gtk::TreeModel::Row row = *iter;
+        auto row = *iter;
         row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(portal);
       }
       else
@@ -311,7 +311,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
         {
           //Add the item to the treeview:
           auto iter = m_model_items->append(iterNewGroup->children());
-          Gtk::TreeModel::Row row = *iter;
+          auto row = *iter;
           row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(item);
         }
       }
@@ -529,7 +529,7 @@ void Dialog_Layout_Details::on_button_add_field()
     auto iter = append_appropriate_row();
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
+      auto row = *iter;
       row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(layout_item);
 
       //Scroll to, and select, the new row:
@@ -618,7 +618,7 @@ Gtk::TreeModel::iterator Dialog_Layout_Details::append_appropriate_row()
     auto iter_first = m_model_items->children().begin();
     if(iter_first)
     {
-      Gtk::TreeModel::Row row = *iter_first;
+      const auto row = *iter_first;
 
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
       auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
@@ -643,7 +643,7 @@ void Dialog_Layout_Details::on_button_add_button()
   auto iter = append_appropriate_row();
   if(iter)
   {
-    Gtk::TreeModel::Row row = *iter;
+    auto row = *iter;
 
     //Add a new button:
     auto button = std::make_shared<LayoutItem_Button>();
@@ -668,7 +668,7 @@ void Dialog_Layout_Details::on_button_add_text()
   auto iter = append_appropriate_row();
   if(iter)
   {
-    Gtk::TreeModel::Row row = *iter;
+    auto row = *iter;
 
     //Add a new button:
     auto textobject = std::make_shared<LayoutItem_Text>();
@@ -693,7 +693,7 @@ void Dialog_Layout_Details::on_button_add_image()
   auto iter = append_appropriate_row();
   if(iter)
   {
-    Gtk::TreeModel::Row row = *iter;
+    auto row = *iter;
 
     //Add a new button:
     auto imageobject = std::make_shared<LayoutItem_Image>();
@@ -718,7 +718,7 @@ void Dialog_Layout_Details::on_button_add_notebook()
   auto iter = append_appropriate_row();
   if(iter)
   {
-    Gtk::TreeModel::Row row = *iter;
+    auto row = *iter;
 
     auto notebook = std::make_shared<LayoutItem_Notebook>();
     notebook->set_name(_("notebook"));
@@ -747,7 +747,7 @@ void Dialog_Layout_Details::on_button_add_related()
     auto iter = append_appropriate_row();
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
+      auto row = *iter;
 
       auto portal = std::make_shared<LayoutItem_Portal>();
       //portal->set_relationship(relationship);
@@ -779,7 +779,7 @@ void Dialog_Layout_Details::on_button_add_related_calendar()
     auto iter = append_appropriate_row();
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
+      auto row = *iter;
 
       auto portal = std::make_shared<LayoutItem_CalendarPortal>();
       //portal->set_relationship(relationship);
@@ -811,7 +811,7 @@ Gtk::TreeModel::iterator Dialog_Layout_Details::get_selected_group_parent() cons
     auto iter = refTreeSelection->get_selected();
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
+      const auto row = *iter;
 
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
       auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
@@ -850,7 +850,7 @@ void Dialog_Layout_Details::on_button_add_group()
 
   if(iterNewGroup)
   {
-    Gtk::TreeModel::Row row = *iterNewGroup;
+    auto row = *iterNewGroup;
     auto layout_item = std::make_shared<LayoutGroup>();
     layout_item->set_name(_("group"));
     row[m_model_items->m_columns.m_col_layout_item] = layout_item;
@@ -879,7 +879,7 @@ void Dialog_Layout_Details::on_button_formatting()
     auto iter = refTreeSelection->get_selected();
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
+      const auto row = *iter;
 
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
       auto field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
@@ -921,7 +921,7 @@ void Dialog_Layout_Details::on_button_edit()
       //Do something different for each type of item:
       //This is unpleasant, but so is this whole dialog.
       //This whole dialog is just a temporary way to edit the layout before we have a visual DnD way.
-      Gtk::TreeModel::Row row = *iter;
+      const auto row = *iter;
 
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
 
@@ -1100,7 +1100,7 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
 
   std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
 
@@ -1188,7 +1188,7 @@ void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, cons
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
   std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
   auto layout_notebook = std::dynamic_pointer_cast<LayoutItem_Notebook>(layout_item);
   if(layout_notebook)
@@ -1216,7 +1216,7 @@ void Dialog_Layout_Details::on_cell_data_column_width(Gtk::CellRenderer* rendere
   if(iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
   std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
 
   guint column_width = 0;
@@ -1248,7 +1248,7 @@ void Dialog_Layout_Details::on_cell_data_group_columns(Gtk::CellRenderer* render
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
   std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
 
   auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
@@ -1283,7 +1283,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_title(const Glib::ustring& p
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
   std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
   if(!layout_item)
     return;
@@ -1307,7 +1307,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_name(const Glib::ustring& pa
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
   std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
   if(!layout_item)
     return;
@@ -1330,7 +1330,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_column_width(const Glib::ust
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
   std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
   if(!layout_item)
     return;
@@ -1357,7 +1357,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_group_columns(const Glib::us
   if(!iter)
     return;
 
-  Gtk::TreeModel::Row row = *iter;
+  const auto row = *iter;
   std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
   auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
   auto layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);

@@ -75,7 +75,7 @@ bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
 
     if(iter_dragged)
     {
-      Gtk::TreeModel::Row row = *iter_dragged;
+      const auto row = *iter_dragged;
 
       std::shared_ptr<LayoutItem> layout_item = row[m_columns.m_col_layout_item];
       auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
@@ -96,7 +96,7 @@ bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
     //const auto iter_dest_parent = get_iter(dest);
     if(iter_dest_parent)
     {
-      Gtk::TreeModel::Row row_parent = *iter_dest_parent;
+      const auto row_parent = *iter_dest_parent;
 
       std::shared_ptr<LayoutItem> layout_item = row_parent[m_columns.m_col_layout_item];
       auto layout_group = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
@@ -115,7 +115,7 @@ void TreeStore_Layout::fill_sequences()
   guint sequence = 1;
   for(auto iter_children = children().begin(); iter_children != children().end(); ++iter_children)
   {
-    Gtk::TreeModel::Row row = *iter_children;
+    auto row = *iter_children;
     row[m_columns.m_col_sequence] = sequence;
     ++sequence;
 
@@ -129,7 +129,7 @@ void TreeStore_Layout::fill_sequences(const iterator& iter)
   guint sequence = 1;
   for(auto iter_children = iter->children().begin(); iter_children != iter->children().end(); ++iter_children)
   {
-    Gtk::TreeModel::Row row = *iter_children;
+    auto row = *iter_children;
     row[m_columns.m_col_sequence] = sequence;
     ++sequence;
 
