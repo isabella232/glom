@@ -147,7 +147,7 @@ void Dialog_Layout::treeview_fill_sequences(const Glib::RefPtr<Gtk::TreeModel> m
   //Add sequences to any that don't have a sequence:
   //(0 means no sequence)
   guint next_sequence = max_sequence+1; //This could leave holes, of course. But we want new groups to be after the old groups. We can compact it later.
-  for(const auto& row : model->children())
+  for(auto& row : model->children())
   {
     guint sequence = row[sequence_column];
     if(sequence == 0)

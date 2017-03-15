@@ -387,7 +387,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
       {
         //Set all the other rows to false:
         auto model = m_AddDel.get_model();
-        for(const auto& child_row : model->children())
+        for(auto& child_row : model->children())
         {
           m_AddDel.set_value(child_row.get_iter(), m_col_default, false);
         }

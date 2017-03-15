@@ -302,7 +302,7 @@ void Window_Translations::on_button_copy_translation()
       //Save and update:
       on_combo_target_locale_changed();
 
-      for(const auto& row : m_model->children())
+      for(auto& row : m_model->children())
       {
         std::shared_ptr<TranslatableItem> item = row[m_columns.m_col_item];
         if(item)

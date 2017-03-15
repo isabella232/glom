@@ -227,7 +227,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, std
     group->remove_all_items(); //Remove the copied child items, if any, so we can add them.
 
     //Get child layout items:
-    for(const auto& rowChild : row.children())
+    for(auto& rowChild : row.children())
     {
       std::shared_ptr<LayoutItem> layout_item = rowChild[m_model_items->m_columns.m_col_layout_item];
 
@@ -1046,7 +1046,7 @@ void Dialog_Layout_Details::save_to_document()
     Document::type_list_layout_groups list_groups;
 
     //Add the layout items:
-    for(const auto& row : m_model_items->children())
+    for(auto& row : m_model_items->children())
     {
       std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
 

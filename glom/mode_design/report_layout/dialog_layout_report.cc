@@ -257,7 +257,7 @@ void Dialog_Layout_Report::fill_group_children(const std::shared_ptr<LayoutGroup
     const auto row = *iter;
 
     group->remove_all_items();
-    for(const auto& child_row : row.children())
+    for(auto& child_row : row.children())
     {
       std::shared_ptr<LayoutItem> item = child_row[model->m_columns.m_col_item];
 
