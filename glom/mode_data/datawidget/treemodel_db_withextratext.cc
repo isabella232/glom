@@ -90,7 +90,7 @@ GType DbTreeModelWithExtraText::get_column_type_vfunc(int index) const
     return DbTreeModel::get_column_type_vfunc(index);
 }
 
-void DbTreeModelWithExtraText::get_value_vfunc(const TreeModel::iterator& iter, int column, Glib::ValueBase& value) const
+void DbTreeModelWithExtraText::get_value_vfunc(const TreeModel::const_iterator& iter, int column, Glib::ValueBase& value) const
 {
   //std::cout << G_STRFUNC << ": Debug: column=" << column << std::endl;
   if(column == get_text_column())

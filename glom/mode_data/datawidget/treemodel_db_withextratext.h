@@ -59,7 +59,7 @@ public:
 private:
   int get_n_columns_vfunc() const override;
   GType get_column_type_vfunc(int index) const override;
-  void get_value_vfunc(const TreeModel::iterator& iter, int column, Glib::ValueBase& value) const override;
+  void get_value_vfunc(const TreeModel::const_iterator& iter, int column, Glib::ValueBase& value) const override;
 
 
   int m_column_index_first; //The index of the first field in the TreeModel.

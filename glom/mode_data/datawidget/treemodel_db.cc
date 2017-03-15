@@ -420,7 +420,7 @@ GType DbTreeModel::get_column_type_vfunc(int index) const
     return 0;
 }
 
-void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, Glib::ValueBase& value) const
+void DbTreeModel::get_value_vfunc(const TreeModel::const_iterator& iter, int column, Glib::ValueBase& value) const
 {
   //std::cout << "debug: " << G_STRFUNC << ": column=" << column << std::endl;
 
@@ -547,12 +547,12 @@ bool DbTreeModel::iter_children_vfunc(const iterator& parent, iterator& iter) co
   return iter_nth_child_vfunc(parent, 0, iter);
 }
 
-bool DbTreeModel::iter_has_child_vfunc(const iterator& /* iter */) const
+bool DbTreeModel::iter_has_child_vfunc(const const_iterator& /* iter */) const
 {
   return false;
 }
 
-int DbTreeModel::iter_n_children_vfunc(const iterator& iter) const
+int DbTreeModel::iter_n_children_vfunc(const const_iterator& iter) const
 {
   if(!check_treeiter_validity(iter))
     return iter_n_root_children_vfunc();
@@ -629,7 +629,7 @@ bool DbTreeModel::iter_parent_vfunc(const iterator& child, iterator& iter) const
   return false; //There are no children, so no parents.
 }
 
-Gtk::TreeModel::Path DbTreeModel::get_path_vfunc(const iterator& iter) const
+Gtk::TreeModel::Path DbTreeModel::get_path_vfunc(const const_iterator& iter) const
 {
   const auto datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
 
@@ -720,7 +720,7 @@ bool DbTreeModel::check_treeiter_validity(const const_iterator& iter) const
   return m_stamp == iter.get_stamp();
 }
 
-bool DbTreeModel::iter_is_valid(const iterator& iter) const
+bool DbTreeModel::iter_is_valid(const const_iterator& iter) const
 {
   return check_treeiter_validity(iter);
 }
