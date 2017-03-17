@@ -116,7 +116,7 @@ void CellRendererDbList::repack_cells_fixed(Gtk::CellLayout* combobox)
   }
 
   //Add extra cells:
-  Glib::ListHandle<Gtk::CellRenderer*> cells = combobox->get_cells();
+  const auto cells = combobox->get_cells();
   if(cells.size() < m_vec_model_columns_value_fixed.size())
   {
     for(guint col = cells.size(); col != m_vec_model_columns_value_fixed.size(); ++col)
