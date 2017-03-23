@@ -163,7 +163,7 @@ AS_IF([test "x$glom_enable_postgresql" = xyes],
 
 
 # Libraries used by libglom:
-REQUIRED_LIBGLOM_LIBS='giomm-2.52 >= 2.47.4 libxml++-4.0 >= 3.0.0 libxslt >= 1.1.10 pygobject-3.0 >= 2.29.0 libgdamm-6.0 >= 4.99.10 libgda-6.0 >= 5.2.1 libgda-postgres-6.0 libgda-postgres-6.0 libgda-mysql-6.0 libarchive >= 3.0'
+REQUIRED_LIBGLOM_LIBS='giomm-2.54 >= 2.47.4 libxml++-4.0 >= 3.0.0 libxslt >= 1.1.10 pygobject-3.0 >= 2.29.0 libgdamm-6.0 >= 4.99.10 libgda-6.0 >= 5.2.1 libgda-postgres-6.0 libgda-postgres-6.0 libgda-mysql-6.0 libarchive >= 3.0'
 
 AS_IF([test "x$glom_host_win32" != xyes],
       [REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS libepc-2.0 >= 0.4.0"])
