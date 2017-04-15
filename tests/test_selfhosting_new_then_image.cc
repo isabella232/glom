@@ -115,14 +115,15 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   else if(value_read_type == GDA_TYPE_BLOB)
   {
     const auto blob = gda_value_get_blob(value_read.gobj());
-    const auto read_all = gda_blob_op_read_all(const_cast<GdaBlobOp*>(blob->op), const_cast<GdaBlob*>(blob));
+    const auto op = blob ? gda_blob_get_op(const_cast<GdaBlob*>(blob)) : nullptr;
+    const auto read_all = gda_blob_op_read_all(op, const_cast<GdaBlob*>(blob));
     if(!read_all)
     {
       std::cerr << G_STRFUNC << ": Failure: gda_blob_op_read_all() failed.\n";
       return false;
     }
 
-    binary_read = &(blob->data);
+    binary_read = gda_blob_get_binary(const_cast<GdaBlob*>(blob));
   }
 
   if(!binary_read)
@@ -138,16 +139,20 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  if(binary_set->binary_length != binary_read->binary_length)
+  const auto binary_set_len = gda_binary_get_size(const_cast<GdaBinary*>(binary_set));
+  const auto binary_read_len = gda_binary_get_size(const_cast<GdaBinary*>(binary_read));
+  if(binary_set_len != binary_read_len)
   {
     std::cerr << G_STRFUNC << ": Failure: The value read's data length ("
-      << binary_read->binary_length <<
+      << binary_read_len <<
       ") was not equal to that of the value set ("
-      << binary_set->binary_length << ")\n";
+      << binary_set_len << ")\n";
     return false;
   }
 
-  if(memcmp(binary_set->data, binary_read->data, binary_set->binary_length) != 0)
+  const auto binary_set_data = gda_binary_get_data(const_cast<GdaBinary*>(binary_set));
+  const auto binary_read_data = gda_binary_get_data(const_cast<GdaBinary*>(binary_read));
+  if(memcmp(binary_set_data, binary_read_data, binary_set_len) != 0)
   {
     std::cerr << G_STRFUNC << ": Failure: The value read was not equal to the value set.\n";
     return false;
