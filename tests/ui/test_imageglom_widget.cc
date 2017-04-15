@@ -88,10 +88,10 @@ void test_changing_from_jpg_to_pdf_to_jpg()
 }
 
 
-int main(int argc, char *argv[])
+int main()
 {
   auto app =
-    Gtk::Application::create(argc, argv, "org.glom.test_glade_derived_instantiation");
+    Gtk::Application::create("org.glom.test_glade_derived_instantiation");
 
   test_use_jpg();
   test_reset_same_jpg();

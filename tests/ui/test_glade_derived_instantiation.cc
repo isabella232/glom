@@ -127,10 +127,10 @@ bool instantiate_widget()
   return true;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
   auto app =
-    Gtk::Application::create(argc, argv, "org.glom.test_glade_derived_instantiation");
+    Gtk::Application::create("org.glom.test_glade_derived_instantiation");
   Gsv::init(); //Our .glade files contain gtksourceview widgets too.
 
   using namespace Glom;

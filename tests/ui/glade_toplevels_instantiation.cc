@@ -91,7 +91,7 @@ static bool attempt_instantiation(const std::string& filepath, const xmlpp::Elem
 int main(int argc, char* argv[])
 {
   auto app =
-    Gtk::Application::create(argc, argv, "org.glom.test_glade_toplevels_instantiation");
+    Gtk::Application::create("org.glom.test_glade_toplevels_instantiation");
   Gsv::init(); //Our .glade files contain gtksourceview widgets too.
 
   std::string filepath;

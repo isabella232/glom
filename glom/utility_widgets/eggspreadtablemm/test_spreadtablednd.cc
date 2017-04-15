@@ -352,10 +352,10 @@ create_window()
 }
 
 int
-main(int argc, char *argv[])
+main()
 {
   auto app =
-    Gtk::Application::create(argc, argv, "org.glom.test_spreadtablednd");
+    Gtk::Application::create("org.glom.test_spreadtablednd");
 
   auto window = create_window();
   return app->run(*window);
