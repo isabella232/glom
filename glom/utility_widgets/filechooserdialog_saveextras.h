@@ -39,8 +39,8 @@ namespace Glom
 class FileChooserDialog_SaveExtras : public Gtk::FileChooserDialog
 {
 public:
-  explicit FileChooserDialog_SaveExtras(const Glib::ustring& title, Gtk::FileChooserAction action = Gtk::FILE_CHOOSER_ACTION_OPEN);
-  FileChooserDialog_SaveExtras(Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action = Gtk::FILE_CHOOSER_ACTION_OPEN);
+  explicit FileChooserDialog_SaveExtras(const Glib::ustring& title, Gtk::FileChooserAction action = Gtk::FileChooserAction::OPEN);
+  FileChooserDialog_SaveExtras(Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action = Gtk::FileChooserAction::OPEN);
 
   void set_extra_message(const Glib::ustring& message);
   void set_extra_newdb_title(const Glib::ustring& title);

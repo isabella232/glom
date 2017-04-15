@@ -32,8 +32,8 @@ namespace Glom
 {
 
 Box_WithButtons::Box_WithButtons()
-: Gtk::Box(Gtk::ORIENTATION_VERTICAL),
-  m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
+: Gtk::Box(Gtk::Orientation::VERTICAL),
+  m_Box_Buttons(Gtk::Orientation::HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
   m_Button_Cancel(_("_Cancel"))
 {
   //m_document = nullptr;
@@ -47,7 +47,7 @@ Box_WithButtons::Box_WithButtons()
 
 Box_WithButtons::Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::Box(cobject),
-  m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
+  m_Box_Buttons(Gtk::Orientation::HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
   m_Button_Cancel(_("_Cancel"))
 {
   //m_document = nullptr;
@@ -61,7 +61,7 @@ Box_WithButtons::Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk
 
 Box_WithButtons::Box_WithButtons(BaseObjectType* cobject)
 : Gtk::Box(cobject),
-  m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
+  m_Box_Buttons(Gtk::Orientation::HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
   m_Button_Cancel(_("_Cancel"))
 {
 }

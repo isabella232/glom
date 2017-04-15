@@ -77,7 +77,7 @@ Gnome::Gda::Value Dialog_ChooseDate::get_date_chosen() const
 void Dialog_ChooseDate::on_day_selected_double_click()
 {
   //Close the dialog:
-  response(Gtk::RESPONSE_OK);
+  response(Gtk::ResponseType::OK);
 }
 
 } //namespace DataWidetChildren

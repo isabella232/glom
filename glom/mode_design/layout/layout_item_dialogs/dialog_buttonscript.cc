@@ -130,7 +130,7 @@ void Dialog_ButtonScript::on_button_test_script()
     error_message);
 
   if(!error_message.empty())
-    UiUtils::show_ok_dialog(_("Calculation failed"), Glib::ustring::compose(_("The calculation failed with this error:\n%1"), error_message), *this, Gtk::MESSAGE_ERROR);
+    UiUtils::show_ok_dialog(_("Calculation failed"), Glib::ustring::compose(_("The calculation failed with this error:\n%1"), error_message), *this, Gtk::MessageType::ERROR);
 }
 
 } //namespace Glom

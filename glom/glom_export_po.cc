@@ -167,7 +167,7 @@ int main(int argc, char* argv[])
   }
 
   const auto file_type = file_input->query_file_type();
-  if(file_type == Gio::FILE_TYPE_DIRECTORY)
+  if(file_type == Gio::FileType::DIRECTORY)
   {
     std::cerr << _("Glom: The file path is a directory instead of a file.") << std::endl;
     std::cerr << std::endl << context.get_help() << std::endl;

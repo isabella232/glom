@@ -152,14 +152,14 @@ void Dialog_UsersList::on_button_user_delete()
         const Glib::ustring user = row[m_model_columns_users.m_col_name];
         if(!user.empty())
         {
-          Gtk::MessageDialog dialog(UiUtils::bold_message(_("Delete User")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
+          Gtk::MessageDialog dialog(UiUtils::bold_message(_("Delete User")), true, Gtk::MessageType::QUESTION, Gtk::ButtonsType::OK_CANCEL);
           dialog.set_secondary_text(_("Are your sure that you wish to delete this user?"));
           dialog.set_transient_for(*this);
 
           const auto dialog_response = dialog.run();
           dialog.hide();
 
-          if(dialog_response == Gtk::RESPONSE_OK)
+          if(dialog_response == Gtk::ResponseType::OK)
           {
             DbUtils::remove_user(user); //TODO: Warn about failure when this returns false?
             fill_list();
@@ -179,7 +179,7 @@ void Dialog_UsersList::on_button_user_add()
   if(users.empty())
   {
     UiUtils::show_ok_dialog(_("Error Retrieving the List of Users"),
-      _("Glom could not get the list of users from the database server. You probably do not have enough permissions. You should be a superuser."), *this, Gtk::MESSAGE_ERROR);
+      _("Glom could not get the list of users from the database server. You probably do not have enough permissions. You should be a superuser."), *this, Gtk::MessageType::ERROR);
     return;
   }
 
@@ -198,7 +198,7 @@ void Dialog_UsersList::on_button_user_add()
 
   delete dialog;
 
-  if(dialog_response != Gtk::RESPONSE_OK)
+  if(dialog_response != Gtk::ResponseType::OK)
     return;
 
   if(!user.empty())
@@ -232,14 +232,14 @@ void Dialog_UsersList::on_button_user_new()
   dialog->set_transient_for(*this);
   dialog->m_combo_group->set_sensitive(false); //It is being added to the current group, so don't offer a different group.
 
-  int dialog_response = Gtk::RESPONSE_OK;
+  int dialog_response = static_cast<int>(Gtk::ResponseType::OK);
   bool keep_trying = true;
   while(keep_trying)
   {
     dialog_response = Glom::UiUtils::dialog_run_with_help(dialog);
 
     //Check the password is acceptable:
-    if(dialog_response == Gtk::RESPONSE_OK)
+    if(dialog_response == static_cast<int>(Gtk::ResponseType::OK))
     {
       const auto password_ok = dialog->check_password();
       if(password_ok)
@@ -254,7 +254,7 @@ void Dialog_UsersList::on_button_user_new()
 
   delete dialog;
 
-  if(dialog_response != Gtk::RESPONSE_OK)
+  if(dialog_response != Gtk::ResponseType::OK)
     return;
 
   if(!DbUtils::add_user(get_document(), user, password, m_combo_group->get_active_text() /* group */))
@@ -300,14 +300,14 @@ void Dialog_UsersList::on_button_user_edit()
       dialog->m_combo_group->set_sensitive(false); //TODO: Allow, and handle, changes to this.
 
 
-      int dialog_response = Gtk::RESPONSE_OK;
+      int dialog_response = static_cast<int>(Gtk::ResponseType::OK);
       bool keep_trying = true;
       while(keep_trying)
       {
         dialog_response = Glom::UiUtils::dialog_run_with_help(dialog);
 
         //Check the password is acceptable:
-        if(dialog_response == Gtk::RESPONSE_OK)
+        if(dialog_response == Gtk::ResponseType::OK)
         {
           const auto password_ok = dialog->check_password();
           if(password_ok)
@@ -322,7 +322,7 @@ void Dialog_UsersList::on_button_user_edit()
 
       delete dialog;
 
-      if(dialog_response != Gtk::RESPONSE_OK)
+      if(dialog_response != Gtk::ResponseType::OK)
         return;
 
       if(!user.empty() && !password.empty())
@@ -406,7 +406,7 @@ bool Dialog_UsersList::warn_about_empty_standard_group()
   {
     if(m_model_users->children().size() == 1)
     {
-      Gtk::MessageDialog dialog(UiUtils::bold_message(_("Developer group may not be empty.")), true, Gtk::MESSAGE_WARNING);
+      Gtk::MessageDialog dialog(UiUtils::bold_message(_("Developer group may not be empty.")), true, Gtk::MessageType::WARNING);
       dialog.set_secondary_text(_("The developer group must contain at least one user."));
       dialog.set_transient_for(*this);
       dialog.run();

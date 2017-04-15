@@ -62,7 +62,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
   }
   else
   {
-    if(db_file->query_file_type() != Gio::FILE_TYPE_REGULAR)
+    if(db_file->query_file_type() != Gio::FileType::REGULAR)
     {
       std::cerr << G_STRFUNC << ": The db file is not a regular file at path: " << db_file->get_uri() << std::endl;
     }
@@ -96,7 +96,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
     // If the database directory is valid, then only the database (file) is
     // missing, otherwise we pretend the "server" is not running.
     if(Glom::FileUtils::file_exists(db_dir) &&
-      (db_dir->query_file_type() == Gio::FILE_TYPE_DIRECTORY))
+      (db_dir->query_file_type() == Gio::FileType::DIRECTORY))
     {
       throw ExceptionConnection(ExceptionConnection::failure_type::NO_DATABASE);
     }

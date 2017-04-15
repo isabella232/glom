@@ -223,7 +223,7 @@ void Box_Tables::on_adddel_add(const Gtk::TreeModel::iterator& row)
   // TODO: Remove this check when the libgda bug has been fixed:
   // https://bugzilla.gnome.org/show_bug.cgi?id=763534
   if (std::find(std::begin(table_name), std::end(table_name), ' ') != std::end(table_name)) {
-    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Table Names Cannot Contain Spaces")), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Table Names Cannot Contain Spaces")), true, Gtk::MessageType::ERROR, Gtk::ButtonsType::OK);
     dialog.set_secondary_text(_("Unfortunately, Glom tables cannot have names that contain spaces. Please enter a different name for the table."));
     dialog.set_transient_for(*AppWindow::get_appwindow());
     dialog.run();
@@ -236,14 +236,14 @@ void Box_Tables::on_adddel_add(const Gtk::TreeModel::iterator& row)
   if(exists_in_db)
   {
     //Ask the user if they want us to try to cope with this:
-    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Table Already Exists")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Table Already Exists")), true, Gtk::MessageType::QUESTION, Gtk::ButtonsType::OK_CANCEL);
     dialog.set_secondary_text(_("This table already exists on the database server, though it is not mentioned in the .glom file. This should not happen. Would you like Glom to attempt to use the existing table?"));
     dialog.set_transient_for(*AppWindow::get_appwindow());
 
     const auto response = dialog.run();
     dialog.hide();
 
-    if(response == Gtk::RESPONSE_OK)
+    if(response == Gtk::ResponseType::OK)
     {
       //Maybe Glom will cope with whatever fields are there. Let's see.
       created = true;
@@ -306,19 +306,19 @@ void Box_Tables::on_adddel_delete(const Gtk::TreeModel::iterator& rowStart, cons
           //Ask the user to confirm:
           const auto strMsg = Glib::ustring::compose(_("Are you sure that you want to delete this table?\nTable name: %1"), table_name);
           Gtk::MessageDialog dialog(UiUtils::bold_message(_("Delete Table")),
-            true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE,
+            true, Gtk::MessageType::QUESTION, Gtk::ButtonsType::NONE,
             true /* modal */);
           dialog.set_secondary_text(strMsg);
           dialog.set_transient_for(*AppWindow::get_appwindow());
-          dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-          dialog.add_button(_("Delete Table"), Gtk::RESPONSE_OK);
+          dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+          dialog.add_button(_("Delete Table"), Gtk::ResponseType::OK);
           const auto iButtonClicked = dialog.run();
 
           //Get a list of autoincrementing fields in the table:
           const auto fields = document->get_table_fields(table_name);
 
           //Delete the table:
-          if(iButtonClicked == Gtk::RESPONSE_OK)
+          if(iButtonClicked == Gtk::ResponseType::OK)
           {
             const auto test = DbUtils::drop_table(table_name);
             if(!test)
@@ -413,14 +413,14 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
       if(!table_name.empty() && !table_name_new.empty())
       {
         Glib::ustring strMsg = _("Are you sure that you want to rename this table?");  //TODO: Show old and new names?
-        Gtk::MessageDialog dialog(_("<b>Rename Table</b>"), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE );
-        dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-        dialog.add_button(_("Rename"), Gtk::RESPONSE_OK);
+        Gtk::MessageDialog dialog(_("<b>Rename Table</b>"), true, Gtk::MessageType::QUESTION, Gtk::ButtonsType::NONE );
+        dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+        dialog.add_button(_("Rename"), Gtk::ResponseType::OK);
         dialog.set_secondary_text(strMsg);
         int iButtonClicked = dialog.run();
 
         //Rename the table:
-        if(iButtonClicked == Gtk::RESPONSE_OK)
+        if(iButtonClicked == Gtk::ResponseType::OK)
         {
           const auto test = DbUtils::rename_table(table_name, table_name_new);
           if(test)

@@ -53,7 +53,7 @@ Box_Data_Calendar_Related::Box_Data_Calendar_Related()
   m_calendar.signal_month_changed().connect( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_month_changed) );
 
   setup_menu(this);
-  //m_calendar.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
+  //m_calendar.add_events(Gdk::EventMask::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
   m_calendar.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_button_press_event) );
 
   //We do not actually use this,
@@ -392,8 +392,8 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
 
   //Glib::Date is 1-indexed:
   Glib::Date::Month datemonth = (Glib::Date::Month)(month +1);
-  if(datemonth > Glib::Date::DECEMBER)
-    datemonth = Glib::Date::JANUARY;
+  if(datemonth > Glib::Date::Month::DECEMBER)
+    datemonth = Glib::Date::Month::JANUARY;
   Glib::Date date(day, datemonth, year);
 
   //Examine the cached data:

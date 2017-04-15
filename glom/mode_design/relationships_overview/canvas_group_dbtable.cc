@@ -62,7 +62,7 @@ CanvasGroupDbTable::CanvasGroupDbTable(const Glib::ustring& table_name, const Gl
   const Glib::ustring title = "<b>" + table_title + "</b>";
   auto text = CanvasTextMovable::create(title,
     x + margin, y + margin, m_table_width - margin*2,
-    Goocanvas::ANCHOR_NORTH_WEST);
+    Goocanvas::AnchorType::NORTH_WEST);
   text->property_font() = "Sans 12"; //TODO: Let the user specify this.
   text->property_use_markup() = true;
   text->set_movement_allowed(false, false); //Move only as part of the parent group.
@@ -91,7 +91,7 @@ CanvasGroupDbTable::CanvasGroupDbTable(const Glib::ustring& table_name, const Gl
 
     auto text_item = CanvasTextMovable::create(title_field,
       x + margin, y + margin + field_y, m_table_width - margin*2,
-      Goocanvas::ANCHOR_NORTH_WEST);
+      Goocanvas::AnchorType::NORTH_WEST);
     text_item->property_font() = "Sans 12"; //TODO: Let the user specify this.
     text_item->property_use_markup() = true;
     text_item->set_movement_allowed(false, false); //Move only as part of the parent group.

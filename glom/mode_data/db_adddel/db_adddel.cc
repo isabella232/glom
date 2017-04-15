@@ -43,7 +43,7 @@ namespace Glom
 {
 
 DbAddDel::DbAddDel()
-: Gtk::Box(Gtk::ORIENTATION_VERTICAL),
+: Gtk::Box(Gtk::Orientation::VERTICAL),
   m_column_is_sorted(false),
   m_column_sorted_direction(false),
   m_column_sorted(0),
@@ -78,8 +78,8 @@ DbAddDel::DbAddDel()
   m_tree_view.get_accessible()->set_name(_("Table Content"));
 #endif
 
-  m_scrolled_window.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  m_scrolled_window.set_shadow_type(Gtk::SHADOW_IN);
+  m_scrolled_window.set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
+  m_scrolled_window.set_shadow_type(Gtk::ShadowType::IN);
   m_tree_view.set_fixed_height_mode(); //This allows some optimizations.
   m_scrolled_window.add(m_tree_view);
   pack_start(m_scrolled_window);
@@ -89,7 +89,7 @@ DbAddDel::DbAddDel()
   //Make sure that the TreeView doesn't start out only big enough for zero items.
   set_height_rows(6, 6);
 
-  m_tree_view.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
+  m_tree_view.add_events(Gdk::EventMask::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
   m_tree_view.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &DbAddDel::on_treeview_button_press_event) );
   m_tree_view.signal_columns_changed().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columns_changed) );
   //signal_button_press_event().connect(sigc::mem_fun(*this, &DbAddDel::on_button_press_event_Popup));
@@ -660,7 +660,7 @@ void DbAddDel::construct_specified_columns()
     Gtk::Requisition requistion_min, requistion_natural; //TODO: Really support natural size.
     pCellButton->get_preferred_size(m_tree_view, requistion_min, requistion_natural);
 
-    m_treeviewcolumn_button->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Needed by fixed-height mode.
+    m_treeviewcolumn_button->set_sizing(Gtk::TreeViewColumnSizing::FIXED); //Needed by fixed-height mode.
 
     // TODO: I am not sure whether this is always correct. Perhaps, we also
     // have to take into account the xpad property of the cell renderer and
@@ -1649,7 +1649,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
 
   //This is needed by fixed-height mode. We get critical warnings otherwise.
   //But we must call set_fixed_width() later or we will have a zero-width column.
-  pViewColumn->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
+  pViewColumn->set_sizing(Gtk::TreeViewColumnSizing::FIXED);
 
   auto cols_count = m_tree_view.append_column(*pViewColumn);
 
@@ -2215,7 +2215,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   if(m_allow_only_one_related_record && (get_count() > 0))
   {
     //Tell user that they can't do that:
-    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Extra Related Records Not Possible")), true, Gtk::MESSAGE_WARNING);
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Extra Related Records Not Possible")), true, Gtk::MessageType::WARNING);
     dialog.set_secondary_text(_("You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key.")),
     dialog.set_transient_for(*AppWindow::get_appwindow());
     dialog.run();

@@ -404,7 +404,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 
 Gtk::TreeModelFlags DbTreeModel::get_flags_vfunc() const
 {
-   return (Gtk::TreeModelFlags)(Gtk::TREE_MODEL_LIST_ONLY | Gtk::TREE_MODEL_ITERS_PERSIST);
+   return (Gtk::TreeModelFlags)(Gtk::TreeModelFlags::LIST_ONLY | Gtk::TreeModelFlags::ITERS_PERSIST);
 }
 
 int DbTreeModel::get_n_columns_vfunc() const

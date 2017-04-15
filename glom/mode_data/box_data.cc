@@ -188,12 +188,12 @@ bool Box_Data::confirm_discard_unstored_data() const
   {
     const auto message = _("This data cannot be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?");
     //Ask user to confirm loss of data:
-    Gtk::MessageDialog dialog(UiUtils::bold_message(_("No primary key value")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("No primary key value")), true, Gtk::MessageType::QUESTION, Gtk::ButtonsType::OK_CANCEL );
     dialog.set_secondary_text(message);
     //TODO: It needs a const. I wonder if it should. murrayc. dialog.set_transient_for(*get_app_window());
     const auto iButton = dialog.run();
 
-    return (iButton == Gtk::RESPONSE_OK);
+    return (iButton == Gtk::ResponseType::OK);
   }
   else
   {

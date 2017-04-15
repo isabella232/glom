@@ -24,7 +24,7 @@ namespace Glom
 {
 
 PlaceHolder::PlaceHolder()
-: Gtk::Box(Gtk::ORIENTATION_VERTICAL),
+: Gtk::Box(Gtk::Orientation::VERTICAL),
   m_pChild(nullptr)
 {
 }

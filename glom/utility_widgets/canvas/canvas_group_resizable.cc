@@ -52,7 +52,7 @@ CanvasGroupResizable::CanvasGroupResizable()
   //    (Goocanvas::PointerEvents)(Goocanvas::EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
 
 
-  set_drag_cursor(Gdk::FLEUR);
+  set_drag_cursor(Gdk::CursorType::FLEUR);
 }
 
 void CanvasGroupResizable::create_manipulators()
@@ -127,14 +127,14 @@ void CanvasGroupResizable::create_rect_manipulators()
   m_manipulator_edge_left->set_grid(m_grid);
   m_manipulator_edge_right->set_grid(m_grid);
 
-  m_manipulator_corner_top_left->set_drag_cursor(Gdk::TOP_LEFT_CORNER);
-  m_manipulator_corner_top_right->set_drag_cursor(Gdk::TOP_RIGHT_CORNER);
-  m_manipulator_corner_bottom_left->set_drag_cursor(Gdk::BOTTOM_LEFT_CORNER);
-  m_manipulator_corner_bottom_right->set_drag_cursor(Gdk::BOTTOM_RIGHT_CORNER);
-  m_manipulator_edge_top->set_drag_cursor(Gdk::TOP_SIDE);
-  m_manipulator_edge_bottom->set_drag_cursor(Gdk::BOTTOM_SIDE);
-  m_manipulator_edge_left->set_drag_cursor(Gdk::LEFT_SIDE);
-  m_manipulator_edge_right->set_drag_cursor(Gdk::RIGHT_SIDE);
+  m_manipulator_corner_top_left->set_drag_cursor(Gdk::CursorType::TOP_LEFT_CORNER);
+  m_manipulator_corner_top_right->set_drag_cursor(Gdk::CursorType::TOP_RIGHT_CORNER);
+  m_manipulator_corner_bottom_left->set_drag_cursor(Gdk::CursorType::BOTTOM_LEFT_CORNER);
+  m_manipulator_corner_bottom_right->set_drag_cursor(Gdk::CursorType::BOTTOM_RIGHT_CORNER);
+  m_manipulator_edge_top->set_drag_cursor(Gdk::CursorType::TOP_SIDE);
+  m_manipulator_edge_bottom->set_drag_cursor(Gdk::CursorType::BOTTOM_SIDE);
+  m_manipulator_edge_left->set_drag_cursor(Gdk::CursorType::LEFT_SIDE);
+  m_manipulator_edge_right->set_drag_cursor(Gdk::CursorType::RIGHT_SIDE);
 
   //Make sure that this is above the outline group:
   m_group_edge_manipulators->raise();//m_group_outline);
@@ -165,8 +165,8 @@ void CanvasGroupResizable::create_line_manipulators()
   m_manipulator_end->set_grid(m_grid);
   //m_manipulator_corner_top_right->set_snap_corner(CanvasRectMovable::Corners::TOP_RIGHT);
 
-  m_manipulator_start->set_drag_cursor(Gdk::TCROSS); //A rather arbitrary cursor.
-  m_manipulator_end->set_drag_cursor(Gdk::TCROSS);
+  m_manipulator_start->set_drag_cursor(Gdk::CursorType::TCROSS); //A rather arbitrary cursor.
+  m_manipulator_end->set_drag_cursor(Gdk::CursorType::TCROSS);
 
   manipulator_connect_signals(m_manipulator_start, Manipulators::START);
   manipulator_connect_signals(m_manipulator_end, Manipulators::END);
@@ -217,7 +217,7 @@ void CanvasGroupResizable::set_outline_visible(bool visible)
   }
 
   m_group_outline->property_visibility() =
-    (visible ? Goocanvas::ITEM_VISIBLE : Goocanvas::ITEM_INVISIBLE);
+    (visible ? Goocanvas::ItemVisibility::VISIBLE : Goocanvas::ItemVisibility::INVISIBLE);
 }
 
 Glib::RefPtr<CanvasGroupResizable> CanvasGroupResizable::create()
@@ -422,7 +422,7 @@ void CanvasGroupResizable::set_child(const Glib::RefPtr<CanvasItemMovable>& chil
   set_width_height(width, height);
 
   position_extras();
-  set_manipulators_visibility(Goocanvas::ITEM_INVISIBLE);
+  set_manipulators_visibility(Goocanvas::ItemVisibility::INVISIBLE);
   set_outline_visible(false);
 }
 
@@ -526,7 +526,7 @@ void CanvasGroupResizable::on_manipulator_corner_moved(const Glib::RefPtr<Canvas
 {
   //Make sure that the manipulator is still visibile.
   //(if the user moves too fast then we get a leave-notify-event on the manipulator, rect, or item):
-  set_manipulators_visibility(Goocanvas::ITEM_VISIBLE);
+  set_manipulators_visibility(Goocanvas::ItemVisibility::VISIBLE);
 
   auto manipulator_base = get_manipulator(manipulator_id);
   auto manipulator = std::dynamic_pointer_cast<CanvasRectMovable>(manipulator_base);
@@ -599,7 +599,7 @@ void CanvasGroupResizable::on_manipulator_line_end_moved(const Glib::RefPtr<Canv
 {
   //Make sure that the manipulator is still visibile.
   //(if the user moves too fast then we get a leave-notify-event on the manipulator, rect, or item):
-  set_manipulators_visibility(Goocanvas::ITEM_VISIBLE);
+  set_manipulators_visibility(Goocanvas::ItemVisibility::VISIBLE);
 
   auto manipulator_base = get_manipulator(manipulator_id);
   auto manipulator = std::dynamic_pointer_cast<CanvasRectMovable>(manipulator_base);
@@ -634,14 +634,14 @@ void CanvasGroupResizable::on_manipulator_line_end_moved(const Glib::RefPtr<Canv
 bool CanvasGroupResizable::on_manipulator_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
 {
   m_in_manipulator = true;
-  set_manipulators_visibility(Goocanvas::ITEM_VISIBLE);
+  set_manipulators_visibility(Goocanvas::ItemVisibility::VISIBLE);
   return false;
 }
 
 bool CanvasGroupResizable::on_manipulator_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
 {
   m_in_manipulator = false;
-  set_manipulators_visibility(Goocanvas::ITEM_INVISIBLE);
+  set_manipulators_visibility(Goocanvas::ItemVisibility::INVISIBLE);
   return false;
 }
 
@@ -649,7 +649,7 @@ void CanvasGroupResizable::on_manipulator_edge_moved(const Glib::RefPtr<CanvasIt
 {
   //Make sure that the manipulator is still visibile.
   //(if the user moves too fast then we get a leave-notify-event on the manipulator, rect, or item):
-  set_manipulators_visibility(Goocanvas::ITEM_VISIBLE);
+  set_manipulators_visibility(Goocanvas::ItemVisibility::VISIBLE);
 
   auto manipulator_base = get_manipulator(manipulator_id);
   auto manipulator = std::dynamic_pointer_cast<CanvasLineMovable>(manipulator_base);
@@ -769,9 +769,9 @@ void CanvasGroupResizable::set_manipulators_visibility(Goocanvas::ItemVisibility
   //because that is how we show selection:
   Goocanvas::ItemVisibility edge_visibility = visibility;
   if(get_selected())
-    edge_visibility = Goocanvas::ITEM_VISIBLE;
+    edge_visibility = Goocanvas::ItemVisibility::VISIBLE;
 
-  //For testing: visibility = Goocanvas::ITEM_VISIBLE;
+  //For testing: visibility = Goocanvas::ItemVisibility::VISIBLE;
   m_group_edge_manipulators->property_visibility() = edge_visibility;
   m_group_corner_manipulators->property_visibility() = visibility;
 
@@ -781,7 +781,7 @@ void CanvasGroupResizable::set_manipulators_visibility(Goocanvas::ItemVisibility
     std::dynamic_pointer_cast<CanvasTableMovable>(get_child());
   if(table)
   {
-    if(visibility == Goocanvas::ITEM_VISIBLE)
+    if(visibility == Goocanvas::ItemVisibility::VISIBLE)
       table->set_lines_visibility();
     else
       table->set_lines_visibility(false);
@@ -791,7 +791,7 @@ void CanvasGroupResizable::set_manipulators_visibility(Goocanvas::ItemVisibility
 
 bool CanvasGroupResizable::on_rect_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
 {
-  set_manipulators_visibility(Goocanvas::ITEM_VISIBLE);
+  set_manipulators_visibility(Goocanvas::ItemVisibility::VISIBLE);
 
   return true;
 }
@@ -804,7 +804,7 @@ bool CanvasGroupResizable::on_rect_leave_notify_event(const Glib::RefPtr<Goocanv
   //Hide the manipulators if we are outside of the main area,
   //but not just because we are instead inside the manipulator itself:
   //Doesn't seem useful: if(!m_in_manipulator && (target_movable == m_child))
-  set_manipulators_visibility(Goocanvas::ITEM_INVISIBLE);
+  set_manipulators_visibility(Goocanvas::ItemVisibility::INVISIBLE);
 
 
   return false;
@@ -814,7 +814,7 @@ bool CanvasGroupResizable::on_resizer_enter_notify_event(const Glib::RefPtr<Gooc
 {
   CanvasItemMovable::on_enter_notify_event(target, event);
 
-  set_manipulators_visibility(Goocanvas::ITEM_VISIBLE);
+  set_manipulators_visibility(Goocanvas::ItemVisibility::VISIBLE);
 
   return true;
 }
@@ -827,7 +827,7 @@ bool CanvasGroupResizable::on_resizer_leave_notify_event(const Glib::RefPtr<Gooc
   //Hide the manipulators if we are outside of the main area,
   //but not just because we are instead inside the manipulator itself:
   //Doesn't seem useful: if(!m_in_manipulator && (target_movable == m_child))
-  set_manipulators_visibility(Goocanvas::ITEM_INVISIBLE);
+  set_manipulators_visibility(Goocanvas::ItemVisibility::INVISIBLE);
 
   return false;
 }
@@ -1044,9 +1044,9 @@ void CanvasGroupResizable::show_selected()
   if(!m_group_edge_manipulators)
     return;
 
-  Goocanvas::ItemVisibility edge_visibility = Goocanvas::ITEM_INVISIBLE;
+  Goocanvas::ItemVisibility edge_visibility = Goocanvas::ItemVisibility::INVISIBLE;
   if(get_selected())
-    edge_visibility = Goocanvas::ITEM_VISIBLE;
+    edge_visibility = Goocanvas::ItemVisibility::VISIBLE;
 
   //This is also set the same way if set_manipulators_visibility(),
   //in case that is called at some other time.

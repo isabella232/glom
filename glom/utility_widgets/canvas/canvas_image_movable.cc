@@ -212,7 +212,7 @@ void CanvasImageMovable::set_image_empty()
 
     try
     {
-      pixbuf = theme->load_icon("image-missing", Gtk::ICON_SIZE_DIALOG);
+      pixbuf = theme->load_icon("image-missing", static_cast<int>(Gtk::BuiltinIconSize::DIALOG));
     }
     catch(const Glib::Error& ex)
     {

@@ -137,9 +137,9 @@ void Dialog_FieldCalculation::on_button_test()
     error_message);
 
   if(error_message.empty())
-    UiUtils::show_ok_dialog(_("Calculation result"), Glib::ustring::compose(_("The result of the calculation is:\n%1"), value.to_string()), *this, Gtk::MESSAGE_INFO);
+    UiUtils::show_ok_dialog(_("Calculation result"), Glib::ustring::compose(_("The result of the calculation is:\n%1"), value.to_string()), *this, Gtk::MessageType::INFO);
   else
-    UiUtils::show_ok_dialog( _("Calculation failed"), Glib::ustring::compose(_("The calculation failed with this error:\n%s"), error_message), *this, Gtk::MESSAGE_ERROR);
+    UiUtils::show_ok_dialog( _("Calculation failed"), Glib::ustring::compose(_("The calculation failed with this error:\n%s"), error_message), *this, Gtk::MessageType::ERROR);
 
   //Show what fields would trigger the recalculation:
   auto temp = std::make_shared<Field>();

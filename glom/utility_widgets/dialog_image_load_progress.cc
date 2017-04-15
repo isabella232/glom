@@ -141,12 +141,12 @@ void DialogImageLoadProgress::on_stream_read(const Glib::RefPtr<Gio::AsyncResult
     }
     else
       // We are done loading the image, close the progress dialog
-      response(Gtk::RESPONSE_ACCEPT);
+      response(Gtk::ResponseType::ACCEPT);
   }
   catch(const Glib::Error& ex)
   {
     error(ex.what());
-    response(Gtk::RESPONSE_REJECT);
+    response(Gtk::ResponseType::REJECT);
   }
 }
 
@@ -162,12 +162,12 @@ void DialogImageLoadProgress::on_read_next(unsigned int at)
 
 void DialogImageLoadProgress::error(const Glib::ustring& error_message)
 {
-  Gtk::MessageDialog dialog(*this, Glib::ustring::compose(_("Error loading %1"), m_file->get_parse_name()), Gtk::MESSAGE_ERROR);
+  Gtk::MessageDialog dialog(*this, Glib::ustring::compose(_("Error loading %1"), m_file->get_parse_name()), false, Gtk::MessageType::ERROR);
   dialog.set_title(_("Error loading image"));
   dialog.set_secondary_text(error_message);
 
   dialog.run();
-  response(Gtk::RESPONSE_REJECT);
+  response(Gtk::ResponseType::REJECT);
 }
 
 DialogImageLoadProgress::UniquePtr DialogImageLoadProgress::get_image_data()

@@ -27,27 +27,27 @@ namespace Glom
 {
 
 DbAddDel_WithButtons::DbAddDel_WithButtons()
-: m_ButtonBox(Gtk::ORIENTATION_HORIZONTAL),
+: m_ButtonBox(Gtk::Orientation::HORIZONTAL),
   m_Button_Del(_("_Delete"), true),
   m_Button_Edit(_("_Open"), true),
   m_Button_Add(_("_Add"), true)
 {
-  m_ButtonBox.set_layout(Gtk::BUTTONBOX_END);
+  m_ButtonBox.set_layout(Gtk::ButtonBoxStyle::END);
   m_ButtonBox.set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   setup_buttons();
-  pack_start(m_ButtonBox, Gtk::PACK_SHRINK);
+  pack_start(m_ButtonBox, Gtk::PackOptions::PACK_SHRINK);
 
   //Link buttons to handlers:
 
   m_Button_Add.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_add));
-  m_ButtonBox.pack_end(m_Button_Add, Gtk::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Add, Gtk::PackOptions::PACK_SHRINK);
 
   m_Button_Del.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_del));
   m_Button_Edit.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_edit));
 
-  m_ButtonBox.pack_end(m_Button_Del, Gtk::PACK_SHRINK);
-  m_ButtonBox.pack_end(m_Button_Edit, Gtk::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Del, Gtk::PackOptions::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Edit, Gtk::PackOptions::PACK_SHRINK);
 
   setup_buttons();
 }

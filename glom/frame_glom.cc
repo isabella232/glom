@@ -79,7 +79,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 : PlaceHolder(cobject, builder),
   m_label_table_data_mode(nullptr),
   m_label_table_find_mode(nullptr),
-  m_box_records_count(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
+  m_box_records_count(Gtk::Orientation::HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
   m_button_find_all(_("Find All")),
   m_stack_mode(nullptr),
   m_box_tables(nullptr),
@@ -102,17 +102,17 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 {
   m_label_table_data_mode = Gtk::manage(new Gtk::Label(_("No Table Selected")));
   m_label_table_data_mode->show();
-  m_notebook_data.set_action_widget(m_label_table_data_mode, Gtk::PACK_START);
+  m_notebook_data.set_action_widget(m_label_table_data_mode, Gtk::PackType::START);
 
   m_label_table_find_mode = Gtk::manage(new Gtk::Label(_("No Table Selected")));
   m_label_table_find_mode->show();
-  m_notebook_find.set_action_widget(m_label_table_find_mode, Gtk::PACK_START);
+  m_notebook_find.set_action_widget(m_label_table_find_mode, Gtk::PackType::START);
 
   //QuickFind widgets:
   //We don't use Glade for these, so it easier to modify them for the Maemo port.
-  m_box_quick_find = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)));
+  m_box_quick_find = Gtk::manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)));
   auto label = Gtk::manage(new Gtk::Label(_("Quick _search:"), true));
-  m_box_quick_find->pack_start(*label, Gtk::PACK_SHRINK);
+  m_box_quick_find->pack_start(*label, Gtk::PackOptions::PACK_SHRINK);
 
   m_entry_quick_find = Gtk::manage(new Gtk::Entry());
 
@@ -121,11 +121,11 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 
   label->set_mnemonic_widget(*m_entry_quick_find);
 
-  m_box_quick_find->pack_start(*m_entry_quick_find, Gtk::PACK_EXPAND_WIDGET);
+  m_box_quick_find->pack_start(*m_entry_quick_find, Gtk::PackOptions::PACK_EXPAND_WIDGET);
   m_button_quick_find = Gtk::manage(new Gtk::Button(_("_Find"), true));
   m_button_quick_find->signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) );
-  m_box_quick_find->pack_start(*m_button_quick_find, Gtk::PACK_SHRINK);
+  m_box_quick_find->pack_start(*m_button_quick_find, Gtk::PackOptions::PACK_SHRINK);
   m_box_quick_find->hide();
 
   PlaceHolder* placeholder_quickfind = nullptr;
@@ -135,13 +135,13 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 
   //Add the Records/Found widgets at the right of the notebook tabs:
   m_box_records_count.pack_start(
-    *Gtk::manage(new Gtk::Label(_("Records:"))), Gtk::PACK_SHRINK);
-  m_box_records_count.pack_start(m_label_records_count, Gtk::PACK_SHRINK);
+    *Gtk::manage(new Gtk::Label(_("Records:"))), Gtk::PackOptions::PACK_SHRINK);
+  m_box_records_count.pack_start(m_label_records_count, Gtk::PackOptions::PACK_SHRINK);
   m_box_records_count.pack_start(
-    *Gtk::manage(new Gtk::Label(_("Found:"))), Gtk::PACK_SHRINK);
-  m_box_records_count.pack_start(m_label_found_count, Gtk::PACK_SHRINK);
-  m_box_records_count.pack_start(m_button_find_all, Gtk::PACK_SHRINK);
-  m_notebook_data.set_action_widget(&m_box_records_count, Gtk::PACK_END);
+    *Gtk::manage(new Gtk::Label(_("Found:"))), Gtk::PackOptions::PACK_SHRINK);
+  m_box_records_count.pack_start(m_label_found_count, Gtk::PackOptions::PACK_SHRINK);
+  m_box_records_count.pack_start(m_button_find_all, Gtk::PackOptions::PACK_SHRINK);
+  m_notebook_data.set_action_widget(&m_box_records_count, Gtk::PackType::END);
   m_button_find_all.signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_find_all) );
 
@@ -318,7 +318,7 @@ void Frame_Glom::alert_no_table()
   {
     //TODO: Obviously this document should have been deleted when the database-creation was cancelled.
     /* Note that "canceled" is the correct US spelling. */
-    show_ok_dialog(_("No table"), _("This database has no tables yet."), *pWindowApp, Gtk::MESSAGE_WARNING);
+    show_ok_dialog(_("No table"), _("This database has no tables yet."), *pWindowApp, Gtk::MessageType::WARNING);
   }
 }
 
@@ -490,14 +490,14 @@ bool Frame_Glom::attempt_change_usermode_to_developer()
     if(document->get_opened_from_browse())
     {
       //TODO: Obviously this could be possible but it would require a network protocol and some work:
-      Gtk::MessageDialog dialog(UiUtils::bold_message(_("Developer mode not available.")), true, Gtk::MESSAGE_WARNING);
+      Gtk::MessageDialog dialog(UiUtils::bold_message(_("Developer mode not available.")), true, Gtk::MessageType::WARNING);
       dialog.set_secondary_text(_("Developer mode is not available because the file was opened over the network from a running Glom. Only the original file may be edited."));
       dialog.set_transient_for(*get_app_window());
       dialog.run();
     }
     else
     {
-      Gtk::MessageDialog dialog(UiUtils::bold_message(_("Developer mode not available")), true, Gtk::MESSAGE_WARNING);
+      Gtk::MessageDialog dialog(UiUtils::bold_message(_("Developer mode not available")), true, Gtk::MessageType::WARNING);
       dialog.set_secondary_text(_("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."));
       dialog.set_transient_for(*get_app_window());
       dialog.run();
@@ -505,13 +505,13 @@ bool Frame_Glom::attempt_change_usermode_to_developer()
   }
   else if(document->get_document_format_version() < Document::get_latest_known_document_format_version())
   {
-    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Saving in new document format")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Saving in new document format")), true, Gtk::MessageType::QUESTION, Gtk::ButtonsType::NONE);
     dialog.set_secondary_text(_("The document was created by an earlier version of the application. Making changes to the document will mean that the document cannot be opened by some earlier versions of the application."));
     dialog.set_transient_for(*get_app_window());
-    dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-    dialog.add_button(_("Continue"), Gtk::RESPONSE_OK);
+    dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+    dialog.add_button(_("Continue"), Gtk::ResponseType::OK);
     const int response = dialog.run();
-    test = (response == Gtk::RESPONSE_OK);
+    test = (response == Gtk::ResponseType::OK);
   }
 
   return test;
@@ -545,7 +545,7 @@ void Frame_Glom::on_menu_file_export()
   Privileges table_privs = Privs::get_current_privs(m_table_name);
   if(!table_privs.m_view)
   {
-    show_ok_dialog(_("Export Not Allowed."), _("You do not have permission to view the data in this table, so you may not export the data."), *pWindowApp, Gtk::MESSAGE_ERROR);
+    show_ok_dialog(_("Export Not Allowed."), _("You do not have permission to view the data in this table, so you may not export the data."), *pWindowApp, Gtk::MessageType::ERROR);
     return;
   }
 
@@ -559,7 +559,7 @@ void Frame_Glom::on_menu_file_export()
   const int response = dialog.run();
   dialog.hide();
 
-  if((response == Gtk::RESPONSE_CANCEL) || (response == Gtk::RESPONSE_DELETE_EVENT))
+  if((response == Gtk::ResponseType::CANCEL) || (response == Gtk::ResponseType::DELETE_EVENT))
     return;
 
   std::string filepath = dialog.get_filename();
@@ -578,7 +578,7 @@ void Frame_Glom::on_menu_file_export()
   std::fstream the_stream(filepath, std::ios_base::out | std::ios_base::trunc);
   if(!the_stream)
   {
-    show_ok_dialog(_("Could Not Create File."), _("Glom could not create the specified file."), *pWindowApp, Gtk::MESSAGE_ERROR);
+    show_ok_dialog(_("Could Not Create File."), _("Glom could not create the specified file."), *pWindowApp, Gtk::MessageType::ERROR);
     return;
   }
 
@@ -589,13 +589,13 @@ void Frame_Glom::on_menu_file_import()
 {
   if(m_table_name.empty())
   {
-    UiUtils::show_ok_dialog(_("No Table"), _("There is no table in to which data could be imported."), *get_app_window(), Gtk::MESSAGE_ERROR);
+    UiUtils::show_ok_dialog(_("No Table"), _("There is no table in to which data could be imported."), *get_app_window(), Gtk::MessageType::ERROR);
   }
   else
   {
-    Gtk::FileChooserDialog file_chooser(*get_app_window(), _("Open CSV Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
-    file_chooser.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-    file_chooser.add_button(_("_Open"), Gtk::RESPONSE_ACCEPT);
+    Gtk::FileChooserDialog file_chooser(*get_app_window(), _("Open CSV Document"), Gtk::FileChooserAction::OPEN);
+    file_chooser.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+    file_chooser.add_button(_("_Open"), Gtk::ResponseType::ACCEPT);
     auto filter_csv = Gtk::FileFilter::create();
     filter_csv->set_name(_("CSV files"));
     filter_csv->add_mime_type("text/csv");
@@ -605,7 +605,7 @@ void Frame_Glom::on_menu_file_import()
     filter_any->add_pattern("*");
     file_chooser.add_filter(filter_any);
 
-    if(file_chooser.run() == Gtk::RESPONSE_ACCEPT)
+    if(file_chooser.run() == Gtk::ResponseType::ACCEPT)
     {
       file_chooser.hide();
 
@@ -617,13 +617,13 @@ void Frame_Glom::on_menu_file_import()
       add_view(dialog);
 
       dialog->import(file_chooser.get_uri(), m_table_name);
-      while(Glom::UiUtils::dialog_run_with_help(dialog) == Gtk::RESPONSE_ACCEPT)
+      while(Glom::UiUtils::dialog_run_with_help(dialog) == Gtk::ResponseType::ACCEPT)
       {
         dialog->hide();
 
         Dialog_Import_CSV_Progress* progress_dialog = nullptr;
         Glom::Utils::get_glade_widget_derived_with_warning(progress_dialog);
-        int response = Gtk::RESPONSE_OK;
+        int response = static_cast<int>(Gtk::ResponseType::OK);
         if(!progress_dialog)
         {
           std::cerr << G_STRFUNC << ": progress_dialog was null.\n";
@@ -645,7 +645,7 @@ void Frame_Glom::on_menu_file_import()
 
           // Re-show chooser dialog when an error occured or when the user
           // cancelled.
-          if(response == Gtk::RESPONSE_OK)
+          if(response == Gtk::ResponseType::OK)
             break;
         }
       }
@@ -678,15 +678,15 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
   //TODO: Warn that this will be saved as the default if doing this in developer mode?
   if(shared)
   {
-    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Share on the network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Share on the network")), true, Gtk::MessageType::QUESTION, Gtk::ButtonsType::NONE);
     dialog.set_secondary_text(_("This will allow other users on the network to use this database."));
     dialog.set_transient_for(*get_app_window());
-    dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-    dialog.add_button(_("_Share"), Gtk::RESPONSE_OK);
+    dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+    dialog.add_button(_("_Share"), Gtk::ResponseType::OK);
 
     const auto response = dialog.run();
     dialog.hide();
-    if(response == Gtk::RESPONSE_OK)
+    if(response == Gtk::ResponseType::OK)
     {
       shared = true;
 
@@ -784,15 +784,15 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
   else //not shared:
   {
     //TODO: Warn about connected users if possible.
-    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Stop sharing on the network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Stop sharing on the network")), true, Gtk::MessageType::QUESTION, Gtk::ButtonsType::NONE);
     dialog.set_secondary_text(_("This will prevent other users on the network from using this database."));
     dialog.set_transient_for(*get_app_window());
-    dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-    dialog.add_button(_("_Stop Sharing"), Gtk::RESPONSE_OK);
+    dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+    dialog.add_button(_("_Stop Sharing"), Gtk::ResponseType::OK);
 
     const auto response = dialog.run();
     dialog.hide();
-    if(response == Gtk::RESPONSE_OK)
+    if(response == Gtk::ResponseType::OK)
     {
       shared = false;
 
@@ -989,7 +989,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
 
   m_dialog_addrelatedtable->hide();
 
-  if(response == Gtk::RESPONSE_OK)
+  if(response == Gtk::ResponseType::OK)
   {
     bool stop_trying = false;
 
@@ -1002,15 +1002,15 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
     //but I don't think we can stop the response from being returned. murrayc
     if(DbUtils::get_table_exists_in_database(table_name))
     {
-      Frame_Glom::show_ok_dialog(_("Table Exists Already"), _("A table with this name already exists in the database. Please choose a different table name."), *parent, Gtk::MESSAGE_ERROR);
+      Frame_Glom::show_ok_dialog(_("Table Exists Already"), _("A table with this name already exists in the database. Please choose a different table name."), *parent, Gtk::MessageType::ERROR);
     }
     else if(get_relationship_exists(m_table_name, relationship_name))
     {
-      Frame_Glom::show_ok_dialog(_("Relationship Exists Already"), _("A relationship with this name already exists for this table. Please choose a different relationship name."), *parent, Gtk::MESSAGE_ERROR);
+      Frame_Glom::show_ok_dialog(_("Relationship Exists Already"), _("A relationship with this name already exists for this table. Please choose a different relationship name."), *parent, Gtk::MessageType::ERROR);
     }
     else if(table_name.empty() || relationship_name.empty())
     {
-      Frame_Glom::show_ok_dialog(_("More information needed"), _("You must specify a field, a table name, and a relationship name."), *parent, Gtk::MESSAGE_ERROR);
+      Frame_Glom::show_ok_dialog(_("More information needed"), _("You must specify a field, a table name, and a relationship name."), *parent, Gtk::MessageType::ERROR);
     }
     else
     {
@@ -1063,7 +1063,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
       on_dialog_tables_hide(); //Update the menu.
 
       if(parent)
-        show_ok_dialog(_("Related Table Created"), _("The new related table has been created."), *parent, Gtk::MESSAGE_INFO);
+        show_ok_dialog(_("Related Table Created"), _("The new related table has been created."), *parent, Gtk::MessageType::INFO);
     }
   }
 }
@@ -1190,7 +1190,7 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
   {
     const Glib::ustring message = _("You have not entered any find criteria. Try entering information in the fields.");
 
-    Gtk::MessageDialog dialog(UiUtils::bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("No Find Criteria")), true, Gtk::MessageType::WARNING );
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*app);
     dialog.run();
@@ -1773,7 +1773,7 @@ bool Frame_Glom::handle_connection_initialize_errors(ConnectionPool::InitErrors 
     message = _("There was an error when attempting to start the database server.");
   }
 
-  UiUtils::show_ok_dialog(title, message, *get_app_window(), Gtk::MESSAGE_ERROR);
+  UiUtils::show_ok_dialog(title, message, *get_app_window(), Gtk::MessageType::ERROR);
 
   return false;
 }
@@ -1802,14 +1802,14 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
   add_view(dialog);
 
 
-  int response = Gtk::RESPONSE_OK;
+  int response = static_cast<int>(Gtk::ResponseType::OK);
   bool keep_trying = true;
   while(keep_trying)
   {
     response = UiUtils::dialog_run_with_help(dialog);
 
     //Check the password is acceptable:
-    if(response == Gtk::RESPONSE_OK)
+    if(response == Gtk::ResponseType::OK)
     {
       const auto password_ok = dialog->check_password();
       if(password_ok)
@@ -1832,7 +1832,7 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
   delete dialog;
   dialog = nullptr;
 
-  return (response == Gtk::RESPONSE_OK);
+  return (response == Gtk::ResponseType::OK);
 }
 
 void Frame_Glom::instantiate_dialog_connection()
@@ -1919,7 +1919,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         m_dialog_connection->hide();
         password_requested = true; //So we can ask again if it didn't work.
 
-        if(response == Gtk::RESPONSE_OK)
+        if(response == Gtk::ResponseType::OK)
         {
           // We are not self-hosting, but we also call initialize() for
           // consistency (the backend will ignore it anyway).
@@ -1983,7 +1983,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     {
       //This can only happen if we couldn't connect to the server at all.
       //Warn the user, and let him try again:
-      UiUtils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
+      UiUtils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MessageType::ERROR); //TODO: Add help button.
 
       //If we didn't ask the user for a password then there's nothing for us to try again.
       //Otherwise let the while() loop try again.
@@ -2052,7 +2052,7 @@ bool Frame_Glom::handle_request_password_connection_error(bool asked_for_passwor
   if(asked_for_password && ex.get_failure_type() == ExceptionConnection::failure_type::NO_SERVER)
   {
     //Warn the user, and let him try again:
-    UiUtils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
+    UiUtils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MessageType::ERROR); //TODO: Add help button.
     return true;
   }
   else if(ex.get_failure_type() == ExceptionConnection::failure_type::NO_DATABASE)
@@ -2138,7 +2138,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
   while(true) //Loop until a return
   {
     //Only show the dialog if we don't know the correct username/password yet:
-    int response = Gtk::RESPONSE_OK;
+    int response = static_cast<int>(Gtk::ResponseType::OK);
 
     if(m_dialog_connection)
     {
@@ -2147,7 +2147,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     }
 
     //Try to use the entered username/password:
-    if(response == Gtk::RESPONSE_OK)
+    if(response == Gtk::ResponseType::OK)
     {
       std::shared_ptr<SharedConnection> sharedconnection;
 

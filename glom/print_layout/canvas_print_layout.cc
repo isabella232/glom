@@ -56,7 +56,7 @@ Canvas_PrintLayout::Canvas_PrintLayout()
 
   //Use millimeters, because that's something that is meaningful to the user,
   //and we can use it with Gtk::PageSetup too:
-  property_units() = Gtk::UNIT_MM;
+  property_units() = Gtk::Unit::MM;
 
   m_items_group = Goocanvas::Group::create();
   //m_items_group->signal_button_press_event().connect( sigc::ptr_fun(&on_group_button_press_event), false );
@@ -366,7 +366,7 @@ std::shared_ptr<LayoutItem_Line> Canvas_PrintLayout::offer_line(const std::share
 
   const int response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
-  if(response == Gtk::RESPONSE_OK)
+  if(response == Gtk::ResponseType::OK)
   {
     //Get the chosen relationship:
     result = dialog->get_line();
@@ -575,7 +575,7 @@ void Canvas_PrintLayout::update_page_bounds()
 
   double page_width = 0;
   double page_height = 0;
-  if(m_page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
+  if(m_page_setup->get_orientation() == Gtk::PageOrientation::PORTRAIT) //TODO: Handle the reverse orientations too?
   {
     page_width = paper_size.get_width(units);
     page_height = paper_size.get_height(units);
@@ -1043,7 +1043,7 @@ void Canvas_PrintLayout::set_zoom_percent(guint percent)
 
 void Canvas_PrintLayout::hide_page_bounds()
 {
-  m_bounds_group->property_visibility() = Goocanvas::ITEM_HIDDEN;
+  m_bounds_group->property_visibility() = Goocanvas::ItemVisibility::HIDDEN;
 }
 
 void Canvas_PrintLayout::set_grid_gap(double gap)
@@ -1176,7 +1176,7 @@ Goocanvas::Bounds Canvas_PrintLayout::get_page_bounds(guint page_num) const
 
   double page_width = 0;
   double page_height = 0;
-  if(m_page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
+  if(m_page_setup->get_orientation() == Gtk::PageOrientation::PORTRAIT) //TODO: Handle the reverse orientations too?
   {
     page_width = paper_size.get_width(units);
     page_height = paper_size.get_height(units);

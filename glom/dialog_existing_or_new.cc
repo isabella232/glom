@@ -129,7 +129,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
     throw std::runtime_error("Glade file does not contain the notebook or the select button for ExistingOrNew dialog.");
 
   m_existing_model = Gtk::TreeStore::create(m_existing_columns);
-  m_existing_model->set_sort_column(m_existing_columns.m_col_time, Gtk::SORT_DESCENDING);
+  m_existing_model->set_sort_column(m_existing_columns.m_col_time, Gtk::SortType::DESCENDING);
   m_existing_view->set_model(m_existing_model);
 
 
@@ -452,14 +452,14 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
   if(!pixbuf_renderer)
     throw std::logic_error("Renderer not a pixbuf renderer in existing_icon_data_func");
 
-  pixbuf_renderer->property_stock_size() = Gtk::ICON_SIZE_BUTTON;
+  pixbuf_renderer->property_stock_size() = static_cast<guint>(Gtk::BuiltinIconSize::BUTTON);
   pixbuf_renderer->property_icon_name() = "";
   pixbuf_renderer->property_pixbuf() = Glib::RefPtr<Gdk::Pixbuf>();
 
   if(iter == m_iter_existing_recent)
     pixbuf_renderer->property_icon_name() = "folder";
 
-  pixbuf_renderer->property_stock_size() = Gtk::ICON_SIZE_BUTTON;
+  pixbuf_renderer->property_stock_size() = static_cast<guint>(Gtk::BuiltinIconSize::BUTTON);
   pixbuf_renderer->property_icon_name() = std::string();
   pixbuf_renderer->property_pixbuf() = Glib::RefPtr<Gdk::Pixbuf>();
 
@@ -482,7 +482,7 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
     if(m_existing_model->is_ancestor(m_iter_existing_recent, iter))
     {
       //Glib::RefPtr<Gtk::RecentInfo> info = (*iter)[m_existing_columns.m_col_recent_info];
-      //pixbuf_renderer->property_pixbuf() = (*info)->get_icon(Gtk::ICON_SIZE_BUTTON);
+      //pixbuf_renderer->property_pixbuf() = (*info)->get_icon(Gtk::BuiltinIconSize::BUTTON);
       pixbuf_renderer->property_icon_name() = Glib::ustring("glom");
     }
 #ifndef G_OS_WIN32
@@ -529,7 +529,7 @@ void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const
   if(!pixbuf_renderer)
     throw std::logic_error("Renderer not a pixbuf renderer in new_icon_data_func");
 
-  pixbuf_renderer->property_stock_size() = Gtk::ICON_SIZE_BUTTON;
+  pixbuf_renderer->property_stock_size() = static_cast<guint>(Gtk::BuiltinIconSize::BUTTON);
   pixbuf_renderer->property_icon_name() = "";
   pixbuf_renderer->property_pixbuf() = Glib::RefPtr<Gdk::Pixbuf>();
 
@@ -783,9 +783,9 @@ void Dialog_ExistingOrNew::on_select_clicked()
   if(action == Action::OPEN_URI && iter == m_iter_existing_other)
   {
     Gtk::FileChooserDialog dialog(*this, "Open Glom File");
-    dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-    dialog.add_button(_("_Open"), Gtk::RESPONSE_OK);
-    dialog.set_default_response(Gtk::RESPONSE_OK);
+    dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+    dialog.add_button(_("_Open"), Gtk::ResponseType::OK);
+    dialog.set_default_response(Gtk::ResponseType::OK);
 
     auto filter = Gtk::FileFilter::create();
     filter->add_mime_type("application/x-glom");
@@ -793,15 +793,15 @@ void Dialog_ExistingOrNew::on_select_clicked()
     dialog.add_filter(filter);
 
     const auto response_id = dialog.run();
-    if(response_id == Gtk::RESPONSE_OK)
+    if(response_id == Gtk::ResponseType::OK)
     {
       m_chosen_uri = dialog.get_uri();
-      response(Gtk::RESPONSE_ACCEPT);
+      response(Gtk::ResponseType::ACCEPT);
     }
   }
   else
   {
-    response(Gtk::RESPONSE_ACCEPT);
+    response(Gtk::ResponseType::ACCEPT);
   }
 }
 

@@ -560,7 +560,7 @@ std::shared_ptr<LayoutItem_Button> Dialog_Layout_Details::offer_button_script_ed
   dialog->set_transient_for(*this);
   const auto dialog_response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
-  if(dialog_response == Gtk::RESPONSE_OK)
+  if(dialog_response == Gtk::ResponseType::OK)
   {
     //Get the chosen relationship:
      result = dialog->get_script();
@@ -590,7 +590,7 @@ std::shared_ptr<Relationship> Dialog_Layout_Details::offer_relationship_list(con
   dialog->set_transient_for(*this);
   const auto dialog_response = dialog->run();
   dialog->hide();
-  if(dialog_response == Gtk::RESPONSE_OK)
+  if(dialog_response == Gtk::ResponseType::OK)
   {
     //Get the chosen relationship:
     result = dialog->get_relationship_chosen();

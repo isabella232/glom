@@ -121,7 +121,7 @@ int UiUtils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
 {
   int result = dialog->run();
 
-  while (result == Gtk::RESPONSE_HELP)
+  while (result == Gtk::ResponseType::HELP)
   {
     show_help(dialog, id);
     result = dialog->run();
@@ -162,14 +162,14 @@ void UiUtils::show_help(Gtk::Window* parent_window, const Glib::ustring& id)
   catch(const std::exception& ex)
   {
     const auto message = Glib::ustring::compose(_("Could not display help: %1"), Glib::ustring(ex.what()));
-    Gtk::MessageDialog dialog(message, false, Gtk::MESSAGE_ERROR);
+    Gtk::MessageDialog dialog(message, false, Gtk::MessageType::ERROR);
     dialog.run();
   }
 }
 
 void UiUtils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window* parent, Gtk::MessageType message_type)
 {
-  Gtk::MessageDialog dialog("<b>" + title + "</b>", true /* markup */, message_type, Gtk::BUTTONS_OK);
+  Gtk::MessageDialog dialog("<b>" + title + "</b>", true /* markup */, message_type, Gtk::ButtonsType::OK);
   dialog.set_secondary_text(message);
   if(parent)
     dialog.set_transient_for(*parent);
@@ -481,21 +481,21 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::image_scale_keeping_ratio(const Glib::RefPtr<
    return Glib::RefPtr<Gdk::Pixbuf>(); //This shouldn't happen anyway. It seems to happen sometimes though, when ratio is very small.
  }
 
-  return pixbuf->scale_simple(target_width, target_height, Gdk::INTERP_NEAREST);
+  return pixbuf->scale_simple(target_width, target_height, Gdk::InterpType::NEAREST);
 }
 
 bool UiUtils::show_warning_no_records_found(Gtk::Window& transient_for)
 {
   const auto message = _("Your find criteria did not match any records in the table.");
 
-  Gtk::MessageDialog dialog(UiUtils::bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("No Records Found")), true, Gtk::MessageType::WARNING, Gtk::ButtonsType::NONE);
   dialog.set_secondary_text(message);
   dialog.set_transient_for(transient_for);
 
-  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  dialog.add_button(_("New Find"), Gtk::RESPONSE_OK);
+  dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  dialog.add_button(_("New Find"), Gtk::ResponseType::OK);
 
-  const auto find_again = (dialog.run() == Gtk::RESPONSE_OK);
+  const auto find_again = (dialog.run() == Gtk::ResponseType::OK);
   return find_again;
 }
 
@@ -504,7 +504,7 @@ void UiUtils::show_report_in_browser(const std::string& filepath, Gtk::Window* p
 {
   //Give the user a clue, in case the web browser opens in the background, for instance in a new tab:
   if(parent_window)
-    show_ok_dialog(_("Report Finished"), _("The report will now be opened in your web browser."), *parent_window, Gtk::MESSAGE_INFO);
+    show_ok_dialog(_("Report Finished"), _("The report will now be opened in your web browser."), *parent_window, Gtk::MessageType::INFO);
 
 #ifdef G_OS_WIN32
   // gtk_show_uri doesn't seem to work on Win32, at least not for local files
@@ -546,7 +546,7 @@ bool UiUtils::script_check_for_pygtk2_with_warning(const Glib::ustring& script, 
   if(!Utils::script_check_for_pygtk2(script))
   {
     UiUtils::show_ok_dialog(_("Script Uses PyGTK 2"),
-      _("Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, and attempting to use pygtk 2 would cause Glom to crash."), parent_window, Gtk::MESSAGE_ERROR);
+      _("Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, and attempting to use pygtk 2 would cause Glom to crash."), parent_window, Gtk::MessageType::ERROR);
     return false;
   }
 

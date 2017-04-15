@@ -428,7 +428,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
       //tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
       the_c_time.tm_year = gda_date.get_year() - 1900; //C years start are the AD year - 1900. So, 01 is 1901.
-      the_c_time.tm_mon = gda_date.get_month() - 1; //C months start at 0.
+      the_c_time.tm_mon = static_cast<int>(gda_date.get_month()) - 1; //C months start at 0.
       the_c_time.tm_mday = gda_date.get_day(); //starts at 1
     }
     else
@@ -797,8 +797,8 @@ tm Conversions::parse_date(const Glib::ustring& text, const std::locale& locale,
       if(date.get_year() != Glib::Date::BAD_YEAR)
         the_c_time.tm_year = date.get_year() - 1900; //C years start are the AD year - 1900. So, 01 is 1901.
 
-      if(date.get_month() != Glib::Date::BAD_MONTH)
-        the_c_time.tm_mon = date.get_month() - 1; //C months start at 0.
+      if(date.get_month() != Glib::Date::Month::BAD_MONTH)
+        the_c_time.tm_mon = static_cast<int>(date.get_month()) - 1; //C months start at 0.
 
       if(date.get_day() != Glib::Date::BAD_DAY)
         the_c_time.tm_mday = date.get_day(); //starts at 1

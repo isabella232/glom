@@ -372,14 +372,14 @@ bool Base_DB_Table_Data::confirm_delete_record()
 {
   //Ask the user for confirmation:
   const Glib::ustring message = _("Are you sure that you would like to delete this record? The data in this record will then be permanently lost.");
-  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Delete record")), true, Gtk::MessageType::QUESTION, Gtk::ButtonsType::NONE);
   dialog.set_secondary_text(message);
   dialog.set_transient_for(*AppWindow::get_appwindow());
-  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  dialog.add_button(_("_Delete"), Gtk::RESPONSE_OK);
+  dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  dialog.add_button(_("_Delete"), Gtk::ResponseType::OK);
 
   const int response = dialog.run();
-  return (response == Gtk::RESPONSE_OK);
+  return (response == Gtk::ResponseType::OK);
 }
 
 bool Base_DB_Table_Data::record_delete(const Gnome::Gda::Value& primary_key_value)

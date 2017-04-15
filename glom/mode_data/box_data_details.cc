@@ -42,9 +42,9 @@ namespace Glom
 {
 
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
-: m_hbox_content(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
+: m_hbox_content(Gtk::Orientation::HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
   m_show_toolbar(false),
-  m_hbox_buttons(Gtk::ORIENTATION_HORIZONTAL),
+  m_hbox_buttons(Gtk::Orientation::HORIZONTAL),
   m_Button_New(_("_Add"), true),
   m_Button_Del(_("_Delete"), true),
   m_Button_Nav_First(_("_First"), true),
@@ -59,7 +59,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 {
   m_layout_name = "details";
 
-  m_hbox_buttons.set_layout(Gtk::BUTTONBOX_END);
+  m_hbox_buttons.set_layout(Gtk::ButtonBoxStyle::END);
   m_hbox_buttons.set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   add_view(&m_FlowTable); //Allow this to access the document too.
@@ -75,11 +75,11 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   //m_scrolled_window.set_margin(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   // Allow vertical scrolling, but never scroll horizontally:
-  m_ScrolledWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
-  m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_NONE); //SHADOW_IN is Recommended by the GNOME HIG, but looks odd.
+  m_ScrolledWindow.set_policy(Gtk::PolicyType::NEVER, Gtk::PolicyType::AUTOMATIC);
+  m_ScrolledWindow.set_shadow_type(Gtk::ShadowType::NONE); //ShadowType::IN is Recommended by the GNOME HIG, but looks odd.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_hbox_content.pack_start(m_Dragbar, Gtk::PACK_SHRINK);
+  m_hbox_content.pack_start(m_Dragbar, Gtk::PackOptions::PACK_SHRINK);
   m_Dragbar.hide();
 #endif
 
@@ -88,7 +88,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   // The FlowTable does not support native scrolling, so gtkmm adds it to a
   // viewport first that also has some shadow we do not want.
   if(auto viewport = dynamic_cast<Gtk::Viewport*>(m_FlowTable.get_parent()))
-    viewport->set_shadow_type(Gtk::SHADOW_NONE);
+    viewport->set_shadow_type(Gtk::ShadowType::NONE);
 
 
   pack_start(m_hbox_content);
@@ -117,8 +117,8 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_Button_Nav_Last.set_tooltip_text(_("View the last record in the list."));
 
   //Add or delete record:
-  m_hbox_buttons.pack_start(m_Button_New, Gtk::PACK_SHRINK);
-  m_hbox_buttons.pack_start(m_Button_Del,  Gtk::PACK_SHRINK);
+  m_hbox_buttons.pack_start(m_Button_New, Gtk::PackOptions::PACK_SHRINK);
+  m_hbox_buttons.pack_start(m_Button_Del,  Gtk::PackOptions::PACK_SHRINK);
 
   m_hbox_buttons.set_child_secondary(m_Button_New, true);
   m_hbox_buttons.set_child_secondary(m_Button_Del, true);
@@ -130,10 +130,10 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   //Navigation:
   if(bWithNavButtons)
   {
-    m_hbox_buttons.pack_start(m_Button_Nav_First, Gtk::PACK_SHRINK);
-    m_hbox_buttons.pack_start(m_Button_Nav_Prev, Gtk::PACK_SHRINK);
-    m_hbox_buttons.pack_start(m_Button_Nav_Next, Gtk::PACK_SHRINK);
-    m_hbox_buttons.pack_start(m_Button_Nav_Last, Gtk::PACK_SHRINK);
+    m_hbox_buttons.pack_start(m_Button_Nav_First, Gtk::PackOptions::PACK_SHRINK);
+    m_hbox_buttons.pack_start(m_Button_Nav_Prev, Gtk::PackOptions::PACK_SHRINK);
+    m_hbox_buttons.pack_start(m_Button_Nav_Next, Gtk::PackOptions::PACK_SHRINK);
+    m_hbox_buttons.pack_start(m_Button_Nav_Last, Gtk::PackOptions::PACK_SHRINK);
   }
 
   //Link buttons to handlers:
@@ -142,7 +142,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_Button_Nav_Next.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_nav_next));
   m_Button_Nav_Last.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_nav_last));
 
-  pack_start(m_hbox_buttons, Gtk::PACK_SHRINK);
+  pack_start(m_hbox_buttons, Gtk::PackOptions::PACK_SHRINK);
 
   m_ignore_signals = false;
 }
@@ -419,7 +419,7 @@ void Box_Data_Details::on_button_new()
     {
       auto parent_window = get_app_window();
       if(parent_window)
-        UiUtils::show_ok_dialog(_("Layout Contains No Fields"), _("There are no fields on the layout, so there is no way to enter data in a new record."), *parent_window, Gtk::MESSAGE_ERROR);
+        UiUtils::show_ok_dialog(_("Layout Contains No Fields"), _("There are no fields on the layout, so there is no way to enter data in a new record."), *parent_window, Gtk::MessageType::ERROR);
     }
 
     return;

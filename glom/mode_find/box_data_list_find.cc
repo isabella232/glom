@@ -27,12 +27,12 @@ namespace Glom
 {
 
 Box_Data_List_Find::Box_Data_List_Find()
-: m_HBox(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL))
+: m_HBox(Gtk::Orientation::HORIZONTAL, Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL))
 {
   //m_strHint = _("Enter the search criteria and click [Find]\n Glom will then change to Data mode to display the results.");
 
-  m_HBox.pack_end(m_Button_Find, Gtk::PACK_SHRINK);
-  pack_start(m_HBox, Gtk::PACK_SHRINK);
+  m_HBox.pack_end(m_Button_Find, Gtk::PackOptions::PACK_SHRINK);
+  pack_start(m_HBox, Gtk::PackOptions::PACK_SHRINK);
 
   //A signal handler is connected in the Box_Data base class.
   m_Button_Find.set_can_default();

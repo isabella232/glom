@@ -93,7 +93,7 @@ void Dialog_ScriptLibrary::on_button_add()
   dialog->set_transient_for(*this);
   const auto dialog_response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
-  if(dialog_response != Gtk::RESPONSE_OK)
+  if(dialog_response != Gtk::ResponseType::OK)
     return;
 
   const auto name = dialog->m_entry_name->get_text();
@@ -119,14 +119,14 @@ void Dialog_ScriptLibrary::on_button_remove()
   if(!document)
     return;
 
-  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Remove library script")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE );
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Remove library script")), true, Gtk::MessageType::QUESTION, Gtk::ButtonsType::NONE );
   dialog.set_secondary_text(_("Do you really want to delete this script? This data can not be recovered"));
-  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  dialog.add_button(_("_Remove"), Gtk::RESPONSE_OK);
+  dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  dialog.add_button(_("_Remove"), Gtk::ResponseType::OK);
   dialog.set_transient_for(*this);
   const auto dialog_response = dialog.run();
   dialog.hide();
-  if(dialog_response != Gtk::RESPONSE_OK)
+  if(dialog_response != Gtk::ResponseType::OK)
     return;
 
   const auto name = m_combobox_name->get_active_text();

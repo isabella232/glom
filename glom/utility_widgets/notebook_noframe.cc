@@ -30,15 +30,15 @@ namespace Glom
 
 NotebookNoFrame::NotebookNoFrame()
 {
-  set_orientation(Gtk::ORIENTATION_VERTICAL);
+  set_orientation(Gtk::Orientation::VERTICAL);
   set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
-  m_box_top.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
+  m_box_top.set_orientation(Gtk::Orientation::HORIZONTAL);
   m_box_top.set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
-  m_box_top.pack_start(m_box_action_left, Gtk::PACK_SHRINK);
+  m_box_top.pack_start(m_box_action_left, Gtk::PackOptions::PACK_SHRINK);
   m_box_top.pack_start(m_box_tabs);
-  m_box_top.pack_end(m_box_action_right, Gtk::PACK_SHRINK);
-  pack_start(m_box_top, Gtk::PACK_SHRINK);
+  m_box_top.pack_end(m_box_action_right, Gtk::PackOptions::PACK_SHRINK);
+  pack_start(m_box_top, Gtk::PackOptions::PACK_SHRINK);
 
   m_box_top.show();
 
@@ -107,14 +107,14 @@ void NotebookNoFrame::on_visible_child_changed()
 
 void NotebookNoFrame::set_action_widget(Gtk::Widget* widget, Gtk::PackType pack_type)
 {
-  if(pack_type == Gtk::PACK_START)
+  if(pack_type == Gtk::PackType::START)
   {
-    m_box_action_left.pack_start(*widget, Gtk::PACK_SHRINK);
+    m_box_action_left.pack_start(*widget, Gtk::PackOptions::PACK_SHRINK);
     m_box_action_left.show();
   }
   else
   {
-    m_box_action_right.pack_end(*widget, Gtk::PACK_SHRINK);
+    m_box_action_right.pack_end(*widget, Gtk::PackOptions::PACK_SHRINK);
     m_box_action_right.show();
   }
 }

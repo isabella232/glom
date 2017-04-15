@@ -46,7 +46,7 @@ void NotebookLabel::init()
 {
   add(m_label);
   m_label.show();
-  set_events (Gdk::ALL_EVENTS_MASK);
+  set_events (Gdk::EventMask::ALL_EVENTS_MASK);
   set_visible_window (false);
   setup_menu(this);
 }
@@ -90,11 +90,11 @@ void NotebookLabel::on_menu_delete_activate()
     message = _("Delete whole notebook?");
   }
 
-  Gtk::MessageDialog dlg (message, false, Gtk::MESSAGE_QUESTION,
-                          Gtk::BUTTONS_YES_NO, true);
+  Gtk::MessageDialog dlg (message, false, Gtk::MessageType::QUESTION,
+                          Gtk::ButtonsType::YES_NO, true);
   switch(dlg.run())
   {
-    case Gtk::RESPONSE_YES:
+    case static_cast<int>(Gtk::ResponseType::YES):
       m_notebook->delete_from_layout();
       break;
     default:

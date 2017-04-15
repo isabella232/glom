@@ -218,7 +218,7 @@ bool check_user_is_not_root_with_warning()
     //Make sure this is on stderr too, in case something goes wrong with the UI:
     std::cerr << message << std::endl;
 
-    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Running As Root")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Running As Root")), true /* use_markup */, Gtk::MessageType::ERROR, Gtk::ButtonsType::OK, true /* modal */);
     dialog.set_secondary_text(message);
     dialog.run();
 
@@ -261,12 +261,12 @@ bool check_postgres_is_available_with_warning()
 
   //Show message to the user about the broken installation:
   //This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
-  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_NONE, true /* modal */);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MessageType::ERROR, Gtk::ButtonsType::NONE, true /* modal */);
   dialog.set_secondary_text(_("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nYou may now install PostgreSQL to complete the Glom installation."));
-  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  dialog.add_button(_("Install PostgreSQL"), Gtk::RESPONSE_OK);
+  dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  dialog.add_button(_("Install PostgreSQL"), Gtk::ResponseType::OK);
   const auto response = dialog.run();
-  if(response != Gtk::RESPONSE_OK)
+  if(response != Gtk::ResponseType::OK)
     return false; //Failure. Glom should now quit.
   else
     return install_postgres(&dialog);
@@ -279,7 +279,7 @@ bool check_postgres_is_available_with_warning()
   //Make sure this is on stderr too, in case something goes wrong with the UI:
   std::cerr << message << std::endl;
 
-  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MessageType::ERROR, Gtk::ButtonsType::OK, true /* modal */);
   dialog.set_secondary_text(message);
   dialog.run();
   return false;
@@ -317,12 +317,12 @@ bool check_mysql_is_available_with_warning()
   //Show message to the user about the broken installation:
   //This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
   //Unlike for PostgreSQL, this warning is only shown if MySQL was specified in the build.
-  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_NONE, true /* modal */);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MessageType::ERROR, Gtk::ButtonsType::NONE, true /* modal */);
   dialog.set_secondary_text(_("Your installation of Glom is not complete, because MySQL is not available on your system. MySQL is needed for self-hosting of some Glom databases.\n\nYou may now install MySQL to complete the Glom installation."));
-  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  dialog.add_button(_("Install MySQL"), Gtk::RESPONSE_OK);
+  dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  dialog.add_button(_("Install MySQL"), Gtk::ResponseType::OK);
   const auto response = dialog.run();
-  if(response != Gtk::RESPONSE_OK)
+  if(response != Gtk::ResponseType::OK)
     return false; //Failure. Glom should now quit.
   else
     return install_mysql(&dialog);
@@ -330,7 +330,7 @@ bool check_mysql_is_available_with_warning()
   #else  //DISTRO_SPECIFIC_MYSQL_INSTALL_IMPLEMENTED
 
   //Show message to the user about the broken installation:
-  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MessageType::ERROR, Gtk::ButtonsType::OK, true /* modal */);
   dialog.set_secondary_text(_("Your installation of Glom is not complete, because MySQL is not available on your system. MySQL is needed for self-hosting of some Glom databases.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected."));
   dialog.run();
   return false;
@@ -352,7 +352,7 @@ bool check_pyglom_is_available_with_warning()
   //Make sure this is on stderr too, in case something goes wrong with the UI:
   std::cerr << message << std::endl;
 
-  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Glom Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Glom Python Module Not Installed")), true /* use_markup */, Gtk::MessageType::ERROR, Gtk::ButtonsType::OK, true /* modal */);
   dialog.set_secondary_text(message);
   dialog.run();
 
@@ -370,7 +370,7 @@ bool check_gir_is_available_with_warning()
   //Make sure this is on stderr too, in case something goes wrong with the UI:
   std::cerr << message << std::endl;
 
-  Gtk::MessageDialog dialog(UiUtils::bold_message(_("gi.repository Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("gi.repository Python Module Not Installed")), true /* use_markup */, Gtk::MessageType::ERROR, Gtk::ButtonsType::OK, true /* modal */);
   dialog.set_secondary_text(message);
   dialog.run();
 
@@ -388,7 +388,7 @@ bool check_pygda_is_available_with_warning()
   //Make sure this is on stderr too, in case something goes wrong with the UI:
   std::cerr << message << std::endl;
 
-  Gtk::MessageDialog dialog(UiUtils::bold_message(_("gi.repository.Gda Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("gi.repository.Gda Python Module Not Installed")), true /* use_markup */, Gtk::MessageType::ERROR, Gtk::ButtonsType::OK, true /* modal */);
   dialog.set_secondary_text(message);
   dialog.run();
 
@@ -513,7 +513,7 @@ main(int argc, char* argv[])
       //Make sure this is on stderr too, in case something goes wrong with the UI:
       std::cerr << message << std::endl;
 
-      Gtk::MessageDialog dialog(Glom::UiUtils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+      Gtk::MessageDialog dialog(Glom::UiUtils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MessageType::ERROR, Gtk::ButtonsType::OK, true /* modal */);
       dialog.set_secondary_text(message);
       dialog.run();
 

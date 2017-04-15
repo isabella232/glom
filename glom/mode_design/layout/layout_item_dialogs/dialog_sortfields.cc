@@ -59,7 +59,7 @@ Dialog_SortFields::Dialog_SortFields(BaseObjectType* cobject, const Glib::RefPtr
     m_treeview_fields->append_column_editable(_("Ascending"), m_ColumnsFields.m_col_ascending);
 
     //Sort by sequence, so we can change the order by changing the values in the hidden sequence column.
-    m_model_fields->set_sort_column(m_ColumnsFields.m_col_sequence, Gtk::SORT_ASCENDING);
+    m_model_fields->set_sort_column(m_ColumnsFields.m_col_sequence, Gtk::SortType::ASCENDING);
 
 
     //Respond to changes of selection:

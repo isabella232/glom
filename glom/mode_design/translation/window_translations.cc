@@ -158,7 +158,7 @@ void Window_Translations::on_button_identify()
   const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
 
-  if(response == Gtk::RESPONSE_OK)
+  if(response == Gtk::ResponseType::OK)
   {
     get_document()->set_translation_original_locale(dialog->get_locale());
 
@@ -294,7 +294,7 @@ void Window_Translations::on_button_copy_translation()
   const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
 
-  if(response == Gtk::RESPONSE_OK)
+  if(response == Gtk::ResponseType::OK)
   {
     const auto copy_source_locale = dialog->get_locale();
     if(!copy_source_locale.empty())
@@ -338,7 +338,7 @@ void Window_Translations::on_treeview_edited(const Glib::ustring& /* path */, co
 void Window_Translations::on_button_export()
 {
   //Show the file-chooser dialog, to select an output .po file:
-  Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+  Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FileChooserAction::SAVE);
   file_dlg.set_transient_for(*this);
   file_dlg.set_do_overwrite_confirmation();
 
@@ -348,11 +348,11 @@ void Window_Translations::on_button_export()
   filter->add_pattern("*.po");
   file_dlg.add_filter(filter);
 
-  file_dlg.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  file_dlg.add_button(_("Export"), Gtk::RESPONSE_OK);
+  file_dlg.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  file_dlg.add_button(_("Export"), Gtk::ResponseType::OK);
 
   const auto result = file_dlg.run();
-  if(result != Gtk::RESPONSE_OK)
+  if(result != Gtk::ResponseType::OK)
     return;
 
   Glib::ustring uri = file_dlg.get_uri();
@@ -378,7 +378,7 @@ void Window_Translations::on_button_export()
 
 void Window_Translations::on_button_import()
 {
-  Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+  Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FileChooserAction::OPEN);
   file_dlg.set_transient_for(*this);
 
   // Only po files
@@ -387,13 +387,13 @@ void Window_Translations::on_button_import()
   filter->add_pattern("*.po");
   file_dlg.add_filter(filter);
 
-  file_dlg.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
+  file_dlg.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
 
   //Note to translators: "Import" here is an action verb - it's a button.
-  file_dlg.add_button(_("Import"), Gtk::RESPONSE_OK);
+  file_dlg.add_button(_("Import"), Gtk::ResponseType::OK);
 
   const auto result = file_dlg.run();
-  if(result != Gtk::RESPONSE_OK)
+  if(result != Gtk::ResponseType::OK)
     return;
 
   const auto uri = file_dlg.get_uri();

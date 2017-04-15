@@ -29,7 +29,7 @@ GlomCellRenderer_ButtonText::GlomCellRenderer_ButtonText():
   //const Gtk::StockID stock_id = _("_Open"); //A default.
   //property_stock_id() = stock_id.get_string();
 
-  property_mode() = Gtk::CELL_RENDERER_MODE_ACTIVATABLE; //So that it calls activate_vfunc().
+  property_mode() = Gtk::CellRendererMode::ACTIVATABLE; //So that it calls activate_vfunc().
 }
 
 GlomCellRenderer_ButtonText::type_signal_clicked GlomCellRenderer_ButtonText::signal_clicked()

@@ -87,7 +87,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
     pFieldWidget = checkbutton;
 
     m_label.set_label(title);
-    m_label.set_halign(Gtk::ALIGN_START);
+    m_label.set_halign(Gtk::Align::START);
     m_label.show();
   }
   else if(glom_type == Field::glom_field_type::IMAGE)
@@ -104,13 +104,13 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
     pFieldWidget = image;
 
     m_label.set_label(title);
-    m_label.set_halign(Gtk::ALIGN_START);
+    m_label.set_halign(Gtk::Align::START);
     m_label.show();
   }
   else
   {
     m_label.set_label(title);
-    m_label.set_halign(Gtk::ALIGN_START);
+    m_label.set_halign(Gtk::Align::START);
     m_label.show();
 
     //Use a Combo if there is a drop-down of choices (A "value list"), else an Entry:
@@ -195,7 +195,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
     const bool with_extra_widgets = field_used_in_relationship_to_one || add_open_button || (glom_type == Field::glom_field_type::DATE);
     if(with_extra_widgets)
     {
-      hbox_parent = Gtk::manage( new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL) ); //We put the child (and any extra stuff) in this:
+      hbox_parent = Gtk::manage( new Gtk::Box(Gtk::Orientation::HORIZONTAL) ); //We put the child (and any extra stuff) in this:
       hbox_parent->set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
       hbox_parent->pack_start(*m_child);
@@ -211,7 +211,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
       auto button_date = Gtk::manage(new Gtk::Button(_("..."))); //TODO: A better label/icon for "Choose Date".
       button_date->set_tooltip_text(_("Choose a date from an on-screen calendar."));
       button_date->show();
-      hbox_parent->pack_start(*button_date, Gtk::PACK_SHRINK);
+      hbox_parent->pack_start(*button_date, Gtk::PackOptions::PACK_SHRINK);
       button_date->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_choose_date));
     }
 
@@ -220,7 +220,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
       //Add a button for related record navigation:
       m_button_go_to_details = Gtk::manage(new Gtk::Button(_("_Open"), true));
       m_button_go_to_details->set_tooltip_text(_("Open the record identified by this ID, in the other table."));
-      hbox_parent->pack_start(*m_button_go_to_details, Gtk::PACK_SHRINK);
+      hbox_parent->pack_start(*m_button_go_to_details, Gtk::PackOptions::PACK_SHRINK);
       m_button_go_to_details->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_open_details));
 
       //Add an additional button to make it easier to choose an ID for this field.
@@ -230,12 +230,12 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
       {
         auto button_select = Gtk::manage(new Gtk::Button(_("_Find"), true));
         button_select->set_tooltip_text(_("Enter search criteria to identify records in the other table, to choose an ID for this field."));
-        hbox_parent->pack_start(*button_select, Gtk::PACK_SHRINK);
+        hbox_parent->pack_start(*button_select, Gtk::PackOptions::PACK_SHRINK);
         button_select->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_select_id));
 
         auto button_new = Gtk::manage(new Gtk::Button(_("_New"), true));
         button_new->set_tooltip_text(_("Enter details for a new record in the other table, then use its ID for this field."));
-        hbox_parent->pack_start(*button_new, Gtk::PACK_SHRINK);
+        hbox_parent->pack_start(*button_new, Gtk::PackOptions::PACK_SHRINK);
         button_new->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_new_id));
       }
     }
@@ -248,7 +248,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
   setup_menu(this);
 #endif // GLOM_ENABLE_CLIENT_ONLY
 
-  set_events(Gdk::BUTTON_PRESS_MASK);
+  set_events(Gdk::EventMask::BUTTON_PRESS_MASK);
 }
 
 void DataWidget::on_widget_edited()
@@ -474,7 +474,7 @@ std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustri
 
     const auto response = dialog->run();
     dialog->hide();
-    if(response == Gtk::RESPONSE_OK)
+    if(response == Gtk::ResponseType::OK)
     {
       //Get the chosen field:
       result = dialog->get_field_chosen();
@@ -504,7 +504,7 @@ std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_layout(const std::shar
 
   const auto response = dialog->run();
   dialog->hide();
-  if(response == Gtk::RESPONSE_OK)
+  if(response == Gtk::ResponseType::OK)
   {
     //Get the chosen field:
     result = dialog->get_field_chosen();
@@ -636,7 +636,7 @@ void DataWidget::on_button_choose_date()
 
     const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
     dialog->hide();
-    if(response == Gtk::RESPONSE_OK)
+    if(response == Gtk::ResponseType::OK)
     {
       //Get the chosen date
       const auto value = dialog->get_date_chosen();
@@ -684,7 +684,7 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
 
     const auto response = dialog->run();
     dialog->hide();
-    if(response == Gtk::RESPONSE_OK)
+    if(response == Gtk::ResponseType::OK)
     {
       //Get the chosen field:
       result = dialog->get_id_chosen(chosen_id);
@@ -733,7 +733,7 @@ bool DataWidget::offer_related_record_id_new(Gnome::Gda::Value& chosen_id)
 
     const auto response = dialog->run();
     dialog->hide();
-    if(response == Gtk::RESPONSE_OK)
+    if(response == Gtk::ResponseType::OK)
     {
       //Get the chosen ID:
       result = dialog->get_id_chosen(chosen_id);

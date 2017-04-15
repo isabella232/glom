@@ -102,7 +102,7 @@ void Base_DB::handle_error(const Glib::Exception& ex, Gtk::Window* parent)
 {
   std::cerr << G_STRFUNC << ": Internal Error (Base_DB::handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
 
-  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Internal error")), true, Gtk::MessageType::WARNING );
   dialog.set_secondary_text(ex.what());
 
   if(parent)
@@ -115,7 +115,7 @@ void Base_DB::handle_error(const std::exception& ex, Gtk::Window* parent)
 {
   std::cerr << G_STRFUNC << ": Internal Error (Base_DB::handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
 
-  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Internal error")), true, Gtk::MessageType::WARNING );
   dialog.set_secondary_text(ex.what());
 
   if(parent)
@@ -286,7 +286,7 @@ bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vec_con
   catch(const Glib::Error& ex)
   {
     handle_error(ex, parent_window);
-//    Gtk::MessageDialog window(*parent_window, UiUtils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+//    Gtk::MessageDialog window(*parent_window, UiUtils::bold_message(ex.what()), true, Gtk::MessageType::ERROR, Gtk::ButtonsType::OK);
 //    window.run();
     return false;
   }
@@ -342,7 +342,7 @@ std::shared_ptr<LayoutItem_Field> Base_DB::offer_field_list_select_one_field(con
 
     dialog->set_document(get_document(), table_name, start_field);
     const auto response = dialog->run();
-    if(response == Gtk::RESPONSE_OK)
+    if(response == Gtk::ResponseType::OK)
     {
       //Get the chosen field:
       result = dialog->get_field_chosen();
@@ -372,7 +372,7 @@ Base_DB::type_list_field_items Base_DB::offer_field_list(const Glib::ustring& ta
 
     dialog->set_document(get_document(), table_name);
     const auto response = dialog->run();
-    if(response == Gtk::RESPONSE_OK)
+    if(response == Gtk::ResponseType::OK)
     {
       //Get the chosen field:
       result = dialog->get_fields_chosen();
@@ -397,7 +397,7 @@ bool Base_DB::offer_non_field_item_formatting(const std::shared_ptr<LayoutItem_W
   dialog.set_item(layout_item, false);
 
   const auto response = dialog.run();
-  if(response == Gtk::RESPONSE_OK)
+  if(response == Gtk::ResponseType::OK)
   {
     //Get the chosen formatting:
      dialog.use_item_chosen(layout_item);
@@ -427,7 +427,7 @@ std::shared_ptr<LayoutItem_Field> Base_DB::offer_field_formatting(const std::sha
   dialog->set_field(start_field, table_name, show_editable_options);
 
   const auto response = dialog->run();
-  if(response == Gtk::RESPONSE_OK)
+  if(response == Gtk::ResponseType::OK)
   {
     //Get the chosen field:
     result = dialog->get_field_chosen();
@@ -456,7 +456,7 @@ std::shared_ptr<LayoutItem_Text> Base_DB::offer_textobject(const std::shared_ptr
   dialog->set_textobject(start_textobject, Glib::ustring(), show_title);
   const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
-  if(response == Gtk::RESPONSE_OK)
+  if(response == Gtk::ResponseType::OK)
   {
     //Get the chosen relationship:
     result = dialog->get_textobject();
@@ -482,7 +482,7 @@ std::shared_ptr<LayoutItem_Image> Base_DB::offer_imageobject(const std::shared_p
   dialog->set_imageobject(start_imageobject, Glib::ustring(), show_title);
   const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
-  if(response == Gtk::RESPONSE_OK)
+  if(response == Gtk::ResponseType::OK)
   {
     //Get the chosen relationship:
     result = dialog->get_imageobject();

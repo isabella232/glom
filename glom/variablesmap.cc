@@ -173,7 +173,7 @@ void VariablesMap::transfer_one_widget(Gtk::Widget* pWidget, bool to_variable)
     else
     {
       pCalendar->select_day(pVar->get_day());
-      pCalendar->select_month(pVar->get_month(), pVar->get_year());
+      pCalendar->select_month(static_cast<guint>(pVar->get_month()), pVar->get_year());
     }
   }
 }

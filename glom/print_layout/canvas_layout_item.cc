@@ -66,7 +66,7 @@ void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& c
   //Horizontal alignment:
   const Formatting::HorizontalAlignment alignment =
     layout_item.get_formatting_used_horizontal_alignment();
-  const Pango::Alignment x_align = (alignment == Formatting::HorizontalAlignment::LEFT ? Pango::ALIGN_LEFT : Pango::ALIGN_RIGHT);
+  const Pango::Alignment x_align = (alignment == Formatting::HorizontalAlignment::LEFT ? Pango::Alignment::LEFT : Pango::Alignment::RIGHT);
   canvas_item->property_alignment() = x_align;
 
   const auto formatting = layout_item.get_formatting_used();
@@ -374,7 +374,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
             canvas_table->attach(cell_as_item,
               col /* left_attach */, col + 1 /* right_attach */,
               row /* top_attach */, row + 1 /* right_attach */,
-              Gtk::PACK_EXPAND_WIDGET, Gtk::PACK_EXPAND_WIDGET);
+              Gtk::PackOptions::PACK_EXPAND_WIDGET, Gtk::PackOptions::PACK_EXPAND_WIDGET);
 
             something_expanded = true;
         }
@@ -388,7 +388,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
             canvas_table->attach(cell_as_item,
               col /* left_attach */, col + 1 /* right_attach */,
               row /* top_attach */, row + 1 /* right_attach */,
-              Gtk::PACK_EXPAND_PADDING, Gtk::PACK_EXPAND_WIDGET);
+              Gtk::PackOptions::PACK_EXPAND_PADDING, Gtk::PackOptions::PACK_EXPAND_WIDGET);
 
             //Add a second item (an invisible rect) to make sure that the size is really used:
             auto rect =
@@ -399,7 +399,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
             canvas_table->attach(rect,
               col /* left_attach */, col + 1 /* right_attach */,
               row /* top_attach */, row + 1 /* right_attach */,
-              Gtk::PACK_SHRINK, Gtk::PACK_SHRINK);
+              Gtk::PackOptions::PACK_SHRINK, Gtk::PackOptions::PACK_SHRINK);
         }
       }
 

@@ -68,7 +68,7 @@ void ButtonGlom::on_menu_properties_activate()
   dialog->set_script(layout_item, m_table_name);
   const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
-  if(response == Gtk::RESPONSE_OK)
+  if(response == Gtk::ResponseType::OK)
   {
     dialog->get_script(layout_item);
     signal_layout_changed().emit();

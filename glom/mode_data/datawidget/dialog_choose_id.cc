@@ -101,7 +101,7 @@ void Dialog_ChooseID::on_button_quickfind()
   if(criteria.empty())
   {
     Glib::ustring message = _("You have not entered any quick find criteria.");
-    Gtk::MessageDialog dialog(UiUtils::bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("No Find Criteria")), true, Gtk::MessageType::WARNING );
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*this);
 
@@ -130,7 +130,7 @@ void Dialog_ChooseID::on_box_find_criteria(const Gnome::Gda::SqlExpr& where_clau
       const auto find_again = UiUtils::show_warning_no_records_found(*this);
 
       if(!find_again)
-        response(Gtk::RESPONSE_CANCEL);
+        response(Gtk::ResponseType::CANCEL);
     }
     else
     {
@@ -143,7 +143,7 @@ void Dialog_ChooseID::on_box_find_criteria(const Gnome::Gda::SqlExpr& where_clau
 void Dialog_ChooseID::on_box_select_selected(const Gnome::Gda::Value& primary_key)
 {
   m_id_chosen = primary_key;
-  response(Gtk::RESPONSE_OK); //Close the dialog.
+  response(Gtk::ResponseType::OK); //Close the dialog.
 }
 
 void Dialog_ChooseID::update_ui_for_stage()

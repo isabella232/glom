@@ -102,7 +102,7 @@ private:
 #else // G_OS_WIN32
   bool on_io(Glib::IOCondition cond, Glib::RefPtr<Glib::IOChannel> channel, std::string& result)
   {
-    if(cond != Glib::IO_IN)
+    if(cond != Glib::IOCondition::IN)
     {
       // Perhaps the pipe was closed or something. Ignore & Disconnect. If the
       // this was because the child exited, then the on_child_watch() callback
@@ -114,7 +114,7 @@ private:
       char buffer[1024 + 1];
       gsize bytes_read;
 
-      Glib::IOStatus status = Glib::IO_STATUS_NORMAL;
+      auto status = Glib::IOStatus::NORMAL;
       try
       {
         status = channel->read(buffer, 1024, bytes_read);
@@ -128,19 +128,19 @@ private:
       buffer[bytes_read] = '\0';
       result += buffer;
 
-      return status == Glib::IO_STATUS_NORMAL || status == Glib::IO_STATUS_AGAIN;
+      return status == Glib::IOStatus::NORMAL || status == Glib::IOStatus::AGAIN;
     }
   }
 
   void redirect_to_string(int fd, std::string& string)
   {
     auto channel = Glib::IOChannel::create_from_fd(fd);
-    channel->set_flags(Glib::IO_FLAG_NONBLOCK);
+    channel->set_flags(Glib::IOFlags::NONBLOCK);
 
     channel->set_encoding("");
     channel->set_buffered(false);
 
-    Glib::signal_io().connect(sigc::bind(sigc::mem_fun(*this, &SpawnInfo::on_io), channel, std::ref(string)), channel, Glib::IO_IN);
+    Glib::signal_io().connect(sigc::bind(sigc::mem_fun(*this, &SpawnInfo::on_io), channel, std::ref(string)), channel, Glib::IOCondition::IN);
   }
 #endif // !G_OS_WIN32
 
@@ -187,7 +187,7 @@ public:
       std::vector<std::string> arguments = Glib::shell_parse_argv(command_line);
       int child_stdout = 0;
       int child_stderr = 0;
-      Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void()>(), &pid, nullptr, (redirect & REDIRECT_STDOUT) ? &child_stdout : nullptr, (redirect & REDIRECT_STDERR) ? &child_stderr : nullptr);
+      Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SpawnFlags::DO_NOT_REAP_CHILD, sigc::slot<void()>(), &pid, nullptr, (redirect & REDIRECT_STDOUT) ? &child_stdout : nullptr, (redirect & REDIRECT_STDERR) ? &child_stderr : nullptr);
       if(redirect & REDIRECT_STDOUT)
         redirect_to_string(child_stdout, stdout_text);
       if(redirect & REDIRECT_STDERR)
@@ -607,15 +607,15 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   else
   {
     // The user either cancelled, or the first command failed, or exited prematurely
-    if(true) //response == Gtk::RESPONSE_REJECT)
+    if(true) //response == Gtk::ResponseType::REJECT)
     {
       /* TODO: Allow the caller to show a dialog?
       // Command failed
       std::shared_ptr<Gtk::MessageDialog> error_dialog;
       if(parent_window)
-        error_dialog.reset(new Gtk::MessageDialog(*parent_window, "Child command failed", false, Gtk::MESSAGE_ERROR));
+        error_dialog.reset(new Gtk::MessageDialog(*parent_window, "Child command failed", false, Gtk::MessageType::ERROR));
       else
-        error_dialog.reset(new Gtk::MessageDialog("Child command failed", false, Gtk::MESSAGE_ERROR));
+        error_dialog.reset(new Gtk::MessageDialog("Child command failed", false, Gtk::MessageType::ERROR));
 
       // TODO: i18n
       error_dialog->set_secondary_text("The command was:\n\n" + Glib::Markup::escape_text(command) + (stderr_text.empty() ? Glib::ustring("") : ("\n\n<small>" + Glib::Markup::escape_text(stderr_text) + "</small>")), true);

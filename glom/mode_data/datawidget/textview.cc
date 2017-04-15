@@ -50,15 +50,15 @@ void TextView::init()
   setup_menu(this);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  set_shadow_type(Gtk::SHADOW_IN);
+  set_shadow_type(Gtk::ShadowType::IN);
 
   m_TextView.show();
   add(m_TextView);
 
   //Wrap text, and allow vertical scrolling:
-  set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
-  set_shadow_type(Gtk::SHADOW_IN);
-  m_TextView.set_wrap_mode(Gtk::WRAP_WORD);
+  set_policy(Gtk::PolicyType::NEVER, Gtk::PolicyType::AUTOMATIC);
+  set_shadow_type(Gtk::ShadowType::IN);
+  m_TextView.set_wrap_mode(Gtk::WrapMode::WORD);
 
   //We use connect(slot, false) to connect before the default signal handler, because the default signal handler prevents _further_ handling.
   m_TextView.signal_focus_out_event().connect(sigc::mem_fun(*this, &TextView::on_textview_focus_out_event), false);

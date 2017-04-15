@@ -207,14 +207,14 @@ void Dialog_GroupsList::on_button_group_delete()
       if(!group.empty())
       {
         //TODO: Prevent deletion of standard groups
-        Gtk::MessageDialog dialog(UiUtils::bold_message(_("Delete Group")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
+        Gtk::MessageDialog dialog(UiUtils::bold_message(_("Delete Group")), true, Gtk::MessageType::QUESTION, Gtk::ButtonsType::OK_CANCEL);
         dialog.set_secondary_text(_("Are your sure that you wish to delete this group?"));
         dialog.set_transient_for(*this);
 
         int dialog_response = dialog.run();
         dialog.hide();
 
-        if(dialog_response == Gtk::RESPONSE_OK)
+        if(dialog_response == Gtk::ResponseType::OK)
         {
           const Glib::ustring strQuery = "DROP GROUP " + DbUtils::escape_sql_id(group);
           const auto test = DbUtils::query_execute_string(strQuery);
@@ -244,7 +244,7 @@ void Dialog_GroupsList::on_button_group_new()
 
   delete dialog;
 
-  if(dialog_response != Gtk::RESPONSE_OK)
+  if(dialog_response != Gtk::ResponseType::OK)
     return;
 
   if(group_name.empty())

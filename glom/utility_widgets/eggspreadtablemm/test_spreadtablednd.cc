@@ -37,7 +37,7 @@
 static const guint INITIAL_HSPACING = 2;
 static const guint INITIAL_VSPACING = 2;
 static const guint INITIAL_LINES = 3;
-static const Gtk::Align INITIAL_HALIGN = Gtk::ALIGN_FILL;
+static const Gtk::Align INITIAL_HALIGN = Gtk::Align::FILL;
 
 static Egg::SpreadTableDnd *paper = nullptr;
 static Gtk::ComboBoxText* combo_halign = nullptr;
@@ -80,7 +80,7 @@ populate_spread_table_wrappy(Egg::SpreadTableDnd* spread_table)
       eventbox->add(*frame);
 
       label->set_line_wrap();
-      label->set_line_wrap_mode(Pango::WRAP_WORD);
+      label->set_line_wrap_mode(Pango::WrapMode::WORD);
       label->set_width_chars(10);
 
       frame->set_halign(child_halign);
@@ -110,7 +110,7 @@ on_spinbutton_spacing_changed(Gtk::SpinButton* spinbutton, Gtk::Orientation orie
 {
   const auto state = spinbutton->get_value_as_int();
 
-  if(orientation == Gtk::ORIENTATION_HORIZONTAL)
+  if(orientation == Gtk::Orientation::HORIZONTAL)
     paper->set_horizontal_spacing(state);
   else
     paper->set_vertical_spacing(state);
@@ -150,9 +150,9 @@ static Gtk::Window *
 create_window()
 {
   auto window = new Gtk::Window();
-  auto hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 2));
+  auto hbox = Gtk::manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL, 2));
   hbox->show();
-  auto vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 6));
+  auto vbox = Gtk::manage(new Gtk::Box(Gtk::Orientation::VERTICAL, 6));
   vbox->show();
 
   window->set_margin (8);
@@ -165,14 +165,14 @@ create_window()
   hbox->pack_start(*frame, true, true, 0);
 
   auto swindow = Gtk::manage(new Gtk::ScrolledWindow());
-  swindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  swindow->set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
 
   swindow->show();
   frame->add(*swindow);
 
   paper =
     Gtk::manage(new Egg::SpreadTableDnd(
-      Gtk::ORIENTATION_VERTICAL,
+      Gtk::Orientation::VERTICAL,
       INITIAL_LINES));
 
   paper->set_vertical_spacing (INITIAL_VSPACING);
@@ -184,7 +184,7 @@ create_window()
   /* Add SpreadTable test control frame */
   auto expander = Gtk::manage(new Gtk::Expander("SpreadTable controls"));
   expander->set_expanded();
-  auto paper_cntl = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 2));
+  auto paper_cntl = Gtk::manage(new Gtk::Box(Gtk::Orientation::VERTICAL, 2));
   paper_cntl->show();;
   expander->show();
   expander->add(*paper_cntl);
@@ -204,7 +204,7 @@ create_window()
     sigc::ptr_fun(&on_combo_orientation_changed));
 
   /* Add horizontal/vertical spacing controls */
-  hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 2));
+  hbox = Gtk::manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL, 2));
   hbox->show();
 
   auto label = Gtk::manage(new Gtk::Label("H Spacing"));
@@ -221,15 +221,15 @@ create_window()
   spinbutton->signal_changed().connect(
     sigc::bind(
       sigc::ptr_fun(&on_spinbutton_spacing_changed),
-      spinbutton, Gtk::ORIENTATION_HORIZONTAL));
+      spinbutton, Gtk::Orientation::HORIZONTAL));
   spinbutton->signal_value_changed().connect(
     sigc::bind(
       sigc::ptr_fun(&on_spinbutton_spacing_changed),
-      spinbutton, Gtk::ORIENTATION_HORIZONTAL));
+      spinbutton, Gtk::Orientation::HORIZONTAL));
 
   paper_cntl->pack_start(*hbox, false, false, 0);
 
-  hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 2));
+  hbox = Gtk::manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL, 2));
   hbox->show();
 
   label =  Gtk::manage(new Gtk::Label("V Spacing"));
@@ -246,11 +246,11 @@ create_window()
   spinbutton->signal_changed().connect(
     sigc::bind(
       sigc::ptr_fun(&on_spinbutton_spacing_changed),
-      spinbutton, Gtk::ORIENTATION_VERTICAL));
+      spinbutton, Gtk::Orientation::VERTICAL));
   spinbutton->signal_value_changed().connect(
     sigc::bind(
       sigc::ptr_fun(&on_spinbutton_spacing_changed),
-      spinbutton, Gtk::ORIENTATION_VERTICAL));
+      spinbutton, Gtk::Orientation::VERTICAL));
 
   paper_cntl->pack_start(*hbox, false, false, 0);
 
@@ -274,7 +274,7 @@ create_window()
       togglebutton, child_accepts_drops));
 
   /* Add lines controls */
-  hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 2));
+  hbox = Gtk::manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL, 2));
   hbox->show();
 
   label = Gtk::manage(new Gtk::Label("Lines"));
@@ -299,7 +299,7 @@ create_window()
   /* Add test items control frame */
   expander = Gtk::manage(new Gtk::Expander("Test item controls"));
   expander->set_expanded();
-  auto items_cntl = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 2));
+  auto items_cntl = Gtk::manage(new Gtk::Box(Gtk::Orientation::VERTICAL, 2));
   items_cntl->show();
   expander->show();
   expander->add(*items_cntl);
@@ -325,7 +325,7 @@ create_window()
   /* Embed another dnd spread table */
   auto spreadtable_inner =
     Gtk::manage(new Egg::SpreadTableDnd(
-      Gtk::ORIENTATION_VERTICAL,
+      Gtk::Orientation::VERTICAL,
       INITIAL_LINES));
 
   spreadtable_inner->set_vertical_spacing(INITIAL_VSPACING);

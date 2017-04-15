@@ -84,7 +84,7 @@ static void show_gettext_error(int severity, const char* filename, const gchar* 
     default:
     {
       //TODO: const auto msg = Glib::ustring(_("Gettext-Error: ")) + ' ' + msg_stream.str();
-      //Gtk::MessageDialog dlg(msg, false, Gtk::MESSAGE_ERROR);
+      //Gtk::MessageDialog dlg(msg, false, Gtk::MessageType::ERROR);
       //dlg.run();
       break;
     }

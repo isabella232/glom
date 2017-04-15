@@ -61,7 +61,7 @@ void Dialog_InvalidData::set_example_data(Field::glom_field_type glom_type)
   {
     case(Field::glom_field_type::DATE):
     {
-      Glib::Date date(31, Glib::Date::JANUARY, 2005);
+      Glib::Date date(31, Glib::Date::Month::JANUARY, 2005);
       example_text = Conversions::get_text_for_gda_value(glom_type, Gnome::Gda::Value(date));
       break;
     }

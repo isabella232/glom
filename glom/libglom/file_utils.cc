@@ -60,7 +60,7 @@ bool file_exists(const Glib::RefPtr<Gio::File>& file)
 bool delete_file(const std::string& uri)
 {
   auto file = Gio::File::create_for_uri(uri);
-  if(file->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
+  if(file->query_file_type() == Gio::FileType::DIRECTORY)
   {
     std::cerr << G_STRFUNC << ": The file is a directory.\n";
     return false;

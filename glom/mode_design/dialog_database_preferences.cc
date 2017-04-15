@@ -244,7 +244,7 @@ void Dialog_Database_Preferences::save_to_document()
 
 void Dialog_Database_Preferences::on_response(int response_id)
 {
-  if(response_id == Gtk::RESPONSE_OK)
+  if(response_id == Gtk::ResponseType::OK)
     save_to_document();
 }
 

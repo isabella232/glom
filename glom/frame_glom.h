@@ -148,7 +148,7 @@ public:
   enumModes m_Mode;
   enumModes m_Mode_Previous; // see comments in set_mode_widget().
 
-  static void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type = Gtk::MESSAGE_INFO);
+  static void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type = Gtk::MessageType::INFO);
 
   /** Show the dialog to request the password, and check whether it works.
    *

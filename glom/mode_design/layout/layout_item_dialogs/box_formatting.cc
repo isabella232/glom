@@ -200,13 +200,13 @@ void Box_Formatting::set_is_for_non_editable()
   //Add labels (because we will hide the checkboxes):
   auto label = Gtk::manage(new Gtk::Label(_("Font")));
   label->show();
-  m_hbox_font->pack_start(*label, Gtk::PACK_SHRINK);
+  m_hbox_font->pack_start(*label, Gtk::PackOptions::PACK_SHRINK);
   label = Gtk::manage(new Gtk::Label(_("Foreground Color")));
   label->show();
-  m_hbox_color_foreground->pack_start(*label, Gtk::PACK_SHRINK);
+  m_hbox_color_foreground->pack_start(*label, Gtk::PackOptions::PACK_SHRINK);
   label = Gtk::manage(new Gtk::Label(_("Background Color")));
   label->show();
-  m_hbox_color_background->pack_start(*label, Gtk::PACK_SHRINK);
+  m_hbox_color_background->pack_start(*label, Gtk::PackOptions::PACK_SHRINK);
 
   enforce_constraints();
 }
@@ -571,7 +571,7 @@ void Box_Formatting::on_button_choices_extra()
 
   const auto response = Glom::UiUtils::dialog_run_with_help(m_dialog_choices_extra_fields);
   m_dialog_choices_extra_fields->hide();
-  if(response == Gtk::RESPONSE_OK && m_dialog_choices_extra_fields->get_modified())
+  if(response == Gtk::ResponseType::OK && m_dialog_choices_extra_fields->get_modified())
   {
     //Update the label:
     const Glib::ustring text_extra_fields =
@@ -590,7 +590,7 @@ void Box_Formatting::on_button_choices_sortby()
 
   const auto response = Glom::UiUtils::dialog_run_with_help(m_dialog_choices_sortby);
   m_dialog_choices_sortby->hide();
-  if(response == Gtk::RESPONSE_OK && m_dialog_choices_sortby->get_modified())
+  if(response == Gtk::ResponseType::OK && m_dialog_choices_sortby->get_modified())
   {
     //Update the label:
     const Glib::ustring text_sortby =

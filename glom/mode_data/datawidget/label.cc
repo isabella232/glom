@@ -53,7 +53,7 @@ void Label::init()
 
   add(m_label);
   m_label.show();
-  set_events(Gdk::ALL_EVENTS_MASK);
+  set_events(Gdk::EventMask::ALL_EVENTS_MASK);
   //This would be more efficient if we were only using the (base) EventBox to get events,
   //but we also want to allow changing of the background color, so we don't use it: set_visible_window(false);
 
@@ -84,7 +84,7 @@ void Label::on_menu_properties_activate()
   dialog->set_textobject(textobject, m_table_name);
   const auto response = dialog->run();
   dialog->hide();
-  if(response == Gtk::RESPONSE_OK)
+  if(response == Gtk::ResponseType::OK)
   {
     //Get the chosen relationship:
     dialog->get_textobject(textobject);

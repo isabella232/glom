@@ -150,7 +150,7 @@ int main(int argc, char* argv[])
   }
 
   Gio::FileType file_type = file_input->query_file_type();
-  if(file_type == Gio::FILE_TYPE_DIRECTORY)
+  if(file_type == Gio::FileType::DIRECTORY)
   {
     std::cerr << _("The Glom file path is a directory instead of a file.") << std::endl;
     std::cerr << std::endl << context.get_help() << std::endl;
@@ -169,7 +169,7 @@ int main(int argc, char* argv[])
   auto file_output = Gio::File::create_for_commandline_arg(group.m_arg_filepath_po_input);
 
   file_type = file_output->query_file_type();
-  if(file_type != Gio::FILE_TYPE_DIRECTORY)
+  if(file_type != Gio::FileType::DIRECTORY)
   {
     std::cerr << _("Glom: The po files directory path is not a directory.") << std::endl;
     std::cerr << std::endl << context.get_help() << std::endl;
@@ -196,7 +196,7 @@ int main(int argc, char* argv[])
   while( (info = enumerator->next_file()) )
   {
     auto child = file_output->get_child(info->get_name());
-    if(child->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
+    if(child->query_file_type() == Gio::FileType::DIRECTORY)
       continue;
 
     //Check that it has the .po file extension:

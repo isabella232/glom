@@ -29,18 +29,18 @@ namespace Glom
 {
 
 FileChooser_Export::FileChooser_Export()
-: Gtk::FileChooserDialog(_("Export to File"), Gtk::FILE_CHOOSER_ACTION_SAVE),
-  m_extra_widget(Gtk::ORIENTATION_HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
+: Gtk::FileChooserDialog(_("Export to File"), Gtk::FileChooserAction::SAVE),
+  m_extra_widget(Gtk::Orientation::HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_button_format(_("Define Data _Format"), true /* use mnenomic */),
   m_dialog_layout(nullptr),
 #endif //GLOM_ENABLE_CLIENT_ONLY
   m_document(nullptr)
 {
-  add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  add_button(_("_Export"), Gtk::RESPONSE_OK);
+  add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  add_button(_("_Export"), Gtk::ResponseType::OK);
 
-  m_extra_widget.pack_start(m_button_format, Gtk::PACK_SHRINK);
+  m_extra_widget.pack_start(m_button_format, Gtk::PackOptions::PACK_SHRINK);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_button_format.signal_clicked().connect(

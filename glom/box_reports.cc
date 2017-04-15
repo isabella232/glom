@@ -235,7 +235,7 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
           int iButtonClicked = dialog.run();
 
           //Rename the report:
-          if(iButtonClicked == Gtk::RESPONSE_OK)
+          if(iButtonClicked == Gtk::ResponseType::OK)
           {
             m_AddDel.set_value_key(row, report_name_new);
 

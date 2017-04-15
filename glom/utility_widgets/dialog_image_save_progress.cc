@@ -84,7 +84,7 @@ void DialogImageSaveProgress::save(const Glib::ustring& uri)
   catch(const Gio::Error& ex)
   {
     std::cerr << G_STRFUNC << ": exception: " << ex.what() << std::endl;
-    response(Gtk::RESPONSE_REJECT);
+    response(Gtk::ResponseType::REJECT);
     return;
   }
 
@@ -98,7 +98,7 @@ void DialogImageSaveProgress::save(const Glib::ustring& uri)
   catch(const Gio::Error& ex)
   {
     std::cerr << G_STRFUNC << ": exception: " << ex.what() << std::endl;
-    response(Gtk::RESPONSE_REJECT);
+    response(Gtk::ResponseType::REJECT);
     return;
   }
 }
@@ -122,23 +122,23 @@ void DialogImageSaveProgress::on_stream_write(const Glib::RefPtr<Gio::AsyncResul
       Glib::signal_idle().connect(sigc::bind_return(sigc::bind(sigc::mem_fun(*this, &DialogImageSaveProgress::on_write_next), offset + size), false));
     else
       // We are done saving the image, close the progress dialog
-      response(Gtk::RESPONSE_ACCEPT);
+      response(Gtk::ResponseType::ACCEPT);
   }
   catch(const Glib::Error& ex)
   {
     error(ex.what());
-    response(Gtk::RESPONSE_REJECT);
+    response(Gtk::ResponseType::REJECT);
   }
 }
 
 void DialogImageSaveProgress::error(const Glib::ustring& error_message)
 {
-  Gtk::MessageDialog dialog(*this, _("Error Saving"), Gtk::MESSAGE_ERROR);
+  Gtk::MessageDialog dialog(*this, _("Error Saving"), false, Gtk::MessageType::ERROR);
   dialog.set_title(_("Error saving image"));
   dialog.set_secondary_text(error_message);
 
   dialog.run();
-  response(Gtk::RESPONSE_REJECT);
+  response(Gtk::ResponseType::REJECT);
 }
 
 void DialogImageSaveProgress::on_write_next(unsigned int at)

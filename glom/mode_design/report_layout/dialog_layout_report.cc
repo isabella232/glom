@@ -699,7 +699,7 @@ std::shared_ptr<Relationship> Dialog_Layout_Report::offer_relationship_list()
   dialog->set_transient_for(*this);
   const auto dialog_response = dialog->run();
   dialog->hide();
-  if(dialog_response == Gtk::RESPONSE_OK)
+  if(dialog_response == Gtk::ResponseType::OK)
   {
     //Get the chosen relationship:
     result = dialog->get_relationship_chosen();
@@ -831,7 +831,7 @@ void Dialog_Layout_Report::on_button_edit()
         const auto dialog_response = dialog->run();
         dialog->hide();
 
-        if(dialog_response == Gtk::RESPONSE_OK)
+        if(dialog_response == Gtk::ResponseType::OK)
         {
           //Get the chosen relationship:
           auto chosenitem = dialog->get_item();
@@ -903,7 +903,7 @@ void Dialog_Layout_Report::on_button_edit()
                 const auto dialog_response = dialog->run();
                 dialog->hide();
 
-                if(dialog_response == Gtk::RESPONSE_OK)
+                if(dialog_response == Gtk::ResponseType::OK)
                 {
                   //Get the chosen relationship:
                   auto chosenitem = dialog->get_item();

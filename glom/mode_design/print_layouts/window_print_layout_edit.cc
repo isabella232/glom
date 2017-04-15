@@ -96,7 +96,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_spinbutton_height->signal_value_changed().connect(
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_spinbutton_height));
 
-  const Gtk::TargetEntry target_rule(DRAG_TARGET_NAME_RULE, Gtk::TARGET_SAME_APP, 0);
+  const Gtk::TargetEntry target_rule(DRAG_TARGET_NAME_RULE, Gtk::TargetFlags::SAME_APP, 0);
   m_drag_targets_rule.emplace_back(target_rule);
 
   //The rulers are not in the glade file because they use an unusual widget
@@ -142,7 +142,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   builder->get_widget("button_close", m_button_close);
   m_button_close->signal_clicked().connect( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_button_close) );
 
-  m_scrolled_window.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  m_scrolled_window.set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
   m_scrolled_window.add(m_canvas);
   m_box_canvas->pack_start(m_scrolled_window);
   m_canvas.show();
@@ -153,8 +153,8 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   const auto toolbar_target = Gtk::ToolPalette::get_drag_target_item();
   m_drag_targets_all.emplace_back(toolbar_target);
 
-  //Note that we don't use Gtk::DEST_DEFAULT_DEFAULTS because that would prevent our signal handlers from being used:
-  m_canvas.drag_dest_set(m_drag_targets_all, Gtk::DEST_DEFAULT_HIGHLIGHT, Gdk::ACTION_COPY);
+  //Note that we don't use Gtk::DestDefaults::DEFAULTS because that would prevent our signal handlers from being used:
+  m_canvas.drag_dest_set(m_drag_targets_all, Gtk::DestDefaults::HIGHLIGHT, Gdk::DragAction::COPY);
   m_canvas.signal_drag_drop().connect(
       sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_drop) );
   m_canvas.signal_drag_motion().connect(
@@ -274,14 +274,14 @@ void Window_PrintLayout_Edit::init_menu()
   auto object =
     m_builder->get_object("Menubar");
   auto gmenu =
-    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+    std::dynamic_pointer_cast<Gio::Menu>(object);
   if(!gmenu)
     g_warning("GMenu not found");
 
   //Menubar:
   auto menubar = std::make_unique<Gtk::MenuBar>(gmenu);
   menubar->show();
-  m_box_menu->pack_start(*(Gtk::manage(menubar.release())), Gtk::PACK_SHRINK);
+  m_box_menu->pack_start(*(Gtk::manage(menubar.release())), Gtk::PackOptions::PACK_SHRINK);
 
 
   //TODO: Create a generic checking method to test that
@@ -337,7 +337,7 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
     else
        m_canvas.show_temp_rule(item_x, 0);
 
-    drag_context->drag_status(Gdk::ACTION_MOVE, timestamp);
+    drag_context->drag_status(Gdk::DragAction::MOVE, timestamp);
     return true; //Allow the drop.
   }
 
@@ -354,7 +354,7 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
     return true;
   }
 
-  drag_context->drag_status(Gdk::ACTION_COPY, timestamp);
+  drag_context->drag_status(Gdk::DragAction::COPY, timestamp);
 
   //Move the temporary canvas item to the new position:
   m_layout_item_dropping->snap_position(item_x, item_y);
@@ -507,7 +507,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
       }
     }
 
-    drag_context->drag_status(Gdk::ACTION_COPY, timestamp);
+    drag_context->drag_status(Gdk::DragAction::COPY, timestamp);
     m_drag_preview_requested = false;
   }
   else
@@ -703,7 +703,7 @@ void Window_PrintLayout_Edit::setup_context_menu()
   auto object =
     m_builder->get_object("ContextMenu");
   auto gmenu =
-    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+    std::dynamic_pointer_cast<Gio::Menu>(object);
   if(!gmenu)
     g_warning("GMenu not found");
 
@@ -833,14 +833,14 @@ void Window_PrintLayout_Edit::on_menu_insert_line_vertical()
 void Window_PrintLayout_Edit::on_menu_insert_create_standard()
 {
   //Ask for confirmation:
-  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Create Standard Layout")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Create Standard Layout")), true, Gtk::MessageType::QUESTION, Gtk::ButtonsType::NONE);
   dialog.set_secondary_text(_("This is an experimental feature. It will remove all items from the print layout and then try to create a layout similar to the layout of the detail view."));
   dialog.set_transient_for(*this);
-  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  dialog.add_button(_("Create"), Gtk::RESPONSE_OK);
+  dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  dialog.add_button(_("Create"), Gtk::ResponseType::OK);
 
   const auto response = dialog.run();
-  if(response != Gtk::RESPONSE_OK)
+  if(response != Gtk::ResponseType::OK)
     return;
 
   const auto document = std::dynamic_pointer_cast<const Document>(get_document());
@@ -877,12 +877,12 @@ void Window_PrintLayout_Edit::on_menu_insert_delete_page()
     return;
 
   //Ask the user to confirm:
-  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Remove page")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Remove page")), true, Gtk::MessageType::QUESTION, Gtk::ButtonsType::NONE);
   dialog.set_secondary_text(_("Are you sure that you wish to remove the last page and any items on that page?"));
   dialog.set_transient_for(*this);
-  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  dialog.add_button(_("Remove Page"), Gtk::RESPONSE_OK);
-  if(dialog.run() != Gtk::RESPONSE_OK)
+  dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  dialog.add_button(_("Remove Page"), Gtk::ResponseType::OK);
+  if(dialog.run() != Gtk::ResponseType::OK)
     return;
 
   m_canvas.set_page_count(page_count - 1);

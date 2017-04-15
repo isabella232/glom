@@ -305,7 +305,7 @@ bool Document::write_to_disk()
         //Otherwise something unexpected happened.
         if(ex.code() == Gio::Error::EXISTS)
         {
-          if(parent->query_file_type() != Gio::FILE_TYPE_DIRECTORY)
+          if(parent->query_file_type() != Gio::FileType::DIRECTORY)
           {
             std::cerr << G_STRFUNC << ": This part of the URI is not a directory: " << parent->get_uri() <<  std::endl;
             std::cerr << G_STRFUNC << ":   using m_file_uri = " << m_file_uri << std::endl;

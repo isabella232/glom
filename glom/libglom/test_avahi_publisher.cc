@@ -28,7 +28,7 @@ private:
 
 
 TestWindow::TestWindow()
-: m_box(Gtk::ORIENTATION_VERTICAL, Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL)),
+: m_box(Gtk::Orientation::VERTICAL, Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL)),
   m_button_start("Start"),
   m_button_stop("Stop")
 {

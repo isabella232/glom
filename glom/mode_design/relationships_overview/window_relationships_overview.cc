@@ -84,7 +84,7 @@ Window_RelationshipsOverview::Window_RelationshipsOverview(BaseObjectType* cobje
 
   auto menu = std::make_unique<Gtk::MenuBar>(gmenu);
   menu->show();
-  vbox->pack_start(*(Gtk::manage(menu.release())), Gtk::PACK_SHRINK);
+  vbox->pack_start(*(Gtk::manage(menu.release())), Gtk::PackOptions::PACK_SHRINK);
 
 
   //Get the scolled window and add the canvas to it:
@@ -279,7 +279,7 @@ void Window_RelationshipsOverview::draw_lines()
           const auto text_y = ((from_field_y + to_field_y) / 2) + y_offset;
           auto text = CanvasTextMovable::create(item_get_title_or_name(relationship),
             text_x, text_y, -1, //TODO: Calc a suitable width.
-            Goocanvas::ANCHOR_CENTER);
+            Goocanvas::AnchorType::CENTER);
           text->property_font() = "Sans 10";
           text->property_use_markup() = true;
           text->set_movement_allowed(false, false); //Move only as part of the parent group.
@@ -302,7 +302,7 @@ void Window_RelationshipsOverview::load_from_document()
 
 void Window_RelationshipsOverview::on_menu_file_print()
 {
-  print_or_preview(Gtk::PRINT_OPERATION_ACTION_PRINT_DIALOG);
+  print_or_preview(Gtk::PrintOperationAction::PRINT_DIALOG);
 }
 
 void Window_RelationshipsOverview::on_menu_file_page_setup()

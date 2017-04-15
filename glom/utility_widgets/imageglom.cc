@@ -142,7 +142,7 @@ void ImageGlom::init()
 
   setup_menu_usermode();
 
-  m_frame.set_shadow_type(Gtk::SHADOW_ETCHED_IN); //Without this, the image widget has no borders and is completely invisible when empty.
+  m_frame.set_shadow_type(Gtk::ShadowType::ETCHED_IN); //Without this, the image widget has no borders and is completely invisible when empty.
   m_frame.show();
 
   add(m_frame);
@@ -457,11 +457,11 @@ void ImageGlom::show_image_data()
     }
     else if(icon)
     {
-      m_image->set(icon, Gtk::ICON_SIZE_DIALOG);
+      m_image->set(icon, Gtk::BuiltinIconSize::DIALOG);
     }
     else
     {
-      m_image->set_from_icon_name("image-missing", Gtk::ICON_SIZE_DIALOG);
+      m_image->set_from_icon_name("image-missing", Gtk::BuiltinIconSize::DIALOG);
     }
   }
 }
@@ -493,7 +493,7 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
       //Don't set a new pixbuf if the dimensions have not changed:
       Glib::RefPtr<Gdk::Pixbuf> pixbuf_in_image;
 
-      if(m_image->get_storage_type() == Gtk::IMAGE_PIXBUF) //Prevent warning.
+      if(m_image->get_storage_type() == Gtk::ImageType::PIXBUF) //Prevent warning.
         pixbuf_in_image = m_image->get_pixbuf();
 
       if( !pixbuf_in_image || !pixbuf_scaled || (pixbuf_in_image->get_height() != pixbuf_scaled->get_height()) || (pixbuf_in_image->get_width() != pixbuf_scaled->get_width()) )
@@ -542,7 +542,7 @@ void ImageGlom::on_menupopup_activate_open_file_with()
   if(pApp)
     dialog.set_transient_for(*pApp);
 
-  if(dialog.run() != Gtk::RESPONSE_OK)
+  if(dialog.run() != Gtk::ResponseType::OK)
     return;
 
   auto app_info = dialog.get_app_info();
@@ -702,17 +702,17 @@ void ImageGlom::on_menupopup_activate_save_file()
 {
   auto pApp = get_appwindow();
 
-  Gtk::FileChooserDialog dialog(_("Save Image"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+  Gtk::FileChooserDialog dialog(_("Save Image"), Gtk::FileChooserAction::SAVE);
   if(pApp)
     dialog.set_transient_for(*pApp);
 
   set_file_filter_images(dialog);
 
-  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  dialog.add_button(_("_Save"), Gtk::RESPONSE_OK);
+  dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  dialog.add_button(_("_Save"), Gtk::ResponseType::OK);
   const auto response = dialog.run();
   dialog.hide();
-  if(response != Gtk::RESPONSE_OK)
+  if(response != Gtk::ResponseType::OK)
     return;
 
   const auto uri = dialog.get_uri();
@@ -791,18 +791,18 @@ void ImageGlom::on_menupopup_activate_select_file()
 
   auto pApp = get_appwindow();
 
-  Gtk::FileChooserDialog dialog(_("Choose Image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+  Gtk::FileChooserDialog dialog(_("Choose Image"), Gtk::FileChooserAction::OPEN);
   if(pApp)
     dialog.set_transient_for(*pApp);
 
   set_file_filter_images(dialog);
 
-  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  dialog.add_button(_("Select"), Gtk::RESPONSE_OK);
+  dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  dialog.add_button(_("Select"), Gtk::ResponseType::OK);
   int response = dialog.run();
   dialog.hide();
 
-  if((response != Gtk::RESPONSE_CANCEL) && (response != Gtk::RESPONSE_DELETE_EVENT))
+  if((response != Gtk::ResponseType::CANCEL) && (response != Gtk::ResponseType::DELETE_EVENT))
   {
     const auto uri = dialog.get_uri();
     if(!uri.empty())
@@ -819,7 +819,7 @@ void ImageGlom::on_menupopup_activate_select_file()
 
         dialog_progress->load(uri);
 
-        if(dialog_progress->run() == Gtk::RESPONSE_ACCEPT)
+        if(dialog_progress->run() == Gtk::ResponseType::ACCEPT)
         {
           // This takes ownership of the GdaBinary from the dialog:
           auto image_data = dialog_progress->get_image_data();

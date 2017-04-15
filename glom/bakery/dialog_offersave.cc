@@ -47,7 +47,7 @@ namespace GlomBakery
 
 
 Dialog_OfferSave::Dialog_OfferSave(const Glib::ustring& file_uri)
-: Gtk::MessageDialog( Glom::AppWindow::util_bold_message(_("Close without Saving")), true /* use markup */, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE)
+: Gtk::MessageDialog( Glom::AppWindow::util_bold_message(_("Close without Saving")), true /* use markup */, Gtk::MessageType::QUESTION, Gtk::ButtonsType::NONE)
 {
   set_title(""); //The HIG says that alert dialogs should not have titles. The default comes from the message type.
 

@@ -52,7 +52,7 @@ CanvasItemMovable::CanvasItemMovable()
   m_drag_start_cursor_x(0.0), m_drag_start_cursor_y(0.0),
   m_drag_start_position_x(0.0), m_drag_start_position_y(0.0),
   m_drag_latest_position_x(0.0), m_drag_latest_position_y(0.0),
-  m_drag_cursor_type(Gdk::FLEUR), //arbitrary default
+  m_drag_cursor_type(Gdk::CursorType::FLEUR), //arbitrary default
   m_grid(nullptr),
   m_allow_vertical_movement(true), m_allow_horizontal_movement(true),
   m_selected(false),
@@ -95,7 +95,7 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
       if(canvas)
       {
         canvas->pointer_grab(item,
-          Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK,
+          Gdk::EventMask::POINTER_MOTION_MASK | Gdk::EventMask::BUTTON_RELEASE_MASK,
           create_drag_cursor((GdkEventAny*)event, m_drag_cursor_type),
           event->time);
       }
@@ -129,14 +129,14 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
 
   auto item = target;
 
-  if(item && m_dragging && (event->state & Gdk::BUTTON1_MASK))
+  if(item && m_dragging && (event->state & static_cast<guint>(Gdk::ModifierType::BUTTON1_MASK)))
   {
     const double offset_x = event->x - m_drag_start_cursor_x;
     const double offset_y = event->y - m_drag_start_cursor_y;
 
     // Inkscape uses the Ctrl key to restrict movement to horizontal or vertical,
     // so let's do that too.
-    if( (event->state & Gdk::CONTROL_MASK) && !m_dragging_vertical_only && !m_dragging_horizontal_only )
+    if( (event->state & static_cast<guint>(Gdk::ModifierType::CONTROL_MASK)) && !m_dragging_vertical_only && !m_dragging_horizontal_only )
     {
       //Decide whether to restrict to vertical or horizontal movement:
       //Whichever has the greatest offset already will be the axis that we restrict movement to.
@@ -151,7 +151,7 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
         m_dragging_horizontal_only = false;
       }
     }
-    else if( !(event->state & Gdk::CONTROL_MASK) && (m_dragging_vertical_only || m_dragging_horizontal_only))
+    else if( !(event->state & static_cast<guint>(Gdk::ModifierType::CONTROL_MASK)) && (m_dragging_vertical_only || m_dragging_horizontal_only))
     {
       //Ctrl was released, so allow full movement again:
       m_dragging_vertical_only = false;

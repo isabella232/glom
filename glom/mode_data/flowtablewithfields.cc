@@ -174,7 +174,7 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
       frame->set_label_widget(*label);
     }
 
-    frame->set_shadow_type(Gtk::SHADOW_NONE); //HIG-style
+    frame->set_shadow_type(Gtk::ShadowType::NONE); //HIG-style
     frame->show();
 
     auto flow_table = Gtk::manage( new FlowTableWithFields() );
@@ -466,13 +466,13 @@ void FlowTableWithFields::add_field(const std::shared_ptr<LayoutItem_Field>& lay
   auto label = info.m_second->get_label();
   if(label && !label->get_text().empty())
   {
-    auto boxLabel = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+    auto boxLabel = Gtk::manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL));
     boxLabel->show();
     boxLabel->pack_start(*label);
     info.m_first = boxLabel;
 
-    label->set_halign(Gtk::ALIGN_START);
-    label->set_valign(Gtk::ALIGN_CENTER);
+    label->set_halign(Gtk::Align::START);
+    label->set_valign(Gtk::Align::CENTER);
     label->show();
   }
   else
@@ -486,22 +486,22 @@ void FlowTableWithFields::add_field(const std::shared_ptr<LayoutItem_Field>& lay
   if( (layoutitem_field->get_glom_type() == Field::glom_field_type::TEXT) && layoutitem_field->get_formatting_used().get_text_format_multiline())
   {
     if(label)
-      label->set_valign(Gtk::ALIGN_START); //Center is neater next to entries, but center is silly next to multi-line text boxes.
+      label->set_valign(Gtk::Align::START); //Center is neater next to entries, but center is silly next to multi-line text boxes.
   }
   else if(layoutitem_field->get_glom_type() == Field::glom_field_type::IMAGE)
   {
     if(label)
-      label->set_valign(Gtk::ALIGN_START); //Center is neater next to entries, but center is silly next to large images.
+      label->set_valign(Gtk::Align::START); //Center is neater next to entries, but center is silly next to large images.
   }
 
   auto eventbox = Gtk::manage(new Gtk::EventBox());
   if(info.m_first)
       eventbox->add(*info.m_first);
 
-  eventbox->set_halign(Gtk::ALIGN_START);
+  eventbox->set_halign(Gtk::Align::START);
   info.m_first_eventbox = eventbox; //Remember it so we can retrieve the column number later from FlowTable.
   eventbox->set_visible_window(false);
-  eventbox->set_events(Gdk::ALL_EVENTS_MASK);
+  eventbox->set_events(Gdk::EventMask::ALL_EVENTS_MASK);
 
   add_widgets(*eventbox, *(info.m_second), true);
 
@@ -544,12 +544,12 @@ void FlowTableWithFields::add_button(const std::shared_ptr<LayoutItem_Button>& l
     //Put the button in a Gtk::Box so we can have non-default alignment in
     //its space. Note that we will need a different technique if we ever
     //support center alignment.
-    auto box_button = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+    auto box_button = Gtk::manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL));
     box_button->show();
     if(alignment == Formatting::HorizontalAlignment::RIGHT)
-      box_button->pack_end(*button, Gtk::PACK_SHRINK);
+      box_button->pack_end(*button, Gtk::PackOptions::PACK_SHRINK);
     else
-      box_button->pack_start(*button, Gtk::PACK_SHRINK);
+      box_button->pack_start(*button, Gtk::PackOptions::PACK_SHRINK);
 
     widget_to_add = box_button;
     expand = true;
@@ -569,9 +569,9 @@ void FlowTableWithFields::add_textobject(const std::shared_ptr<LayoutItem_Text>&
 
   const Formatting::HorizontalAlignment alignment =
     layoutitem_text->get_formatting_used_horizontal_alignment();
-  const Gtk::Align x_align = (alignment == Formatting::HorizontalAlignment::LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
+  const Gtk::Align x_align = (alignment == Formatting::HorizontalAlignment::LEFT ? Gtk::Align::START : Gtk::Align::END);
   label->set_halign(x_align);
-  label->set_valign(Gtk::ALIGN_CENTER);
+  label->set_valign(Gtk::Align::CENTER);
   label->show();
 
   apply_formatting(*label, *layoutitem_text);
@@ -585,10 +585,10 @@ void FlowTableWithFields::add_textobject(const std::shared_ptr<LayoutItem_Text>&
   }
   else
   {
-    auto title_label = Gtk::manage(new DataWidgetChildren::Label(title, Gtk::ALIGN_START, Gtk::ALIGN_START, false));
+    auto title_label = Gtk::manage(new DataWidgetChildren::Label(title, Gtk::Align::START, Gtk::Align::START, false));
     title_label->set_layout_item(layoutitem_text, table_name);
-    title_label->set_halign(Gtk::ALIGN_END);
-    title_label->set_valign(Gtk::ALIGN_CENTER);
+    title_label->set_halign(Gtk::Align::END);
+    title_label->set_valign(Gtk::Align::CENTER);
     title_label->show();
     add_layoutwidgetbase(title_label);
 
@@ -617,8 +617,8 @@ void FlowTableWithFields::add_imageobject(const std::shared_ptr<LayoutItem_Image
   else
   {
     auto title_label = Gtk::manage(new Gtk::Label(title));
-    title_label->set_halign(Gtk::ALIGN_END);
-    title_label->set_valign(Gtk::ALIGN_CENTER);
+    title_label->set_halign(Gtk::Align::END);
+    title_label->set_valign(Gtk::Align::CENTER);
     title_label->show();
     add_widgets(*title_label, *image, true /* expand */);
   }
@@ -1229,7 +1229,7 @@ void FlowTableWithFields::align_child_group_labels()
   type_vec_sizegroups vec_sizegroups(max_columns);
   for(guint i = 0; i < max_columns; ++i)
   {
-    vec_sizegroups[i] = Gtk::SizeGroup::create(Gtk::SIZE_GROUP_HORIZONTAL);
+    vec_sizegroups[i] = Gtk::SizeGroup::create(Gtk::SizeGroupMode::HORIZONTAL);
   }
 
   for(const auto& subtable : m_sub_flow_tables)
@@ -1267,7 +1267,7 @@ void FlowTableWithFields::on_menu_properties_activate()
 
   dialog->set_flowtable(this);
   const auto response = dialog->run();
-  if(response == Gtk::RESPONSE_OK)
+  if(response == Gtk::ResponseType::OK)
   {
     auto group = get_layout_group();
     group->set_columns_count( dialog->get_columns_count() );
@@ -1294,11 +1294,11 @@ void FlowTableWithFields::on_menu_delete_activate()
     message = _("Delete whole group?");
   }
 
-  Gtk::MessageDialog dlg(message, false, Gtk::MESSAGE_QUESTION,
-    Gtk::BUTTONS_YES_NO, true);
+  Gtk::MessageDialog dlg(message, false, Gtk::MessageType::QUESTION,
+    Gtk::ButtonsType::YES_NO, true);
   switch(dlg.run())
   {
-    case Gtk::RESPONSE_YES:
+    case static_cast<int>(Gtk::ResponseType::YES):
       LayoutWidgetUtils::on_menu_delete_activate();
       break;
     default:
@@ -1336,7 +1336,7 @@ std::shared_ptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship(
   //TODO: dialog->set_transient_for(*get_app_window());
   const auto response = dialog->run();
   dialog->hide();
-  if(response == Gtk::RESPONSE_OK)
+  if(response == Gtk::ResponseType::OK)
   {
     //Get the chosen relationship:
     auto relationship  = dialog->get_relationship_chosen();

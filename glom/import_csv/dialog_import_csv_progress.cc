@@ -96,8 +96,8 @@ void Dialog_Import_CSV_Progress::import(Dialog_Import_CSV& data_source)
     break;
   }
 
-  set_response_sensitive(Gtk::RESPONSE_CANCEL, true);
-  set_response_sensitive(Gtk::RESPONSE_OK, false);
+  set_response_sensitive(Gtk::ResponseType::CANCEL, true);
+  set_response_sensitive(Gtk::ResponseType::OK, false);
 }
 
 void Dialog_Import_CSV_Progress::clear()
@@ -130,7 +130,7 @@ void Dialog_Import_CSV_Progress::on_data_source_state_changed()
   {
   case CsvParser::State::ENCODING_ERROR:
     // Cancel on error
-    response(Gtk::RESPONSE_CANCEL);
+    response(Gtk::ResponseType::CANCEL);
     break;
   case CsvParser::State::PARSED:
     // Begin importing when fully parsed
@@ -171,8 +171,8 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   {
     // Don't do the response immediately, so the user has a chance to read the
     // warnings and errors, if any.
-    set_response_sensitive(Gtk::RESPONSE_CANCEL, false);
-    set_response_sensitive(Gtk::RESPONSE_OK, true);
+    set_response_sensitive(Gtk::ResponseType::CANCEL, false);
+    set_response_sensitive(Gtk::ResponseType::OK, true);
     add_text(_("Import complete\n"));
     return false;
   }

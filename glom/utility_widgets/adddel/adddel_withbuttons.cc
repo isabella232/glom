@@ -29,7 +29,7 @@ namespace Glom
 {
 
 AddDel_WithButtons::AddDel_WithButtons()
-: m_ButtonBox(Gtk::ORIENTATION_HORIZONTAL),
+: m_ButtonBox(Gtk::Orientation::HORIZONTAL),
   m_Button_Add(_("_Add"), true),
   m_Button_Del(_("_Delete"), true),
   m_Button_Edit(_("_Open"), true)
@@ -39,7 +39,7 @@ AddDel_WithButtons::AddDel_WithButtons()
 
 AddDel_WithButtons::AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : AddDel(cobject, builder),
-  m_ButtonBox(Gtk::ORIENTATION_HORIZONTAL),
+  m_ButtonBox(Gtk::Orientation::HORIZONTAL),
   m_Button_Add(_("_Add"), true),
   m_Button_Del(_("_Delete"), true),
   m_Button_Edit(_("_Open"), true)
@@ -49,7 +49,7 @@ AddDel_WithButtons::AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefP
 
 void AddDel_WithButtons::init()
 {
-  m_ButtonBox.set_layout(Gtk::BUTTONBOX_END);
+  m_ButtonBox.set_layout(Gtk::ButtonBoxStyle::END);
   m_ButtonBox.set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   //m_Button_Add.set_margin(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
@@ -57,7 +57,7 @@ void AddDel_WithButtons::init()
   //m_Button_Edit.set_margin(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   setup_buttons();
-  pack_start(m_ButtonBox, Gtk::PACK_SHRINK);
+  pack_start(m_ButtonBox, Gtk::PackOptions::PACK_SHRINK);
 
   //Link buttons to handlers:
   m_Button_Add.signal_clicked().connect(sigc::mem_fun(*this, &AddDel_WithButtons::on_button_add));
@@ -155,16 +155,16 @@ void AddDel_WithButtons::setup_buttons()
   if(!get_allow_user_actions())
     return;
 
-  m_ButtonBox.pack_end(m_Button_Add, Gtk::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Add, Gtk::PackOptions::PACK_SHRINK);
   m_Button_Add.show();
 
-  m_ButtonBox.pack_end(m_Button_Del, Gtk::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Del, Gtk::PackOptions::PACK_SHRINK);
   m_Button_Del.show();
 
-  m_ButtonBox.pack_end(m_Button_Edit, Gtk::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Edit, Gtk::PackOptions::PACK_SHRINK);
   m_Button_Edit.show();
 
-  m_ButtonBox.pack_end(m_Button_Extra, Gtk::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Extra, Gtk::PackOptions::PACK_SHRINK);
   if(!m_label_extra.empty())
     m_Button_Extra.show();
   else

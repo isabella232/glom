@@ -38,7 +38,7 @@ CanvasGroupGrid::CanvasGroupGrid()
 
   //Create the temp rule and hide it by default:
   m_temp_rule = create_rule_line(0, true); //Arbitrary defaults.
-  m_temp_rule->property_visibility() = Goocanvas::ITEM_INVISIBLE;
+  m_temp_rule->property_visibility() = Goocanvas::ItemVisibility::INVISIBLE;
   add_child(m_temp_rule);
 }
 
@@ -322,7 +322,7 @@ void CanvasGroupGrid::create_grid_lines()
 void CanvasGroupGrid::set_rules_visibility(bool visible)
 {
   if(m_grid_rules_group)
-    m_grid_rules_group->property_visibility() = (visible ? Goocanvas::ITEM_VISIBLE : Goocanvas::ITEM_INVISIBLE);
+    m_grid_rules_group->property_visibility() = (visible ? Goocanvas::ItemVisibility::VISIBLE : Goocanvas::ItemVisibility::INVISIBLE);
   else
     std::cerr << G_STRFUNC << ": m_grid_rules_group was null.\n";
 
@@ -333,7 +333,7 @@ void CanvasGroupGrid::set_rules_visibility(bool visible)
 
 void CanvasGroupGrid::show_temp_rule(double x, double y, bool show)
 {
-  m_temp_rule->property_visibility() = (show ? Goocanvas::ITEM_VISIBLE : Goocanvas::ITEM_INVISIBLE);
+  m_temp_rule->property_visibility() = (show ? Goocanvas::ItemVisibility::VISIBLE : Goocanvas::ItemVisibility::INVISIBLE);
 
   double left = 0.0;
   double top = 0.0;

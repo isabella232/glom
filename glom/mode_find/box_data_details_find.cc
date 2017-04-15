@@ -30,7 +30,7 @@ Box_Data_Details_Find::Box_Data_Details_Find()
 : Box_Data_Details(false)
 {
   //Instead of nav buttons:
-  m_hbox_buttons.pack_end(m_Button_Find, Gtk::PACK_SHRINK);
+  m_hbox_buttons.pack_end(m_Button_Find, Gtk::PackOptions::PACK_SHRINK);
 
   //A signal handler is connected in the Box_Data base class.
   m_Button_Find.set_can_default();

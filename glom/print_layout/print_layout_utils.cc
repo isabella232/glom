@@ -46,7 +46,7 @@ double get_page_height(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk
   const auto paper_size = page_setup->get_paper_size();
 
   double page_height = 0;
-  if(page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
+  if(page_setup->get_orientation() == Gtk::PageOrientation::PORTRAIT) //TODO: Handle the reverse orientations too?
   {
     page_height = paper_size.get_height(units);
     margin_top = page_setup->get_top_margin(units);
@@ -312,7 +312,7 @@ guint get_page_for_y(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::
 
 std::shared_ptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, const Glib::ustring& table_name, const std::shared_ptr<const Document>& document, bool avoid_page_margins)
 {
-  const Gtk::Unit units = Gtk::UNIT_MM;
+  const Gtk::Unit units = Gtk::Unit::MM;
   auto print_layout = std::make_shared<PrintLayout>();
 
   //Start inside the border, on the next grid line:
@@ -427,7 +427,7 @@ void do_print_layout(const std::shared_ptr<const PrintLayout>& print_layout, con
   try
   {
     print->run(
-      (preview ? Gtk::PRINT_OPERATION_ACTION_PREVIEW : Gtk::PRINT_OPERATION_ACTION_PRINT_DIALOG),
+      (preview ? Gtk::PrintOperationAction::PREVIEW : Gtk::PrintOperationAction::PRINT_DIALOG),
       *transient_for);
   }
   catch(const Gtk::PrintError& ex)

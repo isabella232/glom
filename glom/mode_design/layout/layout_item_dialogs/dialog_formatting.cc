@@ -35,8 +35,8 @@ Dialog_Formatting::Dialog_Formatting()
   Utils::box_pack_start_glade_child_widget_derived_with_warning(get_content_area(), m_box_formatting);
   add_view(m_box_formatting);
 
-  add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  add_button(_("_Save"), Gtk::RESPONSE_OK);
+  add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  add_button(_("_Save"), Gtk::ResponseType::OK);
 }
 
 Dialog_Formatting::~Dialog_Formatting()

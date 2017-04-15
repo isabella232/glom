@@ -80,6 +80,28 @@ void LayoutWidgetBase::set_read_only(bool /* read_only */)
 {
 }
 
+namespace {
+
+// Based on _gtkmm_align_float_from_enum().
+static float
+get_align_float_from_enum(Gtk::Align value)
+{
+  //Choose the float alignment value appropriate for this human-readable enum value:
+  switch(value)
+  {
+    case Gtk::Align::CENTER:
+      return 0.5; break;
+    case Gtk::Align::END:
+      return 1.0; break;
+    case Gtk::Align::START:
+    default:
+      return 0.0; break;
+  }
+}
+
+} // namespace }
+
+
 void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const LayoutItem_WithFormatting& layout_item)
 {
   auto widget_to_change = &widget;
@@ -110,9 +132,9 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const LayoutItem_Wi
     const Formatting::HorizontalAlignment alignment =
      layout_item.get_formatting_used_horizontal_alignment(true /* for details view */);
     const Gtk::Justification justification =
-      (alignment == Formatting::HorizontalAlignment::LEFT ? Gtk::JUSTIFY_LEFT : Gtk::JUSTIFY_RIGHT);
+      (alignment == Formatting::HorizontalAlignment::LEFT ? Gtk::Justification::LEFT : Gtk::Justification::RIGHT);
     const Gtk::Align x_align =
-      (alignment == Formatting::HorizontalAlignment::LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
+      (alignment == Formatting::HorizontalAlignment::LEFT ? Gtk::Align::START : Gtk::Align::END);
 
     auto label = dynamic_cast<Gtk::Label*>(widget_to_change);
     if(label)
@@ -122,7 +144,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const LayoutItem_Wi
       //so we use set_xalign() to get the effect even for single lines of text.
       //See http://www.murrayc.com/permalink/2015/03/02/gtk-aligning-justification-in-text-widgets/
       label->set_justify(justification);
-      label->set_xalign(x_align);
+      label->set_xalign(get_align_float_from_enum(x_align));
     } else {
       auto textview = dynamic_cast<Gtk::TextView*>(widget_to_change);
       if(textview)

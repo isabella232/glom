@@ -40,7 +40,7 @@ ComboBox_Locale::ComboBox_Locale(BaseObjectType* cobject, const Glib::RefPtr<Gtk
     row[m_model_columns.m_name] = the_locale.m_name;
   }
 
-  m_model->set_sort_column(m_model_columns.m_name, Gtk::SORT_ASCENDING);
+  m_model->set_sort_column(m_model_columns.m_name, Gtk::SortType::ASCENDING);
 
   set_model(m_model);
 

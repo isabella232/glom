@@ -774,7 +774,7 @@ bool MySQL::create_text_file(const std::string& file_uri, const std::string& con
     {
       if(current_user_only)
       {
-        stream = file->replace(std::string() /* etag */, false /* make_backup */, Gio::FILE_CREATE_PRIVATE); //Instead of append_to().
+        stream = file->replace(std::string() /* etag */, false /* make_backup */, Gio::FileCreateFlags::PRIVATE); //Instead of append_to().
       }
       else
       {
@@ -783,11 +783,11 @@ bool MySQL::create_text_file(const std::string& file_uri, const std::string& con
     }
     else
     {
-      //By default files created are generally readable by everyone, but if we pass FILE_CREATE_PRIVATE in flags the file will be made readable only to the current user, to the level that is supported on the target filesystem.
+      //By default files created are generally readable by everyone, but if we pass FileCreateFlags::PRIVATE in flags the file will be made readable only to the current user, to the level that is supported on the target filesystem.
       if(current_user_only)
       {
       //TODO: Do we want to specify 0660 exactly? (means "this user and his group can read and write this non-executable file".)
-        stream = file->create_file(Gio::FILE_CREATE_PRIVATE);
+        stream = file->create_file(Gio::FileCreateFlags::PRIVATE);
       }
       else
       {

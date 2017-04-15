@@ -87,7 +87,7 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
   Gtk::ApplicationWindow(cobject),
   m_builder(builder),
   m_vbox(nullptr),
-  m_vbox_placeHolder(Gtk::ORIENTATION_VERTICAL),
+  m_vbox_placeHolder(Gtk::Orientation::VERTICAL),
   m_box_top(nullptr),
   m_frame(nullptr),
   m_about_shown(false),
@@ -120,7 +120,7 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 
   m_menubar = std::make_unique<Gtk::MenuBar>(gmenu);
   m_menubar->show();
-  m_box_top->pack_start(*m_menubar, Gtk::PACK_SHRINK);
+  m_box_top->pack_start(*m_menubar, Gtk::PackOptions::PACK_SHRINK);
 
   //TODO: Remove our use of add_accelerator() in application.cc,
   //if there is ever an easier way to make the 'accel's from the .glade file just work.
@@ -173,7 +173,7 @@ void AppWindow::on_connection_avahi_begin()
   delete m_avahi_progress_dialog;
   m_avahi_progress_dialog = nullptr;
 
-  m_avahi_progress_dialog = new Gtk::MessageDialog(UiUtils::bold_message(_("Glom: Generating Encryption Certificates")), true, Gtk::MESSAGE_INFO);
+  m_avahi_progress_dialog = new Gtk::MessageDialog(UiUtils::bold_message(_("Glom: Generating Encryption Certificates")), true, Gtk::MessageType::INFO);
   m_avahi_progress_dialog->set_secondary_text(_("Please wait while Glom prepares your system for publishing over the network."));
   m_avahi_progress_dialog->set_transient_for(*this);
   m_avahi_progress_dialog->show();
@@ -204,7 +204,7 @@ bool AppWindow::init_with_document(const Glib::ustring& document_uri, bool resto
 {
   init(); //calls init_menus()
 
-  //m_frame->set_shadow_type(Gtk::SHADOW_IN);
+  //m_frame->set_shadow_type(Gtk::ShadowType::IN);
 
   if(document_uri.empty())
   {
@@ -611,7 +611,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
     dialog_connection->set_database_name(service_name);
     const auto response = Glom::UiUtils::dialog_run_with_help(dialog_connection);
     dialog_connection->hide();
-    if(response != Gtk::RESPONSE_OK)
+    if(response != Gtk::ResponseType::OK)
       keep_trying = false;
     else
     {
@@ -636,7 +636,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
         {
           //std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED\n";
 
-          UiUtils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *this, Gtk::MESSAGE_ERROR); //TODO: Add help button.
+          UiUtils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *this, Gtk::MessageType::ERROR); //TODO: Add help button.
         }
       }
       else
@@ -843,7 +843,7 @@ bool AppWindow::check_document_hosting_mode_is_supported(const std::shared_ptr<D
     return true;
 
   //Warn the user.
-  Frame_Glom::show_ok_dialog(_("File Uses Unsupported Database Backend"), error_message, *this, Gtk::MESSAGE_ERROR);
+  Frame_Glom::show_ok_dialog(_("File Uses Unsupported Database Backend"), error_message, *this, Gtk::MessageType::ERROR);
   return false;
 }
 
@@ -976,15 +976,15 @@ bool AppWindow::on_document_load()
     const auto userlevel = document->get_userlevel(reason);
     if( (userlevel == AppState::userlevels::OPERATOR) && (reason == Document::userLevelReason::FILE_READ_ONLY) )
     {
-      Gtk::MessageDialog dialog(UiUtils::bold_message(_("Opening Read-Only File.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
+      Gtk::MessageDialog dialog(UiUtils::bold_message(_("Opening Read-Only File.")), true,  Gtk::MessageType::INFO, Gtk::ButtonsType::NONE);
       dialog.set_secondary_text(_("This file is read only, so you will not be able to enter Developer mode to make design changes."));
       dialog.set_transient_for(*this);
-      dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-      dialog.add_button(_("Continue without Developer Mode"), Gtk::RESPONSE_OK); //arbitrary response code.
+      dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+      dialog.add_button(_("Continue without Developer Mode"), Gtk::ResponseType::OK); //arbitrary response code.
 
       const auto response = dialog.run();
       dialog.hide();
-      if((response == Gtk::RESPONSE_CANCEL)  || (response == Gtk::RESPONSE_DELETE_EVENT))
+      if((response == Gtk::ResponseType::CANCEL)  || (response == Gtk::ResponseType::DELETE_EVENT))
         return false;
     }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -1039,7 +1039,7 @@ bool AppWindow::on_document_load()
           if(!is_example)
           {
             //The connection to the server is OK, but the database is not there yet.
-            Frame_Glom::show_ok_dialog(_("Database Not Found On Server"), _("The database could not be found on the server. Please consult your system administrator."), *this, Gtk::MESSAGE_ERROR);
+            Frame_Glom::show_ok_dialog(_("Database Not Found On Server"), _("The database could not be found on the server. Please consult your system administrator."), *this, Gtk::MessageType::ERROR);
           }
           else
           #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -1049,7 +1049,7 @@ bool AppWindow::on_document_load()
         {
           //std::cerr might show some hints, but we don't want to confront the user with them:
           //TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
-          Frame_Glom::show_ok_dialog(_("Problem Loading Document"), _("Glom could not load the document."), *this, Gtk::MESSAGE_ERROR);
+          Frame_Glom::show_ok_dialog(_("Problem Loading Document"), _("Glom could not load the document."), *this, Gtk::MessageType::ERROR);
           std::cerr << G_STRFUNC << ": unexpected error.\n";
         }
       }
@@ -1304,7 +1304,7 @@ bool AppWindow::offer_new_or_existing()
     const auto response_id = UiUtils::dialog_run_with_help(dialog_raw);
     dialog->hide();
 
-    if(response_id == Gtk::RESPONSE_ACCEPT)
+    if(response_id == Gtk::ResponseType::ACCEPT)
     {
       switch(dialog->get_action())
       {
@@ -1340,11 +1340,11 @@ bool AppWindow::offer_new_or_existing()
       if(!document->get_file_uri().empty() || (document->get_opened_from_browse()))
         ask_again = false;
     }
-    else if((response_id == Gtk::RESPONSE_CLOSE)  || (response_id == Gtk::RESPONSE_DELETE_EVENT))
+    else if((response_id == Gtk::ResponseType::CLOSE)  || (response_id == Gtk::ResponseType::DELETE_EVENT))
     {
       return false; //close the window to close the application, because they need to choose a new or existing document.
     }
-    else if((response_id == Gtk::RESPONSE_NONE)
+    else if((response_id == Gtk::ResponseType::NONE)
      || (response_id == 0))
     {
        //For instance, the file-open dialog was cancelled after Dialog_ExistingOrNew opened it,
@@ -1696,7 +1696,7 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
 
 
     const auto message = _("Glom could not create the new database. Maybe you do not have the necessary access rights. Please contact your system administrator.");
-    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Database Creation Failed")), true, Gtk::MESSAGE_ERROR );
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Database Creation Failed")), true, Gtk::MessageType::ERROR );
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*this);
 
@@ -2089,12 +2089,12 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
   //Create the appropriate dialog, depending on how the caller set m_ui_save_extra_showextras:
   if(m_ui_save_extra_showextras)
   {
-    fileChooser_SaveExtras = new Glom::FileChooserDialog_SaveExtras(_("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+    fileChooser_SaveExtras = new Glom::FileChooserDialog_SaveExtras(_("Save Document"), Gtk::FileChooserAction::SAVE);
     fileChooser_Save.reset(fileChooser_SaveExtras);
   }
   else
   {
-    fileChooser_Save.reset(new Gtk::FileChooserDialog(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE));
+    fileChooser_Save.reset(new Gtk::FileChooserDialog(gettext("Save Document"), Gtk::FileChooserAction::SAVE));
   }
 
   fileChooser_Save->set_do_overwrite_confirmation(); //Ask the user if the file already exists.
@@ -2102,10 +2102,10 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
   if(auto pWindow = dynamic_cast<Gtk::Window*>(&app))
     fileChooser_Save->set_transient_for(*pWindow);
 
-  fileChooser_Save->add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  fileChooser_Save->add_button(_("_Save"), Gtk::RESPONSE_OK);
+  fileChooser_Save->add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  fileChooser_Save->add_button(_("_Save"), Gtk::ResponseType::OK);
 
-  fileChooser_Save->set_default_response(Gtk::RESPONSE_OK);
+  fileChooser_Save->set_default_response(Gtk::ResponseType::OK);
 
   //This is the reason that we override this method:
   if(!m_ui_save_extra_title.empty())
@@ -2159,7 +2159,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
 
     const auto response_id = fileChooser_Save->run();
     fileChooser_Save->hide();
-    if((response_id != Gtk::RESPONSE_CANCEL) && (response_id != Gtk::RESPONSE_DELETE_EVENT))
+    if((response_id != Gtk::ResponseType::CANCEL) && (response_id != Gtk::ResponseType::DELETE_EVENT))
     {
       const auto uri_chosen = fileChooser_Save->get_uri();
 
@@ -2211,7 +2211,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
 
         if(m_ui_save_extra_newdb_title.empty())
         {
-          Frame_Glom::show_ok_dialog(_("Database Title missing"), _("You must specify a title for the new database."), *this, Gtk::MESSAGE_ERROR);
+          Frame_Glom::show_ok_dialog(_("Database Title missing"), _("You must specify a title for the new database."), *this, Gtk::MessageType::ERROR);
 
           try_again = true;
           continue;
@@ -2310,7 +2310,7 @@ void AppWindow::on_menu_developer_changelanguage()
   const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
 
-  if(response == Gtk::RESPONSE_OK)
+  if(response == Gtk::ResponseType::OK)
   {
     AppWindow::set_current_locale(dialog->get_locale());
 
@@ -2380,14 +2380,14 @@ void AppWindow::on_menu_developer_export_backup()
   starting_name = Utils::string_replace(starting_name, ":", "-");
 
   // This actually creates the directory:
-  Gtk::FileChooserDialog dialog(*this, _("Save Backup"), Gtk::FILE_CHOOSER_ACTION_CREATE_FOLDER);
-  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  dialog.add_button(_("_Save"), Gtk::RESPONSE_ACCEPT);
+  Gtk::FileChooserDialog dialog(*this, _("Save Backup"), Gtk::FileChooserAction::CREATE_FOLDER);
+  dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  dialog.add_button(_("_Save"), Gtk::ResponseType::ACCEPT);
   dialog.set_local_only(); //Because pg_dump, pg_restore and tar can't use URIs.
   dialog.set_current_name(starting_name);
   const auto result = dialog.run();
   dialog.hide();
-  if(result != Gtk::RESPONSE_ACCEPT)
+  if(result != Gtk::ResponseType::ACCEPT)
     return;
 
   //Get the path to the directory in which the .glom and data files will be created.
@@ -2408,7 +2408,7 @@ void AppWindow::on_menu_developer_export_backup()
 
 void AppWindow::on_menu_developer_restore_backup()
 {
-  Gtk::FileChooserDialog file_dlg(_("Choose a backup file"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+  Gtk::FileChooserDialog file_dlg(_("Choose a backup file"), Gtk::FileChooserAction::OPEN);
   file_dlg.set_transient_for(*this);
   file_dlg.set_local_only(); //Because we can't untar remote files.
 
@@ -2418,12 +2418,12 @@ void AppWindow::on_menu_developer_restore_backup()
   filter->add_pattern("*.tgz");
   file_dlg.add_filter(filter);
 
-  file_dlg.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  file_dlg.add_button(_("Restore"), Gtk::RESPONSE_OK);
+  file_dlg.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  file_dlg.add_button(_("Restore"), Gtk::ResponseType::OK);
 
   const auto result = file_dlg.run();
   file_dlg.hide();
-  if(result != Gtk::RESPONSE_OK)
+  if(result != Gtk::ResponseType::OK)
     return;
 
   const auto uri_tarball = file_dlg.get_uri();
@@ -2771,7 +2771,7 @@ void AppWindow::ui_warning(const Glib::ustring& text, const Glib::ustring& secon
 {
   Gtk::Window* pWindow = this;
 
-  Gtk::MessageDialog dialog(AppWindow::util_bold_message(text), true /* use markup */, Gtk::MESSAGE_WARNING);
+  Gtk::MessageDialog dialog(AppWindow::util_bold_message(text), true /* use markup */, Gtk::MessageType::WARNING);
   dialog.set_secondary_text(secondary_text);
 
   dialog.set_title(""); //The HIG says that alert dialogs should not have titles. The default comes from the message type.
@@ -2792,10 +2792,10 @@ Glib::ustring AppWindow::ui_file_select_open(const Glib::ustring& starting_folde
 {
   Gtk::Window* pWindow = this;
 
-  Gtk::FileChooserDialog fileChooser_Open(_("Open Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
-  fileChooser_Open.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-  fileChooser_Open.add_button(_("_Open"), Gtk::RESPONSE_OK);
-  fileChooser_Open.set_default_response(Gtk::RESPONSE_OK);
+  Gtk::FileChooserDialog fileChooser_Open(_("Open Document"), Gtk::FileChooserAction::OPEN);
+  fileChooser_Open.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
+  fileChooser_Open.add_button(_("_Open"), Gtk::ResponseType::OK);
+  fileChooser_Open.set_default_response(Gtk::ResponseType::OK);
 
   if(pWindow)
     fileChooser_Open.set_transient_for(*pWindow);
@@ -2805,7 +2805,7 @@ Glib::ustring AppWindow::ui_file_select_open(const Glib::ustring& starting_folde
 
   const auto response_id = fileChooser_Open.run();
   fileChooser_Open.hide();
-  if(response_id != Gtk::RESPONSE_CANCEL)
+  if(response_id != Gtk::ResponseType::CANCEL)
   {
     return fileChooser_Open.get_uri();
   }

@@ -59,7 +59,7 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
 
     m_treeview->append_column( _("Name"), m_ColumnsFields.m_col_name );
     m_treeview->append_column( _("Title"), m_ColumnsFields.m_col_title );
-    m_model->set_sort_column(m_ColumnsFields.m_col_name, Gtk::SORT_ASCENDING);
+    m_model->set_sort_column(m_ColumnsFields.m_col_name, Gtk::SortType::ASCENDING);
 
     m_treeview->signal_row_activated().connect( sigc::mem_fun(*this, &Dialog_ChooseField::on_row_activated) );
 
@@ -93,7 +93,7 @@ void Dialog_ChooseField::set_document(const std::shared_ptr<Document>& document,
   //Make this explicit in the API if that is not always suitable.
   auto selection = m_treeview->get_selection();
   selection->set_mode((field && !(field->get_name().empty()))
-    ? Gtk::SELECTION_SINGLE : Gtk::SELECTION_MULTIPLE);
+    ? Gtk::SelectionMode::SINGLE : Gtk::SelectionMode::MULTIPLE);
 
   //Select the current field at the start:
   if(field)
@@ -139,7 +139,7 @@ void Dialog_ChooseField::set_document(const std::shared_ptr<Document>& document,
   }
 
   auto selection = m_treeview->get_selection();
-  selection->set_mode(Gtk::SELECTION_MULTIPLE);
+  selection->set_mode(Gtk::SelectionMode::MULTIPLE);
 
 
   //Update the tree models from the document
@@ -274,7 +274,7 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
 
 void Dialog_ChooseField::on_row_activated(const Gtk::TreeModel::Path& /* path */, Gtk::TreeViewColumn* /* view_column */)
 {
-  response(Gtk::RESPONSE_OK);
+  response(Gtk::ResponseType::OK);
 }
 
 void Dialog_ChooseField::on_checkbutton_related_relationships_toggled()

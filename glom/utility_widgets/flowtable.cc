@@ -135,14 +135,14 @@ void FlowTable::insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool 
 {
   if(first && second)
   {
-    auto hbox = new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, get_horizontal_spacing());
+    auto hbox = new Gtk::Box(Gtk::Orientation::HORIZONTAL, get_horizontal_spacing());
     m_list_hboxes.emplace_back(hbox); //So we can delete it whenever necessary.
 
-    hbox->pack_start(*first, Gtk::PACK_SHRINK);
-    hbox->pack_start(*second, expand ? Gtk::PACK_EXPAND_WIDGET : Gtk::PACK_SHRINK);
+    hbox->pack_start(*first, Gtk::PackOptions::PACK_SHRINK);
+    hbox->pack_start(*second, expand ? Gtk::PackOptions::PACK_EXPAND_WIDGET : Gtk::PackOptions::PACK_SHRINK);
     hbox->show();
 
-    hbox->set_halign(Gtk::ALIGN_FILL);
+    hbox->set_halign(Gtk::Align::FILL);
     Egg::SpreadTableDnd::insert_child(*hbox, index);
     //std::cout << "DEBUG: inserted hbox=" << hbox << " for first=" << first << std::endl;
 
@@ -150,7 +150,7 @@ void FlowTable::insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool 
   }
   else if(first)
   {
-    first->set_halign(expand ? Gtk::ALIGN_FILL : Gtk::ALIGN_START);
+    first->set_halign(expand ? Gtk::Align::FILL : Gtk::Align::START);
     Egg::SpreadTableDnd::append_child(*first);
     //std::cout << "DEBUG: inserted first=" << first << std::endl;
     m_list_first_widgets.emplace_back(first);

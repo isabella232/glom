@@ -33,7 +33,7 @@ Window_BoxHolder::Window_BoxHolder(Box_WithButtons* pBox, const Glib::ustring& t
     set_title(title);
 
   //Set default position:
-  set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
+  set_position(Gtk::WindowPosition::CENTER_ON_PARENT);
 
   pBox->signal_cancelled.connect(sigc::mem_fun(*this, &Window_BoxHolder::on_box_cancelled));
 

@@ -152,11 +152,11 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
   auto pLabel = m_data_idget_default_value_simple->get_label();
   if(!pLabel->get_text().empty())
   {
-    pLabel->set_valign(Gtk::ALIGN_START); //Because the widget might be multiline.
-    m_box_default_value_simple->pack_start(*pLabel, Gtk::PACK_SHRINK);
+    pLabel->set_valign(Gtk::Align::START); //Because the widget might be multiline.
+    m_box_default_value_simple->pack_start(*pLabel, Gtk::PackOptions::PACK_SHRINK);
   }
 
-  m_box_default_value_simple->pack_end(*m_data_idget_default_value_simple, Gtk::PACK_EXPAND_WIDGET);
+  m_box_default_value_simple->pack_end(*m_data_idget_default_value_simple, Gtk::PackOptions::PACK_EXPAND_WIDGET);
   m_data_idget_default_value_simple->set_value(default_value);
   m_data_idget_default_value_simple->show();
 
@@ -379,7 +379,7 @@ void Dialog_FieldDefinition::on_button_edit_calculation()
   dialog->set_field(m_Field, m_table_name);
   //TODO: dialog.set_transient_for(*get_app_window());
   const auto response = Glom::UiUtils::dialog_run_with_help(dialog);
-  if(response == Gtk::RESPONSE_OK)
+  if(response == Gtk::ResponseType::OK)
   {
     m_textView_calculation->get_buffer()->set_text( dialog->get_field()->get_calculation() );
   }

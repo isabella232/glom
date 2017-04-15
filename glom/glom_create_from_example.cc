@@ -161,7 +161,7 @@ static bool delete_directory(const Glib::RefPtr<Gio::File>& directory)
   {
     auto child = directory->get_child(info->get_name());
     bool removed_child = false;
-    if(child->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
+    if(child->query_file_type() == Gio::FileType::DIRECTORY)
       removed_child = delete_directory(child);
     else
       removed_child = child->remove();
@@ -300,7 +300,7 @@ int main(int argc, char* argv[])
     }
 
     const auto file_type = file->query_file_type();
-    if(file_type == Gio::FILE_TYPE_DIRECTORY)
+    if(file_type == Gio::FileType::DIRECTORY)
     {
       std::cerr << _("Glom: The file path is a directory instead of a file.") << std::endl;
       std::cerr << std::endl << context.get_help() << std::endl;
@@ -341,7 +341,7 @@ int main(int argc, char* argv[])
     }
 
     const auto file_type = file->query_file_type();
-    if(file_type != Gio::FILE_TYPE_DIRECTORY)
+    if(file_type != Gio::FileType::DIRECTORY)
     {
       std::cerr << _("Glom: The output path is not a directory.") << std::endl;
       std::cerr << std::endl << context.get_help() << std::endl;

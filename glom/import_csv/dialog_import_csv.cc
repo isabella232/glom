@@ -216,7 +216,7 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
     // Create the sorted version of this model,
     // so the user sees the fields in alphabetical order:
     m_field_model_sorted = Gtk::TreeModelSort::create(m_field_model);
-    m_field_model_sorted->set_sort_column(m_field_columns.m_col_field_name, Gtk::SORT_ASCENDING);
+    m_field_model_sorted->set_sort_column(m_field_columns.m_col_field_name, Gtk::SortType::ASCENDING);
 
     m_file_uri = uri;
     m_parser->set_file_and_start_parsing(uri);
@@ -272,7 +272,7 @@ void Dialog_Import_CSV::clear()
 void Dialog_Import_CSV::show_error_dialog(const Glib::ustring&, const Glib::ustring& secondary)
 {
   UiUtils::show_ok_dialog(_("Error Importing CSV File"),
-     secondary, *this, Gtk::MESSAGE_ERROR);
+     secondary, *this, Gtk::MessageType::ERROR);
 }
 
 void Dialog_Import_CSV::encoding_data_func(const Gtk::TreeModel::const_iterator& iter, Gtk::CellRendererText& renderer)
@@ -531,7 +531,7 @@ std::unique_ptr<Gtk::TreeViewColumn> Dialog_Import_CSV::create_sample_column(con
   auto cell = create_sample_cell(index);
   col->pack_start(*Gtk::manage(cell.release()), true);
   col->set_cell_data_func(*cell, sigc::bind(sigc::mem_fun(*this, &Dialog_Import_CSV::field_data_func), index));
-  col->set_sizing(Gtk::TREE_VIEW_COLUMN_AUTOSIZE);
+  col->set_sizing(Gtk::TreeViewColumnSizing::AUTOSIZE);
   return col;
 }
 
@@ -681,7 +681,7 @@ void Dialog_Import_CSV::validate_primary_key()
    || get_parser_state() == CsvParser::State::ENCODING_ERROR)
   {
     m_error_label->hide();
-    set_response_sensitive(Gtk::RESPONSE_ACCEPT, false);
+    set_response_sensitive(Gtk::ResponseType::ACCEPT, false);
   }
   else
   {
@@ -718,7 +718,7 @@ void Dialog_Import_CSV::validate_primary_key()
       primary_key_selected = true;
     }
 
-    set_response_sensitive(Gtk::RESPONSE_ACCEPT, primary_key_selected);
+    set_response_sensitive(Gtk::ResponseType::ACCEPT, primary_key_selected);
     if(primary_key_selected)
       m_error_label->hide();
     else

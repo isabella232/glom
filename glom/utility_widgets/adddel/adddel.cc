@@ -47,7 +47,7 @@ AddDelColumnInfo::AddDelColumnInfo()
 }
 
 AddDel::AddDel()
-: Gtk::Box(Gtk::ORIENTATION_VERTICAL),
+: Gtk::Box(Gtk::Orientation::VERTICAL),
   m_col_key(0),
   m_auto_add(true),
   m_allow_add(true),
@@ -81,15 +81,15 @@ void AddDel::init()
   //construct_specified_columns();
 
   m_scrolled_window.add(m_tree_view);
-  m_scrolled_window.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  m_scrolled_window.set_shadow_type(Gtk::SHADOW_IN);
+  m_scrolled_window.set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
+  m_scrolled_window.set_shadow_type(Gtk::ShadowType::IN);
   m_tree_view.show();
   pack_start(m_scrolled_window);
 
   //Make sure that the TreeView doesn't start out only big enough for zero items.
   m_tree_view.set_size_request(-1, 150);
 
-  //m_tree_view.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
+  //m_tree_view.add_events(Gdk::EventMask::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
   m_tree_view.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &AddDel::on_treeview_button_press_event) );
 
   m_tree_view.signal_columns_changed().connect( sigc::mem_fun(*this, &AddDel::on_treeview_columns_changed) );
@@ -120,7 +120,7 @@ void AddDel::warn_about_duplicate()
   else
     message = m_prevent_duplicates_warning; //Something more specific and helpful.
 
-  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Duplicate")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Duplicate")), true, Gtk::MessageType::WARNING, Gtk::ButtonsType::OK);
   dialog.set_secondary_text(message);
 
   //TODO: dialog.set_transient_for(get_parent_window());

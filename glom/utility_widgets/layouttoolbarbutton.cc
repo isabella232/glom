@@ -47,8 +47,8 @@ LayoutToolbarButton::LayoutToolbarButton(const std::string& icon_name, LayoutWid
   std::vector<Gtk::TargetEntry> targetentries;
   targetentries.emplace_back(Gtk::TargetEntry(get_target()));
 
-  drag_source_set(targetentries, Gdk::MODIFIER_MASK,
-                  Gdk::ACTION_COPY | Gdk::ACTION_MOVE);
+  drag_source_set(targetentries, Gdk::ModifierType::MODIFIER_MASK,
+                  Gdk::DragAction::COPY | Gdk::DragAction::MOVE);
   set_tooltip_text(tooltip);
   set_label(title);
 }
