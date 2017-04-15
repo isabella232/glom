@@ -178,7 +178,7 @@ AS_IF([test "x$glom_enable_client_only" != xyes && test "x$glom_host_win32" != x
 
 # Do not require gtksourceviewmm in client only mode
 AS_IF([test "x$glom_enable_client_only" != xyes],
-      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS gtksourceviewmm-3.0 >= 3.18.0"])
+      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS gtksourceviewmm-4.0 >= 3.18.0"])
 
 AS_IF([test "x$glom_enable_sqlite" = xyes],
       [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS libgda-sqlite-6.0"])
