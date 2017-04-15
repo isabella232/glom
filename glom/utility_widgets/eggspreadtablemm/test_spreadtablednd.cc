@@ -311,7 +311,7 @@ create_window()
   combo_halign->append("Start");
   combo_halign->append("End");
   combo_halign->append("Center");
-  combo_halign->set_active(INITIAL_HALIGN);
+  combo_halign->set_active(static_cast<int>(INITIAL_HALIGN));
   combo_halign->show();
 
   combo_halign->set_tooltip_text("Set the children's halign property");
