@@ -301,7 +301,7 @@ void CanvasGroupResizable::position_rect_manipulators()
 
 void CanvasGroupResizable::position_line_manipulators()
 {
-  auto line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(m_child);
+  auto line = std::dynamic_pointer_cast<CanvasLineMovable>(m_child);
   if(!line)
     return;
 
@@ -443,7 +443,7 @@ void CanvasGroupResizable::manipulator_connect_signals(const Glib::RefPtr<Goocan
 
   //TODO: Use x and y property notification.
 
-  auto rect = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(manipulator);
+  auto rect = std::dynamic_pointer_cast<CanvasRectMovable>(manipulator);
   if(rect)
   {
     if(get_is_line())
@@ -459,7 +459,7 @@ void CanvasGroupResizable::manipulator_connect_signals(const Glib::RefPtr<Goocan
   }
   else
   {
-    auto line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(manipulator);
+    auto line = std::dynamic_pointer_cast<CanvasLineMovable>(manipulator);
     if(line)
     {
       line->signal_moved().connect(
@@ -529,7 +529,7 @@ void CanvasGroupResizable::on_manipulator_corner_moved(const Glib::RefPtr<Canvas
   set_manipulators_visibility(Goocanvas::ITEM_VISIBLE);
 
   auto manipulator_base = get_manipulator(manipulator_id);
-  auto manipulator = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(manipulator_base);
+  auto manipulator = std::dynamic_pointer_cast<CanvasRectMovable>(manipulator_base);
 
   if(!manipulator)
     return;
@@ -602,13 +602,13 @@ void CanvasGroupResizable::on_manipulator_line_end_moved(const Glib::RefPtr<Canv
   set_manipulators_visibility(Goocanvas::ITEM_VISIBLE);
 
   auto manipulator_base = get_manipulator(manipulator_id);
-  auto manipulator = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(manipulator_base);
+  auto manipulator = std::dynamic_pointer_cast<CanvasRectMovable>(manipulator_base);
 
   if(!manipulator)
     return;
 
 
-  auto line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(m_child);
+  auto line = std::dynamic_pointer_cast<CanvasLineMovable>(m_child);
   if(!line)
     return;
 
@@ -652,7 +652,7 @@ void CanvasGroupResizable::on_manipulator_edge_moved(const Glib::RefPtr<CanvasIt
   set_manipulators_visibility(Goocanvas::ITEM_VISIBLE);
 
   auto manipulator_base = get_manipulator(manipulator_id);
-  auto manipulator = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(manipulator_base);
+  auto manipulator = std::dynamic_pointer_cast<CanvasLineMovable>(manipulator_base);
 
   //std::cout << "debug: " << G_STRFUNC << ": manipulator=" << manipulator_id << std::endl;
 
@@ -778,7 +778,7 @@ void CanvasGroupResizable::set_manipulators_visibility(Goocanvas::ItemVisibility
   //Also show grid lines in the portal table,
   //though these are not actually manipulatable.
   auto table =
-    Glib::RefPtr<CanvasTableMovable>::cast_dynamic(get_child());
+    std::dynamic_pointer_cast<CanvasTableMovable>(get_child());
   if(table)
   {
     if(visibility == Goocanvas::ITEM_VISIBLE)
@@ -998,7 +998,7 @@ Goocanvas::Canvas* CanvasGroupResizable::get_parent_canvas_widget()
 
 bool CanvasGroupResizable::get_is_line() const
 {
-  auto line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(m_child);
+  auto line = std::dynamic_pointer_cast<CanvasLineMovable>(m_child);
   return (bool)line;
 }
 

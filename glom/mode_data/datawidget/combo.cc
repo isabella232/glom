@@ -97,7 +97,7 @@ void ComboGlom::set_choices_fixed(const Formatting::type_list_values& list_value
   }
 
   auto cell_area =
-    Glib::RefPtr<Gtk::CellAreaBox>::cast_dynamic(get_area());
+    std::dynamic_pointer_cast<Gtk::CellAreaBox>(get_area());
   if(!cell_area)
   {
     std::cerr << G_STRFUNC << ": Unexpected or null CellArea type.\n";
@@ -159,7 +159,7 @@ void ComboGlom::set_choices_related(const std::shared_ptr<const Document>& docum
   if(get_has_entry())
   {
     auto model_db =
-      Glib::RefPtr<DbTreeModelWithExtraText>::cast_dynamic(model);
+      std::dynamic_pointer_cast<DbTreeModelWithExtraText>(model);
     if(model_db)
     {
       const auto text_col = model_db->get_text_column();

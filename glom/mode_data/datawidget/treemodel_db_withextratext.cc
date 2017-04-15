@@ -74,7 +74,7 @@ Glib::RefPtr<DbTreeModelWithExtraText> DbTreeModelWithExtraText::create(const Fo
 
 Glib::RefPtr<DbTreeModelWithExtraText> DbTreeModelWithExtraText::create(const FoundSet& found_set, const type_vec_const_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown)
 {
-  return Glib::RefPtr<DbTreeModelWithExtraText>( new DbTreeModelWithExtraText(found_set, layout_items, get_records, find_mode, fields_shown) );
+  return Glib::make_refptr_for_instance<DbTreeModelWithExtraText>( new DbTreeModelWithExtraText(found_set, layout_items, get_records, find_mode, fields_shown) );
 }
 
 int DbTreeModelWithExtraText::get_n_columns_vfunc() const

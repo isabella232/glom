@@ -487,7 +487,7 @@ Glib::RefPtr<Dialog_Layout_Report::type_model> Dialog_Layout_Report::get_selecte
 
   auto treeview = get_selected_treeview();
   if(treeview)
-    model = Glib::RefPtr<type_model>::cast_dynamic(treeview->get_model());
+    model = std::dynamic_pointer_cast<type_model>(treeview->get_model());
 
   return model;
 }
@@ -629,7 +629,7 @@ void Dialog_Layout_Report::on_button_add()
     return;
 
   auto model = get_selected_model();
-  auto model_available = Glib::RefPtr<type_model>::cast_dynamic(m_treeview_available_parts->get_model());
+  auto model_available = std::dynamic_pointer_cast<type_model>(m_treeview_available_parts->get_model());
 
   auto parent = get_selected_group_parent();
   std::shared_ptr<const LayoutItem> pParentPart;
@@ -1002,7 +1002,7 @@ void Dialog_Layout_Report::on_cell_data_available_part(Gtk::CellRenderer* render
     return;
 
   const auto row = *iter;
-  auto model = Glib::RefPtr<type_model>::cast_dynamic(m_treeview_available_parts->get_model());
+  auto model = std::dynamic_pointer_cast<type_model>(m_treeview_available_parts->get_model());
   std::shared_ptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
   Glib::ustring part = pItem->get_part_type_name();
 

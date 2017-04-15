@@ -129,7 +129,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
   if(layout_choice_extra)
     extra_fields = layout_choice_extra->get_items_recursive();
 
-  auto list_store = Glib::RefPtr<Gtk::ListStore>::cast_dynamic(m_model);
+  auto list_store = std::dynamic_pointer_cast<Gtk::ListStore>(m_model);
   if(!list_store)
   {
     std::cerr << G_STRFUNC << ": list_store is null.\n";
@@ -184,7 +184,7 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const Formatting::type_list_va
 {
   create_model_non_db(1); //Use a regular ListStore without a dynamic column?
 
-  auto list_store = Glib::RefPtr<Gtk::ListStore>::cast_dynamic(m_model);
+  auto list_store = std::dynamic_pointer_cast<Gtk::ListStore>(m_model);
   if(!list_store)
   {
     std::cerr << G_STRFUNC << ": list_store is null.\n";

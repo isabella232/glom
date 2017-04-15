@@ -62,7 +62,7 @@ void CellRendererDbList::set_choices_related(const std::shared_ptr<const Documen
   property_model() = model;
 
   auto model_db =
-    Glib::RefPtr<DbTreeModelWithExtraText>::cast_dynamic(model);
+    std::dynamic_pointer_cast<DbTreeModelWithExtraText>(model);
   if(model_db)
     property_text_column() = model_db->get_text_column();
   else
@@ -221,7 +221,7 @@ void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, co
   //The DB model has a special virtual text column,
   //and the simple model just has text in all columns:
   auto model_db =
-    Glib::RefPtr<DbTreeModelWithExtraText>::cast_dynamic(get_choices_model());
+    std::dynamic_pointer_cast<DbTreeModelWithExtraText>(get_choices_model());
   if(model_db)
     repack_cells_related(combobox);
   else

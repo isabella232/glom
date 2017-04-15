@@ -740,7 +740,7 @@ bool Window_PrintLayout_Edit::get_is_item_at(double x, double y) const
   if(!item_hit)
    return false;
 
-  const auto layout_item = Glib::RefPtr<const CanvasLayoutItem>::cast_dynamic(item_hit);
+  const auto layout_item = std::dynamic_pointer_cast<const CanvasLayoutItem>(item_hit);
   return (bool)layout_item;
 }
 
@@ -1406,7 +1406,7 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
   const auto items = m_canvas.get_selected_items();
   for(const auto& base_item : items)
   {
-    auto item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_item);
+    auto item = std::dynamic_pointer_cast<CanvasLayoutItem>(base_item);
     if(!item)
       continue;
 

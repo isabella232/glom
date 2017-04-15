@@ -206,7 +206,7 @@ bool Box_Data_List::on_script_button_idle(const std::weak_ptr<const LayoutItem_B
   // TODO: This is perhaps a better approach, but
   // DbTreeModel::refresh_from_database is protected
   auto model = m_AddDel.get_model();
-  auto db_model = Glib::RefPtr<DbTreeModel>::cast_dynamic(model);
+  auto db_model = std::dynamic_pointer_cast<DbTreeModel>(model);
   if(db_model)
     db_model->refresh_from_database(m_found_set);
 #endif
@@ -491,7 +491,7 @@ void Box_Data_List::get_record_counts(gulong& total, gulong& found) const
   found = 0;
 
   auto refModel = m_AddDel.get_model();
-  auto refModelDerived = Glib::RefPtr<DbTreeModel>::cast_dynamic(refModel);
+  auto refModelDerived = std::dynamic_pointer_cast<DbTreeModel>(refModel);
 
   if(refModelDerived)
     refModelDerived->get_record_counts(total, found);

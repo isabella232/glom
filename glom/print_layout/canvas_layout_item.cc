@@ -100,7 +100,7 @@ void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& c
 
 void CanvasLayoutItem::on_resized()
 {
-  auto canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(get_child());
+  auto canvas_image = std::dynamic_pointer_cast<CanvasImageMovable>(get_child());
   if(canvas_image)
     canvas_image->scale_to_size();
 }
@@ -142,7 +142,7 @@ void CanvasLayoutItem::set_layout_item(const std::shared_ptr<LayoutItem>& layout
 
   //Scale images.
   //This can only be done after setting the size:
-  auto canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child_item);
+  auto canvas_image = std::dynamic_pointer_cast<CanvasImageMovable>(child_item);
   if(canvas_image)
   {
     canvas_image->scale_to_size();
@@ -306,7 +306,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(guint rows_count)
 {
   auto child = get_child();
   auto canvas_table =
-    Glib::RefPtr<CanvasTableMovable>::cast_dynamic(child);
+    std::dynamic_pointer_cast<CanvasTableMovable>(child);
   if(!canvas_table)
     return;
 
@@ -427,7 +427,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
     case(Field::glom_field_type::TIME):
     case(Field::glom_field_type::DATE):
     {
-      auto canvas_item = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(child);
+      auto canvas_item = std::dynamic_pointer_cast<CanvasTextMovable>(child);
       if(!canvas_item)
         return;
 
@@ -446,7 +446,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
     }
     case(Field::glom_field_type::IMAGE):
     {
-      auto canvas_item = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child);
+      auto canvas_item = std::dynamic_pointer_cast<CanvasImageMovable>(child);
       if(!canvas_item)
         return;
 
@@ -473,7 +473,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
 void CanvasLayoutItem::remove_empty_indicators()
 {
   auto child = get_child();
-  auto canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child);
+  auto canvas_image = std::dynamic_pointer_cast<CanvasImageMovable>(child);
   if(canvas_image)
   {
     //Clear the no-image pixbuf from images:

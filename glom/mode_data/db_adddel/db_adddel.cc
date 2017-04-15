@@ -377,7 +377,7 @@ Gtk::TreeModel::iterator DbAddDel::get_item_selected() const
   Glib::RefPtr<const Gtk::TreeSelection> refTreeSelection = m_tree_view.get_selection();
   if(refTreeSelection)
   {
-     auto unconst = Glib::RefPtr<Gtk::TreeSelection>::cast_const(refTreeSelection);
+     auto unconst = std::const_pointer_cast<Gtk::TreeSelection>(refTreeSelection);
      return unconst->get_selected();
   }
 
@@ -752,7 +752,7 @@ void DbAddDel::construct_specified_columns()
   //Show as many rows as needed, but not more than the maximum:
   gulong total = 0; //ignored
   gulong db_rows_count_found = 0;
-  auto refModelDerived = Glib::RefPtr<DbTreeModel>::cast_dynamic(m_list_store);
+  auto refModelDerived = std::dynamic_pointer_cast<DbTreeModel>(m_list_store);
   if(refModelDerived)
     refModelDerived->get_record_counts(total, db_rows_count_found);
 

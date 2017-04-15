@@ -234,7 +234,7 @@ void Canvas_PrintLayout::fill_layout_group(const std::shared_ptr<LayoutGroup>& g
   for(int i = 0; i < count; ++i)
   {
     auto base_canvas_item = m_items_group->get_child(i);
-    auto canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
+    auto canvas_item = std::dynamic_pointer_cast<CanvasLayoutItem>(base_canvas_item);
     if(canvas_item)
     {
       //Get the actual position:
@@ -507,7 +507,7 @@ void Canvas_PrintLayout::on_context_menu_delete()
       continue;
 
     const Glib::RefPtr<CanvasLayoutItem> canvas_layout_item =
-      Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(selected_item);
+      std::dynamic_pointer_cast<CanvasLayoutItem>(selected_item);
     if(canvas_layout_item)
       remove_canvas_layout_item(canvas_layout_item);
   }
@@ -753,7 +753,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
   for(int i = 0; i < count; ++i)
   {
     auto base_canvas_item = canvas_group->get_child(i);
-    auto canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
+    auto canvas_item = std::dynamic_pointer_cast<CanvasLayoutItem>(base_canvas_item);
     if(!canvas_item)
       continue;
 
@@ -828,7 +828,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
   for(int i = 0; i < count; ++i)
   {
     auto base_canvas_item = canvas_group->get_child(i);
-    auto canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
+    auto canvas_item = std::dynamic_pointer_cast<CanvasLayoutItem>(base_canvas_item);
     if(!canvas_item)
       continue;
 
@@ -888,7 +888,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   if(!portal)
     return;
 
-  auto canvas_table = Glib::RefPtr<CanvasTableMovable>::cast_dynamic(canvas_item->get_child());
+  auto canvas_table = std::dynamic_pointer_cast<CanvasTableMovable>(canvas_item->get_child());
   if(!canvas_table)
     return;
 
@@ -993,7 +993,7 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
   //Expect the appropriate canvas item, depending on the field type:
   if(field->get_glom_type() == Field::glom_field_type::IMAGE)
   {
-    auto canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(canvas_item);
+    auto canvas_image = std::dynamic_pointer_cast<CanvasImageMovable>(canvas_item);
     if(!canvas_image)
       return;
 
@@ -1002,7 +1002,7 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
   }
   else //text, numbers, date, time, boolean:
   {
-    auto canvas_text = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(canvas_item);
+    auto canvas_text = std::dynamic_pointer_cast<CanvasTextMovable>(canvas_item);
     if(!canvas_text)
     {
       std::cerr << G_STRFUNC << ": The canvas item is not of the expected type. Instead it is of type.\n";
@@ -1109,7 +1109,7 @@ Canvas_PrintLayout::type_vec_items Canvas_PrintLayout::get_selected_items()
   {
     auto child = root->get_child(i);
     auto derived =
-      Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(child);
+      std::dynamic_pointer_cast<CanvasLayoutItem>(child);
     if(!derived)
       continue;
 
@@ -1135,7 +1135,7 @@ void Canvas_PrintLayout::set_outlines_visibility(bool visible)
   {
     auto child = root->get_child(i);
     auto derived =
-      Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(child);
+      std::dynamic_pointer_cast<CanvasLayoutItem>(child);
     if(!derived)
       continue;
 
@@ -1154,7 +1154,7 @@ void Canvas_PrintLayout::select_all(bool selected)
   {
     auto child = root->get_child(i);
     auto derived =
-      Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(child);
+      std::dynamic_pointer_cast<CanvasLayoutItem>(child);
     if(!derived)
       continue;
 
@@ -1215,7 +1215,7 @@ Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::move_items_down(double y_star
   {
     auto child = root->get_child(i);
     auto derived =
-      Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(child);
+      std::dynamic_pointer_cast<CanvasLayoutItem>(child);
     if(!derived)
     {
       std::cout << "debug: not derived\n";

@@ -114,8 +114,7 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
   //Add menu bar at the top:
   auto object =
     builder->get_object("mainmenu");
-  auto gmenu =
-    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  auto gmenu = std::dynamic_pointer_cast<Gio::Menu>(object);
   if(!gmenu)
     g_warning("GMenu not found");
 
@@ -1813,8 +1812,7 @@ void AppWindow::fill_menu_tables()
 
   auto object =
     m_builder->get_object("tables-list");
-  auto menu =
-    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  auto menu = std::dynamic_pointer_cast<Gio::Menu>(object);
   if(!menu)
   {
     std::cerr << G_STRFUNC << ": GMenu not found\n";
@@ -1859,8 +1857,7 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
   //Remove existing items.
   auto object =
     m_builder->get_object("reports-list");
-  auto menu =
-    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  auto menu = std::dynamic_pointer_cast<Gio::Menu>(object);
   if(!menu)
   {
     std::cerr << G_STRFUNC << ": GMenu not found\n";
@@ -1924,7 +1921,7 @@ void AppWindow::enable_menu_print_layouts_details(bool enable)
   for(const auto& name : m_nav_print_layouts_action_group->list_actions())
   {
     auto action =
-      Glib::RefPtr<Gio::SimpleAction>::cast_dynamic(m_nav_print_layouts_action_group->lookup_action(name));
+      std::dynamic_pointer_cast<Gio::SimpleAction>(m_nav_print_layouts_action_group->lookup_action(name));
     if(action)
       action->set_enabled(enable);
   }
@@ -1939,8 +1936,7 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
   //Remove existing items.
   auto object =
     m_builder->get_object("print-layouts-list");
-  auto menu =
-    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  auto menu = std::dynamic_pointer_cast<Gio::Menu>(object);
   if(!menu)
   {
     std::cerr << G_STRFUNC << ": GMenu not found\n";

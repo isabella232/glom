@@ -78,7 +78,7 @@ Window_RelationshipsOverview::Window_RelationshipsOverview(BaseObjectType* cobje
   auto object =
     builder->get_object("Overview_MainMenu");
   auto gmenu =
-    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+    std::dynamic_pointer_cast<Gio::Menu>(object);
   if(!gmenu)
     g_warning("GMenu not found");
 
@@ -372,7 +372,7 @@ Glib::RefPtr<CanvasGroupDbTable> Window_RelationshipsOverview::get_table_group(c
   for(int i = 0; i < count; ++i)
   {
     auto item = m_group_tables->get_child(i);
-    auto table_item = Glib::RefPtr<CanvasGroupDbTable>::cast_dynamic(item);
+    auto table_item = std::dynamic_pointer_cast<CanvasGroupDbTable>(item);
     if(table_item && (table_item->get_table_name() == table_name))
     {
       return table_item;
@@ -386,7 +386,7 @@ Glib::RefPtr<CanvasGroupDbTable> Window_RelationshipsOverview::get_table_group(c
 void Window_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasItemMovable>& item, double /* x_offset */, double /* y_offset */)
 {
   auto table =
-    Glib::RefPtr<CanvasGroupDbTable>::cast_dynamic(item);
+    std::dynamic_pointer_cast<CanvasGroupDbTable>(item);
   if(!table)
     return;
 
@@ -442,7 +442,7 @@ void Window_RelationshipsOverview::setup_context_menu()
   auto object =
     m_builder->get_object("ContextMenu");
   auto gmenu =
-    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+    std::dynamic_pointer_cast<Gio::Menu>(object);
   if(!gmenu)
     g_warning("GMenu not found");
 

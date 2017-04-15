@@ -36,7 +36,7 @@ CanvasEditable::CanvasEditable()
 void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool resizable)
 {
   auto root = get_root_item();
-  auto root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
+  auto root_group = std::dynamic_pointer_cast<Goocanvas::Group>(root);
   if(!root_group)
     return;
 
@@ -53,7 +53,7 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, const G
   //Add it inside a manipulatable group, if requested:
   if(resizable)
   {
-    auto movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(item);
+    auto movable = std::dynamic_pointer_cast<CanvasItemMovable>(item);
     if(movable)
     {
       auto resizable_item = CanvasGroupResizable::create();
@@ -100,7 +100,7 @@ void CanvasEditable::remove_item(const Glib::RefPtr<Goocanvas::Item>& item , con
   //TODO: Remove resizable=true items via their parent item.
   item->remove();
 
-  auto movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(item);
+  auto movable = std::dynamic_pointer_cast<CanvasItemMovable>(item);
   if(movable && movable->get_selected())
     m_signal_selection_changed.emit();
 }
@@ -110,7 +110,7 @@ void CanvasEditable::remove_all_items()
   const auto some_selected = !(get_selected_items().empty());
 
   auto root = get_root_item();
-  auto root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
+  auto root_group = std::dynamic_pointer_cast<Goocanvas::Group>(root);
 
   while(root_group && root_group->get_n_children())
       root_group->remove_child(0);
