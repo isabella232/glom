@@ -158,11 +158,11 @@ create_window()
   window->set_margin (8);
 
   window->add (*hbox);
-  hbox->pack_start(*vbox, false, false, 0);
+  hbox->pack_start(*vbox, false, false);
 
   auto frame = Gtk::manage(new Gtk::Frame("SpreadTable"));
   frame->show();
-  hbox->pack_start(*frame, true, true, 0);
+  hbox->pack_start(*frame, true, true);
 
   auto swindow = Gtk::manage(new Gtk::ScrolledWindow());
   swindow->set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
@@ -188,7 +188,7 @@ create_window()
   paper_cntl->show();;
   expander->show();
   expander->add(*paper_cntl);
-  vbox->pack_start(*expander, false, false, 0);
+  vbox->pack_start(*expander, false, false);
 
   /* Add Orientation control */
   combo_orientation = Gtk::manage(new Gtk::ComboBoxText());
@@ -198,7 +198,7 @@ create_window()
   combo_orientation->show();
 
   combo_orientation->set_tooltip_text("Set the spread_table orientation");
-  paper_cntl->pack_start(*combo_orientation, false, false, 0);
+  paper_cntl->pack_start(*combo_orientation, false, false);
 
   combo_orientation->signal_changed().connect(
     sigc::ptr_fun(&on_combo_orientation_changed));
@@ -209,14 +209,14 @@ create_window()
 
   auto label = Gtk::manage(new Gtk::Label("H Spacing"));
   label->show();
-  hbox->pack_start(*label, true, true, 0);
+  hbox->pack_start(*label, true, true);
 
   auto spinbutton = Glib::wrap(GTK_SPIN_BUTTON(gtk_spin_button_new_with_range (0, 30, 1)));
   spinbutton->set_value(INITIAL_HSPACING);
   spinbutton->show();
 
   spinbutton->set_tooltip_text("Set the horizontal spacing between children");
-  hbox->pack_start(*spinbutton, false, false, 0);
+  hbox->pack_start(*spinbutton, false, false);
 
   spinbutton->signal_changed().connect(
     sigc::bind(
@@ -227,21 +227,21 @@ create_window()
       sigc::ptr_fun(&on_spinbutton_spacing_changed),
       spinbutton, Gtk::Orientation::HORIZONTAL));
 
-  paper_cntl->pack_start(*hbox, false, false, 0);
+  paper_cntl->pack_start(*hbox, false, false);
 
   hbox = Gtk::manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL, 2));
   hbox->show();
 
   label =  Gtk::manage(new Gtk::Label("V Spacing"));
   label->show();
-  hbox->pack_start(*label, true, true, 0);
+  hbox->pack_start(*label, true, true);
 
   spinbutton = Glib::wrap(GTK_SPIN_BUTTON(gtk_spin_button_new_with_range (0, 30, 1)));
   spinbutton->set_value(INITIAL_VSPACING);
   spinbutton->show();
 
   spinbutton->set_tooltip_text("Set the vertical spacing between children");
-  hbox->pack_start(*spinbutton, false, false, 0);
+  hbox->pack_start(*spinbutton, false, false);
 
   spinbutton->signal_changed().connect(
     sigc::bind(
@@ -252,13 +252,13 @@ create_window()
       sigc::ptr_fun(&on_spinbutton_spacing_changed),
       spinbutton, Gtk::Orientation::VERTICAL));
 
-  paper_cntl->pack_start(*hbox, false, false, 0);
+  paper_cntl->pack_start(*hbox, false, false);
 
   /* Add widget-drop-possible controls */
   auto togglebutton = Gtk::manage(new Gtk::ToggleButton("parent accept drop"));
   togglebutton->show();
   togglebutton->set_active();
-  paper_cntl->pack_start(*togglebutton, false, false, 0);
+  paper_cntl->pack_start(*togglebutton, false, false);
   togglebutton->signal_toggled().connect(
     sigc::bind(
       sigc::ptr_fun(&on_togglebutton_toggled),
@@ -267,7 +267,7 @@ create_window()
   togglebutton = Gtk::manage(new Gtk::ToggleButton("child accept drop"));
   togglebutton->show();
   togglebutton->set_active();
-  paper_cntl->pack_start(*togglebutton, false, false, 0);
+  paper_cntl->pack_start(*togglebutton, false, false);
   togglebutton->signal_toggled().connect(
     sigc::bind(
       sigc::ptr_fun(&on_togglebutton_toggled),
@@ -279,21 +279,21 @@ create_window()
 
   label = Gtk::manage(new Gtk::Label("Lines"));
   label->show();
-  hbox->pack_start(*label, true, true, 0);
+  hbox->pack_start(*label, true, true);
 
   spinbutton_lines = Glib::wrap(GTK_SPIN_BUTTON(gtk_spin_button_new_with_range (1, 30, 1)));
   spinbutton_lines->set_value(INITIAL_LINES);
   spinbutton_lines->show();
 
   spinbutton_lines->set_tooltip_text("Set the horizontal spacing between children");
-  hbox->pack_start(*spinbutton_lines, false, false, 0);
+  hbox->pack_start(*spinbutton_lines, false, false);
 
   spinbutton_lines->signal_changed().connect(
     sigc::ptr_fun(&on_spinbutton_lines_changed));
   spinbutton_lines->signal_value_changed().connect(
     sigc::ptr_fun(&on_spinbutton_lines_changed));
 
-  paper_cntl->pack_start(*hbox, false, false, 0);
+  paper_cntl->pack_start(*hbox, false, false);
 
 
   /* Add test items control frame */
@@ -303,7 +303,7 @@ create_window()
   items_cntl->show();
   expander->show();
   expander->add(*items_cntl);
-  vbox->pack_start(*expander, false, false, 0);
+  vbox->pack_start(*expander, false, false);
 
   /* Add child halign control */
   combo_halign = Gtk::manage(new Gtk::ComboBoxText());
@@ -315,7 +315,7 @@ create_window()
   combo_halign->show();
 
   combo_halign->set_tooltip_text("Set the children's halign property");
-  items_cntl->pack_start(*combo_halign, false, false, 0);
+  items_cntl->pack_start(*combo_halign, false, false);
 
   combo_halign->signal_changed().connect(
     sigc::ptr_fun(&on_combo_halign_changed));
