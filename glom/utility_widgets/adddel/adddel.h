@@ -27,7 +27,6 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/box.h>
 #include <gtkmm/liststore.h>
-#include <gtkmm/uimanager.h>
 #include <giomm/simpleactiongroup.h>
 
 #include <vector>

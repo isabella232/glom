@@ -34,7 +34,6 @@
 #include <gtkmm/menubar.h>
 #include <gtkmm/menu.h>
 #include <gtkmm/toolbar.h>
-#include <gtkmm/handlebox.h>
 #include <gtkmm/builder.h>
 #include <gtkmm/applicationwindow.h>
 

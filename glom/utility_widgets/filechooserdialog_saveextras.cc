@@ -21,7 +21,6 @@
 #include "config.h"
 #include <glom/utility_widgets/filechooserdialog_saveextras.h>
 #include <glom/utils_ui.h>
-#include <gtkmm/alignment.h>
 #include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
 

@@ -23,7 +23,6 @@
 #include <libglom/algorithms_utils.h>
 #include <libglom/utils.h> //For bold_message()).
 #include <libglom/string_utils.h>
-#include <gtkmm/alignment.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/messagedialog.h>
 #include <glibmm/i18n.h>

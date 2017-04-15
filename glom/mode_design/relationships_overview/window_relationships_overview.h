@@ -29,7 +29,6 @@
 #include <gtkmm/menubar.h>
 #include <gtkmm/printoperation.h>
 #include <gtkmm/scrolledwindow.h>
-#include <gtkmm/toggleaction.h>
 #include <gtkmm/builder.h>
 #include <glibmm/weakref.h>
 #include <goocanvasmm/canvas.h>
