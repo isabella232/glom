@@ -657,10 +657,7 @@ Gtk::TreeModel::Path DbTreeModel::get_path_vfunc(const const_iterator& iter) con
 
 bool DbTreeModel::create_iterator(const type_datamodel_row_index& datamodel_row, DbTreeModel::iterator& iter) const
 {
-  Glib::RefPtr<DbTreeModel> refModel(const_cast<DbTreeModel*>(this));
-  refModel->reference();
-
-  iter.set_model_refptr(refModel);
+  iter.set_model_gobject(const_cast<GtkTreeModel*>(gobj()));
 
   const guint count_all_rows = std::max(0, get_internal_rows_count());
   //g_warning("DbTreeModel::create_iterator(): datamodel_row=%d, count=%d", datamodel_row, count_all_rows);
