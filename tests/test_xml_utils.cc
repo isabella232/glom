@@ -59,7 +59,7 @@ int main()
   if(!test_value(Glom::Field::glom_field_type::TEXT, Gnome::Gda::Value(str)))
     return EXIT_FAILURE;
 
-  const Glib::Date date(11, Glib::Date::MAY, 1973);
+  const Glib::Date date(11, Glib::Date::Month::MAY, 1973);
   if(!test_value(Glom::Field::glom_field_type::DATE, Gnome::Gda::Value(date)))
     return EXIT_FAILURE;
 

@@ -92,7 +92,7 @@ static bool delete_directory(const Glib::RefPtr<Gio::File>& directory)
   {
     auto child = directory->get_child(info->get_name());
     bool removed_child = false;
-    if(child->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
+    if(child->query_file_type() == Gio::FileType::DIRECTORY)
       removed_child = delete_directory(child);
     else
       removed_child = child->remove();

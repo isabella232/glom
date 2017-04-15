@@ -49,7 +49,7 @@ void execute_func_with_date_input_value()
   const char* calculation = "import datetime\n"
                             "return record[\"test_field\"].year";
   Glom::type_map_fields field_values;
-  const auto input_date = Glib::Date(11, Glib::Date::MAY, 1973);
+  const auto input_date = Glib::Date(11, Glib::Date::Month::MAY, 1973);
   field_values["test_field"] = Gnome::Gda::Value(input_date);
   Glib::RefPtr<Gnome::Gda::Connection> connection;
 
