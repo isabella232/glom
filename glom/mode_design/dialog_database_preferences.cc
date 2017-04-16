@@ -25,7 +25,6 @@
 #include <libglom/db_utils.h>
 #include <glom/bakery/busy_cursor.h>
 #include <glom/utils_ui.h>
-#include <gtksourceviewmm/languagemanager.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>
@@ -87,19 +86,9 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
 
   //Dialog_Properties::set_modified(false);
 
-  //Tell the SourceView to do syntax highlighting for Python:
-  auto languages_manager =
-    Gsv::LanguageManager::get_default();
-
-  auto language =
-    languages_manager->get_language("python"); //This is the GtkSourceView language ID.
-  if(language)
-  {
-     //Create a new buffer and set it, instead of getting the default buffer, in case libglade has tried to set it, using the wrong buffer type:
-     auto buffer = Gsv::Buffer::create(language);
-     buffer->set_highlight_syntax();
-     m_text_view_script->set_buffer(buffer);
-  }
+  //Create a new buffer and set it, instead of getting the default buffer, in case libglade has tried to set it, using the wrong buffer type:
+  auto buffer = Gtk::TextBuffer::create();
+  m_text_view_script->set_buffer(buffer);
 }
 
 void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib::ustring& path_string, const Glib::ustring& new_text)

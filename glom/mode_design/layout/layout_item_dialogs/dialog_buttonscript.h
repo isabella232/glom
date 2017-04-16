@@ -24,10 +24,9 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/builder.h>
+#include <gtkmm/textview.h>
 #include <libglom/data_structure/layout/layoutitem_button.h>
 #include <glom/base_db.h>
-
-#include <gtksourceviewmm/view.h>
 
 namespace Glom
 {
@@ -51,7 +50,7 @@ private:
   void on_button_test_script();
 
   Gtk::Entry* m_entry_title;
-  Gsv::View* m_text_view_script;
+  Gtk::TextView* m_text_view_script;
   Gtk::Button* m_button_test_script;
 
   std::shared_ptr<LayoutItem_Button> m_script;
