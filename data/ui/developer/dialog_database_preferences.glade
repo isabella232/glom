@@ -4,7 +4,7 @@
   <requires lib="gtk+" version="3.6"/>
   <object class="GtkDialog" id="dialog_database_preferences">
     <property name="can_focus">False</property>
-    <property name="border_width">6</property>
+    <property name="margin">6</property>
     <property name="title" translatable="yes">Database Preferences</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -74,7 +74,7 @@
           <object class="GtkBox" id="vbox61">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="border_width">6</property>
+            <property name="margin">6</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
@@ -120,7 +120,7 @@
                   <object class="GtkBox" id="vbox62">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="border_width">6</property>
+                    <property name="margin">6</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">18</property>
                     <child>
@@ -343,7 +343,7 @@
                   <object class="GtkBox" id="vbox98">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="border_width">6</property>
+                    <property name="margin">6</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
@@ -408,7 +408,7 @@
                   <object class="GtkBox" id="vbox63">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="border_width">6</property>
+                    <property name="margin">6</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
@@ -454,7 +454,7 @@
                   <object class="GtkBox" id="vbox21">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="border_width">6</property>
+                    <property name="margin">6</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
                     <child>

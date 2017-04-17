@@ -72,7 +72,7 @@
           <object class="GtkBox" id="hbox93">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="border_width">12</property>
+            <property name="margin">12</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkImage" id="image38">

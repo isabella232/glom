@@ -71,7 +71,7 @@
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <property name="border_width">6</property>
+            <property name="margin">6</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkButtonBox" id="hbuttonbox38">
@@ -79,7 +79,7 @@
                 <property name="can_focus">False</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">False</property>
-                <property name="border_width">6</property>
+                <property name="margin">6</property>
                 <property name="layout_style">end</property>
                 <child>
                   <object class="GtkButton" id="button_close">
@@ -111,7 +111,7 @@
                 <property name="can_focus">True</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="border_width">6</property>
+                <property name="margin">6</property>
                 <property name="shadow_type">in</property>
                 <child>
                   <placeholder/>

@@ -4,7 +4,7 @@
   <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkDialog" id="dialog_script_library">
     <property name="can_focus">False</property>
-    <property name="border_width">6</property>
+    <property name="margin">6</property>
     <property name="title" translatable="yes">Script Library</property>
     <property name="default_width">500</property>
     <property name="default_height">600</property>
@@ -63,7 +63,7 @@
           <object class="GtkBox" id="vbox1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="border_width">6</property>
+            <property name="margin">6</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>

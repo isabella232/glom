@@ -4,7 +4,7 @@
   <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkDialog" id="window_textobject">
     <property name="can_focus">False</property>
-    <property name="border_width">6</property>
+    <property name="margin">6</property>
     <property name="title" translatable="yes">Text Object</property>
     <property name="window_position">center-on-parent</property>
     <property name="default_width">300</property>
@@ -81,7 +81,7 @@
           <object class="GtkBox" id="vbox21">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="border_width">6</property>
+            <property name="margin">6</property>
             <property name="orientation">vertical</property>
             <property name="spacing">12</property>
             <child>

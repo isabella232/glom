@@ -4,7 +4,7 @@
   <requires lib="gtk+" version="3.6"/>
   <object class="GtkDialog" id="dialog_translation_copy">
     <property name="can_focus">False</property>
-    <property name="border_width">6</property>
+    <property name="margin">6</property>
     <property name="title" translatable="yes">Identify Original</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -75,7 +75,7 @@
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
-            <property name="border_width">12</property>
+            <property name="margin">12</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkImage" id="image38">

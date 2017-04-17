@@ -4,7 +4,7 @@
   <requires lib="gtk+" version="3.6"/>
   <object class="GtkDialog" id="dialog_new_library_script">
     <property name="can_focus">False</property>
-    <property name="border_width">6</property>
+    <property name="margin">6</property>
     <property name="title" translatable="yes">Create Group</property>
     <property name="default_width">311</property>
     <property name="default_height">179</property>
@@ -86,7 +86,7 @@
               <object class="GtkBox" id="hbox4">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="border_width">6</property>
+                <property name="margin">6</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkImage" id="image1">
@@ -145,7 +145,7 @@ What name should this module have?</property>
               <object class="GtkBox" id="hbox6">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="border_width">6</property>
+                <property name="margin">6</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="Group Name1">

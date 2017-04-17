@@ -4,7 +4,7 @@
   <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkDialog" id="dialog_import_csv_progress">
     <property name="can_focus">False</property>
-    <property name="border_width">6</property>
+    <property name="margin">6</property>
     <property name="title" translatable="yes" comments="This is a status message for a progress dialog. It says that importing is currently happenning.">Importing Data</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
@@ -61,7 +61,7 @@
           <object class="GtkBox" id="vbox3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="border_width">6</property>
+            <property name="margin">6</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>

@@ -4,7 +4,7 @@
   <requires lib="gtk+" version="3.6"/>
   <object class="GtkDialog" id="dialog_add_related_table">
     <property name="can_focus">False</property>
-    <property name="border_width">6</property>
+    <property name="margin">6</property>
     <property name="title" translatable="yes">Add Related Table</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -62,7 +62,7 @@
           <object class="GtkBox" id="vbox104">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="border_width">6</property>
+            <property name="margin">6</property>
             <property name="orientation">vertical</property>
             <property name="spacing">18</property>
             <child>

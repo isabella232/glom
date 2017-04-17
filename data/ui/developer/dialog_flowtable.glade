@@ -4,7 +4,7 @@
   <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkDialog" id="dialog_flowtable">
     <property name="can_focus">False</property>
-    <property name="border_width">5</property>
+    <property name="margin">5</property>
     <property name="title" translatable="yes">Group Properties</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
@@ -61,7 +61,7 @@
           <object class="GtkGrid" id="table2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="border_width">6</property>
+            <property name="margin">6</property>
             <property name="row_spacing">6</property>
             <property name="column_spacing">12</property>
             <child>

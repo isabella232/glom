@@ -4,7 +4,7 @@
   <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkDialog" id="dialog_choose_date">
     <property name="can_focus">False</property>
-    <property name="border_width">6</property>
+    <property name="margin">6</property>
     <property name="title" translatable="yes">Choose Date</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -77,14 +77,14 @@
           <object class="GtkBox" id="vbox100">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="border_width">6</property>
+            <property name="margin">6</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkBox" id="hbox119">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="border_width">12</property>
+                <property name="margin">12</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkImage" id="image50">

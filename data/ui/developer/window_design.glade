@@ -12,7 +12,7 @@
       <object class="GtkBox" id="vbox14">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="border_width">6</property>
+        <property name="margin">6</property>
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
@@ -24,7 +24,7 @@
               <object class="GtkBox" id="hbox10">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="border_width">6</property>
+                <property name="margin">6</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkLabel" id="label45">
@@ -62,7 +62,7 @@
               <object class="GtkBox" id="vbox_placeholder">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="border_width">6</property>
+                <property name="margin">6</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <placeholder/>
@@ -85,7 +85,7 @@
           <object class="GtkButtonBox" id="hbuttonbox11">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="border_width">6</property>
+            <property name="margin">6</property>
             <property name="spacing">6</property>
             <property name="layout_style">end</property>
             <child>

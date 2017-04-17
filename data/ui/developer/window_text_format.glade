@@ -4,7 +4,7 @@
   <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkWindow" id="window_text_format">
     <property name="can_focus">False</property>
-    <property name="border_width">12</property>
+    <property name="margin">12</property>
     <property name="title" translatable="yes">Text Format</property>
     <property name="default_width">700</property>
     <property name="default_height">500</property>
