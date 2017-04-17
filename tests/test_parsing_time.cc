@@ -6,6 +6,21 @@ int main()
 {
   Gnome::Gda::init();
 
+  // Use the C locale, to make this test behave the same regardless of the user's current locale.
+  // (This is necessary, because Glib::init (via Gnome::Gda::init()) sets the locale, as of glibmm-2.54.
+
+  try
+  {
+    std::locale::global(std::locale("C"));
+  }
+  catch(const std::runtime_error& ex)
+  {
+    //This has been known to throw an exception at least once:
+    //https://bugzilla.gnome.org/show_bug.cgi?id=619445
+    //This should tell us what the problem is:
+    std::cerr << G_STRFUNC << ": exception from std::locale::global(): " << ex.what() << std::endl;
+  }
+
   const Glib::ustring time_text_input = "01:00 PM";
   //std::cout << "time_text_input=" << time_text_input << std::endl;
 
