@@ -1229,7 +1229,7 @@ void FlowTableWithFields::align_child_group_labels()
   type_vec_sizegroups vec_sizegroups(max_columns);
   for(guint i = 0; i < max_columns; ++i)
   {
-    vec_sizegroups[i] = Gtk::SizeGroup::create(Gtk::SizeGroupMode::HORIZONTAL);
+    vec_sizegroups[i] = Gtk::SizeGroup::create(Gtk::SizeGroup::Mode::HORIZONTAL);
   }
 
   for(const auto& subtable : m_sub_flow_tables)
