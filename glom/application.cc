@@ -30,11 +30,11 @@
 namespace Glom
 {
 
-// We use Gio::ApplicationFlags::NON_UNIQUE because we have some singletons and other static data,
+// We use Gio::Application::Flags::NON_UNIQUE because we have some singletons and other static data,
 // to simplify our code.
 // We also want to prevent all instances from crashing when one instance crashes.
 Application::Application()
-: Gtk::Application("org.glom.Glom", Gio::ApplicationFlags::HANDLES_OPEN | Gio::ApplicationFlags::HANDLES_COMMAND_LINE | Gio::ApplicationFlags::NON_UNIQUE)
+: Gtk::Application("org.glom.Glom", Gio::Application::Flags::HANDLES_OPEN | Gio::Application::Flags::HANDLES_COMMAND_LINE | Gio::Application::Flags::NON_UNIQUE)
 {
 }
 
@@ -146,7 +146,7 @@ int Application::on_command_line(const Glib::RefPtr<Gio::ApplicationCommandLine>
 
   //Note that these options should really be parsed in main(),
   //but we do it here because of glib bug: https://bugzilla.gnome.org/show_bug.cgi?id=634990#c6
-  //Handling the two groups together here is possible due to our use of Gio::ApplicationFlags::NON_UNIQUE .
+  //Handling the two groups together here is possible due to our use of Gio::Application::Flags::NON_UNIQUE .
   LocalOptionGroup local_group;
   context.add_group(local_group);
 
