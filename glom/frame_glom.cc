@@ -129,7 +129,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_box_quick_find->hide();
 
   PlaceHolder* placeholder_quickfind = nullptr;
-  builder->get_widget_derived("vbox_quickfind", placeholder_quickfind);
+  Gtk::Builder::get_widget_derived(builder, "vbox_quickfind", placeholder_quickfind);
   if(placeholder_quickfind)
     placeholder_quickfind->add(*m_box_quick_find);
 

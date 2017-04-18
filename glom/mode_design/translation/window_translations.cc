@@ -89,7 +89,7 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
     m_button_identify->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_identify) );
   }
 
-  builder->get_widget_derived("combobox_target_locale", m_combo_target_locale);
+  Gtk::Builder::get_widget_derived(builder, "combobox_target_locale", m_combo_target_locale);
   if(m_combo_target_locale)
   {
     m_combo_target_locale->signal_changed().connect(sigc::mem_fun(*this, &Window_Translations::on_combo_target_locale_changed));

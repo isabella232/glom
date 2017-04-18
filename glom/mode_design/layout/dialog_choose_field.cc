@@ -44,7 +44,7 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
   m_checkbutton_show_related_relationships->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_ChooseField::on_checkbutton_related_relationships_toggled));
 
   builder->get_widget("button_select", m_button_select);
-  builder->get_widget_derived("combobox_relationship", m_combo_relationship);
+  Gtk::Builder::get_widget_derived(builder, "combobox_relationship", m_combo_relationship);
   if(m_combo_relationship)
   {
     m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ChooseField::on_combo_relationship_changed));

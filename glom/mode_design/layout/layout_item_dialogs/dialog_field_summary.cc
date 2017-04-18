@@ -33,7 +33,7 @@ Dialog_FieldSummary::Dialog_FieldSummary(BaseObjectType* cobject, const Glib::Re
   m_button_field(nullptr)
 {
   builder->get_widget("label_field", m_label_field);
-  builder->get_widget_derived("combobox_summarytype", m_combo_summarytype);
+  Gtk::Builder::get_widget_derived(builder, "combobox_summarytype", m_combo_summarytype);
 
   builder->get_widget("button_field", m_button_field);
 

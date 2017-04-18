@@ -81,7 +81,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   builder->get_widget("checkbutton_format_thousands", m_checkbox_format_use_thousands);
   builder->get_widget("checkbutton_format_use_decimal_places", m_checkbox_format_use_decimal_places);
   builder->get_widget("entry_format_decimal_places", m_entry_format_decimal_places);
-  builder->get_widget_derived("entry_currency_symbol", m_entry_currency_symbol);
+  Gtk::Builder::get_widget_derived(builder, "entry_currency_symbol", m_entry_currency_symbol);
   builder->get_widget("checkbutton_foreground_negatives", m_checkbox_format_color_negatives);
 
   //Text formatting:
@@ -130,7 +130,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
 
   //Choices:
   builder->get_widget("vbox_choices", m_vbox_choices);
-  builder->get_widget_derived("adddel_choices", m_adddel_choices_custom);
+  Gtk::Builder::get_widget_derived(builder, "adddel_choices", m_adddel_choices_custom);
   m_col_index_custom_choices = m_adddel_choices_custom->add_column("Choices");
   m_adddel_choices_custom->set_allow_add();
   m_adddel_choices_custom->set_allow_delete();
@@ -139,8 +139,8 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   builder->get_widget("checkbutton_choices_restrict", m_checkbutton_choices_restricted);
   builder->get_widget("checkbutton_choices_restrict_as_radio_buttons", m_checkbutton_choices_restricted_as_radio_buttons);
 
-  builder->get_widget_derived("combobox_choices_related_relationship", m_combo_choices_relationship);
-  builder->get_widget_derived("combobox_choices_related_field", m_combo_choices_field);
+  Gtk::Builder::get_widget_derived(builder, "combobox_choices_related_relationship", m_combo_choices_relationship);
+  Gtk::Builder::get_widget_derived(builder, "combobox_choices_related_field", m_combo_choices_field);
   builder->get_widget("label_choices_related_extra_fields", m_label_choices_extra_fields);
   builder->get_widget("button_choices_related_extra_fields", m_button_choices_extra_fields);
   builder->get_widget("label_choices_related_sortby", m_label_choices_sortby);

@@ -49,7 +49,7 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
   m_glade_variables_map.connect_widget("entry_org_address_country", m_system_prefs.m_org_address_country);
   m_glade_variables_map.connect_widget("entry_org_address_postcode", m_system_prefs.m_org_address_postcode);
 
-  builder->get_widget_derived("imageglom", m_image);
+  Gtk::Builder::get_widget_derived(builder, "imageglom", m_image);
   builder->get_widget("button_choose_image", m_button_choose_image);
   m_button_choose_image->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_Database_Preferences::on_button_choose_image));
 

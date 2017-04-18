@@ -30,7 +30,7 @@ Dialog_ChooseUser::Dialog_ChooseUser(BaseObjectType* cobject, const Glib::RefPtr
 : Gtk::Dialog(cobject),
   m_combo_name(nullptr)
 {
-  builder->get_widget_derived("combo_user_name", m_combo_name);
+  Gtk::Builder::get_widget_derived(builder, "combo_user_name", m_combo_name);
 }
 
 void Dialog_ChooseUser::set_user_list(const type_vec_strings& users)

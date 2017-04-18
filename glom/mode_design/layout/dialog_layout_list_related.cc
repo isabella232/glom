@@ -64,7 +64,7 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   m_spinbutton_rows_count_max->signal_value_changed().connect(
     sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_spinbutton_changed));
 
-  builder->get_widget_derived("combo_relationship_name", m_combo_relationship);
+  Gtk::Builder::get_widget_derived(builder, "combo_relationship_name", m_combo_relationship);
   if(m_combo_relationship)
   {
     m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_relationship_changed));
@@ -84,7 +84,7 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   builder->get_widget("radiobutton_navigation_none", m_radio_navigation_none);
 
   builder->get_widget("radiobutton_navigation_specify", m_radio_navigation_specify);
-  builder->get_widget_derived("combobox_navigation_specify", m_combo_navigation_specify);
+  Gtk::Builder::get_widget_derived(builder, "combobox_navigation_specify", m_combo_navigation_specify);
   if(m_radio_navigation_specify && m_combo_navigation_specify)
   {
     make_sensitivity_depend_on_toggle_button(*m_radio_navigation_specify, *m_combo_navigation_specify);

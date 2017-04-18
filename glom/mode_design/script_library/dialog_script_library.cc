@@ -40,7 +40,7 @@ Dialog_ScriptLibrary::Dialog_ScriptLibrary(BaseObjectType* cobject, const Glib::
 : Gtk::Dialog(cobject)
 {
   //Get child widgets:
-  builder->get_widget_derived("combobox_name", m_combobox_name);
+  Gtk::Builder::get_widget_derived(builder, "combobox_name", m_combobox_name);
   builder->get_widget("textview_script",  m_text_view);
   builder->get_widget("button_check",  m_button_check);
   builder->get_widget("button_add",  m_button_add);

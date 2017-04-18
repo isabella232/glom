@@ -48,7 +48,7 @@ Dialog_Layout_Calendar_Related::Dialog_Layout_Calendar_Related(BaseObjectType* c
   m_box_related_table_widgets->show();
   m_box_related_navigation->show();
 
-  builder->get_widget_derived("combo_relationship_name", m_combo_relationship);
+  Gtk::Builder::get_widget_derived(builder, "combo_relationship_name", m_combo_relationship);
   if(m_combo_relationship)
   {
     m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_Calendar_Related::on_combo_relationship_changed));
@@ -66,14 +66,14 @@ Dialog_Layout_Calendar_Related::Dialog_Layout_Calendar_Related(BaseObjectType* c
   make_sensitivity_depend_on_toggle_button(*m_radio_navigation_automatic, *m_label_navigation_automatic);
 
   builder->get_widget("radiobutton_navigation_specify", m_radio_navigation_specify);
-  builder->get_widget_derived("combobox_navigation_specify", m_combo_navigation_specify);
+  Gtk::Builder::get_widget_derived(builder, "combobox_navigation_specify", m_combo_navigation_specify);
   if(m_radio_navigation_specify && m_combo_navigation_specify)
   {
     make_sensitivity_depend_on_toggle_button(*m_radio_navigation_specify, *m_combo_navigation_specify);
     m_combo_navigation_specify->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_Calendar_Related::on_combo_navigation_specific_changed));
   }
 
-  builder->get_widget_derived("combobox_date_field", m_combobox_date_field);
+  Gtk::Builder::get_widget_derived(builder, "combobox_date_field", m_combobox_date_field);
   if(m_combobox_date_field)
   {
     m_combobox_date_field->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_Calendar_Related::on_combo_date_field_changed));

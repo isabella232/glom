@@ -38,7 +38,7 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
 : Dialog_Properties(cobject, builder),
   m_data_idget_default_value_simple(nullptr)
 {
-  builder->get_widget_derived("combobox_type", m_combo_type);
+  Gtk::Builder::get_widget_derived(builder, "combobox_type", m_combo_type);
 
   builder->get_widget("entry_name", m_entry_name);
   builder->get_widget("entry_title", m_entry_title);
@@ -56,7 +56,7 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
 
   builder->get_widget("checkbutton_lookup",  m_check_lookup);
   builder->get_widget("table_lookup",  m_table_lookup);
-  builder->get_widget_derived("combobox_lookup_relationship",  m_combo_lookup_relationship);
+  Gtk::Builder::get_widget_derived(builder, "combobox_lookup_relationship",  m_combo_lookup_relationship);
   builder->get_widget("combobox_lookup_field",  m_combo_lookup_field);
 
   builder->get_widget("radiobutton_calculate",  m_radio_calculate);

@@ -32,7 +32,7 @@ Dialog_Fields::Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Bu
 : Dialog_Design(cobject, builder),
   m_box(nullptr)
 {
-  builder->get_widget_derived("vbox_placeholder", m_box);
+  Gtk::Builder::get_widget_derived(builder, "vbox_placeholder", m_box);
 
   //Fill composite view:
   add_view(m_box);

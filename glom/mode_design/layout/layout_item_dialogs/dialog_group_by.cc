@@ -53,7 +53,7 @@ Dialog_GroupBy::Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   builder->get_widget("button_select_sort_by", m_button_field_sort_by);
   builder->get_widget("button_secondary_edit", m_button_secondary_fields);
 
-  builder->get_widget_derived("comboboxentry_border_width", m_comboboxentry_border_width);
+  Gtk::Builder::get_widget_derived(builder, "comboboxentry_border_width", m_comboboxentry_border_width);
 
   //Connect signals:
   m_button_field_group_by->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_GroupBy::on_button_field_group_by));

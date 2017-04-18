@@ -31,7 +31,7 @@ Dialog_CopyTranslation::Dialog_CopyTranslation(BaseObjectType* cobject, const Gl
 : Gtk::Dialog(cobject),
   m_combo_locale(nullptr)
 {
-  builder->get_widget_derived("combobox_locale", m_combo_locale);
+  Gtk::Builder::get_widget_derived(builder, "combobox_locale", m_combo_locale);
   if(m_combo_locale)
     m_combo_locale->set_selected_locale(AppWindow::get_current_locale());
 }

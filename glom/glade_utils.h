@@ -78,7 +78,7 @@ Glib::RefPtr<Gtk::Builder> helper_get_glade_widget_derived_with_warning(const st
 
   if(refXml)
   {
-    refXml->get_widget_derived(id, widget);
+    Gtk::Builder::get_widget_derived(refXml, id, widget);
   }
 
   return refXml;

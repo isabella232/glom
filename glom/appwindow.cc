@@ -108,8 +108,8 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 
   //Load widgets from glade file:
   builder->get_widget("bakery_vbox", m_box_top);
-  builder->get_widget_derived("vbox_frame", m_frame); //This one is derived. There's a lot happening here.
-  builder->get_widget_derived("infobar_progress", m_infobar_progress);
+  Gtk::Builder::get_widget_derived(builder, "vbox_frame", m_frame); //This one is derived. There's a lot happening here.
+  Gtk::Builder::get_widget_derived(builder, "infobar_progress", m_infobar_progress);
 
   //Add menu bar at the top:
   auto object =
