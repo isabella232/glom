@@ -248,8 +248,8 @@ bool FlowTable::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
     return true;
 
   cr->set_line_width(1);
-  cr->set_line_cap(Cairo::LINE_CAP_SQUARE);
-  cr->set_line_join(Cairo::LINE_JOIN_MITER);
+  cr->set_line_cap(Cairo::Context::LineCap::SQUARE);
+  cr->set_line_join(Cairo::Context::LineJoin::MITER);
   std::vector<double> dashes;
   dashes.emplace_back(10);
   cr->set_dash(dashes, 0);
