@@ -20,7 +20,6 @@
             <child>
               <object class="GtkButton" id="button26">
                 <property name="label" translatable="yes">_Cancel</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -36,7 +35,6 @@
             <child>
               <object class="GtkButton" id="button27">
                 <property name="label" translatable="yes">_OK</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -111,7 +109,6 @@
                 <child>
                   <object class="GtkCheckButton" id="checkbutton_editable">
                     <property name="label" translatable="yes">Allow Editing</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -147,7 +144,6 @@
                             <child>
                               <object class="GtkRadioButton" id="radiobutton_use_title_default">
                                 <property name="label" translatable="yes">Use default field title: </property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -188,7 +184,6 @@
                             <child>
                               <object class="GtkRadioButton" id="radiobutton_use_title_custom">
                                 <property name="label" translatable="yes">Use custom title:</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -266,7 +261,6 @@
                         <child>
                           <object class="GtkRadioButton" id="radiobutton_use_default">
                             <property name="label" translatable="yes">Use default formatting</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -284,7 +278,6 @@
                         <child>
                           <object class="GtkRadioButton" id="radiobutton_use_custom">
                             <property name="label" translatable="yes">Use custom formatting</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>

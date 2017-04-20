@@ -103,7 +103,6 @@
                 <child>
                   <object class="GtkCheckButton" id="checkbutton_show_child_relationships">
                     <property name="label" translatable="yes">Show child relationships</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
@@ -211,7 +210,6 @@
                     <child>
                       <object class="GtkButton" id="button_add_field">
                         <property name="label" translatable="yes">Add Field</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
@@ -229,7 +227,6 @@
                     <child>
                       <object class="GtkButton" id="button_add_text">
                         <property name="label" translatable="yes">Add Text</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
@@ -247,7 +244,6 @@
                     <child>
                       <object class="GtkButton" id="button_add_image">
                         <property name="label" translatable="yes">Add Image</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
@@ -265,7 +261,6 @@
                     <child>
                       <object class="GtkButton" id="button_add_button">
                         <property name="label" translatable="yes">Add Button</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
@@ -283,7 +278,6 @@
                     <child>
                       <object class="GtkButton" id="button_add_group">
                         <property name="label" translatable="yes">Add Group</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
@@ -301,7 +295,6 @@
                     <child>
                       <object class="GtkButton" id="button_add_notebook">
                         <property name="label" translatable="yes">Add Notebook</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
                         <property name="receives_default">True</property>
@@ -318,7 +311,6 @@
                     <child>
                       <object class="GtkButton" id="button_add_related">
                         <property name="label" translatable="yes">Add Related Records</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
@@ -336,7 +328,6 @@
                     <child>
                       <object class="GtkButton" id="button_add_related_calendar">
                         <property name="label" translatable="yes">Add Related Calendar</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
@@ -373,7 +364,6 @@
                         <child>
                           <object class="GtkButton" id="button_up">
                             <property name="label" translatable="yes">_Up</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -389,7 +379,6 @@
                         <child>
                           <object class="GtkButton" id="button_down">
                             <property name="label" translatable="yes">_Down</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -418,7 +407,6 @@
                         <child>
                           <object class="GtkButton" id="button_field_delete">
                             <property name="label" translatable="yes">_Delete</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -435,7 +423,6 @@
                         <child>
                           <object class="GtkButton" id="button_formatting">
                             <property name="label" translatable="yes">Formatting</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -450,7 +437,6 @@
                         <child>
                           <object class="GtkButton" id="button_edit">
                             <property name="label" translatable="yes">_Edit</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -531,7 +517,6 @@
                     <child>
                       <object class="GtkRadioButton" id="radiobutton_navigation_automatic">
                         <property name="label" translatable="yes">Automatic:</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -573,7 +558,6 @@
                     <child>
                       <object class="GtkRadioButton" id="radiobutton_navigation_none">
                         <property name="label" translatable="yes">None</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -601,7 +585,6 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkRadioButton" id="radiobutton_navigation_specify">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -660,7 +643,6 @@
             <child>
               <object class="GtkButton" id="button_close">
                 <property name="label" translatable="yes">_Close</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -884,7 +866,6 @@
                     </child>
                     <child>
                       <object class="GtkColorButton" id="colorbutton_line">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
