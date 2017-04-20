@@ -666,7 +666,7 @@ void DbAddDel::construct_specified_columns()
     // have to take into account the xpad property of the cell renderer and
     // the spacing property of the treeviewcolumn.
     int horizontal_separator = 0;
-    m_tree_view.get_style_property("horizontal-separator", horizontal_separator);
+    //m_tree_view.get_style_property("horizontal-separator", horizontal_separator);
     const int button_width = requistion_min.width + horizontal_separator*2;
     if(button_width > 0) //Otherwise an assertion fails.
       m_treeviewcolumn_button->set_fixed_width(button_width);
