@@ -24,7 +24,6 @@
             <child>
               <object class="GtkButton" id="import_csv_cancel_button">
                 <property name="label" translatable="yes">_Cancel</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -39,7 +38,6 @@
             <child>
               <object class="GtkButton" id="import_csv_import_button">
                 <property name="label" translatable="yes">I_mport</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -54,7 +52,6 @@
             <child>
               <object class="GtkButton" id="import_csv_help_button">
                 <property name="label" translatable="yes">_Help</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -120,7 +117,6 @@
                         <child>
                           <object class="GtkCheckButton" id="import_csv_first_line_as_title">
                             <property name="label" translatable="yes">_First line as title</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>

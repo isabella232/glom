@@ -20,7 +20,6 @@
             <child>
               <object class="GtkButton" id="button1">
                 <property name="label" translatable="yes">_Help</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -36,7 +35,6 @@
             <child>
               <object class="GtkButton" id="button_revert">
                 <property name="label" translatable="yes">_Revert</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -52,7 +50,6 @@
             <child>
               <object class="GtkButton" id="button4">
                 <property name="label" translatable="yes">_OK</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>

@@ -27,7 +27,6 @@
             <child>
               <object class="GtkButton" id="helpbutton2">
                 <property name="label" translatable="yes">_Help</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -43,7 +42,6 @@
             <child>
               <object class="GtkButton" id="cancelbutton2">
                 <property name="label" translatable="yes">_Cancel</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -59,7 +57,6 @@
             <child>
               <object class="GtkButton" id="okbutton2">
                 <property name="label" translatable="yes">_OK</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -129,7 +126,6 @@
             </child>
             <child>
               <object class="GtkColorButton" id="colorbutton">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>

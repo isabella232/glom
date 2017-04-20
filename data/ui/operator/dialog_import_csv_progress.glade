@@ -22,7 +22,6 @@
             <child>
               <object class="GtkButton" id="import_csv_progress_cancel_button">
                 <property name="label" translatable="yes">_Cancel</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -37,7 +36,6 @@
             <child>
               <object class="GtkButton" id="import_csv_progress_ok_button">
                 <property name="label" translatable="yes">_OK</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>

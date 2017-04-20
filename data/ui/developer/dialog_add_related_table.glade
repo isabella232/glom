@@ -21,7 +21,6 @@
             <child>
               <object class="GtkButton" id="button41">
                 <property name="label" translatable="yes">_Cancel</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -36,7 +35,6 @@
             <child>
               <object class="GtkButton" id="button_ok">
                 <property name="label" translatable="yes">C_reate Table</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -113,7 +111,6 @@ If a suitable related table already exists then you should instead cancel and ju
                 <child>
                   <object class="GtkButton" id="button_edit_fields">
                     <property name="label" translatable="yes">_Edit Fields</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>

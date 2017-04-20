@@ -38,7 +38,6 @@
             <child>
               <object class="GtkCheckButton" id="checkbutton_show_hidden">
                 <property name="label" translatable="yes">_Show hidden tables</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -68,7 +67,6 @@
             <child>
               <object class="GtkButton" id="button_cancel_tables">
                 <property name="label" translatable="yes">_Close</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>

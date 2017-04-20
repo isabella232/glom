@@ -23,7 +23,6 @@
             <child>
               <object class="GtkButton" id="cancelbutton3">
                 <property name="label" translatable="yes">_Cancel</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -39,7 +38,6 @@
             <child>
               <object class="GtkButton" id="button_select">
                 <property name="label" translatable="yes">_Select</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -71,7 +69,6 @@
             <child>
               <object class="GtkCheckButton" id="checkbutton_show_related_relationships">
                 <property name="label" translatable="yes">Show _Related Relationships</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>

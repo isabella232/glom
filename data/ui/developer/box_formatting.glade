@@ -27,7 +27,6 @@
                 <child>
                   <object class="GtkCheckButton" id="checkbutton_format_thousands">
                     <property name="label" translatable="yes">Use 1000s separator</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -50,7 +49,6 @@
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_format_use_decimal_places">
                         <property name="label" translatable="yes">Decimal Places:</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -127,7 +125,6 @@
                 <child>
                   <object class="GtkCheckButton" id="checkbutton_foreground_negatives">
                     <property name="label" translatable="yes">Alternative Color for Negative Values</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -201,7 +198,6 @@
                 <child>
                   <object class="GtkCheckButton" id="checkbutton_format_text_multiline">
                     <property name="label" translatable="yes">Multi-line</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -262,7 +258,6 @@
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_font">
                         <property name="label" translatable="yes">Font:</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -279,7 +274,6 @@
                     </child>
                     <child>
                       <object class="GtkFontButton" id="fontbutton">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -307,7 +301,6 @@
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_color_foreground">
                         <property name="label" translatable="yes">Foreground Color:</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -324,7 +317,6 @@
                     </child>
                     <child>
                       <object class="GtkColorButton" id="colorbutton_foreground">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -351,7 +343,6 @@
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_color_background">
                         <property name="label" translatable="yes">Background Color:</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -368,7 +359,6 @@
                     </child>
                     <child>
                       <object class="GtkColorButton" id="colorbutton_background">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -430,7 +420,6 @@
                         <child type="label">
                           <object class="GtkRadioButton" id="radiobutton_choices_no">
                             <property name="label" translatable="yes">No Choices</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -548,7 +537,6 @@
                                 <child>
                                   <object class="GtkButton" id="button_choices_related_extra_fields">
                                     <property name="label" translatable="yes">Edit</property>
-                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -587,7 +575,6 @@
                                 <child>
                                   <object class="GtkButton" id="button_choices_related_sortby">
                                     <property name="label" translatable="yes">Edit</property>
-                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -622,7 +609,6 @@
                             <child>
                               <object class="GtkCheckButton" id="checkbutton_choices_related_show_all">
                                 <property name="label" translatable="yes">Show all records</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -644,7 +630,6 @@
                         <child type="label">
                           <object class="GtkRadioButton" id="radiobutton_choices_related">
                             <property name="label" translatable="yes">Choices From Related Records</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -684,7 +669,6 @@
                         <child type="label">
                           <object class="GtkRadioButton" id="radiobutton_choices_custom">
                             <property name="label" translatable="yes">Custom Choice List</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -716,7 +700,6 @@
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_choices_restrict">
                         <property name="label" translatable="yes">Restrict data to these choices</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -733,7 +716,6 @@
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_choices_restrict_as_radio_buttons">
                         <property name="label" translatable="yes">Display as radio buttons</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>

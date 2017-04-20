@@ -22,7 +22,6 @@
             <child>
               <object class="GtkButton" id="helpbutton1">
                 <property name="label" translatable="yes">_Help</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -38,7 +37,6 @@
             <child>
               <object class="GtkButton" id="okbutton5">
                 <property name="label" translatable="yes">_OK</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -111,7 +109,6 @@
                 <child>
                   <object class="GtkButton" id="button_add">
                     <property name="label" translatable="yes">_Add</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
@@ -126,7 +123,6 @@
                 <child>
                   <object class="GtkButton" id="button_remove">
                     <property name="label" translatable="yes">_Remove</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
@@ -174,7 +170,6 @@
                 <child>
                   <object class="GtkButton" id="button_check">
                     <property name="label" translatable="yes" comments="Translators: This is the verb. It is for checking that a Python script works.">_Check</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
