@@ -555,7 +555,7 @@ Glib::RefPtr<Goocanvas::Polyline> Canvas_PrintLayout::create_margin_line(double 
   //Interpret a click on the line like a click on the background behind it:
   //TODO: Do this for grid lines and rules too:
   line->signal_button_press_event().connect(
-    sigc::mem_fun(*this, &Canvas_PrintLayout::on_background_button_press_event));
+    sigc::mem_fun(*this, &Canvas_PrintLayout::on_background_button_press_event), true /* connect after */);
 
   m_bounds_group->add_child(line);
   return line;
@@ -607,7 +607,7 @@ void Canvas_PrintLayout::update_page_bounds()
   m_bounds_rect->property_fill_color() = "white";
   m_bounds_rect->property_line_width() = 0;
   m_bounds_rect->signal_button_press_event().connect(
-    sigc::mem_fun(*this, &Canvas_PrintLayout::on_background_button_press_event));
+    sigc::mem_fun(*this, &Canvas_PrintLayout::on_background_button_press_event), true /* connect after */);
   m_bounds_group->add_child(m_bounds_rect);
 
   //Make sure that the bounds rect is at the bottom,

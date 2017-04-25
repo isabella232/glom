@@ -84,9 +84,9 @@ void CanvasGroupResizable::create_rect_manipulators()
   add_child(m_rect);
 
   //Allow dragging of the rect to move everything:
-  m_rect->signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_motion_notify_event));
-  m_rect->signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_press_event));
-  m_rect->signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_release_event));
+  m_rect->signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_motion_notify_event), true /* connect after */);
+  m_rect->signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_press_event), true /* connect after */);
+  m_rect->signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_release_event), true /* connect after */);
 
   //m_rect->property_pointer_events() =
   //    (Goocanvas::PointerEvents)(Goocanvas::EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
@@ -404,9 +404,9 @@ void CanvasGroupResizable::set_child(const Glib::RefPtr<CanvasItemMovable>& chil
   child->set_movement_allowed(false, false);
 
   //Allow drag to move:
-  item->signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_motion_notify_event));
-  item->signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_press_event));
-  item->signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_release_event));
+  item->signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_motion_notify_event), true /* connect after */);
+  item->signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_press_event), true /* connect after */);
+  item->signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_release_event), true /* connect after */);
 
   item->signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_resizer_enter_notify_event), false);
   item->signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_resizer_leave_notify_event), false);

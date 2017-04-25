@@ -194,7 +194,7 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
     event_box->set_visible_window(false);
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     event_box->signal_button_press_event().connect (sigc::mem_fun (*flow_table,
-      &FlowTableWithFields::on_button_press_event));
+      &FlowTableWithFields::on_button_press_event), true /* connect after */);
 #endif
     event_box->show();
 
@@ -401,8 +401,8 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
         event_box->add(*flow_table);
         event_box->set_visible_window(false);
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-        event_box->signal_button_press_event().connect (sigc::mem_fun (*flow_table,
-                                                                       &FlowTableWithFields::on_button_press_event));
+        event_box->signal_button_press_event().connect (sigc::mem_fun (*flow_table, &FlowTableWithFields::on_button_press_event),
+          true /* connect after */);
 #endif
         event_box->show();
 

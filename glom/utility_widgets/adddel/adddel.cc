@@ -96,7 +96,7 @@ void AddDel::init()
   //add_blank();
 
   setup_menu(this);
-  signal_button_press_event().connect(sigc::mem_fun(*this, &AddDel::on_button_press_event_Popup));
+  signal_button_press_event().connect(sigc::mem_fun(*this, &AddDel::on_button_press_event_Popup), true /* connect after */);
 
   set_prevent_user_signals(false);
   set_ignore_treeview_signals(false);

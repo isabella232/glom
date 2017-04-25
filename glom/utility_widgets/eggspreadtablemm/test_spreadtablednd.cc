@@ -344,9 +344,9 @@ create_window()
 
   /* Signals to control drop allowed or not */
   paper->signal_widget_drop_possible().connect(
-    sigc::ptr_fun(&on_spreadtable_parent_drop_possible));
+    sigc::ptr_fun(&on_spreadtable_parent_drop_possible), true /* connect after */);
   spreadtable_inner->signal_widget_drop_possible().connect(
-    sigc::ptr_fun(&on_inner_spreadtable_drop_possible));
+    sigc::ptr_fun(&on_inner_spreadtable_drop_possible), true /* connect after */);
 
   return window;
 }
