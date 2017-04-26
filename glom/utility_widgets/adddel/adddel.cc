@@ -96,7 +96,7 @@ void AddDel::init()
   //add_blank();
 
   setup_menu(this);
-  signal_button_press_event().connect(sigc::mem_fun(*this, &AddDel::on_button_press_event_Popup), true /* connect after */);
+  signal_button_press_event().connect_notify(sigc::mem_fun(*this, &AddDel::on_button_press_event_Popup));
 
   set_prevent_user_signals(false);
   set_ignore_treeview_signals(false);
@@ -215,7 +215,7 @@ void AddDel::setup_menu(Gtk::Widget* /* widget */)
   m_menu_popup->attach_to_widget(*this);
 }
 
-bool AddDel::on_button_press_event_Popup(GdkEventButton *button_event)
+void AddDel::on_button_press_event_Popup(GdkEventButton *button_event)
 {
   GdkModifierType mods;
   gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, nullptr, nullptr, &mods );
@@ -233,7 +233,7 @@ bool AddDel::on_button_press_event_Popup(GdkEventButton *button_event)
     }
   }
 
-  return true;
+  //return true;
 }
 
 Gtk::TreeModel::iterator AddDel::get_item_placeholder()

@@ -156,13 +156,13 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   //Note that we don't use Gtk::DestDefaults::DEFAULTS because that would prevent our signal handlers from being used:
   m_canvas.drag_dest_set(m_drag_targets_all, Gtk::DestDefaults::HIGHLIGHT, Gdk::DragAction::COPY);
   m_canvas.signal_drag_drop().connect(
-      sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_drop), true /* connect after */ );
+      sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_drop), true /* connect after */);
   m_canvas.signal_drag_motion().connect(
-      sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_motion), true /* connect after */ );
+      sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_motion), true /* connect after */);
   m_canvas.signal_drag_data_received().connect(
-      sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_data_received), true /* connect after */ );
+      sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_data_received), true /* connect after */);
   m_canvas.signal_drag_leave().connect(
-      sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_leave), true /* connect after */ );
+      sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_leave), true /* connect after */);
 
   init_menu();
 
@@ -171,13 +171,13 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_toolbar.show();
 
   m_scrolled_window.get_hadjustment()->signal_changed().connect(
-    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_scroll_value_changed), true /* connect after */ );
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_scroll_value_changed));
   m_scrolled_window.get_hadjustment()->signal_value_changed().connect(
-    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_scroll_value_changed), true /* connect after */ );
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_scroll_value_changed) );
   m_scrolled_window.get_vadjustment()->signal_changed().connect(
-    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_scroll_value_changed), true /* connect after */ );
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_scroll_value_changed));
   m_scrolled_window.get_vadjustment()->signal_value_changed().connect(
-    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_scroll_value_changed), true /* connect after */ );
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_scroll_value_changed) );
 
   //Fill composite view:
   //add_view(m_box);
@@ -185,7 +185,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   setup_context_menu();
   m_canvas.signal_show_context().connect(sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_show_context_menu));
 
-  m_canvas.signal_motion_notify_event().connect(sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_motion_notify_event), true /* connect after */);
+  m_canvas.signal_motion_notify_event().connect_notify(sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_motion_notify_event));
 
   m_canvas.signal_selection_changed().connect(
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_selection_changed));
@@ -711,7 +711,7 @@ void Window_PrintLayout_Edit::setup_context_menu()
   m_context_menu->attach_to_widget(*this);
 }
 
-bool Window_PrintLayout_Edit::on_canvas_motion_notify_event(GdkEventMotion* motion_event)
+void Window_PrintLayout_Edit::on_canvas_motion_notify_event(GdkEventMotion* motion_event)
 {
   //Notice that, unlike drag-motion, motion-notify-event's x/y position already
   //seems to have the scrolling taken into account.
@@ -722,7 +722,7 @@ bool Window_PrintLayout_Edit::on_canvas_motion_notify_event(GdkEventMotion* moti
   //gimp_ruler_set_position(m_hruler, x);
   //gimp_ruler_set_position(m_vruler, y);
 
-  return false;
+  // return false;
 }
 
 void Window_PrintLayout_Edit::on_canvas_show_context_menu(guint button, guint32 activate_time)

@@ -69,7 +69,7 @@ CanvasItemMovable::CanvasItemMovable()
   */
 }
 
-bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
+void CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
 {
   //std::cout << G_STRFUNC << ": DEBUG\n";
 
@@ -80,7 +80,7 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
     case 1:
     {
       if(!m_allow_vertical_movement && !m_allow_horizontal_movement)
-        return false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
+        return; //false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
 
       auto item = target;
 
@@ -107,25 +107,25 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
       if(event->state & GDK_SHIFT_MASK)
         m_shift_click = true;
 
-      return true; // Handled.
+      return; // true; // Handled.
     }
     case 3:
     {
       m_signal_show_context.emit(event->button, event->time);
-      return false; // Not fully Handled.
+      return; // false; // Not fully Handled.
     }
     default:
       break;
   }
 
 
-  return false; // Not handled. Pass it to an item lower in the z order, if any.
+  return; // false; // Not handled. Pass it to an item lower in the z order, if any.
 }
 
-bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
+void CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
 {
   if(!m_allow_vertical_movement && !m_allow_horizontal_movement)
-    return false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
+    return; // false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
 
   auto item = target;
 
@@ -190,18 +190,18 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
     m_drag_latest_position_y = new_y;
     m_signal_moved.emit(refThis, this_move_offset_x, this_move_offset_y);
 
-    return true; //We handled this event.
+    return; // true; //We handled this event.
   }
 
-  return false; //We didn't handle this event.
+  return; // false; //We didn't handle this event.
 }
 
-bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
+void CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
 {
   //std::cout << G_STRFUNC << ": DEBUG\n";
 
   if(!m_allow_vertical_movement && !m_allow_horizontal_movement)
-    return false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
+    return; // false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
 
   auto canvas = get_parent_canvas_widget();
   if(canvas)
@@ -239,22 +239,22 @@ bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::It
     m_signal_selected.emit(refThis, m_shift_click);
   }
 
-  return true;
+  return; // true;
 }
 
-bool CanvasItemMovable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* event)
+void CanvasItemMovable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* event)
 {
   set_cursor(create_drag_cursor((GdkEventAny*)event, m_drag_cursor_type));
 
-  return false; //We didn't fully handle this event - let other signal handlers (even for other items) handle it too.
+  //return false; //We didn't fully handle this event - let other signal handlers (even for other items) handle it too.
 }
 
 
-bool CanvasItemMovable::on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
+void CanvasItemMovable::on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
 {
   unset_cursor();
 
-  return false; //We didn't fully handle this event - let other signal handlers (even for other items) handle it too.
+  // return false; //We didn't fully handle this event - let other signal handlers (even for other items) handle it too.
 }
 
 CanvasItemMovable::type_signal_moved CanvasItemMovable::signal_moved()

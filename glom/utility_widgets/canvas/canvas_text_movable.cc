@@ -37,12 +37,12 @@ CanvasTextMovable::CanvasTextMovable(const Glib::ustring& text, double x, double
 
 void CanvasTextMovable::init()
 {
-  signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event), true /* connect after */);
-  signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_press_event), true /* connect after */);
-  signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_release_event), true /* connect after */);
+  signal_motion_notify_event().connect_notify(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));
+  signal_button_press_event().connect_notify(sigc::mem_fun(*this, &CanvasItemMovable::on_button_press_event));
+  signal_button_release_event().connect_notify(sigc::mem_fun(*this, &CanvasItemMovable::on_button_release_event));
 
-  signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_enter_notify_event), true /* connect after */);
-  signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_leave_notify_event), true /* connect after */);
+  signal_enter_notify_event().connect_notify(sigc::mem_fun(*this, &CanvasItemMovable::on_enter_notify_event));
+  signal_leave_notify_event().connect_notify(sigc::mem_fun(*this, &CanvasItemMovable::on_leave_notify_event));
 }
 
 Glib::RefPtr<CanvasTextMovable> CanvasTextMovable::create(const Glib::ustring& string, double x, double y, double width, Goocanvas::AnchorType anchor)

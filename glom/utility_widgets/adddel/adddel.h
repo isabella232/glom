@@ -256,7 +256,7 @@ private:
 
   void on_treeview_columns_changed();
 
-  bool on_button_press_event_Popup(GdkEventButton* button_event);
+  void on_button_press_event_Popup(GdkEventButton* button_event);
 
   void on_treeview_button_press_event(GdkEventButton* button_event);
 

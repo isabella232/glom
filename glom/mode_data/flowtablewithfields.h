@@ -286,7 +286,7 @@ private:
   void on_menu_delete_activate() override; // override this to add a dialog box
   bool on_button_press_event(GdkEventButton *event) override;
 
-  bool on_event_box_button_press_event(GdkEventButton *event);
+  void on_event_box_button_press_event(GdkEventButton *event);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 };
 

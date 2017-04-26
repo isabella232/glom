@@ -193,8 +193,8 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
     event_box->add(*flow_table);
     event_box->set_visible_window(false);
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    event_box->signal_button_press_event().connect (sigc::mem_fun (*flow_table,
-      &FlowTableWithFields::on_event_box_button_press_event), true /* connect after */);
+    event_box->signal_button_press_event().connect_notify(sigc::mem_fun (*flow_table,
+      &FlowTableWithFields::on_event_box_button_press_event));
 #endif
     event_box->show();
 
@@ -401,8 +401,7 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
         event_box->add(*flow_table);
         event_box->set_visible_window(false);
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-        event_box->signal_button_press_event().connect (sigc::mem_fun (*flow_table, &FlowTableWithFields::on_event_box_button_press_event),
-          true /* connect after */);
+        event_box->signal_button_press_event().connect_notify(sigc::mem_fun (*flow_table, &FlowTableWithFields::on_event_box_button_press_event));
 #endif
         event_box->show();
 
@@ -1306,10 +1305,10 @@ void FlowTableWithFields::on_menu_delete_activate()
   }
 }
 
-bool FlowTableWithFields::on_event_box_button_press_event(GdkEventButton *button_event)
+void FlowTableWithFields::on_event_box_button_press_event(GdkEventButton *button_event)
 {
   // Re-use the handler for the parent FlowTableWithFields:
-  return on_button_press_event(button_event);
+  on_button_press_event(button_event);
 }
 
 bool FlowTableWithFields::on_button_press_event(GdkEventButton *button_event)
