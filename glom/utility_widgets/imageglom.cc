@@ -493,7 +493,7 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
       //Don't set a new pixbuf if the dimensions have not changed:
       Glib::RefPtr<Gdk::Pixbuf> pixbuf_in_image;
 
-      if(m_image->get_storage_type() == Gtk::ImageType::PIXBUF) //Prevent warning.
+      if(m_image->get_storage_type() == Gtk::Image::Type::PIXBUF) //Prevent warning.
         pixbuf_in_image = m_image->get_pixbuf();
 
       if( !pixbuf_in_image || !pixbuf_scaled || (pixbuf_in_image->get_height() != pixbuf_scaled->get_height()) || (pixbuf_in_image->get_width() != pixbuf_scaled->get_width()) )
