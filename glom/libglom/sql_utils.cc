@@ -147,7 +147,7 @@ static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder
     builder->select_join_targets(
             builder->select_add_target(relationship->get_from_table()),
             to_target_id,
-            Gnome::Gda::SQL_SELECT_JOIN_LEFT,
+            Gnome::Gda::SqlSelectJoinType::LEFT,
             builder->add_cond(
                     Gnome::Gda::SqlOperatorType::EQ,
                     builder->add_field_id(relationship->get_from_field(), relationship->get_from_table()),
@@ -164,7 +164,7 @@ static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder
     builder->select_join_targets(
             builder->select_add_target(relationship->get_from_table()), //TODO: Must we use the ID from select_add_target_id()?
             to_target_id,
-            Gnome::Gda::SQL_SELECT_JOIN_LEFT,
+            Gnome::Gda::SqlSelectJoinType::LEFT,
             builder->add_cond(
                     Gnome::Gda::SqlOperatorType::EQ,
                     builder->add_field_id(related_relationship->get_from_field(), parent_relationship.get_sql_join_alias_name()),
