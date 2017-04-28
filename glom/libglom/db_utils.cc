@@ -586,7 +586,7 @@ bool add_standard_groups(const std::shared_ptr<Document>& document)
   }
 
   // If the connection doesn't support users we can skip this step
-  if(gda_connection->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
+  if(gda_connection->supports_feature(Gnome::Gda::ConnectionFeature::USERS))
   {
     const auto vecGroups = Glom::Privs::get_database_groups();
     if(Utils::find_exists(vecGroups, devgroup)) {
@@ -657,7 +657,7 @@ bool add_groups_from_document(const std::shared_ptr<const Document>& document)
   }
 
   // If the connection doesn't support users we can skip this step
-  if(!(gda_connection->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS)))
+  if(!(gda_connection->supports_feature(Gnome::Gda::ConnectionFeature::USERS)))
     return true;
 
   //Get the list of groups from the database server:
@@ -693,7 +693,7 @@ bool set_table_privileges_groups_from_document(const std::shared_ptr<const Docum
   }
 
   // If the connection doesn't support users we can skip this step
-  if(!(gda_connection->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS)))
+  if(!(gda_connection->supports_feature(Gnome::Gda::ConnectionFeature::USERS)))
     return true;
 
   //Get the list of groups from the database server:

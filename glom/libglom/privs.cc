@@ -472,7 +472,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   }
   */
   auto sharedconnection = connection_pool->connect();
-  if(sharedconnection && sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
+  if(sharedconnection && sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::ConnectionFeature::USERS))
   {
     //Get the "true" rights for any groups that the user is in:
     const auto groups = get_groups_of_user(current_user);

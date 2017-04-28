@@ -1261,7 +1261,7 @@ void AppWindow::update_userlevel_ui()
     if(ConnectionPool::get_instance_is_ready())
     {
       auto connection = ConnectionPool::get_and_connect();
-      if(connection && !connection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
+      if(connection && !connection->get_gda_connection()->supports_feature(Gnome::Gda::ConnectionFeature::USERS))
         m_action_developer_users->set_enabled(false);
     }
   }
