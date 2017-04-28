@@ -410,7 +410,7 @@ std::string sqlbuilder_get_full_query(
     if(connection)
     {
       result = connection->statement_to_sql(stmt,
-                                            Gnome::Gda::STATEMENT_SQL_PARAMS_AS_VALUES | Gnome::Gda::STATEMENT_SQL_PRETTY);
+                                            Gnome::Gda::Statement::SqlFlag::PARAMS_AS_VALUES | Gnome::Gda::Statement::SqlFlag::PRETTY);
     }
     else
       result = stmt->to_sql();
