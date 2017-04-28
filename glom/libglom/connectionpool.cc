@@ -546,7 +546,7 @@ bool ConnectionPool::handle_error_cerr_only()
       Glib::ustring error_details;
       for(const auto& event : list_errors)
       {
-        if(event && (event->get_event_type() == Gnome::Gda::CONNECTION_EVENT_ERROR))
+        if(event && (event->get_event_type() == Gnome::Gda::ConnectionEvent::Type::ERROR))
         {
           if(!error_details.empty())
             error_details += '\n'; //Add newline after each error.
