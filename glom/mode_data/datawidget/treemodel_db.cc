@@ -402,9 +402,9 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
   }
 }
 
-Gtk::TreeModelFlags DbTreeModel::get_flags_vfunc() const
+Gtk::TreeModel::Flags DbTreeModel::get_flags_vfunc() const
 {
-   return (Gtk::TreeModelFlags)(Gtk::TreeModelFlags::LIST_ONLY | Gtk::TreeModelFlags::ITERS_PERSIST);
+   return (Gtk::TreeModel::Flags)(Gtk::TreeModel::Flags::LIST_ONLY | Gtk::TreeModel::Flags::ITERS_PERSIST);
 }
 
 int DbTreeModel::get_n_columns_vfunc() const
