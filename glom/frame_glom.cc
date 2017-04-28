@@ -1175,7 +1175,7 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
   }
 
   //Identify the where_clause:
-  Gnome::Gda::SqlExpr where_clause_to_use = where_clause;
+  auto where_clause_to_use = where_clause;
 
   //Prefer the quick find text if any was entered:
   const auto quickfind_criteria = m_entry_quick_find->get_text();

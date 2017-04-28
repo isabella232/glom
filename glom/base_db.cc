@@ -735,7 +735,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   const auto field_name = field_in_record.m_field->get_name();
   if(!field_name.empty()) //This should not happen.
   {
-    const Gnome::Gda::SqlExpr where_clause =
+    const auto where_clause =
       SqlUtils::build_simple_where_expression(field_in_record.m_table_name,
         field_in_record.m_key, field_in_record.m_key_value);
     const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =

@@ -257,7 +257,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
           Conversions::get_text_for_gda_value(field_group_by->get_glom_type(), group_value, m_locale, field_group_by->get_formatting_used().m_numeric_format) );
 
         //TODO: Use a SQL parameter instead of using sql().
-        Gnome::Gda::SqlExpr where_clause =
+        auto where_clause =
           SqlUtils::build_simple_where_expression(group_field_table_name, field_group_by->get_full_field_details(), group_value);
 
         if(!found_set_parent.m_where_clause.empty())

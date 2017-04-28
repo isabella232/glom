@@ -67,7 +67,7 @@ int main()
   //Build a SQL query and get the string for it:
   const Gnome::Gda::Value value("Born To Run");
   auto where_field = document->get_field("albums", "name");
-  const Gnome::Gda::SqlExpr where_clause =
+  const auto where_clause =
     Glom::SqlUtils::build_simple_where_expression("albums", where_field, value);
 
   Glom::SqlUtils::type_vecLayoutFields fieldsToGet;

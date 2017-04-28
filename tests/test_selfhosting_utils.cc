@@ -513,7 +513,7 @@ bool test_example_musiccollection_data(const std::shared_ptr<const Glom::Documen
 
   //Check that some data is as expected:
   const Gnome::Gda::Value value("Born To Run");
-  const Gnome::Gda::SqlExpr where_clause =
+  const auto where_clause =
     Glom::SqlUtils::get_find_where_clause_quick(document, "albums", value);
 
   Glom::SqlUtils::type_vecLayoutFields fieldsToGet;

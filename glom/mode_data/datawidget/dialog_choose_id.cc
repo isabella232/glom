@@ -109,7 +109,7 @@ void Dialog_ChooseID::on_button_quickfind()
   }
   else
   {
-    const Gnome::Gda::SqlExpr where_clause =
+    const auto where_clause =
       SqlUtils::get_find_where_clause_quick(get_document(), m_table_name,
         Gnome::Gda::Value(criteria));
     on_box_find_criteria(where_clause);

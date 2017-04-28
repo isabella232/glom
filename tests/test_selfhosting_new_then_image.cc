@@ -57,7 +57,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  const Gnome::Gda::SqlExpr where_clause =
+  const auto where_clause =
     Glom::SqlUtils::build_simple_where_expression(table_name, key_field, Gnome::Gda::Value(1));
 
   //Set the value, from an image file:
