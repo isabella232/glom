@@ -702,7 +702,7 @@ void ImageGlom::on_menupopup_activate_save_file()
 {
   auto pApp = get_appwindow();
 
-  Gtk::FileChooserDialog dialog(_("Save Image"), Gtk::FileChooserAction::SAVE);
+  Gtk::FileChooserDialog dialog(_("Save Image"), Gtk::FileChooser::Action::SAVE);
   if(pApp)
     dialog.set_transient_for(*pApp);
 
@@ -791,7 +791,7 @@ void ImageGlom::on_menupopup_activate_select_file()
 
   auto pApp = get_appwindow();
 
-  Gtk::FileChooserDialog dialog(_("Choose Image"), Gtk::FileChooserAction::OPEN);
+  Gtk::FileChooserDialog dialog(_("Choose Image"), Gtk::FileChooser::Action::OPEN);
   if(pApp)
     dialog.set_transient_for(*pApp);
 

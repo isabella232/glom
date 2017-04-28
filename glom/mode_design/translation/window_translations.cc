@@ -338,7 +338,7 @@ void Window_Translations::on_treeview_edited(const Glib::ustring& /* path */, co
 void Window_Translations::on_button_export()
 {
   //Show the file-chooser dialog, to select an output .po file:
-  Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FileChooserAction::SAVE);
+  Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FileChooser::Action::SAVE);
   file_dlg.set_transient_for(*this);
   file_dlg.set_do_overwrite_confirmation();
 
@@ -378,7 +378,7 @@ void Window_Translations::on_button_export()
 
 void Window_Translations::on_button_import()
 {
-  Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FileChooserAction::OPEN);
+  Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FileChooser::Action::OPEN);
   file_dlg.set_transient_for(*this);
 
   // Only po files

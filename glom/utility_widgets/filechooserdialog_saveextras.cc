@@ -27,14 +27,14 @@
 namespace Glom
 {
 
-FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras(const Glib::ustring& title, Gtk::FileChooserAction action)
+FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras(const Glib::ustring& title, Gtk::FileChooser::Action action)
 : Gtk::FileChooserDialog(title, action),
   m_extra_widget(Gtk::Orientation::VERTICAL)
 {
   create_child_widgets();
 }
 
-FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras(Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action)
+FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras(Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooser::Action action)
 : Gtk::FileChooserDialog(parent, title, action),
   m_extra_widget(Gtk::Orientation::VERTICAL)
 {

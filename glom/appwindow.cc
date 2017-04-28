@@ -2089,12 +2089,12 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
   //Create the appropriate dialog, depending on how the caller set m_ui_save_extra_showextras:
   if(m_ui_save_extra_showextras)
   {
-    fileChooser_SaveExtras = new Glom::FileChooserDialog_SaveExtras(_("Save Document"), Gtk::FileChooserAction::SAVE);
+    fileChooser_SaveExtras = new Glom::FileChooserDialog_SaveExtras(_("Save Document"), Gtk::FileChooser::Action::SAVE);
     fileChooser_Save.reset(fileChooser_SaveExtras);
   }
   else
   {
-    fileChooser_Save.reset(new Gtk::FileChooserDialog(gettext("Save Document"), Gtk::FileChooserAction::SAVE));
+    fileChooser_Save.reset(new Gtk::FileChooserDialog(gettext("Save Document"), Gtk::FileChooser::Action::SAVE));
   }
 
   fileChooser_Save->set_do_overwrite_confirmation(); //Ask the user if the file already exists.
@@ -2380,7 +2380,7 @@ void AppWindow::on_menu_developer_export_backup()
   starting_name = Utils::string_replace(starting_name, ":", "-");
 
   // This actually creates the directory:
-  Gtk::FileChooserDialog dialog(*this, _("Save Backup"), Gtk::FileChooserAction::CREATE_FOLDER);
+  Gtk::FileChooserDialog dialog(*this, _("Save Backup"), Gtk::FileChooser::Action::CREATE_FOLDER);
   dialog.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
   dialog.add_button(_("_Save"), Gtk::ResponseType::ACCEPT);
   dialog.set_local_only(); //Because pg_dump, pg_restore and tar can't use URIs.
@@ -2408,7 +2408,7 @@ void AppWindow::on_menu_developer_export_backup()
 
 void AppWindow::on_menu_developer_restore_backup()
 {
-  Gtk::FileChooserDialog file_dlg(_("Choose a backup file"), Gtk::FileChooserAction::OPEN);
+  Gtk::FileChooserDialog file_dlg(_("Choose a backup file"), Gtk::FileChooser::Action::OPEN);
   file_dlg.set_transient_for(*this);
   file_dlg.set_local_only(); //Because we can't untar remote files.
 
@@ -2792,7 +2792,7 @@ Glib::ustring AppWindow::ui_file_select_open(const Glib::ustring& starting_folde
 {
   Gtk::Window* pWindow = this;
 
-  Gtk::FileChooserDialog fileChooser_Open(_("Open Document"), Gtk::FileChooserAction::OPEN);
+  Gtk::FileChooserDialog fileChooser_Open(_("Open Document"), Gtk::FileChooser::Action::OPEN);
   fileChooser_Open.add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
   fileChooser_Open.add_button(_("_Open"), Gtk::ResponseType::OK);
   fileChooser_Open.set_default_response(Gtk::ResponseType::OK);
