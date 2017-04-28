@@ -86,7 +86,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   }
 
   //Get all entered field name/value pairs:
-  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
+  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::INSERT);
   builder->set_table(m_table_name);
 
   //Avoid specifying the same field twice:
@@ -285,7 +285,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
         //Generate the new key value;
       }
 
-      auto builder_insert = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
+      auto builder_insert = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::INSERT);
       builder_insert->set_table(relationship->get_to_table());
       builder_insert->add_field_value(primary_key_field->get_name(), primary_key_value);
       if(!DbUtils::query_execute(builder_insert))
@@ -331,7 +331,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
           {
             const auto target_table = relationship->get_from_table();
             auto builder_update =
-              Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+              Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::UPDATE);
             builder_update->set_table(target_table);
             builder_update->add_field_value_as_value(relationship->get_from_field(), primary_key_value);
             builder_update->set_where(
@@ -388,7 +388,7 @@ bool Base_DB_Table_Data::record_delete(const Gnome::Gda::Value& primary_key_valu
   if(field_primary_key && !Conversions::value_is_empty(primary_key_value))
   {
     auto builder =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_DELETE);
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::DELETE);
     builder->set_table(m_table_name);
     builder->set_where(
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
@@ -425,7 +425,7 @@ bool Base_DB_Table_Data::get_related_record_exists(const std::shared_ptr<const R
 
   //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria?
   auto builder =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder->select_add_field(to_field, related_table);
   builder->select_add_target(related_table);
   builder->set_where(

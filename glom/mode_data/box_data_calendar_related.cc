@@ -149,7 +149,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
     auto date_field = derived_portal->get_date_field();
 
     auto builder =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
     const auto cond = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_BETWEEN,
        builder->add_field_id(date_field->get_name(), m_found_set.m_table_name),
        builder->add_expr_as_value(date_start_value),
@@ -262,7 +262,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
     //Create the link by setting the foreign key
     if(m_key_field && portal)
     {
-      auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+      auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::UPDATE);
       const auto target_table = portal->get_table_used(Glib::ustring() /* not relevant */);
       builder->set_table(target_table);
       builder->add_field_value_as_value(m_key_field->get_name(), m_key_value);

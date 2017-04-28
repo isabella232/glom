@@ -87,7 +87,7 @@ FoundSet Box_Data::get_found_set() const
 Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
 {
   auto builder =
-    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder->select_add_target(m_table_name);  //This might not be necessary.
   guint where_cond_id = 0;
 

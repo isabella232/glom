@@ -77,7 +77,7 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
   }
 
   const auto target_table = portal->get_table_used(Glib::ustring() /* not relevant */);
-  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::UPDATE);
     builder->set_table(target_table);
     builder->add_field_value_as_value(m_key_field->get_name(), m_key_value);
     builder->set_where(

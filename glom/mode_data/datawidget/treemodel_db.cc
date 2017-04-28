@@ -990,7 +990,7 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       //TODO: Apparently, this is very slow:
 
       auto builder =
-        Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+        Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
 
       const auto id_function = builder->add_function("count", builder->add_id("*")); //TODO: Is * allowed here?
       builder->add_field_value_id(id_function);

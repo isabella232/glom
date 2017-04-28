@@ -223,7 +223,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
     const auto group_field_table_name = field_group_by->get_table_used(found_set_parent.m_table_name);
 
     auto builder =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
     builder->select_add_field(field_group_by->get_name(), group_field_table_name);
     builder->select_add_target(group_field_table_name);
 
@@ -461,7 +461,7 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
   {
     //In this case it can only be a system preferences field.
     //So let's get that data here:
-    auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
     builder->set_table(field->get_table_used(found_set.m_table_name));
     builder->select_add_field(field->get_name(), found_set.m_table_name);
     builder->select_set_limit(1);

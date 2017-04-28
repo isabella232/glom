@@ -693,7 +693,7 @@ bool Box_DB_Table_Definition::field_has_null_values(const std::shared_ptr<const 
   //Note that "= Null" doesn't work, though it doesn't error either.
   //Note also that SELECT COUNT always returns 0 if all the values are NULL, so we can't use that to be more efficient.
   auto builder =
-    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder->select_add_field(field->get_name(), m_table_name);
   builder->select_add_target(m_table_name);
   builder->set_where(
@@ -724,7 +724,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const std::shared_ptr<
   long count_all = 0;
 
   //Count the distinct rows:
-  auto builder_query_distinct = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+  auto builder_query_distinct = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::UPDATE);
   builder_query_distinct->select_set_distinct();
   builder_query_distinct->set_table(m_table_name);
   builder_query_distinct->select_add_field(field->get_name(), m_table_name);
@@ -742,7 +742,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const std::shared_ptr<
 
   //Count all rows, to compare. TODO_performance: Is there a more efficient way to do this? Maybe count(*), which apparently doesn't ignore NULL rows like count(somefield) would.
   auto builder_query_all =
-    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder_query_all->select_add_field(field->get_name(), m_table_name);
   builder_query_all->select_add_target(m_table_name);
 

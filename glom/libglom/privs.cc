@@ -39,7 +39,7 @@ Privs::type_vec_strings Privs::get_database_groups()
   type_vec_strings result;
 
   auto builder =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder->select_add_field("groname", "pg_group");
   builder->select_add_target("pg_group");
 
@@ -115,7 +115,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
   {
     //pg_shadow contains the users. pg_users is a view of pg_shadow without the password.
     auto builder =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
     builder->select_add_field("usename", "pg_shadow");
     builder->select_add_target("pg_shadow");
 
@@ -134,7 +134,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
   else
   {
     auto builderGroup =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
     builderGroup->select_add_field("groname", "pg_group");
     builderGroup->select_add_field("grolist", "pg_group");
     builderGroup->select_add_target("pg_group");
@@ -161,7 +161,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
         {
           //TODO_Performance: Can we do this in one SQL SELECT?
           auto builderUser =
-            Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+            Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
           builderUser->select_add_field("usename", "pg_user");
           builderUser->select_add_target("pg_user");
           builderUser->set_where(
@@ -309,7 +309,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
 
   //Get the permissions:
   auto builder =
-    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
 
   const Glib::ustring function_name = "has_table_privilege";
   std::vector<Gnome::Gda::SqlBuilder::Id> args_base;

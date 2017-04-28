@@ -98,7 +98,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
 
     //Get the single value from the related records:
     auto builder =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
     builder->select_add_field(field_name, related_table);
     builder->select_add_target(related_table);
     builder->set_where(
@@ -187,7 +187,7 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
 
   //Get the aggregate value from the related records:
   auto builder =
-    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
 
   const Gnome::Gda::SqlBuilder::Id id_function = builder->add_function(aggregate, builder->add_id(field_name)); //TODO: It would be nice to specify the table here too.
   builder->add_field_value_id(id_function);

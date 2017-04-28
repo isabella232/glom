@@ -355,7 +355,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
 void PostgresSelfHosted::show_active_connections()
 {
   auto builder =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder->select_add_field("*", "pg_stat_activity");
   builder->select_add_target("pg_stat_activity");
 

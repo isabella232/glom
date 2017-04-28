@@ -365,7 +365,7 @@ SystemPrefs get_database_preferences(const std::shared_ptr<const Document>& docu
   const auto optional_org_logo = get_field_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME, GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO);
 
   auto builder =
-    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder->select_add_target(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
 
   builder->select_add_field(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
@@ -443,7 +443,7 @@ void set_database_preferences(const std::shared_ptr<Document>& document, const S
    //The logo field was introduced in a later version of Glom.
   //If the user is not in developer mode then the new field has not yet been added:
 
-  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::UPDATE);
   builder->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME, prefs.m_name);
   builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME, prefs.m_org_name);
@@ -485,7 +485,7 @@ bool add_standard_tables(const std::shared_ptr<const Document>& document)
       if(test)
       {
         //Add the single record:
-        auto builderAdd = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
+        auto builderAdd = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::INSERT);
         builderAdd->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
         builderAdd->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, 1);
         if(!query_execute(builderAdd))
@@ -495,7 +495,7 @@ bool add_standard_tables(const std::shared_ptr<const Document>& document)
         const auto system_name = document->get_database_title_original();
         if(!system_name.empty())
         {
-          auto builderUpdate = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+          auto builderUpdate = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::UPDATE);
           builderUpdate->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
           builderUpdate->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME, system_name);
           builderUpdate->set_where(builderUpdate->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
@@ -1405,7 +1405,7 @@ Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name,
   ++num_result;
   const auto next_value = Conversions::parse_value(num_result);
 
-  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::UPDATE);
   builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   builder->add_field_value_as_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE, next_value);
   builder_set_where_autoincrement(builder, table_name, field_name);
@@ -1442,7 +1442,7 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
   }
 
   auto builder =
-    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder->select_add_field("next_value", GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   builder->select_add_target(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   builder_set_where_autoincrement(builder, table_name, field_name);
@@ -1453,7 +1453,7 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
     //Start with zero:
 
     //Insert the row if it's not there.
-    builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
+    builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::INSERT);
     builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
     builder->add_field_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME, table_name);
     builder->add_field_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME, field_name);
@@ -1504,7 +1504,7 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
   auto_increment_insert_first_if_necessary(table_name, field_name);
 
   //Get the max key value in the database:
-  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   std::vector<guint> args;
   args.emplace_back(builder->add_field_id(field_name, table_name));
   builder->add_field_value_id(builder->add_function("MAX", args));
@@ -1530,7 +1530,7 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
     const auto next_value = Conversions::parse_value(num_max);
 
     builder.reset();
-    builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+    builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::UPDATE);
     builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
     builder->add_field_value_as_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE, next_value);
     builder_set_where_autoincrement(builder, table_name, field_name);
@@ -1558,7 +1558,7 @@ void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring&
   }
 
   auto builder =
-    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_DELETE);
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::DELETE);
   builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   builder_set_where_autoincrement(builder, table_name, field_name);
 
@@ -1609,7 +1609,7 @@ bool insert_example_data(const std::shared_ptr<const Document>& document, const 
 
     const auto hosting_mode = document->get_hosting_mode();
 
-    auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
+    auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::INSERT);
     builder->set_table(table_name);
     for(unsigned int i = 0; i < row_data.size(); ++i) //TODO_Performance: Avoid calling size() so much.
     {
@@ -2273,7 +2273,7 @@ Gnome::Gda::Value get_lookup_value(const std::shared_ptr<const Document>& docume
 
     const auto target_table = relationship->get_to_table();
     auto builder =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
     builder->select_add_field(source_field->get_name(), target_table );
     builder->select_add_target(target_table );
     builder->set_where(

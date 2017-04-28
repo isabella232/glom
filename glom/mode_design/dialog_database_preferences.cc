@@ -115,7 +115,7 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
 
     const Gnome::Gda::Value next_value = Conversions::parse_value(new_value);
 
-    auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+    auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::UPDATE);
     builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
     builder->add_field_value_as_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE, next_value);
     builder->set_where(
@@ -159,7 +159,7 @@ void Dialog_Database_Preferences::load_from_document()
   m_model_autoincrements->clear();
 
   auto builder =
-    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder->select_add_field(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME,
     GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   builder->select_add_field(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME,

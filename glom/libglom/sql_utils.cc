@@ -77,7 +77,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_count_rows(const Glib::Ref
     return result;
   }
 
-  result = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  result = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
 
   //Note that the alias is just because the SQL syntax requires it - we get an error if we don't use it.
   //Be careful not to include ORDER BY clauses in this, because that would make it unnecessarily slow:
@@ -249,7 +249,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_where_clause(const Gl
   //Build the whole SQL statement:
   try
   {
-    builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
     builder->select_add_target(table_name);
 
     //Add the fields to SELECT, plus the tables that they are selected FROM.
@@ -320,7 +320,7 @@ Gnome::Gda::SqlExpr build_simple_where_expression(const Glib::ustring& table_nam
     return Gnome::Gda::SqlExpr();
   }
 
-  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder->select_add_target(table_name);  //This might not be necessary.
   const Gnome::Gda::SqlBuilder::Id id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
                                                           builder->add_field_id(key_field->get_name(), table_name),
@@ -333,7 +333,7 @@ Gnome::Gda::SqlExpr build_simple_where_expression(const Glib::ustring& table_nam
 Gnome::Gda::SqlExpr build_combined_where_expression(const Gnome::Gda::SqlExpr& a, const Gnome::Gda::SqlExpr& b, Gnome::Gda::SqlOperatorType op)
 {
   auto builder =
-          Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+          Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
 
   const Gnome::Gda::SqlBuilder::Id id = builder->add_cond(op,
                                                           builder->import_expression(a),
@@ -456,7 +456,7 @@ Gnome::Gda::SqlExpr get_find_where_clause_quick(const std::shared_ptr<const Docu
     return Gnome::Gda::SqlExpr();
 
   auto builder =
-          Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+          Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder->select_add_target(table_name);
 
   //We need to add some fields to select,
@@ -544,7 +544,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_update_with_where_clause(
   //Build the whole SQL statement:
   try
   {
-    builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+    builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::UPDATE);
     builder->set_table(table_name);
 
     builder->add_field_value_as_value(field->get_name(), value);

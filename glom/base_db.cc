@@ -527,7 +527,7 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
 {
 
   //Get primary key values for every record:
-  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder->select_add_field(primary_key->get_name(), table_name);
   builder->select_add_target(table_name);
 
@@ -1080,7 +1080,7 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
   const auto table_name_used = field->get_table_used(table_name);
 
   auto builder =
-    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder->select_add_field(field->get_name(), table_name_used);
   builder->select_add_target(table_name_used);
   builder->set_where(
@@ -1161,7 +1161,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
   layout_item->set_full_field_details(primary_key);
   fieldsToGet.emplace_back(layout_item);
 
-  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder->select_add_target(found_set.m_table_name);
 
   const auto eq_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
