@@ -93,7 +93,6 @@ static void egg_spread_table_add                  (GtkContainer        *containe
 static void egg_spread_table_remove               (GtkContainer        *container,
 						   GtkWidget           *widget);
 static void egg_spread_table_forall               (GtkContainer        *container,
-						   gboolean             include_internals,
 						   GtkCallback          callback,
 						   gpointer             callback_data);
 static GType egg_spread_table_child_type          (GtkContainer        *container);
@@ -701,7 +700,6 @@ egg_spread_table_remove (GtkContainer *container,
 
 static void
 egg_spread_table_forall (GtkContainer *container,
-			 G_GNUC_UNUSED gboolean      include_internals,
 			 GtkCallback   callback,
 			 gpointer      callback_data)
 {
