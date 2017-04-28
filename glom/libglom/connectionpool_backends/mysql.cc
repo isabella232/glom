@@ -178,7 +178,7 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
 
   try
   {
-    connection->begin_transaction(TRANSACTION_NAME, Gnome::Gda::TRANSACTION_ISOLATION_SERVER_DEFAULT); // TODO: What does the transaction isolation do?
+    connection->begin_transaction(TRANSACTION_NAME, Gnome::Gda::TransactionIsolation::SERVER_DEFAULT); // TODO: What does the transaction isolation do?
   }
   catch(const Glib::Error& ex)
   {
