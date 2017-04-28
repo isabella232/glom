@@ -427,7 +427,7 @@ void do_print_layout(const std::shared_ptr<const PrintLayout>& print_layout, con
   try
   {
     print->run(
-      (preview ? Gtk::PrintOperationAction::PREVIEW : Gtk::PrintOperationAction::PRINT_DIALOG),
+      (preview ? Gtk::PrintOperation::Action::PREVIEW : Gtk::PrintOperation::Action::PRINT_DIALOG),
       *transient_for);
   }
   catch(const Gtk::PrintError& ex)

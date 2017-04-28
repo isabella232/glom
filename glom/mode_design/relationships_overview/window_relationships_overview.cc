@@ -302,7 +302,7 @@ void Window_RelationshipsOverview::load_from_document()
 
 void Window_RelationshipsOverview::on_menu_file_print()
 {
-  print_or_preview(Gtk::PrintOperationAction::PRINT_DIALOG);
+  print_or_preview(Gtk::PrintOperation::Action::PRINT_DIALOG);
 }
 
 void Window_RelationshipsOverview::on_menu_file_page_setup()
@@ -340,7 +340,7 @@ void Window_RelationshipsOverview::on_menu_file_save()
 {
 }
 
-void Window_RelationshipsOverview::print_or_preview(Gtk::PrintOperationAction print_action)
+void Window_RelationshipsOverview::print_or_preview(Gtk::PrintOperation::Action print_action)
 {
   //Create a new PrintOperation with our PageSetup and PrintSettings:
   //(We use our derived PrintOperation class)

@@ -59,7 +59,7 @@ private:
   void draw_tables();
   void draw_lines();
   void setup_context_menu();
-  void print_or_preview(Gtk::PrintOperationAction print_action);
+  void print_or_preview(Gtk::PrintOperation::Action print_action);
   void on_button_close();
 
   void on_menu_file_print();
