@@ -883,7 +883,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
       //Both these libgda APIs are awful, and it's awful that we must use two APIs. murrayc.
       auto store = connection->get_meta_store();
       auto metastruct =
-        Gnome::Gda::MetaStruct::create(store, Gnome::Gda::META_STRUCT_FEATURE_NONE);
+        Gnome::Gda::MetaStruct::create(store, Gnome::Gda::MetaStruct::Feature::NONE);
       GdaMetaDbObject* meta_dbobject = nullptr;
       try
       {

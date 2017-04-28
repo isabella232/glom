@@ -184,7 +184,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   static const gchar TRANSACTION_NAME[] = "GLOM_RECREATE_TABLE_TRANSACTION";
 
   auto store = connection->get_meta_store();
-  auto metastruct = Gnome::Gda::MetaStruct::create(store, Gnome::Gda::META_STRUCT_FEATURE_NONE);
+  auto metastruct = Gnome::Gda::MetaStruct::create(store, Gnome::Gda::MetaStruct::Feature::NONE);
 
   auto object = metastruct->complement(Gnome::Gda::META_DB_TABLE, Gnome::Gda::Value(), Gnome::Gda::Value(), Gnome::Gda::Value(table_name));
   if(!object)
