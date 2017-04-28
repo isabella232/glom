@@ -80,13 +80,13 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
       {
          connection = Gnome::Gda::Connection::create_from_string("SQLite",
           cnc_string, auth_string,
-          Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+          Gnome::Gda::Connection::Options::SQL_IDENTIFIERS_CASE_SENSITIVE);
       }
       else
       {
         connection = Gnome::Gda::Connection::open_from_string("SQLite",
           cnc_string, auth_string,
-          Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+          Gnome::Gda::Connection::Options::SQL_IDENTIFIERS_CASE_SENSITIVE);
       }
     }
   }
@@ -129,7 +129,7 @@ bool Sqlite::create_database(const SlotProgress& slot_progress, const Glib::ustr
   auto cnc =
     Gnome::Gda::Connection::open_from_string("SQLite",
       cnc_string, "",
-      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+      Gnome::Gda::Connection::Options::SQL_IDENTIFIERS_CASE_SENSITIVE);
 
   if(slot_progress)
     slot_progress();

@@ -92,13 +92,13 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
     {
       connection = Gnome::Gda::Connection::create_from_string("PostgreSQL",
         cnc_string, auth_string,
-        Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+        Gnome::Gda::Connection::Options::SQL_IDENTIFIERS_CASE_SENSITIVE);
     }
     else
     {
       connection = Gnome::Gda::Connection::open_from_string("PostgreSQL",
         cnc_string, auth_string,
-        Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+        Gnome::Gda::Connection::Options::SQL_IDENTIFIERS_CASE_SENSITIVE);
 
       connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
       data_model = connection->statement_execute_select("SELECT version()");
@@ -118,7 +118,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
     {
       temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL",
         cnc_string_with_db, auth_string,
-        Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+        Gnome::Gda::Connection::Options::SQL_IDENTIFIERS_CASE_SENSITIVE);
     }
     catch(const Glib::Error& /* ex */)
     {
