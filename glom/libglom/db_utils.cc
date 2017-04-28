@@ -887,7 +887,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
       GdaMetaDbObject* meta_dbobject = nullptr;
       try
       {
-        meta_dbobject = metastruct->complement(Gnome::Gda::META_DB_TABLE,
+        meta_dbobject = metastruct->complement(Gnome::Gda::MetaDbObjectType::TABLE,
           Gnome::Gda::Value(), /* catalog */
           Gnome::Gda::Value(), /* schema */
           Gnome::Gda::Value(quoted_table_name)); //It's a static instance inside the MetaStore.
