@@ -179,7 +179,7 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
   builder->set_table(m_table_name);
   builder->add_field_value_as_value(field->get_name(), field_value);
   builder->set_where(
-    builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+    builder->add_cond(Gnome::Gda::SqlOperatorType::EQ,
       builder->add_field_id(m_key_field->get_name(), m_table_name),
       builder->add_expr(m_key_field_value)));
 

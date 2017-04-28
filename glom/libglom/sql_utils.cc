@@ -149,7 +149,7 @@ static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder
             to_target_id,
             Gnome::Gda::SQL_SELECT_JOIN_LEFT,
             builder->add_cond(
-                    Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+                    Gnome::Gda::SqlOperatorType::EQ,
                     builder->add_field_id(relationship->get_from_field(), relationship->get_from_table()),
                     builder->add_field_id(relationship->get_to_field(), alias_name)));
   }
@@ -166,7 +166,7 @@ static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder
             to_target_id,
             Gnome::Gda::SQL_SELECT_JOIN_LEFT,
             builder->add_cond(
-                    Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+                    Gnome::Gda::SqlOperatorType::EQ,
                     builder->add_field_id(related_relationship->get_from_field(), parent_relationship.get_sql_join_alias_name()),
                     builder->add_field_id(related_relationship->get_to_field(), alias_name) ) );
   }
@@ -322,7 +322,7 @@ Gnome::Gda::SqlExpr build_simple_where_expression(const Glib::ustring& table_nam
 
   auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder->select_add_target(table_name);  //This might not be necessary.
-  const Gnome::Gda::SqlBuilder::Id id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+  const Gnome::Gda::SqlBuilder::Id id = builder->add_cond(Gnome::Gda::SqlOperatorType::EQ,
                                                           builder->add_field_id(key_field->get_name(), table_name),
                                                           builder->add_expr(key_value));
   builder->set_where(id); //This might not be necessary.
@@ -500,7 +500,7 @@ Gnome::Gda::SqlExpr get_find_where_clause_quick(const std::shared_ptr<const Docu
 
       if(previous_id)
       {
-        const guint or_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_OR,
+        const guint or_id = builder->add_cond(Gnome::Gda::SqlOperatorType::OR,
                                               previous_id, eq_id);
         previous_id = or_id;
       }

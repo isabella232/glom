@@ -124,7 +124,7 @@ Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
           //And with previous condition, if any:
           if(where_cond_id)
           {
-            where_cond_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
+            where_cond_id = builder->add_cond(Gnome::Gda::SqlOperatorType::AND,
               where_cond_id,
               cond_id);
           }

@@ -263,7 +263,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
         if(!found_set_parent.m_where_clause.empty())
         {
           where_clause = SqlUtils::build_combined_where_expression(where_clause, found_set_parent.m_where_clause,
-            Gnome::Gda::SQL_OPERATOR_TYPE_AND);
+            Gnome::Gda::SqlOperatorType::AND);
         }
 
         FoundSet found_set_records = found_set_parent;

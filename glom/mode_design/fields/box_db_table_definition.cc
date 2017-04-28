@@ -697,7 +697,7 @@ bool Box_DB_Table_Definition::field_has_null_values(const std::shared_ptr<const 
   builder->select_add_field(field->get_name(), m_table_name);
   builder->select_add_target(m_table_name);
   builder->set_where(
-    builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_ISNULL,
+    builder->add_cond(Gnome::Gda::SqlOperatorType::ISNULL,
       builder->add_field_id(field->get_name(), m_table_name)));
 
   long null_count = 0;

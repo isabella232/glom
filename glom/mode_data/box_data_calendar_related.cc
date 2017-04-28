@@ -150,7 +150,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
 
     auto builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
-    const auto cond = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_BETWEEN,
+    const auto cond = builder->add_cond(Gnome::Gda::SqlOperatorType::BETWEEN,
        builder->add_field_id(date_field->get_name(), m_found_set.m_table_name),
        builder->add_expr_as_value(date_start_value),
        builder->add_expr_as_value(date_end_value));
@@ -166,7 +166,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
     {
       where_clause = SqlUtils::build_combined_where_expression(
         m_found_set.m_where_clause, extra_where_clause,
-        Gnome::Gda::SQL_OPERATOR_TYPE_AND);
+        Gnome::Gda::SqlOperatorType::AND);
     }
 
     //Do one SQL query for the whole month and store the cached values here:
@@ -267,7 +267,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
       builder->set_table(target_table);
       builder->add_field_value_as_value(m_key_field->get_name(), m_key_value);
       builder->set_where(
-        builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+        builder->add_cond(Gnome::Gda::SqlOperatorType::EQ,
           builder->add_field_id(field_primary_key->get_name(), target_table),
           builder->add_expr_as_value(primary_key_value)));
 

@@ -139,7 +139,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
     builderGroup->select_add_field("grolist", "pg_group");
     builderGroup->select_add_target("pg_group");
     builderGroup->set_where(
-      builderGroup->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+      builderGroup->add_cond(Gnome::Gda::SqlOperatorType::EQ,
         builderGroup->add_field_id("groname", "pg_group"),
         builderGroup->add_expr(group_name)));
     //TODO: Show SQL.
@@ -165,7 +165,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
           builderUser->select_add_field("usename", "pg_user");
           builderUser->select_add_target("pg_user");
           builderUser->set_where(
-            builderUser->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+            builderUser->add_cond(Gnome::Gda::SqlOperatorType::EQ,
               builderUser->add_field_id("usesysid", "pg_user"),
               builderUser->add_expr(userId)));
           auto data_model_user = DbUtils::query_execute_select(builderUser);

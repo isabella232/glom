@@ -429,7 +429,7 @@ bool Sqlite::supports_remote_access() const
 
 Gnome::Gda::SqlOperatorType Sqlite::get_string_find_operator() const
 {
-  return Gnome::Gda::SQL_OPERATOR_TYPE_LIKE;
+  return Gnome::Gda::SqlOperatorType::LIKE;
 }
 
 const char* Sqlite::get_public_schema_name() const

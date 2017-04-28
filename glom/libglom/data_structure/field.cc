@@ -427,7 +427,7 @@ Gnome::Gda::SqlOperatorType Field::sql_find_operator() const
       if(connection_pool && connection_pool->get_backend())
         return connection_pool->get_string_find_operator();
       else
-        return Gnome::Gda::SQL_OPERATOR_TYPE_LIKE; // Default
+        return Gnome::Gda::SqlOperatorType::LIKE; // Default
       break;
     }
     case(glom_field_type::DATE):
@@ -436,11 +436,11 @@ Gnome::Gda::SqlOperatorType Field::sql_find_operator() const
     case(glom_field_type::BOOLEAN):
     default:
     {
-      return Gnome::Gda::SQL_OPERATOR_TYPE_EQ;
+      return Gnome::Gda::SqlOperatorType::EQ;
     }
   }
 
-  return Gnome::Gda::SQL_OPERATOR_TYPE_EQ;
+  return Gnome::Gda::SqlOperatorType::EQ;
 }
 
 

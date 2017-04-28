@@ -81,7 +81,7 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
     builder->set_table(target_table);
     builder->add_field_value_as_value(m_key_field->get_name(), m_key_value);
     builder->set_where(
-      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+      builder->add_cond(Gnome::Gda::SqlOperatorType::EQ,
         builder->add_field_id(field_primary_key->get_name(), target_table),
         builder->add_expr_as_value(related_record_primary_key_value)));
 

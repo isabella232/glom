@@ -457,7 +457,7 @@ void set_database_preferences(const std::shared_ptr<Document>& document, const S
   {
     builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO, prefs.m_org_logo);
   }
-  builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+  builder->set_where(builder->add_cond(Gnome::Gda::SqlOperatorType::EQ,
                                        builder->add_field_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME),
                                        builder->add_expr(1)));
   const auto test = query_execute(builder);
@@ -498,7 +498,7 @@ bool add_standard_tables(const std::shared_ptr<const Document>& document)
           auto builderUpdate = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::UPDATE);
           builderUpdate->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
           builderUpdate->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME, system_name);
-          builderUpdate->set_where(builderUpdate->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+          builderUpdate->set_where(builderUpdate->add_cond(Gnome::Gda::SqlOperatorType::EQ,
                                                builderUpdate->add_field_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME),
                                                builderUpdate->add_expr(1)));
           if(!query_execute(builderUpdate))
@@ -1375,11 +1375,11 @@ static void builder_set_where_autoincrement(const Glib::RefPtr<Gnome::Gda::SqlBu
     return;
   }
 
-  builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
-    builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+  builder->set_where(builder->add_cond(Gnome::Gda::SqlOperatorType::AND,
+    builder->add_cond(Gnome::Gda::SqlOperatorType::EQ,
       builder->add_field_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME),
       builder->add_expr(table_name)),
-    builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+    builder->add_cond(Gnome::Gda::SqlOperatorType::EQ,
       builder->add_field_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME),
       builder->add_expr(field_name))));
 }
@@ -2277,7 +2277,7 @@ Gnome::Gda::Value get_lookup_value(const std::shared_ptr<const Document>& docume
     builder->select_add_field(source_field->get_name(), target_table );
     builder->select_add_target(target_table );
     builder->set_where(
-      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+      builder->add_cond(Gnome::Gda::SqlOperatorType::EQ,
         builder->add_field_id(to_key_field->get_name(), target_table),
         builder->add_expr(value_to_key_field)));
 

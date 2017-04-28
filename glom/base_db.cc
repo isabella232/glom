@@ -1084,7 +1084,7 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
   builder->select_add_field(field->get_name(), table_name_used);
   builder->select_add_target(table_name_used);
   builder->set_where(
-    builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+    builder->add_cond(Gnome::Gda::SqlOperatorType::EQ,
       builder->add_field_id(field->get_name(), table_name_used),
       builder->add_expr(value)));
 
@@ -1164,7 +1164,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
   auto builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::SELECT);
   builder->select_add_target(found_set.m_table_name);
 
-  const auto eq_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+  const auto eq_id = builder->add_cond(Gnome::Gda::SqlOperatorType::EQ,
         builder->add_field_id(primary_key->get_name(), found_set.m_table_name),
         builder->add_expr_as_value(primary_key_value));
   guint cond_id = 0;
@@ -1174,7 +1174,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
   }
   else
   {
-    cond_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
+    cond_id = builder->add_cond(Gnome::Gda::SqlOperatorType::AND,
       builder->import_expression(found_set.m_where_clause),
       eq_id);
   }

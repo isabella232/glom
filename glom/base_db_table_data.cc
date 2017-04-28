@@ -335,7 +335,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
             builder_update->set_table(target_table);
             builder_update->add_field_value_as_value(relationship->get_from_field(), primary_key_value);
             builder_update->set_where(
-              builder_update->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+              builder_update->add_cond(Gnome::Gda::SqlOperatorType::EQ,
                 builder_update->add_field_id(parent_primary_key_field->get_name(), target_table),
                 builder_update->add_expr(parent_primary_key_value)) );
 
@@ -391,7 +391,7 @@ bool Base_DB_Table_Data::record_delete(const Gnome::Gda::Value& primary_key_valu
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SqlStatement::Type::DELETE);
     builder->set_table(m_table_name);
     builder->set_where(
-      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+      builder->add_cond(Gnome::Gda::SqlOperatorType::EQ,
         builder->add_field_id(field_primary_key->get_name(), m_table_name),
         builder->add_expr(primary_key_value)) );
     return DbUtils::query_execute(builder);
@@ -429,7 +429,7 @@ bool Base_DB_Table_Data::get_related_record_exists(const std::shared_ptr<const R
   builder->select_add_field(to_field, related_table);
   builder->select_add_target(related_table);
   builder->set_where(
-    builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+    builder->add_cond(Gnome::Gda::SqlOperatorType::EQ,
       builder->add_field_id(to_field, related_table),
       builder->add_expr(key_value)));
 
