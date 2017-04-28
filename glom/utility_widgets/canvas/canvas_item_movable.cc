@@ -34,7 +34,7 @@
 
 namespace {
 
-static Glib::RefPtr<Gdk::Cursor> create_drag_cursor(GdkEventAny* event, Gdk::CursorType cursor_type)
+static Glib::RefPtr<Gdk::Cursor> create_drag_cursor(GdkEventAny* event, Gdk::Cursor::Type cursor_type)
 {
   auto window = Glib::wrap(event->window, true);
   auto display = window->get_display();
@@ -52,7 +52,7 @@ CanvasItemMovable::CanvasItemMovable()
   m_drag_start_cursor_x(0.0), m_drag_start_cursor_y(0.0),
   m_drag_start_position_x(0.0), m_drag_start_position_y(0.0),
   m_drag_latest_position_x(0.0), m_drag_latest_position_y(0.0),
-  m_drag_cursor_type(Gdk::CursorType::FLEUR), //arbitrary default
+  m_drag_cursor_type(Gdk::Cursor::Type::FLEUR), //arbitrary default
   m_grid(nullptr),
   m_allow_vertical_movement(true), m_allow_horizontal_movement(true),
   m_selected(false),
@@ -272,7 +272,7 @@ CanvasItemMovable::type_signal_selected CanvasItemMovable::signal_selected()
   return m_signal_selected;
 }
 
-void CanvasItemMovable::set_drag_cursor(Gdk::CursorType cursor_type)
+void CanvasItemMovable::set_drag_cursor(Gdk::Cursor::Type cursor_type)
 {
   m_drag_cursor_type = cursor_type;
 }

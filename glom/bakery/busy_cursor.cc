@@ -7,12 +7,12 @@ namespace Glom
 //Intialize static member variable:
 BusyCursor::type_map_cursors BusyCursor::m_map_cursors;
 
-BusyCursor::BusyCursor(Gtk::Window& window, Gdk::CursorType cursor_type)
+BusyCursor::BusyCursor(Gtk::Window& window, Gdk::Cursor::Type cursor_type)
 : BusyCursor(&window, cursor_type)
 {
 }
 
-BusyCursor::BusyCursor(Gtk::Window* window, Gdk::CursorType cursor_type)
+BusyCursor::BusyCursor(Gtk::Window* window, Gdk::Cursor::Type cursor_type)
 : m_window(window) //If this is a nested cursor then remember the previously-set cursor, so we can restore it.
 {
   if(!m_window)

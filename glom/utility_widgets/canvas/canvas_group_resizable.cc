@@ -52,7 +52,7 @@ CanvasGroupResizable::CanvasGroupResizable()
   //    (Goocanvas::PointerEvents)(Goocanvas::EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
 
 
-  set_drag_cursor(Gdk::CursorType::FLEUR);
+  set_drag_cursor(Gdk::Cursor::Type::FLEUR);
 }
 
 void CanvasGroupResizable::create_manipulators()
@@ -127,14 +127,14 @@ void CanvasGroupResizable::create_rect_manipulators()
   m_manipulator_edge_left->set_grid(m_grid);
   m_manipulator_edge_right->set_grid(m_grid);
 
-  m_manipulator_corner_top_left->set_drag_cursor(Gdk::CursorType::TOP_LEFT_CORNER);
-  m_manipulator_corner_top_right->set_drag_cursor(Gdk::CursorType::TOP_RIGHT_CORNER);
-  m_manipulator_corner_bottom_left->set_drag_cursor(Gdk::CursorType::BOTTOM_LEFT_CORNER);
-  m_manipulator_corner_bottom_right->set_drag_cursor(Gdk::CursorType::BOTTOM_RIGHT_CORNER);
-  m_manipulator_edge_top->set_drag_cursor(Gdk::CursorType::TOP_SIDE);
-  m_manipulator_edge_bottom->set_drag_cursor(Gdk::CursorType::BOTTOM_SIDE);
-  m_manipulator_edge_left->set_drag_cursor(Gdk::CursorType::LEFT_SIDE);
-  m_manipulator_edge_right->set_drag_cursor(Gdk::CursorType::RIGHT_SIDE);
+  m_manipulator_corner_top_left->set_drag_cursor(Gdk::Cursor::Type::TOP_LEFT_CORNER);
+  m_manipulator_corner_top_right->set_drag_cursor(Gdk::Cursor::Type::TOP_RIGHT_CORNER);
+  m_manipulator_corner_bottom_left->set_drag_cursor(Gdk::Cursor::Type::BOTTOM_LEFT_CORNER);
+  m_manipulator_corner_bottom_right->set_drag_cursor(Gdk::Cursor::Type::BOTTOM_RIGHT_CORNER);
+  m_manipulator_edge_top->set_drag_cursor(Gdk::Cursor::Type::TOP_SIDE);
+  m_manipulator_edge_bottom->set_drag_cursor(Gdk::Cursor::Type::BOTTOM_SIDE);
+  m_manipulator_edge_left->set_drag_cursor(Gdk::Cursor::Type::LEFT_SIDE);
+  m_manipulator_edge_right->set_drag_cursor(Gdk::Cursor::Type::RIGHT_SIDE);
 
   //Make sure that this is above the outline group:
   m_group_edge_manipulators->raise();//m_group_outline);
@@ -165,8 +165,8 @@ void CanvasGroupResizable::create_line_manipulators()
   m_manipulator_end->set_grid(m_grid);
   //m_manipulator_corner_top_right->set_snap_corner(CanvasRectMovable::Corners::TOP_RIGHT);
 
-  m_manipulator_start->set_drag_cursor(Gdk::CursorType::TCROSS); //A rather arbitrary cursor.
-  m_manipulator_end->set_drag_cursor(Gdk::CursorType::TCROSS);
+  m_manipulator_start->set_drag_cursor(Gdk::Cursor::Type::TCROSS); //A rather arbitrary cursor.
+  m_manipulator_end->set_drag_cursor(Gdk::Cursor::Type::TCROSS);
 
   manipulator_connect_signals(m_manipulator_start, Manipulators::START);
   manipulator_connect_signals(m_manipulator_end, Manipulators::END);
