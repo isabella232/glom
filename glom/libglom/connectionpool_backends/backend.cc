@@ -64,7 +64,7 @@ bool Backend::set_network_shared(const SlotProgress& /* slot_progress */, bool /
 bool Backend::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const std::shared_ptr<const Field>& field)
 {
   auto provider = connection->get_provider();
-  auto operation = provider->create_operation(connection, Gnome::Gda::SERVER_OPERATION_ADD_COLUMN);
+  auto operation = provider->create_operation(connection, Gnome::Gda::ServerOperation::Type::ADD_COLUMN);
 
   //TODO: Quote table_name and field_name?
   operation->set_value_at("/COLUMN_DEF_P/TABLE_NAME", table_name);
@@ -79,7 +79,7 @@ bool Backend::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection,
 bool Backend::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   auto provider = connection->get_provider();
-  auto operation = provider->create_operation(connection, Gnome::Gda::SERVER_OPERATION_DROP_COLUMN);
+  auto operation = provider->create_operation(connection, Gnome::Gda::ServerOperation::Type::DROP_COLUMN);
 
   //TODO: Quote table name and column name?
   operation->set_value_at("/COLUMN_DESC_P/TABLE_NAME", table_name);

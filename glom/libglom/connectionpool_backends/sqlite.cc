@@ -190,7 +190,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   if(!object)
     return false;
 
-  auto operation = connection->get_provider()->create_operation(connection, Gnome::Gda::SERVER_OPERATION_CREATE_TABLE);
+  auto operation = connection->get_provider()->create_operation(connection, Gnome::Gda::ServerOperation::Type::CREATE_TABLE);
   if(!operation)
     return false;
 
