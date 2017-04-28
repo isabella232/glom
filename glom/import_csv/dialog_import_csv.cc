@@ -531,7 +531,7 @@ std::unique_ptr<Gtk::TreeViewColumn> Dialog_Import_CSV::create_sample_column(con
   auto cell = create_sample_cell(index);
   col->pack_start(*Gtk::manage(cell.release()), true);
   col->set_cell_data_func(*cell, sigc::bind(sigc::mem_fun(*this, &Dialog_Import_CSV::field_data_func), index));
-  col->set_sizing(Gtk::TreeViewColumnSizing::AUTOSIZE);
+  col->set_sizing(Gtk::TreeViewColumn::Sizing::AUTOSIZE);
   return col;
 }
 

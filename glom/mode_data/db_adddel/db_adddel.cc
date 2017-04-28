@@ -660,7 +660,7 @@ void DbAddDel::construct_specified_columns()
     Gtk::Requisition requistion_min, requistion_natural; //TODO: Really support natural size.
     pCellButton->get_preferred_size(m_tree_view, requistion_min, requistion_natural);
 
-    m_treeviewcolumn_button->set_sizing(Gtk::TreeViewColumnSizing::FIXED); //Needed by fixed-height mode.
+    m_treeviewcolumn_button->set_sizing(Gtk::TreeViewColumn::Sizing::FIXED); //Needed by fixed-height mode.
 
     // TODO: I am not sure whether this is always correct. Perhaps, we also
     // have to take into account the xpad property of the cell renderer and
@@ -1649,7 +1649,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
 
   //This is needed by fixed-height mode. We get critical warnings otherwise.
   //But we must call set_fixed_width() later or we will have a zero-width column.
-  pViewColumn->set_sizing(Gtk::TreeViewColumnSizing::FIXED);
+  pViewColumn->set_sizing(Gtk::TreeViewColumn::Sizing::FIXED);
 
   auto cols_count = m_tree_view.append_column(*pViewColumn);
 
