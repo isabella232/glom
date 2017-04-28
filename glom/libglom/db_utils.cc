@@ -853,7 +853,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
     {
       //This should work because we called update_meta_store_table_names() in ConnectionPool,
       //and that gets the tables' fields too.
-      data_model_fields = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list);
+      data_model_fields = connection->get_meta_store_data(Gnome::Gda::Connection::MetaType::FIELDS, holder_list);
     }
     catch(const Gnome::Gda::MetaStoreError& ex)
     {
@@ -1065,7 +1065,7 @@ type_vec_strings get_table_names_from_database(bool ignore_system_tables)
     try
     {
       //This should work because we called update_meta_store_tables() in ConnectionPool.
-      data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TABLES);
+      data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::Connection::MetaType::TABLES);
     }
     catch(const Gnome::Gda::MetaStoreError& ex)
     {

@@ -46,7 +46,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables;
     if(true) //Already done in ConnectionPool::connect(): gda_connection->update_meta_store())
     {
-      data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES);
+      data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::Connection::MetaType::TYPES);
     }
 
     if(!data_model_tables)
@@ -54,7 +54,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
 
     if(data_model_tables && (data_model_tables->get_n_columns() == 0))
     {
-      std::cerr << G_STRFUNC << ": get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES) failed.\n";
+      std::cerr << G_STRFUNC << ": get_meta_store_data(Gnome::Gda::Connection::MetaType::TYPES) failed.\n";
     }
     else if(data_model_tables)
     {
