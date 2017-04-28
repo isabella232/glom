@@ -1688,7 +1688,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
     if(use_cursor)
     {
       //Specify the STATEMENT_MODEL_CURSOR, so that libgda only gets the rows that we actually use.
-      result = gda_connection->statement_execute_select_builder(builder, Gnome::Gda::STATEMENT_MODEL_CURSOR_FORWARD);
+      result = gda_connection->statement_execute_select_builder(builder, Gnome::Gda::Statement::ModelUsage::CURSOR_FORWARD);
     }
     else
       result = gda_connection->statement_execute_select_builder(builder);
