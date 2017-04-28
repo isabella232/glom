@@ -374,7 +374,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
             canvas_table->attach(cell_as_item,
               col /* left_attach */, col + 1 /* right_attach */,
               row /* top_attach */, row + 1 /* right_attach */,
-              Gtk::PackOptions::PACK_EXPAND_WIDGET, Gtk::PackOptions::PACK_EXPAND_WIDGET);
+              Gtk::PackOptions::EXPAND_WIDGET, Gtk::PackOptions::EXPAND_WIDGET);
 
             something_expanded = true;
         }
@@ -388,7 +388,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
             canvas_table->attach(cell_as_item,
               col /* left_attach */, col + 1 /* right_attach */,
               row /* top_attach */, row + 1 /* right_attach */,
-              Gtk::PackOptions::PACK_EXPAND_PADDING, Gtk::PackOptions::PACK_EXPAND_WIDGET);
+              Gtk::PackOptions::EXPAND_PADDING, Gtk::PackOptions::EXPAND_WIDGET);
 
             //Add a second item (an invisible rect) to make sure that the size is really used:
             auto rect =
@@ -399,7 +399,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
             canvas_table->attach(rect,
               col /* left_attach */, col + 1 /* right_attach */,
               row /* top_attach */, row + 1 /* right_attach */,
-              Gtk::PackOptions::PACK_SHRINK, Gtk::PackOptions::PACK_SHRINK);
+              Gtk::PackOptions::SHRINK, Gtk::PackOptions::SHRINK);
         }
       }
 

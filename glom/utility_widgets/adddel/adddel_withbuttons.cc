@@ -57,7 +57,7 @@ void AddDel_WithButtons::init()
   //m_Button_Edit.set_margin(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   setup_buttons();
-  pack_start(m_ButtonBox, Gtk::PackOptions::PACK_SHRINK);
+  pack_start(m_ButtonBox, Gtk::PackOptions::SHRINK);
 
   //Link buttons to handlers:
   m_Button_Add.signal_clicked().connect(sigc::mem_fun(*this, &AddDel_WithButtons::on_button_add));
@@ -155,16 +155,16 @@ void AddDel_WithButtons::setup_buttons()
   if(!get_allow_user_actions())
     return;
 
-  m_ButtonBox.pack_end(m_Button_Add, Gtk::PackOptions::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Add, Gtk::PackOptions::SHRINK);
   m_Button_Add.show();
 
-  m_ButtonBox.pack_end(m_Button_Del, Gtk::PackOptions::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Del, Gtk::PackOptions::SHRINK);
   m_Button_Del.show();
 
-  m_ButtonBox.pack_end(m_Button_Edit, Gtk::PackOptions::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Edit, Gtk::PackOptions::SHRINK);
   m_Button_Edit.show();
 
-  m_ButtonBox.pack_end(m_Button_Extra, Gtk::PackOptions::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Extra, Gtk::PackOptions::SHRINK);
   if(!m_label_extra.empty())
     m_Button_Extra.show();
   else

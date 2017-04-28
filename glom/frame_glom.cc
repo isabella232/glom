@@ -112,7 +112,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   //We don't use Glade for these, so it easier to modify them for the Maemo port.
   m_box_quick_find = Gtk::manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::SMALL)));
   auto label = Gtk::manage(new Gtk::Label(_("Quick _search:"), true));
-  m_box_quick_find->pack_start(*label, Gtk::PackOptions::PACK_SHRINK);
+  m_box_quick_find->pack_start(*label, Gtk::PackOptions::SHRINK);
 
   m_entry_quick_find = Gtk::manage(new Gtk::Entry());
 
@@ -121,11 +121,11 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 
   label->set_mnemonic_widget(*m_entry_quick_find);
 
-  m_box_quick_find->pack_start(*m_entry_quick_find, Gtk::PackOptions::PACK_EXPAND_WIDGET);
+  m_box_quick_find->pack_start(*m_entry_quick_find, Gtk::PackOptions::EXPAND_WIDGET);
   m_button_quick_find = Gtk::manage(new Gtk::Button(_("_Find"), true));
   m_button_quick_find->signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) );
-  m_box_quick_find->pack_start(*m_button_quick_find, Gtk::PackOptions::PACK_SHRINK);
+  m_box_quick_find->pack_start(*m_button_quick_find, Gtk::PackOptions::SHRINK);
   m_box_quick_find->hide();
 
   PlaceHolder* placeholder_quickfind = nullptr;
@@ -135,12 +135,12 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 
   //Add the Records/Found widgets at the right of the notebook tabs:
   m_box_records_count.pack_start(
-    *Gtk::manage(new Gtk::Label(_("Records:"))), Gtk::PackOptions::PACK_SHRINK);
-  m_box_records_count.pack_start(m_label_records_count, Gtk::PackOptions::PACK_SHRINK);
+    *Gtk::manage(new Gtk::Label(_("Records:"))), Gtk::PackOptions::SHRINK);
+  m_box_records_count.pack_start(m_label_records_count, Gtk::PackOptions::SHRINK);
   m_box_records_count.pack_start(
-    *Gtk::manage(new Gtk::Label(_("Found:"))), Gtk::PackOptions::PACK_SHRINK);
-  m_box_records_count.pack_start(m_label_found_count, Gtk::PackOptions::PACK_SHRINK);
-  m_box_records_count.pack_start(m_button_find_all, Gtk::PackOptions::PACK_SHRINK);
+    *Gtk::manage(new Gtk::Label(_("Found:"))), Gtk::PackOptions::SHRINK);
+  m_box_records_count.pack_start(m_label_found_count, Gtk::PackOptions::SHRINK);
+  m_box_records_count.pack_start(m_button_find_all, Gtk::PackOptions::SHRINK);
   m_notebook_data.set_action_widget(&m_box_records_count, Gtk::PackType::END);
   m_button_find_all.signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_find_all) );

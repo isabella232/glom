@@ -281,7 +281,7 @@ void Window_PrintLayout_Edit::init_menu()
   //Menubar:
   auto menubar = std::make_unique<Gtk::MenuBar>(gmenu);
   menubar->show();
-  m_box_menu->pack_start(*(Gtk::manage(menubar.release())), Gtk::PackOptions::PACK_SHRINK);
+  m_box_menu->pack_start(*(Gtk::manage(menubar.release())), Gtk::PackOptions::SHRINK);
 
 
   //TODO: Create a generic checking method to test that

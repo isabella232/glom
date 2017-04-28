@@ -153,10 +153,10 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
   if(!pLabel->get_text().empty())
   {
     pLabel->set_valign(Gtk::Align::START); //Because the widget might be multiline.
-    m_box_default_value_simple->pack_start(*pLabel, Gtk::PackOptions::PACK_SHRINK);
+    m_box_default_value_simple->pack_start(*pLabel, Gtk::PackOptions::SHRINK);
   }
 
-  m_box_default_value_simple->pack_end(*m_data_idget_default_value_simple, Gtk::PackOptions::PACK_EXPAND_WIDGET);
+  m_box_default_value_simple->pack_end(*m_data_idget_default_value_simple, Gtk::PackOptions::EXPAND_WIDGET);
   m_data_idget_default_value_simple->set_value(default_value);
   m_data_idget_default_value_simple->show();
 

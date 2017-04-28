@@ -79,7 +79,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_ScrolledWindow.set_shadow_type(Gtk::ShadowType::NONE); //ShadowType::IN is Recommended by the GNOME HIG, but looks odd.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_hbox_content.pack_start(m_Dragbar, Gtk::PackOptions::PACK_SHRINK);
+  m_hbox_content.pack_start(m_Dragbar, Gtk::PackOptions::SHRINK);
   m_Dragbar.hide();
 #endif
 
@@ -117,8 +117,8 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_Button_Nav_Last.set_tooltip_text(_("View the last record in the list."));
 
   //Add or delete record:
-  m_hbox_buttons.pack_start(m_Button_New, Gtk::PackOptions::PACK_SHRINK);
-  m_hbox_buttons.pack_start(m_Button_Del,  Gtk::PackOptions::PACK_SHRINK);
+  m_hbox_buttons.pack_start(m_Button_New, Gtk::PackOptions::SHRINK);
+  m_hbox_buttons.pack_start(m_Button_Del,  Gtk::PackOptions::SHRINK);
 
   m_hbox_buttons.set_child_secondary(m_Button_New, true);
   m_hbox_buttons.set_child_secondary(m_Button_Del, true);
@@ -130,10 +130,10 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   //Navigation:
   if(bWithNavButtons)
   {
-    m_hbox_buttons.pack_start(m_Button_Nav_First, Gtk::PackOptions::PACK_SHRINK);
-    m_hbox_buttons.pack_start(m_Button_Nav_Prev, Gtk::PackOptions::PACK_SHRINK);
-    m_hbox_buttons.pack_start(m_Button_Nav_Next, Gtk::PackOptions::PACK_SHRINK);
-    m_hbox_buttons.pack_start(m_Button_Nav_Last, Gtk::PackOptions::PACK_SHRINK);
+    m_hbox_buttons.pack_start(m_Button_Nav_First, Gtk::PackOptions::SHRINK);
+    m_hbox_buttons.pack_start(m_Button_Nav_Prev, Gtk::PackOptions::SHRINK);
+    m_hbox_buttons.pack_start(m_Button_Nav_Next, Gtk::PackOptions::SHRINK);
+    m_hbox_buttons.pack_start(m_Button_Nav_Last, Gtk::PackOptions::SHRINK);
   }
 
   //Link buttons to handlers:
@@ -142,7 +142,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_Button_Nav_Next.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_nav_next));
   m_Button_Nav_Last.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_nav_last));
 
-  pack_start(m_hbox_buttons, Gtk::PackOptions::PACK_SHRINK);
+  pack_start(m_hbox_buttons, Gtk::PackOptions::SHRINK);
 
   m_ignore_signals = false;
 }

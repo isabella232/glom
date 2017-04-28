@@ -211,7 +211,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
       auto button_date = Gtk::manage(new Gtk::Button(_("..."))); //TODO: A better label/icon for "Choose Date".
       button_date->set_tooltip_text(_("Choose a date from an on-screen calendar."));
       button_date->show();
-      hbox_parent->pack_start(*button_date, Gtk::PackOptions::PACK_SHRINK);
+      hbox_parent->pack_start(*button_date, Gtk::PackOptions::SHRINK);
       button_date->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_choose_date));
     }
 
@@ -220,7 +220,7 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
       //Add a button for related record navigation:
       m_button_go_to_details = Gtk::manage(new Gtk::Button(_("_Open"), true));
       m_button_go_to_details->set_tooltip_text(_("Open the record identified by this ID, in the other table."));
-      hbox_parent->pack_start(*m_button_go_to_details, Gtk::PackOptions::PACK_SHRINK);
+      hbox_parent->pack_start(*m_button_go_to_details, Gtk::PackOptions::SHRINK);
       m_button_go_to_details->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_open_details));
 
       //Add an additional button to make it easier to choose an ID for this field.
@@ -230,12 +230,12 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
       {
         auto button_select = Gtk::manage(new Gtk::Button(_("_Find"), true));
         button_select->set_tooltip_text(_("Enter search criteria to identify records in the other table, to choose an ID for this field."));
-        hbox_parent->pack_start(*button_select, Gtk::PackOptions::PACK_SHRINK);
+        hbox_parent->pack_start(*button_select, Gtk::PackOptions::SHRINK);
         button_select->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_select_id));
 
         auto button_new = Gtk::manage(new Gtk::Button(_("_New"), true));
         button_new->set_tooltip_text(_("Enter details for a new record in the other table, then use its ID for this field."));
-        hbox_parent->pack_start(*button_new, Gtk::PackOptions::PACK_SHRINK);
+        hbox_parent->pack_start(*button_new, Gtk::PackOptions::SHRINK);
         button_new->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_new_id));
       }
     }

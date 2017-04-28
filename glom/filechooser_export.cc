@@ -40,7 +40,7 @@ FileChooser_Export::FileChooser_Export()
   add_button(_("_Cancel"), Gtk::ResponseType::CANCEL);
   add_button(_("_Export"), Gtk::ResponseType::OK);
 
-  m_extra_widget.pack_start(m_button_format, Gtk::PackOptions::PACK_SHRINK);
+  m_extra_widget.pack_start(m_button_format, Gtk::PackOptions::SHRINK);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_button_format.signal_clicked().connect(

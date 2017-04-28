@@ -120,7 +120,7 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 
   m_menubar = std::make_unique<Gtk::MenuBar>(gmenu);
   m_menubar->show();
-  m_box_top->pack_start(*m_menubar, Gtk::PackOptions::PACK_SHRINK);
+  m_box_top->pack_start(*m_menubar, Gtk::PackOptions::SHRINK);
 
   //TODO: Remove our use of add_accelerator() in application.cc,
   //if there is ever an easier way to make the 'accel's from the .glade file just work.

@@ -36,18 +36,18 @@ DbAddDel_WithButtons::DbAddDel_WithButtons()
   m_ButtonBox.set_spacing(Utils::to_utype(UiUtils::DefaultSpacings::SMALL));
 
   setup_buttons();
-  pack_start(m_ButtonBox, Gtk::PackOptions::PACK_SHRINK);
+  pack_start(m_ButtonBox, Gtk::PackOptions::SHRINK);
 
   //Link buttons to handlers:
 
   m_Button_Add.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_add));
-  m_ButtonBox.pack_end(m_Button_Add, Gtk::PackOptions::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Add, Gtk::PackOptions::SHRINK);
 
   m_Button_Del.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_del));
   m_Button_Edit.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_edit));
 
-  m_ButtonBox.pack_end(m_Button_Del, Gtk::PackOptions::PACK_SHRINK);
-  m_ButtonBox.pack_end(m_Button_Edit, Gtk::PackOptions::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Del, Gtk::PackOptions::SHRINK);
+  m_ButtonBox.pack_end(m_Button_Edit, Gtk::PackOptions::SHRINK);
 
   setup_buttons();
 }

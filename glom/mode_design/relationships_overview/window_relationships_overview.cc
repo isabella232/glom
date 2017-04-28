@@ -84,7 +84,7 @@ Window_RelationshipsOverview::Window_RelationshipsOverview(BaseObjectType* cobje
 
   auto menu = std::make_unique<Gtk::MenuBar>(gmenu);
   menu->show();
-  vbox->pack_start(*(Gtk::manage(menu.release())), Gtk::PackOptions::PACK_SHRINK);
+  vbox->pack_start(*(Gtk::manage(menu.release())), Gtk::PackOptions::SHRINK);
 
 
   //Get the scolled window and add the canvas to it:

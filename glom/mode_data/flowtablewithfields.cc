@@ -546,9 +546,9 @@ void FlowTableWithFields::add_button(const std::shared_ptr<LayoutItem_Button>& l
     auto box_button = Gtk::manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL));
     box_button->show();
     if(alignment == Formatting::HorizontalAlignment::RIGHT)
-      box_button->pack_end(*button, Gtk::PackOptions::PACK_SHRINK);
+      box_button->pack_end(*button, Gtk::PackOptions::SHRINK);
     else
-      box_button->pack_start(*button, Gtk::PackOptions::PACK_SHRINK);
+      box_button->pack_start(*button, Gtk::PackOptions::SHRINK);
 
     widget_to_add = box_button;
     expand = true;

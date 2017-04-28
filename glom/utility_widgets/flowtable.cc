@@ -138,8 +138,8 @@ void FlowTable::insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool 
     auto hbox = new Gtk::Box(Gtk::Orientation::HORIZONTAL, get_horizontal_spacing());
     m_list_hboxes.emplace_back(hbox); //So we can delete it whenever necessary.
 
-    hbox->pack_start(*first, Gtk::PackOptions::PACK_SHRINK);
-    hbox->pack_start(*second, expand ? Gtk::PackOptions::PACK_EXPAND_WIDGET : Gtk::PackOptions::PACK_SHRINK);
+    hbox->pack_start(*first, Gtk::PackOptions::SHRINK);
+    hbox->pack_start(*second, expand ? Gtk::PackOptions::EXPAND_WIDGET : Gtk::PackOptions::SHRINK);
     hbox->show();
 
     hbox->set_halign(Gtk::Align::FILL);

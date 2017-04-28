@@ -82,7 +82,7 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
 
   auto box_label = Gtk::manage(new Gtk::Box(Gtk::Orientation::HORIZONTAL, Utils::to_utype(UiUtils::DefaultSpacings::LARGE)));
   auto label_title = Gtk::manage(new Gtk::Label(_("_Title:"), true));
-  box_label->pack_start(*label_title, Gtk::PackOptions::PACK_SHRINK);
+  box_label->pack_start(*label_title, Gtk::PackOptions::SHRINK);
   label_title->show();
   box_label->pack_start(m_entry_title);
   m_entry_title.get_accessible()->set_name(_("Title"));

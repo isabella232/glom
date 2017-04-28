@@ -200,13 +200,13 @@ void Box_Formatting::set_is_for_non_editable()
   //Add labels (because we will hide the checkboxes):
   auto label = Gtk::manage(new Gtk::Label(_("Font")));
   label->show();
-  m_hbox_font->pack_start(*label, Gtk::PackOptions::PACK_SHRINK);
+  m_hbox_font->pack_start(*label, Gtk::PackOptions::SHRINK);
   label = Gtk::manage(new Gtk::Label(_("Foreground Color")));
   label->show();
-  m_hbox_color_foreground->pack_start(*label, Gtk::PackOptions::PACK_SHRINK);
+  m_hbox_color_foreground->pack_start(*label, Gtk::PackOptions::SHRINK);
   label = Gtk::manage(new Gtk::Label(_("Background Color")));
   label->show();
-  m_hbox_color_background->pack_start(*label, Gtk::PackOptions::PACK_SHRINK);
+  m_hbox_color_background->pack_start(*label, Gtk::PackOptions::SHRINK);
 
   enforce_constraints();
 }
