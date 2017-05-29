@@ -372,8 +372,7 @@ egg_spread_table_dnd_realize (GtkWidget *widget)
 
   gtk_widget_get_allocation (widget, &allocation);
 
-  gint event_mask = gtk_widget_get_events (widget)
-                         | GDK_VISIBILITY_NOTIFY_MASK | GDK_EXPOSURE_MASK
+  gint event_mask = GDK_VISIBILITY_NOTIFY_MASK | GDK_EXPOSURE_MASK
                          | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
                          | GDK_POINTER_MOTION_MASK | GDK_LEAVE_NOTIFY_MASK;
 
