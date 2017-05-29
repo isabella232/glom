@@ -226,8 +226,8 @@ Glib::RefPtr<Gdk::Pixbuf> UiUtils::get_pixbuf_for_gda_value(const Gnome::Gda::Va
 
   if(value.get_value_type() == GDA_TYPE_BINARY || value.get_value_type() == GDA_TYPE_BLOB)
   {
-    glong buffer_binary_length;
-    gconstpointer buffer_binary;
+    glong buffer_binary_length = 0;
+    gconstpointer buffer_binary = nullptr;
     if(value.get_value_type() == GDA_TYPE_BLOB)
     {
       const auto blob = value.get_blob();
