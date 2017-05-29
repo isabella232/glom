@@ -406,20 +406,10 @@ get_widget_size (GtkWidget      *widget,
 		 gint           *min_size,
 		 gint           *nat_size)
 {
-  if (orientation == GTK_ORIENTATION_HORIZONTAL)
-    {
-      if (for_size < 0)
-	gtk_widget_get_preferred_width (widget, min_size, nat_size);
-      else
-	gtk_widget_get_preferred_width_for_height (widget, for_size, min_size, nat_size);
-    }
+  if (for_size < 0)
+    gtk_widget_measure (widget, orientation, -1, min_size, nat_size, NULL, NULL);
   else
-    {
-      if (for_size < 0)
-	gtk_widget_get_preferred_height (widget, min_size, nat_size);
-      else
-	gtk_widget_get_preferred_height_for_width (widget, for_size, min_size, nat_size);
-    }
+    gtk_widget_measure (widget, orientation, for_size, min_size, nat_size, NULL, NULL);
 }
 
 static void
@@ -649,25 +639,20 @@ get_placeholder_size (EggSpreadTableDnd *spread_table,
   if (orientation == GTK_ORIENTATION_VERTICAL)
     {
       gint min_width;
-
-      gtk_widget_get_preferred_width (spread_table->priv->drag_data.child, &min_width, NULL);
+      gtk_widget_measure (spread_table->priv->drag_data.child, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, NULL, NULL, NULL);
 
       *width = MAX (line_width, min_width);
-
-      gtk_widget_get_preferred_height_for_width (spread_table->priv->drag_data.child,
-						 *width, height, NULL);
     }
   else
     {
       gint min_height;
-
-      gtk_widget_get_preferred_width (spread_table->priv->drag_data.child, &min_height, NULL);
+      gtk_widget_measure (spread_table->priv->drag_data.child, GTK_ORIENTATION_VERTICAL, -1, &min_height, NULL, NULL, NULL);
 
       *height = MAX (line_width, min_height);
-
-      gtk_widget_get_preferred_width_for_height (spread_table->priv->drag_data.child,
-						 *height, width, NULL);
     }
+
+    gtk_widget_measure (spread_table->priv->drag_data.child, orientation,
+						 *width, height, NULL, NULL, NULL);
 }
 
 static gboolean

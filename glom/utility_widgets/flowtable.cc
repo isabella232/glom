@@ -225,9 +225,12 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
   if(!child)
     return false;
 
+  int width = 0;
   int width_min = 0;
   int width_natural = 0;
-  child->get_preferred_width(width_min, width_natural);
+  int baseline_min = 0;
+  int baseline_natural = 0;
+  child->measure(Gtk::Orientation::HORIZONTAL, width, width_min, width_natural, baseline_min, baseline_natural);
   //std::cout << G_STRFUNC << ": Calling get_child_line() with child=" << child << ", for first=" << &first << std::endl;
 
   //Get the internal parent GtkEventBox, if any,

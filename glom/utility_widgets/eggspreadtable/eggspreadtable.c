@@ -321,20 +321,10 @@ get_widget_size (GtkWidget      *widget,
 		 gint           *min_size,
 		 gint           *nat_size)
 {
-  if (orientation == GTK_ORIENTATION_HORIZONTAL)
-    {
-      if (for_size < 0)
-	gtk_widget_get_preferred_width (widget, min_size, nat_size);
-      else
-	gtk_widget_get_preferred_width_for_height (widget, for_size, min_size, nat_size);
-    }
+  if (for_size < 0)
+    gtk_widget_measure (widget, orientation, -1, min_size, nat_size,  NULL, NULL);
   else
-    {
-      if (for_size < 0)
-	gtk_widget_get_preferred_height (widget, min_size, nat_size);
-      else
-	gtk_widget_get_preferred_height_for_width (widget, for_size, min_size, nat_size);
-    }
+    gtk_widget_measure (widget, orientation, for_size, min_size, nat_size, NULL, NULL);
 }
 
 /* This gets the widest child, it is used to reserve
