@@ -106,14 +106,14 @@ int main()
   if(document.get_field(table_name, field_name_original))
   {
     std::cerr << G_STRFUNC << ": Failure: The document should have forgotten about the original field name." << std::endl;
-    return false;
+    return EXIT_FAILURE;
   }
 
   //Check that the new field name is known to the document:
   if(!(document.get_field(table_name, field_name_new)))
   {
     std::cerr << G_STRFUNC << ": Failure: The document does not know about the new field name." << std::endl;
-    return false;
+    return EXIT_FAILURE;
   }
 
   //Check that the original field name is no longer used in the relationship:
@@ -121,20 +121,20 @@ int main()
   if(!relationship)
   {
     std::cerr << G_STRFUNC << ": Failure: The relationship could not be found in the document." << std::endl;
-    return false;
+    return EXIT_FAILURE;
   }
 
   if(relationship->get_to_field() == field_name_original)
   {
     std::cerr << G_STRFUNC << ": Failure: The relationship still uses the original field name." << std::endl;
-    return false;
+    return EXIT_FAILURE;
   }
 
   //Check that the original field name is no longer used on a layout:
   if(field_is_on_a_layout(document, table_name, field_name_original))
   {
     std::cerr << G_STRFUNC << ": Failure: The original field name is still used on a layout." << std::endl;
-    return false;
+    return EXIT_FAILURE;
   }
 
   {
@@ -147,13 +147,13 @@ int main()
     if(document.get_relationship(table_name, relationship_name_original))
     {
       std::cerr << G_STRFUNC << ": Failure: The original relationship name still exists." << std::endl;
-      return false;
+      return EXIT_FAILURE;
     }
 
     if(!document.get_relationship(table_name, relationship_name_new))
     {
       std::cerr << G_STRFUNC << ": Failure: The new relationship name does not exist." << std::endl;
-      return false;
+      return EXIT_FAILURE;
     }
 
     //Check that the old relationship name is not used.
@@ -163,7 +163,7 @@ int main()
     if(field_on_layout->get_relationship_name() != relationship_name_new)
     {
       std::cerr << G_STRFUNC << ": Failure: A layout item does not use the new relationship name as expected." << std::endl;
-      return false;
+      return EXIT_FAILURE;
     }
   }
 
@@ -172,7 +172,7 @@ int main()
   if(field_is_on_a_layout(document, "publisher", "publisher_id"))
   {
     std::cerr << G_STRFUNC << ": Failure: The removed field name is still used on a layout." << std::endl;
-    return false;
+    return EXIT_FAILURE;
   }
   
   //Remove a relationship:
@@ -181,7 +181,7 @@ int main()
   if(relationship)
   {
     std::cerr << G_STRFUNC << ": Failure: The removed relationship still exists." << std::endl;
-    return false;
+    return EXIT_FAILURE;
   }
   
   //Change a table name:
@@ -190,27 +190,27 @@ int main()
   if(document.get_table("invoice_lines"))
   {
     std::cerr << G_STRFUNC << ": Failure: The renamed table still exists." << std::endl;
-    return false;
+    return EXIT_FAILURE;
   }
   
   relationship = document.get_relationship("invoices", "invoice_lines");
   if(!relationship)
   {
     std::cerr << G_STRFUNC << ": Failure: The expected relationship does not exist." << std::endl;
-    return false;
+    return EXIT_FAILURE;
   }
 
   if(relationship->get_to_table() != table_renamed)
   {
     std::cerr << G_STRFUNC << ": Failure: The relationship's to_table does have been renamed." << std::endl;
-    return false;
+    return EXIT_FAILURE;
   }
   
   document.remove_table("products");
   if(document.get_table("products"))
   {
     std::cerr << G_STRFUNC << ": Failure: The removed table still exists." << std::endl;
-    return false;
+    return EXIT_FAILURE;
   }
 
  
@@ -220,7 +220,7 @@ int main()
   if(!print_layout)
   {
     std::cerr << G_STRFUNC << ": Failure: Could not get an expected print layout." << std::endl;
-    return false;
+    return EXIT_FAILURE;
   }
   
   document.remove_print_layout("contacts", "contact_details");
@@ -229,7 +229,7 @@ int main()
   if(print_layout)
   {
     std::cerr << G_STRFUNC << ": Failure: The removed print layotu still exists." << std::endl;
-    return false;
+    return EXIT_FAILURE;
   }
   
   //Test user groups:
