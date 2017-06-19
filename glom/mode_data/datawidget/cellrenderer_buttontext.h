@@ -38,7 +38,7 @@ public:
 
 private:
 
-  bool activate_vfunc(GdkEvent* event, Gtk::Widget& widget, const Glib::ustring& path, const Gdk::Rectangle& background_area, const Gdk::Rectangle& cell_area, Gtk::CellRendererState flags) override;
+  bool activate_vfunc(Gdk::Event& event, Gtk::Widget& widget, const Glib::ustring& path, const Gdk::Rectangle& background_area, const Gdk::Rectangle& cell_area, Gtk::CellRendererState flags) override;
 
   type_signal_clicked m_signal_clicked;
 };

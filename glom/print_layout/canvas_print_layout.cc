@@ -315,7 +315,7 @@ void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activat
   m_context_menu->popup(button, activate_time);
 }
 
-void Canvas_PrintLayout::on_background_button_press_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventButton* /* event */)
+void Canvas_PrintLayout::on_background_button_press_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, Gdk::EventButton& /* event */)
 {
   //A click on empty space should deselect any selected items:
   select_all(false);

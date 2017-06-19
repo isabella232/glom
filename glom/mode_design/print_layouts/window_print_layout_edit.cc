@@ -711,12 +711,12 @@ void Window_PrintLayout_Edit::setup_context_menu()
   m_context_menu->attach_to_widget(*this);
 }
 
-void Window_PrintLayout_Edit::on_canvas_motion_notify_event(GdkEventMotion* motion_event)
+void Window_PrintLayout_Edit::on_canvas_motion_notify_event(Gdk::EventMotion& motion_event)
 {
   //Notice that, unlike drag-motion, motion-notify-event's x/y position already
   //seems to have the scrolling taken into account.
-  double x = motion_event->x;
-  double y = motion_event->y;
+  double x = motion_event.get_x();
+  double y = motion_event.get_y();
   canvas_convert_from_drag_pixels(x, y, false /* do not adjust for scrolling */);
 
   //gimp_ruler_set_position(m_hruler, x);
@@ -1334,7 +1334,7 @@ void Window_PrintLayout_Edit::on_scroll_value_changed()
   //gimp_ruler_set_range(m_vruler, y, y + height, y + height);
 }
 
-bool Window_PrintLayout_Edit::on_configure_event(GdkEventConfigure* configure_event)
+bool Window_PrintLayout_Edit::on_configure_event(Gdk::EventConfigure& configure_event)
 {
   const auto result = Gtk::Window::on_configure_event(configure_event);
 
@@ -1592,9 +1592,9 @@ void Window_PrintLayout_Edit::on_spinbutton_height()
     m_spinbutton_height->get_value());
 }
 
-bool Window_PrintLayout_Edit::on_hruler_button_press_event(GdkEventButton* button_event)
+bool Window_PrintLayout_Edit::on_hruler_button_press_event(Gdk::EventButton& button_event)
 {
-  if(button_event->button != 1)
+  if(button_event.get_button() != 1)
     return true;
 
   m_temp_rule_horizontal = true;
@@ -1602,9 +1602,9 @@ bool Window_PrintLayout_Edit::on_hruler_button_press_event(GdkEventButton* butto
   return false;
 }
 
-bool Window_PrintLayout_Edit::on_vruler_button_press_event(GdkEventButton* button_event)
+bool Window_PrintLayout_Edit::on_vruler_button_press_event(Gdk::EventButton& button_event)
 {
-  if(button_event->button != 1)
+  if(button_event.get_button() != 1)
     return true;
 
   m_temp_rule_horizontal = false; //vertical.

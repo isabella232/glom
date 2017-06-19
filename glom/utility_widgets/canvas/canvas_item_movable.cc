@@ -34,9 +34,9 @@
 
 namespace {
 
-static Glib::RefPtr<Gdk::Cursor> create_drag_cursor(GdkEventAny* event, Gdk::Cursor::Type cursor_type)
+static Glib::RefPtr<Gdk::Cursor> create_drag_cursor(Gdk::Event& event, Gdk::Cursor::Type cursor_type)
 {
-  auto window = Glib::wrap(event->window, true);
+  auto window = event.get_window();
   auto display = window->get_display();
   return Gdk::Cursor::create(display, cursor_type);
 }
@@ -69,13 +69,13 @@ CanvasItemMovable::CanvasItemMovable()
   */
 }
 
-void CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
+void CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventButton& event)
 {
   //std::cout << G_STRFUNC << ": DEBUG\n";
 
   m_shift_click = false;
 
-  switch(event->button)
+  switch(event.get_button())
   {
     case 1:
     {
@@ -84,8 +84,8 @@ void CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
 
       auto item = target;
 
-      m_drag_start_cursor_x = event->x;
-      m_drag_start_cursor_y = event->y;
+      m_drag_start_cursor_x = event.get_x();
+      m_drag_start_cursor_y = event.get_y();
 
       get_xy(m_drag_start_position_x, m_drag_start_position_y);
       m_drag_latest_position_x = m_drag_start_position_x;
@@ -96,22 +96,22 @@ void CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
       {
         canvas->pointer_grab(item,
           Gdk::EventMask::POINTER_MOTION_MASK | Gdk::EventMask::BUTTON_RELEASE_MASK,
-          create_drag_cursor((GdkEventAny*)event, m_drag_cursor_type),
-          event->time);
+          create_drag_cursor(event, m_drag_cursor_type),
+          event.get_time());
       }
 
       m_dragging = true;
 
       //Holding down shift when pressing the mouse down
       //means that any selection (decided later) will be a multiple selection.
-      if(event->state & GDK_SHIFT_MASK)
+      if((event.get_state() & Gdk::ModifierType::SHIFT_MASK) == Gdk::ModifierType::SHIFT_MASK)
         m_shift_click = true;
 
       return; // true; // Handled.
     }
     case 3:
     {
-      m_signal_show_context.emit(event->button, event->time);
+      m_signal_show_context.emit(event.get_button(), event.get_time());
       return; // false; // Not fully Handled.
     }
     default:
@@ -122,21 +122,21 @@ void CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
   return; // false; // Not handled. Pass it to an item lower in the z order, if any.
 }
 
-void CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
+void CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventMotion& event)
 {
   if(!m_allow_vertical_movement && !m_allow_horizontal_movement)
     return; // false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
 
   auto item = target;
 
-  if(item && m_dragging && (event->state & static_cast<guint>(Gdk::ModifierType::BUTTON1_MASK)))
+  if(item && m_dragging && (event.get_state() & Gdk::ModifierType::BUTTON1_MASK) == Gdk::ModifierType::BUTTON1_MASK)
   {
-    const double offset_x = event->x - m_drag_start_cursor_x;
-    const double offset_y = event->y - m_drag_start_cursor_y;
+    const double offset_x = event.get_x() - m_drag_start_cursor_x;
+    const double offset_y = event.get_y() - m_drag_start_cursor_y;
 
     // Inkscape uses the Ctrl key to restrict movement to horizontal or vertical,
     // so let's do that too.
-    if( (event->state & static_cast<guint>(Gdk::ModifierType::CONTROL_MASK)) && !m_dragging_vertical_only && !m_dragging_horizontal_only )
+    if( (event.get_state() & Gdk::ModifierType::CONTROL_MASK) == Gdk::ModifierType::CONTROL_MASK && !m_dragging_vertical_only && !m_dragging_horizontal_only )
     {
       //Decide whether to restrict to vertical or horizontal movement:
       //Whichever has the greatest offset already will be the axis that we restrict movement to.
@@ -151,7 +151,7 @@ void CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
         m_dragging_horizontal_only = false;
       }
     }
-    else if( !(event->state & static_cast<guint>(Gdk::ModifierType::CONTROL_MASK)) && (m_dragging_vertical_only || m_dragging_horizontal_only))
+    else if( !((event.get_state() & Gdk::ModifierType::CONTROL_MASK) == Gdk::ModifierType::CONTROL_MASK) && (m_dragging_vertical_only || m_dragging_horizontal_only))
     {
       //Ctrl was released, so allow full movement again:
       m_dragging_vertical_only = false;
@@ -196,7 +196,7 @@ void CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
   return; // false; //We didn't handle this event.
 }
 
-void CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
+void CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventButton& event)
 {
   //std::cout << G_STRFUNC << ": DEBUG\n";
 
@@ -205,7 +205,7 @@ void CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::It
 
   auto canvas = get_parent_canvas_widget();
   if(canvas)
-    canvas->pointer_ungrab(target, event->time);
+    canvas->pointer_ungrab(target, event.get_time());
 
   m_dragging = false;
 
@@ -242,15 +242,15 @@ void CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::It
   return; // true;
 }
 
-void CanvasItemMovable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* event)
+void CanvasItemMovable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, Gdk::EventCrossing& event)
 {
-  set_cursor(create_drag_cursor((GdkEventAny*)event, m_drag_cursor_type));
+  set_cursor(create_drag_cursor(event, m_drag_cursor_type));
 
   //return false; //We didn't fully handle this event - let other signal handlers (even for other items) handle it too.
 }
 
 
-void CanvasItemMovable::on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
+void CanvasItemMovable::on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, Gdk::EventCrossing& /* event */)
 {
   unset_cursor();
 

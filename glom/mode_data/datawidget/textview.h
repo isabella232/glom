@@ -66,12 +66,12 @@ public:
 private:
   void init();
 
-  bool on_textview_focus_out_event(GdkEventFocus* focus_event);
+  bool on_textview_focus_out_event(Gdk::EventFocus& focus_event);
 
   void check_for_change();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  bool on_button_press_event(GdkEventButton *event) override;
+  bool on_button_press_event(Gdk::EventButton& event) override;
 #endif
 
   AppWindow* get_appwindow() const override;

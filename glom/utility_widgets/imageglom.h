@@ -70,7 +70,7 @@ private:
 
   void on_size_allocate(Gtk::Allocation& allocation) override;
 
-  bool on_button_press_event(GdkEventButton *event) override;
+  bool on_button_press_event(Gdk::EventButton& event) override;
 
   void on_menupopup_activate_open_file();
   void on_menupopup_activate_open_file_with();

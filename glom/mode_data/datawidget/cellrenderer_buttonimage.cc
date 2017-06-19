@@ -37,7 +37,7 @@ GlomCellRenderer_ButtonImage::type_signal_clicked GlomCellRenderer_ButtonImage::
   return m_signal_clicked;
 }
 
-bool GlomCellRenderer_ButtonImage::activate_vfunc(GdkEvent* event, Gtk::Widget& widget, const Glib::ustring& path, const Gdk::Rectangle& background_area, const Gdk::Rectangle& cell_area, Gtk::CellRendererState flags)
+bool GlomCellRenderer_ButtonImage::activate_vfunc(Gdk::Event& event, Gtk::Widget& widget, const Glib::ustring& path, const Gdk::Rectangle& background_area, const Gdk::Rectangle& cell_area, Gtk::CellRendererState flags)
 {
   //TODO: It would be nice to depress this like a real button.
 

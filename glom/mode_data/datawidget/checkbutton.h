@@ -48,7 +48,7 @@ public:
 
 private:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  bool on_button_press_event(GdkEventButton *event) override;
+  bool on_button_press_event(Gdk::EventButton& event) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   AppWindow* get_appwindow() const override;

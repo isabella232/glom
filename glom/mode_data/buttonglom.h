@@ -46,7 +46,7 @@ private:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_menu_properties_activate() override;
-  bool on_button_press_event(GdkEventButton *event) override;
+  bool on_button_press_event(Gdk::EventButton& event) override;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 };
 

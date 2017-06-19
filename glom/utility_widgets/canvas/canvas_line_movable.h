@@ -48,8 +48,8 @@ public:
 private:
   Goocanvas::Canvas* get_parent_canvas_widget() override;
 
-  bool on_enter_notify_event(const Glib::RefPtr<Item>& target, GdkEventCrossing* event) override;
-  bool on_leave_notify_event(const Glib::RefPtr<Item>& target, GdkEventCrossing* event) override;
+  bool on_enter_notify_event(const Glib::RefPtr<Item>& target, Gdk::EventCrossing& event) override;
+  bool on_leave_notify_event(const Glib::RefPtr<Item>& target, Gdk::EventCrossing& event) override;
 
   Gdk::RGBA m_stroke_color;
   Glib::ustring m_hover_color;

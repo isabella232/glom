@@ -134,11 +134,11 @@ private:
 
 public:
   //These should really be protected, but the compiler doesn't allow it:
-  void on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
-  void on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event);
-  void on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
-  void on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
-  void on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
+  void on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventButton& event);
+  void on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventMotion& event);
+  void on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventButton& event);
+  void on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventCrossing& event);
+  void on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventCrossing& event);
 
 private:
   bool m_dragging;

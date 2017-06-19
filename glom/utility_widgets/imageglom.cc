@@ -156,10 +156,13 @@ void ImageGlom::set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, 
 #endif
 }
 
-bool ImageGlom::on_button_press_event(GdkEventButton *button_event)
+bool ImageGlom::on_button_press_event(Gdk::EventButton& button_event)
 {
-  GdkModifierType mods;
-  gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, nullptr, nullptr, &mods );
+  auto gdkwindow = get_window();
+  Gdk::ModifierType mods;
+  int x = 0;
+  int y = 0;
+  gdkwindow->get_device_position(button_event.get_device(), x, y, mods);
 
   //Enable/Disable items.
   //We did this earlier, but get_appwindow is more likely to work now:
@@ -180,10 +183,10 @@ bool ImageGlom::on_button_press_event(GdkEventButton *button_event)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     if(pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
-      if(mods & GDK_BUTTON3_MASK)
+      if((mods & Gdk::ModifierType::BUTTON3_MASK) == Gdk::ModifierType::BUTTON3_MASK)
       {
         //Give user choices of actions on this item:
-        popup_menu(button_event->button, button_event->time);
+        popup_menu(button_event.get_button(), button_event.get_time());
 
         return true; //We handled this event.
       }
@@ -192,17 +195,17 @@ bool ImageGlom::on_button_press_event(GdkEventButton *button_event)
 #endif // !GLOM_ENABLE_CLIENT_ONLY
     {
       // We cannot be in developer mode in client only mode.
-      if(mods & GDK_BUTTON3_MASK)
+      if((mods & Gdk::ModifierType::BUTTON3_MASK) == Gdk::ModifierType::BUTTON3_MASK)
       {
         //Give user choices of actions on this item:
-        popup_menu(button_event->button, button_event->time);
+        popup_menu(button_event.get_button(), button_event.get_time());
 
         return true; //We handled this event.
       }
     }
 
     //Single-click to select file:
-    if(mods & GDK_BUTTON1_MASK)
+    if((mods & Gdk::ModifierType::BUTTON1_MASK) == Gdk::ModifierType::BUTTON1_MASK)
     {
       on_menupopup_activate_select_file();
       return true; //We handled this event.

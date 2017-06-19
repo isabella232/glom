@@ -55,7 +55,7 @@ private:
   void on_menu_new_group_activate();
   void on_menu_delete_activate();
 
-  bool on_button_press_event(GdkEventButton *event) override;
+  bool on_button_press_event(Gdk::EventButton& event) override;
 
   Glib::RefPtr<Gio::SimpleAction> m_new_group;
   Glib::RefPtr<Gio::SimpleAction> m_deelete;

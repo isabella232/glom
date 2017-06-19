@@ -108,7 +108,7 @@ void Entry::check_for_change()
   }
 }
 
-bool Entry::on_focus_out_event(GdkEventFocus* focus_event)
+bool Entry::on_focus_out_event(Gdk::EventFocus& focus_event)
 {
   const auto result = Gtk::Entry::on_focus_out_event(focus_event);
 
@@ -178,7 +178,7 @@ Gnome::Gda::Value Entry::get_value() const
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-bool Entry::on_button_press_event(GdkEventButton *button_event)
+bool Entry::on_button_press_event(Gdk::EventButton& button_event)
 {
   //Enable/Disable items.
   //We did this earlier, but get_appwindow is more likely to work now:
@@ -196,16 +196,18 @@ bool Entry::on_button_press_event(GdkEventButton *button_event)
     //TODO: It would be better to add it somehow to the standard context menu.
     if(pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
-      GdkModifierType mods;
-      gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), button_event->device, nullptr, nullptr, &mods );
-      if(mods & GDK_BUTTON3_MASK)
+      auto gdkwindow = get_window();
+      Gdk::ModifierType mods;
+      int x = 0;
+      int y = 0;
+      gdkwindow->get_device_position(button_event.get_device(), x, y, mods);
+      if((mods & Gdk::ModifierType::BUTTON3_MASK) == Gdk::ModifierType::BUTTON3_MASK)
       {
         //Give user choices of actions on this item:
-        m_menu_popup->popup(button_event->button, button_event->time);
+        m_menu_popup->popup(button_event.get_button(), button_event.get_time());
         return true; //We handled this event.
       }
     }
-
   }
 
   return Gtk::Entry::on_button_press_event(button_event);

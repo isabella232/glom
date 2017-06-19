@@ -631,14 +631,14 @@ void CanvasGroupResizable::on_manipulator_line_end_moved(const Glib::RefPtr<Canv
   position_extras();
 }
 
-bool CanvasGroupResizable::on_manipulator_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
+bool CanvasGroupResizable::on_manipulator_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, Gdk::EventCrossing& /* event */)
 {
   m_in_manipulator = true;
   set_manipulators_visibility(Goocanvas::ItemVisibility::VISIBLE);
   return false;
 }
 
-bool CanvasGroupResizable::on_manipulator_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
+bool CanvasGroupResizable::on_manipulator_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, Gdk::EventCrossing& /* event */)
 {
   m_in_manipulator = false;
   set_manipulators_visibility(Goocanvas::ItemVisibility::INVISIBLE);
@@ -720,12 +720,12 @@ void CanvasGroupResizable::on_manipulator_edge_moved(const Glib::RefPtr<CanvasIt
 }
 
 
-void CanvasGroupResizable::on_child_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
+void CanvasGroupResizable::on_child_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventButton& event)
 {
   CanvasItemMovable::on_button_press_event(target, event);
 }
 
-void CanvasGroupResizable::on_child_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
+void CanvasGroupResizable::on_child_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventMotion& event)
 {
   //std::cout << "CanvasGroupResizable::on_motion_notify_event()\n";
 
@@ -734,7 +734,7 @@ void CanvasGroupResizable::on_child_motion_notify_event(const Glib::RefPtr<Gooca
   position_extras();
 }
 
-void CanvasGroupResizable::on_child_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
+void CanvasGroupResizable::on_child_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventButton& event)
 {
   CanvasItemMovable::on_button_release_event(target, event);
 }
@@ -742,17 +742,17 @@ void CanvasGroupResizable::on_child_button_release_event(const Glib::RefPtr<Gooc
 
 
 /*
-bool CanvasGroupResizable::on_manipulator_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event, Manipulators manipulator)
+bool CanvasGroupResizable::on_manipulator_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventButton& event, Manipulators manipulator)
 {
   return true;
 }
 
-bool CanvasGroupResizable::on_manipulator_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event, Manipulators manipulator)
+bool CanvasGroupResizable::on_manipulator_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventButton& event, Manipulators manipulator)
 {
   return true;
 }
 
-bool CanvasGroupResizable::on_manipulator_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event, Manipulators manipulator)
+bool CanvasGroupResizable::on_manipulator_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventMotion& event, Manipulators manipulator)
 {
   return true;
 }
@@ -787,14 +787,14 @@ void CanvasGroupResizable::set_manipulators_visibility(Goocanvas::ItemVisibility
 
 }
 
-bool CanvasGroupResizable::on_rect_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
+bool CanvasGroupResizable::on_rect_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, Gdk::EventCrossing& /* event */)
 {
   set_manipulators_visibility(Goocanvas::ItemVisibility::VISIBLE);
 
   return true;
 }
 
-bool CanvasGroupResizable::on_rect_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
+bool CanvasGroupResizable::on_rect_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, Gdk::EventCrossing& /* event */)
 {
   //std::cout << "CanvasGroupResizable::on_rect_leave_notify_event\n";
 
@@ -808,7 +808,7 @@ bool CanvasGroupResizable::on_rect_leave_notify_event(const Glib::RefPtr<Goocanv
   return false;
 }
 
-bool CanvasGroupResizable::on_resizer_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
+bool CanvasGroupResizable::on_resizer_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventCrossing& event)
 {
   CanvasItemMovable::on_enter_notify_event(target, event);
 
@@ -817,7 +817,7 @@ bool CanvasGroupResizable::on_resizer_enter_notify_event(const Glib::RefPtr<Gooc
   return true;
 }
 
-bool CanvasGroupResizable::on_resizer_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
+bool CanvasGroupResizable::on_resizer_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventCrossing& event)
 {
   CanvasItemMovable::on_leave_notify_event(target, event);
 

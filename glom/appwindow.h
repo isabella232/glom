@@ -199,7 +199,7 @@ protected:
   void ui_hide() override;
   void ui_bring_to_front() override;
 
-  bool on_delete_event(GdkEventAny* event) override;
+  bool on_delete_event(Gdk::Event& event) override;
 
   void on_menu_edit_copy_activate();
   void on_menu_edit_cut_activate();

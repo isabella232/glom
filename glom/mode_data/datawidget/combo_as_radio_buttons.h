@@ -82,9 +82,9 @@ private:
 
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  bool on_button_press_event(GdkEventButton *event) override;
-  bool on_radiobutton_button_press_event(GdkEventButton *event);
-  void show_context_menu(GdkEventButton *event);
+  bool on_button_press_event(Gdk::EventButton& event) override;
+  bool on_radiobutton_button_press_event(Gdk::EventButton& event);
+  void show_context_menu(Gdk::EventButton& event);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   AppWindow* get_appwindow() const override;

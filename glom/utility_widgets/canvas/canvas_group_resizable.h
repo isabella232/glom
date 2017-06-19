@@ -88,16 +88,16 @@ private:
   void snap_position(Corners corner, double& x, double& y) const;
 
 
-  bool on_rect_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
-  bool on_rect_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
+  bool on_rect_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventCrossing& event);
+  bool on_rect_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventCrossing& event);
 
-  bool on_resizer_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
-  bool on_resizer_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
+  bool on_resizer_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventCrossing& event);
+  bool on_resizer_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventCrossing& event);
 
 
-  void on_child_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
-  void on_child_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
-  void on_child_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event);
+  void on_child_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventButton& event);
+  void on_child_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventButton& event);
+  void on_child_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventMotion& event);
 
   enum class Manipulators
   {
@@ -143,15 +143,15 @@ private:
   void on_manipulator_corner_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset, Manipulators manipulator_id);
   void on_manipulator_edge_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset, Manipulators manipulator_id);
   void on_manipulator_line_end_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset, Manipulators manipulator_id);
-  bool on_manipulator_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
-  bool on_manipulator_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
+  bool on_manipulator_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventCrossing& event);
+  bool on_manipulator_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventCrossing& event);
 
 
   bool get_is_line() const;
 
-  //bool on_manipulator_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event, Manipulators manipulator);
-  //bool on_manipulator_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event, Manipulators manipulator);
-  //bool on_manipulator_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event, Manipulators manipulator);
+  //bool on_manipulator_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventButton& event, Manipulators manipulator);
+  //bool on_manipulator_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventButton& event, Manipulators manipulator);
+  //bool on_manipulator_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, Gdk::EventMotion& event, Manipulators manipulator);
 
   static Glib::RefPtr<CanvasRectMovable> create_corner_manipulator();
   static Glib::RefPtr<CanvasLineMovable> create_edge_manipulator();

@@ -272,7 +272,7 @@ void DbAddDel::setup_menu(Gtk::Widget* /* widget */)
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
-bool DbAddDel::on_button_press_event_Popup(GdkEventButton *button_event)
+bool DbAddDel::on_button_press_event_Popup(Gdk::EventButton& button_event)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Enable/Disable items.
@@ -285,17 +285,20 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *button_event)
   }
 #endif
 
-  GdkModifierType mods;
-  gdk_window_get_device_position( gtk_widget_get_window(Gtk::Widget::gobj()), button_event->device, nullptr, nullptr, &mods );
-  if(mods & GDK_BUTTON3_MASK)
+  auto gdkwindow = get_window();
+  Gdk::ModifierType mods;
+  int x = 0;
+  int y = 0;
+  gdkwindow->get_device_position(button_event.get_device(), x, y, mods);
+  if((mods & Gdk::ModifierType::BUTTON3_MASK) == Gdk::ModifierType::BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
-    m_menu_popup->popup(button_event->button, button_event->time);
+    m_menu_popup->popup(button_event.get_button(), button_event.get_time());
     return true; //handled.
   }
   else
   {
-    if(button_event->type == GDK_2BUTTON_PRESS)
+    if(button_event.get_event_type() == Gdk::Event::Type::DOUBLE_BUTTON_PRESS)
     {
       //Double-click means edit.
       //Don't do this usually, because users sometimes double-click by accident when they just want to edit a cell.
@@ -1510,7 +1513,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
   }
 }
 
-void DbAddDel::on_treeview_button_press_event(GdkEventButton* button_event)
+void DbAddDel::on_treeview_button_press_event(Gdk::EventButton& button_event)
 {
   on_button_press_event_Popup(button_event);
 }

@@ -80,7 +80,7 @@ void CanvasLineMovable::set_hover_color(const Glib::ustring& color)
   m_hover_color = color;
 }
 
-bool CanvasLineMovable::on_enter_notify_event(const Glib::RefPtr<Item>& target, GdkEventCrossing* event)
+bool CanvasLineMovable::on_enter_notify_event(const Glib::RefPtr<Item>& target, Gdk::EventCrossing& event)
 {
   if(!m_hover_color.empty())
   {
@@ -92,7 +92,7 @@ bool CanvasLineMovable::on_enter_notify_event(const Glib::RefPtr<Item>& target, 
   return Goocanvas::Polyline::on_enter_notify_event(target, event);
 }
 
-bool CanvasLineMovable::on_leave_notify_event(const Glib::RefPtr<Item>& target, GdkEventCrossing* event)
+bool CanvasLineMovable::on_leave_notify_event(const Glib::RefPtr<Item>& target, Gdk::EventCrossing& event)
 {
   if(!m_hover_color.empty())
     property_stroke_color_gdk_rgba() = m_stroke_color;

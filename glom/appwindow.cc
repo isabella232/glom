@@ -2759,7 +2759,7 @@ void AppWindow::add(Gtk::Widget& child)
   m_vbox_placeHolder.pack_start(child);
 }
 
-bool AppWindow::on_delete_event(GdkEventAny* /* event */)
+bool AppWindow::on_delete_event(Gdk::Event& /* event */)
 {
   //Clicking on the [x] in the title bar should be like choosing File|Close
   on_menu_file_close();

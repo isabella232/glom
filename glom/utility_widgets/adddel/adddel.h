@@ -256,9 +256,9 @@ private:
 
   void on_treeview_columns_changed();
 
-  void on_button_press_event_Popup(GdkEventButton* button_event);
+  void on_button_press_event_Popup(Gdk::EventButton& button_event);
 
-  void on_treeview_button_press_event(GdkEventButton* button_event);
+  void on_treeview_button_press_event(Gdk::EventButton& button_event);
 
   bool row_has_duplicates(const Gtk::TreeModel::const_iterator& iter) const;
   void warn_about_duplicate();

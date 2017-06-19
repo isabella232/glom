@@ -72,7 +72,7 @@ private:
   void on_calendar_month_changed();
 
   void setup_menu(Gtk::Widget* widget);
-  void on_calendar_button_press_event(GdkEventButton *event);
+  void on_calendar_button_press_event(Gdk::EventButton& event);
 
   void on_MenuPopup_activate_Edit();
 
