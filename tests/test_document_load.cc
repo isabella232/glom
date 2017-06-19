@@ -262,7 +262,7 @@ int main()
   if(!module_names.empty()) //TODO: Test a document that actually has some?
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected library module names.\n";
-    return false;
+    return EXIT_FAILURE;
   }
 
 
@@ -272,32 +272,32 @@ int main()
   if(print_layout_names.size() != 1)
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected number of print layouts.\n";
-    return false;
+    return EXIT_FAILURE;
   }
 
   if(!contains(print_layout_names, "contact_details"))
   {
     std::cerr << G_STRFUNC << ": Failure: Could not find the expected print layout name.\n";
-    return false;
+    return EXIT_FAILURE;
   }
 
   const auto print_layout = document->get_print_layout("contacts", "contact_details");
   if(!print_layout)
   {
     std::cerr << G_STRFUNC << ": Failure: Could not get an expected print layout.\n";
-    return false;
+    return EXIT_FAILURE;
   }
 
   if(print_layout->get_title_original() != "Contact Details")
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected print layout title.\n";
-    return false;
+    return EXIT_FAILURE;
   }
 
   if(!print_layout->get_layout_group())
   {
     std::cerr << G_STRFUNC << ": Failure: The print layout has no layout group.\n";
-    return false;
+    return EXIT_FAILURE;
   }
 
 
@@ -306,32 +306,32 @@ int main()
   if(report_names.size() != 2)
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected number of reports.\n";
-    return false;
+    return EXIT_FAILURE;
   }
 
   if(!contains(report_names, "by_country"))
   {
     std::cerr << G_STRFUNC << ": Failure: Could not find the expected report name.\n";
-    return false;
+    return EXIT_FAILURE;
   }
 
   const auto report = document->get_report("contacts", "by_country_by_town");
   if(!report)
   {
     std::cerr << G_STRFUNC << ": Failure: Could not get an expected report.\n";
-    return false;
+    return EXIT_FAILURE;
   }
 
   if(report->get_title_original() != "By Country, By Town")
   {
     std::cerr << G_STRFUNC << ": Failure: Unexpected report title.\n";
-    return false;
+    return EXIT_FAILURE;
   }
 
   if(!report->get_layout_group())
   {
     std::cerr << G_STRFUNC << ": Failure: The report has no layout group.\n";
-    return false;
+    return EXIT_FAILURE;
   }
 
 
@@ -356,13 +356,13 @@ int main()
   if(!needs_navigation(document, "scenes", "location_id"))
   {
     std::cerr << G_STRFUNC << ": Failure: DbUtils::layout_field_should_have_navigation() did not return the expected result.\n";
-    return false;
+    return EXIT_FAILURE;
   }
 
   if(needs_navigation(document, "scenes", "description"))
   {
     std::cerr << G_STRFUNC << ": Failure: DbUtils::layout_field_should_have_navigation() did not return the expected result.\n";
-    return false;
+    return EXIT_FAILURE;
   }
 
 
@@ -375,7 +375,7 @@ int main()
   if(!portal)
   {
     std::cerr << G_STRFUNC << ": Failure: Could not get the portal from the layout.\n";
-    return false;
+    return EXIT_FAILURE;
   }
 
   Glib::ustring navigation_table_name;
@@ -385,19 +385,19 @@ int main()
   if(navigation_table_name != "characters")
   {
     std::cerr << G_STRFUNC << ": Failure: get_suitable_table_to_view_details() returned an unexpected table name: " << navigation_table_name << std::endl;
-    return false;
+    return EXIT_FAILURE;
   }
 
   if(!navigation_relationship)
   {
     std::cerr << G_STRFUNC << ": Failure: get_suitable_table_to_view_details() returned an empty navigation_relationship.\n";
-    return false;
+    return EXIT_FAILURE;
   }
 
   if(navigation_relationship->get_relationship_name() != "cast")
   {
     std::cerr << G_STRFUNC << ": Failure: get_suitable_table_to_view_details() returned an unexpected navigation_relationship name: " << navigation_relationship->get_relationship_name() << std::endl;
-    return false;
+    return EXIT_FAILURE;
   }
 
   Glom::libglom_deinit();
