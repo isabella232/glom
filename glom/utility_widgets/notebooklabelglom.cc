@@ -46,7 +46,6 @@ void NotebookLabel::init()
 {
   add(m_label);
   m_label.show();
-  set_events (Gdk::EventMask::ALL_EVENTS_MASK);
   set_visible_window (false);
   setup_menu(this);
 }

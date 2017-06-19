@@ -89,7 +89,6 @@ DbAddDel::DbAddDel()
   //Make sure that the TreeView doesn't start out only big enough for zero items.
   set_height_rows(6, 6);
 
-  m_tree_view.add_events(Gdk::EventMask::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
   m_tree_view.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &DbAddDel::on_treeview_button_press_event) );
   m_tree_view.signal_columns_changed().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columns_changed) );
   //signal_button_press_event().connect(sigc::mem_fun(*this, &DbAddDel::on_button_press_event_Popup));

@@ -500,7 +500,6 @@ void FlowTableWithFields::add_field(const std::shared_ptr<LayoutItem_Field>& lay
   eventbox->set_halign(Gtk::Align::START);
   info.m_first_eventbox = eventbox; //Remember it so we can retrieve the column number later from FlowTable.
   eventbox->set_visible_window(false);
-  eventbox->set_events(Gdk::EventMask::ALL_EVENTS_MASK);
 
   add_widgets(*eventbox, *(info.m_second), true);
 

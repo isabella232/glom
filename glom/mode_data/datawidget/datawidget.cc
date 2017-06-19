@@ -247,8 +247,6 @@ DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Gli
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu(this);
 #endif // GLOM_ENABLE_CLIENT_ONLY
-
-  set_events(Gdk::EventMask::BUTTON_PRESS_MASK);
 }
 
 void DataWidget::on_widget_edited()

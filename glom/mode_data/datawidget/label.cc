@@ -53,7 +53,6 @@ void Label::init()
 
   add(m_label);
   m_label.show();
-  set_events(Gdk::EventMask::ALL_EVENTS_MASK);
   //This would be more efficient if we were only using the (base) EventBox to get events,
   //but we also want to allow changing of the background color, so we don't use it: set_visible_window(false);
 
