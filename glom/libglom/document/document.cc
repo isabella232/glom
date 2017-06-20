@@ -1078,7 +1078,7 @@ void Document::change_relationship_name(const Glib::ustring& table_name, const G
   const auto doctableinfo = get_table_info(table_name);
   if(doctableinfo)
   {
-    const auto relationships = doctableinfo->m_relationships;
+    const auto& relationships = doctableinfo->m_relationships;
 
     //Change the relationship name:
     auto iterRelFind = find_if_same_name(relationships, name);
