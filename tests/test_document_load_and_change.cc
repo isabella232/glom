@@ -169,12 +169,21 @@ int main()
 
   //Remove a field from the whole document:
   document.remove_field("publisher", "publisher_id");
+
+  //Check that the old field name is not used.
+  auto field =
+    document.get_field("publisher", "publisher_id");
+  if (field) {
+    std::cerr << G_STRFUNC << ": Failure: The removed field name still exists.\n";
+    return EXIT_FAILURE;
+  }
+
   if(field_is_on_a_layout(document, "publisher", "publisher_id"))
   {
     std::cerr << G_STRFUNC << ": Failure: The removed field name is still used on a layout." << std::endl;
     return EXIT_FAILURE;
   }
-  
+
   //Remove a relationship:
   document.remove_relationship(relationship);
   relationship = document.get_relationship("invoice_lines", "products");
@@ -183,7 +192,7 @@ int main()
     std::cerr << G_STRFUNC << ": Failure: The removed relationship still exists." << std::endl;
     return EXIT_FAILURE;
   }
-  
+
   //Change a table name:
   const Glib::ustring table_renamed = "invoiceslinesrenamed";
   document.change_table_name("invoice_lines", table_renamed);
