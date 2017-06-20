@@ -717,7 +717,7 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
   const auto table_info = get_table_info(table_name);
   if(table_info)
   {
-    auto vecFields = table_info->m_fields;
+    auto& vecFields = table_info->m_fields;
     auto iterFind = find_if_same_name(vecFields, field_name);
     if(iterFind != vecFields.end()) //If it was found:
     {
