@@ -669,7 +669,7 @@ void Document::remove_relationship(const std::shared_ptr<const Relationship>& re
   }
 
   //Remove relationship from any layouts:
-  auto layouts = info->m_layouts;
+  const auto& layouts = info->m_layouts;
   auto iterLayouts = layouts.begin();
   while(iterLayouts != layouts.end())
   {
@@ -935,7 +935,7 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
   if(info)
   {
     //Fields:
-    auto& vecFields = info->m_fields;
+    const auto& vecFields = info->m_fields;
     auto iterFind = find_if_same_name(vecFields, strFieldNameOld);
     if(iterFind != vecFields.end()) //If it was found:
     {
@@ -1518,7 +1518,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups(const Glib::u
   const auto info = get_table_info(parent_table_name);
   if(info)
   {
-    const auto layouts = info->m_layouts;
+    const auto& layouts = info->m_layouts;
 
     //Look for the layout with this name:
     auto iter = find_if_layout(layouts, layout_name, layout_platform);
