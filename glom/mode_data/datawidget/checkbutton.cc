@@ -22,6 +22,7 @@
 #include <gtkmm/messagedialog.h>
 #include <glom/dialog_invalid_data.h>
 #include <glom/appwindow.h>
+#include <glom/utils_ui.h>
 
 namespace Glom
 {
@@ -56,17 +57,8 @@ bool CheckButton::on_button_press_event(Gdk::EventButton& button_event)
     //TODO: It would be better to add it somehow to the standard context menu.
     if(pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
-      auto gdkwindow = get_window();
-      Gdk::ModifierType mods;
-      int x = 0;
-      int y = 0;
-      gdkwindow->get_device_position(button_event.get_device(), x, y, mods);
-      if((mods & Gdk::ModifierType::BUTTON3_MASK) == Gdk::ModifierType::BUTTON3_MASK)
-      {
-        //Give user choices of actions on this item:
-        m_menu_popup->popup(button_event.get_button(), button_event.get_time());
-        return true; //We handled this event.
-      }
+      if(UiUtils::popup_menu_if_button3_click(*this, *m_menu_popup, button_event))
+        return true;
     }
   }
 

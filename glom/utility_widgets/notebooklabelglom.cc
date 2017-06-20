@@ -20,6 +20,7 @@
 
 #include "notebooklabelglom.h"
 #include <glom/appwindow.h>
+#include <glom/utils_ui.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>
@@ -125,17 +126,8 @@ bool NotebookLabel::on_button_press_event(Gdk::EventButton& button_event)
   auto pApp = get_appwindow();
   if(pApp && pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
   {
-    auto gdkwindow = get_window();
-    Gdk::ModifierType mods;
-    int x = 0;
-    int y = 0;
-    gdkwindow->get_device_position(button_event.get_device(), x, y, mods);
-    if((mods & Gdk::ModifierType::BUTTON3_MASK) == Gdk::ModifierType::BUTTON3_MASK)
-    {
-      //Give user choices of actions on this item:
-      m_popup_menu->popup(button_event.get_button(), button_event.get_time());
-      return true; //We handled this event.
-    }
+    if(UiUtils::popup_menu_if_button3_click(*this, *m_popup_menu, button_event))
+      return true; //handled.
   }
 
   return Gtk::EventBox::on_button_press_event(button_event);

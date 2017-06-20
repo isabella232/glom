@@ -637,4 +637,25 @@ void UiUtils::load_background_color_into_css_provider(Gtk::Widget& widget, const
   load_into_css_provider(widget, css);
 }
 
+bool UiUtils::popup_menu_if_button3_click(Gtk::Widget& widget, Gtk::Menu& menu, const Gdk::EventButton& event)
+{
+  auto gdkwindow = widget.get_window();
+  if (!gdkwindow) {
+    return false;
+  }
+
+  Gdk::ModifierType mods;
+  int x = 0;
+  int y = 0;
+  gdkwindow->get_device_position(event.get_device(), x, y, mods);
+  if((mods & Gdk::ModifierType::BUTTON3_MASK) == Gdk::ModifierType::BUTTON3_MASK)
+  {
+    //Give user choices of actions on this item:
+    menu.popup(event.get_button(), event.get_time());
+    return true; //We handled this event.
+  }
+
+  return false;
+}
+
 } //namespace Glom

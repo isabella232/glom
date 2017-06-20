@@ -1315,18 +1315,10 @@ bool FlowTableWithFields::on_button_press_event(Gdk::EventButton& button_event)
   auto pApp = AppWindow::get_appwindow();
   if(pApp && pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
   {
-    auto gdkwindow = get_window();
-    Gdk::ModifierType mods;
-    int x = 0;
-    int y = 0;
-    gdkwindow->get_device_position(button_event.get_device(), x, y, mods);
-    if((mods & Gdk::ModifierType::BUTTON3_MASK) == Gdk::ModifierType::BUTTON3_MASK)
-    {
-      //Give user choices of actions on this item:
-      m_popup_menu_utils->popup(button_event.get_button(), button_event.get_time());
-      return true; //We handled this event.
-    }
+    if(UiUtils::popup_menu_if_button3_click(*this, *m_popup_menu_utils, button_event))
+      return true; //handled.
   }
+
   return Gtk::Widget::on_button_press_event(button_event);
 }
 

@@ -23,6 +23,7 @@
 
 #include "config.h"
 #include <gtkmm/dialog.h>
+#include <gtkmm/menu.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/cssprovider.h>
 #include <libglom/data_structure/field.h>
@@ -115,6 +116,11 @@ void load_font_into_css_provider(Gtk::Widget& widget, const Glib::ustring& pango
 
 void load_color_into_css_provider(Gtk::Widget& widget, const Glib::ustring& color);
 void load_background_color_into_css_provider(Gtk::Widget& widget, const Glib::ustring& color);
+
+/** Popup the @a menu if the @a event, on the @a widget, is a button 3 click.
+ * @result Whether the event was handled.
+ */
+bool popup_menu_if_button3_click(Gtk::Widget& widget, Gtk::Menu& menu, const Gdk::EventButton& event);
 
 } //namespace UiUtils
 

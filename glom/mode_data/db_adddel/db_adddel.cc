@@ -284,15 +284,8 @@ bool DbAddDel::on_button_press_event_Popup(Gdk::EventButton& button_event)
   }
 #endif
 
-  auto gdkwindow = get_window();
-  Gdk::ModifierType mods;
-  int x = 0;
-  int y = 0;
-  gdkwindow->get_device_position(button_event.get_device(), x, y, mods);
-  if((mods & Gdk::ModifierType::BUTTON3_MASK) == Gdk::ModifierType::BUTTON3_MASK)
+  if(UiUtils::popup_menu_if_button3_click(*this, *m_menu_popup, button_event))
   {
-    //Give user choices of actions on this item:
-    m_menu_popup->popup(button_event.get_button(), button_event.get_time());
     return true; //handled.
   }
   else

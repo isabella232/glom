@@ -23,6 +23,7 @@
 #include <gtkmm/messagedialog.h>
 #include <glom/dialog_invalid_data.h>
 #include <glom/appwindow.h>
+#include <glom/utils_ui.h>
 #include <libglom/db_utils.h>
 #include <iostream>   // for cout, endl
 
@@ -267,16 +268,7 @@ void ComboAsRadioButtons::show_context_menu(Gdk::EventButton& button_event)
     //TODO: It would be better to add it somehow to the standard context menu.
     if(pApp->get_userlevel() == AppState::userlevels::DEVELOPER)
     {
-      auto gdkwindow = get_window();
-      Gdk::ModifierType mods;
-      int x = 0;
-      int y = 0;
-      gdkwindow->get_device_position(button_event.get_device(), x, y, mods);
-      if((mods & Gdk::ModifierType::BUTTON3_MASK) == Gdk::ModifierType::BUTTON3_MASK)
-      {
-        //Give user choices of actions on this item:
-        m_menu_popup->popup(button_event.get_button(), button_event.get_time());
-      }
+      UiUtils::popup_menu_if_button3_click(*this, *m_menu_popup, button_event);
     }
   }
 }
