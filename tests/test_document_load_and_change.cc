@@ -143,13 +143,13 @@ int main()
     const Glib::ustring relationship_name_new = "newrelationshipname";
     document->change_relationship_name(table_name_invoices,
       relationship_name_original, relationship_name_new);
-    if(document->get_relationship(table_name, relationship_name_original))
+    if(document->get_relationship(table_name_invoices, relationship_name_original))
     {
       std::cerr << G_STRFUNC << ": Failure: The original relationship name still exists.\n";
       return EXIT_FAILURE;
     }
 
-    if(!document->get_relationship(table_name, relationship_name_new))
+    if(!document->get_relationship(table_name_invoices, relationship_name_new))
     {
       std::cerr << G_STRFUNC << ": Failure: The new relationship name does not exist.\n";
       return EXIT_FAILURE;
@@ -157,7 +157,7 @@ int main()
 
     //Check that the old relationship name is not used.
     auto field_on_layout =
-      get_field_on_layout(document, table_name, "contacts", "name_full");
+      get_field_on_layout(document, table_name_invoices, "contacts", "name_full");
     g_assert(field_on_layout);
     if(field_on_layout->get_relationship_name() != relationship_name_new)
     {
