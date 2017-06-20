@@ -658,7 +658,8 @@ void Document::remove_relationship(const std::shared_ptr<const Relationship>& re
   const auto relationship_name = glom_get_sharedptr_name(relationship);
 
   //Find the relationship and remove it:
-  auto relationships = info->m_relationships;
+  auto& relationships = info->m_relationships;
+
   auto iterRel = find_if_same_name(relationships, relationship_name);
   if(iterRel != relationships.end())
   {
