@@ -168,6 +168,15 @@ int main()
 
   //Remove a field from the whole document:
   document->remove_field("publisher", "publisher_id");
+
+  //Check that the old field name is not used.
+  auto field =
+    document->get_field("publisher", "publisher_id");
+  if (field) {
+    std::cerr << G_STRFUNC << ": Failure: The removed field name still exists.\n";
+    return EXIT_FAILURE;
+  }
+
   if(field_is_on_a_layout(document, "publisher", "publisher_id"))
   {
     std::cerr << G_STRFUNC << ": Failure: The removed field name is still used on a layout.\n";
