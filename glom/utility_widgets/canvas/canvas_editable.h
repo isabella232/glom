@@ -84,7 +84,7 @@ public:
   //TODO: Actually emit this, so we actually show the context menu when clicking on blank space:
   /** void on_show_context(guint button, guint32 activate_time);
    */
-  typedef sigc::signal<void(guint, guint32)> type_signal_show_context;
+  typedef sigc::signal<void(GdkEventButton*)> type_signal_show_context;
   type_signal_show_context signal_show_context();
 
 

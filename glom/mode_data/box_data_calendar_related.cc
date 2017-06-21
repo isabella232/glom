@@ -521,7 +521,7 @@ void Box_Data_Calendar_Related::on_calendar_button_press_event(GdkEventButton *b
   if(mods & GDK_BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
-    m_menu_popup->popup(button_event->button, button_event->time);
+    m_menu_popup->popup_at_pointer((GdkEvent*)button_event);
     return; //handled.
   }
   else

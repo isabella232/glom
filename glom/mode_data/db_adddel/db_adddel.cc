@@ -292,7 +292,7 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *button_event)
   if(mods & GDK_BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
-    m_menu_popup->popup(button_event->button, button_event->time);
+    m_menu_popup->popup_at_pointer((GdkEvent*)button_event);
     return true; //handled.
   }
   else
