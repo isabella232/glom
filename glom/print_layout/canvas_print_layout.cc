@@ -291,7 +291,7 @@ void Canvas_PrintLayout::setup_context_menu()
 }
 
 
-void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activate_time, const Glib::WeakRef<CanvasLayoutItem>& item_weak)
+void Canvas_PrintLayout::on_item_show_context_menu(Gdk::EventButton& event, const Glib::WeakRef<CanvasLayoutItem>& item_weak)
 {
   const auto item = item_weak.get();
   if(!item)
@@ -312,7 +312,7 @@ void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activat
 
   m_action_formatting->set_enabled(enable_formatting);
 
-  m_context_menu->popup(button, activate_time);
+  m_context_menu->popup_at_pointer(event);
 }
 
 void Canvas_PrintLayout::on_background_button_press_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, Gdk::EventButton& /* event */)

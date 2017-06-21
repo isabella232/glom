@@ -111,7 +111,7 @@ void CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
     }
     case 3:
     {
-      m_signal_show_context.emit(event.get_button(), event.get_time());
+      m_signal_show_context.emit(event);
       return; // false; // Not fully Handled.
     }
     default:

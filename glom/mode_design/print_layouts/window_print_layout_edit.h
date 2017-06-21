@@ -93,7 +93,7 @@ private:
   void on_menu_align_right();
 
   void on_canvas_motion_notify_event(Gdk::EventMotion& motion_event);
-  void on_canvas_show_context_menu(guint button, guint32 activate_time);
+  void on_canvas_show_context_menu(Gdk::EventButton& event);
   void on_context_menu_insert_field();
   void on_context_menu_insert_text();
 

@@ -186,7 +186,7 @@ bool ImageGlom::on_button_press_event(Gdk::EventButton& button_event)
       if((mods & Gdk::ModifierType::BUTTON3_MASK) == Gdk::ModifierType::BUTTON3_MASK)
       {
         //Give user choices of actions on this item:
-        popup_menu(button_event.get_button(), button_event.get_time());
+        popup_menu(button_event);
 
         return true; //We handled this event.
       }
@@ -198,7 +198,7 @@ bool ImageGlom::on_button_press_event(Gdk::EventButton& button_event)
       if((mods & Gdk::ModifierType::BUTTON3_MASK) == Gdk::ModifierType::BUTTON3_MASK)
       {
         //Give user choices of actions on this item:
-        popup_menu(button_event.get_button(), button_event.get_time());
+        popup_menu(button_event);
 
         return true; //We handled this event.
       }
@@ -1007,7 +1007,7 @@ void ImageGlom::set_read_only(bool read_only)
   m_read_only = read_only;
 }
 
-void ImageGlom::popup_menu(guint button, guint32 activate_time)
+void ImageGlom::popup_menu(Gdk::EventButton& event)
 {
   if(!m_menu_popup_user_mode)
   {
@@ -1015,7 +1015,7 @@ void ImageGlom::popup_menu(guint button, guint32 activate_time)
     return;
   }
 
-  m_menu_popup_user_mode->popup(button, activate_time);
+  m_menu_popup_user_mode->popup_at_pointer(event);
 
   m_action_select_file->set_enabled();
 }

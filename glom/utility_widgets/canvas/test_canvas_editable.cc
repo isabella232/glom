@@ -153,7 +153,7 @@ private:
   void on_show_context_menu(guint button, guint32 activate_time)
   {
     if(m_context_menu)
-      m_context_menu->popup(button, activate_time);
+      m_context_menu->popup_at_pointer(event);
   }
   */
 

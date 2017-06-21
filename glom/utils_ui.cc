@@ -651,7 +651,7 @@ bool UiUtils::popup_menu_if_button3_click(Gtk::Widget& widget, Gtk::Menu& menu, 
   if((mods & Gdk::ModifierType::BUTTON3_MASK) == Gdk::ModifierType::BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
-    menu.popup(event.get_button(), event.get_time());
+    menu.popup_at_pointer(event);
     return true; //We handled this event.
   }
 

@@ -68,7 +68,7 @@ private:
   void on_menu_view_showgrid(const Glib::VariantBase& /* parameter */);
 
   void on_table_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset);
-  void on_table_show_context(guint button, guint32 activate_time, const Glib::WeakRef<CanvasGroupDbTable>& table);
+  void on_table_show_context(Gdk::EventButton& event, const Glib::WeakRef<CanvasGroupDbTable>& table);
 
   void on_context_menu_edit_fields(const Glib::VariantBase& parameter, const Glib::WeakRef<CanvasGroupDbTable>& table);
   void on_context_menu_edit_relationships(const Glib::VariantBase& parameter, const Glib::WeakRef<CanvasGroupDbTable>& table);

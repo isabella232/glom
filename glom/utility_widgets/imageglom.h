@@ -89,7 +89,7 @@ private:
   void setup_menu_usermode();
   void show_image_data();
 
-  void popup_menu(guint button, guint32 activate_time);
+  void popup_menu(Gdk::EventButton& event);
 
   const GdaBinary* get_binary() const;
 
