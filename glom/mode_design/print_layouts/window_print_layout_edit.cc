@@ -726,13 +726,13 @@ bool Window_PrintLayout_Edit::on_canvas_motion_notify_event(GdkEventMotion* moti
   return false;
 }
 
-void Window_PrintLayout_Edit::on_canvas_show_context_menu(guint button, guint32 activate_time)
+void Window_PrintLayout_Edit::on_canvas_show_context_menu(GdkEventButton* event)
 {
   //TODO: This is never called when right-clicking on the canvas.
   //std::cout << G_STRFUNC << ": debug\n";
 
   if(m_context_menu)
-    m_context_menu->popup(button, activate_time);
+    m_context_menu->popup_at_pointer((GdkEvent*)event);
 }
 
 bool Window_PrintLayout_Edit::get_is_item_at(double x, double y) const

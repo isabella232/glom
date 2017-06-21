@@ -131,7 +131,7 @@ bool NotebookLabel::on_button_press_event(GdkEventButton *button_event)
     if(mods & GDK_BUTTON3_MASK)
     {
       //Give user choices of actions on this item:
-      m_popup_menu->popup(button_event->button, button_event->time);
+      m_popup_menu->popup_at_pointer((GdkEvent*)button_event);
       return true; //We handled this event.
     }
   }

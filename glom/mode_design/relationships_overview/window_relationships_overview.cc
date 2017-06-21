@@ -406,7 +406,7 @@ void Window_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasItemM
   draw_lines();
 }
 
-void Window_RelationshipsOverview::on_table_show_context(guint button, guint32 activate_time, const Glib::WeakRef<CanvasGroupDbTable>& table_weak)
+void Window_RelationshipsOverview::on_table_show_context(GdkEventButton* event, const Glib::WeakRef<CanvasGroupDbTable>& table_weak)
 {
   const auto table = table_weak.get();
   if (!table)
@@ -426,7 +426,7 @@ void Window_RelationshipsOverview::on_table_show_context(guint button, guint32 a
   }
 
   if(m_context_menu)
-    m_context_menu->popup(button, activate_time);
+    m_context_menu->popup_at_pointer((GdkEvent*)event);
 }
 
 void Window_RelationshipsOverview::setup_context_menu()
