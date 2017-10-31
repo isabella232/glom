@@ -102,7 +102,7 @@ private:
 #else // G_OS_WIN32
   bool on_io(Glib::IOCondition cond, Glib::RefPtr<Glib::IOChannel> channel, std::string& result)
   {
-    if(cond != Glib::IOCondition::IN)
+    if(cond != Glib::IOCondition::IO_IN)
     {
       // Perhaps the pipe was closed or something. Ignore & Disconnect. If the
       // this was because the child exited, then the on_child_watch() callback
@@ -140,7 +140,7 @@ private:
     channel->set_encoding("");
     channel->set_buffered(false);
 
-    Glib::signal_io().connect(sigc::bind(sigc::mem_fun(*this, &SpawnInfo::on_io), channel, std::ref(string)), channel, Glib::IOCondition::IN);
+    Glib::signal_io().connect(sigc::bind(sigc::mem_fun(*this, &SpawnInfo::on_io), channel, std::ref(string)), channel, Glib::IOCondition::IO_IN);
   }
 #endif // !G_OS_WIN32
 
