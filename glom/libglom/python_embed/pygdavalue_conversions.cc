@@ -129,15 +129,17 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
       //TODO: Find some way to do this with boost::python
       if(PyDateTime_Check (input_c))
       {
-         GdaTimestamp gda;
-         gda.year = PyDateTime_GET_YEAR(input_c);
-         gda.month = PyDateTime_GET_MONTH(input_c);
-         gda.day = PyDateTime_GET_DAY(input_c);
-         gda.hour = PyDateTime_DATE_GET_HOUR(input_c);
-         gda.minute = PyDateTime_DATE_GET_MINUTE(input_c);
-         gda.second = PyDateTime_DATE_GET_SECOND(input_c);
-         gda.timezone = 0;
-         gda_value_set_timestamp (boxed, &gda);
+         GdaTimestamp* gda = gda_timestamp_new_from_values(
+           PyDateTime_GET_YEAR(input_c),
+           PyDateTime_GET_MONTH(input_c),
+           PyDateTime_GET_DAY(input_c),
+           PyDateTime_DATE_GET_HOUR(input_c),
+           PyDateTime_DATE_GET_MINUTE(input_c),
+           PyDateTime_DATE_GET_SECOND(input_c),
+           0,
+           0);
+         gda_value_set_timestamp (boxed, gda);
+         gda_timestamp_free (gda);
          return true;
        } else if(PyDate_Check (input_c))
        {
@@ -151,12 +153,14 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
          return true;
        } else if(PyTime_Check (input_c))
        {
-         GdaTime gda;
-         gda.hour = PyDateTime_TIME_GET_HOUR(input_c);
-         gda.minute = PyDateTime_TIME_GET_MINUTE(input_c);
-         gda.second = PyDateTime_TIME_GET_SECOND(input_c);
-         gda.timezone = 0;
-         gda_value_set_time (boxed, &gda);
+         GdaTime* gda = gda_time_new_from_values(
+           PyDateTime_TIME_GET_HOUR(input_c),
+           PyDateTime_TIME_GET_MINUTE(input_c),
+           PyDateTime_TIME_GET_SECOND(input_c),
+           0,
+           0);
+         gda_value_set_time (boxed, gda);
+         gda_time_free (gda);
          return true;
        }
      }
@@ -246,10 +250,12 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
     } else if(value_type == G_TYPE_DOUBLE) {
         ret = boost::python::object(g_value_get_double(boxed));
     } else if(value_type == GDA_TYPE_GEOMETRIC_POINT) {
-        const auto val = gda_value_get_geometric_point(boxed);
+        auto val = const_cast<GdaGeometricPoint*>(gda_value_get_geometric_point(boxed));
         if(val)
         {
-          PyObject* cobject = Py_BuildValue ("(ii)", val->x, val->y);
+          PyObject* cobject = Py_BuildValue ("(ii)",
+            gda_geometric_point_get_x(val),
+            gda_geometric_point_get_y(val));
           ret = boost::python::object( (boost::python::handle<>(cobject)) );
         }
     } else if(value_type == G_TYPE_INT) {
@@ -267,14 +273,22 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
         const auto val = gda_value_get_time(boxed);
         if(val)
         {
-          PyObject* cobject = PyTime_FromTime(val->hour, val->minute, val->second, 0); /* TODO: Should we ignore GDate::timezone ? */
+          PyObject* cobject = PyTime_FromTime(
+            gda_time_get_hour(val), gda_time_get_minute(val), gda_time_get_second(val), 0); /* TODO: Should we ignore GDate::timezone ? */
           ret = boost::python::object( (boost::python::handle<>(cobject)) );
         }
     } else if(value_type == GDA_TYPE_TIMESTAMP) {
         const auto val = gda_value_get_timestamp(boxed);
         if(val)
         {
-          PyObject* cobject = PyDateTime_FromDateAndTime(val->year, val->month, val->day, val->hour, val->minute, val->second, 0); /* TODO: Should we ignore GdaTimestamp::timezone ? */
+          PyObject* cobject = PyDateTime_FromDateAndTime(
+            gda_timestamp_get_year(val),
+            gda_timestamp_get_month(val),
+            gda_timestamp_get_day(val),
+            gda_timestamp_get_hour(val),
+            gda_timestamp_get_minute(val),
+            gda_timestamp_get_second(val),
+            0); /* TODO: Should we ignore GdaTimestamp::timezone ? */
           ret = boost::python::object( (boost::python::handle<>(cobject)) );
         }
 #endif
