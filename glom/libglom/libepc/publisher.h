@@ -21,9 +21,9 @@
 #ifndef __EPC_PUBLISHER_H__
 #define __EPC_PUBLISHER_H__
 
-#include <libepc/contents.h>
-#include <libepc/dispatcher.h>
-#include <libepc/service-type.h>
+#include <libglom/libepc/contents.h>
+#include <libglom/libepc/dispatcher.h>
+#include <libglom/libepc/service-type.h>
 
 G_BEGIN_DECLS
 

@@ -56,6 +56,10 @@ glom/libglom/utils.cc
 glom/libglom/db_utils.cc
 glom/libglom/report_builder.cc
 glom/libglom/xsl_utils.cc
+glom/libglom/libepc/consumer.c
+glom/libglom/libepc/publisher.c
+glom/libglom/libepc/shell.c
+glom/libglom/libepc/tls.c
 glom/glom_create_from_example.cc
 glom/glom_export_po.cc
 glom/glom_export_po_all.cc

@@ -21,7 +21,7 @@
 #ifndef __EPC_DISPATCHER_H__
 #define __EPC_DISPATCHER_H__
 
-#include <libepc/service-info.h>
+#include <libglom/libepc/service-info.h>
 
 G_BEGIN_DECLS
 

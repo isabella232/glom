@@ -33,8 +33,8 @@
 #ifdef G_OS_WIN32
 # include <windows.h>
 #else
-# include <libepc/shell.h> //For epc_shell_set_progress_hooks().
-# include <libepc/publisher.h>
+# include <libglom/libepc/shell.h> //For epc_shell_set_progress_hooks().
+# include <libglom/libepc/publisher.h>
 #endif
 
 #include <csignal> //To catch segfaults
