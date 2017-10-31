@@ -1,0 +1,7 @@
+*.[ao]
+*.l[ao]
+*.l[ao]T
+*.stamp
+*.tmp
+.dirstamp
+

@@ -53,7 +53,7 @@
 #include <sstream> //For stringstream.
 
 #ifndef G_OS_WIN32
-#include <libepc/consumer.h>
+#include <libglom/libepc/consumer.h>
 #include <libsoup/soup-status.h>
 #endif // !G_OS_WIN32
 

@@ -199,7 +199,31 @@ libglom_sources =							\
 	glom/libglom/connectionpool_backends/postgres.cc		\
 	glom/libglom/connectionpool_backends/postgres.h			\
 	glom/libglom/connectionpool_backends/postgres_central.cc	\
-	glom/libglom/connectionpool_backends/postgres_central.h
+	glom/libglom/connectionpool_backends/postgres_central.h \
+        glom/libglom/libepc/consumer.c \
+        glom/libglom/libepc/consumer.h \
+        glom/libglom/libepc/contents.c \
+        glom/libglom/libepc/contents.h \
+        glom/libglom/libepc/dispatcher.c \
+        glom/libglom/libepc/dispatcher.h \
+        glom/libglom/libepc/enums.c \
+        glom/libglom/libepc/enums.h \
+        glom/libglom/libepc/protocol.c \
+        glom/libglom/libepc/protocol.h \
+        glom/libglom/libepc/publisher.c \
+        glom/libglom/libepc/publisher.h \
+        glom/libglom/libepc/service-info.c \
+        glom/libglom/libepc/service-info.h \
+        glom/libglom/libepc/service-monitor.c \
+        glom/libglom/libepc/service-monitor.h \
+        glom/libglom/libepc/service-type.c \
+        glom/libglom/libepc/service-type.h \
+        glom/libglom/libepc/shell.c \
+        glom/libglom/libepc/shell.h \
+        glom/libglom/libepc/tls.c \
+        glom/libglom/libepc/tls.h
+
+
 
 if !GLOM_ENABLE_CLIENT_ONLY
 libglom_sources +=						\

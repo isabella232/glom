@@ -36,7 +36,7 @@
 #include <glibmm/fileutils.h>
 #include <glib.h>
 #else
-#include <libepc/service-type.h>
+#include <libglom/libepc/service-type.h>
 #endif
 
 #include <iostream>

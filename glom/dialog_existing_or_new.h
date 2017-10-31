@@ -36,7 +36,7 @@
 #include <gtkmm/builder.h>
 
 #ifndef G_OS_WIN32
-# include <libepc/service-monitor.h>
+# include <libglom/libepc/service-monitor.h>
 #endif
 
 namespace Glom
