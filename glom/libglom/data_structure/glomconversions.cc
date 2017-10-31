@@ -467,9 +467,9 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 
       //tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-      the_c_time.tm_hour = gda_time.hour;
-      the_c_time.tm_min = gda_time.minute;
-      the_c_time.tm_sec = gda_time.second;
+      the_c_time.tm_hour = gda_time.get_hour();
+      the_c_time.tm_min = gda_time.get_minute();
+      the_c_time.tm_sec = gda_time.get_second();
     }
     else
     {
@@ -647,9 +647,9 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
     }
 
     Gnome::Gda::Time gda_time = {0, 0, 0, 0, 0};
-    gda_time.hour = the_c_time.tm_hour;
-    gda_time.minute = the_c_time.tm_min;
-    gda_time.second = the_c_time.tm_sec;
+    gda_time.set_hour(the_c_time.tm_hour);
+    gda_time.set_minute(the_c_time.tm_min);
+    gda_time.set_second(the_c_time.tm_sec);
 
     return Gnome::Gda::Value(gda_time);
   }
