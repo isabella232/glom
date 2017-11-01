@@ -68,7 +68,7 @@ private:
   void clear_image_from_widgets();
   void clear_original_data();
 
-  void on_size_allocate(Gtk::Allocation& allocation) override;
+  void on_size_allocate(const Gtk::Allocation& allocation, int baseline, Gtk::Allocation& out_clip) override;
 
   bool on_button_press_event(Gdk::EventButton& event) override;
 

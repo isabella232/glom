@@ -245,9 +245,9 @@ Gnome::Gda::Value ImageGlom::get_value() const
   return m_original_data;
 }
 
-void ImageGlom::on_size_allocate(Gtk::Allocation& allocation)
+void ImageGlom::on_size_allocate(const Gtk::Allocation& allocation, int baseline, Gtk::Allocation& out_clip)
 {
-  Gtk::EventBox::on_size_allocate(allocation);
+  Gtk::EventBox::on_size_allocate(allocation, baseline, out_clip);
 
   //Resize the GtkImage if necessary:
   if(m_pixbuf_original)
