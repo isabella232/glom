@@ -19,6 +19,7 @@
  */
 
 #include "dialog_choose_relationship.h"
+#include <gtkmm/label.h>
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 

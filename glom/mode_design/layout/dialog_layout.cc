@@ -19,6 +19,7 @@
  */
 
 #include <glom/mode_design/layout/dialog_layout.h>
+#include <gtkmm/label.h>
 //#include <libgnome/gnome-i18n.h>
 
 namespace Glom

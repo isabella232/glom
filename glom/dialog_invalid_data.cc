@@ -22,6 +22,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
+#include <gtkmm/label.h>
 
 namespace Glom
 {

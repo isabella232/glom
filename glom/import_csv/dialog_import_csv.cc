@@ -24,6 +24,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/cellrenderercombo.h>
+#include <gtkmm/label.h>
 #include <glom/utils_ui.h>
 #include <gtkmm/main.h>
 #include <glibmm/convert.h>
