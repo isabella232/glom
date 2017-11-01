@@ -30,7 +30,6 @@
 #include <libglom/document/view.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/mode_design/layout/treestore_layout.h> //Forthe enum.
-#include <gtkmm/eventbox.h>
 #include <gtkmm/button.h>
 
 namespace Glom
@@ -39,7 +38,7 @@ namespace Glom
 class AppWindow;
 
 class DataWidget
- : public Gtk::EventBox,
+ : public Gtk::Bin,
    public LayoutWidgetMenu,
    public View_Composite_Glom
 {

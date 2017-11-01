@@ -21,7 +21,6 @@
 #ifndef GLOM_UTILITY_WIDGETS_IMAGE_GLOM_H
 #define GLOM_UTILITY_WIDGETS_IMAGE_GLOM_H
 
-#include <gtkmm/eventbox.h>
 #include <gtkmm/image.h>
 #include <gtkmm/menu.h>
 #include <libglom/data_structure/field.h>
@@ -39,7 +38,7 @@ namespace Glom
 class AppWindow;
 
 class ImageGlom
-: public Gtk::EventBox,
+: public Gtk::Bin,
   public LayoutWidgetField
 {
 public:

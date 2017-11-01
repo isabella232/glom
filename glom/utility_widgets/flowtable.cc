@@ -21,7 +21,6 @@
 #include "flowtable.h"
 #include <libglom/algorithms_utils.h>
 #include <iostream>
-#include <gtkmm/eventbox.h>
 #include <gdkmm/window.h>
 #include <glom/utils_ui.h>
 
@@ -232,12 +231,6 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
   int baseline_natural = 0;
   child->measure(Gtk::Orientation::HORIZONTAL, width, width_min, width_natural, baseline_min, baseline_natural);
   //std::cout << G_STRFUNC << ": Calling get_child_line() with child=" << child << ", for first=" << &first << std::endl;
-
-  //Get the internal parent GtkEventBox, if any,
-  //though we need a derived get_child_line() to do this automatically:
-  const auto parent = child->get_parent();
-  if(dynamic_cast<const Gtk::EventBox*>(parent))
-     child = parent;
 
   column = get_child_line(*child, width_natural);
 

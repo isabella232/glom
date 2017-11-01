@@ -22,7 +22,6 @@
 #define GLOM_UTILITY_WIDGETS_NOTEBOOK_LABEL_GLOM_H
 
 #include "notebookglom.h"
-#include <gtkmm/eventbox.h>
 #include <gtkmm/label.h>
 #include <gtkmm/menu.h>
 #include <giomm/simpleactiongroup.h>
@@ -33,7 +32,7 @@ namespace Glom
 class AppWindow;
 
 class NotebookLabel
-: public Gtk::EventBox
+: public Gtk::Bin
 {
 public:
   explicit NotebookLabel(NotebookGlom* notebook);

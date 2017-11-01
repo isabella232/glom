@@ -47,7 +47,6 @@ void NotebookLabel::init()
 {
   add(m_label);
   m_label.show();
-  set_visible_window (false);
   setup_menu(this);
 }
 
@@ -130,7 +129,7 @@ bool NotebookLabel::on_button_press_event(Gdk::EventButton& button_event)
       return true; //handled.
   }
 
-  return Gtk::EventBox::on_button_press_event(button_event);
+  return Gtk::Bin::on_button_press_event(button_event);
 }
 
 } //namespace Glom

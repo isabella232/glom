@@ -41,7 +41,6 @@
 #include <glom/mode_design/layout/treestore_layout.h> //Forthe enum.
 #include <gtkmm/checkbutton.h>
 #include <gtkmm/sizegroup.h>
-#include <gtkmm/eventbox.h>
 #include <gtkmm/box.h>
 #include <unordered_map>
 #include <vector>
@@ -221,7 +220,6 @@ private:
     std::shared_ptr<const LayoutItem_Field> m_field; //Store the field information so we know the title, ID, and type.
 
     Gtk::Widget* m_first;
-    Gtk::EventBox* m_first_eventbox; //The label is often inside an eventbox.
     Glib::RefPtr<Gtk::SizeGroup> m_first_in_sizegroup; //Just to avoid a warning when removing a widget not in a group.
 
     DataWidget* m_second;
@@ -285,8 +283,6 @@ private:
   void on_menu_properties_activate() override;
   void on_menu_delete_activate() override; // override this to add a dialog box
   bool on_button_press_event(Gdk::EventButton& event) override;
-
-  void on_event_box_button_press_event(Gdk::EventButton& event);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 };
 

@@ -438,7 +438,7 @@ bool DataWidget::on_button_press_event(Gdk::EventButton& button_event)
     }
   }
 
-  return Gtk::EventBox::on_button_press_event(button_event);
+  return Gtk::Bin::on_button_press_event(button_event);
 }
 
 std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name)

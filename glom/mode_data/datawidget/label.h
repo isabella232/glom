@@ -21,7 +21,6 @@
 #ifndef GLOM_UTILITY_WIDGETS_LABEL_GLOM_H
 #define GLOM_UTILITY_WIDGETS_LABEL_GLOM_H
 
-#include <gtkmm/eventbox.h>
 #include <gtkmm/label.h>
 #include <glom/utility_widgets/layoutwidgetbase.h>
 #include <glom/utility_widgets/layoutwidgetutils.h>
@@ -37,7 +36,7 @@ namespace DataWidgetChildren
 {
 
 class Label
-: public Gtk::EventBox,
+: public Gtk::Bin, /* TODO: Derive directly from Label? */
   public LayoutWidgetUtils
 {
 public:

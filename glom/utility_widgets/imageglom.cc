@@ -56,7 +56,7 @@ ImageGlom::ImageGlom()
 }
 
 ImageGlom::ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
-: Gtk::EventBox(cobject) /*,
+: Gtk::Bin(cobject) /*,
   m_ev_view(nullptr),
   m_ev_document_model(nullptr) */
 {
@@ -213,7 +213,7 @@ bool ImageGlom::on_button_press_event(Gdk::EventButton& button_event)
     }
   }
 
-  return Gtk::EventBox::on_button_press_event(button_event);
+  return Gtk::Bin::on_button_press_event(button_event);
 }
 
 AppWindow* ImageGlom::get_appwindow() const
@@ -247,7 +247,7 @@ Gnome::Gda::Value ImageGlom::get_value() const
 
 void ImageGlom::on_size_allocate(const Gtk::Allocation& allocation, int baseline, Gtk::Allocation& out_clip)
 {
-  Gtk::EventBox::on_size_allocate(allocation, baseline, out_clip);
+  Gtk::Bin::on_size_allocate(allocation, baseline, out_clip);
 
   //Resize the GtkImage if necessary:
   if(m_pixbuf_original)

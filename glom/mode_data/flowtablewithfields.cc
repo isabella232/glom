@@ -44,7 +44,6 @@ namespace Glom
 
 FlowTableWithFields::Info::Info()
 : m_first(nullptr),
-  m_first_eventbox(nullptr),
   m_second(nullptr),
   m_checkbutton(nullptr)
 {
@@ -189,16 +188,7 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
     flow_table->set_vertical_spacing(get_vertical_spacing());
     flow_table->show();
 
-    auto event_box = Gtk::manage( new Gtk::EventBox() ); //TODO_Leak: Valgrind says this is possibly leaked.
-    event_box->add(*flow_table);
-    event_box->set_visible_window(false);
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-    event_box->signal_button_press_event().connect_notify(sigc::mem_fun (*flow_table,
-      &FlowTableWithFields::on_event_box_button_press_event));
-#endif
-    event_box->show();
-
-    frame->add(*event_box);
+    frame->add(*flow_table);
 
     if(!group_title.empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
     {
@@ -207,15 +197,15 @@ void FlowTableWithFields::add_layout_group(const std::shared_ptr<LayoutGroup>& g
       const int BASE_INDENT = 3;
 
       //std::cout << "title= " << group_title << ", with_indent=" << with_indent << std::endl;
-      event_box->set_margin_top(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
+      flow_table->set_margin_top(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
 
       if(with_indent)
       {
-        event_box->set_margin_start(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL) + BASE_INDENT);
+        flow_table->set_margin_start(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL) + BASE_INDENT);
       }
       else
       {
-        event_box->set_margin_start(BASE_INDENT);
+        flow_table->set_margin_start(BASE_INDENT);
       }
     }
 
@@ -396,24 +386,15 @@ void FlowTableWithFields::add_layout_notebook(const std::shared_ptr<LayoutItem_N
         flow_table->set_vertical_spacing(get_vertical_spacing());
         flow_table->show();
 
-        // Put the new flowtable in an event box to catch events
-        auto event_box = Gtk::manage( new Gtk::EventBox() ); //TODO_Leak: Valgrind says this is possibly leaked.
-        event_box->add(*flow_table);
-        event_box->set_visible_window(false);
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-        event_box->signal_button_press_event().connect_notify(sigc::mem_fun (*flow_table, &FlowTableWithFields::on_event_box_button_press_event));
-#endif
-        event_box->show();
-
         //Put some space between the page child and the page edges.
         //This doesn't work (probably because we haven't implemented it in our custom container),
         //so we use GtkWidget margins instead. TODO: What's the difference.
-        event_box->set_margin_start(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
-        event_box->set_margin_end(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
-        event_box->set_margin_top(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
-        event_box->set_margin_bottom(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
+        flow_table->set_margin_start(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
+        flow_table->set_margin_end(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
+        flow_table->set_margin_top(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
+        flow_table->set_margin_bottom(Utils::to_utype(Glom::UiUtils::DefaultSpacings::SMALL));
 
-        notebook_widget->append_page(*event_box, *tab_label);
+        notebook_widget->append_page(*flow_table, *tab_label);
 
         //Add child items:
         for(const auto& child_item : group->get_items())
@@ -493,15 +474,8 @@ void FlowTableWithFields::add_field(const std::shared_ptr<LayoutItem_Field>& lay
       label->set_valign(Gtk::Align::START); //Center is neater next to entries, but center is silly next to large images.
   }
 
-  auto eventbox = Gtk::manage(new Gtk::EventBox());
-  if(info.m_first)
-      eventbox->add(*info.m_first);
-
-  eventbox->set_halign(Gtk::Align::START);
-  info.m_first_eventbox = eventbox; //Remember it so we can retrieve the column number later from FlowTable.
-  eventbox->set_visible_window(false);
-
-  add_widgets(*eventbox, *(info.m_second), true);
+  info.m_first->set_halign(Gtk::Align::START);
+  add_widgets(*(info.m_first), *(info.m_second), true);
 
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  );
   info.m_second->signal_choices_changed().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_choices_changed), layoutitem_field)  );
@@ -1192,15 +1166,11 @@ void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups&
     if(!label)
       continue;
 
-    auto label_parent = info.m_first_eventbox;
-    if(!label_parent)
-      continue;
-
     //Only align labels in the first column, because items in separate columns
     //couldn't be aligned vertically anyway, and this would cause extra space.
     //TODO: Use a different SizeGroup for items in 2nd columns?
     guint column = 0;
-    const auto ready = get_column_for_first_widget(*label_parent, column);
+    const auto ready = get_column_for_first_widget(*label, column);
     if(!ready)
       continue;
 
@@ -1302,12 +1272,6 @@ void FlowTableWithFields::on_menu_delete_activate()
     default:
       return;
   }
-}
-
-void FlowTableWithFields::on_event_box_button_press_event(Gdk::EventButton& button_event)
-{
-  // Re-use the handler for the parent FlowTableWithFields:
-  on_button_press_event(button_event);
 }
 
 bool FlowTableWithFields::on_button_press_event(Gdk::EventButton& button_event)

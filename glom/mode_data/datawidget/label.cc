@@ -104,7 +104,7 @@ bool Label::on_button_press_event(Gdk::EventButton& button_event)
         return true;
   }
 
-  return Gtk::EventBox::on_button_press_event(button_event);
+  return Gtk::Bin::on_button_press_event(button_event);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
