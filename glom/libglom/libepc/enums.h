@@ -32,10 +32,6 @@ const gchar* epc_auth_flags_to_string (EpcAuthFlags value) G_GNUC_PURE;
 #include <libglom/libepc/service-info.h>
 #define EPC_TYPE_ADDRESS_FAMILY (epc_address_family_get_type())
 
-GType                 epc_address_family_get_type  (void) G_GNUC_CONST;
-GEnumClass*           epc_address_family_get_class (void) G_GNUC_CONST;
-const gchar* epc_address_family_to_string (EpcAddressFamily value) G_GNUC_PURE;
-
 G_END_DECLS
 
 #endif /* __EPC_ENUMS_H__ */
