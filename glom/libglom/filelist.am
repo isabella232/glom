@@ -208,6 +208,8 @@ libglom_sources =							\
         glom/libglom/libepc/dispatcher.h \
         glom/libglom/libepc/enums.c \
         glom/libglom/libepc/enums.h \
+        glom/libglom/libepc/marshal.h \
+        glom/libglom/libepc/marshal.c \
         glom/libglom/libepc/protocol.c \
         glom/libglom/libepc/protocol.h \
         glom/libglom/libepc/publisher.c \
