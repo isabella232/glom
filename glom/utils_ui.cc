@@ -337,10 +337,10 @@ int UiUtils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const std:
     }
     case(Field::glom_field_type::TIME):
     {
-      Gnome::Gda::Time time = {0, 0, 0, 0, 0};
-      time.hour = 24;
-      time.minute = 59;
-      time.second = 59;
+      Gnome::Gda::Time time(24, /* hour */
+        59, /* minute */
+        59, /* second */
+        0, 0);
       example_text = Conversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(time));
       break;
     }
