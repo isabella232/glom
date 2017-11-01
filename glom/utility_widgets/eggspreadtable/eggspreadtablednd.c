@@ -45,7 +45,9 @@ static void          egg_spread_table_dnd_realize            (GtkWidget         
 static gboolean      egg_spread_table_dnd_draw               (GtkWidget *widget,
                     cairo_t *cr);
 static void          egg_spread_table_dnd_size_allocate      (GtkWidget         *widget,
-							      GtkAllocation     *allocation);
+                                                             const GtkAllocation *allocation,
+                                                             int                  baseline,
+                                                             GtkAllocation       *out_clip);
 
 /* GtkWidgetClass drag-dest */
 static void          egg_spread_table_dnd_drag_leave         (GtkWidget         *widget,
@@ -447,7 +449,9 @@ allocate_child (EggSpreadTableDnd *table,
       child_allocation.height = item_size;
     }
 
-  gtk_widget_size_allocate (child, &child_allocation);
+  gint baseline = gtk_widget_get_allocated_baseline (child);
+  GtkAllocation clip;
+  gtk_widget_size_allocate (child, &child_allocation, baseline, &clip);
 }
 
 static void
@@ -496,7 +500,9 @@ get_spread_table_dimensions (EggSpreadTableDnd *spread_table,
 
 static void
 egg_spread_table_dnd_size_allocate (GtkWidget         *widget,
-				    GtkAllocation     *allocation)
+                                    const GtkAllocation *allocation,
+                                    int                  baseline,
+                                    GtkAllocation       *out_clip)
 {
   EggSpreadTableDnd        *table = EGG_SPREAD_TABLE_DND (widget);
   GList                    *list, *children;
@@ -515,7 +521,7 @@ egg_spread_table_dnd_size_allocate (GtkWidget         *widget,
   /* Skip the EggSpreadTableClass allocator, chain up to it's parent to resize
    * the GdkWindow properly */
   parent_parent_class = g_type_class_peek_parent (egg_spread_table_dnd_parent_class);
-  parent_parent_class->size_allocate (widget, allocation);
+  parent_parent_class->size_allocate (widget, allocation, baseline, out_clip);
 
   get_spread_table_dimensions (table, -1, &line_spacing, &item_spacing, &full_thickness, &line_thickness);
   lines       = egg_spread_table_get_lines (EGG_SPREAD_TABLE (table));

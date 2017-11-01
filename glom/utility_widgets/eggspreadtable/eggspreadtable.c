@@ -84,8 +84,10 @@ static void egg_spread_table_measure (GtkWidget      *widget,
                                       int            *natural,
                                       int            *minimum_baseline,
                                       int            *natural_baseline);
-static void egg_spread_table_size_allocate        (GtkWidget           *widget,
-						   GtkAllocation       *allocation);
+static void egg_spread_table_size_allocate (GtkWidget     *widget,
+                                            const GtkAllocation *allocation,
+                                            int                  baseline,
+                                            GtkAllocation       *out_clip);
 
 /* GtkContainerClass */
 static void egg_spread_table_add                  (GtkContainer        *container,
@@ -598,12 +600,16 @@ allocate_child (EggSpreadTable *table,
       child_allocation.height = item_size;
     }
 
-  gtk_widget_size_allocate (child, &child_allocation);
+  gint baseline = gtk_widget_get_allocated_baseline (child);
+  GtkAllocation clip;
+  gtk_widget_size_allocate (child, &child_allocation, baseline, &clip);
 }
 
 static void
 egg_spread_table_size_allocate (GtkWidget     *widget,
-				GtkAllocation *allocation)
+                                const GtkAllocation *allocation,
+                                int                  baseline,
+                                GtkAllocation       *out_clip)
 {
   EggSpreadTable        *table = EGG_SPREAD_TABLE (widget);
   EggSpreadTablePrivate *priv = table->priv;
@@ -616,7 +622,7 @@ egg_spread_table_size_allocate (GtkWidget     *widget,
   gint                   line_spacing;
   gint                   item_spacing;
 
-  GTK_WIDGET_CLASS (egg_spread_table_parent_class)->size_allocate (widget, allocation);
+  GTK_WIDGET_CLASS (egg_spread_table_parent_class)->size_allocate (widget, allocation, baseline, out_clip);
 
   if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
     full_thickness = allocation->height;
