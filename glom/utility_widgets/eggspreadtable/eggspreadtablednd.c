@@ -1319,18 +1319,12 @@ egg_spread_table_dnd_insert_child (EggSpreadTableDnd *table,
 				   GtkWidget         *child,
 				   gint               index)
 {
-  GtkWidget *event_box;
-
   g_return_if_fail (EGG_IS_SPREAD_TABLE_DND (table));
   g_return_if_fail (GTK_IS_WIDGET (child));
 
-  event_box = gtk_event_box_new ();
-  gtk_event_box_set_above_child (GTK_EVENT_BOX (event_box), table->priv->drag_enabled == EGG_DRAG_FULL);
-  g_object_set_qdata (G_OBJECT (event_box), dnd_table_child_quark, GINT_TO_POINTER (TRUE));
-  gtk_widget_show (event_box);
+  g_object_set_qdata (G_OBJECT (child), dnd_table_child_quark, GINT_TO_POINTER (TRUE));
 
-  gtk_container_add (GTK_CONTAINER (event_box), child);
-  egg_spread_table_insert_child (EGG_SPREAD_TABLE (table), event_box, index);
+  egg_spread_table_insert_child (EGG_SPREAD_TABLE (table), child, index);
 }
 
 /**
@@ -1348,44 +1342,27 @@ void
 egg_spread_table_dnd_remove_child (EggSpreadTableDnd *table,
 				   GtkWidget         *child)
 {
-  GtkWidget *event_box;
-
   g_return_if_fail (EGG_IS_SPREAD_TABLE_DND (table));
   g_return_if_fail (GTK_IS_WIDGET (child));
 
-  event_box = gtk_widget_get_parent (child);
-  if (!event_box)
-    {
-      g_message ("Bad hierarchy encountered in %s. The child had no parent.", G_STRFUNC);
-      return;
-    }
-
-  if (GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (event_box), dnd_table_child_quark)) == FALSE)
+  if (GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (child), dnd_table_child_quark)) == FALSE)
     {
       g_message ("Bad hierarchy encountered in %s.", G_STRFUNC);
       return;
     }
 
-  /* unparent the user's child and remove the intermediate spread-table owned event-box. */
-  gtk_container_remove (GTK_CONTAINER (event_box), child);
-  gtk_container_remove (GTK_CONTAINER (table), event_box);
+  /* unparent the user's child. */
+  gtk_container_remove (GTK_CONTAINER (table), child);
 }
 
 static void
-reconfigure_children (GtkEventBox       *child,
+reconfigure_children (GtkWidget       *child,
 		      EggSpreadTableDnd *table)
 {
-  /* Besides the internally owned event boxes, only EggPlaceholders can exist 
-   * as direct children of the EggSpreadTableDnd */
-  if (GTK_IS_EVENT_BOX (child))
-    {
-      gtk_event_box_set_above_child (child, table->priv->drag_enabled == EGG_DRAG_FULL);
-
-      if (table->priv->drag_enabled == EGG_DRAG_DISABLED)
-	egg_spread_table_disconnect_child (table, child);
-      else
-	egg_spread_table_connect_child (table, child);
-    }
+  if (table->priv->drag_enabled == EGG_DRAG_DISABLED)
+    egg_spread_table_disconnect_child (table, child);
+  else
+    egg_spread_table_connect_child (table, child);
 }
 
 /**
