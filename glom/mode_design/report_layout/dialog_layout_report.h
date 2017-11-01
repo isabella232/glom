@@ -27,7 +27,6 @@
 #include <gtkmm/checkbutton.h>
 #include <gtkmm/label.h>
 #include <gtkmm/entry.h>
-#include <glibmm/weakref.h>
 #include "treestore_report_layout.h"
 //#include <libglom/data_structure/layout/layoutitem.h>
 //#include <libglom/sharedptr.h>
@@ -92,8 +91,8 @@ private:
   void on_treeview_parts_selection_changed();
   void on_treeview_available_parts_selection_changed();
 
-  void on_cell_data_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter, const Glib::WeakRef<type_model>& model);
-  void on_cell_data_details(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter, const Glib::WeakRef<type_model>& model);
+  void on_cell_data_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter, const std::weak_ptr<type_model>& model);
+  void on_cell_data_details(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter, const std::weak_ptr<type_model>& model);
 
   void on_cell_data_available_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter);
 

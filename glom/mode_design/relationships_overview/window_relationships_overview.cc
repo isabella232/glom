@@ -406,9 +406,9 @@ void Window_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasItemM
   draw_lines();
 }
 
-void Window_RelationshipsOverview::on_table_show_context(Gdk::EventButton& event, const Glib::WeakRef<CanvasGroupDbTable>& table_weak)
+void Window_RelationshipsOverview::on_table_show_context(Gdk::EventButton& event, const std::weak_ptr<CanvasGroupDbTable>& table_weak)
 {
-  const auto table = table_weak.get();
+  const auto table = table_weak.lock();
   if (!table)
     return;
 
@@ -450,9 +450,9 @@ void Window_RelationshipsOverview::setup_context_menu()
   m_context_menu->attach_to_widget(*this);
 }
 
-void Window_RelationshipsOverview::on_context_menu_edit_fields(const Glib::VariantBase& /* parameter */, const Glib::WeakRef<CanvasGroupDbTable>& table_weak)
+void Window_RelationshipsOverview::on_context_menu_edit_fields(const Glib::VariantBase& /* parameter */, const std::weak_ptr<CanvasGroupDbTable>& table_weak)
 {
-  const auto table = table_weak.get();
+  const auto table = table_weak.lock();
   if (!table)
     return;
 
@@ -465,9 +465,9 @@ void Window_RelationshipsOverview::on_context_menu_edit_fields(const Glib::Varia
   }
 }
 
-void Window_RelationshipsOverview::on_context_menu_edit_relationships(const Glib::VariantBase& /* parameter */, const Glib::WeakRef<CanvasGroupDbTable>& table_weak)
+void Window_RelationshipsOverview::on_context_menu_edit_relationships(const Glib::VariantBase& /* parameter */, const std::weak_ptr<CanvasGroupDbTable>& table_weak)
 {
-  const auto table = table_weak.get();
+  const auto table = table_weak.lock();
   if (!table)
     return;
 

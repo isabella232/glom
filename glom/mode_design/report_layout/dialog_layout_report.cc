@@ -941,9 +941,9 @@ void Dialog_Layout_Report::on_treeview_parts_selection_changed()
   enable_buttons();
 }
 
-void Dialog_Layout_Report::on_cell_data_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter, const Glib::WeakRef<type_model>& model_weak)
+void Dialog_Layout_Report::on_cell_data_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter, const std::weak_ptr<type_model>& model_weak)
 {
-  const auto model = model_weak.get();
+  const auto model = model_weak.lock();
   if (!model)
     return;
 
@@ -966,9 +966,9 @@ void Dialog_Layout_Report::on_cell_data_part(Gtk::CellRenderer* renderer, const 
   renderer_text->property_editable() = false; //Part names can never be edited.
 }
 
-void Dialog_Layout_Report::on_cell_data_details(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter, const Glib::WeakRef<type_model>& model_weak)
+void Dialog_Layout_Report::on_cell_data_details(Gtk::CellRenderer* renderer, const Gtk::TreeModel::const_iterator& iter, const std::weak_ptr<type_model>& model_weak)
 {
-  const auto model = model_weak.get();
+  const auto model = model_weak.lock();
   if(!model)
     return;
 
