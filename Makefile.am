@@ -43,7 +43,7 @@ endif
 if ENABLE_DOCUMENTATION
 yelp_doc_subdirs = docs/user-guide
 else
-yelp_doc_subdirs = docs/user-guide
+yelp_doc_subdirs =
 endif
 
 SUBDIRS = po $(doc_subdirs) $(yelp_doc_subdirs)
