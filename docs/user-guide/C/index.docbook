@@ -106,8 +106,8 @@
     </releaseinfo> 
     <legalnotice> 
       <title>Feedback</title> 
-      <para>To report a bug or make a suggestion regarding the &app; or 
-	this manual can be submitted to the 
+      <para>To report a problem or make a suggestion regarding &app; or 
+	this manual, you may submit a bug report to the 
 	<ulink url="http://bugzilla.gnome.org" type="http">GNOME Bugzilla
 	</ulink>, under the &app; product. Please search bugzilla before
 	submitting your bug to ensure that yours hasn't already been reported.
@@ -295,7 +295,7 @@
 
     <sect2 id="glom-operator-printing-reports">
     <title>Printing Reports</title>
-    <para>If your database developer has defined some reports for a table then you will seem them listed in the <literal>Reports</literal> menu. Just choose the report from the menu to create the report. If you have previously performed a search then the report will contain only the currently-found data. Otherwise it will contain all data in the current report. Remember that each table has its own reports so you may need to switch to the relevant table to use a particular report.</para>
+    <para>If your database developer has defined some reports for a table then you will see them listed in the <literal>Reports</literal> menu. Just choose the report from the menu to create the report. If you have previously performed a search then the report will contain only the currently-found data. Otherwise it will contain all data in the current report. Remember that each table has its own reports so you may need to switch to the relevant table to use a particular report.</para>
 
      <figure id="operator-report-result"> 
 	<title>A report</title> 
