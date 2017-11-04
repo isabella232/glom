@@ -473,14 +473,12 @@ void AppWindow::on_menu_help_about()
     const auto glom_icon_path = UiUtils::get_icon_path(about_icon_name);
 
     //TODO: Use this, instead of the C API, when we can depend on gtkmm 3.12, with a try/catch:
-    //Glib::RefPtr<Gdk::Pixbuf> logo = Gdk::Pixbuf::create_from_resource(glom_icon_path);
-    GError* gerror = nullptr;
-    auto logo =
-      Glib::wrap(gdk_pixbuf_new_from_resource(glom_icon_path.c_str(), &gerror));
-    if(gerror)
+    Glib::RefPtr<Gdk::Pixbuf> logo;
+    try
     {
+      logo = Gdk::Pixbuf::create_from_resource(glom_icon_path);
+    } catch(const Glib::Exception& ex) {
       std::cerr << G_STRFUNC << ": Could not load icon from resource path=" << glom_icon_path << std::endl;
-      g_clear_error(&gerror);
     }
 
     if(logo)
