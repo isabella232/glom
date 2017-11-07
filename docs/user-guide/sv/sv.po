@@ -7,15 +7,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glom doc\n"
-"POT-Creation-Date: 2017-06-23 16:17+0000\n"
-"PO-Revision-Date: 2017-09-28 18:00+0200\n"
+"POT-Creation-Date: 2017-11-02 21:58+0000\n"
+"PO-Revision-Date: 2017-11-07 12:37+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.0.4\n"
 
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
 msgctxt "_"
@@ -191,20 +191,20 @@ msgstr "Den här handboken beskriver version 1.6 av Glom"
 msgid "Feedback"
 msgstr "Återkoppling"
 
-# TODO: grammar
 #. (itstool) path: legalnotice/para
 #: C/index.docbook:109
 msgid ""
-"To report a bug or make a suggestion regarding the Glom or this manual can "
-"be submitted to the <ulink url=\"http://bugzilla.gnome.org\" type=\"http"
-"\">GNOME Bugzilla </ulink>, under the Glom product. Please search bugzilla "
-"before submitting your bug to ensure that yours hasn't already been reported."
+"To report a problem or make a suggestion regarding Glom or this manual, you "
+"may submit a bug report to the <ulink url=\"http://bugzilla.gnome.org\" type="
+"\"http\">GNOME Bugzilla </ulink>, under the Glom product. Please search "
+"bugzilla before submitting your bug to ensure that yours hasn't already been "
+"reported."
 msgstr ""
-"Om du vill rapportera ett fel eller göra ett förslag kring Glom eller denna "
-"handbok kan de skickas in till <ulink url=\"http://bugzilla.gnome.org\" type="
-"\"http\">GNOME:s Bugzilla </ulink>, under produkten Glom. Sök i Bugzilla "
-"innan du skickar in din rapport för att säkerställa att den inte redan "
-"rapporterats."
+"Om du vill rapportera ett problem eller göra ett förslag kring Glom eller "
+"denna handbok kan du skicka in en felrapport till <ulink url=\"http://"
+"bugzilla.gnome.org\" type=\"http\">GNOME:s Bugzilla </ulink>, under "
+"produkten Glom. Sök i Bugzilla innan du skickar in din rapport för att "
+"säkerställa att den inte redan rapporterats."
 
 #. (itstool) path: abstract/para
 #: C/index.docbook:119
@@ -595,17 +595,16 @@ msgstr ""
 msgid "Printing Reports"
 msgstr "Skriva ut rapporter"
 
-# TODO: you will seem -> you will see
 #. (itstool) path: sect2/para
 #: C/index.docbook:298
 msgid ""
 "If your database developer has defined some reports for a table then you "
-"will seem them listed in the <literal>Reports</literal> menu. Just choose "
-"the report from the menu to create the report. If you have previously "
-"performed a search then the report will contain only the currently-found "
-"data. Otherwise it will contain all data in the current report. Remember "
-"that each table has its own reports so you may need to switch to the "
-"relevant table to use a particular report."
+"will see them listed in the <literal>Reports</literal> menu. Just choose the "
+"report from the menu to create the report. If you have previously performed "
+"a search then the report will contain only the currently-found data. "
+"Otherwise it will contain all data in the current report. Remember that each "
+"table has its own reports so you may need to switch to the relevant table to "
+"use a particular report."
 msgstr ""
 "Om din databasutvecklare har definierat rapporter för en tabell så kommer du "
 "att se dem listade i menyn <literal>Rapporter</literal>. Välj helt enkelt "
