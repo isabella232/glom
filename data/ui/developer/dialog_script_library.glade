@@ -2,6 +2,7 @@
 <!-- Generated with glade 3.16.0 on Fri Oct 25 10:59:22 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.6 -->
+  <!-- interface-requires gtksourceview 0.0 -->
   <object class="GtkDialog" id="dialog_script_library">
     <property name="can_focus">False</property>
     <property name="margin">6</property>
@@ -148,7 +149,7 @@
                 <property name="can_focus">True</property>
                 <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkTextView" id="textview_script">
+                  <object class="GtkSourceView" id="textview_script">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="left_margin">2</property>

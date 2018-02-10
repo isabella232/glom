@@ -25,6 +25,7 @@
 #include <glom/appwindow.h>
 #include <glom/utils_ui.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <gtksourceviewmm/languagemanager.h>
 
 
 //#include <libgnome/gnome-i18n.h>
@@ -51,9 +52,19 @@ Dialog_ButtonScript::Dialog_ButtonScript(BaseObjectType* cobject, const Glib::Re
 
   //Dialog_Properties::set_modified(false);
 
-  //Create a new buffer and set it, instead of getting the default buffer, in case libglade has tried to set it, using the wrong buffer type:
-  auto buffer = Gtk::TextBuffer::create();
-  m_text_view_script->set_buffer(buffer);
+  //Tell the SourceView to do syntax highlighting for Python:
+  auto languages_manager =
+    Gsv::LanguageManager::get_default();
+
+  auto language =
+    languages_manager->get_language("python"); //This is the GtkSourceView language ID.
+  if(language)
+  {
+     //Create a new buffer and set it, instead of getting the default buffer, in case libglade has tried to set it, using the wrong buffer type:
+     auto buffer = Gsv::Buffer::create(language);
+     buffer->set_highlight_syntax();
+     m_text_view_script->set_buffer(buffer);
+  }
 }
 
 void Dialog_ButtonScript::set_script(const std::shared_ptr<const LayoutItem_Button>& script, const Glib::ustring& table_name)

@@ -20,6 +20,7 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/application.h>
+#include <gtksourceviewmm/init.h>
 #include <libxml++/libxml++.h>
 
 #include <iostream>
@@ -91,6 +92,7 @@ int main(int argc, char* argv[])
 {
   auto app =
     Gtk::Application::create("org.glom.test_glade_toplevels_instantiation");
+  Gsv::init(); //Our .glade files contain gtksourceview widgets too.
 
   std::string filepath;
   if(argc > 1 )

@@ -25,9 +25,9 @@
 #include <gtkmm/button.h>
 #include <gtkmm/label.h>
 #include <gtkmm/builder.h>
-#include <gtkmm/textview.h>
 #include <libglom/data_structure/field.h>
 #include <glom/base_db.h>
+#include <gtksourceviewmm/view.h>
 
 namespace Glom
 {
@@ -50,7 +50,7 @@ private:
   void on_button_test();
   bool check_for_return_statement(const Glib::ustring& calculation);
 
-  Gtk::TextView* m_text_view;
+  Gsv::View* m_text_view;
   Gtk::Button* m_button_test;
   Gtk::Label* m_label_triggered_by;
 

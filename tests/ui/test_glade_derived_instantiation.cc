@@ -73,6 +73,7 @@
 #include <glom/dialog_invalid_data.h>
 #include <gtkmm/builder.h>
 #include <gtkmm/application.h>
+#include <gtksourceviewmm/init.h>
 
 const int GLOM_MAX_WINDOW_WIDTH = 800;
 const int GLOM_MAX_WINDOW_HEIGHT = 600;
@@ -130,6 +131,7 @@ int main()
 {
   auto app =
     Gtk::Application::create("org.glom.test_glade_derived_instantiation");
+  Gsv::init(); //Our .glade files contain gtksourceview widgets too.
 
   using namespace Glom;
 

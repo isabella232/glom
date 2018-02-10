@@ -25,7 +25,6 @@
 #include <gtkmm/checkbutton.h>
 #include <gtkmm/comboboxtext.h>
 #include <gtkmm/entry.h>
-#include <gtkmm/textview.h>
 #include <glom/mode_design/layout/combobox_relationship.h>
 #include "combo_fieldtype.h"
 //#include "../../utility_widgets/entry_numerical.h"
@@ -34,6 +33,7 @@
 #include <libglom/data_structure/field.h>
 #include <glom/mode_design/layout/layout_item_dialogs/box_formatting.h>
 #include <glom/base_db.h>
+#include <gtksourceviewmm/view.h>
 
 namespace Glom
 {
@@ -84,7 +84,7 @@ private:
 
   Gtk::RadioButton* m_radio_calculate;
   Gtk::Box* m_alignment_calculate;
-  Gtk::TextView* m_textView_calculation;
+  Gsv::View* m_textView_calculation;
   Gtk::Button* m_button_edit_calculation;
 
   Gtk::Entry* m_entry_title;

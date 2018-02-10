@@ -26,6 +26,7 @@
 #include <glom/utils_ui.h>
 #include <glom/appwindow.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <gtksourceviewmm/languagemanager.h>
 
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
@@ -48,9 +49,18 @@ Dialog_FieldCalculation::Dialog_FieldCalculation(BaseObjectType* cobject, const 
 
   if(m_text_view)
   {
-    //Createa a new buffer and set it, instead of getting the default buffer, in case libglade has tried to set it, using the wrong buffer type:
-    auto buffer = Gtk::TextBuffer::create();
-    m_text_view->set_buffer(buffer);
+    m_text_view->set_highlight_current_line(true);
+
+    auto languages_manager = Gsv::LanguageManager::get_default();
+
+    auto language = languages_manager->get_language("python"); //This is the GtkSourceView language ID.
+    if(language)
+    {
+       //Createa a new buffer and set it, instead of getting the default buffer, in case libglade has tried to set it, using the wrong buffer type:
+       auto buffer = Gsv::Buffer::create(language);
+       buffer->set_highlight_syntax();
+       m_text_view->set_buffer(buffer);
+    }
   }
 
   //Dialog_Properties::set_modified(false);

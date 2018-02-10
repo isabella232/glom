@@ -28,7 +28,7 @@
 #include <gtkmm/label.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
-#include <gtkmm/textview.h>
+#include <gtksourceviewmm/view.h>
 #include <glom/base_db.h>
 #include <libglom/data_structure/system_prefs.h>
 #include <libglom/connectionpool.h>
@@ -82,7 +82,7 @@ private:
   ImageGlom* m_image;
   Gtk::Button* m_button_choose_image;
 
-  Gtk::TextView* m_text_view_script;
+  Gsv::View* m_text_view_script;
   Gtk::Button* m_button_test_script;
 
   SystemPrefs m_system_prefs;

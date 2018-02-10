@@ -55,6 +55,7 @@
 #include <glom/python_embed/glom_python.h>
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+#include <gtksourceviewmm/init.h>
 #include <goocanvasmm/init.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -494,6 +495,7 @@ main(int argc, char* argv[])
       Glom::Application::create();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+    Gsv::init();
     Goocanvas::init();
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
