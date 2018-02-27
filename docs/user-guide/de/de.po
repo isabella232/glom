@@ -1,21 +1,21 @@
 # German translation of the Glom manual.
-# Mario Blättermann <mario.blaettermann@gmail.com>, 2008, 2010, 2016.
+# Mario Blättermann <mario.blaettermann@gmail.com>, 2008, 2010, 2016, 2018.
 # Christian Kirbach <Christian.Kirbach@googlemail.com>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-24 07:44+0000\n"
-"PO-Revision-Date: 2016-01-24 16:57+0100\n"
+"POT-Creation-Date: 2017-11-02 21:58+0000\n"
+"PO-Revision-Date: 2018-02-27 21:52+0100\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
-"Language: de_DE\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
 msgctxt "_"
@@ -23,184 +23,6 @@ msgid "translator-credits"
 msgstr ""
 "Mario Blättermann <mario.blaettermann@gmail.com>, 2008, 2010, 2016\n"
 "Christian Kirbach <Christian.Kirbach@googlemail.com>, 2010"
-
-#. (itstool) path: imagedata
-#. This is a reference to an external file such as an image or video. When
-#. the file changes, the md5 hash will change to let you know you need to
-#. update your localized copy. The msgstr is not used at all. Set it to
-#. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:181
-msgctxt "_"
-msgid ""
-"external ref='figures/start_open.png' md5='adac27f11f2324c3da2349f72d554994'"
-msgstr "ok"
-
-#. (itstool) path: imagedata
-#. This is a reference to an external file such as an image or video. When
-#. the file changes, the md5 hash will change to let you know you need to
-#. update your localized copy. The msgstr is not used at all. Set it to
-#. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:195
-msgctxt "_"
-msgid ""
-"external ref='figures/start_create.png' "
-"md5='f1e4c22fd6811e4ba908e290e76f0474'"
-msgstr "ok"
-
-#. (itstool) path: imagedata
-#. This is a reference to an external file such as an image or video. When
-#. the file changes, the md5 hash will change to let you know you need to
-#. update your localized copy. The msgstr is not used at all. Set it to
-#. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:226
-msgctxt "_"
-msgid ""
-"external ref='figures/glom_tables.png' md5='a61ac5516314b38c6c7a3f3fd534427f'"
-msgstr "ok"
-
-#. (itstool) path: imagedata
-#. This is a reference to an external file such as an image or video. When
-#. the file changes, the md5 hash will change to let you know you need to
-#. update your localized copy. The msgstr is not used at all. Set it to
-#. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:252
-msgctxt "_"
-msgid ""
-"external ref='figures/glom_data_list.png' "
-"md5='3b7469ee1de77081b435db5ac2d48953'"
-msgstr "ok"
-
-#. (itstool) path: imagedata
-#. This is a reference to an external file such as an image or video. When
-#. the file changes, the md5 hash will change to let you know you need to
-#. update your localized copy. The msgstr is not used at all. Set it to
-#. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:275
-msgctxt "_"
-msgid ""
-"external ref='figures/glom_data_details.png' "
-"md5='455bde435350fd53401213dff235bfb3'"
-msgstr "ok"
-
-#. (itstool) path: imagedata
-#. This is a reference to an external file such as an image or video. When
-#. the file changes, the md5 hash will change to let you know you need to
-#. update your localized copy. The msgstr is not used at all. Set it to
-#. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:305
-msgctxt "_"
-msgid ""
-"external ref='figures/glom_report_result.png' "
-"md5='2b752779eb0ed68724d094f6e1fef699'"
-msgstr "ok"
-
-#. (itstool) path: imagedata
-#. This is a reference to an external file such as an image or video. When
-#. the file changes, the md5 hash will change to let you know you need to
-#. update your localized copy. The msgstr is not used at all. Set it to
-#. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:343
-msgctxt "_"
-msgid ""
-"external ref='figures/glom_design_fields.png' "
-"md5='39a13053db33b9c45bc1f61a0f31a199'"
-msgstr "ok"
-
-#. (itstool) path: imagedata
-#. This is a reference to an external file such as an image or video. When
-#. the file changes, the md5 hash will change to let you know you need to
-#. update your localized copy. The msgstr is not used at all. Set it to
-#. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:393
-msgctxt "_"
-msgid ""
-"external ref='figures/glom_design_layout_list.png' "
-"md5='213888ef5cd3037b2fa61155b4fe5136'"
-msgstr "ok"
-
-#. (itstool) path: imagedata
-#. This is a reference to an external file such as an image or video. When
-#. the file changes, the md5 hash will change to let you know you need to
-#. update your localized copy. The msgstr is not used at all. Set it to
-#. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:412
-msgctxt "_"
-msgid ""
-"external ref='figures/glom_design_layout_details.png' "
-"md5='6f1d78f90d6ec0ea338014d2ac697a90'"
-msgstr "ok"
-
-#. (itstool) path: imagedata
-#. This is a reference to an external file such as an image or video. When
-#. the file changes, the md5 hash will change to let you know you need to
-#. update your localized copy. The msgstr is not used at all. Set it to
-#. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:458
-msgctxt "_"
-msgid ""
-"external ref='figures/glom_design_translations.png' "
-"md5='92b8e4905d0b85ef7f7d248420942a97'"
-msgstr "ok"
-
-#. (itstool) path: imagedata
-#. This is a reference to an external file such as an image or video. When
-#. the file changes, the md5 hash will change to let you know you need to
-#. update your localized copy. The msgstr is not used at all. Set it to
-#. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:485
-msgctxt "_"
-msgid ""
-"external ref='figures/glom_design_reports.png' "
-"md5='697eb7cc6baebae8b374e474b4fa0899'"
-msgstr "ok"
-
-#. (itstool) path: imagedata
-#. This is a reference to an external file such as an image or video. When
-#. the file changes, the md5 hash will change to let you know you need to
-#. update your localized copy. The msgstr is not used at all. Set it to
-#. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:517
-msgctxt "_"
-msgid ""
-"external ref='figures/glom_design_reports_details.png' "
-"md5='00ac05c3515a4db2175a47047ec3b98e'"
-msgstr "ok"
-
-#. (itstool) path: imagedata
-#. This is a reference to an external file such as an image or video. When
-#. the file changes, the md5 hash will change to let you know you need to
-#. update your localized copy. The msgstr is not used at all. Set it to
-#. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:534
-msgctxt "_"
-msgid ""
-"external ref='figures/glom_design_reports_group_by.png' "
-"md5='21168c2a89f9febf6905a59c24a3d6de'"
-msgstr "ok"
-
-#. (itstool) path: imagedata
-#. This is a reference to an external file such as an image or video. When
-#. the file changes, the md5 hash will change to let you know you need to
-#. update your localized copy. The msgstr is not used at all. Set it to
-#. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:550
-msgctxt "_"
-msgid ""
-"external ref='figures/glom_design_reports_vertical_group.png' "
-"md5='001b3021da2dc0de68358b0b41215afb'"
-msgstr "ok"
-
-#. (itstool) path: imagedata
-#. This is a reference to an external file such as an image or video. When
-#. the file changes, the md5 hash will change to let you know you need to
-#. update your localized copy. The msgstr is not used at all. Set it to
-#. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:766
-msgctxt "_"
-msgid ""
-"external ref='figures/glom_design_fields_dialog_calculated.png' "
-"md5='21b9fc570ff40883d1d283d960e45767'"
-msgstr "ok"
 
 #. (itstool) path: articleinfo/title
 #: C/index.docbook:28
@@ -375,10 +197,11 @@ msgstr "Rückmeldungen"
 #. (itstool) path: legalnotice/para
 #: C/index.docbook:109
 msgid ""
-"To report a bug or make a suggestion regarding the Glom or this manual can "
-"be submitted to the <ulink url=\"http://bugzilla.gnome.org\" type=\"http"
-"\">GNOME Bugzilla </ulink>, under the Glom product. Please search bugzilla "
-"before submitting your bug to ensure that yours hasn't already been reported."
+"To report a problem or make a suggestion regarding Glom or this manual, you "
+"may submit a bug report to the <ulink url=\"http://bugzilla.gnome.org\" type="
+"\"http\">GNOME Bugzilla </ulink>, under the Glom product. Please search "
+"bugzilla before submitting your bug to ensure that yours hasn't already been "
+"reported."
 msgstr ""
 "Um einen Fehler zu melden oder einen Vorschlag zu <application>Glom</"
 "application> oder zu diesem Handbuch zu machen, können Sie das <ulink url="
@@ -463,6 +286,17 @@ msgstr ""
 msgid "Glom Start Up Window, Opening an Existing File"
 msgstr "Glom-Startfenster, Öffnen einer bestehenden Datei"
 
+#. (itstool) path: imageobject/imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:181
+msgctxt "_"
+msgid ""
+"external ref='figures/start_open.png' md5='adac27f11f2324c3da2349f72d554994'"
+msgstr "ok"
+
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:179
 msgid ""
@@ -478,6 +312,18 @@ msgstr ""
 #: C/index.docbook:191
 msgid "Glom Start Up Window, Creating a New File"
 msgstr "Glom-Startfenster, Erstellen einer neuen Datei"
+
+#. (itstool) path: imageobject/imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:195
+msgctxt "_"
+msgid ""
+"external ref='figures/start_create.png' "
+"md5='f1e4c22fd6811e4ba908e290e76f0474'"
+msgstr "ok"
 
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:193
@@ -548,6 +394,17 @@ msgstr ""
 msgid "Navigating to a Table"
 msgstr "Navigieren zu einer Tabelle"
 
+#. (itstool) path: imageobject/imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:226
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_tables.png' md5='a61ac5516314b38c6c7a3f3fd534427f'"
+msgstr "ok"
+
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:224
 msgid ""
@@ -613,6 +470,18 @@ msgstr ""
 "der letzten leeren Zeile. Eine Zeile mit leeren Feldern für einen neuen "
 "Datensatz wird erstellt, die Sie nun ausfüllen können."
 
+#. (itstool) path: imageobject/imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:252
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_data_list.png' "
+"md5='3b7469ee1de77081b435db5ac2d48953'"
+msgstr "ok"
+
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:250
 msgid ""
@@ -660,6 +529,18 @@ msgstr ""
 "Um einen neuen Datensatz zu erstellen, klicken Sie auf den Knopf "
 "<guibutton>Neu</guibutton>. Ein neuer Datensatz mit leeren Feldern wird "
 "angelegt, welche Sie ausfüllen können."
+
+#. (itstool) path: imageobject/imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:275
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_data_details.png' "
+"md5='455bde435350fd53401213dff235bfb3'"
+msgstr "ok"
 
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:273
@@ -724,12 +605,12 @@ msgstr "Drucken von Berichten"
 #: C/index.docbook:298
 msgid ""
 "If your database developer has defined some reports for a table then you "
-"will seem them listed in the <literal>Reports</literal> menu. Just choose "
-"the report from the menu to create the report. If you have previously "
-"performed a search then the report will contain only the currently-found "
-"data. Otherwise it will contain all data in the current report. Remember "
-"that each table has its own reports so you may need to switch to the "
-"relevant table to use a particular report."
+"will see them listed in the <literal>Reports</literal> menu. Just choose the "
+"report from the menu to create the report. If you have previously performed "
+"a search then the report will contain only the currently-found data. "
+"Otherwise it will contain all data in the current report. Remember that each "
+"table has its own reports so you may need to switch to the relevant table to "
+"use a particular report."
 msgstr ""
 "Falls der Entwickler Ihrer Datenbank Berichte für eine Tabelle festgelegt "
 "hat, dann erscheinen diese möglicherweise im Menü <guimenu>Berichte</"
@@ -744,6 +625,18 @@ msgstr ""
 #: C/index.docbook:301
 msgid "A report"
 msgstr "Ein Bericht"
+
+#. (itstool) path: imageobject/imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:305
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_report_result.png' "
+"md5='2b752779eb0ed68724d094f6e1fef699'"
+msgstr "ok"
 
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:303
@@ -874,6 +767,18 @@ msgid ""
 msgstr ""
 "Um für ein Feld weitere Details festzulegen, wählen Sie das Feld aus und "
 "klicken Sie auf den Knopf <guibutton>Details</guibutton>."
+
+#. (itstool) path: imageobject/imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:343
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_fields.png' "
+"md5='39a13053db33b9c45bc1f61a0f31a199'"
+msgstr "ok"
 
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:341
@@ -1029,6 +934,18 @@ msgstr ""
 msgid "Editing the List Layout"
 msgstr "Bearbeiten der Listenansicht"
 
+#. (itstool) path: imageobject/imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:393
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_layout_list.png' "
+"md5='213888ef5cd3037b2fa61155b4fe5136'"
+msgstr "ok"
+
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:391
 msgid ""
@@ -1068,6 +985,18 @@ msgstr ""
 #: C/index.docbook:408
 msgid "Editing the details Layout"
 msgstr "Bearbeiten der Detailansicht"
+
+#. (itstool) path: imageobject/imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:412
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_layout_details.png' "
+"md5='6f1d78f90d6ec0ea338014d2ac697a90'"
+msgstr "ok"
 
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:410
@@ -1227,6 +1156,18 @@ msgstr ""
 "einem Benutzer der jeweiligen Sprache geöffnet wird, dann werden diese "
 "Textobjekte in der Benutzeroberfläche angezeigt."
 
+#. (itstool) path: imageobject/imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:458
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_translations.png' "
+"md5='92b8e4905d0b85ef7f7d248420942a97'"
+msgstr "ok"
+
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:456
 msgid ""
@@ -1295,6 +1236,18 @@ msgstr ""
 #: C/index.docbook:481
 msgid "Creating or Editing Reports"
 msgstr "Erzeugen oder Bearbeiten von Berichten"
+
+#. (itstool) path: imageobject/imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:485
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_reports.png' "
+"md5='697eb7cc6baebae8b374e474b4fa0899'"
+msgstr "ok"
 
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:483
@@ -1385,6 +1338,18 @@ msgstr ""
 "<guibutton>Formatierung</guibutton> die Feldformatierung anpassen, wenn Sie "
 "ein Detail- oder Listenlayout angeben wollen."
 
+#. (itstool) path: imageobject/imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:517
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_reports_details.png' "
+"md5='00ac05c3515a4db2175a47047ec3b98e'"
+msgstr "ok"
+
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:515
 msgid ""
@@ -1449,6 +1414,18 @@ msgstr ""
 msgid "Editing a Group By Part"
 msgstr "Bearbeiten eines <guilabel>Gruppieren nach</guilabel>-Teils"
 
+#. (itstool) path: imageobject/imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:534
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_reports_group_by.png' "
+"md5='21168c2a89f9febf6905a59c24a3d6de'"
+msgstr "ok"
+
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:532
 msgid ""
@@ -1480,6 +1457,18 @@ msgstr ""
 #: C/index.docbook:546
 msgid "A Report with Vertical Groups"
 msgstr "Ein Bericht mit vertikalen Gruppen"
+
+#. (itstool) path: imageobject/imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:550
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_reports_vertical_group.png' "
+"md5='001b3021da2dc0de68358b0b41215afb'"
+msgstr "ok"
 
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:548
@@ -1870,6 +1859,18 @@ msgstr ""
 msgid "Editing the definition of a calculated field"
 msgstr "Bearbeiten der Definition eines berechneten Feldes"
 
+#. (itstool) path: imageobject/imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:766
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_fields_dialog_calculated.png' "
+"md5='21b9fc570ff40883d1d283d960e45767'"
+msgstr "ok"
+
 #. (itstool) path: screenshot/mediaobject
 #: C/index.docbook:764
 msgid ""
@@ -2222,94 +2223,3 @@ msgstr ""
 "sowie ohne Texte auf dem vorderen und hinteren Buchdeckel kopiert, verteilt "
 "und/oder modifiziert werden. Eine Kopie der GFDL finden Sie unter diesem <_:"
 "ulink-1/> oder in der mit diesem Handbuch gelieferten Datei COPYING-DOCS."
-
-#~ msgid "2004"
-#~ msgstr "2004"
-
-#~ msgid "Murray"
-#~ msgstr "Murray"
-
-#~ msgid "Cumming"
-#~ msgstr "Cumming"
-
-#~ msgid "murrayc@murrayc.com"
-#~ msgstr "murrayc@murrayc.com"
-
-#~ msgid "Glom 1.6"
-#~ msgstr "Glom 1.6"
-
-#~ msgid "20 June 2004"
-#~ msgstr "20. juni 2004"
-
-#~ msgid "MY-GNOME-APP"
-#~ msgstr "MY-GNOME-APP"
-
-#~ msgid "mygnomeapp"
-#~ msgstr "mygnomeapp"
-
-#~ msgid "Shows Glom main window used to open an existing Glom file."
-#~ msgstr ""
-#~ "Zeigt das Haupfenster von Glom während eine bestehende Glom-Datei "
-#~ "geöffnet wird."
-
-#~ msgid "Shows Glom main window used to create a new Glom file."
-#~ msgstr ""
-#~ "Zeigt das Glom-Hauptfenster während der Erstellung einer neuen Glom-Datei."
-
-#~ msgid "Navigating to a Table."
-#~ msgstr "Navigieren zu einer Tabelle."
-
-#~ msgid "The List View."
-#~ msgstr "Die Listenansicht."
-
-#~ msgid "The Details View."
-#~ msgstr "Die Detailansicht."
-
-#~ msgid "A report."
-#~ msgstr "Ein Bericht."
-
-#~ msgid "Editing the table's fields."
-#~ msgstr "Bearbeiten der Tabellenfelder."
-
-#~ msgid "Editing the list layout."
-#~ msgstr "Bearbeiten der Listenansicht."
-
-#~ msgid "Editing the Details Layout."
-#~ msgstr "Bearbeiten der Detailansicht."
-
-#~ msgid "Translations."
-#~ msgstr "Übersetzungen."
-
-#~ msgid "Creating or editing reports."
-#~ msgstr "Erstellen oder Bearbeiten von Berichten."
-
-#~ msgid "Editing a report."
-#~ msgstr "Bearbeiten eines Berichts."
-
-#~ msgid "A Report with Vertical Groups."
-#~ msgstr "Ein Bericht mit vertikalen Gruppen."
-
-#~ msgid "Editing the definition of a calculated field."
-#~ msgstr "Bearbeiten der Definition eines berechneten Feldes."
-
-#~ msgid ""
-#~ "@@image: 'figures/glom_tables.png'; md5=e725285aae974272ca99dc991c7ae9ed"
-#~ msgstr "ok"
-
-#~ msgid ""
-#~ "When you start <application>Glom</application>, the following window is "
-#~ "displayed."
-#~ msgstr ""
-#~ "Wenn Sie <application>Glom</application> starten, wird folgendes Fenster "
-#~ "angezeigt."
-
-#~ msgid "Shows Glom main window."
-#~ msgstr "Zeigt das Hauptfenster von Glom."
-
-#~ msgid ""
-#~ "(Note that the <literal>record.connection</literal> and <literal>record."
-#~ "table_name</literal> attributes are only available since Glom 1.1.6.)"
-#~ msgstr ""
-#~ "(Beachten Sie, dass die Attribute <literal>record.connection</literal> "
-#~ "und <literal>record.table_name</literal> erst seit Glom 1.1.6 verfügbar "
-#~ "sind.)"
