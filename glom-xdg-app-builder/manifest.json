@@ -298,7 +298,7 @@
             "sources": [
                 {
                     "type": "git",
-                    "url": "git://git.gnome.org/glom",
+                    "url": "https://gitlab.gnome.org/GNOME/glom.git",
                     "branch": "c1e4cdba2055c6fd18337352807a3f0f16ec5fa5"
                 }
             ]
