@@ -121,7 +121,7 @@ msgid ""
 "SQLite databases."
 msgstr ""
 "El fitxer no es pot obrir perquè aquesta versió de Glom no és compatibleBases "
-"de dades SQLite.."
+"de dades SQLite."
 
 #. Warn the user.
 #: ../glom/appwindow.cc:848
@@ -142,14 +142,14 @@ msgstr ""
 
 #: ../glom/appwindow.cc:919
 msgid "Creating From Backup File"
-msgstr "S'està creant a partir d'un fitxer de copia de seguretat"
+msgstr "S'està creant a partir d'un fitxer de còpia de seguretat"
 
 #: ../glom/appwindow.cc:920
 msgid ""
 "To use this backup file you must save an editable copy of the file. A new "
 "database will also be created on the server."
 msgstr ""
-"Per a poder utilitzar aquest fitxer de copia de seguretat, cal que en deseu "
+"Per a poder utilitzar aquest fitxer de còpia de seguretat, cal que en deseu "
 "una còpia editable. També es crearà una base de dades nova al servidor."
 
 #: ../glom/appwindow.cc:981
@@ -244,7 +244,7 @@ msgstr ""
 #. TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
 #: ../glom/appwindow.cc:1054
 msgid "Problem Loading Document"
-msgstr "Ha hagut un problema obrint un document"
+msgstr "Hi ha hagut un problema obrint un document"
 
 #: ../glom/appwindow.cc:1054
 msgid "Glom could not load the document."
@@ -256,7 +256,7 @@ msgstr "S'està creant una base de dades Glom a partir d'un fitxer d'exemple."
 
 #: ../glom/appwindow.cc:1641
 msgid "Creating Glom database from backup file."
-msgstr "S'està creant una base de dades Glom a partir de la copia de seguretat."
+msgstr "S'està creant una base de dades Glom a partir de la còpia de seguretat."
 
 #: ../glom/appwindow.cc:1700
 #| msgid ""
@@ -349,27 +349,27 @@ msgstr ""
 #. This actually creates the directory:
 #: ../glom/appwindow.cc:2388
 msgid "Save Backup"
-msgstr "Desa la copia de seguretat"
+msgstr "Desa la còpia de seguretat"
 
 #: ../glom/appwindow.cc:2404
 msgid "Exporting backup"
-msgstr "S'està exportant la copia de seguretat"
+msgstr "S'està exportant la còpia de seguretat"
 
 #: ../glom/appwindow.cc:2410
 msgid "Export Backup failed."
-msgstr "L'exportació de la copia de seguretat ha fallat."
+msgstr "L'exportació de la còpia de seguretat ha fallat."
 
 #: ../glom/appwindow.cc:2410
 msgid "There was an error while exporting the backup."
-msgstr "S'ha produït un error en exportar la copia de seguretat."
+msgstr "S'ha produït un error en exportar la còpia de seguretat."
 
 #: ../glom/appwindow.cc:2416
 msgid "Choose a backup file"
-msgstr "Escolliu el fitxer de copia de seguretat"
+msgstr "Escolliu el fitxer de còpia de seguretat"
 
 #: ../glom/appwindow.cc:2421
 msgid ".tar.gz Backup files"
-msgstr "Fitxers de copia de seguretat .tar.gz"
+msgstr "Fitxers de còpia de seguretat .tar.gz"
 
 #: ../glom/appwindow.cc:2427
 msgid "Restore"
@@ -377,15 +377,15 @@ msgstr "Restaura"
 
 #: ../glom/appwindow.cc:2452
 msgid "Restoring backup"
-msgstr "S'està restaurant la copia de seguretat"
+msgstr "S'està restaurant la còpia de seguretat"
 
 #: ../glom/appwindow.cc:2459
 msgid "Restore Backup failed."
-msgstr "La restauració de la copia de seguretat ha fallat."
+msgstr "La restauració de la còpia de seguretat ha fallat."
 
 #: ../glom/appwindow.cc:2459
 msgid "There was an error while extracting the backup."
-msgstr "S'ha produït un error en extraure la copia de seguretat."
+msgstr "S'ha produït un error en extraure la còpia de seguretat."
 
 #: ../glom/appwindow.cc:2566
 msgid " (read-only)"
@@ -956,7 +956,7 @@ msgstr "Detalls"
 
 #: ../glom/onlineglom_strings.cc:34
 msgid "Generating the report..."
-msgstr "S'està generant el informe..."
+msgstr "S'està generant l'informe..."
 
 #: ../glom/onlineglom_strings.cc:35
 msgid "Login"
@@ -1098,7 +1098,7 @@ msgid ""
 "one, or try \"Auto Detect\"."
 msgstr ""
 "El fitxer conté dades però no en la codificació especificada. Trieu-ne una "
-"altre o proveu «Detecta automàticament»."
+"altra o proveu «Detecta automàticament»."
 
 #. Translators: This is the name of a UI element (a layout part name).
 #. This is a straight line, not a database row.
@@ -1582,7 +1582,7 @@ msgid ""
 "The directory in which to save the created .glom file, or sub-directory if "
 "necessary, such as /home/someuser/ ."
 msgstr ""
-"El directori per guardar el fitxer .glom o el sub-directori creat, si és "
+"El directori per guardar el fitxer .glom o el subdirectori creat, si és "
 "necessari, com /home/algun_usuari/."
 
 #: ../glom/glom_create_from_example.cc:95
@@ -1634,7 +1634,7 @@ msgid ""
 "The path at which to save the created .po file, such as /home/someuser/"
 "somefile.po ."
 msgstr ""
-"La camí d'accés per guardar el fitxer .po creat, com /home/algun_usuari/"
+"El camí d'accés per guardar el fitxer .po creat, com /home/algun_usuari/"
 "algun_fitxer.po."
 
 #: ../glom/glom_export_po.cc:62
@@ -1665,7 +1665,7 @@ msgstr "Especifiqueu un camí de sortida."
 
 #: ../glom/glom_export_po.cc:220
 msgid "Pot file creation failed."
-msgstr "Ha hagut un error en crear el fitxer .pot ."
+msgstr "Hi ha hagut un error en crear el fitxer .pot ."
 
 #: ../glom/glom_export_po.cc:224
 msgid "Pot file created at: %1"
@@ -2195,7 +2195,7 @@ msgstr "Text nou"
 #. TODO: Use a real English sentence here?
 #: ../glom/mode_data/flowtablewithfields.cc:1290
 msgid "Delete whole group \"%1\"?"
-msgstr "Suprimeix el grup sencer «%1» ?"
+msgstr "Suprimeix el grup sencer «%1»?"
 
 #. TODO: Use a real English sentence here:
 #: ../glom/mode_data/flowtablewithfields.cc:1296
@@ -2818,7 +2818,7 @@ msgstr "Predeterminat"
 
 #: ../glom/navigation/box_tables.cc:228
 msgid "Table Names Cannot Contain Spaces"
-msgstr "Els noms de la taula no poden contindre espais"
+msgstr "Els noms de la taula no poden contenirx espais"
 
 #: ../glom/navigation/box_tables.cc:229
 msgid ""
@@ -3108,7 +3108,7 @@ msgid ""
 "embedded devices."
 msgstr ""
 "SQLite no admet l'autenticació ni l'accés remot, però és adequat per "
-"adispositius incrustats."
+"a dispositius incrustats."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:143
 msgid "Create MySQL database in its own folder, to be hosted by this computer."
@@ -3232,11 +3232,11 @@ msgstr "Propietats"
 
 #: ../glom/utility_widgets/notebooklabelglom.cc:85
 msgid "Delete whole notebook \"%1\"?"
-msgstr "Suprimeix la llibreta de notes «%1» sencera ?"
+msgstr "Suprimeix la llibreta de notes «%1» sencera?"
 
 #: ../glom/utility_widgets/notebooklabelglom.cc:90
 msgid "Delete whole notebook?"
-msgstr "Suprimeix la llibreta de notes sencera ?"
+msgstr "Suprimeix la llibreta de notes sencera?"
 
 #: ../data/ui/operator/box_navigation_tables.glade.h:2
 msgid "_Show hidden tables"
@@ -3541,7 +3541,7 @@ msgstr "_Edita les disposicions d'impressió"
 #: ../data/ui/operator/window_main.glade.h:14
 #: ../data/ui/developer/window_print_layout_edit.glade.h:5
 msgid "Cu_t"
-msgstr "_Talla"
+msgstr "_Retalla"
 
 #: ../data/ui/operator/window_main.glade.h:19
 msgid "_Tables"
@@ -3628,11 +3628,11 @@ msgstr "_Arrosega i solta la disposició"
 
 #: ../data/ui/operator/window_main.glade.h:40
 msgid "_Export Backup"
-msgstr "_Exporta la copia de seguretat"
+msgstr "_Exporta la còpia de seguretat"
 
 #: ../data/ui/operator/window_main.glade.h:41
 msgid "_Restore Backup"
-msgstr "_Restaura la copia de seguretat"
+msgstr "_Restaura la còpia de seguretat"
 
 #: ../data/ui/operator/window_main.glade.h:43
 msgid "_About"
@@ -4403,15 +4403,15 @@ msgstr "Alineació horitzontal:"
 
 #: ../data/ui/developer/box_formatting.glade.h:9
 msgid "Multi-line"
-msgstr "Multi-línia"
+msgstr "Multilínia"
 
 #: ../data/ui/developer/box_formatting.glade.h:10
 msgid ""
 "If this is selected then the field value will be shown in a multi-line box "
 "with a scrollbar."
 msgstr ""
-"Si està seleccionat, llavors el valor del camp es mostrarà en un quadre multi-"
-"línia amb barres de desplaçament."
+"Si està seleccionat, llavors el valor del camp es mostrarà en un quadre multilínia "
+"amb barres de desplaçament."
 
 #: ../data/ui/developer/box_formatting.glade.h:11
 msgid "Height (lines)"
@@ -4482,7 +4482,7 @@ msgid ""
 "in the related table. If this option is not selected then the choices will "
 "list values only from related records."
 msgstr ""
-"Si es selecciona aquesta opció, les opcions mostraran valors de tots els "
+"Si se selecciona aquesta opció, les opcions mostraran valors de tots els "
 "registres de la taula relacionada. Si aquesta opció no està seleccionada, les "
 "opcions només mostraran els valors dels registres relacionats."
 
