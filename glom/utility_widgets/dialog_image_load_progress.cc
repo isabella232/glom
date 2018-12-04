@@ -157,7 +157,7 @@ void DialogImageLoadProgress::on_read_next(unsigned int at)
 
 void DialogImageLoadProgress::error(const Glib::ustring& error_message)
 {
-  Gtk::MessageDialog dialog(*this, Glib::ustring::compose(_("Error loading %1"), m_file->get_parse_name()), Gtk::MESSAGE_ERROR);
+  Gtk::MessageDialog dialog(*this, Glib::ustring::compose(_("Error loading %1"), m_file->get_parse_name()), false, Gtk::MESSAGE_ERROR);
   dialog.set_title(_("Error loading image"));
   dialog.set_secondary_text(error_message);
 
