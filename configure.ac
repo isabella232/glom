@@ -234,12 +234,15 @@ AC_CHECK_FUNCS([strptime])
 
 # Get the path to python, to define pyexecdir,
 # so we can use pyexec_LTLIBRARIES in the .am files:
-AM_PATH_PYTHON
+# (This sets PYTHON_VERSION, used by AX_PYTHON_DEVEL later.)
+#
+# To specify a particular python version you must pass PYTHON.
+# For instance, ./configure PYTHON=python3.4 --prefix=/opt/gnome
+AM_PATH_PYTHON([3.0])
 
 # Get the compiler and linker flags for embedding Python.
-# To specify a particular python version you must pass PYTHON_VERSION.
-# For instance, ./configure PYTHON_VERSION="3.4" --prefix=/opt/gnome
-# 
+# This uses the PYTHON_VERSION set by AM_PATH_PYTHON above.
+#
 # See http://www.gnu.org/software/autoconf-archive/ax_python_devel.html
 AX_PYTHON_DEVEL([>= '3.0.0'])
 
