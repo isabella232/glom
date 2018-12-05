@@ -35,6 +35,7 @@ check_PROGRAMS =						\
 	tests/test_script_check_for_problems \
 	tests/test_selfhosting_new_empty \
 	tests/test_selfhosting_new_empty_change_sysprefs \
+	tests/test_selfhosting_new_empty_then_add_tables \
 	tests/test_selfhosting_new_empty_then_users \
 	tests/test_selfhosting_new_from_example \
 	tests/test_selfhosting_new_from_example_defaultvalues \
@@ -83,6 +84,7 @@ TESTS =	tests/test_document_load	\
 	tests/test_script_check_for_problems \
 	tests/test_selfhosting_new_empty \
 	tests/test_selfhosting_new_empty_change_sysprefs \
+	tests/test_selfhosting_new_empty_then_add_tables \
 	tests/test_selfhosting_new_empty_then_users \
 	tests/test_selfhosting_new_from_example \
 	tests/test_selfhosting_new_from_example_defaultvalues \
@@ -288,6 +290,10 @@ tests_test_selfhosting_new_empty_CPPFLAGS = $(tests_cppflags)
 tests_test_selfhosting_new_empty_change_sysprefs_SOURCES = tests/test_selfhosting_new_empty_change_sysprefs.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_empty_change_sysprefs_LDADD = $(tests_ldadd)
 tests_test_selfhosting_new_empty_change_sysprefs_CPPFLAGS = $(tests_cppflags)
+
+tests_test_selfhosting_new_empty_then_add_tables_SOURCES = tests/test_selfhosting_new_empty_then_add_tables.cc $(sources_test_selfhosting_utils)
+tests_test_selfhosting_new_empty_then_add_tables_LDADD = $(tests_ldadd)
+tests_test_selfhosting_new_empty_then_add_tables_CPPFLAGS = $(tests_cppflags)
 
 tests_test_selfhosting_new_empty_then_users_SOURCES = tests/test_selfhosting_new_empty_then_users.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_empty_then_users_LDADD = $(tests_ldadd)
