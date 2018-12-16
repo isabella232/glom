@@ -10,7 +10,7 @@
   <homepage rdf:resource="http://www.glom.org/" />
   <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/glom-devel-list" />
   <download-page rdf:resource="http://www.glom.org/wiki/index.php?title=Download" />
-  <bug-database rdf:resource="http://bugzilla.gnome.org/browse.cgi?product=glom" />
+  <bug-database rdf:resource="https://gitlab.gnome.org/GNOME/glom/issues/" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#productivity" />
 
   <maintainer>
