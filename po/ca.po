@@ -1238,7 +1238,7 @@ msgstr "Turc"
 
 #: ../glom/import_csv/file_encodings.cc:87
 msgid "Nordic"
-msgstr "Nordic"
+msgstr "Nòrdic"
 
 #: ../glom/import_csv/file_encodings.cc:89
 msgid "Celtic"
@@ -2341,7 +2341,7 @@ msgid ""
 "You may set another field as the primary key instead."
 msgstr ""
 "No podeu desactivar la clau principal perquè la taula ha de tenir una clau "
-"principal.Podeu establir un altre camp com a clau principal."
+"principal. Podeu establir un altre camp com a clau principal."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:325
 msgid "Field contains empty values."
@@ -3398,7 +3398,7 @@ msgstr "exemple del format de dades"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:1
 msgid "Welcome to Glom"
-msgstr "Benvingut a Glom"
+msgstr "Us donem la benvinguda a Glom"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:3
 msgid "_Quit"
@@ -3624,7 +3624,7 @@ msgstr "_Maemo"
 
 #: ../data/ui/operator/window_main.glade.h:39
 msgid "_Drag and Drop Layout"
-msgstr "_Arrosega i solta la disposició"
+msgstr "_Arrossega i deixar anar la disposició"
 
 #: ../data/ui/operator/window_main.glade.h:40
 msgid "_Export Backup"
