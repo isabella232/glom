@@ -1,0 +1,328 @@
+# Romanian translation for glom.
+# Copyright (C) 2019 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+# Florentina Mușat <florentina.musat.28@gmail.com>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glom glom-1-32\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2019-08-20 11:36+0300\n"
+"Last-Translator: Florentina Mușat <florentina.musat.28 [at] gmail [dot] "
+"com>\n"
+"Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2);;\n"
+"X-Generator: Poedit 2.2.3\n"
+
+msgctxt "Database Title"
+msgid "Project Manager Example"
+msgstr "Exemplu de administrator de proiecte"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Contacte"
+
+msgctxt "Field (contact_id). Parent table: contacts"
+msgid "Contact ID"
+msgstr "ID contact"
+
+msgctxt "Field (name_first). Parent table: contacts"
+msgid "First Name"
+msgstr "Prenume"
+
+msgctxt "Field (name_middle). Parent table: contacts"
+msgid "Middle Name"
+msgstr "Nume mijlociu"
+
+msgctxt "Field (name_last). Parent table: contacts"
+msgid "Last Name"
+msgstr "Nume de familie"
+
+msgctxt "Field (name_title). Parent table: contacts"
+msgid "Title"
+msgstr "Titlu"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mr"
+msgstr "Dl"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Dna"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Ms"
+msgstr "Dna/dra"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Miss"
+msgstr "Dra"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof"
+
+msgctxt "Field (address_street). Parent table: contacts"
+msgid "Street"
+msgstr "Stradă"
+
+msgctxt "Field (address_town). Parent table: contacts"
+msgid "Town"
+msgstr "Oraș"
+
+msgctxt "Field (address_state). Parent table: contacts"
+msgid "State"
+msgstr "Stat"
+
+msgctxt "Field (address_country). Parent table: contacts"
+msgid "Country"
+msgstr "Țară"
+
+msgctxt "Field (address_postcode). Parent table: contacts"
+msgid "Postcode"
+msgstr "Cod poștal"
+
+msgctxt "Field (date_of_birth). Parent table: contacts"
+msgid "Date of Birth"
+msgstr "Data nașterii"
+
+msgctxt "Field (comments). Parent table: contacts"
+msgid "Comments"
+msgstr "Comentarii"
+
+msgctxt "Field (name_full). Parent table: contacts"
+msgid "Full Name"
+msgstr "Nume complet"
+
+msgctxt "Field (picture). Parent table: contacts"
+msgid "Picture"
+msgstr "Fotografie"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email Address"
+msgstr "Adresă de email"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Pagină web"
+
+msgctxt "Field (tel_home). Parent table: contacts"
+msgid "Home Telephone"
+msgstr "Telefon de acasă"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "Telefon de la serviciu"
+
+msgctxt "Field (tel_mobile). Parent table: contacts"
+msgid "Mobile Telephone"
+msgstr "Telefon mobil"
+
+msgctxt "Field (tel_fax). Parent table: contacts"
+msgid "Fax"
+msgstr "Fax"
+
+msgctxt "Relationship (team_members). Parent table: contacts"
+msgid "Team Membership"
+msgstr "Membru al echipei"
+
+msgctxt "Report (by_country). Parent table: contacts"
+msgid "Contacts By Country"
+msgstr "Contacte după țară"
+
+msgctxt "Report (by_country_by_town). Parent table: contacts"
+msgid "By Country, By Town"
+msgstr "După țară, după oraș"
+
+msgctxt "Layout Group (overview). Parent table: contacts"
+msgid "Overview"
+msgstr "Prezentare generală"
+
+msgctxt ""
+"Layout Group (notebook). Parent table: contacts, Parent Group: details"
+msgid "(Notebook)"
+msgstr "(Agendă)"
+
+msgctxt ""
+"Layout Group (telephone). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt ""
+"Layout Group (address). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Address"
+msgstr "Adresă"
+
+msgctxt ""
+"Layout Group (name). Parent table: contacts, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Name"
+msgstr "Nume"
+
+msgctxt "Table (projects)"
+msgid "Projects"
+msgstr "Proiecte"
+
+msgctxt "Field (project_id). Parent table: projects"
+msgid "Project ID"
+msgstr "ID proiect"
+
+msgctxt "Field (description). Parent table: projects"
+msgid "Description"
+msgstr "Descriere"
+
+msgctxt "Field (comments). Parent table: projects"
+msgid "Comments"
+msgstr "Comentarii"
+
+msgctxt "Field (name). Parent table: projects"
+msgid "Name"
+msgstr "Nume"
+
+msgctxt "Relationship (teams). Parent table: projects"
+msgid "Teams"
+msgstr "Echipe"
+
+msgctxt "Layout Group (overview). Parent table: projects"
+msgid "Overview"
+msgstr "Prezentare generală"
+
+msgctxt "Layout Group (details). Parent table: projects"
+msgid "Details"
+msgstr "Detalii"
+
+msgctxt "Table (project_teams)"
+msgid "Project Teams"
+msgstr "Echipe de proiect"
+
+msgctxt "Field (project_team_id). Parent table: project_teams"
+msgid "Project Team ID"
+msgstr "ID echipă de proiect"
+
+msgctxt "Field (comments). Parent table: project_teams"
+msgid "Comments"
+msgstr "Comentarii"
+
+msgctxt "Field (team_id). Parent table: project_teams"
+msgid "Team ID"
+msgstr "ID echipă"
+
+msgctxt "Field (project_id). Parent table: project_teams"
+msgid "Project ID"
+msgstr "ID proiect"
+
+msgctxt "Relationship (team). Parent table: project_teams"
+msgid "Team"
+msgstr "Echipă"
+
+msgctxt "Relationship (project). Parent table: project_teams"
+msgid "Project"
+msgstr "Proiect"
+
+msgctxt "Layout Group (overview). Parent table: project_teams"
+msgid "Overview"
+msgstr "Prezentare generală"
+
+msgctxt "Layout Group (details). Parent table: project_teams"
+msgid "Details"
+msgstr "Detalii"
+
+msgctxt "Custom Title. Parent table: project_teams"
+msgid "Team Name"
+msgstr "Nume echipă"
+
+msgctxt "Custom Title. Parent table: project_teams"
+msgid "Project Name"
+msgstr "Nume proiect"
+
+msgctxt "Table (team_members)"
+msgid "Team Members"
+msgstr "Membri echipă"
+
+msgctxt "Field (team_members_id). Parent table: team_members"
+msgid "team_members ID"
+msgstr "ID membri_echipă"
+
+msgctxt "Field (description). Parent table: team_members"
+msgid "Description"
+msgstr "Descriere"
+
+msgctxt "Field (comments). Parent table: team_members"
+msgid "Comments"
+msgstr "Comentarii"
+
+msgctxt "Field (contact_id). Parent table: team_members"
+msgid "Contact ID"
+msgstr "ID contact"
+
+msgctxt "Field (team_id). Parent table: team_members"
+msgid "Team ID"
+msgstr "ID echipă"
+
+msgctxt "Field (role). Parent table: team_members"
+msgid "Role"
+msgstr "Rol"
+
+msgctxt "Relationship (contacts). Parent table: team_members"
+msgid "Contacts"
+msgstr "Contacte"
+
+msgctxt "Relationship (team). Parent table: team_members"
+msgid "Team"
+msgstr "Echipă"
+
+msgctxt "Layout Group (overview). Parent table: team_members"
+msgid "Overview"
+msgstr "Prezentare generală"
+
+msgctxt "Layout Group (details). Parent table: team_members"
+msgid "Details"
+msgstr "Detalii"
+
+msgctxt "Table (teams)"
+msgid "Teams"
+msgstr "Echipe"
+
+msgctxt "Field (team_id). Parent table: teams"
+msgid "Team ID"
+msgstr "ID echipă"
+
+msgctxt "Field (description). Parent table: teams"
+msgid "Description"
+msgstr "Descriere"
+
+msgctxt "Field (comments). Parent table: teams"
+msgid "Comments"
+msgstr "Comentarii"
+
+msgctxt "Field (name). Parent table: teams"
+msgid "Name"
+msgstr "Nume"
+
+msgctxt "Relationship (members). Parent table: teams"
+msgid "Members"
+msgstr "Membri"
+
+msgctxt "Relationship (projects). Parent table: teams"
+msgid "Projects"
+msgstr "Proiecte"
+
+msgctxt "Layout Group (overview). Parent table: teams"
+msgid "Overview"
+msgstr "Prezentare generală"
+
+msgctxt "Layout Group (details). Parent table: teams"
+msgid "Details"
+msgstr "Detalii"
