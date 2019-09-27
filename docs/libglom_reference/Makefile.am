@@ -18,7 +18,8 @@
 include $(top_srcdir)/glom/libglom/filelist.am
 
 book_name  = libglom-$(GLOM_ABI_VERSION)
-doc_input  = $(addprefix $(top_srcdir)/,$(libglom_headers))
+doc_input  = $(addprefix $(top_srcdir)/,$(libglom_headers)) \
+	     $(addprefix $(top_builddir)/,$(libglom_headers_generated))
 doc_outdir = .
 
 include $(top_srcdir)/doc-reference.am
