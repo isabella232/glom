@@ -21,7 +21,6 @@ libglom_toplevel_headers =				\
 	glom/libglom/appstate.h				\
 	glom/libglom/algorithms_utils.h \
 	glom/libglom/init.h				\
-	glom/libglom/libglom_config.h			\
 	glom/libglom/sharedptr.h                        \
 	glom/libglom/standard_table_prefs_fields.h	\
 	glom/libglom/utils.h				\
@@ -31,6 +30,10 @@ libglom_toplevel_headers =				\
 	glom/libglom/sql_utils.h \
 	glom/libglom/report_builder.h \
 	glom/libglom/translations_po.h
+
+# These will be in the build directory, not the source directory.
+libglom_toplevel_headers_generated  = \
+	glom/libglom/libglom_config.h
 
 libglom_data_structure_headers =				\
 	glom/libglom/data_structure/database_title.h		\
@@ -97,6 +100,10 @@ libglom_headers =				\
 	$(libglom_document_headers)		\
 	$(libglom_d_bakery_headers)		\
 	$(libglom_d_b_view_headers)
+
+# These will be in the build directory, not the source directory.
+libglom_headers_generated = \
+	$(libglom_toplevel_headers_generated)
 
 # Private source and header files:
 
