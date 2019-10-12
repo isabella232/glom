@@ -1129,7 +1129,7 @@ msgstr ""
 
 #: ../glom/import_csv/dialog_import_csv.cc:740
 msgid "Could Not Open file"
-msgstr "No s'ha pogut obrir el fitxer."
+msgstr "No s'ha pogut obrir el fitxer"
 
 #: ../glom/import_csv/dialog_import_csv.cc:741
 msgid "The file at \"%1\" could not be opened: %2"
@@ -1909,7 +1909,7 @@ msgstr ""
 
 #: ../glom/main.cc:355
 msgid "Glom Python Module Not Installed"
-msgstr "El mòdul Glom Python no està instal·lat."
+msgstr "El mòdul Glom Python no està instal·lat"
 
 #. The python module could not be imported by Glom, so warn the user:
 #: ../glom/main.cc:368
@@ -2252,7 +2252,7 @@ msgstr "El nom d'usuari és buit"
 
 #: ../glom/mode_design/dialog_initial_password.cc:79
 msgid "Please enter a login name for the new user."
-msgstr "Entreu el nom d'entrada per a l'usuari nou."
+msgstr "Introduïu el nom d'entrada per a l'usuari nou."
 
 #: ../glom/mode_design/dialog_initial_password.cc:84
 #: ../glom/mode_design/users/dialog_user.cc:54
@@ -2333,7 +2333,7 @@ msgstr ""
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:312
 msgid "Primary key required"
-msgstr "Clau primària requerida."
+msgstr "Clau primària requerida"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:313
 msgid ""
@@ -2818,7 +2818,7 @@ msgstr "Predeterminat"
 
 #: ../glom/navigation/box_tables.cc:228
 msgid "Table Names Cannot Contain Spaces"
-msgstr "Els noms de la taula no poden contenirx espais"
+msgstr "Els noms de la taula no poden contenir espais"
 
 #: ../glom/navigation/box_tables.cc:229
 msgid ""
@@ -2970,7 +2970,7 @@ msgid ""
 "Enter search criteria to identify records in the other table, to choose an ID "
 "for this field."
 msgstr ""
-"Entreu el criteri de cerca per a identificar els registres de l'altra taula, "
+"Introduïu el criteri de cerca per a identificar els registres de l'altra taula, "
 "per a escollir un ID per a aquest camp."
 
 #: ../glom/mode_data/datawidget/datawidget.cc:238
@@ -2985,7 +2985,7 @@ msgid ""
 "Enter details for a new record in the other table, then use its ID for this "
 "field."
 msgstr ""
-"Entreu els detalls per un registre nou en l'altra taula, llavors useu aquests "
+"Introduïu els detalls per un registre nou en l'altra taula, llavors useu aquests "
 "ID per al camp."
 
 #: ../glom/mode_data/db_adddel/db_adddel.cc:78
@@ -3006,7 +3006,7 @@ msgstr ""
 #. Tell user that they can't do that:
 #: ../glom/mode_data/db_adddel/db_adddel.cc:2219
 msgid "Extra Related Records Not Possible"
-msgstr "No són possibles registres relacionats extra."
+msgstr "No són possibles registres relacionats extra"
 
 #: ../glom/mode_data/db_adddel/db_adddel.cc:2220
 msgid ""
@@ -3334,7 +3334,7 @@ msgstr "C_onnecta"
 
 #: ../data/ui/operator/dialog_connection.glade.h:5
 msgid "Please enter the connection details for your database server."
-msgstr "Entreu els detalls de la connexió al servidor de base de dades."
+msgstr "Introduïu els detalls de la connexió al servidor de base de dades."
 
 #: ../data/ui/operator/dialog_connection.glade.h:6
 msgid "Host"
@@ -4604,7 +4604,7 @@ msgstr "Alinea amun_t"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:23
 msgid "Align _Bottom"
-msgstr "Alinea a_baix"
+msgstr "Alinea a_vall"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:24
 msgid "Align _Left"
