@@ -19,6 +19,7 @@
  */
 
 #include "box_db_table_definition.h"
+#include <glom/mode_design/fields/dialog_fielddefinition.h>
 #include <glom/frame_glom.h>
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h> //For bold_message()).
