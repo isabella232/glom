@@ -1,3 +1,13 @@
+1.32.0 (stable):
+
+* Require libgda 5.2.9, to support newer postgresql versions.
+* Require Python 3.
+* Require at least gtkmm 3.22
+* Use some more modern C++ code.
+* Avoid some compiler warnings.
+* Correct build errors when srcdir != builddir
+(Murray Cumming)
+
 1.31.6 (unstable):
 
 * Layout: Custom fonts: Fix regressoin in 1.31.5.
