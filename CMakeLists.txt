@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.2)
 project("glom")
 
-set(PACKAGE_VERSION "1.31.3")
+set(PACKAGE_VERSION "1.33.1")
 set(GETTEXT_PACKAGE "glom")
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(GLOM_ABI_VERSION "1.32")
+set(GLOM_ABI_VERSION "1.34")
 # TODO: Find an equivalent for autoconf's AS_TR_SH()
-set(GLOM_ABI_VERSION_UNDERLINED "1_32")
+set(GLOM_ABI_VERSION_UNDERLINED "1_34")
 
 # TODO: GLOM_LOCALEDIR seems to be empty by default.
 include(GNUInstallDirs)

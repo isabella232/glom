@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([Glom],[1.31.6],[http://bugzilla.gnome.org/enter_bug.cgi?product=Glom],[glom])
+AC_INIT([Glom],[1.33.1],[http://bugzilla.gnome.org/enter_bug.cgi?product=Glom],[glom])
 AC_PREREQ(2.63)
 
 AC_CONFIG_SRCDIR([glom/main.cc])
@@ -39,7 +39,7 @@ LT_INIT([disable-static win32-dll])
 # Used for the install directories for headers.  The same number is used in
 # the library name, which must be kept in sync, but variables can't be used
 # with that.
-AC_SUBST([GLOM_ABI_VERSION], [1.32])
+AC_SUBST([GLOM_ABI_VERSION], [1.34])
 AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION], ["$GLOM_ABI_VERSION"],
 		   [Define to the Glom ABI version string.])
 
