@@ -130,7 +130,7 @@ void DialogImageSaveProgress::on_stream_write(const Glib::RefPtr<Gio::AsyncResul
 
 void DialogImageSaveProgress::error(const Glib::ustring& error_message)
 {
-  Gtk::MessageDialog dialog(*this, _("Error Saving"), Gtk::MESSAGE_ERROR);
+  Gtk::MessageDialog dialog(*this, _("Error Saving"), false, Gtk::MESSAGE_ERROR);
   dialog.set_title(_("Error saving image"));
   dialog.set_secondary_text(error_message);
 
