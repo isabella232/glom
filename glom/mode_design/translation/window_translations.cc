@@ -180,8 +180,8 @@ void Window_Translations::on_cell_data_original(Gtk::CellRenderer* renderer, con
   if(!renderer_text)
     return;
 
-    if(!iter)
-      return;
+  if(!iter)
+    return;
 
   Gtk::TreeModel::Row row = *iter;
 
