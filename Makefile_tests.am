@@ -148,10 +148,6 @@ glom_libglom_example_document_load_SOURCES = glom/libglom/example_document_load.
 glom_libglom_example_document_load_LDADD = $(tests_ldadd)
 glom_libglom_example_document_load_CPPFLAGS = $(tests_cppflags)
 
-glom_libglom_test_sharedptr_layoutitem_SOURCES = glom/libglom/test_sharedptr_layoutitem.cc
-glom_libglom_test_sharedptr_layoutitem_LDADD = $(tests_ldadd)
-glom_libglom_test_sharedptr_layoutitem_CPPFLAGS = $(tests_cppflags)
-
 tests_test_document_load_SOURCES = tests/test_document_load.cc $(sources_test_utils)
 tests_test_document_load_LDADD = $(tests_ldadd)
 tests_test_document_load_CPPFLAGS = $(tests_cppflags) $(glom_test_image_defines)
