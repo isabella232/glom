@@ -46,6 +46,7 @@
 #include <giomm/menu.h>
 
 #include <gtkmm/main.h>
+#include <gtkmm/textview.h>
 
 #include <giomm/file.h>
 #include <glibmm/spawn.h>

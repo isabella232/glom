@@ -23,6 +23,7 @@
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h>
 #include <glom/appwindow.h>
+#include <glom/mode_design/fields/dialog_fielddefinition.h>
 #include "../../box_db_table.h"
 #include <libglom/db_utils.h>
 //#include <libgnome/gnome-i18n.h>

@@ -22,11 +22,14 @@
 #define GLOM_MODE_DESIGN_BOX_DB_TABLE_DEFINITION_H
 
 #include <glom/box_db_table.h>
-#include <glom/mode_design/fields/dialog_fielddefinition.h>
 #include <glom/mode_design/fields/dialog_defaultformatting.h>
 
 namespace Glom
 {
+
+// Avoid including dialog_fielddefinition,
+// which includes some messy gtksourceview headers.
+class Dialog_FieldDefinition;
 
 class Box_DB_Table_Definition : public Box_DB_Table
 {
