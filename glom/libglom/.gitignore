@@ -1,6 +1,5 @@
 /test_connectionpool
 /test_document
-/test_sharedptr_layoutitem
 /stamp-h2
 /libglom_config.h
 /glom-*.pc
