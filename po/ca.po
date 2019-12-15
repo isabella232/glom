@@ -666,7 +666,7 @@ msgstr "_Cerca"
 
 #: ../glom/frame_glom.cc:140
 msgid "Records:"
-msgstr "Registres: "
+msgstr "Registres:"
 
 #: ../glom/frame_glom.cc:143
 msgid "Found:"
@@ -2443,11 +2443,11 @@ msgstr "(Cap)"
 
 #: ../glom/mode_design/layout/combobox_relationship.cc:287
 msgid " Via: %1::%2"
-msgstr "  Via: %1::%2"
+msgstr " Via: %1::%2"
 
 #: ../glom/mode_design/layout/combobox_relationship.cc:293
 msgid " Via: %1"
-msgstr "Via: %1"
+msgstr " Via: %1"
 
 #: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:240
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:304
@@ -2702,7 +2702,7 @@ msgstr ""
 #. Ask for confirmation:
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:837
 msgid "Create Standard Layout"
-msgstr "Crea disposició estàndard "
+msgstr "Crea disposició estàndard"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:838
 msgid ""
@@ -4608,11 +4608,11 @@ msgstr "Alinea a_vall"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:24
 msgid "Align _Left"
-msgstr "Alinea a _esquerre"
+msgstr "Alinea a l'_esquerra"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:25
 msgid "Align _Right"
-msgstr "Alinea a _dreta"
+msgstr "Alinea a la _dreta"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:26
 #: ../data/ui/developer/window_relationships_overview.glade.h:4
