@@ -106,11 +106,10 @@
     </releaseinfo> 
     <legalnotice> 
       <title>Feedback</title> 
-      <para>To report a problem or make a suggestion regarding &app; or 
-	this manual, you may submit a bug report to the 
-	<ulink url="http://bugzilla.gnome.org" type="http">GNOME Bugzilla
-	</ulink>, under the &app; product. Please search bugzilla before
-	submitting your bug to ensure that yours hasn't already been reported.
+      <para>To report a problem or make a suggestion regarding &app; or
+	this manual, you may submit a bug report in the
+	<ulink url="https://gitlab.gnome.org/GNOME/glom/issues">GNOME issue
+	tracker</ulink>.
       </para>
 <!-- Translators may also add here feedback address for translations -->
     </legalnotice> 
@@ -723,9 +722,10 @@ For instance, a shop might need a report listing all products sold in one month,
       <ulink url="http://www.glom.org/" type="http">&app; Web
       site</ulink>. </para>
     <para>
-      To report a bug or make a suggestion regarding this application or
-      this manual, you can submit them using 
-      <ulink url="http://bugzilla.gnome.org"   type="help">bugzilla</ulink>.
+      To report a problem or make a suggestion regarding &app; or
+	this manual, you may submit a bug report in the
+	<ulink url="https://gitlab.gnome.org/GNOME/glom/issues">GNOME issue
+	tracker</ulink>.
     </para>
 
     <para>
