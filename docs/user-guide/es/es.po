@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
-"POT-Creation-Date: 2020-01-21 23:38+0000\n"
-"PO-Revision-Date: 2020-01-23 12:51+0100\n"
+"POT-Creation-Date: 2020-01-23 11:53+0000\n"
+"PO-Revision-Date: 2020-02-12 12:15+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -18,7 +18,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
-#| msgid "translator-credits"
 msgctxt "_"
 msgid "translator-credits"
 msgstr ""
@@ -27,13 +26,11 @@ msgstr ""
 
 #. (itstool) path: articleinfo/title
 #: C/index.docbook:28
-#| msgid "Glom User Guide V0.1"
 msgid "Glom User Guide V0.2"
 msgstr "Manual del usuario de Glom V0.2"
 
 #. (itstool) path: articleinfo/subtitle
 #: C/index.docbook:29
-#| msgid "for Glom v0.8"
 msgid "for Glom v1.6"
 msgstr "para Glom v1.6"
 
@@ -49,13 +46,6 @@ msgstr "Equipo de desarrollo de Glom"
 
 #. (itstool) path: legalnotice/para
 #: C/index.docbook:2
-#| msgid ""
-#| "This program is distributed under the terms of the GNU General Public "
-#| "license as published by the Free Software Foundation; either version 2 of "
-#| "the License, or (at your option) any later version. A copy of this "
-#| "license can be found at this <ulink url=\"ghelp:gpl\" type=\"help\">link</"
-#| "ulink>, or in the file COPYING included with the source code of this "
-#| "program."
 msgid ""
 "Permission is granted to copy, distribute and/or modify this document under "
 "the terms of the GNU Free Documentation License (GFDL), Version 1.1 or any "
@@ -192,7 +182,6 @@ msgstr ""
 
 #. (itstool) path: articleinfo/releaseinfo
 #: C/index.docbook:105
-#| msgid "This manual describes version 0.8 of Glom"
 msgid "This manual describes version 1.6 of Glom"
 msgstr "Este manual describe el uso de la versión 1.6 de Glom"
 
@@ -204,10 +193,6 @@ msgstr "Retroalimentación"
 #. (itstool) path: legalnotice/para
 #. (itstool) path: sect1/para
 #: C/index.docbook:109 C/index.docbook:724
-#| msgid ""
-#| "To report a bug or make a suggestion regarding this application or this "
-#| "manual, you can submit them using <ulink url=\"http://bugzilla.gnome.org"
-#| "\" type=\"help\">bugzilla</ulink>."
 msgid ""
 "To report a problem or make a suggestion regarding Glom or this manual, you "
 "may submit a bug report in the <ulink url=\"https://gitlab.gnome.org/GNOME/"
@@ -265,9 +250,6 @@ msgstr "Menú de <guimenu>Aplicaciones</guimenu>"
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:159
-#| msgid ""
-#| "Choose <menuchoice><guisubmenu>Office</guisubmenu><guimenuitem>Glom</"
-#| "guimenuitem></menuchoice>."
 msgid ""
 "Choose <menuchoice> <guisubmenu>Office</guisubmenu> <guimenuitem>Glom</"
 "guimenuitem> </menuchoice>."
@@ -293,7 +275,6 @@ msgstr ""
 
 #. (itstool) path: figure/title
 #: C/index.docbook:176
-#| msgid "Glom Start Up Window"
 msgid "Glom Start Up Window, Opening an Existing File"
 msgstr "Ventana de inicio de Glom, Abrir un archivo existente"
 
@@ -322,7 +303,6 @@ msgstr ""
 
 #. (itstool) path: figure/title
 #: C/index.docbook:190
-#| msgid "Glom Start Up Window"
 msgid "Glom Start Up Window, Creating a New File"
 msgstr "Ventana de inicio de Glom, Crear un archivo nuevo"
 
@@ -358,12 +338,6 @@ msgstr "Uso de Glom como un operador"
 
 #. (itstool) path: sect1/para
 #: C/index.docbook:212
-#| msgid ""
-#| "To open an existing glom document, either open that document from the "
-#| "File Manager, or choose Glom from the Applications menu, and then choose "
-#| "the document when asked. Glom will ask you for a user name and password "
-#| "to access the database. Your administrator will provide your user name "
-#| "and password."
 msgid ""
 "To open an existing Glom document, either open that document from the File "
 "Manager, or choose Glom from the Applications menu, and then choose the "
@@ -379,11 +353,6 @@ msgstr ""
 
 #. (itstool) path: sect1/para
 #: C/index.docbook:214
-#| msgid ""
-#| "When you open an existing document, Glom will be in <literal>Operator</"
-#| "literal><literal>user level</literal>. This user level allows you to find "
-#| "and edit records, but does not allow you to change the fundamental "
-#| "structure of the database."
 msgid ""
 "When you open an existing document, Glom will be in <literal>Operator</"
 "literal> <literal>user level</literal>. This user level allows you to find "
@@ -402,11 +371,6 @@ msgstr "Navegación"
 
 #. (itstool) path: sect2/para
 #: C/index.docbook:218
-#| msgid ""
-#| "Each database has several tables. To look at a different table, choose "
-#| "<literal>Table</literal> from the <literal>Navigate</literal> menu. Then "
-#| "double-click on the table, or select it and click the <literal>Open</"
-#| "literal> button."
 msgid ""
 "Each database has several tables. To look at a different table, choose "
 "<literal>Tables</literal> from the <literal>Navigate</literal> menu. Then "
@@ -448,18 +412,11 @@ msgstr ""
 
 #. (itstool) path: sect2/title
 #: C/index.docbook:237
-#| msgid "Entering Data"
 msgid "Viewing and Entering Data"
 msgstr "Ver e introducir datos"
 
 #. (itstool) path: sect2/para
 #: C/index.docbook:238
-#| msgid ""
-#| "When in <literal>Data Mode</literal>, you can enter information into "
-#| "either the <literal>List</literal> or <literal>Details</literal> view. "
-#| "The List view shows many records at once, but does not show every field. "
-#| "The details view shows only one record, and shows all the fields arranged "
-#| "suitably."
 msgid ""
 "When in <literal>Data Mode</literal>, you can view or enter information in "
 "either the <literal>List</literal> or <literal>Details</literal> view."
@@ -496,9 +453,6 @@ msgstr ""
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:244
-#| msgid ""
-#| "To create a new record just click the <literal>New</literal> button. A "
-#| "new record will be created with blank fields for you to fill in."
 msgid ""
 "To create a new record just click the <literal>New</literal> button, or "
 "start typing into a field in the last empty row. A new record row will be "
@@ -623,11 +577,6 @@ msgstr ""
 
 #. (itstool) path: sect2/para
 #: C/index.docbook:291
-#| msgid ""
-#| "When you press the <literal>Find</literal> button, glom will search for "
-#| "records and then display them. If only one record is found then it will "
-#| "show you that record in the Details view. If several records are found "
-#| "then it will show you those records in the List view."
 msgid ""
 "When you press the <literal>Find</literal> button, Glom will search for "
 "records and then display them. If only one record is found then it will show "
@@ -700,12 +649,6 @@ msgstr "Uso de Glom como desarrollador"
 
 #. (itstool) path: sect1/para
 #: C/index.docbook:320
-#| msgid ""
-#| "When you create a new document, Glom will be in the <literal>Developer</"
-#| "literal><literal>user level</literal>. You can also change to the "
-#| "Developer user level after opening an existing document, with the "
-#| "<literal>User Level</literal> menu. Glom will only allow this if the "
-#| "administrator has allowed it."
 msgid ""
 "When you create a new document, Glom will be in the <literal>Developer</"
 "literal> <literal>user level</literal>. You can also change to the Developer "
@@ -725,18 +668,6 @@ msgstr "Añadir tablas"
 
 #. (itstool) path: sect2/para
 #: C/index.docbook:324
-#| msgid ""
-#| "You can see the list of existing tables by choosing <literal>Table</"
-#| "literal> from the <literal>Navigate</literal> menu. You will also see "
-#| "this window after connecting to a database server, after creating a new "
-#| "document. To create a new table, click the <literal>Add</literal> button "
-#| "and enter the name for the new table. This name should not contain any "
-#| "spaces or special characters. Glom will suggest a human-readable title "
-#| "for this table. <literal>Operators</literal> will see this title instead "
-#| "of the actual table name. You can also marka a tables as <literal>hidden</"
-#| "literal> from Operators. For instance, Operators should see \"Invoice "
-#| "Lines\" as related records from the \"Invoices\" table, but they should "
-#| "never be able to navigate directly to the \"Invoice Lines\" table."
 msgid ""
 "You can see the list of existing tables by choosing <literal>Tables</"
 "literal> from the <literal>Navigate</literal> menu. You will also see this "
@@ -804,12 +735,6 @@ msgstr ""
 
 #. (itstool) path: sect2/para
 #: C/index.docbook:334
-#| msgid ""
-#| "Click the <literal>Add</literal> button to add a new field, then enter "
-#| "the name of the new field. The name should not contain spaces or special "
-#| "characters. Glom will guess an appropriate human-readable title for this "
-#| "field, but you can edit this. <literal>Operators</literal> will see this "
-#| "title instead of the actual field name."
 msgid ""
 "Click the <literal>Add</literal> button to add a new field, then enter the "
 "name of the new field. Glom will guess an appropriate human-readable title "
@@ -918,7 +843,6 @@ msgstr "Imagen"
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:359
-#| msgid "Glom offers a few simple field types: <placeholder-1/>"
 msgid "Glom offers a few simple field types: <_:orderedlist-1/>"
 msgstr "Glom ofrece algunos tipos simples de campos: <_:orderedlist-1/>"
 
@@ -981,7 +905,6 @@ msgstr ""
 
 #. (itstool) path: sect3/title
 #: C/index.docbook:384
-#| msgid "Arranging Layouts"
 msgid "Arranging the List View"
 msgstr "Ordenar la vista de lista"
 
@@ -1050,7 +973,6 @@ msgstr ""
 
 #. (itstool) path: figure/title
 #: C/index.docbook:407
-#| msgid "Editing the table's fields."
 msgid "Editing the details Layout"
 msgstr "Editar la disposición de los detalles"
 
@@ -1115,7 +1037,7 @@ msgid ""
 "values in both fields are equal."
 msgstr ""
 "Para crear relaciones, escoja <literal>Relaciones</literal> del menú de "
-"<literal>Desarrollador</litral>. Esto le mostrará la lista de relaciones "
+"<literal>Desarrollador</literal>. Esto le mostrará la lista de relaciones "
 "existentes. Para crear una nueva relación pulse el botón de <literal>Añadir</"
 "literal> e introduzca un nombre para ella. Debe elegir un campo de la tabla "
 "actual y un campo de otra tabla con el que se creará la relación. Esta "
@@ -1151,8 +1073,6 @@ msgstr "Para calcular el valor de un campo."
 
 #. (itstool) path: sect2/para
 #: C/index.docbook:428
-#| msgid ""
-#| "You can use the relationship in the following places. <placeholder-1/>"
 msgid ""
 "You can use the relationship in the following places. <_:orderedlist-1/>"
 msgstr ""
@@ -1165,11 +1085,6 @@ msgstr "Administración de usuarios"
 
 #. (itstool) path: sect2/para
 #: C/index.docbook:441
-#| msgid ""
-#| "To define the <literal>Operators</literal> who can use your database, and "
-#| "to specify what access they have to the various tables, choose "
-#| "<literal>Users</literal> from the <literal>Developer</literal> menu. "
-#| "TODO: Implement the User adminstration."
 msgid ""
 "To define the <literal>Operators</literal> who can use your database, and to "
 "specify what access they have to the various tables, choose <literal>Users</"
@@ -1183,7 +1098,6 @@ msgstr ""
 #. (itstool) path: sect2/title
 #. (itstool) path: figure/title
 #: C/index.docbook:446 C/index.docbook:453
-#| msgid "translator-credits"
 msgid "Translations"
 msgstr "Traducciones"
 
@@ -1299,11 +1213,6 @@ msgstr ""
 
 #. (itstool) path: sect3/para
 #: C/index.docbook:478
-#| msgid ""
-#| "To define the <literal>Operators</literal> who can use your database, and "
-#| "to specify what access they have to the various tables, choose "
-#| "<literal>Users</literal> from the <literal>Developer</literal> menu. "
-#| "TODO: Implement the User adminstration."
 msgid ""
 "To define a report, or to change the definition of an existing report, "
 "choose <literal>Reports</literal> from the <literal>Developer</literal> menu."
@@ -1356,7 +1265,6 @@ msgstr ""
 #. (itstool) path: sect3/title
 #. (itstool) path: figure/title
 #: C/index.docbook:498 C/index.docbook:512
-#| msgid "Editing Fields"
 msgid "Editing a Report"
 msgstr "Editar un informe"
 
@@ -1845,9 +1753,6 @@ msgstr "Conceptos"
 
 #. (itstool) path: listitem/simpara
 #: C/index.docbook:748
-#| msgid ""
-#| "<literal>Database</literal>: Each glom document allows access to one "
-#| "database."
 msgid ""
 "<literal>Database</literal>: Each Glom document allows access to one "
 "database."
@@ -1908,9 +1813,6 @@ msgstr ""
 
 #. (itstool) path: appendix/para
 #: C/index.docbook:746
-#| msgid ""
-#| "Glom is easy to use, but you must understand the following basic "
-#| "concepts. <placeholder-1/>"
 msgid ""
 "Glom is easy to use, but you must understand the following basic concepts. "
 "<_:orderedlist-1/>"
@@ -1920,7 +1822,6 @@ msgstr ""
 
 #. (itstool) path: appendix/title
 #: C/index.docbook:758
-#| msgid "Calculated Fields"
 msgid "Calculated fields and button scripts"
 msgstr "Campos calculados y botones de script"
 
@@ -1937,7 +1838,6 @@ msgstr ""
 
 #. (itstool) path: figure/title
 #: C/index.docbook:762
-#| msgid "Editing the table's fields."
 msgid "Editing the definition of a calculated field"
 msgstr "Editar la definición de un campo calculado"
 
@@ -1970,7 +1870,6 @@ msgstr ""
 
 #. (itstool) path: sect1/title
 #: C/index.docbook:776
-#| msgid "Field Types"
 msgid "Field values"
 msgstr "Valores de campo"
 
