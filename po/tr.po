@@ -3269,7 +3269,7 @@ msgid ""
 "\n"
 "Please select a date to enter in this field."
 msgstr ""
-"<span·weight=\"bold\"·size=\"larger\">Tarih Seç</span>\n"
+"<span weight=\"bold\" size=\"larger\">Tarih Seç</span>\n"
 "\n"
 "Lütfen bu alana girmek için bir tarih seçin."
 
