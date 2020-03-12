@@ -16,15 +16,15 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>http://www.glom.org/screenshots/glom_data_details.png</image>
+      <image>https://gitlab.gnome.org/GNOME/glom/-/raw/master/docs/website/screenshots/glom_data_details.png</image>
       <_caption>The details view showing the whole record</_caption>
     </screenshot>
     <screenshot>
-      <image>http://www.glom.org/screenshots/glom_data_list.png</image>
+      <image>https://gitlab.gnome.org/GNOME/glom/-/raw/master/docs/website/screenshots/glom_data_list.png</image>
       <_caption>The list view showing all records in the table</_caption>
     </screenshot>
     <screenshot>
-      <image>http://www.glom.org/screenshots/glom_data_details_related.png</image>
+      <image>https://gitlab.gnome.org/GNOME/glom/-/raw/master/docs/website/screenshots/glom_data_details_related.png</image>
       <_caption>The details view showing records from a related table</_caption>
     </screenshot>
   </screenshots>
