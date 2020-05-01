@@ -1,21 +1,21 @@
 # Swedish translation for glom.
-# Copyright © 2006, 2017 glom's COPYRIGHT HOLDER
+# Copyright © 2006-2020 glom's COPYRIGHT HOLDER
 # This file is distributed under the same license as the glom package.
 # Daniel Nylander <po@danielnylander.se>, 2006.
-# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2017.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2017, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glom doc\n"
-"POT-Creation-Date: 2017-11-02 21:58+0000\n"
-"PO-Revision-Date: 2017-11-07 12:37+0100\n"
+"POT-Creation-Date: 2020-01-21 23:38+0000\n"
+"PO-Revision-Date: 2020-05-01 21:44+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.3\n"
 
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
 msgctxt "_"
@@ -192,69 +192,66 @@ msgid "Feedback"
 msgstr "Återkoppling"
 
 #. (itstool) path: legalnotice/para
-#: C/index.docbook:109
+#. (itstool) path: sect1/para
+#: C/index.docbook:109 C/index.docbook:724
 msgid ""
 "To report a problem or make a suggestion regarding Glom or this manual, you "
-"may submit a bug report to the <ulink url=\"http://bugzilla.gnome.org\" type="
-"\"http\">GNOME Bugzilla </ulink>, under the Glom product. Please search "
-"bugzilla before submitting your bug to ensure that yours hasn't already been "
-"reported."
+"may submit a bug report in the <ulink url=\"https://gitlab.gnome.org/GNOME/"
+"glom/issues\">GNOME issue tracker</ulink>."
 msgstr ""
-"Om du vill rapportera ett problem eller göra ett förslag kring Glom eller "
-"denna handbok kan du skicka in en felrapport till <ulink url=\"http://"
-"bugzilla.gnome.org\" type=\"http\">GNOME:s Bugzilla </ulink>, under "
-"produkten Glom. Sök i Bugzilla innan du skickar in din rapport för att "
-"säkerställa att den inte redan rapporterats."
+"För att rapportera ett problem eller komma med ett förslag kring Glom eller "
+"denna handbok kan du skicka in en felrapport med <ulink url=\"https://gitlab."
+"gnome.org/GNOME/glom/issues\">GNOME:s ärendehanteringssystem</ulink>."
 
 #. (itstool) path: abstract/para
-#: C/index.docbook:119
+#: C/index.docbook:118
 msgid "User manual for Glom."
 msgstr "Användarhandbok för Glom."
 
 # TODO: Glom?
 #. (itstool) path: article/indexterm
-#: C/index.docbook:123
+#: C/index.docbook:122
 msgid "<primary>MY-GNOME-APP</primary>"
 msgstr "<primary>MY-GNOME-APP</primary>"
 
 # TODO: Glom?
 #. (itstool) path: article/indexterm
-#: C/index.docbook:126
+#: C/index.docbook:125
 msgid "<primary>mygnomeapp</primary>"
 msgstr "<primary>mygnomeapp</primary>"
 
 #. (itstool) path: sect1/title
-#: C/index.docbook:135
+#: C/index.docbook:134
 msgid "Introduction"
 msgstr "Introduktion"
 
 #. (itstool) path: sect1/para
-#: C/index.docbook:136
+#: C/index.docbook:135
 msgid "Glom allows you to design and use database systems."
 msgstr "Glom låter dig designa och använda databassystem."
 
 #. (itstool) path: sect1/title
-#: C/index.docbook:150
+#: C/index.docbook:149
 msgid "Getting Started"
 msgstr "Komma igång"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:153
+#: C/index.docbook:152
 msgid "Starting Glom"
 msgstr "Starta Glom"
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:154
+#: C/index.docbook:153
 msgid "You can start <application>Glom</application> in the following ways:"
 msgstr "Du kan starta <application>Glom</application> på följande sätt:"
 
 #. (itstool) path: varlistentry/term
-#: C/index.docbook:158
+#: C/index.docbook:157
 msgid "<guimenu>Applications</guimenu> menu"
 msgstr "<guimenu>Program</guimenu>-menyn"
 
 #. (itstool) path: listitem/para
-#: C/index.docbook:160
+#: C/index.docbook:159
 msgid ""
 "Choose <menuchoice> <guisubmenu>Office</guisubmenu> <guimenuitem>Glom</"
 "guimenuitem> </menuchoice>."
@@ -263,12 +260,12 @@ msgstr ""
 "guimenuitem> </menuchoice>."
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:171
+#: C/index.docbook:170
 msgid "When You Start Glom"
 msgstr "Då du startar Glom"
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:172
+#: C/index.docbook:171
 msgid ""
 "When you start <application>Glom</application>, the following window is "
 "displayed. You may open an existing Glom file or create a new one, possibly "
@@ -279,7 +276,7 @@ msgstr ""
 "ny Glom-fil på ett av exemplen."
 
 #. (itstool) path: figure/title
-#: C/index.docbook:177
+#: C/index.docbook:176
 msgid "Glom Start Up Window, Opening an Existing File"
 msgstr "Uppstartsfönster för Glom, öppnande av en befintlig fil"
 
@@ -288,7 +285,7 @@ msgstr "Uppstartsfönster för Glom, öppnande av en befintlig fil"
 #. the file changes, the md5 hash will change to let you know you need to
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:181
+#: C/index.docbook:180
 msgctxt "_"
 msgid ""
 "external ref='figures/start_open.png' md5='adac27f11f2324c3da2349f72d554994'"
@@ -296,7 +293,7 @@ msgstr ""
 "external ref='figures/start_open.png' md5='adac27f11f2324c3da2349f72d554994'"
 
 #. (itstool) path: screenshot/mediaobject
-#: C/index.docbook:179
+#: C/index.docbook:178
 msgid ""
 "<imageobject><imagedata fileref=\"figures/start_open.png\" format=\"PNG\"/> "
 "</imageobject> <textobject> <phrase>Shows Glom main window used to open an "
@@ -307,7 +304,7 @@ msgstr ""
 "för att öppna en befintlig Glom-fil.</phrase> </textobject>"
 
 #. (itstool) path: figure/title
-#: C/index.docbook:191
+#: C/index.docbook:190
 msgid "Glom Start Up Window, Creating a New File"
 msgstr "Uppstartsfönster för Glom, skapande av en ny fil"
 
@@ -316,7 +313,7 @@ msgstr "Uppstartsfönster för Glom, skapande av en ny fil"
 #. the file changes, the md5 hash will change to let you know you need to
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:195
+#: C/index.docbook:194
 msgctxt "_"
 msgid ""
 "external ref='figures/start_create.png' "
@@ -326,7 +323,7 @@ msgstr ""
 "md5='f1e4c22fd6811e4ba908e290e76f0474'"
 
 #. (itstool) path: screenshot/mediaobject
-#: C/index.docbook:193
+#: C/index.docbook:192
 msgid ""
 "<imageobject><imagedata fileref=\"figures/start_create.png\" format=\"PNG\"/"
 "> </imageobject> <textobject> <phrase>Shows Glom main window used to create "
@@ -337,12 +334,12 @@ msgstr ""
 "används för att skapa en ny Glom-fil.</phrase> </textobject>"
 
 #. (itstool) path: sect1/title
-#: C/index.docbook:212
+#: C/index.docbook:211
 msgid "Using Glom as an Operator"
 msgstr "Använda Glom som en operatör"
 
 #. (itstool) path: sect1/para
-#: C/index.docbook:213
+#: C/index.docbook:212
 msgid ""
 "To open an existing Glom document, either open that document from the File "
 "Manager, or choose Glom from the Applications menu, and then choose the "
@@ -357,7 +354,7 @@ msgstr ""
 "användarnamn och lösenord."
 
 #. (itstool) path: sect1/para
-#: C/index.docbook:215
+#: C/index.docbook:214
 msgid ""
 "When you open an existing document, Glom will be in <literal>Operator</"
 "literal> <literal>user level</literal>. This user level allows you to find "
@@ -370,12 +367,12 @@ msgstr ""
 "databasens grundläggande struktur."
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:218
+#: C/index.docbook:217
 msgid "Navigation"
 msgstr "Navigering"
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:219
+#: C/index.docbook:218
 msgid ""
 "Each database has several tables. To look at a different table, choose "
 "<literal>Tables</literal> from the <literal>Navigate</literal> menu. Then "
@@ -388,7 +385,7 @@ msgstr ""
 "<literal>Öppna</literal>."
 
 #. (itstool) path: figure/title
-#: C/index.docbook:222
+#: C/index.docbook:221
 msgid "Navigating to a Table"
 msgstr "Navigera till en tabell"
 
@@ -397,7 +394,7 @@ msgstr "Navigera till en tabell"
 #. the file changes, the md5 hash will change to let you know you need to
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:226
+#: C/index.docbook:225
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_tables.png' md5='a61ac5516314b38c6c7a3f3fd534427f'"
@@ -405,7 +402,7 @@ msgstr ""
 "external ref='figures/glom_tables.png' md5='a61ac5516314b38c6c7a3f3fd534427f'"
 
 #. (itstool) path: screenshot/mediaobject
-#: C/index.docbook:224
+#: C/index.docbook:223
 msgid ""
 "<imageobject><imagedata fileref=\"figures/glom_tables.png\" format=\"PNG\"/> "
 "</imageobject> <textobject> <phrase>Navigating to a Table.</phrase> </"
@@ -416,12 +413,12 @@ msgstr ""
 "textobject>"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:238
+#: C/index.docbook:237
 msgid "Viewing and Entering Data"
 msgstr "Visa och mata in data"
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:239
+#: C/index.docbook:238
 msgid ""
 "When in <literal>Data Mode</literal>, you can view or enter information in "
 "either the <literal>List</literal> or <literal>Details</literal> view."
@@ -431,12 +428,12 @@ msgstr ""
 
 #. (itstool) path: sect3/title
 #. (itstool) path: figure/title
-#: C/index.docbook:242 C/index.docbook:248
+#: C/index.docbook:241 C/index.docbook:247
 msgid "The List View"
 msgstr "Listvyn"
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:243
+#: C/index.docbook:242
 msgid ""
 "The List view shows many records at once and usually shows only the most "
 "important fields."
@@ -445,7 +442,7 @@ msgstr ""
 "fälten."
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:244 C/index.docbook:267
+#: C/index.docbook:243 C/index.docbook:266
 msgid ""
 "When you enter data into a field it will be saved into the database "
 "immediately after you finish editing the field. If it is a date or time "
@@ -456,7 +453,7 @@ msgstr ""
 "dataformatet att kontrolleras åt dig."
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:245
+#: C/index.docbook:244
 msgid ""
 "To create a new record just click the <literal>New</literal> button, or "
 "start typing into a field in the last empty row. A new record row will be "
@@ -471,7 +468,7 @@ msgstr ""
 #. the file changes, the md5 hash will change to let you know you need to
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:252
+#: C/index.docbook:251
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_data_list.png' "
@@ -481,7 +478,7 @@ msgstr ""
 "md5='3b7469ee1de77081b435db5ac2d48953'"
 
 #. (itstool) path: screenshot/mediaobject
-#: C/index.docbook:250
+#: C/index.docbook:249
 msgid ""
 "<imageobject><imagedata fileref=\"figures/glom_data_list.png\" format=\"PNG"
 "\"/> </imageobject> <textobject> <phrase>The List View.</phrase> </"
@@ -491,7 +488,7 @@ msgstr ""
 "\"/> </imageobject> <textobject> <phrase>Listvyn.</phrase> </textobject>"
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:261
+#: C/index.docbook:260
 msgid ""
 "To sort the records just click on a column header. For instance, you could "
 "might click on a date column to list invoices in order of their date, and "
@@ -503,12 +500,12 @@ msgstr ""
 
 #. (itstool) path: sect3/title
 #. (itstool) path: figure/title
-#: C/index.docbook:265 C/index.docbook:271
+#: C/index.docbook:264 C/index.docbook:270
 msgid "The Details View"
 msgstr "Detaljvyn"
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:266
+#: C/index.docbook:265
 msgid ""
 "The details view shows only one record and usually shows all the fields "
 "arranged suitably."
@@ -517,7 +514,7 @@ msgstr ""
 "lämpligt sätt."
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:268
+#: C/index.docbook:267
 msgid ""
 "To create a new record just click the <literal>New</literal> button. A new "
 "record will be created with blank fields for you to fill in."
@@ -530,7 +527,7 @@ msgstr ""
 #. the file changes, the md5 hash will change to let you know you need to
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:275
+#: C/index.docbook:274
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_data_details.png' "
@@ -540,7 +537,7 @@ msgstr ""
 "md5='455bde435350fd53401213dff235bfb3'"
 
 #. (itstool) path: screenshot/mediaobject
-#: C/index.docbook:273
+#: C/index.docbook:272
 msgid ""
 "<imageobject><imagedata fileref=\"figures/glom_data_details.png\" format="
 "\"PNG\"/> </imageobject> <textobject> <phrase>The Details View.</phrase> </"
@@ -551,12 +548,12 @@ msgstr ""
 "textobject>"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:289
+#: C/index.docbook:288
 msgid "Finding Data"
 msgstr "Hitta data"
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:290
+#: C/index.docbook:289
 msgid ""
 "Choose <literal>Find Mode</literal> from the Mode menu. The fields in the "
 "List and Details views will now be empty, and a Find button will appear at "
@@ -567,7 +564,7 @@ msgstr ""
 "ner i fönstret."
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:291
+#: C/index.docbook:290
 msgid ""
 "Enter information, or part of the information, into a field to find records "
 "with that information in that field. For instance, enter Jim into a name "
@@ -578,7 +575,7 @@ msgstr ""
 "söka poster med ”Jim” eller ”Jimmy” i namnet."
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:292
+#: C/index.docbook:291
 msgid ""
 "When you press the <literal>Find</literal> button, Glom will search for "
 "records and then display them. If only one record is found then it will show "
@@ -591,12 +588,12 @@ msgstr ""
 "posterna i listvyn."
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:297
+#: C/index.docbook:296
 msgid "Printing Reports"
 msgstr "Skriva ut rapporter"
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:298
+#: C/index.docbook:297
 msgid ""
 "If your database developer has defined some reports for a table then you "
 "will see them listed in the <literal>Reports</literal> menu. Just choose the "
@@ -615,7 +612,7 @@ msgstr ""
 "till den relevanta tabellen för att använda en specifik rapport."
 
 #. (itstool) path: figure/title
-#: C/index.docbook:301
+#: C/index.docbook:300
 msgid "A report"
 msgstr "En rapport"
 
@@ -624,7 +621,7 @@ msgstr "En rapport"
 #. the file changes, the md5 hash will change to let you know you need to
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:305
+#: C/index.docbook:304
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_report_result.png' "
@@ -634,7 +631,7 @@ msgstr ""
 "md5='2b752779eb0ed68724d094f6e1fef699'"
 
 #. (itstool) path: screenshot/mediaobject
-#: C/index.docbook:303
+#: C/index.docbook:302
 msgid ""
 "<imageobject><imagedata fileref=\"figures/glom_report_result.png\" format="
 "\"PNG\"/> </imageobject> <textobject> <phrase>A report.</phrase> </"
@@ -645,12 +642,12 @@ msgstr ""
 "textobject>"
 
 #. (itstool) path: sect1/title
-#: C/index.docbook:320
+#: C/index.docbook:319
 msgid "Using Glom as a Developer"
 msgstr "Använda Glom som en utvecklare"
 
 #. (itstool) path: sect1/para
-#: C/index.docbook:321
+#: C/index.docbook:320
 msgid ""
 "When you create a new document, Glom will be in the <literal>Developer</"
 "literal> <literal>user level</literal>. You can also change to the Developer "
@@ -664,13 +661,13 @@ msgstr ""
 "tillåta detta om administratören har tillåtit det."
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:324
+#: C/index.docbook:323
 msgid "Adding Tables"
 msgstr "Lägga till tabeller"
 
 # TODO: a tables -> a table
 #. (itstool) path: sect2/para
-#: C/index.docbook:325
+#: C/index.docbook:324
 msgid ""
 "You can see the list of existing tables by choosing <literal>Tables</"
 "literal> from the <literal>Navigate</literal> menu. You will also see this "
@@ -696,7 +693,7 @@ msgstr ""
 "\"Fakturarader\"."
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:327
+#: C/index.docbook:326
 msgid ""
 "You can also specify one table as the <literal>default table</literal>. This "
 "table will be shown whenever an operator opens an existing document, without "
@@ -707,13 +704,13 @@ msgstr ""
 "någon fråga om att välja en tabell från listan."
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:328
+#: C/index.docbook:327
 msgid "You can also use this window to rename an existing table."
 msgstr ""
 "Du kan också använda detta fönster för att byta namn på en befintlig tabell."
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:329
+#: C/index.docbook:328
 msgid "Click the <literal>Open</literal> button to look at the selected table."
 msgstr ""
 "Klicka på knappen <literal>Öppna</literal> för att titta på den valda "
@@ -721,12 +718,12 @@ msgstr ""
 
 #. (itstool) path: sect2/title
 #. (itstool) path: figure/title
-#: C/index.docbook:333 C/index.docbook:339
+#: C/index.docbook:332 C/index.docbook:338
 msgid "Editing Fields"
 msgstr "Redigera fält"
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:334
+#: C/index.docbook:333
 msgid ""
 "Choose <literal>Fields</literal> from the <literal>Developer</literal> menu. "
 "This shows the list of fields in the table. New tables automatically have a "
@@ -737,7 +734,7 @@ msgstr ""
 "primärnyckelfält, men du kan ändra detta fält om nödvändigt."
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:335
+#: C/index.docbook:334
 msgid ""
 "Click the <literal>Add</literal> button to add a new field, then enter the "
 "name of the new field. Glom will guess an appropriate human-readable title "
@@ -751,7 +748,7 @@ msgstr ""
 "istället för fältets faktiska namn."
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:336
+#: C/index.docbook:335
 msgid ""
 "To specify more field details, select the field and click the "
 "<literal>Details</literal> button."
@@ -764,7 +761,7 @@ msgstr ""
 #. the file changes, the md5 hash will change to let you know you need to
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:343
+#: C/index.docbook:342
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_fields.png' "
@@ -774,7 +771,7 @@ msgstr ""
 "md5='39a13053db33b9c45bc1f61a0f31a199'"
 
 #. (itstool) path: screenshot/mediaobject
-#: C/index.docbook:341
+#: C/index.docbook:340
 msgid ""
 "<imageobject><imagedata fileref=\"figures/glom_design_fields.png\" format="
 "\"PNG\"/> </imageobject> <textobject> <phrase>Editing the table's fields.</"
@@ -785,12 +782,12 @@ msgstr ""
 "phrase> </textobject>"
 
 #. (itstool) path: sect3/title
-#: C/index.docbook:354
+#: C/index.docbook:353
 msgid "Primary Keys"
 msgstr "Primärnycklar"
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:355
+#: C/index.docbook:354
 msgid ""
 "Each table must have one, and only one, <literal>Primary Key</literal>. The "
 "value in this field will be unique, meaning that each value in this field "
@@ -810,52 +807,52 @@ msgstr ""
 "tabeller."
 
 #. (itstool) path: sect3/title
-#: C/index.docbook:359
+#: C/index.docbook:358
 msgid "Field Types"
 msgstr "Fälttyper"
 
 #. (itstool) path: listitem/simpara
-#: C/index.docbook:362
+#: C/index.docbook:361
 msgid "Number"
 msgstr "Tal"
 
 #. (itstool) path: listitem/simpara
-#: C/index.docbook:363
+#: C/index.docbook:362
 msgid "Text"
 msgstr "Text"
 
 #. (itstool) path: listitem/simpara
-#: C/index.docbook:364
+#: C/index.docbook:363
 msgid "Date"
 msgstr "Datum"
 
 #. (itstool) path: listitem/simpara
-#: C/index.docbook:365
+#: C/index.docbook:364
 msgid "Time"
 msgstr "Tid"
 
 #. (itstool) path: listitem/simpara
-#: C/index.docbook:366
+#: C/index.docbook:365
 msgid "Boolean - either true or false"
 msgstr "Boolesk - antingen sant eller falskt"
 
 #. (itstool) path: listitem/simpara
-#: C/index.docbook:367
+#: C/index.docbook:366
 msgid "Image"
 msgstr "Bild"
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:360
+#: C/index.docbook:359
 msgid "Glom offers a few simple field types: <_:orderedlist-1/>"
 msgstr "Glom erbjuder några få enkla fälttyper: <_:orderedlist-1/>"
 
 #. (itstool) path: sect3/title
-#: C/index.docbook:373
+#: C/index.docbook:372
 msgid "Calculated Fields"
 msgstr "Beräknade fält"
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:374
+#: C/index.docbook:373
 msgid ""
 "Field values can be calculated in terms of other fields, using the Python "
 "programming language. This calculation should be the implementation of a "
@@ -872,7 +869,7 @@ msgstr ""
 "inte använda fältvärden i beräkningen ännu."
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:375
+#: C/index.docbook:374
 msgid ""
 "You can also use calculations to specify a default value for fields, by "
 "selecting the <literal>Default Value</literal> tab in the <literal>Field "
@@ -887,12 +884,12 @@ msgstr ""
 "beräkning i fönstret <literal>Redigera</literal>."
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:381
+#: C/index.docbook:380
 msgid "Arranging Layouts"
 msgstr "Arrangera layouter"
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:382
+#: C/index.docbook:381
 msgid ""
 "Each table has <literal>List</literal> and <literal>Details</literal> views, "
 "and by default these show all fields in the table, in order of creation. You "
@@ -905,12 +902,12 @@ msgstr ""
 "från menyn <literal>Utvecklare</literal>."
 
 #. (itstool) path: sect3/title
-#: C/index.docbook:385
+#: C/index.docbook:384
 msgid "Arranging the List View"
 msgstr "Arrangera listvyn"
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:386
+#: C/index.docbook:385
 msgid ""
 "For the <literal>List</literal> view, you can specify the sequence of field "
 "columns, and whether some fields are hidden."
@@ -919,7 +916,7 @@ msgstr ""
 "huruvida några fält är dolda."
 
 #. (itstool) path: figure/title
-#: C/index.docbook:389
+#: C/index.docbook:388
 msgid "Editing the List Layout"
 msgstr "Redigera listlayouten"
 
@@ -928,7 +925,7 @@ msgstr "Redigera listlayouten"
 #. the file changes, the md5 hash will change to let you know you need to
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:393
+#: C/index.docbook:392
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_layout_list.png' "
@@ -938,7 +935,7 @@ msgstr ""
 "md5='213888ef5cd3037b2fa61155b4fe5136'"
 
 #. (itstool) path: screenshot/mediaobject
-#: C/index.docbook:391
+#: C/index.docbook:390
 msgid ""
 "<imageobject><imagedata fileref=\"figures/glom_design_layout_list.png\" "
 "format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing the list layout."
@@ -949,13 +946,13 @@ msgstr ""
 "phrase> </textobject>"
 
 #. (itstool) path: sect3/title
-#: C/index.docbook:404
+#: C/index.docbook:403
 msgid "Arranging the Details View"
 msgstr "Arrangera detaljvyn"
 
 # TODO: sequence fo fields -> sequence for fields ?
 #. (itstool) path: sect3/para
-#: C/index.docbook:405
+#: C/index.docbook:404
 msgid ""
 "For the <literal>Details</literal> view, you can create groups of fields, "
 "and give these groups titles. You can then place fields in these groups and "
@@ -973,7 +970,7 @@ msgstr ""
 "i den gruppen. Du kan ha andra grupper för \"Adress\"-fälten."
 
 #. (itstool) path: figure/title
-#: C/index.docbook:408
+#: C/index.docbook:407
 msgid "Editing the details Layout"
 msgstr "Redigera detaljlayouten"
 
@@ -982,7 +979,7 @@ msgstr "Redigera detaljlayouten"
 #. the file changes, the md5 hash will change to let you know you need to
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:412
+#: C/index.docbook:411
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_layout_details.png' "
@@ -992,7 +989,7 @@ msgstr ""
 "md5='6f1d78f90d6ec0ea338014d2ac697a90'"
 
 #. (itstool) path: screenshot/mediaobject
-#: C/index.docbook:410
+#: C/index.docbook:409
 msgid ""
 "<imageobject><imagedata fileref=\"figures/glom_design_layout_details.png\" "
 "format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing the Details "
@@ -1003,12 +1000,12 @@ msgstr ""
 "</phrase> </textobject>"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:425
+#: C/index.docbook:424
 msgid "Creating Relationships"
 msgstr "Skapa relationer"
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:426
+#: C/index.docbook:425
 msgid ""
 "Tables in the Database are often related together. For instance, an "
 "\"Invoices\" table might have a \"Customer ID\" field. A value in this field "
@@ -1026,7 +1023,7 @@ msgstr ""
 "\"Fakturarader\" som är relaterade till en post i \"Faktura\"-posten."
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:427
+#: C/index.docbook:426
 msgid ""
 "To create relationships, choose <literal>Relationships</literal> from the "
 "<literal>Developer</literal> menu. This will show the list of existing "
@@ -1045,17 +1042,17 @@ msgstr ""
 "vilka värdena i båda fälten är lika."
 
 #. (itstool) path: listitem/simpara
-#: C/index.docbook:432
+#: C/index.docbook:431
 msgid "To show a related field on the List or Details view."
 msgstr "För att visa ett relaterat fält i list- eller detaljvyn."
 
 #. (itstool) path: listitem/simpara
-#: C/index.docbook:433
+#: C/index.docbook:432
 msgid "To show a list of related records on the Details view."
 msgstr "För att visa en lista över relaterade fält i detaljvyn."
 
 #. (itstool) path: listitem/simpara
-#: C/index.docbook:434
+#: C/index.docbook:433
 msgid ""
 "To lookup a value from a field in a related record. For instance, to copy "
 "the current price of a \"Product\" into the \"Price\" field of an \"Invoice "
@@ -1066,23 +1063,23 @@ msgstr ""
 "\"Fakturarad\"-post."
 
 #. (itstool) path: listitem/simpara
-#: C/index.docbook:435
+#: C/index.docbook:434
 msgid "To calculate a field value."
 msgstr "För att beräkna ett fälts värde."
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:429
+#: C/index.docbook:428
 msgid ""
 "You can use the relationship in the following places. <_:orderedlist-1/>"
 msgstr "Du kan använda relationen på följande platser. <_:orderedlist-1/>"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:441
+#: C/index.docbook:440
 msgid "Users Administration"
 msgstr "Användaradministration"
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:442
+#: C/index.docbook:441
 msgid ""
 "To define the <literal>Operators</literal> who can use your database, and to "
 "specify what access they have to the various tables, choose <literal>Users</"
@@ -1094,12 +1091,12 @@ msgstr ""
 
 #. (itstool) path: sect2/title
 #. (itstool) path: figure/title
-#: C/index.docbook:447 C/index.docbook:454
+#: C/index.docbook:446 C/index.docbook:453
 msgid "Translations"
 msgstr "Översättningar"
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:448
+#: C/index.docbook:447
 msgid ""
 "Glom's user interface (and this document) is translated into several "
 "languages, as you should see already if you are using your computer with a "
@@ -1118,7 +1115,7 @@ msgstr ""
 "som 1,99 och 13.1.2008."
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:449
+#: C/index.docbook:448
 msgid ""
 "However, the Glom system that you create also contains text that must be "
 "translated if it will be used by people who speak different languages. For "
@@ -1145,7 +1142,7 @@ msgstr ""
 #. the file changes, the md5 hash will change to let you know you need to
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:458
+#: C/index.docbook:457
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_translations.png' "
@@ -1155,7 +1152,7 @@ msgstr ""
 "md5='92b8e4905d0b85ef7f7d248420942a97'"
 
 #. (itstool) path: screenshot/mediaobject
-#: C/index.docbook:456
+#: C/index.docbook:455
 msgid ""
 "<imageobject><imagedata fileref=\"figures/glom_design_translations.png\" "
 "format=\"PNG\"/> </imageobject> <textobject> <phrase>Translations.</phrase> "
@@ -1166,7 +1163,7 @@ msgstr ""
 "phrase> </textobject>"
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:467
+#: C/index.docbook:466
 msgid ""
 "Experienced translators may be more familiar with the .po file format, or "
 "you might wish to use the many tools that work with the .po file format. By "
@@ -1182,17 +1179,17 @@ msgstr ""
 "<literal>Importera</literal>."
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:472
+#: C/index.docbook:471
 msgid "Defining Reports"
 msgstr "Definiera rapporter"
 
 #. (itstool) path: sect3/title
-#: C/index.docbook:475
+#: C/index.docbook:474
 msgid "Adding or Editing Reports"
 msgstr "Lägga till eller redigera rapporter"
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:477
+#: C/index.docbook:476
 msgid ""
 "Glom can produce reports to show specific fields for sets of records, sorted "
 "and grouped. For instance, a shop might need a report listing all products "
@@ -1208,7 +1205,7 @@ msgstr ""
 "<literal>Rapporter</literal>."
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:479
+#: C/index.docbook:478
 msgid ""
 "To define a report, or to change the definition of an existing report, "
 "choose <literal>Reports</literal> from the <literal>Developer</literal> menu."
@@ -1218,7 +1215,7 @@ msgstr ""
 "<literal>Utvecklare</literal>."
 
 #. (itstool) path: figure/title
-#: C/index.docbook:481
+#: C/index.docbook:480
 msgid "Creating or Editing Reports"
 msgstr "Skapa eller redigera rapporter"
 
@@ -1227,7 +1224,7 @@ msgstr "Skapa eller redigera rapporter"
 #. the file changes, the md5 hash will change to let you know you need to
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:485
+#: C/index.docbook:484
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_reports.png' "
@@ -1237,7 +1234,7 @@ msgstr ""
 "md5='697eb7cc6baebae8b374e474b4fa0899'"
 
 #. (itstool) path: screenshot/mediaobject
-#: C/index.docbook:483
+#: C/index.docbook:482
 msgid ""
 "<imageobject><imagedata fileref=\"figures/glom_design_reports.png\" format="
 "\"PNG\"/> </imageobject> <textobject> <phrase>Creating or editing reports.</"
@@ -1248,7 +1245,7 @@ msgstr ""
 "</phrase> </textobject>"
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:494
+#: C/index.docbook:493
 msgid ""
 "Notice that each report has an ID as well as a human-readable name. This "
 "allows your report to have a translated title when used on a computer that "
@@ -1260,17 +1257,17 @@ msgstr ""
 
 #. (itstool) path: sect3/title
 #. (itstool) path: figure/title
-#: C/index.docbook:499 C/index.docbook:513
+#: C/index.docbook:498 C/index.docbook:512
 msgid "Editing a Report"
 msgstr "Redigera en rapport"
 
 #. (itstool) path: listitem/simpara
-#: C/index.docbook:503
+#: C/index.docbook:502
 msgid "The Header, which appears at the start of the report"
 msgstr "Sidhuvudet, vilket visas i början på rapporten"
 
 #. (itstool) path: listitem/simpara
-#: C/index.docbook:504
+#: C/index.docbook:503
 msgid ""
 "The Main area, in which the records and summary lines are shown, with the "
 "actual data from the database."
@@ -1279,17 +1276,17 @@ msgstr ""
 "faktiska data från databasen."
 
 #. (itstool) path: listitem/simpara
-#: C/index.docbook:505
+#: C/index.docbook:504
 msgid "The Footer, which appears at the end of the report."
 msgstr "Sidfoten, vilken visas i slutet på rapporten."
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:501
+#: C/index.docbook:500
 msgid "A Glom report has three areas: <_:orderedlist-1/>"
 msgstr "En Glom-rapport har tre områden: <_:orderedlist-1/>"
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:509
+#: C/index.docbook:508
 msgid ""
 "Inside an area, such as the Main part, you may add report <literal>Parts</"
 "literal>, such as fields, text, or images. These will usually appear in a "
@@ -1309,7 +1306,7 @@ msgstr ""
 "<literal>Delar</literal> i det valda området."
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:510
+#: C/index.docbook:509
 msgid ""
 "To specify details for the parts, such as the text or image to display, or "
 "to choose the field to display, select the part in the <literal>Parts</"
@@ -1329,7 +1326,7 @@ msgstr ""
 #. the file changes, the md5 hash will change to let you know you need to
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:517
+#: C/index.docbook:516
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_reports_details.png' "
@@ -1339,7 +1336,7 @@ msgstr ""
 "md5='00ac05c3515a4db2175a47047ec3b98e'"
 
 #. (itstool) path: screenshot/mediaobject
-#: C/index.docbook:515
+#: C/index.docbook:514
 msgid ""
 "<imageobject><imagedata fileref=\"figures/glom_design_reports_details.png\" "
 "format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing a report.</"
@@ -1350,7 +1347,7 @@ msgstr ""
 "phrase> </textobject>"
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:526
+#: C/index.docbook:525
 msgid ""
 "Some parts may contain other parts and have extra properties to control how "
 "they present their child parts. For instance, the <literal>Group By</"
@@ -1374,7 +1371,7 @@ msgstr ""
 "gruppera dina produkter efter tillverkare inuti varje produkttypsgrupp."
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:527
+#: C/index.docbook:526
 msgid ""
 "To specify the field by which the records should be grouped, select your "
 "<literal>Group By</literal> part in the <literal>Parts</literal> list and "
@@ -1394,7 +1391,7 @@ msgstr ""
 "tillverkar-ID, men också visa tillverkarens namn."
 
 #. (itstool) path: figure/title
-#: C/index.docbook:530
+#: C/index.docbook:529
 msgid "Editing a Group By Part"
 msgstr "Redigera en grupp efter del"
 
@@ -1403,7 +1400,7 @@ msgstr "Redigera en grupp efter del"
 #. the file changes, the md5 hash will change to let you know you need to
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:534
+#: C/index.docbook:533
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_reports_group_by.png' "
@@ -1413,7 +1410,7 @@ msgstr ""
 "md5='21168c2a89f9febf6905a59c24a3d6de'"
 
 #. (itstool) path: screenshot/mediaobject
-#: C/index.docbook:532
+#: C/index.docbook:531
 msgid ""
 "<imageobject><imagedata fileref=\"figures/glom_design_reports_group_by.png\" "
 "format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing a report.</"
@@ -1424,7 +1421,7 @@ msgstr ""
 "phrase> </textobject>"
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:543
+#: C/index.docbook:542
 msgid ""
 "The <literal>Vertical Group</literal> part may contain other items. For "
 "instance, it allows you to arrange fields below each other instead of just "
@@ -1439,7 +1436,7 @@ msgstr ""
 "information i postens rad i rapporten."
 
 #. (itstool) path: figure/title
-#: C/index.docbook:546
+#: C/index.docbook:545
 msgid "A Report with Vertical Groups"
 msgstr "En rapport med vertikala grupper"
 
@@ -1448,7 +1445,7 @@ msgstr "En rapport med vertikala grupper"
 #. the file changes, the md5 hash will change to let you know you need to
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
-#: C/index.docbook:550
+#: C/index.docbook:549
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_reports_vertical_group.png' "
@@ -1458,7 +1455,7 @@ msgstr ""
 "md5='001b3021da2dc0de68358b0b41215afb'"
 
 #. (itstool) path: screenshot/mediaobject
-#: C/index.docbook:548
+#: C/index.docbook:547
 msgid ""
 "<imageobject><imagedata fileref=\"figures/glom_design_reports_vertical_group."
 "png\" format=\"PNG\"/> </imageobject> <textobject> <phrase>A Report with "
@@ -1469,7 +1466,7 @@ msgstr ""
 "vertikala grupper.</phrase> </textobject>"
 
 #. (itstool) path: sect3/para
-#: C/index.docbook:559
+#: C/index.docbook:558
 msgid ""
 "When you have finished, click the <literal>Close</literal> button to save "
 "the report's definition. Your report can then be chosen from the "
@@ -1482,18 +1479,18 @@ msgstr ""
 "printing-reports\">Skriva ut rapporter</link> för mer detaljer."
 
 #. (itstool) path: sect1/title
-#: C/index.docbook:573
+#: C/index.docbook:572
 msgid "Dialogs"
 msgstr "Dialogrutor"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:576
+#: C/index.docbook:575
 msgid "Dialog: Initial dialog"
 msgstr "Dialogruta: Ursprunglig dialogruta"
 
 # TODO: documents may be *selected* from the list of recently opened documents or by select*ing* a file with
 #. (itstool) path: sect2/para
-#: C/index.docbook:577
+#: C/index.docbook:576
 msgid ""
 "This dialog allows the user to choose an existing document or create a new "
 "document. Existing documents may be selecting from the list of recently "
@@ -1512,22 +1509,22 @@ msgstr ""
 "poster, eller genom att skapa ett nytt dokument."
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:581
+#: C/index.docbook:580
 msgid "Dialog: New database"
 msgstr "Dialogruta: Ny databas"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:586
+#: C/index.docbook:585
 msgid "Dialog: Create database"
 msgstr "Dialogruta: Skapa databas"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:591
+#: C/index.docbook:590
 msgid "Dialog: Connection"
 msgstr "Dialogruta: Anslutning"
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:592
+#: C/index.docbook:591
 msgid ""
 "This dialog requests a user name and password for connection to a database "
 "server. This is usually not the same username and password combination with "
@@ -1546,13 +1543,13 @@ msgstr ""
 "ditt värdnamn kommer vara något annat än detta."
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:593
+#: C/index.docbook:592
 msgid "Your system administrator can provide these database login details."
 msgstr ""
 "Din systemadministratör kan tillhandahålla dessa databasinloggningsdetaljer."
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:594
+#: C/index.docbook:593
 msgid ""
 "If you are the system administrator, see Glom's <ulink url=\"http://www.glom."
 "org/wiki/index.php?title=Initial_Postgres_Configuration\" type=\"http"
@@ -1565,12 +1562,12 @@ msgstr ""
 "konfiguration av databasservrar."
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:598
+#: C/index.docbook:597
 msgid "Dialog: Connection Error"
 msgstr "Dialogruta: Anslutningsfel"
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:599
+#: C/index.docbook:598
 msgid ""
 "This dialog is shown when Glom could not connect to the specified database "
 "server. Either the database server is not running at the specified hostname, "
@@ -1585,102 +1582,102 @@ msgstr ""
 "\"dialog_connection\">Anslutning</link> för mer detaljer."
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:605
+#: C/index.docbook:604
 msgid "Dialog: Database preferences"
 msgstr "Dialogruta: Databasinställningar"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:610
+#: C/index.docbook:609
 msgid "Dialog: Change language"
 msgstr "Dialogruta: Ändra språk"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:615
+#: C/index.docbook:614
 msgid "Window: Textobject"
 msgstr "Fönster: Textobjekt"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:620
+#: C/index.docbook:619
 msgid "Window: Imageobject"
 msgstr "Fönster: Bildobjekt"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:625
+#: C/index.docbook:624
 msgid "Dialog: Notebook"
 msgstr "Dialogruta: Flikhäfte"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:630
+#: C/index.docbook:629
 msgid "Dialog: Data invalid format"
 msgstr "Dialogruta: Ogiltigt format för data"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:635
+#: C/index.docbook:634
 msgid "Dialog: Relationship overview"
 msgstr "Dialogruta: Relationsöversikt"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:640
+#: C/index.docbook:639
 msgid "Window: Groups"
 msgstr "Fönster: Grupper"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:645
+#: C/index.docbook:644
 msgid "Dialog: Group by sort fields"
 msgstr "Dialogruta: Gruppera efter sorteringsfält"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:650
+#: C/index.docbook:649
 msgid "Dialog: Group by secondary fields"
 msgstr "Dialogruta: Gruppera efter sekundära fält"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:655
+#: C/index.docbook:654
 msgid "Window: Button script"
 msgstr "Fönster: Knappskript"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:660
+#: C/index.docbook:659
 msgid "Window: Field calculation"
 msgstr "Fönster: Fältberäkning"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:665
+#: C/index.docbook:664
 msgid "Dialog: New group"
 msgstr "Dialogruta: Ny grupp"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:670
+#: C/index.docbook:669
 msgid "Dialog: Choose user"
 msgstr "Dialogruta: Välj användare"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:675
+#: C/index.docbook:674
 msgid "Dialog: User"
 msgstr "Dialogruta: Användare"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:680
+#: C/index.docbook:679
 msgid "Dialog: Translation identify original"
 msgstr "Dialogruta: Identifiera ursprunglig översättning"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:685
+#: C/index.docbook:684
 msgid "Dialog: Translation copy"
 msgstr "Dialogruta: Översättningskopia"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:690
+#: C/index.docbook:689
 msgid "Dialog: Choose Date"
 msgstr "Dialogruta: Välj datum"
 
 #. (itstool) path: sect2/title
-#: C/index.docbook:695
+#: C/index.docbook:694
 msgid "Dialog: Import Into Table"
 msgstr "Dialogruta: Importera till tabell"
 
 #. (itstool) path: sect2/para
-#: C/index.docbook:696
+#: C/index.docbook:695
 msgid ""
 "This dialog allows the user to import a CSV (comma separated value) file "
 "into the current database table. It shows the first few rows of the file to "
@@ -1697,12 +1694,12 @@ msgstr ""
 "kolumn importeras till primärnyckelfältet."
 
 #. (itstool) path: sect1/title
-#: C/index.docbook:719
+#: C/index.docbook:718
 msgid "About Glom"
 msgstr "Om Glom"
 
 #. (itstool) path: sect1/para
-#: C/index.docbook:720
+#: C/index.docbook:719
 msgid ""
 "Glom is maintained by Glom and GNOME community volunteers. To find more "
 "information about Glom, please visit the <ulink url=\"http://www.glom.org/\" "
@@ -1711,17 +1708,6 @@ msgstr ""
 "Glom underhålls av frivilliga från Glom- och GNOME-gemenskapen. För att få "
 "mer information om Glom, besök <ulink url=\"http://www.glom.org/\" type="
 "\"http\">Gloms webbplats</ulink>."
-
-#. (itstool) path: sect1/para
-#: C/index.docbook:725
-msgid ""
-"To report a bug or make a suggestion regarding this application or this "
-"manual, you can submit them using <ulink url=\"http://bugzilla.gnome.org\" "
-"type=\"help\">bugzilla</ulink>."
-msgstr ""
-"För att rapportera ett fel eller komma med ett förslag kring detta program "
-"eller denna handbok kan du skicka in dem med <ulink url=\"http://bugzilla."
-"gnome.org\" type=\"help\">bugzilla</ulink>."
 
 # TODO: Actual links to the mailing lists?
 #. (itstool) path: sect1/para
@@ -2203,6 +2189,19 @@ msgstr ""
 "senare, utgivet av Free Software Foundation utan standardavsnitt och "
 "omslagstexter.  En kopia av GFDL finns att hämta på denna <_:ulink-1/> eller "
 "i filen COPYING-DOCS som medföljer denna handbok."
+
+#~ msgid ""
+#~ "To report a problem or make a suggestion regarding Glom or this manual, "
+#~ "you may submit a bug report to the <ulink url=\"http://bugzilla.gnome.org"
+#~ "\" type=\"http\">GNOME Bugzilla </ulink>, under the Glom product. Please "
+#~ "search bugzilla before submitting your bug to ensure that yours hasn't "
+#~ "already been reported."
+#~ msgstr ""
+#~ "Om du vill rapportera ett problem eller göra ett förslag kring Glom eller "
+#~ "denna handbok kan du skicka in en felrapport till <ulink url=\"http://"
+#~ "bugzilla.gnome.org\" type=\"http\">GNOME:s Bugzilla </ulink>, under "
+#~ "produkten Glom. Sök i Bugzilla innan du skickar in din rapport för att "
+#~ "säkerställa att den inte redan rapporterats."
 
 #~ msgid "@@image: 'figures/start.png'; md5=b8c9acc03f9f1cdb213e37c9da91817a"
 #~ msgstr "@@image: 'figures/start.png'; md5=b8c9acc03f9f1cdb213e37c9da91817a"
