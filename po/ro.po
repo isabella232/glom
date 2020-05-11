@@ -1,27 +1,30 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Romanian translation for glom.
+# Copyright (C) 2019 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+# Florentina Mușat <florentina.musat.28@gmail.com>, 2019.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: glom glom-1-32\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glom/issues\n"
-"POT-Creation-Date: 2019-08-20 18:51+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2019-05-07 06:38+0000\n"
+"PO-Revision-Date: 2020-04-14 13:38+0300\n"
+"Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
+"Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2);;\n"
+"Last-Translator: Florentina Mușat <florentina.musat.28 [at] gmail [dot] "
+"com>\n"
+"X-Generator: Poedit 2.3\n"
 
 #: ../glom/application.cc:159 ../glom/glom_create_from_example.cc:260
 #: ../glom/glom_export_po.cc:112 ../glom/glom_export_po_all.cc:100
 #: ../glom/glom_import_po_all.cc:102 ../glom/glom_test_connection.cc:148
 msgid "Error while parsing command-line options: "
-msgstr ""
+msgstr "Eroare la parsarea opțiunilor în linie de comandă: "
 
 #. TODO: How can we just print them out?
 #: ../glom/application.cc:160 ../glom/glom_create_from_example.cc:261
@@ -29,48 +32,53 @@ msgstr ""
 #: ../glom/glom_import_po_all.cc:103 ../glom/glom_test_connection.cc:108
 msgid "Use --help to see a list of available command-line options."
 msgstr ""
+"Utilizați --help pentru a vedea o listă a opțiunilor în linie de comandă "
+"disponibile."
 
 #: ../glom/application.cc:201 ../glom/glom_create_from_example.cc:295
 #: ../glom/glom_export_po.cc:162
 msgid "Glom: The file does not exist."
-msgstr ""
+msgstr "Glom: fișierul nu există."
 
 #: ../glom/application.cc:211 ../glom/glom_create_from_example.cc:305
 #: ../glom/glom_export_po.cc:172
 msgid "Glom: The file path is a directory instead of a file."
-msgstr ""
+msgstr "Glom: calea către fișier este un director în locul unui fișier."
 
 #: ../glom/appwindow.cc:177
 msgid "Glom: Generating Encryption Certificates"
-msgstr ""
+msgstr "Glom: Se generează certificările de criptare"
 
 #: ../glom/appwindow.cc:178
 msgid ""
 "Please wait while Glom prepares your system for publishing over the network."
 msgstr ""
+"Așteptați în timp ce Glom pregătește sistemul pentru publicarea peste rețea."
 
 #: ../glom/appwindow.cc:464
 msgid "A Database GUI"
-msgstr ""
+msgstr "Un GUI pentru baze de date"
 
 #: ../glom/appwindow.cc:466
 msgid "© 2000-2011 Murray Cumming, Openismus GmbH"
-msgstr ""
+msgstr "© 2000-2011 Murray Cumming, Openismus GmbH"
 
 #. TODO: Put this in the generic bakery code.
 #: ../glom/appwindow.cc:575 ../glom/appwindow.cc:584
 msgid "Open Failed"
-msgstr ""
+msgstr "Deschiderea a eșuat"
 
 #: ../glom/appwindow.cc:576
 msgid "The document could not be found."
-msgstr ""
+msgstr "Documentul nu a putut fi găsit."
 
 #: ../glom/appwindow.cc:585
 msgid ""
 "The document could not be opened because it was created or modified by a "
 "newer version of Glom."
 msgstr ""
+"Documentul nu a putut fi deschis pentru că a fost creat sau modificat de o "
+"nouă versiune a Glom."
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED\n";
 #. This can only happen if we couldn't connect to the server at all.
@@ -78,7 +86,7 @@ msgstr ""
 #: ../glom/appwindow.cc:641 ../glom/frame_glom.cc:1994
 #: ../glom/frame_glom.cc:2063
 msgid "Connection Failed"
-msgstr ""
+msgstr "Conexiunea a eșuat"
 
 #: ../glom/appwindow.cc:641 ../glom/frame_glom.cc:1994
 #: ../glom/frame_glom.cc:2063
@@ -87,65 +95,82 @@ msgid ""
 "incorrect user name or password, or maybe the postgres database server is "
 "not running."
 msgstr ""
+"Glom nu s-a putut conecta la serverul bazei de date. Poate că ați introdus "
+"un nume de utilizator sau parolă greșită, sau poate că serverul bazei de "
+"date postgres nu rulează."
 
 #: ../glom/appwindow.cc:808
 msgid ""
 "The file cannot be opened because this version of Glom does not support self-"
 "hosting of databases."
 msgstr ""
+"Fișierul nu poate fi deschis pentru că versiunea aceasta de Glom nu suportă "
+"baze de date care se găzduiesc singure."
 
 #: ../glom/appwindow.cc:813 ../glom/appwindow.cc:822
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "PostgreSQL databases."
 msgstr ""
+"Fișierul nu poate fi deschis pentru că versiunea aceasta de Glom nu suportă "
+"baze de date PostgreSQL."
 
 #: ../glom/appwindow.cc:830
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "SQLite databases."
 msgstr ""
+"Fișierul nu poate fi deschis pentru că versiunea aceasta de Glom nu suportă "
+"baze de date SQLite."
 
 #. Warn the user.
 #: ../glom/appwindow.cc:848
 msgid "File Uses Unsupported Database Backend"
-msgstr ""
+msgstr "Fișierul utilizează un suport de bază de date nesuportat"
 
 #: ../glom/appwindow.cc:914
 msgid "Creating From Example File"
-msgstr ""
+msgstr "Se creează din fișierul exemplu"
 
 #: ../glom/appwindow.cc:915
 msgid ""
 "To use this example file you must save an editable copy of the file. A new "
 "database will also be created on the server."
 msgstr ""
+"Pentru a utiliza acest exemplu de fișier trebuie să salvați o copie "
+"editabilă a fișierului. O nouă bază de date va fi de asemenea creată pe "
+"server."
 
 #: ../glom/appwindow.cc:919
 msgid "Creating From Backup File"
-msgstr ""
+msgstr "Se creează din fișierul de rezervă"
 
 #: ../glom/appwindow.cc:920
 msgid ""
 "To use this backup file you must save an editable copy of the file. A new "
 "database will also be created on the server."
 msgstr ""
+"Pentru a utiliza acest fișier de copie de rezervă, trebuie să salvați o "
+"copie editabilă a fișierului. O nouă bază de date va fi de asemenea creată "
+"pe server."
 
 #: ../glom/appwindow.cc:981
 msgid "Opening Read-Only File."
-msgstr ""
+msgstr "Se deschide fișierul doar în citire."
 
 #: ../glom/appwindow.cc:982
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes."
 msgstr ""
+"Acest fișier este doar în citire, deci nu veți putea să intrați în modul "
+"Dezvoltator pentru a face modificări la proiect."
 
 #: ../glom/appwindow.cc:984 ../glom/appwindow.cc:2110 ../glom/appwindow.cc:2389
 #: ../glom/appwindow.cc:2426 ../glom/appwindow.cc:2801
 #: ../glom/base_db_table_data.cc:378 ../glom/box_withbuttons.cc:37
 #: ../glom/box_withbuttons.cc:51 ../glom/box_withbuttons.cc:65
-#: ../glom/dialog_existing_or_new.cc:786 ../glom/filechooser_export.cc:40
+#: ../glom/dialog_existing_or_new.cc:785 ../glom/filechooser_export.cc:40
 #: ../glom/frame_glom.cc:516 ../glom/frame_glom.cc:602
 #: ../glom/frame_glom.cc:689 ../glom/frame_glom.cc:795 ../glom/utils_ui.cc:490
 #: ../glom/onlineglom_strings.cc:40 ../glom/bakery/dialog_offersave.cc:57
@@ -197,64 +222,68 @@ msgstr ""
 #: ../data/ui/developer/window_textobject.glade.h:3
 #: ../data/ui/developer/window_translations.glade.h:10
 msgid "_Cancel"
-msgstr ""
+msgstr "_Anulează"
 
 #: ../glom/appwindow.cc:985
 msgid "Continue without Developer Mode"
-msgstr ""
+msgstr "Continuă fără modul de dezvoltare"
 
 #. The connection to the server is OK, but the database is not there yet.
 #: ../glom/appwindow.cc:1044
 msgid "Database Not Found On Server"
-msgstr ""
+msgstr "Baza de date nu a fost găsită pe server"
 
 #: ../glom/appwindow.cc:1044
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
 msgstr ""
+"Baza de date nu a putut fi găsită pe server. Consultați administratorul de "
+"sistem."
 
 #. std::cerr might show some hints, but we don't want to confront the user with them:
 #. TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
 #: ../glom/appwindow.cc:1054
 msgid "Problem Loading Document"
-msgstr ""
+msgstr "A apărut o problemă la încărcarea documentului"
 
 #: ../glom/appwindow.cc:1054
 msgid "Glom could not load the document."
-msgstr ""
+msgstr "Glom nu poate încărca documentul."
 
 #: ../glom/appwindow.cc:1497
 msgid "Creating Glom database from example file."
-msgstr ""
+msgstr "Se creează o bază de date Glom de la fișierul exemplu."
 
 #: ../glom/appwindow.cc:1641
 msgid "Creating Glom database from backup file."
-msgstr ""
+msgstr "Se creează o bază de date Glom de la fișierul de rezervă."
 
 #: ../glom/appwindow.cc:1700
 msgid ""
 "Glom could not create the new database. Maybe you do not have the necessary "
 "access rights. Please contact your system administrator."
 msgstr ""
+"Glom nu a putut crea noua bază de date. Poate nu aveți drepturile de acces "
+"necesare. Contactați administratorul de sistem."
 
 #: ../glom/appwindow.cc:1701
 msgid "Database Creation Failed"
-msgstr ""
+msgstr "Crearea bazei de date a eșuat"
 
 #. The save failed. Tell the user and don't do anything else:
 #: ../glom/appwindow.cc:2082 ../glom/bakery/appwindow_withdoc.cc:226
 #: ../glom/bakery/appwindow_withdoc.cc:270
 msgid "Save failed."
-msgstr ""
+msgstr "Salvarea a eșuat."
 
 #: ../glom/appwindow.cc:2082
 msgid "There was an error while saving the example file."
-msgstr ""
+msgstr "A apărut o eroare în timpul salvării fișierului exemplu."
 
 #: ../glom/appwindow.cc:2097 ../glom/appwindow.cc:2102
 msgid "Save Document"
-msgstr ""
+msgstr "Salvează documentul"
 
 #: ../glom/appwindow.cc:2111 ../glom/appwindow.cc:2390
 #: ../glom/bakery/dialog_offersave.cc:58
@@ -263,41 +292,45 @@ msgstr ""
 #: ../data/ui/developer/window_default_formatting.glade.h:3
 #: ../data/ui/developer/window_field_definition_edit.glade.h:17
 msgid "_Save"
-msgstr ""
+msgstr "_Salvează"
 
 #. Warn the user:
 #: ../glom/appwindow.cc:2188
 msgid "Read-only File."
-msgstr ""
+msgstr "Fișier doar citire."
 
 #: ../glom/appwindow.cc:2188
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
 msgstr ""
+"Nu puteți suprascrie un fișier existent, pentru că nu aveți drepturi de "
+"acces suficiente."
 
 #. Warn the user:
 #: ../glom/appwindow.cc:2202
 msgid "Read-only Directory."
-msgstr ""
+msgstr "Director doar citire."
 
 #: ../glom/appwindow.cc:2202
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
 msgstr ""
+"Nu puteți crea un fișier în acest director, pentru că nu aveți destule "
+"drepturi de acces."
 
 #: ../glom/appwindow.cc:2219
 msgid "Database Title missing"
-msgstr ""
+msgstr "Titlul bazei de date lipsește"
 
 #: ../glom/appwindow.cc:2219
 msgid "You must specify a title for the new database."
-msgstr ""
+msgstr "Trebuie să specificați un titlu pentru noua bază de date."
 
 #: ../glom/appwindow.cc:2253 ../glom/frame_glom.cc:1770
 msgid "Directory Already Exists"
-msgstr ""
+msgstr "Directorul există deja"
 
 #: ../glom/appwindow.cc:2253 ../glom/frame_glom.cc:1771
 msgid ""
@@ -305,62 +338,65 @@ msgid ""
 "should be created for the new database files. You should specify a different "
 "filename to use a new directory instead."
 msgstr ""
+"Este un director existent cu același nume ca directorul care ar trebui creat "
+"pentru fișiere de baze de date noi. Ar trebui să specificați un fișier "
+"diferit pentru a utiliza în loc un director nou."
 
 #. This actually creates the directory:
 #: ../glom/appwindow.cc:2388
 msgid "Save Backup"
-msgstr ""
+msgstr "Salvează copia de rezervă"
 
 #: ../glom/appwindow.cc:2404
 msgid "Exporting backup"
-msgstr ""
+msgstr "Se exportă copia de rezervă"
 
 #: ../glom/appwindow.cc:2410
 msgid "Export Backup failed."
-msgstr ""
+msgstr "Exportarea copiei de rezervă a eșuat."
 
 #: ../glom/appwindow.cc:2410
 msgid "There was an error while exporting the backup."
-msgstr ""
+msgstr "A apărut o eroare în timpul exportării copiei de rezervă."
 
 #: ../glom/appwindow.cc:2416
 msgid "Choose a backup file"
-msgstr ""
+msgstr "Alegeți un fișier de rezervă"
 
 #: ../glom/appwindow.cc:2421
 msgid ".tar.gz Backup files"
-msgstr ""
+msgstr "fișiere de rezervă .tar.gz"
 
 #: ../glom/appwindow.cc:2427
 msgid "Restore"
-msgstr ""
+msgstr "Restaurează"
 
 #: ../glom/appwindow.cc:2452
 msgid "Restoring backup"
-msgstr ""
+msgstr "Se restaurează copia de rezervă"
 
 #: ../glom/appwindow.cc:2459
 msgid "Restore Backup failed."
-msgstr ""
+msgstr "Restaurarea copiei de rezervă a eșuat."
 
 #: ../glom/appwindow.cc:2459
 msgid "There was an error while extracting the backup."
-msgstr ""
+msgstr "A apărut o eroare în timpul extragerii copiei de rezervă."
 
 #: ../glom/appwindow.cc:2566
 msgid " (read-only)"
-msgstr ""
+msgstr " (doar citire)"
 
 #: ../glom/appwindow.cc:2614 ../data/ui/operator/window_main.glade.h:2
 msgid "Processing"
-msgstr ""
+msgstr "Se procesează"
 
 #: ../glom/appwindow.cc:2800
 msgid "Open Document"
-msgstr ""
+msgstr "Deschide document"
 
 #. Add a button for related record navigation:
-#: ../glom/appwindow.cc:2802 ../glom/dialog_existing_or_new.cc:787
+#: ../glom/appwindow.cc:2802 ../glom/dialog_existing_or_new.cc:786
 #: ../glom/frame_glom.cc:603 ../glom/onlineglom_strings.cc:32
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:35
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:45
@@ -368,21 +404,23 @@ msgstr ""
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:32
 #: ../data/ui/operator/window_main.glade.h:5
 msgid "_Open"
-msgstr ""
+msgstr "_Deschide"
 
 #: ../glom/base_db.cc:105 ../glom/base_db.cc:118
 msgid "Internal error"
-msgstr ""
+msgstr "Eroare internă"
 
 #: ../glom/base_db.cc:1124
 msgid "Value Is Not Unique"
-msgstr ""
+msgstr "Valoarea nu este unică"
 
 #: ../glom/base_db.cc:1124
 msgid ""
 "The field's value must be unique, but a record with this value already "
 "exists."
 msgstr ""
+"Valoarea câmpului trebuie să fie unică, dar o înregistrare cu această "
+"valoare există deja."
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
@@ -392,10 +430,13 @@ msgid ""
 "does not yet exist, and the relationship does not allow automatic creation "
 "of new related records."
 msgstr ""
+"Datele pot să nu fie introduse în acest câmp legat, pentru că înregistrarea "
+"legată nu există încă, și relația nu permite crearea automată de "
+"înregistrări legate noi."
 
 #: ../glom/base_db_table_data.cc:244
 msgid "Related Record Does Not Exist"
-msgstr ""
+msgstr "Înregistrarea asociată nu există"
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
@@ -405,10 +446,14 @@ msgid ""
 "does not yet exist, and the key in the related record is auto-generated and "
 "therefore can not be created with the key value in this record."
 msgstr ""
+"Datele pot să nu fie introduse în acest câmp legat, pentru că înregistrarea "
+"legată nu există încă, și cheia în înregistrarea legată este generată "
+"automat și prin urmare nu poate fi creată cu valoarea de cheie din această "
+"înregistrare."
 
 #: ../glom/base_db_table_data.cc:265
 msgid "Related Record Cannot Be Created"
-msgstr ""
+msgstr "Înregistrarea asociată nu poate fi creată"
 
 #. Ask the user for confirmation:
 #: ../glom/base_db_table_data.cc:374
@@ -416,10 +461,12 @@ msgid ""
 "Are you sure that you would like to delete this record? The data in this "
 "record will then be permanently lost."
 msgstr ""
+"Sigur doriți să ștergeți această înregistrare? Datele din această "
+"înregistrare vor fi pierdute permanent."
 
 #: ../glom/base_db_table_data.cc:375
 msgid "Delete record"
-msgstr ""
+msgstr "Șterge înregistrarea"
 
 #: ../glom/base_db_table_data.cc:379 ../glom/mode_data/box_data_details.cc:49
 #: ../glom/mode_design/users/dialog_groups_list.cc:85
@@ -427,7 +474,7 @@ msgstr ""
 #: ../glom/utility_widgets/adddel/adddel.cc:214
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:34
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:44
-#: ../glom/mode_data/db_adddel/db_adddel.cc:252
+#: ../glom/mode_data/db_adddel/db_adddel.cc:258
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:31
 #: ../glom/utility_widgets/layoutwidgetutils.cc:53
 #: ../glom/utility_widgets/notebooklabelglom.cc:118
@@ -441,7 +488,7 @@ msgstr ""
 #: ../data/ui/developer/window_report_layout.glade.h:18
 #: ../data/ui/developer/window_users.glade.h:6
 msgid "_Delete"
-msgstr ""
+msgstr "Ș_terge"
 
 #. Append the View columns:
 #. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
@@ -458,12 +505,12 @@ msgstr ""
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:91
 #: ../glom/mode_design/users/dialog_groups_list.cc:66
 msgid "Name"
-msgstr ""
+msgstr "Nume"
 
 #. Don't allow a relationship to be added twice.
 #: ../glom/box_reports.cc:106
 msgid "This report already exists. Please choose a different report name"
-msgstr ""
+msgstr "Acest raport există deja. Alegeți un alt nume de raport"
 
 #. Title column:
 #: ../glom/box_reports.cc:108
@@ -473,34 +520,36 @@ msgstr ""
 #: ../glom/mode_design/layout/dialog_layout_details.cc:117
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:95
 #: ../glom/navigation/box_tables.cc:132
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:103
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:89
 msgid "Title"
-msgstr ""
+msgstr "Titlu"
 
 #: ../glom/box_reports.cc:234
 msgid "Are you sure that you want to rename this report?"
-msgstr ""
+msgstr "Sigur doriți să redenumiți acest raport?"
 
 #. TODO: Show old and new names?
 #: ../glom/box_reports.cc:235
 msgid "Rename Report"
-msgstr ""
+msgstr "Redenumește raportul"
 
 #. namespace Glom
 #: ../glom.appdata.xml.in.h:1 ../glom.desktop.in.in.h:1
 #: ../data/ui/operator/window_main.glade.h:1
 msgid "Glom"
-msgstr ""
+msgstr "Glom"
 
 #: ../glom.appdata.xml.in.h:2
 msgid "Database user interface"
-msgstr ""
+msgstr "Interfață cu utilizatorul a bazei de date"
 
 #: ../glom.appdata.xml.in.h:3
 msgid ""
 "With Glom you can design database systems - the database and the user "
 "interface."
 msgstr ""
+"Cu Glom puteți să creați sisteme de baze de date - baza de date și interfața "
+"cu utilizatorul."
 
 #: ../glom.appdata.xml.in.h:4
 msgid ""
@@ -509,144 +558,152 @@ msgid ""
 "users and groups. It has simple Numeric, Text, Date, Time, Boolean, and "
 "Image field types."
 msgstr ""
+"Glom are funcționalități de nivel înalt precum relații, căutări, câmpuri "
+"legate, înregistrări legate, câmpuri calculate, alegeri de selecție, "
+"căutare, rapoarte, utilizatori și grupuri. Are tipuri de câmpuri simple "
+"pentru numere, text, date, timp și logic."
 
 #: ../glom.appdata.xml.in.h:5
 msgid "The details view showing the whole record"
-msgstr ""
+msgstr "Vizualizarea în detaliu arătând întreaga înregistrare"
 
 #: ../glom.appdata.xml.in.h:6
 msgid "The list view showing all records in the table"
-msgstr ""
+msgstr "Vizualizarea listă care arată toate înregistrările din tabel"
 
 #: ../glom.appdata.xml.in.h:7
 msgid "The details view showing records from a related table"
-msgstr ""
+msgstr "Vizualizarea în detaliu arătând înregistrări de la un tabel legat"
 
 #: ../glom.desktop.in.in.h:2
 msgid "A user-friendly database environment"
-msgstr ""
+msgstr "Un mediu de baze de date prietenos cu utilizatorul"
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: ../glom.desktop.in.in.h:4
 msgid "database;ui;tables;postgresql;forms;"
-msgstr ""
+msgstr "database;ui;tables;postgresql;forms;bază de date;tabele;formulare;"
 
 #: ../glom/dialog_connection.cc:195
 msgid "Not yet created."
-msgstr ""
+msgstr "Nu este creat încă."
 
 #: ../glom/dialog_existing_or_new.cc:51
 msgid "No sessions found on the local network."
-msgstr ""
+msgstr "Nu s-au găsit sesiuni pe rețeaua locală."
 
 #: ../glom/dialog_existing_or_new.cc:119
 msgid "Open a Document"
-msgstr ""
+msgstr "Deschide un document"
 
 #: ../glom/dialog_existing_or_new.cc:138
 #: ../glom/utility_widgets/imageglom.cc:970
 msgid "Select File"
-msgstr ""
+msgstr "Selectează fișierul"
 
 #: ../glom/dialog_existing_or_new.cc:142
 msgid "Local Network"
-msgstr ""
+msgstr "Rețea locală"
 
 #: ../glom/dialog_existing_or_new.cc:146
 msgid "Recently Opened"
-msgstr ""
+msgstr "Deschise recent"
 
 #: ../glom/dialog_existing_or_new.cc:185
 msgid "No recently used documents available."
-msgstr ""
+msgstr "Nu sunt disponibile documente recent utilizate."
 
 #: ../glom/dialog_existing_or_new.cc:217
 msgid "New Empty Document"
-msgstr ""
+msgstr "Document gol nou"
 
 #: ../glom/dialog_existing_or_new.cc:220
 msgid "New From Template"
-msgstr ""
+msgstr "Nou din șablon"
 
 #. Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
 #: ../glom/dialog_existing_or_new.cc:718
 #, c-format
 msgid "%s on %s (via %s)"
-msgstr ""
+msgstr "%s pe %s (via %s)"
 
 #: ../glom/filechooser_export.cc:32
 msgid "Export to File"
-msgstr ""
+msgstr "Exportă la fișier"
 
 #: ../glom/filechooser_export.cc:35
 msgid "Define Data _Format"
-msgstr ""
+msgstr "Definește _formatul de date"
 
 #: ../glom/filechooser_export.cc:41 ../data/ui/operator/window_main.glade.h:7
 msgid "_Export"
-msgstr ""
+msgstr "_Exportă"
 
 #: ../glom/frame_glom.cc:83
 msgid "Find All"
-msgstr ""
+msgstr "Caută toate"
 
 #: ../glom/frame_glom.cc:103 ../glom/frame_glom.cc:107
 msgid "No Table Selected"
-msgstr ""
+msgstr "Niciun tabel selectat"
 
 #: ../glom/frame_glom.cc:114 ../data/ui/operator/dialog_find_id.glade.h:5
 msgid "Quick _search:"
-msgstr ""
+msgstr "_Căutare rapidă:"
 
 #: ../glom/frame_glom.cc:125 ../glom/mode_data/box_data.cc:42
 #: ../glom/mode_data/datawidget/datawidget.cc:233
 #: ../data/ui/operator/dialog_find_id.glade.h:6
 #: ../data/ui/operator/window_main.glade.h:18
 msgid "_Find"
-msgstr ""
+msgstr "_Caută"
 
 #: ../glom/frame_glom.cc:140
 msgid "Records:"
-msgstr ""
+msgstr "Înregistrări:"
 
 #: ../glom/frame_glom.cc:143
 msgid "Found:"
-msgstr ""
+msgstr "Găsit:"
 
 #. TODO: Obviously this document should have been deleted when the database-creation was cancelled.
 #. Note that "canceled" is the correct US spelling.
 #: ../glom/frame_glom.cc:324
 msgid "No table"
-msgstr ""
+msgstr "Niciun tabel"
 
 #: ../glom/frame_glom.cc:324
 msgid "This database has no tables yet."
-msgstr ""
+msgstr "Această bază de date nu are tabele încă."
 
 #. TODO: Obviously this could be possible but it would require a network protocol and some work:
 #: ../glom/frame_glom.cc:498
 msgid "Developer mode not available."
-msgstr ""
+msgstr "Modul de dezvoltare nu este disponibil."
 
 #: ../glom/frame_glom.cc:499
 msgid ""
 "Developer mode is not available because the file was opened over the network "
 "from a running Glom. Only the original file may be edited."
 msgstr ""
+"Modul dezvoltator nu este disponibil pentru că fișierul a fost deschis peste "
+"rețea de la un Glom care rulează. Doar fișierul original poate fi editat."
 
 #: ../glom/frame_glom.cc:505
 msgid "Developer mode not available"
-msgstr ""
+msgstr "Modul de dezvoltare nu este disponibil"
 
 #: ../glom/frame_glom.cc:506
 msgid ""
 "Developer mode is not available. Check that you have sufficient database "
 "access rights and that the glom file is not read-only."
 msgstr ""
+"Modul de dezvoltare nu este disponibil. Verificați dacă aveți suficiente "
+"drepturi de acces la baza de date și că fișierul glom nu este doar citire."
 
 #: ../glom/frame_glom.cc:513
 msgid "Saving in new document format"
-msgstr ""
+msgstr "Se salvează în formatul documentului nou"
 
 #: ../glom/frame_glom.cc:514
 msgid ""
@@ -654,205 +711,226 @@ msgid ""
 "changes to the document will mean that the document cannot be opened by some "
 "earlier versions of the application."
 msgstr ""
+"Documentul a fost creat de o versiune mai veche a aplicației. Aplicarea de "
+"schimbări la document înseamnă că documentul nu poate fi deschis de versiuni "
+"mai vechi ale aplicației."
 
 #: ../glom/frame_glom.cc:517
 msgid "Continue"
-msgstr ""
+msgstr "Continuă"
 
 #: ../glom/frame_glom.cc:553
 msgid "Export Not Allowed."
-msgstr ""
+msgstr "Exportarea nu este permisă."
 
 #: ../glom/frame_glom.cc:553
 msgid ""
 "You do not have permission to view the data in this table, so you may not "
 "export the data."
 msgstr ""
+"Nu aveți permisiunea de la vizualiza datele din acest tabel, deci nu puteți "
+"exporta datele."
 
 #: ../glom/frame_glom.cc:586
 msgid "Could Not Create File."
-msgstr ""
+msgstr "Nu s-a putut crea fișierul."
 
 #: ../glom/frame_glom.cc:586
 msgid "Glom could not create the specified file."
-msgstr ""
+msgstr "Glom nu poate crea fișierul specificat."
 
 #: ../glom/frame_glom.cc:597
 msgid "No Table"
-msgstr ""
+msgstr "Niciun tabel"
 
 #: ../glom/frame_glom.cc:597
 msgid "There is no table in to which data could be imported."
-msgstr ""
+msgstr "Nu există un tabel către care să se poată importa date."
 
 #: ../glom/frame_glom.cc:601
 msgid "Open CSV Document"
-msgstr ""
+msgstr "Deschide un document CSV"
 
 #: ../glom/frame_glom.cc:605
 msgid "CSV files"
-msgstr ""
+msgstr "Fișiere CSV"
 
 #: ../glom/frame_glom.cc:609
 msgid "All files"
-msgstr ""
+msgstr "Toate fișierele"
 
 #: ../glom/frame_glom.cc:686
 msgid "Share on the network"
-msgstr ""
+msgstr "Partajează pe rețea"
 
 #: ../glom/frame_glom.cc:687
 msgid "This will allow other users on the network to use this database."
 msgstr ""
+"Aceasta va permite ca alți utilizatori de pe rețea să utilizeze această bază "
+"de date."
 
 #: ../glom/frame_glom.cc:690
 msgid "_Share"
-msgstr ""
+msgstr "_Partajează"
 
 #. TODO: Warn about connected users if possible.
 #: ../glom/frame_glom.cc:792
 msgid "Stop sharing on the network"
-msgstr ""
+msgstr "Oprește partajarea pe rețea"
 
 #: ../glom/frame_glom.cc:793
 msgid "This will prevent other users on the network from using this database."
 msgstr ""
+"Aceasta va preveni ca alți utilizatori de pe rețea să utilizeze această bază "
+"de date."
 
 #: ../glom/frame_glom.cc:796
 msgid "_Stop Sharing"
-msgstr ""
+msgstr "_Oprește partajarea"
 
 #: ../glom/frame_glom.cc:845 ../glom/frame_glom.cc:2049
 msgid "Stopping Database Server"
-msgstr ""
+msgstr "Se oprește serverul bazei de date"
 
 #: ../glom/frame_glom.cc:848 ../glom/frame_glom.cc:1976
 #: ../glom/frame_glom.cc:2095
 msgid "Starting Database Server"
-msgstr ""
+msgstr "Se pornește serverul bazei de date"
 
 #: ../glom/frame_glom.cc:1010
 msgid "Table Exists Already"
-msgstr ""
+msgstr "Tabelul există deja"
 
 #: ../glom/frame_glom.cc:1010
 msgid ""
 "A table with this name already exists in the database. Please choose a "
 "different table name."
 msgstr ""
+"Un tabel cu acest nume există deja în baza de date. Alegeți un nume de tabel "
+"diferit."
 
 #: ../glom/frame_glom.cc:1014
 msgid "Relationship Exists Already"
-msgstr ""
+msgstr "Relația există deja"
 
 #: ../glom/frame_glom.cc:1014
 msgid ""
 "A relationship with this name already exists for this table. Please choose a "
 "different relationship name."
 msgstr ""
+"O relație cu acest nume există deja pentru acest tabel. Alegeți un nume de "
+"relație diferit."
 
 #: ../glom/frame_glom.cc:1018
 msgid "More information needed"
-msgstr ""
+msgstr "Sunt necesare mai multe informații"
 
 #: ../glom/frame_glom.cc:1018
 msgid "You must specify a field, a table name, and a relationship name."
 msgstr ""
+"Trebuie să specificați un câmp, un nume de tabel și un nume de relație."
 
 #: ../glom/frame_glom.cc:1071
 msgid "Related Table Created"
-msgstr ""
+msgstr "Tabelul asociat a fost creat"
 
 #: ../glom/frame_glom.cc:1071
 msgid "The new related table has been created."
-msgstr ""
+msgstr "Noul tabel legat a fost creat."
 
 #. namespace Glom
 #: ../glom/frame_glom.cc:1101
 #: ../data/ui/operator/box_navigation_tables.glade.h:1
 msgid "Edit Tables"
-msgstr ""
+msgstr "Editează tabelele"
 
 #: ../glom/frame_glom.cc:1197
 msgid ""
 "You have not entered any find criteria. Try entering information in the "
 "fields."
 msgstr ""
+"Nu ați introdus criterii de căutare. Încercați să introduceți informați în "
+"câmpuri."
 
 #: ../glom/frame_glom.cc:1199
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:105
 msgid "No Find Criteria"
-msgstr ""
+msgstr "Nu există criterii de căutare"
 
 #: ../glom/frame_glom.cc:1575 ../glom/onlineglom_strings.cc:33
 #: ../data/ui/developer/box_reports.glade.h:1
 msgid "Reports"
-msgstr ""
+msgstr "Rapoarte"
 
 #: ../glom/frame_glom.cc:1619 ../data/ui/developer/box_print_layouts.glade.h:1
 msgid "Print Layouts"
-msgstr ""
+msgstr "Aranjamente tipărire"
 
 #: ../glom/frame_glom.cc:1775
 msgid "Could Not Create Directory"
-msgstr ""
+msgstr "Nu s-a putut crea directorul"
 
 #: ../glom/frame_glom.cc:1776
 msgid ""
 "There was an error when attempting to create the directory for the new "
 "database files."
 msgstr ""
+"A apărut o eroare la încercarea de a crea un director pentru fișierele noi "
+"de baze de date."
 
 #: ../glom/frame_glom.cc:1780
 msgid "Could Not Start Database Server"
-msgstr ""
+msgstr "Nu s-a putut porni serverul bazei de date"
 
 #: ../glom/frame_glom.cc:1781
 msgid "There was an error when attempting to start the database server."
-msgstr ""
+msgstr "A apărut o eroare la încercarea de pornire a serverului bazei de date."
 
 #: ../glom/frame_glom.cc:1906
 msgid "Initializing Database Data"
-msgstr ""
+msgstr "Se inițializează datele bazei de date"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
 #: ../glom/frame_glom.cc:2430
 msgid "All"
-msgstr ""
+msgstr "Toate"
 
 #: ../glom/utils_ui.cc:164
 msgid "Could not display help: %1"
-msgstr ""
+msgstr "Nu s-a putut afișa ajutorul: %1"
 
 #: ../glom/utils_ui.cc:484
 msgid "Your find criteria did not match any records in the table."
-msgstr ""
+msgstr "Criteriile de căutare nu s-au potrivit cu înregistrările din tabel."
 
 #: ../glom/utils_ui.cc:486
 msgid "No Records Found"
-msgstr ""
+msgstr "Nu s-au găsit înregistrări"
 
 #: ../glom/utils_ui.cc:491
 msgid "New Find"
-msgstr ""
+msgstr "Căutare nouă"
 
 #: ../glom/utils_ui.cc:502
 msgid "Report Finished"
-msgstr ""
+msgstr "Raport terminat"
 
 #: ../glom/utils_ui.cc:502
 msgid "The report will now be opened in your web browser."
-msgstr ""
+msgstr "Raportul va fi acum deschis în navigatorul web."
 
 #: ../glom/utils_ui.cc:543
 msgid "Script Uses PyGTK 2"
-msgstr ""
+msgstr "Scriptul utilizează PyGTK 2"
 
 #: ../glom/utils_ui.cc:544
 msgid ""
 "Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, "
 "and attempting to use pygtk 2 would cause Glom to crash."
 msgstr ""
+"Glom nu poate rula acest script pentru că utilizează pygtk 2, dar Glom "
+"utilizează GTK+ 3, și încercarea de utilizare a pyhgtk 2 ar cauza Glom să "
+"cadă."
 
 #. These strings are not actually used by Glom.
 #. I am putting them here so that GNOME's translators can translate them
@@ -861,49 +939,49 @@ msgstr ""
 #. murrayc
 #: ../glom/onlineglom_strings.cc:29
 msgid "Search"
-msgstr ""
+msgstr "Caută"
 
 #: ../glom/onlineglom_strings.cc:30
 msgid "Back to List"
-msgstr ""
+msgstr "Înapoi la listă"
 
 #. Translators: This is a noun. It is a notebook tab title.
 #. Details column:
-#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1406
+#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1407
 #: ../glom/mode_data/notebook_data.cc:43
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:213
 #: ../glom/mode_find/notebook_find.cc:38
 msgid "Details"
-msgstr ""
+msgstr "Detalii"
 
 #: ../glom/onlineglom_strings.cc:34
 msgid "Generating the report..."
-msgstr ""
+msgstr "Se generează raportul..."
 
 #: ../glom/onlineglom_strings.cc:35
 msgid "Login"
-msgstr ""
+msgstr "Autentificare"
 
 #: ../glom/onlineglom_strings.cc:36
 msgid "Enter the username and password."
-msgstr ""
+msgstr "Introduceți numele de utilizator și parola."
 
 #: ../glom/onlineglom_strings.cc:37
 msgid "Username"
-msgstr ""
+msgstr "Nume de utilizator"
 
 #: ../glom/onlineglom_strings.cc:38
 #: ../data/ui/operator/dialog_connection.glade.h:7
 msgid "Password"
-msgstr ""
+msgstr "Parolă"
 
 #: ../glom/onlineglom_strings.cc:39
 msgid "Log Out"
-msgstr ""
+msgstr "Deautentificare"
 
 #: ../glom/onlineglom_strings.cc:41
 msgid "The username or password are not correct."
-msgstr ""
+msgstr "Numele de utilizator sau parola nu sunt corecte."
 
 #: ../glom/onlineglom_strings.cc:42
 msgid ""
@@ -911,34 +989,39 @@ msgid ""
 "being served via HTTPS, which is required for secure login. Please contact "
 "your system administrator."
 msgstr ""
+"Autentificarea pare necesară, dar nu va fi încercată. Această pagină web nu "
+"este servită via HTTPS, care este necesar pentru o autentificare securizată. "
+"Contactați administratorul de sistem."
 
 #. / Translators: This is the title of a button used to register a new user.
 #: ../glom/onlineglom_strings.cc:45
 msgid "Register"
-msgstr ""
+msgstr "Înregistrează"
 
 #. / Translators: This is the title of a button used to reset a user's password.
 #: ../glom/onlineglom_strings.cc:48
 msgid "Forgot Password"
-msgstr ""
+msgstr "Ați uitat parola"
 
 #: ../glom/bakery/appwindow_withdoc.cc:226
 #: ../glom/bakery/appwindow_withdoc.cc:270
 msgid ""
 "There was an error while saving the file. Your changes have not been saved."
 msgstr ""
+"A apărut o eroare în timpul salvării fișierului. Modificările nu au fost "
+"salvate."
 
 #: ../glom/bakery/appwindow_withdoc.cc:469
 msgid "Open Failed."
-msgstr ""
+msgstr "Deschiderea a eșuat."
 
 #: ../glom/bakery/appwindow_withdoc.cc:469
 msgid "The document could not be opened."
-msgstr ""
+msgstr "Documentul nu a putut fi deschis."
 
 #: ../glom/bakery/dialog_offersave.cc:31
 msgid "This document has unsaved changes. Would you like to save the document?"
-msgstr ""
+msgstr "Acest document are modificări nesalvate. Doriți să salvați documentul?"
 
 #. TODO: Can we use filename_display_basename() with a URI?
 #. No, almost certainly not. murrayc.
@@ -947,18 +1030,20 @@ msgid ""
 "Document:\n"
 "%1"
 msgstr ""
+"Document:\n"
+"%1"
 
 #: ../glom/bakery/dialog_offersave.cc:50
 msgid "Close without Saving"
-msgstr ""
+msgstr "Închide fără a salva"
 
 #: ../glom/bakery/dialog_offersave.cc:56
 msgid "Discard"
-msgstr ""
+msgstr "Anulează"
 
 #: ../glom/import_csv/dialog_import_csv.cc:99
 msgid "Auto Detect"
-msgstr ""
+msgstr "Detectare automată"
 
 #. We mean 22nd November 2008:
 #. C years start are the AD year - 1900. So, 01 is 1901.
@@ -972,104 +1057,117 @@ msgid ""
 "Note that the source file should contain numbers and dates in international "
 "ISO format. For instance, 22nd November 2008 should be %1."
 msgstr ""
+"Observați că fișierul sursă ar trebui să conțină numere și date în formatul "
+"internațional ISO. De exemplu, 22 noiembrie 2008 ar trebui să fie %1."
 
 #: ../glom/import_csv/dialog_import_csv.cc:181
 msgid "No Document Available"
-msgstr ""
+msgstr "Nu există niciun document disponibil"
 
 #: ../glom/import_csv/dialog_import_csv.cc:181
 msgid "You need to open a document to import the data into a table."
 msgstr ""
+"Trebuie să deschideți un document pentru a importa datele într-un tabel."
 
 #: ../glom/import_csv/dialog_import_csv.cc:192
 msgid "Import From CSV File"
-msgstr ""
+msgstr "Importă din fișier CSV"
 
 #: ../glom/import_csv/dialog_import_csv.cc:197
 #: ../glom/import_csv/dialog_import_csv.cc:577
 msgid "<None>"
-msgstr ""
+msgstr "<Nimic>"
 
 #: ../glom/import_csv/dialog_import_csv.cc:274
 msgid "Error Importing CSV File"
-msgstr ""
+msgstr "Eroare la importarea fișierului CSV"
 
 #: ../glom/import_csv/dialog_import_csv.cc:429
 msgid "Encoding detected as: %1"
-msgstr ""
+msgstr "Codare detectată ca: %1"
 
 #: ../glom/import_csv/dialog_import_csv.cc:468
 msgid "Encoding detection failed. Please manually choose one from the box."
-msgstr ""
+msgstr "Detectarea codării a eșuat. Alegeți una manual din cutie."
 
 #: ../glom/import_csv/dialog_import_csv.cc:472
 msgid ""
 "The file contains data not in the specified encoding. Please choose another "
 "one, or try \"Auto Detect\"."
 msgstr ""
+"Fișierul conține date care nu sunt în codarea specificată. Alegeți altul, "
+"sau încercați „Detectează automat”."
 
 #. Translators: This is the name of a UI element (a layout part name).
 #. This is a straight line, not a database row.
 #: ../glom/import_csv/dialog_import_csv.cc:514
 #: ../glom/libglom/data_structure/layout/layoutitem_line.cc:61
 msgid "Line"
-msgstr ""
+msgstr "Linie"
 
 #: ../glom/import_csv/dialog_import_csv.cc:557
 msgid "Target Field"
-msgstr ""
+msgstr "Câmp țintă"
 
 #: ../glom/import_csv/dialog_import_csv.cc:602
 msgid "<Import Failure>"
-msgstr ""
+msgstr "<Eroare de importare>"
 
 #: ../glom/import_csv/dialog_import_csv.cc:612
 msgid "<Picture>"
-msgstr ""
+msgstr "<Fotografie>"
 
 #: ../glom/import_csv/dialog_import_csv.cc:712
 msgid ""
 "One column needs to be assigned the table's primary key (<b>%1</b>) as "
 "target field before importing"
 msgstr ""
+"O coloană ar trebui să fi alocată cheii primare a tabelului (<b>%1</b>) ca "
+"un câmp de țintă înainte importării"
 
 #: ../glom/import_csv/dialog_import_csv.cc:740
 msgid "Could Not Open file"
-msgstr ""
+msgstr "Nu s-a putut deschide fișierul"
 
 #: ../glom/import_csv/dialog_import_csv.cc:741
 msgid "The file at \"%1\" could not be opened: %2"
-msgstr ""
+msgstr "Fișierul „%1” nu a putut fi deschis: %2"
 
 #: ../glom/import_csv/dialog_import_csv.cc:747
 msgid "Import From CSV File: %1"
-msgstr ""
+msgstr "Importă din fișier CSV: %1"
 
 #: ../glom/import_csv/dialog_import_csv_progress.cc:86
 msgid "Parsing CSV file %1"
-msgstr ""
+msgstr "Se parsează fișierul CSV %1"
 
 #: ../glom/import_csv/dialog_import_csv_progress.cc:176
 msgid "Import complete\n"
-msgstr ""
+msgstr "Importare completă\n"
 
 #: ../glom/import_csv/dialog_import_csv_progress.cc:203
 msgid ""
 "Warning: Importing row %1: The value for field %2 must be unique, but is "
 "already in use. The value will not be imported.\n"
 msgstr ""
+"Avertisment: importarea rândului %1: Valoarea pentru câmpul %2 trebuie să "
+"fie unică, dar este deja în uz. Valoarea nu poate fi importată.\n"
 
 #: ../glom/import_csv/dialog_import_csv_progress.cc:212
 msgid ""
 "Warning: Importing row %1: The value for field %2, \"%3\" could not be "
 "converted to the field's type. The value will not be imported.\n"
 msgstr ""
+"Advertisment: importarea rândului %1: Valoarea pentru câmpul %2, „%3” nu a "
+"putut fi convertită la tipul de câmp. Valoarea nu va fi importată.\n"
 
 #: ../glom/import_csv/dialog_import_csv_progress.cc:238
 msgid ""
 "Error importing row %1: Cannot import the row because the primary key is "
 "empty.\n"
 msgstr ""
+"Eroare la importarea rândului %1: nu se poate importa rândul pentru că cheia "
+"primară este goală.\n"
 
 #. TODO: Can we get this from anywhere else, such as iso-codes? murrayc
 #. TODO: Make this generally more efficient.
@@ -1082,87 +1180,87 @@ msgstr ""
 #: ../glom/import_csv/file_encodings.cc:74
 #: ../glom/import_csv/file_encodings.cc:75
 msgid "Unicode"
-msgstr ""
+msgstr "Unicode"
 
 #. This just adds a separator in the combo box
 #: ../glom/import_csv/file_encodings.cc:77
 #: ../glom/import_csv/file_encodings.cc:90
 #: ../glom/import_csv/file_encodings.cc:95
 msgid "Western"
-msgstr ""
+msgstr "Vestic"
 
 #. This just adds a separator in the combo box
 #: ../glom/import_csv/file_encodings.cc:78
 #: ../glom/import_csv/file_encodings.cc:93
 msgid "Central European"
-msgstr ""
+msgstr "Central European"
 
 #: ../glom/import_csv/file_encodings.cc:79
 msgid "South European"
-msgstr ""
+msgstr "Sud European"
 
 #: ../glom/import_csv/file_encodings.cc:80
 #: ../glom/import_csv/file_encodings.cc:88
 #: ../glom/import_csv/file_encodings.cc:100
 msgid "Baltic"
-msgstr ""
+msgstr "Baltic"
 
 #: ../glom/import_csv/file_encodings.cc:81
 #: ../glom/import_csv/file_encodings.cc:94
 msgid "Cyrillic"
-msgstr ""
+msgstr "Chirilică"
 
 #: ../glom/import_csv/file_encodings.cc:82
 #: ../glom/import_csv/file_encodings.cc:99
 msgid "Arabic"
-msgstr ""
+msgstr "Arabă"
 
 #: ../glom/import_csv/file_encodings.cc:83
 #: ../glom/import_csv/file_encodings.cc:96
 msgid "Greek"
-msgstr ""
+msgstr "Greacă"
 
 #: ../glom/import_csv/file_encodings.cc:84
 msgid "Hebrew Visual"
-msgstr ""
+msgstr "Ebraică vizuală"
 
 #: ../glom/import_csv/file_encodings.cc:85
 #: ../glom/import_csv/file_encodings.cc:98
 msgid "Hebrew"
-msgstr ""
+msgstr "Ebraică"
 
 #: ../glom/import_csv/file_encodings.cc:86
 #: ../glom/import_csv/file_encodings.cc:97
 msgid "Turkish"
-msgstr ""
+msgstr "Turcă"
 
 #: ../glom/import_csv/file_encodings.cc:87
 msgid "Nordic"
-msgstr ""
+msgstr "Nordic"
 
 #: ../glom/import_csv/file_encodings.cc:89
 msgid "Celtic"
-msgstr ""
+msgstr "Celtic"
 
 #: ../glom/import_csv/file_encodings.cc:91
 msgid "Romanian"
-msgstr ""
+msgstr "Română"
 
 #: ../glom/import_csv/file_encodings.cc:101
 msgid "Vietnamese"
-msgstr ""
+msgstr "Vietnameză"
 
 #. Translators: This means an unknown or unnacceptable value type in a database.
 #: ../glom/libglom/data_structure/field.cc:627
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:133
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:141
 msgid "Invalid"
-msgstr ""
+msgstr "Nevalid"
 
 #. Translators: This means a numeric value type in a database.
 #: ../glom/libglom/data_structure/field.cc:630
 msgid "Number"
-msgstr ""
+msgstr "Număr"
 
 #. Translators: This means a text/string value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
@@ -1172,22 +1270,22 @@ msgstr ""
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1156
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
 msgid "Text"
-msgstr ""
+msgstr "Text"
 
 #. Translators: This means a time value type in a database.
 #: ../glom/libglom/data_structure/field.cc:636
 msgid "Time"
-msgstr ""
+msgstr "Oră"
 
 #. Translators: This means a time value type in a database.
 #: ../glom/libglom/data_structure/field.cc:639
 msgid "Date"
-msgstr ""
+msgstr "Dată"
 
 #. Translators: This means a true/false value type in a database.
 #: ../glom/libglom/data_structure/field.cc:642
 msgid "Boolean"
-msgstr ""
+msgstr "Logic"
 
 #. Translators: This means a picture value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
@@ -1198,7 +1296,7 @@ msgstr ""
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
 #: ../glom/utility_widgets/layouttoolbar.cc:46
 msgid "Image"
-msgstr ""
+msgstr "Imagine"
 
 #. TRANSLATORS: Please only translate this string if you know that strftime()
 #. * shows only 2 year digits when using format "x". We want to always display
@@ -1210,7 +1308,7 @@ msgstr ""
 #: ../glom/libglom/data_structure/glomconversions.cc:143
 #, no-c-format
 msgid "%x"
-msgstr ""
+msgstr "%x"
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
 #: ../glom/libglom/data_structure/glomconversions.cc:207
@@ -1218,6 +1316,9 @@ msgid ""
 "ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not "
 "parse a date's text representation that it generated itself, in this locale."
 msgstr ""
+"EROARE: sanity_check_date_parsing(): Verificarea pentru corectitudine a "
+"eșuat: Glom nu a putut parsa reprezentarea textuală a unei date pe care a "
+"generat-o, în această localizare."
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
 #: ../glom/libglom/data_structure/glomconversions.cc:243
@@ -1228,6 +1329,12 @@ msgid ""
 "this might be incorrect for your locale. This needs attention from a "
 "translator. Please file a bug - see http://www.glom.org"
 msgstr ""
+"EROARE: sanity_check_date_text_representation_uses_4_digit_year(): "
+"Verificarea pentru corectitudine a eșuat: Glom nu apare că utilizează 4 "
+"cifre pentru a afișa anii într-o reprezentare textuală a datei, în această "
+"localizare. Se trece implicit la dd/mm/yyyy chiar dacă aceasta poate fi "
+"incorectă pentru localizare. Aceasta are nevoie de atenție de la un "
+"traducător. Depuneți o defecțiune - vedeți http://www.glom.org"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:398
@@ -1235,7 +1342,7 @@ msgstr ""
 #: ../glom/utility_widgets/layouttoolbar.cc:44
 #: ../glom/utility_widgets/notebooklabelglom.cc:71
 msgid "Group"
-msgstr ""
+msgstr "Grup"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:49
@@ -1243,12 +1350,12 @@ msgstr ""
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1149
 #: ../glom/utility_widgets/layouttoolbar.cc:42
 msgid "Button"
-msgstr ""
+msgstr "Buton"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_calendarportal.cc:40
 msgid "Calendar Portal"
-msgstr ""
+msgstr "Portal de calendar"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:189
@@ -1256,19 +1363,19 @@ msgstr ""
 #: ../glom/mode_design/dialog_database_preferences.cc:63
 #: ../data/ui/developer/window_field_definition_edit.glade.h:8
 msgid "Field"
-msgstr ""
+msgstr "Câmp"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #. "Notebook" means a GtkNotebook-type widget.
 #: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:41
 #: ../glom/utility_widgets/layouttoolbar.cc:36
 msgid "Notebook"
-msgstr ""
+msgstr "Agendă"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_placeholder.cc:50
 msgid "Placeholder"
-msgstr ""
+msgstr "Substituent"
 
 #. TODO: This prevents "" as a real title.
 #. parent table - not relevant
@@ -1279,73 +1386,73 @@ msgstr ""
 #: ../glom/mode_data/box_data_portal.cc:142
 #: ../glom/mode_data/box_data_portal.cc:155
 msgid "Undefined Table"
-msgstr ""
+msgstr "Tabel nedefinit"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:61
 #: ../data/ui/developer/dialog_field_summary.glade.h:1
 msgid "Field Summary"
-msgstr ""
+msgstr "Rezumat câmp"
 
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:116
 msgid "No summary chosen"
-msgstr ""
+msgstr "Niciun rezumat ales"
 
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:135
 msgid "Sum"
-msgstr ""
+msgstr "Sumă"
 
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:137
 msgid "Average"
-msgstr ""
+msgstr "Medie"
 
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:139
 msgid "Count"
-msgstr ""
+msgstr "Numărare"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:40
 #: ../data/ui/developer/window_report_layout.glade.h:13
 msgid "Footer"
-msgstr ""
+msgstr "Subsol"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc:79
 #: ../data/ui/developer/dialog_group_by.glade.h:1
 msgid "Group By"
-msgstr ""
+msgstr "Grupează după"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:39
 #: ../data/ui/developer/window_report_layout.glade.h:10
 msgid "Header"
-msgstr ""
+msgstr "Antet"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_summary.cc:45
 msgid "Summary"
-msgstr ""
+msgstr "Rezumat"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.cc:40
 msgid "Vertical Group"
-msgstr ""
+msgstr "Grup vertical"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:206
 msgid "Custom Title"
-msgstr ""
+msgstr "Titlu personalizat"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:208
 msgid "Relationship"
-msgstr ""
+msgstr "Relație"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:210
 msgid "Print Layout"
-msgstr ""
+msgstr "Aranjament tipărire"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:212
 msgid "Report"
-msgstr ""
+msgstr "Raport"
 
 #. Tables:
 #: ../glom/libglom/data_structure/translatable_item.cc:214
@@ -1354,95 +1461,95 @@ msgstr ""
 #: ../glom/mode_design/users/dialog_groups_list.cc:73
 #: ../glom/navigation/box_tables.cc:127
 msgid "Table"
-msgstr ""
+msgstr "Tabel"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:216
 msgid "Layout Item"
-msgstr ""
+msgstr "Element de aranjament"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:220
 msgid "Text Item"
-msgstr ""
+msgstr "Element text"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:224
 msgid "Field Choice"
-msgstr ""
+msgstr "Alegere de câmp"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:226
 msgid "Database Title"
-msgstr ""
+msgstr "Titlu bază de date"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:230
 #: ../glom/mode_design/translation/window_translations.cc:233
 msgid "Unknown"
-msgstr ""
+msgstr "Necunoscut"
 
 #: ../glom/libglom/document/document.cc:503
 #: ../glom/libglom/document/document.cc:521
 msgid "System Preferences"
-msgstr ""
+msgstr "Preferințe sistem"
 
 #: ../glom/libglom/document/document.cc:534
 msgid "System Name"
-msgstr ""
+msgstr "Nume sistem"
 
 #: ../glom/libglom/document/document.cc:540
 msgid "Organisation Name"
-msgstr ""
+msgstr "Nume organizație"
 
 #: ../glom/libglom/document/document.cc:546
 msgid "Organisation Logo"
-msgstr ""
+msgstr "Logo organizație"
 
 #: ../glom/libglom/document/document.cc:552
 msgid "Street"
-msgstr ""
+msgstr "Stradă"
 
 #: ../glom/libglom/document/document.cc:558
 msgid "Street (line 2)"
-msgstr ""
+msgstr "Stradă (linia 2)"
 
 #: ../glom/libglom/document/document.cc:564
 msgid "City"
-msgstr ""
+msgstr "Oraș"
 
 #: ../glom/libglom/document/document.cc:570
 msgid "State"
-msgstr ""
+msgstr "Stat"
 
 #: ../glom/libglom/document/document.cc:576
 msgid "Country"
-msgstr ""
+msgstr "Țară"
 
 #: ../glom/libglom/document/document.cc:582
 msgid "Zip Code"
-msgstr ""
+msgstr "Cod poștal"
 
-#: ../glom/libglom/document/document.cc:1400
+#: ../glom/libglom/document/document.cc:1401
 msgid "Overview"
-msgstr ""
+msgstr "Prezentare generală"
 
 #: ../glom/libglom/document/bakery/document.cc:419
 msgid "Untitled"
-msgstr ""
+msgstr "Fără titlu"
 
 #. Show only debug output
 #: ../glom/libglom/translations_po.cc:70
 msgid "Gettext-Warning: "
-msgstr ""
+msgstr "Avertisment-Gettext: "
 
 #: ../glom/libglom/db_utils.cc:526
 msgid "System: Auto Increments"
-msgstr ""
+msgstr "Sistem: incrementare automată"
 
 #: ../glom/libglom/db_utils.cc:1181
 #: ../glom/mode_design/users/dialog_groups_list.cc:70
 msgid "Description"
-msgstr ""
+msgstr "Descriere"
 
 #: ../glom/libglom/db_utils.cc:1188
 msgid "Comments"
-msgstr ""
+msgstr "Comentarii"
 
 #. Translators: This is a noun. It is the title of a report.
 #. Add Pages:
@@ -1450,195 +1557,212 @@ msgstr ""
 #: ../glom/libglom/report_builder.cc:744 ../glom/mode_data/notebook_data.cc:40
 #: ../glom/mode_find/notebook_find.cc:33
 msgid "List"
-msgstr ""
+msgstr "Listă"
 
 #: ../glom/glom_create_from_example.cc:74 ../glom/glom_export_po.cc:51
 #: ../glom/glom_export_po_all.cc:49 ../glom/glom_import_po_all.cc:51
 #: ../glom/glom_test_connection.cc:60
 msgid "Glom options"
-msgstr ""
+msgstr "Opțiuni Glom"
 
 #: ../glom/glom_create_from_example.cc:74 ../glom/glom_export_po.cc:51
 #: ../glom/glom_export_po_all.cc:49 ../glom/glom_import_po_all.cc:51
 #: ../glom/glom_test_connection.cc:60
 msgid "Command-line options"
-msgstr ""
+msgstr "Opțiuni în linie de comandă"
 
 #: ../glom/glom_create_from_example.cc:85
 msgid "The example .glom file to open."
-msgstr ""
+msgstr "Fișierul exemplu .glom de deschis."
 
 #: ../glom/glom_create_from_example.cc:90
 msgid ""
 "The directory in which to save the created .glom file, or sub-directory if "
 "necessary, such as /home/someuser/ ."
 msgstr ""
+"Directorul în care se salvează fișierul .glom creat, sau sub-directorul dacă "
+"este necesar, precum /home/unutilizator/ ."
 
 #: ../glom/glom_create_from_example.cc:95
 msgid "The name for the created .glom file, such as something.glom ."
-msgstr ""
+msgstr "Numele pentru fișierul .glom creat, precum ceva.glom."
 
 #: ../glom/glom_create_from_example.cc:100 ../glom/glom_export_po.cc:72
 #: ../glom/glom_export_po_all.cc:60 ../glom/glom_import_po_all.cc:62
 #: ../glom/glom_test_connection.cc:72 ../glom/main_local_options.cc:47
 msgid "The version of this application."
-msgstr ""
+msgstr "Versiunea acestei aplicații."
 
 #: ../glom/glom_create_from_example.cc:106
 msgid ""
 "The hostname of the PostgreSQL server, such as localhost. If this is not "
 "specified then a self-hosted database will be created."
 msgstr ""
+"Numele de gazdă al serverului PostgreSQL, precum localhost. Dacă acesta nu "
+"este specificat atunci o bază de date care se găzduiește singură va fi "
+"creată."
 
 #: ../glom/glom_create_from_example.cc:111 ../glom/glom_test_connection.cc:82
 msgid "The port of the PostgreSQL server, such as 5434."
-msgstr ""
+msgstr "Portul serverului PostgreSQL, precum 5434."
 
 #: ../glom/glom_create_from_example.cc:116 ../glom/glom_test_connection.cc:87
 msgid "The username for the PostgreSQL server."
-msgstr ""
+msgstr "Numele de utilizator pentru serverul PostgreSQL."
 
 #: ../glom/glom_create_from_example.cc:122 ../glom/glom_test_connection.cc:100
 msgid "Use MySQL instead of PostgreSQL."
-msgstr ""
+msgstr "Utilizează MySQL în loc de PostgreSQL."
 
 #: ../glom/glom_create_from_example.cc:336
 msgid "Glom: The output directory does not exist."
-msgstr ""
+msgstr "Glom: directorul de ieșire nu există."
 
 #: ../glom/glom_create_from_example.cc:346
 msgid "Glom: The output path is not a directory."
-msgstr ""
+msgstr "Glom: calea de ieșire nu este un director."
 
 #: ../glom/glom_create_from_example.cc:459
 msgid "Please enter the database server's password for the user %1: "
-msgstr ""
+msgstr "Introduceți parola serverului bazei de date pentru utilizatorul %1: "
 
 #: ../glom/glom_export_po.cc:57
 msgid ""
 "The path at which to save the created .po file, such as /home/someuser/"
 "somefile.po ."
 msgstr ""
+"Calea la care să se salveze fișierul .po creat, precum /home/unutilizator/"
+"unfișier.po."
 
 #: ../glom/glom_export_po.cc:62
 msgid ""
 "The locale whose translations should be written to the .po file, such as "
 "de_DE."
 msgstr ""
+"Localizarea ale cărei traduceri ar trebui să fie scrise la fișierul .po, "
+"precum de_DE."
 
 #: ../glom/glom_export_po.cc:67
 msgid "Generate a .pot template file instead of a .po file for a locale."
 msgstr ""
+"Generează un fișier șablon .pot în locul unui fișier .po pentru o localizare."
 
 #: ../glom/glom_export_po.cc:142 ../glom/glom_export_po_all.cc:130
 #: ../glom/glom_import_po_all.cc:132
 msgid "Please specify a glom file."
-msgstr ""
+msgstr "Specificați un fișier glom."
 
 #: ../glom/glom_export_po.cc:149
 msgid "Please use either the --locale-id option or the --template option."
-msgstr ""
+msgstr "Utilizați ori opțiunea --locale-id ori opțiunea --template."
 
 #: ../glom/glom_export_po.cc:180 ../glom/glom_export_po_all.cc:161
 msgid "Please specify an output path."
-msgstr ""
+msgstr "Specificați o cale de ieșire."
 
 #: ../glom/glom_export_po.cc:220
 msgid "Pot file creation failed."
-msgstr ""
+msgstr "Crearea fișierului pot a eșuat."
 
 #: ../glom/glom_export_po.cc:224
 msgid "Pot file created at: %1"
-msgstr ""
+msgstr "Fișier pot creat la: %1"
 
 #: ../glom/glom_export_po.cc:232 ../glom/glom_export_po_all.cc:221
 msgid "Po file creation failed."
-msgstr ""
+msgstr "Crearea fișierului po a eșuat."
 
 #: ../glom/glom_export_po.cc:236 ../glom/glom_export_po_all.cc:225
 msgid "Po file created at: %1"
-msgstr ""
+msgstr "Fișier po creat la: %1"
 
 #: ../glom/glom_export_po_all.cc:55
 msgid ""
 "The directory path at which to save the created .po files, such as /home/"
 "someuser/po_files/ ."
 msgstr ""
+"Calea de director la care să se salveze fișerele .po create, precum /home/"
+"unutilizator/po_files/."
 
 #: ../glom/glom_export_po_all.cc:143 ../glom/glom_import_po_all.cc:145
 msgid "The Glom file does not exist."
-msgstr ""
+msgstr "Fișierul Glom nu există."
 
 #: ../glom/glom_export_po_all.cc:153 ../glom/glom_import_po_all.cc:155
 msgid "The Glom file path is a directory instead of a file."
-msgstr ""
+msgstr "Calea de fișier Glom este un director în locul unui fișier."
 
 #: ../glom/glom_export_po_all.cc:174
 msgid "The output directory could not be created."
-msgstr ""
+msgstr "Directorul de ieșire nu a putut fi creat."
 
 #: ../glom/glom_export_po_all.cc:182
 msgid "Glom: The output file path is not a directory."
-msgstr ""
+msgstr "Glom: calea fișierului de ieșire nu este un director."
 
 #: ../glom/glom_export_po_all.cc:204
 msgid "The Glom document has no translations."
-msgstr ""
+msgstr "Documentul Glom nu are traduceri."
 
 #: ../glom/glom_import_po_all.cc:57
 msgid ""
 "The path to a directory containing .po files, such as /home/someuser/"
 "po_files/ ."
 msgstr ""
+"Calea către un director care conține fișiere .po, precum /home/unutilizator/"
+"po_files/."
 
 #: ../glom/glom_import_po_all.cc:163
 msgid "Please specify the path to a directory containing po files."
-msgstr ""
+msgstr "Specificați calea către un director care conține fișiere po."
 
 #: ../glom/glom_import_po_all.cc:174
 msgid "Glom: The po files directory path is not a directory."
-msgstr ""
+msgstr "Glom: calea către directorul fișierelor po nu este un director."
 
 #: ../glom/glom_import_po_all.cc:214
 msgid "Po file import failed for locale: %1"
-msgstr ""
+msgstr "Importarea fișierului po a eșuat pentru localizarea: %1"
 
 #: ../glom/glom_import_po_all.cc:219
 msgid "Po file import failed during document saving for locale: %1"
 msgstr ""
+"Importarea fișierului po a eșuat în timpul salvării documentului pentru "
+"localizarea: %1"
 
 #: ../glom/glom_import_po_all.cc:223
 msgid "Po file imported for locale: %1 for file %2"
-msgstr ""
+msgstr "Fișier po importa pentru localizarea: %1 pentru fișierul %2"
 
 #: ../glom/glom_test_connection.cc:77
 msgid "The hostname of the PostgreSQL server, such as localhost."
-msgstr ""
+msgstr "Numele de gazdă al serverului PostgreSQL, precum localhost."
 
 #: ../glom/glom_test_connection.cc:93
 msgid "The specific database on the PostgreSQL server (Optional)."
-msgstr ""
+msgstr "Baza de date specifică pe serverul PostgreSQL (Opțional)."
 
 #: ../glom/glom_test_connection.cc:173
 msgid "Please provide a database username."
-msgstr ""
+msgstr "Furnizați un nume de utilizator al bazei de date."
 
 #: ../glom/glom_test_connection.cc:183
 msgid "Please enter the PostgreSQL server's password for the user %1: "
-msgstr ""
+msgstr "Introduceți parola serverului PostgreSQL pentru utilizatorul %1: "
 
 #: ../glom/glom_test_connection.cc:264
 msgid ""
 "Error: Could not connect to the server even without specifying a database."
 msgstr ""
+"Eroare: Nu s-a putut conecta la server chiar fără a specifica o bază de date."
 
 #: ../glom/glom_test_connection.cc:272
 msgid "Error: Could not connect to the specified database."
-msgstr ""
+msgstr "Eroare: nu s-a putut conecta la baza de date specificată."
 
 #: ../glom/glom_test_connection.cc:278
 msgid "Successful connection."
-msgstr ""
+msgstr "Conexiune cu succes."
 
 #: ../glom/main.cc:198
 msgid ""
@@ -1646,6 +1770,9 @@ msgid ""
 "may not be run with such privileges for security reasons.\n"
 "Please login to your system as a normal user."
 msgstr ""
+"Se pare că rulați Glom ca un utilizator cu privilegii de administrator. Glom "
+"nu poate fi rulat cu aceste privilegii pentru motive de securitate.\n"
+"Autentificați-vă pe sistem ca un utilizator normal."
 
 #. Warn the user:
 #: ../glom/main.cc:212
@@ -1653,10 +1780,12 @@ msgid ""
 "You seem to be running Glom as root. Glom may not be run as root.\n"
 "Please login to your system as a normal user."
 msgstr ""
+"Se pare că rulați Glom ca root. Glom nu trebuie să fie rulat ca root.\n"
+"Autentificați-vă pe sistem ca un utilizator normal."
 
 #: ../glom/main.cc:221
 msgid "Running As Root"
-msgstr ""
+msgstr "Rulează ca root"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
@@ -1667,7 +1796,7 @@ msgstr ""
 #: ../glom/main.cc:264 ../glom/main.cc:282 ../glom/main.cc:320
 #: ../glom/main.cc:333 ../glom/main.cc:516
 msgid "Incomplete Glom Installation"
-msgstr ""
+msgstr "Instalare Glom incompletă"
 
 #. use_markup
 #. modal
@@ -1679,10 +1808,15 @@ msgid ""
 "\n"
 "You may now install PostgreSQL to complete the Glom installation."
 msgstr ""
+"Instalarea Glom nu este completă, pentru că PostgreSQL nu este disponibil pe "
+"sistem. PostgreSQL este necesar pentru găzduirea proprie de baze de date "
+"Glom.\n"
+"\n"
+"Puteți acum să instalați PostgreSQL pentru a completa instalarea Glom."
 
 #: ../glom/main.cc:267
 msgid "Install PostgreSQL"
-msgstr ""
+msgstr "Instalează PostgreSQL"
 
 #. Show message to the user about the broken installation:
 #: ../glom/main.cc:277
@@ -1694,6 +1828,12 @@ msgid ""
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
+"Instalarea Glom este completă, pentru că PostgreSQL nu este disponibilă pe "
+"sistem. PostgreSQL este necesar pentru găzduirea proprie a bazelor de date "
+"Glom.\n"
+"\n"
+"Raportați această defecțiune la vânzător, sau la administratorul de sistem "
+"pentru a fi corectată."
 
 #. use_markup
 #. modal
@@ -1704,10 +1844,15 @@ msgid ""
 "\n"
 "You may now install MySQL to complete the Glom installation."
 msgstr ""
+"Instalarea Glom nu este compleă, pentru că PostgreSQL nu este disponibil pe "
+"sistem. MySQL este necesar pentru găzduirea proprie a unor baze de date "
+"Glom.\n"
+"\n"
+"Puteți acum să instalați MySQL pentru a completa instalarea Glom."
 
 #: ../glom/main.cc:323
 msgid "Install MySQL"
-msgstr ""
+msgstr "Instalează MySQL"
 
 #. use_markup
 #. modal
@@ -1719,6 +1864,12 @@ msgid ""
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
+"Instalarea Glom nu este completă, pentru că MySQL nu este disponibil pe "
+"sistem. MySQL este necesar pentru găzduirea proprie a unor baze de date "
+"Glom.\n"
+"\n"
+"Raportați această defecțiune la vânzător, sau la administratorul de sistem "
+"pentru a fi corectată."
 
 #. The python module could not be imported by Glom, so warn the user:
 #: ../glom/main.cc:350
@@ -1729,10 +1880,15 @@ msgid ""
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
+"Instalarea lui Glom nu este completă, pentru că modulul Python Glom nu ese "
+"disponibil pe sistem.\n"
+"\n"
+"Raportați această defecțiune la vânzător, sau la administratorul de sistem "
+"pentru a putea fi corectată."
 
 #: ../glom/main.cc:355
 msgid "Glom Python Module Not Installed"
-msgstr ""
+msgstr "Modulul Python Glom nu este instalat"
 
 #. The python module could not be imported by Glom, so warn the user:
 #: ../glom/main.cc:368
@@ -1743,10 +1899,15 @@ msgid ""
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
+"Instalarea Glom nu este completă, pentru că modulul Python gi.repository nu "
+"este disponibil pe sistem.\n"
+"\n"
+"Raportați această defecțiune la vânzător, sau la administratorul de sistem "
+"pentru a fi corectată."
 
 #: ../glom/main.cc:373
 msgid "gi.repository Python Module Not Installed"
-msgstr ""
+msgstr "modulul Python gi.repository nu este instalat"
 
 #. The python module could not be imported by Glom, so warn the user:
 #: ../glom/main.cc:386
@@ -1757,10 +1918,15 @@ msgid ""
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
+"Instalarea Glom nu este completă, pentru că modulul pyton gi.repository.Gda "
+"nu este disponibil pe sistem.\n"
+"\n"
+"Raportați această defecțiune la vânzător, sau la administratorul de sistem "
+"pentru a fi corectată."
 
 #: ../glom/main.cc:391
 msgid "gi.repository.Gda Python Module Not Installed"
-msgstr ""
+msgstr "modulul Python gi.repository.Gda nu este instalat"
 
 #. The Postgres provider was not found, so warn the user:
 #: ../glom/main.cc:511
@@ -1772,51 +1938,60 @@ msgid ""
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
+"Instalarea Glom nu este completă, întrucât furnizorul libgda PostgreSQL nu "
+"este disponibil pe sistem. Acest furnizor este necesar pentru a accesa "
+"servere de baze de date Postgres.\n"
+"\n"
+"Raportați această defecțiune vânzătorului, sau administratorului "
+"dumneavoastră de sistem pentru a putea fi corectată."
 
 #: ../glom/main_local_options.cc:39
 msgid "Extra Glom options"
-msgstr ""
+msgstr "Opțiuni Glom extra"
 
 #: ../glom/main_local_options.cc:39
 msgid "Extra command-line options for glom"
-msgstr ""
+msgstr "Opțiuni în linia de comandă extra pentru glom"
 
 #: ../glom/main_local_options.cc:52
 msgid "Show how Glom outputs a date in this locale, then stop."
-msgstr ""
+msgstr "Arată cum Glom produce o dată în această localizare, apoi oprește."
 
 #: ../glom/main_remote_options.cc:31
 msgid "Main Glom options"
-msgstr ""
+msgstr "Opțiuni Glom principale"
 
 #: ../glom/main_remote_options.cc:31
 msgid "Main command-line options for glom"
-msgstr ""
+msgstr "Opțiuni în linia de comandă principale pentru glom"
 
 #: ../glom/main_remote_options.cc:39
 msgid "The Filename"
-msgstr ""
+msgstr "Numele de fișier"
 
 #: ../glom/main_remote_options.cc:44
 msgid "Whether the filename is a .tar.gz backup to be restored."
 msgstr ""
+"Dacă numele de fișier este o copie de rezervă .tar.gz pentru a fi restaurată."
 
 #: ../glom/main_remote_options.cc:49
 msgid ""
 "Do not automatically stop the database server if Glom quits. This is helpful "
 "for debugging with gdb."
 msgstr ""
+"Nu opri automat serverul bazei de date dacă Glom se oprește. Aceasta este de "
+"ajutor pentru depanare cu gdb."
 
 #: ../glom/main_remote_options.cc:54
 msgid "Show the generated SQL queries on stdout, for debugging."
-msgstr ""
+msgstr "Arată interogările SQL generate la stdout, pentru depanare."
 
 #: ../glom/mode_data/box_data_calendar_related.cc:494
 #: ../glom/mode_design/users/dialog_groups_list.cc:79
 #: ../glom/print_layout/canvas_print_layout.cc:286
 #: ../glom/utility_widgets/adddel/adddel.cc:213
-#: ../glom/mode_data/db_adddel/db_adddel.cc:218
-#: ../glom/mode_data/db_adddel/db_adddel.cc:250
+#: ../glom/mode_data/db_adddel/db_adddel.cc:224
+#: ../glom/mode_data/db_adddel/db_adddel.cc:256
 #: ../data/ui/operator/window_main.glade.h:13
 #: ../data/ui/developer/dialog_fieldslist.glade.h:10
 #: ../data/ui/developer/dialog_group_by.glade.h:8
@@ -1828,13 +2003,13 @@ msgstr ""
 #: ../data/ui/developer/window_report_layout.glade.h:16
 #: ../data/ui/developer/window_users.glade.h:9
 msgid "_Edit"
-msgstr ""
+msgstr "_Editează"
 
 #: ../glom/mode_data/box_data_calendar_related.cc:495
-#: ../glom/mode_data/db_adddel/db_adddel.cc:254
+#: ../glom/mode_data/db_adddel/db_adddel.cc:260
 #: ../data/ui/operator/window_main.glade.h:28
 msgid "_Layout"
-msgstr ""
+msgstr "_Aranjament"
 
 #: ../glom/mode_data/box_data.cc:189
 msgid ""
@@ -1842,16 +2017,19 @@ msgid ""
 "primary key.\n"
 "Do you really want to discard this data?"
 msgstr ""
+"Aceste date nu pot fi stocare în baza de date pentru că nu ați furnizat o "
+"cheie primară.\n"
+"Sigur doriți să eliminați aceste date?"
 
 #. Ask user to confirm loss of data:
 #: ../glom/mode_data/box_data.cc:191
 msgid "No primary key value"
-msgstr ""
+msgstr "Nicio valoare pentru cheia primară"
 
 #: ../glom/mode_data/box_data_details.cc:48
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:33
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:43
-#: ../glom/mode_data/db_adddel/db_adddel.cc:251
+#: ../glom/mode_data/db_adddel/db_adddel.cc:257
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:33
 #: ../data/ui/developer/dialog_choose_user.glade.h:4
 #: ../data/ui/developer/dialog_fieldslist.glade.h:8
@@ -1862,194 +2040,202 @@ msgstr ""
 #: ../data/ui/developer/window_report_layout.glade.h:9
 #: ../data/ui/developer/window_users.glade.h:7
 msgid "_Add"
-msgstr ""
+msgstr "_Adaugă"
 
 #: ../glom/mode_data/box_data_details.cc:50
 msgid "_First"
-msgstr ""
+msgstr "_Prima"
 
 #: ../glom/mode_data/box_data_details.cc:51
 msgid "_Back"
-msgstr ""
+msgstr "Î_napoi"
 
 #: ../glom/mode_data/box_data_details.cc:52
 msgid "_Forward"
-msgstr ""
+msgstr "Î_nainte"
 
 #: ../glom/mode_data/box_data_details.cc:53
 msgid "_Last"
-msgstr ""
+msgstr "_Ultimul"
 
 #: ../glom/mode_data/box_data_details.cc:112
 msgid "Create a new record."
-msgstr ""
+msgstr "Creează o înregistrare nouă."
 
 #: ../glom/mode_data/box_data_details.cc:113
 msgid "Remove this record."
-msgstr ""
+msgstr "Elimină această înregistrare."
 
 #: ../glom/mode_data/box_data_details.cc:114
 msgid "View the first record in the list."
-msgstr ""
+msgstr "Vizualizează prima înregistrare din listă."
 
 #: ../glom/mode_data/box_data_details.cc:115
 msgid "View the previous record in the list."
-msgstr ""
+msgstr "Vizualizează anterioara înregistrare din listă."
 
 #: ../glom/mode_data/box_data_details.cc:116
 msgid "View the next record in the list."
-msgstr ""
+msgstr "Vizualizează următoarea înregistrare din listă."
 
 #: ../glom/mode_data/box_data_details.cc:117
 msgid "View the last record in the list."
-msgstr ""
+msgstr "Vizualizează ultima înregistrare din listă."
 
 #: ../glom/mode_data/box_data_details.cc:424
 msgid "Layout Contains No Fields"
-msgstr ""
+msgstr "Aranjamentul nu conține câmpuri"
 
 #: ../glom/mode_data/box_data_details.cc:424
 msgid ""
 "There are no fields on the layout, so there is no way to enter data in a new "
 "record."
 msgstr ""
+"Nu există câmpuri pe aranjament, deci nu există o care să introduceți date "
+"într-o înregistrare nouă."
 
 #. Tell user that a primary key is needed to delete a record:
 #: ../glom/mode_data/box_data_details.cc:451
 msgid "No primary key value."
-msgstr ""
+msgstr "Nicio valoare pentru cheia primară."
 
 #: ../glom/mode_data/box_data_details.cc:452
 msgid "This record cannot be deleted because there is no primary key."
 msgstr ""
+"Această înregistrare nu poate fi ștearsă pentru că nu există nicio cheie "
+"primară."
 
 #. Warn user that they can't choose their own primary key:
 #: ../glom/mode_data/box_data_details.cc:862
 msgid "Primary key auto increments"
-msgstr ""
+msgstr "Cheia primară se auto incrementează"
 
 #: ../glom/mode_data/box_data_details.cc:863
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
 msgstr ""
+"Cheia primară este incrementată automat.\n"
+"Nu puteți introduce propria valoare a cheii primare."
 
 #: ../glom/mode_data/box_data_portal.cc:389
 msgid "No Corresponding Record Exists"
-msgstr ""
+msgstr "Nu există nicio înregistrare corespunzătoare"
 
 #: ../glom/mode_data/box_data_portal.cc:389
 msgid ""
 "No record with this value exists. Therefore navigation to the related record "
 "is not possible."
 msgstr ""
+"Nu există nicio înregistrare cu această valoare. Prin urmare navigarea la "
+"înregistrarea asociată nu este posibilă."
 
 #: ../glom/mode_data/flowtablewithfields.cc:1105
 #: ../glom/utility_widgets/notebooklabelglom.cc:70
 #: ../glom/utility_widgets/notebooklabelglom.cc:117
 msgid "New Group"
-msgstr ""
+msgstr "Grup nou"
 
 #: ../glom/mode_data/flowtablewithfields.cc:1111
 #: ../glom/mode_design/layout/dialog_layout_details.cc:726
 msgid "notebook"
-msgstr ""
+msgstr "agendă"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
 #: ../glom/mode_data/flowtablewithfields.cc:1117
 msgid "tab1"
-msgstr ""
+msgstr "tab1"
 
 #. Note to translators: This is the default label text for a notebook tab.
 #: ../glom/mode_data/flowtablewithfields.cc:1120
 msgid "Tab One"
-msgstr ""
+msgstr "Tab unu"
 
 #: ../glom/mode_data/flowtablewithfields.cc:1133
 msgid "button"
-msgstr ""
+msgstr "buton"
 
 #: ../glom/mode_data/flowtablewithfields.cc:1134
 #: ../glom/mode_design/layout/dialog_layout_details.cc:652
 msgid "New Button"
-msgstr ""
+msgstr "Buton nou"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
 #: ../glom/mode_data/flowtablewithfields.cc:1140
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:387
 msgid "text"
-msgstr ""
+msgstr "text"
 
 #: ../glom/mode_data/flowtablewithfields.cc:1141
 msgid "New Text"
-msgstr ""
+msgstr "Text nou"
 
 #. TODO: Use a real English sentence here?
 #: ../glom/mode_data/flowtablewithfields.cc:1290
 msgid "Delete whole group \"%1\"?"
-msgstr ""
+msgstr "Ștergeți întreg grupul „%1”?"
 
 #. TODO: Use a real English sentence here:
 #: ../glom/mode_data/flowtablewithfields.cc:1296
 msgid "Delete whole group?"
-msgstr ""
+msgstr "Ștergeți întreg grupul?"
 
 #. Translators: This is a title, not an action.
 #: ../glom/mode_data/notebook_data.cc:48
 msgid "List Or Details View"
-msgstr ""
+msgstr "Vizualizare listă sau detalii"
 
 #. Don't allow a relationship to be added twice.
 #: ../glom/mode_design/box_db_table_relationships.cc:49
 msgid ""
 "This relationship already exists. Please choose a different relationship name"
-msgstr ""
+msgstr "Această relație există deja. Alegeți un alt nume de relație"
 
 #. Translators: FROM as in SQL's FROM
 #: ../glom/mode_design/box_db_table_relationships.cc:54
 msgid "From Field"
-msgstr ""
+msgstr "De la câmpul"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:56
 msgid "To Field"
-msgstr ""
+msgstr "Către câmpul"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:57
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:5
 msgid "Allow Editing"
-msgstr ""
+msgstr "Permite editarea"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:58
 msgid "Automatic Creation"
-msgstr ""
+msgstr "Creare automată"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:60
 #: ../glom/navigation/box_tables.cc:138
 msgid "Title (Singular Form)"
-msgstr ""
+msgstr "Titlu (formă singulară)"
 
 #: ../glom/mode_design/dialog_database_preferences.cc:64
 msgid "Next Value"
-msgstr ""
+msgstr "Valoare următoare"
 
 #: ../glom/mode_design/dialog_design.cc:49
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:569
 #: ../data/ui/developer/window_design.glade.h:3
 msgid "None selected"
-msgstr ""
+msgstr "Nimic selectat"
 
 #: ../glom/mode_design/dialog_initial_password.cc:79
 msgid "Username Is Empty"
-msgstr ""
+msgstr "Numele de utilizator este gol"
 
 #: ../glom/mode_design/dialog_initial_password.cc:79
 msgid "Please enter a login name for the new user."
-msgstr ""
+msgstr "Introduceți un nume de autentificare pentru utilizatorul nou."
 
 #: ../glom/mode_design/dialog_initial_password.cc:84
 #: ../glom/mode_design/users/dialog_user.cc:54
 msgid "Passwords Do Not Match"
-msgstr ""
+msgstr "Parolele nu se potrivesc"
 
 #: ../glom/mode_design/dialog_initial_password.cc:84
 #: ../glom/mode_design/users/dialog_user.cc:54
@@ -2057,40 +2243,42 @@ msgid ""
 "The entered password does not match the entered password confirmation. "
 "Please try again."
 msgstr ""
+"Parola pe care ați introdus-o nu se potrivește cu parola introdusă pentru "
+"confirmare. Încercați din nou."
 
 #: ../glom/mode_design/dialog_initial_password.cc:89
 #: ../glom/mode_design/users/dialog_user.cc:59
 msgid "Password Is Empty"
-msgstr ""
+msgstr "Parola e goală"
 
 #: ../glom/mode_design/dialog_initial_password.cc:89
 #: ../glom/mode_design/users/dialog_user.cc:59
 msgid "Please enter a password for this user."
-msgstr ""
+msgstr "Introduceți o parolă pentru acest utilizator."
 
 #. Don't allow adding of fields that already exist.
 #: ../glom/mode_design/fields/box_db_table_definition.cc:65
 msgid "This field already exists. Please choose a different field name."
-msgstr ""
+msgstr "Acest câmp există deja. Alegeți un nume de câmp diferit."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:69
 msgid "Type"
-msgstr ""
+msgstr "Tip"
 
 #. TODO: Auto-size columns.
 #. Setup the buttons:
 #: ../glom/mode_design/fields/box_db_table_definition.cc:74
 msgid "_Field Definition"
-msgstr ""
+msgstr "Definiție _câmp"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:75
 msgid "_Default Formatting"
-msgstr ""
+msgstr "Formatare _implicită"
 
 #. TODO: Only show this when there are > 100 records?
 #: ../glom/mode_design/fields/box_db_table_definition.cc:288
 msgid "Recalculation Required"
-msgstr ""
+msgstr "Este necesară o recalculare"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:289
 msgid ""
@@ -2098,14 +2286,17 @@ msgid ""
 "the value in all records. If the table contains many records then this could "
 "take a long time."
 msgstr ""
+"Ați schimbat calculul utilizat de acest câmp pentru ca Glom să recalculeze "
+"valoarea în toate înregistrările. Dacă tabelul conține multe înregistrări, "
+"atunci aceasta poate dura mult timp."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:294
 msgid "Recalculate"
-msgstr ""
+msgstr "Recalculează"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:303
 msgid "Invalid database structure"
-msgstr ""
+msgstr "Structură a bazei de date nevalidă"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:304
 msgid ""
@@ -2113,83 +2304,96 @@ msgid ""
 "type that is not supported by Glom. Your system administrator may be able to "
 "correct this."
 msgstr ""
+"Acest câmp de bază de date a fost creat sau editat în afara lui Glom. Are un "
+"tip de date care nu este suportat de Glom. Administratorul de sistem poate "
+"să corecteze acest lucru."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:312
 msgid "Primary key required"
-msgstr ""
+msgstr "Cheie primară necesară"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:313
 msgid ""
 "You may not unset the primary key because the table must have a primary key. "
 "You may set another field as the primary key instead."
 msgstr ""
+"Nu puteți șterge cheia primară pentru că tabelul trebuie să aibă o cheie "
+"primară. Puteți stabili alt câmp ca și cheie primară în schimb."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:325
 msgid "Field contains empty values."
-msgstr ""
+msgstr "Câmpul conține valori goale."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:325
 msgid ""
 "The field may not yet be used as a primary key because it contains empty "
 "values."
 msgstr ""
+"Câmpul poate să nu fie utilizat încă precum o cheie primară pentru că "
+"conține valori goale."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:334
 msgid "Field contains non-unique values."
-msgstr ""
+msgstr "Câmpul conține valori non-unice."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:334
 msgid ""
 "The field may not yet be used as a primary key because it contains values "
 "that are not unique."
 msgstr ""
+"Câmpul poate să nu fie utilizat încă precum o cheie primară pentru că "
+"conține valori care nu sunt unice."
 
 #. Ask the user to confirm this major change:
 #: ../glom/mode_design/fields/box_db_table_definition.cc:339
 msgid "Change primary key"
-msgstr ""
+msgstr "Modifică cheia primară"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:340
 msgid ""
 "Are you sure that you wish to set this field as the primary key, instead of "
 "the existing primary key?"
 msgstr ""
+"Sigur doriți să stabiliți acest câmp ca și cheie primară, în locul cheii "
+"primare existente?"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:345
 msgid "Change Primary Key"
-msgstr ""
+msgstr "Change primary key"
 
 #. Warn the user and refuse to make the change:
 #: ../glom/mode_design/fields/box_db_table_definition.cc:357
 msgid "Field Name Already Exists"
-msgstr ""
+msgstr "Numele câmpului există deja"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:358
 msgid "This field already exists. Please choose a different field name"
-msgstr ""
+msgstr "Acest câmp există deja. Alegeți un nume de câmp diferit"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:99
 msgid "Calculation Error"
-msgstr ""
+msgstr "Eroare de calculare"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:99
 msgid "The calculation does not have a return statement."
-msgstr ""
+msgstr "Calculul nu are o comandă de întoarcere."
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:142
 msgid "Calculation result"
-msgstr ""
+msgstr "Rezultatul calculării"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:142
 msgid ""
 "The result of the calculation is:\n"
 "%1"
 msgstr ""
+"Rezultatul calculului este:\n"
+"%1"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:144
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:135
 msgid "Calculation failed"
-msgstr ""
+msgstr "Calcularea a eșuat"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:144
 #, c-format
@@ -2197,10 +2401,12 @@ msgid ""
 "The calculation failed with this error:\n"
 "%s"
 msgstr ""
+"Calculul a eșuat cu această eroare:\n"
+"%s"
 
 #: ../glom/mode_design/fields/dialog_fielddefinition.cc:146
 msgid "Default Value"
-msgstr ""
+msgstr "Valoare implicită"
 
 #. A special "None" item, allowing the user to do the equivalent of clearing the combobox,
 #. which is not normally possible with the GtkComboBox UI:
@@ -2210,88 +2416,90 @@ msgstr ""
 #. TODO: Add a template specialization to Glib::ObjectBase::set_property() to allow this?
 #: ../glom/mode_design/layout/combobox_fields.cc:205
 msgid "(None)"
-msgstr ""
+msgstr "(Nimic)"
 
 #: ../glom/mode_design/layout/combobox_relationship.cc:287
 msgid " Via: %1::%2"
-msgstr ""
+msgstr " Via: %1::%2"
 
 #: ../glom/mode_design/layout/combobox_relationship.cc:293
 msgid " Via: %1"
-msgstr ""
+msgstr " Via: %1"
 
 #: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:240
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:304
 msgid "None: No visible tables are specified by the fields."
-msgstr ""
+msgstr "Nimic: nu sunt tabele vizibile specificate de câmpuri."
 
 #. Columns-count column:
 #. Note to translators: This is the number of columns in a group (group being a noun)
 #: ../glom/mode_design/layout/dialog_layout_details.cc:130
 msgid "Group Columns"
-msgstr ""
+msgstr "Coloane grup"
 
 #. Column-Width column: (only for list views)
 #. Note to translators: This is a name (the width of a UI element in the display), not an action.
 #: ../glom/mode_design/layout/dialog_layout_details.cc:143
 msgid "Display Width"
-msgstr ""
+msgstr "Lățimea afișajului"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:677
 msgid "Text Title"
-msgstr ""
+msgstr "Titlu text"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:702
 msgid "Image Title"
-msgstr ""
+msgstr "Titlu imagine"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:857
 msgid "group"
-msgstr ""
+msgstr "grup"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:949
 #: ../data/ui/developer/dialog_notebook.glade.h:1
 msgid "Notebook Tabs"
-msgstr ""
+msgstr "Taburi agendă"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:949
 msgid "Add child groups to the notebook to add tabs."
-msgstr ""
+msgstr "Adaugă grupurile inferioare la agendă pentru a adăuga tab-uri."
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1119
 msgid "Related Calendar: %1"
-msgstr ""
+msgstr "Calendar asociat: %1"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1121
 msgid "Related List: %1"
-msgstr ""
+msgstr "Listă asociată: %1"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1138
 msgid "Field: %1"
-msgstr ""
+msgstr "Câmp: %1"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1197
 msgid "(Notebook)"
-msgstr ""
+msgstr "(Agendă)"
 
 #. Append the View columns:
 #: ../glom/mode_design/layout/dialog_layout_export.cc:54
 msgid "Fields"
-msgstr ""
+msgstr "Câmpuri"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:414
 msgid "Invalid Relationship"
-msgstr ""
+msgstr "Relație nevalidă"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:415
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship does not specify a field in the related table."
 msgstr ""
+"Relația poate să nu fie utilizată pentru a arăta înregistrările legate "
+"pentru că relația nu specifică un câmp în tabelul legat."
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:421
 msgid "Relationship Uses a Related Primary Key"
-msgstr ""
+msgstr "Relația utilizează o cheie primară asociată"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:422
 msgid ""
@@ -2300,10 +2508,14 @@ msgid ""
 "contain unique values. This would prevent the relationship from specifying "
 "multiple related records."
 msgstr ""
+"Relația poate să nu fie utilizată pentru a arăta înregistrările legate "
+"pentru că relația utilizează un câmp de cheie privată, care poate să conțină "
+"valori unice. Aceasta ar preveni ca relația să specifice înregistrări legate "
+"multiple."
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:428
 msgid "Relationship Uses a Related Unique Field"
-msgstr ""
+msgstr "Relația utilizează un câmp unic asociat"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:429
 msgid ""
@@ -2311,66 +2523,71 @@ msgid ""
 "relationship uses a unique-values field in the related table. This would "
 "prevent the relationship from specifying multiple related records."
 msgstr ""
+"Relația nu poate fi utilizată să arate înregistrări legate pentru că relația "
+"utilizează un câmp cu valori unice în tabelul legat. Aceasta ar preveni ca "
+"relația să specifice înregistrări legate multiple."
 
 #. Translators: This is Automatic text alignment.
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:117
 msgid "Automatic"
-msgstr ""
+msgstr "Automat"
 
 #. Translators: This is Left text alignment.
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:121
 msgid "Left"
-msgstr ""
+msgstr "Stânga"
 
 #. Translators: This is Right text alignment.
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:125
 msgid "Right"
-msgstr ""
+msgstr "Dreapta"
 
 #. Give it access to the document.
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:168
 msgid "Extra Fields"
-msgstr ""
+msgstr "Câmpuri extra"
 
 #. Give it access to the document.
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:176
 msgid "Sort Order"
-msgstr ""
+msgstr "Ordine de sortare"
 
 #. Add labels (because we will hide the checkboxes):
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:203
 msgid "Font"
-msgstr ""
+msgstr "Font"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:206
 msgid "Foreground Color"
-msgstr ""
+msgstr "Culoare prim plan"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:209
 msgid "Background Color"
-msgstr ""
+msgstr "Culoare de fundal"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:135
 msgid ""
 "The calculation failed with this error:\n"
 "%1"
 msgstr ""
+"Calculul a eșuat cu această eroare:\n"
+"%1"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:31
 #: ../data/ui/developer/dialog_fieldslist.glade.h:9
 #: ../data/ui/developer/dialog_group_by.glade.h:5
 #: ../data/ui/developer/window_data_layout.glade.h:27
 msgid "Formatting"
-msgstr ""
+msgstr "Formatare"
 
 #. Give it access to the document.
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc:163
 msgid "Group By - Secondary Fields"
-msgstr ""
+msgstr "Grupează după - câmpuri secundare"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_sortfields.cc:59
 msgid "Ascending"
-msgstr ""
+msgstr "În ascensiune"
 
 #. Append the View columns:
 #. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
@@ -2378,89 +2595,93 @@ msgstr ""
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:153
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:204
 msgid "Part"
-msgstr ""
+msgstr "Parte"
 
 #. Don't allow a relationship to be added twice.
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:93
 msgid "This item already exists. Please choose a different item name"
-msgstr ""
+msgstr "Acest item există deja. Alegeți un nume de element diferit"
 
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:219
 msgid "Are you sure that you want to rename this print layout?"
-msgstr ""
+msgstr "Sigur doriți să redenumiți acest aranjament de tipărire?"
 
 #. TODO: Show old and new names?
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:220
 msgid "<b>Rename Print Layout</b>"
-msgstr ""
+msgstr "<b>Redenumește aranjamentul tipăririi</b>"
 
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:222
 #: ../glom/navigation/box_tables.cc:420
 msgid "Rename"
-msgstr ""
+msgstr "Redenumește"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:29
 #: ../glom/utility_widgets/layouttoolbar.cc:31
 msgid "Items"
-msgstr ""
+msgstr "Elemente"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:30
 msgid "Lines"
-msgstr ""
+msgstr "Linii"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:31
 msgid "Records"
-msgstr ""
+msgstr "Înregistrări"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:33
 #: ../glom/utility_widgets/layouttoolbar.cc:38
 msgid "Database Field"
-msgstr ""
+msgstr "Câmp bază de date"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:33
 #: ../glom/utility_widgets/layouttoolbar.cc:38
 msgid "Drag this to the layout to add a new database field."
 msgstr ""
+"Trageți aceasta la aranjament pentru a adăuga un câmp de bază de date nou."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
 #: ../glom/utility_widgets/layouttoolbar.cc:44
 msgid "Drag this to the layout to add a new static text box."
 msgstr ""
+"Trageți aceasta la aranjament pentru a adăuga o cutie de text statică nouă."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
 #: ../glom/utility_widgets/layouttoolbar.cc:46
 msgid "Drag this to the layout to add a new static image."
-msgstr ""
+msgstr "Trageți aceasta la aranjament pentru a adăuga o imagine statică nouă."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:39
 msgid "Horizontal Line"
-msgstr ""
+msgstr "Linie orizontală"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:39
 msgid "Drag this to the layout to add a new horizontal line."
-msgstr ""
+msgstr "Trageți aceasta la aranjament pentru a adăuga o linie orizontală nouă."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:41
 msgid "Vertical Line"
-msgstr ""
+msgstr "Linie verticală"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:41
 msgid "Drag this to the layout to add a new vertical line."
-msgstr ""
+msgstr "Trageți aceasta la aranjament pentru a adăuga o linie verticală nouă."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
 #: ../glom/utility_widgets/layouttoolbar.cc:40
 msgid "Related Records"
-msgstr ""
+msgstr "Înregistrări asociate"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
 msgid "Drag this to the layout to add a new related records portal."
 msgstr ""
+"Trageți aceasta la aranjament pentru a adăuga un portal de înregistrări "
+"asociate nou."
 
 #. Ask for confirmation:
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:837
 msgid "Create Standard Layout"
-msgstr ""
+msgstr "Creează aranjament standard"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:838
 msgid ""
@@ -2468,119 +2689,129 @@ msgid ""
 "layout and then try to create a layout similar to the layout of the detail "
 "view."
 msgstr ""
+"Aceasta este o funcționalitate experimentală. Va elimina toate elementele "
+"din aranjamentul pentru imprimare și va încerca să creeze un aranjament "
+"similar cu aranjamentul vizualizării în detaliu."
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:841
 #: ../glom/mode_design/users/dialog_groups_list.cc:82
 msgid "Create"
-msgstr ""
+msgstr "Creează"
 
 #. Ask the user to confirm:
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:881
 msgid "Remove page"
-msgstr ""
+msgstr "Elimină pagina"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:882
 msgid ""
 "Are you sure that you wish to remove the last page and any items on that "
 "page?"
 msgstr ""
+"Sigur doriți să eliminați ultima pagină și toate elementele de pe acea "
+"pagină?"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:885
 msgid "Remove Page"
-msgstr ""
+msgstr "Elimină pagina"
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:124
 msgid "Remove library script"
-msgstr ""
+msgstr "Elimină scriptul de bibliotecă"
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:125
 msgid ""
 "Do you really want to delete this script? This data can not be recovered"
-msgstr ""
+msgstr "Sigur doriți să ștergeți acest script? Datele nu pot fi recuperate"
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:127
 #: ../data/ui/developer/dialog_script_library.glade.h:7
 #: ../data/ui/developer/window_users.glade.h:8
 msgid "_Remove"
-msgstr ""
+msgstr "_Elimină"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:76
 msgid "View"
-msgstr ""
+msgstr "Vizualizare"
 
 #. TODO: Prevent deletion of standard groups
 #: ../glom/mode_design/users/dialog_groups_list.cc:212
 msgid "Delete Group"
-msgstr ""
+msgstr "Șterge grupul"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:213
 msgid "Are your sure that you wish to delete this group?"
-msgstr ""
+msgstr "Sigur doriți să ștergeți acest grup?"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:354
 msgid "Full access."
-msgstr ""
+msgstr "Acces complet."
 
 #. Append the View columns:
 #: ../glom/mode_design/users/dialog_users_list.cc:66
 msgctxt "Users List"
 msgid "User"
-msgstr ""
+msgstr "Utilizator"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:157
 msgid "Delete User"
-msgstr ""
+msgstr "Șterge utilizatorul"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:158
 msgid "Are your sure that you wish to delete this user?"
-msgstr ""
+msgstr "Sigur doriți să ștergeți acest utilizator?"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:183
 msgid "Error Retrieving the List of Users"
-msgstr ""
+msgstr "Eroare la obținerea listei de utilizatori"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:184
 msgid ""
 "Glom could not get the list of users from the database server. You probably "
 "do not have enough permissions. You should be a superuser."
 msgstr ""
+"Glom nu poate obține lista utilizatorilor de la serverul bazei de date. "
+"Probabil că nu aveți destule permisiuni. Ar trebui să fiți un "
+"superutilizator."
 
 #: ../glom/mode_design/users/dialog_users_list.cc:411
 msgid "Developer group may not be empty."
-msgstr ""
+msgstr "Grupul de dezvoltare nu poate să fie gol."
 
 #: ../glom/mode_design/users/dialog_users_list.cc:412
 msgid "The developer group must contain at least one user."
-msgstr ""
+msgstr "Grupul de dezvoltare trebuie să conțină cel puțin un utilizator."
 
 #. Prevent two tables with the same name from being added.
 #: ../glom/navigation/box_tables.cc:129
 msgid "This table already exists. Please choose a different table name"
-msgstr ""
+msgstr "Acest tabel există deja. Alegeți un alt nume pentru tabel"
 
 #: ../glom/navigation/box_tables.cc:131
 msgid "Hidden"
-msgstr ""
+msgstr "Ascuns"
 
 #. TODO: This should really be a radio, but the use of AddDel makes it awkward to change that CellRenderer property.
 #: ../glom/navigation/box_tables.cc:135
 msgid "Default"
-msgstr ""
+msgstr "Implicit"
 
 #: ../glom/navigation/box_tables.cc:228
 msgid "Table Names Cannot Contain Spaces"
-msgstr ""
+msgstr "Numele tabelelor nu pot conține spații"
 
 #: ../glom/navigation/box_tables.cc:229
 msgid ""
 "Unfortunately, Glom tables cannot have names that contain spaces. Please "
 "enter a different name for the table."
 msgstr ""
+"Din nefericire, tabelele Glom nu pot avea nume care conțin spații. "
+"Introduceți un alt nume pentru tabel."
 
 #. Ask the user if they want us to try to cope with this:
 #: ../glom/navigation/box_tables.cc:241
 msgid "Table Already Exists"
-msgstr ""
+msgstr "Tabelul există deja"
 
 #: ../glom/navigation/box_tables.cc:242
 msgid ""
@@ -2588,6 +2819,9 @@ msgid ""
 "in the .glom file. This should not happen. Would you like Glom to attempt to "
 "use the existing table?"
 msgstr ""
+"Acest tabel există deja pe serverul bazei de date, deși nu este menționat în "
+"fișierul .glom. Asta nu ar trebui să se întâmple. Doriți ca Glom să încerce "
+"să utilizeze tabelul existent?"
 
 #. TODO: Do not show tables that are not in the document.
 #: ../glom/navigation/box_tables.cc:302
@@ -2595,6 +2829,8 @@ msgid ""
 "You cannot delete this table, because there is no information about this "
 "table in the document."
 msgstr ""
+"Nu puteți șterge acest tabel, pentru că nu există informații despre acest "
+"tabel în document."
 
 #. Ask the user to confirm:
 #: ../glom/navigation/box_tables.cc:309
@@ -2602,355 +2838,387 @@ msgid ""
 "Are you sure that you want to delete this table?\n"
 "Table name: %1"
 msgstr ""
+"Sigur doriți să ștergeți acest tabel?\n"
+"Numele tabelului: %1"
 
 #: ../glom/navigation/box_tables.cc:310 ../glom/navigation/box_tables.cc:316
 msgid "Delete Table"
-msgstr ""
+msgstr "Șterge tabelul"
 
 #: ../glom/navigation/box_tables.cc:417
 msgid "Are you sure that you want to rename this table?"
-msgstr ""
+msgstr "Sigur doriți să redenumiți acest tabel?"
 
 #. TODO: Show old and new names?
 #: ../glom/navigation/box_tables.cc:418
 msgid "<b>Rename Table</b>"
-msgstr ""
+msgstr "<b>Redenumește tabelul</b>"
 
 #: ../glom/navigation/box_tables.cc:459
 msgid "Unknown Table"
-msgstr ""
+msgstr "Tabel necunoscut"
 
 #: ../glom/navigation/box_tables.cc:460
 msgid ""
 "You cannot open this table, because there is no information about this table "
 "in the document."
 msgstr ""
+"Nu puteți deschide acest tabel, pentru ca nu există nicio informație despre "
+"acest tabel în document."
 
 #: ../glom/print_layout/canvas_layout_item.cc:230
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:112
 msgid "Choose Field"
-msgstr ""
+msgstr "Alegeți câmpul"
 
 #: ../glom/print_layout/canvas_print_layout.cc:287
 #: ../data/ui/developer/window_report_layout.glade.h:17
 msgid "_Formatting"
-msgstr ""
+msgstr "_Formatare"
 
 #. Append the View columns:
 #: ../glom/mode_design/translation/window_translations.cc:65
 msgid "Original"
-msgstr ""
+msgstr "Original"
 
 #: ../glom/mode_design/translation/window_translations.cc:72
 msgid "Translation"
-msgstr ""
+msgstr "Traducere"
 
 #. This is at the end, because it can contain a long description of the item's context.
 #: ../glom/mode_design/translation/window_translations.cc:78
 msgid "Item"
-msgstr ""
+msgstr "Element"
 
 #. Show the file-chooser dialog, to select an output .po file:
 #: ../glom/mode_design/translation/window_translations.cc:343
 #: ../glom/mode_design/translation/window_translations.cc:383
 msgid "Choose .po File Name"
-msgstr ""
+msgstr "Alegeți un nume de fișier .po"
 
 #: ../glom/mode_design/translation/window_translations.cc:349
 #: ../glom/mode_design/translation/window_translations.cc:388
 msgid "Po files"
-msgstr ""
+msgstr "Fișiere po"
 
 #: ../glom/mode_design/translation/window_translations.cc:354
 #: ../data/ui/developer/window_translations.glade.h:7
 msgid "Export"
-msgstr ""
+msgstr "Exportă"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
 #: ../glom/mode_design/translation/window_translations.cc:395
 #: ../data/ui/developer/window_translations.glade.h:6
 msgid "Import"
-msgstr ""
+msgstr "Importă"
 
 #: ../glom/utility_widgets/adddel/adddel.cc:121
 msgid "This item already exists. Please try again."
-msgstr ""
+msgstr "Acest item există deja. Încercați din nou."
 
 #. Something more specific and helpful.
 #: ../glom/utility_widgets/adddel/adddel.cc:125
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplică"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
 #: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:449
 msgid "Example"
-msgstr ""
+msgstr "Exemplu"
 
 #. The GNOME HIG says that labels should have ":" at the end:
 #. http://library.gnome.org/devel/hig-book/stable/design-text-labels.html.en
 #: ../glom/mode_data/datawidget/datawidget.cc:74
 msgid "%1:"
-msgstr ""
+msgstr "%1:"
 
 #. Let the user choose a date from a calendar dialog:
 #: ../glom/mode_data/datawidget/datawidget.cc:213
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #. TODO: A better label/icon for "Choose Date".
 #: ../glom/mode_data/datawidget/datawidget.cc:214
 msgid "Choose a date from an on-screen calendar."
-msgstr ""
+msgstr "Alegeți o dată dintr-un calendar pe ecran."
 
 #: ../glom/mode_data/datawidget/datawidget.cc:224
 msgid "Open the record identified by this ID, in the other table."
-msgstr ""
+msgstr "Deschide înregistrarea definită de acest ID, în celălalt tabel."
 
 #: ../glom/mode_data/datawidget/datawidget.cc:234
 msgid ""
 "Enter search criteria to identify records in the other table, to choose an "
 "ID for this field."
 msgstr ""
+"Introduceți criterii de căutare pentru a identifica înregistrări în celălalt "
+"tabel, pentru a alege un ID pentru acest câmp."
 
 #: ../glom/mode_data/datawidget/datawidget.cc:238
 #: ../data/ui/operator/window_main.glade.h:4
 #: ../data/ui/developer/window_groups.glade.h:5
 #: ../data/ui/developer/window_users.glade.h:5
 msgid "_New"
-msgstr ""
+msgstr "_Nou"
 
 #: ../glom/mode_data/datawidget/datawidget.cc:239
 msgid ""
 "Enter details for a new record in the other table, then use its ID for this "
 "field."
 msgstr ""
+"Introduceți detalii pentru o nouă înregistrare în celălalt tabel, apoi "
+"utilizați ID-ul acesteia pentru acest câmp."
 
 #: ../glom/mode_data/db_adddel/db_adddel.cc:78
 msgid "Table Content"
-msgstr ""
+msgstr "Conținut tabel"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/db_adddel/db_adddel.cc:533
+#: ../glom/mode_data/db_adddel/db_adddel.cc:539
 msgid "ExampleEg"
-msgstr ""
+msgstr "ExempluEg"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2003
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2021
 msgid "Right-click to layout, to specify the related fields."
-msgstr ""
+msgstr "Clic dreapta pentru aranjament, pentru a specifica câmpurile legate."
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2219
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2237
 msgid "Extra Related Records Not Possible"
-msgstr ""
+msgstr "Înregistrările legate extra nu sunt posibile"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2220
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2238
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
 msgstr ""
+"Ați încercat să adăugați o înregistrare legată nouă, dar poate fi doar o "
+"înregistrare legată, pentru că relația utilizează o cheie unică."
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:87
 #: ../glom/utility_widgets/imageglom.cc:783
 #: ../data/ui/developer/dialog_field_summary.glade.h:5
 #: ../data/ui/developer/dialog_group_by.glade.h:6
 msgid "Select"
-msgstr ""
+msgstr "Selectează"
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:104
 msgid "You have not entered any quick find criteria."
-msgstr ""
+msgstr "Nu ați introdus niciun criteriu de căutare rapidă."
 
 #: ../glom/utility_widgets/dialog_image_load_progress.cc:108
 msgid "Not enough memory available to load the image"
-msgstr ""
+msgstr "Nu există destulă memorie disponibilă pentru a încărca imaginea"
 
 #: ../glom/utility_widgets/dialog_image_load_progress.cc:160
 msgid "Error loading %1"
-msgstr ""
+msgstr "Eroare la încărcarea %1"
 
 #: ../glom/utility_widgets/dialog_image_load_progress.cc:161
 msgid "Error loading image"
-msgstr ""
+msgstr "Eroare la încărcarea imaginii"
 
 #: ../glom/utility_widgets/dialog_image_save_progress.cc:133
 msgid "Error Saving"
-msgstr ""
+msgstr "Eroare la salvare"
 
 #: ../glom/utility_widgets/dialog_image_save_progress.cc:134
 msgid "Error saving image"
-msgstr ""
+msgstr "Eroare la salvarea imaginii"
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:78
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:64
 msgid "New Database"
-msgstr ""
+msgstr "Bază de date nouă"
 
 #. For instance, an extra hint when saving from an example, saying that a new file must be saved.
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:92
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:78
 msgid ""
 "Please choose a human-readable title for the new database. You can change "
 "this later in the database properties. It may contain any characters."
 msgstr ""
+"Alegeți un titlu ușor de înțeles pentru noua bază de date. Puteți schimba "
+"titlul acesta mai târziu în proprietățile bazei de date. Poate să conțină "
+"orice caractere."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:99
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:85
 #: ../data/ui/developer/window_field_definition_edit.glade.h:3
 #: ../data/ui/developer/window_report_layout.glade.h:7
 msgid "_Title:"
-msgstr ""
+msgstr "_Titlu:"
 
 #. Use titles that show the distinction between PostgreSQL and the alternatives:
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:114
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:100
 msgid ""
 "Create PostgreSQL database in its own folder, to be hosted by this computer."
 msgstr ""
+"Creează o bază de date PostgreSQL în propriul dosar, pentru a fi găzduit de "
+"acest calculator."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:115
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:101
 msgid ""
 "Create database on an external PostgreSQL database server, to be specified "
 "in the next step."
 msgstr ""
+"Creează o bază de date pe un server de baze de date PostgreSQL extern, "
+"pentru a fi specificat în următorul pas."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:117
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:103
 msgid "Create database in its own folder, to be hosted by this computer."
 msgstr ""
+"Creează o bază de date în dosarul ei, pentru a fi găzduită de acest "
+"calculator."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:118
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:104
 msgid ""
 "Create database on an external database server, to be specified in the next "
 "step."
 msgstr ""
+"Creează o bază de date pe un server de baze de date extern, pentru a fi "
+"specificat în următorul pas."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:135
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:121
 msgid ""
 "Create SQLite database in its own folder, to be hosted by this computer."
 msgstr ""
+"Creează o bază de date SQLite în propriul dosar, pentru a fi găzduit de "
+"acest calculator."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:136
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:122
 msgid ""
 "SQLite does not support authentication or remote access but is suitable for "
 "embedded devices."
 msgstr ""
+"SQLite nu suportă autentificarea sau accesul de la distanță dar este "
+"potrivit pentru dispozitive încorporate."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:143
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:129
 msgid "Create MySQL database in its own folder, to be hosted by this computer."
 msgstr ""
+"Creează o baze de date MySQL în propriul dosar, pentru a fi găzduit de acest "
+"calculator."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:144
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:150
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:130
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:136
 msgid "MySQL support in Glom is experimental and unlikely to work properly."
 msgstr ""
+"Suportul MySQL în Glom este experimental și este puțin probabil să "
+"funcționeze corect."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:149
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:135
 msgid ""
 "Create database on an external MySQL database server, to be specified in the "
 "next step."
 msgstr ""
+"Creează o bază de date pe un server de baze de date MySQL extern, pentru a "
+"fi specificat în următorul pas."
 
 #: ../glom/utility_widgets/imageglom.cc:668
 msgid "Images"
-msgstr ""
+msgstr "Imagini"
 
 #: ../glom/utility_widgets/imageglom.cc:689
 msgid "Save Image"
-msgstr ""
+msgstr "Salvează imaginea"
 
 #: ../glom/utility_widgets/imageglom.cc:776
 #: ../data/ui/developer/dialog_database_preferences.glade.h:15
 msgid "Choose Image"
-msgstr ""
+msgstr "Alegeți imaginea"
 
 #: ../glom/utility_widgets/imageglom.cc:968
 msgid "_Open File"
-msgstr ""
+msgstr "_Deschide fișierul"
 
 #: ../glom/utility_widgets/imageglom.cc:969
 msgid "Open File With"
-msgstr ""
+msgstr "Deschide fișierul cu"
 
 #: ../glom/utility_widgets/imageglom.cc:971
 #: ../data/ui/operator/window_main.glade.h:15
 #: ../data/ui/developer/window_print_layout_edit.glade.h:6
 msgid "_Copy"
-msgstr ""
+msgstr "_Copiază"
 
 #: ../glom/utility_widgets/imageglom.cc:972
 #: ../data/ui/operator/window_main.glade.h:16
 #: ../data/ui/developer/window_print_layout_edit.glade.h:7
 msgid "_Paste"
-msgstr ""
+msgstr "_Lipește"
 
 #: ../glom/utility_widgets/imageglom.cc:973
 #: ../data/ui/operator/window_main.glade.h:17
 msgid "_Clear"
-msgstr ""
+msgstr "_Curăță"
 
 #: ../glom/utility_widgets/layouttoolbar.cc:32
 msgid "Containers"
-msgstr ""
+msgstr "Containere"
 
 #: ../glom/utility_widgets/layouttoolbar.cc:34
 msgid "Drag this to the layout to add a new group."
-msgstr ""
+msgstr "Trageți aceasta la aranjament pentru a adăuga un grup nou."
 
 #: ../glom/utility_widgets/layouttoolbar.cc:36
 msgid "Drag this to the layout to add a new notebook."
-msgstr ""
+msgstr "Trageți aceasta la aranjament pentru a adăuga o agendă nouă."
 
 #: ../glom/utility_widgets/layouttoolbar.cc:40
 msgid "Drag this to the layout to add a new Related Record."
 msgstr ""
+"Trageți aceasta la aranjament pentru a adăuga o înregistrare asociată nouă."
 
 #: ../glom/utility_widgets/layouttoolbar.cc:42
 msgid "Drag this to the layout to add a new button."
-msgstr ""
+msgstr "Trageți aceasta la aranjament pentru a adăuga un buton nou."
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:113
 msgid "Field Layout Properties"
-msgstr ""
+msgstr "Proprietăți aranjament câmp"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:114
 #: ../data/ui/developer/window_data_layout.glade.h:19
 msgid "Add Related Records"
-msgstr ""
+msgstr "Adaugă înregistrările asociate"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:115
 #: ../data/ui/developer/window_data_layout.glade.h:17
 msgid "Add Notebook"
-msgstr ""
+msgstr "Adaugă o agendă"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:116
 #: ../data/ui/developer/window_data_layout.glade.h:15
 msgid "Add Group"
-msgstr ""
+msgstr "Adaugă un grup"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:117
 #: ../data/ui/developer/window_data_layout.glade.h:13
 msgid "Add Button"
-msgstr ""
+msgstr "Adaugă un buton"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:118
 #: ../data/ui/developer/window_data_layout.glade.h:9
 msgid "Add Text"
-msgstr ""
+msgstr "Adaugă un text"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:119
 msgid "Delete"
-msgstr ""
+msgstr "Șterge"
 
 #: ../glom/utility_widgets/layoutwidgetutils.cc:52
 msgid "Properties"
-msgstr ""
+msgstr "Proprietăți"
 
 #: ../glom/utility_widgets/notebooklabelglom.cc:85
 msgid "Delete whole notebook \"%1\"?"
-msgstr ""
+msgstr "Ștergeți întreaga agendă „%1”?"
 
 #: ../glom/utility_widgets/notebooklabelglom.cc:90
 msgid "Delete whole notebook?"
-msgstr ""
+msgstr "Ștergeți întreaga agendă?"
 
 #: ../data/ui/operator/box_navigation_tables.glade.h:2
 msgid "_Show hidden tables"
-msgstr ""
+msgstr "_Arată tabelele ascunse"
 
 #: ../data/ui/operator/box_navigation_tables.glade.h:3
 #: ../data/ui/operator/dialog_new_record.glade.h:2
@@ -2967,11 +3235,11 @@ msgstr ""
 #: ../data/ui/developer/window_text_format.glade.h:2
 #: ../data/ui/developer/window_users.glade.h:3
 msgid "_Close"
-msgstr ""
+msgstr "În_chide"
 
 #: ../data/ui/operator/dialog_choose_date.glade.h:1
 msgid "Choose Date"
-msgstr ""
+msgstr "Alegeți data"
 
 #: ../data/ui/operator/dialog_choose_date.glade.h:2
 #: ../data/ui/operator/dialog_connection.glade.h:2
@@ -3000,7 +3268,7 @@ msgstr ""
 #: ../data/ui/developer/window_textobject.glade.h:2
 #: ../data/ui/developer/window_users.glade.h:2
 msgid "_Help"
-msgstr ""
+msgstr "_Ajutor"
 
 #: ../data/ui/operator/dialog_choose_date.glade.h:4
 #: ../data/ui/operator/dialog_data_invalid_format.glade.h:3
@@ -3022,7 +3290,7 @@ msgstr ""
 #: ../data/ui/developer/window_textobject.glade.h:4
 #: ../data/ui/developer/window_translations.glade.h:11
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: ../data/ui/operator/dialog_choose_date.glade.h:5
 msgid ""
@@ -3030,54 +3298,57 @@ msgid ""
 "\n"
 "Please select a date to enter in this field."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Alege data</span>\n"
+"\n"
+"Selectați o dată pentru a introduce în acest câmp."
 
 #: ../data/ui/operator/dialog_connection.glade.h:1
 msgid "Connect to Server"
-msgstr ""
+msgstr "Conectează la server"
 
 #: ../data/ui/operator/dialog_connection.glade.h:4
 msgid "C_onnect"
-msgstr ""
+msgstr "C_onectează"
 
 #: ../data/ui/operator/dialog_connection.glade.h:5
 msgid "Please enter the connection details for your database server."
-msgstr ""
+msgstr "Introduceți detaliile de conexiune pentru serverul bazei de date."
 
 #: ../data/ui/operator/dialog_connection.glade.h:6
 msgid "Host"
-msgstr ""
+msgstr "Gazdă"
 
 #: ../data/ui/operator/dialog_connection.glade.h:8
 #: ../data/ui/developer/dialog_choose_user.glade.h:8
 #: ../data/ui/developer/dialog_user.glade.h:1
 msgid "User"
-msgstr ""
+msgstr "Utilizator"
 
 #: ../data/ui/operator/dialog_connection.glade.h:9
 msgid "_Host:"
-msgstr ""
+msgstr "_Gazdă:"
 
 #: ../data/ui/operator/dialog_connection.glade.h:10
 msgid "Database:"
-msgstr ""
+msgstr "Bază de date:"
 
 #: ../data/ui/operator/dialog_connection.glade.h:11
 #: ../data/ui/developer/dialog_initial_password.glade.h:6
 msgid "_User:"
-msgstr ""
+msgstr "_Utilizator:"
 
 #: ../data/ui/operator/dialog_connection.glade.h:12
 #: ../data/ui/developer/dialog_initial_password.glade.h:7
 msgid "_Password:"
-msgstr ""
+msgstr "_Parolă:"
 
 #: ../data/ui/operator/dialog_connection.glade.h:13
 msgid "Database"
-msgstr ""
+msgstr "Bază de date"
 
 #: ../data/ui/operator/dialog_data_invalid_format.glade.h:2
 msgid "_Revert"
-msgstr ""
+msgstr "_Revino"
 
 #: ../data/ui/operator/dialog_data_invalid_format.glade.h:4
 msgid ""
@@ -3087,44 +3358,50 @@ msgid ""
 "revert to the previous value. Here is an example of correctly-formatted data "
 "for this field.\n"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Format nevalid</span>\n"
+"\n"
+"Datele din câmp nu au fost recunoscute. Încercați să corectați datele sau să "
+"reveniți la valoarea anterioară. Aici este un exemplu de date formatate "
+"corect pentru acest câmp.\n"
 
 #: ../data/ui/operator/dialog_data_invalid_format.glade.h:8
 msgid "example data format"
-msgstr ""
+msgstr "exemplu de format de date"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:1
 msgid "Welcome to Glom"
-msgstr ""
+msgstr "Bine ați venit la Glom"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:3
 msgid "_Quit"
-msgstr ""
+msgstr "_Ieșire"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:4
 #: ../data/ui/developer/dialog_choose_field.glade.h:3
 #: ../data/ui/developer/dialog_choose_relationship.glade.h:3
 msgid "_Select"
-msgstr ""
+msgstr "_Selectează"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:5
 msgid "<span weight=\"bold\" size=\"larger\">Open or Create a Document</span>"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Deschide sau creează un document</span>"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:6
 msgid "Open or create Document"
-msgstr ""
+msgstr "Deschide sau creează un document"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:7
 msgid "Open Existing Document"
-msgstr ""
+msgstr "Deschide un document existent"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:8
 msgid "Create New Document"
-msgstr ""
+msgstr "Creează document nou"
 
 #: ../data/ui/operator/dialog_find_id.glade.h:1
 msgid "Find Related Record"
-msgstr ""
+msgstr "Caută înregistrarea asociată"
 
 #: ../data/ui/operator/dialog_find_id.glade.h:3
 #: ../data/ui/operator/dialog_new_record.glade.h:3
@@ -3133,213 +3410,213 @@ msgstr ""
 #: ../data/ui/developer/window_design.glade.h:2
 #: ../data/ui/developer/window_report_layout.glade.h:2
 msgid "<b>Table:</b>"
-msgstr ""
+msgstr "<b>Tabel:</b>"
 
 #: ../data/ui/operator/dialog_find_id.glade.h:4
 #: ../data/ui/operator/dialog_new_record.glade.h:4
 msgid "table_name"
-msgstr ""
+msgstr "nume_tabel"
 
 #: ../data/ui/operator/dialog_new_record.glade.h:1
 msgid "New Related Record"
-msgstr ""
+msgstr "Înregistrare asociată nouă"
 
 #: ../data/ui/operator/dialog_image_load_progress.glade.h:1
 msgid "Loading image"
-msgstr ""
+msgstr "Se încarcă imaginea"
 
 #: ../data/ui/operator/dialog_image_save_progress.glade.h:1
 msgid "Saving Image"
-msgstr ""
+msgstr "Se salvează imaginea"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:1
 msgid "bla.blub - Import from CSV"
-msgstr ""
+msgstr "bla.blub - Import din CSV"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:3
 #: ../data/ui/operator/window_main.glade.h:8
 msgid "I_mport"
-msgstr ""
+msgstr "I_mportă"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:5
 #: ../data/ui/developer/box_formatting.glade.h:23
 msgid "label"
-msgstr ""
+msgstr "etichetă"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:6
 msgid "_First line as title"
-msgstr ""
+msgstr "_Prima linie ca titlu"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:7
 msgid "_Encoding:"
-msgstr ""
+msgstr "_Codare:"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:8
 msgid "Import Into _Table:"
-msgstr ""
+msgstr "Importă în _tabelul:"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:9
 msgid "Encoding detected as: UTF-8"
-msgstr ""
+msgstr "Codare detectată ca: UTF-8"
 
 #. Import is a noun here. This is the title for a window showing options for an import operation.
 #: ../data/ui/operator/dialog_import_csv.glade.h:11
 msgid "<b>Import Options</b>"
-msgstr ""
+msgstr "<b>Opțiuni import</b>"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:12
 msgid "_Number of sample rows:"
-msgstr ""
+msgstr "_Număr de rânduri mostră:"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:13
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #. Import is a noun here. This is the title for a list of fields to import.
 #: ../data/ui/operator/dialog_import_csv.glade.h:15
 msgid "<b>Import Fields</b>"
-msgstr ""
+msgstr "<b>Câmpuri import</b>"
 
 #. This is a status message for a progress dialog. It says that importing is currently happenning.
 #: ../data/ui/operator/dialog_import_csv_progress.glade.h:2
 msgid "Importing Data"
-msgstr ""
+msgstr "Se importă datele"
 
 #: ../data/ui/operator/dialog_import_csv_progress.glade.h:5
 msgid "Please wait while your data is imported."
-msgstr ""
+msgstr "Așteptați importarea datelor."
 
 #: ../data/ui/operator/window_main.glade.h:3
 #: ../data/ui/developer/window_print_layout_edit.glade.h:1
 #: ../data/ui/developer/window_relationships_overview.glade.h:1
 msgid "_File"
-msgstr ""
+msgstr "_Fișier"
 
 #: ../data/ui/operator/window_main.glade.h:6
 msgid "_Save as Example"
-msgstr ""
+msgstr "_Salvează ca exemplu"
 
 #: ../data/ui/operator/window_main.glade.h:9
 msgid "S_hared on Network"
-msgstr ""
+msgstr "P_artajat pe rețea"
 
 #: ../data/ui/operator/window_main.glade.h:10
 #: ../data/ui/developer/window_relationships_overview.glade.h:3
 msgid "_Print"
-msgstr ""
+msgstr "_Tipărește"
 
 #: ../data/ui/operator/window_main.glade.h:11
 msgid "_Edit Print Layouts"
-msgstr ""
+msgstr "_Editează aranjamentele de tipărire"
 
 #: ../data/ui/operator/window_main.glade.h:14
 #: ../data/ui/developer/window_print_layout_edit.glade.h:5
 msgid "Cu_t"
-msgstr ""
+msgstr "_Taie"
 
 #: ../data/ui/operator/window_main.glade.h:19
 msgid "_Tables"
-msgstr ""
+msgstr "_Tabele"
 
 #: ../data/ui/operator/window_main.glade.h:20
 msgid "_Edit Tables"
-msgstr ""
+msgstr "_Editează tabelele"
 
 #: ../data/ui/operator/window_main.glade.h:21
 msgid "R_eports"
-msgstr ""
+msgstr "Rapoart_e"
 
 #: ../data/ui/operator/window_main.glade.h:22
 msgid "_Edit Reports"
-msgstr ""
+msgstr "_Editează rapoartele"
 
 #: ../data/ui/operator/window_main.glade.h:23
 msgid "_Developer"
-msgstr ""
+msgstr "_Dezvoltator"
 
 #: ../data/ui/operator/window_main.glade.h:24
 msgid "_Operator"
-msgstr ""
+msgstr "_Operator"
 
 #: ../data/ui/operator/window_main.glade.h:25
 msgid "_Fields"
-msgstr ""
+msgstr "_Câmpuri"
 
 #: ../data/ui/operator/window_main.glade.h:26
 msgid "_Relationships"
-msgstr ""
+msgstr "_Relații"
 
 #: ../data/ui/operator/window_main.glade.h:27
 msgid "Relationships _Overview"
-msgstr ""
+msgstr "_Prezentare generală a relațiilor"
 
 #: ../data/ui/operator/window_main.glade.h:29
 msgid "_Print Layouts"
-msgstr ""
+msgstr "Aranjamente _tipărire"
 
 #: ../data/ui/operator/window_main.glade.h:30
 msgid "_Reports"
-msgstr ""
+msgstr "_Rapoarte"
 
 #: ../data/ui/operator/window_main.glade.h:31
 msgid "_Database Preferences"
-msgstr ""
+msgstr "Preferințe bază de _date"
 
 #: ../data/ui/operator/window_main.glade.h:32
 msgid "_Users"
-msgstr ""
+msgstr "_Utilizatori"
 
 #: ../data/ui/operator/window_main.glade.h:33
 msgid "Script _Library"
-msgstr ""
+msgstr "Bib_liotecă de script"
 
 #: ../data/ui/operator/window_main.glade.h:34
 msgid "_Translations"
-msgstr ""
+msgstr "_Traduceri"
 
 #: ../data/ui/operator/window_main.glade.h:35
 msgid "Test Tra_nslation"
-msgstr ""
+msgstr "Testează _traducerea"
 
 #: ../data/ui/operator/window_main.glade.h:36
 msgid "Active Platform"
-msgstr ""
+msgstr "Platformă activă"
 
 #: ../data/ui/operator/window_main.glade.h:37
 msgid "_Normal"
-msgstr ""
+msgstr "_Normal"
 
 #: ../data/ui/operator/window_main.glade.h:38
 msgid "_Maemo"
-msgstr ""
+msgstr "_Maemo"
 
 #: ../data/ui/operator/window_main.glade.h:39
 msgid "_Drag and Drop Layout"
-msgstr ""
+msgstr "_Trage și plasează aranjamentul"
 
 #: ../data/ui/operator/window_main.glade.h:40
 msgid "_Export Backup"
-msgstr ""
+msgstr "_Exportă copia de rezervă"
 
 #: ../data/ui/operator/window_main.glade.h:41
 msgid "_Restore Backup"
-msgstr ""
+msgstr "_Restaurează copia de rezervă"
 
 #: ../data/ui/operator/window_main.glade.h:43
 msgid "_About"
-msgstr ""
+msgstr "_Despre"
 
 #: ../data/ui/operator/window_main.glade.h:44
 msgid "_Contents"
-msgstr ""
+msgstr "_Conținut"
 
 #: ../data/ui/developer/dialog_add_related_table.glade.h:1
 msgid "Add Related Table"
-msgstr ""
+msgstr "Adaugă tabelul asociat"
 
 #: ../data/ui/developer/dialog_add_related_table.glade.h:3
 msgid "C_reate Table"
-msgstr ""
+msgstr "C_reează tabel"
 
 #: ../data/ui/developer/dialog_add_related_table.glade.h:4
 msgid ""
@@ -3349,31 +3626,36 @@ msgid ""
 "If a suitable related table already exists then you should instead cancel "
 "and just add a relationship."
 msgstr ""
+"Aceasta va adăuga un tabel nou și va adăuga o nouă relație care referă la "
+"tabelul  nou, ca o alternativă convenientă la a face asta în pași separați.\n"
+"\n"
+"Dacă un tabel legat potrivi există deja atunci trebuie doar să anulați și să "
+"adăugați o relație."
 
 #. Translators: FROM as in SQL
 #: ../data/ui/developer/dialog_add_related_table.glade.h:8
 msgid "From field:"
-msgstr ""
+msgstr "De la câmpul:"
 
 #: ../data/ui/developer/dialog_add_related_table.glade.h:9
 msgid "_Edit Fields"
-msgstr ""
+msgstr "_Editează câmpurile"
 
 #: ../data/ui/developer/dialog_add_related_table.glade.h:10
 msgid "Name of new related table:"
-msgstr ""
+msgstr "Numele tabelului asociat nou:"
 
 #: ../data/ui/developer/dialog_add_related_table.glade.h:11
 msgid "Name of new relationship:"
-msgstr ""
+msgstr "Numele relației noi:"
 
 #: ../data/ui/developer/dialog_change_language.glade.h:1
 msgid "Test Translation"
-msgstr ""
+msgstr "Testează traducerea"
 
 #: ../data/ui/developer/dialog_change_language.glade.h:4
 msgid "Change Language"
-msgstr ""
+msgstr "Modifică limba"
 
 #: ../data/ui/developer/dialog_change_language.glade.h:5
 msgid ""
@@ -3387,34 +3669,43 @@ msgid ""
 "dialog windows, will only be translated when you start Glom on a computer "
 "that uses that language."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Testează traducerea</span>\n"
+"\n"
+"Alege o limbă pentru utilizare temporară pentru a testa traducerile. Aceste "
+"traduceri sunt în mod normal utilizate automat când aplicația este pornită "
+"pe un calculator care utilizează limba.\n"
+"\n"
+"Observați că părțile standard ale interfeței cu utilizatorul Glom, precum "
+"meniurile și ferestrele de dialog, vor fi traduse doar când porniți Glom pe "
+"un calculator care utilizează acea limbă."
 
 #: ../data/ui/developer/dialog_change_language.glade.h:10
 msgid "Locale:"
-msgstr ""
+msgstr "Localizare:"
 
 #: ../data/ui/developer/dialog_choose_field.glade.h:1
 msgid "Select Field"
-msgstr ""
+msgstr "Selectează câmpul"
 
 #: ../data/ui/developer/dialog_choose_field.glade.h:4
 msgid "Show _Related Relationships"
-msgstr ""
+msgstr "Arată relațiile _asociate"
 
 #: ../data/ui/developer/dialog_choose_field.glade.h:5
 msgid "_Table:"
-msgstr ""
+msgstr "_Tabel:"
 
 #: ../data/ui/developer/dialog_choose_relationship.glade.h:1
 msgid "Select Relationship"
-msgstr ""
+msgstr "Selectează relația"
 
 #: ../data/ui/developer/dialog_choose_relationship.glade.h:4
 msgid "Table:"
-msgstr ""
+msgstr "Tabel:"
 
 #: ../data/ui/developer/dialog_choose_user.glade.h:1
 msgid "Choose User"
-msgstr ""
+msgstr "Alegeți utilizatorul"
 
 #: ../data/ui/developer/dialog_choose_user.glade.h:5
 msgid ""
@@ -3422,78 +3713,82 @@ msgid ""
 "\n"
 "Which user should be added to this group?"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Adaugă utilizator la grup</span>\n"
+"\n"
+"Care utilizator ar trebui să fie adăugat la acest grup?"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:1
 msgid "Database Preferences"
-msgstr ""
+msgstr "Preferințe bază de date"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:5
 msgid "System Name:"
-msgstr ""
+msgstr "Nume sistem:"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:6
 msgid "Name:"
-msgstr ""
+msgstr "Nume:"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:7
 msgid "Country:"
-msgstr ""
+msgstr "Țară:"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:8
 msgid "Zip/Postal Code:"
-msgstr ""
+msgstr "Cod zip/poștal:"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:9
 msgid "State/County:"
-msgstr ""
+msgstr "Stat/Județ:"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:10
 msgid "Town:"
-msgstr ""
+msgstr "Oraș:"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:11
 msgid "Street (Line 2):"
-msgstr ""
+msgstr "Stradă (linia 2):"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:12
 msgid "Street:"
-msgstr ""
+msgstr "Stradă:"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:13
 msgid "<b>Address</b>"
-msgstr ""
+msgstr "<b>Adresă</b>"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:14
 msgid "Organisation"
-msgstr ""
+msgstr "Organizație"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:16
 msgid "Logo"
-msgstr ""
+msgstr "Logo"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:17
 msgid "Auto-increment values"
-msgstr ""
+msgstr "Auto-incrementează valorile"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:18
 msgid ""
 "When the database is opened the python function implemented here will run."
 msgstr ""
+"Când baza de date ese deschisă funcția python implementată aici va rula."
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:19
 #: ../data/ui/developer/window_button_script.glade.h:7
 #: ../data/ui/developer/window_field_calculation.glade.h:6
 msgid "Test"
-msgstr ""
+msgstr "Test"
 
 #: ../data/ui/developer/dialog_database_preferences.glade.h:20
 msgid "Startup Script"
-msgstr ""
+msgstr "Scrip executat la pornire"
 
 #: ../data/ui/developer/dialog_fieldslist.glade.h:4
 #: ../data/ui/developer/dialog_sort_fields.glade.h:5
 msgid "Table: "
-msgstr ""
+msgstr "Tabel: "
 
 #: ../data/ui/developer/dialog_fieldslist.glade.h:5
 #: ../data/ui/developer/dialog_notebook.glade.h:5
@@ -3502,7 +3797,7 @@ msgstr ""
 #: ../data/ui/developer/window_data_layout.glade.h:23
 #: ../data/ui/developer/window_report_layout.glade.h:14
 msgid "_Up"
-msgstr ""
+msgstr "S_us"
 
 #: ../data/ui/developer/dialog_fieldslist.glade.h:6
 #: ../data/ui/developer/dialog_notebook.glade.h:6
@@ -3511,57 +3806,57 @@ msgstr ""
 #: ../data/ui/developer/window_data_layout.glade.h:24
 #: ../data/ui/developer/window_report_layout.glade.h:15
 msgid "_Down"
-msgstr ""
+msgstr "_Jos"
 
 #: ../data/ui/developer/dialog_fieldslist.glade.h:11
 #: ../data/ui/developer/window_data_layout.glade.h:29
 msgid "<b>Fields</b>"
-msgstr ""
+msgstr "<b>Câmpuri</b>"
 
 #: ../data/ui/developer/dialog_field_summary.glade.h:4
 #: ../data/ui/developer/dialog_group_by.glade.h:4
 #: ../data/ui/developer/box_formatting.glade.h:21
 msgid "Field:"
-msgstr ""
+msgstr "Câmp:"
 
 #: ../data/ui/developer/dialog_field_summary.glade.h:6
 msgid "Summary Type:"
-msgstr ""
+msgstr "Tip de rezumat:"
 
 #: ../data/ui/developer/dialog_flowtable.glade.h:1
 msgid "Group Properties"
-msgstr ""
+msgstr "Proprietăți grup"
 
 #: ../data/ui/developer/dialog_flowtable.glade.h:4
 msgid "Columns:"
-msgstr ""
+msgstr "Coloane:"
 
 #: ../data/ui/developer/dialog_flowtable.glade.h:5
 #: ../data/ui/developer/window_print_layout_edit.glade.h:42
 msgid "Title:"
-msgstr ""
+msgstr "Titlu:"
 
 #: ../data/ui/developer/dialog_group_by.glade.h:7
 msgid "Sort Fields:"
-msgstr ""
+msgstr "Sortează câmpurile:"
 
 #: ../data/ui/developer/dialog_group_by.glade.h:9
 msgid "Secondary Fields:"
-msgstr ""
+msgstr "Câmpuri secundare:"
 
 #: ../data/ui/developer/dialog_group_by.glade.h:10
 msgid "Border Width (ems):"
-msgstr ""
+msgstr "Lățime margine (ems):"
 
 #: ../data/ui/developer/dialog_initial_password.glade.h:1
 msgid "Database User"
-msgstr ""
+msgstr "Utilizator bază de date"
 
 #: ../data/ui/developer/dialog_initial_password.glade.h:4
 #: ../data/ui/developer/dialog_new_group.glade.h:4
 #: ../data/ui/developer/dialog_new_library_script.glade.h:4
 msgid "C_reate"
-msgstr ""
+msgstr "_Creează"
 
 #: ../data/ui/developer/dialog_initial_password.glade.h:5
 msgid ""
@@ -3569,60 +3864,64 @@ msgid ""
 "additional users later. Remember to keep this password secret because it "
 "allows access to your data from other computers on the network."
 msgstr ""
+"Introduceți detaliile conexiunii inițiale pentru baza de date. Puteți adăuga "
+"utilizatori adiționali mai târziu. Amintiți-vă să păstrați această parolă "
+"secretă pentru că permite accesul la date de la alte calculatoare de pe "
+"rețea."
 
 #: ../data/ui/developer/dialog_initial_password.glade.h:8
 msgid "_Confirm Password:"
-msgstr ""
+msgstr "_Confirmă parola:"
 
 #: ../data/ui/developer/dialog_line.glade.h:1
 #: ../data/ui/developer/window_textobject.glade.h:1
 msgid "Text Object"
-msgstr ""
+msgstr "Obiect text"
 
 #: ../data/ui/developer/dialog_line.glade.h:5
 msgid "Line Width:"
-msgstr ""
+msgstr "Lățime linie:"
 
 #: ../data/ui/developer/dialog_line.glade.h:6
 msgid "Color:"
-msgstr ""
+msgstr "Culoare:"
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:1
 msgid "Field Layout"
-msgstr ""
+msgstr "Aranjament câmp"
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:4
 msgid "<b>Field:</b>"
-msgstr ""
+msgstr "<b>Câmp:</b>"
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:6
 msgid "Use default field title: "
-msgstr ""
+msgstr "Utilizează titlul de câmp implicit: "
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:7
 msgid "Use custom title:"
-msgstr ""
+msgstr "Utilizează titlu personalizat:"
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:8
 msgid "<b>Title</b>"
-msgstr ""
+msgstr "<b>Titlu</b>"
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:9
 msgid "Use default formatting"
-msgstr ""
+msgstr "Utilizează formatarea implicită"
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:10
 msgid "Use custom formatting"
-msgstr ""
+msgstr "Utilizează formatare personalizată"
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:11
 msgid "<b>Formatting</b>"
-msgstr ""
+msgstr "<b>Formatare</b>"
 
 #: ../data/ui/developer/dialog_new_group.glade.h:1
 #: ../data/ui/developer/dialog_new_library_script.glade.h:1
 msgid "Create Group"
-msgstr ""
+msgstr "Creează grup"
 
 #: ../data/ui/developer/dialog_new_group.glade.h:5
 msgid ""
@@ -3630,10 +3929,13 @@ msgid ""
 "\n"
 "What name should this group have?"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Creează grup</span>\n"
+"\n"
+"Ce nume ar trebui acest grup să aibă?"
 
 #: ../data/ui/developer/dialog_new_group.glade.h:8
 msgid "Group name:"
-msgstr ""
+msgstr "Nume grup:"
 
 #: ../data/ui/developer/dialog_new_library_script.glade.h:5
 msgid ""
@@ -3641,50 +3943,55 @@ msgid ""
 "\n"
 "What name should this module have?"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Adaugă modul</span>\n"
+"\n"
+"Ce nume ar trebui să aibă acest modul?"
 
 #: ../data/ui/developer/dialog_new_library_script.glade.h:8
 msgid "Script name:"
-msgstr ""
+msgstr "Nume script:"
 
 #: ../data/ui/developer/dialog_notebook.glade.h:9
 msgid "<b>Notebook Tabs</b>"
-msgstr ""
+msgstr "<b>Taburi agendă</b>"
 
 #: ../data/ui/developer/dialog_script_library.glade.h:1
 msgid "Script Library"
-msgstr ""
+msgstr "Bibliotecă de script"
 
 #: ../data/ui/developer/dialog_script_library.glade.h:4
 msgid ""
 "These modules will be available to your button scripts and field "
 "calculations via the python import keyword."
 msgstr ""
+"Aceste module vor fi disponibile la scripturile butonului și calcularea "
+"câmpului via cuvântului cheie de importare python."
 
 #: ../data/ui/developer/dialog_script_library.glade.h:5
 msgid "Module name:"
-msgstr ""
+msgstr "Nume modul:"
 
 #. Translators: This is the verb. It is for checking that a Python script works.
 #: ../data/ui/developer/dialog_script_library.glade.h:9
 msgid "_Check"
-msgstr ""
+msgstr "_Verifică"
 
 #: ../data/ui/developer/dialog_sort_fields.glade.h:1
 msgid "Group By - Sort Fields"
-msgstr ""
+msgstr "Grupează după - sortează câmpurile"
 
 #: ../data/ui/developer/dialog_sort_fields.glade.h:11
 msgid "<b>Sort Fields</b>"
-msgstr ""
+msgstr "<b>Sortează câmpurile</b>"
 
 #: ../data/ui/developer/dialog_translation_copy.glade.h:1
 #: ../data/ui/developer/dialog_translation_identify_original.glade.h:1
 msgid "Identify Original"
-msgstr ""
+msgstr "Identifică originalul"
 
 #: ../data/ui/developer/dialog_translation_copy.glade.h:4
 msgid "Copy Translation"
-msgstr ""
+msgstr "Copiază traducerea"
 
 #: ../data/ui/developer/dialog_translation_copy.glade.h:5
 msgid ""
@@ -3693,11 +4000,15 @@ msgid ""
 "From what language would you like to copy the translations to use as the "
 "start of the current translation?"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Copiază traducerea</span>\n"
+"\n"
+"Din care limbă străină ar trebui să copiezi traducerile de utilizat ca "
+"începutul traducerii curente?"
 
 #: ../data/ui/developer/dialog_translation_copy.glade.h:8
 #: ../data/ui/developer/dialog_translation_identify_original.glade.h:9
 msgid "Language:"
-msgstr ""
+msgstr "Limbă:"
 
 #: ../data/ui/developer/dialog_translation_identify_original.glade.h:4
 msgid ""
@@ -3705,90 +4016,99 @@ msgid ""
 "\n"
 "The language of the original text is currently identified as:"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Identifică originalul</span>\n"
+"\n"
+"Limba textului original este identificată curent ca:"
 
 #: ../data/ui/developer/dialog_translation_identify_original.glade.h:7
 msgid "<b>English</b>"
-msgstr ""
+msgstr "<b>Engleză</b>"
 
 #: ../data/ui/developer/dialog_translation_identify_original.glade.h:8
 msgid ""
 "If the text is not actually in this language, please choose the correct "
 "language."
-msgstr ""
+msgstr "Dacă textul nu este de fapt în această limbă, alegeți limba corectă."
 
 #: ../data/ui/developer/dialog_user.glade.h:5
 msgid "Group:"
-msgstr ""
+msgstr "Grup:"
 
 #: ../data/ui/developer/dialog_user.glade.h:6
 msgid "Password:"
-msgstr ""
+msgstr "Parolă:"
 
 #: ../data/ui/developer/dialog_user.glade.h:7
 msgid "Confirm Password:"
-msgstr ""
+msgstr "Confirmă parola:"
 
 #: ../data/ui/developer/dialog_user.glade.h:8
 msgid "User:"
-msgstr ""
+msgstr "Utilizator:"
 
 #: ../data/ui/developer/window_button_script.glade.h:1
 msgid "Button Script"
-msgstr ""
+msgstr "Script de buton"
 
 #: ../data/ui/developer/window_button_script.glade.h:5
 #: ../data/ui/developer/window_data_layout.glade.h:6
 #: ../data/ui/developer/window_imageobject.glade.h:5
 #: ../data/ui/developer/window_textobject.glade.h:5
 msgid "<b>Title:</b>"
-msgstr ""
+msgstr "<b>Titlu:</b>"
 
 #: ../data/ui/developer/window_button_script.glade.h:6
 msgid ""
 "When the button is clicked it will run the python function which you "
 "implement here."
 msgstr ""
+"Când butonul este dat clic va rula funcția python pe care o implementați "
+"aici."
 
 #: ../data/ui/developer/window_data_layout_export.glade.h:1
 msgid "Export Format"
-msgstr ""
+msgstr "Formatul de exportare"
 
 #: ../data/ui/developer/window_data_layout.glade.h:1
 msgid "Layout"
-msgstr ""
+msgstr "Aranjament"
 
 #: ../data/ui/developer/window_data_layout.glade.h:3
 #: ../data/ui/developer/window_report_layout.glade.h:3
 msgid "table name"
-msgstr ""
+msgstr "nume tabel"
 
 #: ../data/ui/developer/window_data_layout.glade.h:4
 msgid "<b>Relationship:</b>"
-msgstr ""
+msgstr "<b>Relație:</b>"
 
 #: ../data/ui/developer/window_data_layout.glade.h:5
 msgid "Show child relationships"
-msgstr ""
+msgstr "Arată relațiile inferioare"
 
 #: ../data/ui/developer/window_data_layout.glade.h:7
 msgid "Add Field"
-msgstr ""
+msgstr "Adaugă un câmp"
 
 #: ../data/ui/developer/window_data_layout.glade.h:8
 msgid ""
 "Add a layout item that shows the data from a field in the record, and allows "
 "the user to edit that value."
 msgstr ""
+"Adaugă un element de aranjament care arată datele dintr-un câmp din "
+"înregistrare, și permite utilizatorului să editeze acea valoare."
 
 #: ../data/ui/developer/window_data_layout.glade.h:10
 msgid ""
 "Add text to a layout, such as an explanation or a warning. The text will be "
 "the same for every record viewed."
 msgstr ""
+"Adaugă text la un aranjament, precum o explicație sau un avertisment. Textul "
+"va fi la fel pentru fiecare înregistrare vizualizată."
 
 #: ../data/ui/developer/window_data_layout.glade.h:11
 msgid "Add Image"
-msgstr ""
+msgstr "Adaugă o imagine"
 
 #: ../data/ui/developer/window_data_layout.glade.h:12
 msgid ""
@@ -3796,24 +4116,35 @@ msgid ""
 "every record viewed. To show an image field from a record, to show different "
 "images for each field, use the field layout item."
 msgstr ""
+"Adaugă o imagine la aranjament, precum un logo. Imaginea va fi la fel pentru "
+"fiecare înregistrare vizualizată. Pentru a arăta un câmp de imagine dintr-o "
+"înregistrare, pentru a arăta imagini diferite pentru fiecare câmp, utilizați "
+"elementul de aranjament de câmp."
 
 #: ../data/ui/developer/window_data_layout.glade.h:14
 msgid ""
 "Add a button. Edit the button to define the script that will be run when the "
 "button is clicked."
 msgstr ""
+"Adaugă un buton. Editează butonul pentru a defini scriptul care va fi rulat "
+"când butonul este apăsat."
 
 #: ../data/ui/developer/window_data_layout.glade.h:16
 msgid ""
 "Add a group which can contain other layout items. Use this to group items "
 "together, such as fields."
 msgstr ""
+"Adăugați un grup care poate să conțină alte elemente de aranjament. "
+"Utilizați acest grup pentru a grupa elemente, precum câmpurile."
 
 #: ../data/ui/developer/window_data_layout.glade.h:18
 msgid ""
 "Add a tabbed notebook. Each page of the notebook may contain several other "
 "layout items, but only one page will be visible at one time."
 msgstr ""
+"Adaugă o agendă cu taburi. Fiecare pagină a agendei poate să conțină mai "
+"multe alte elemente de aranjament, dar doar o singură pagină va fi vizibilă "
+"la un moment dat."
 
 #: ../data/ui/developer/window_data_layout.glade.h:20
 msgid ""
@@ -3821,10 +4152,13 @@ msgid ""
 "Remember to edit this layout item to specify the relationship to use, and "
 "the fields to show from the related table."
 msgstr ""
+"Adaugă un portal de înregistrări relativ. Aceasta este o listă de "
+"înregistrări într-un tabel relativ. Nu uitați să editați acest aranjament să "
+"specifice relația de utilizat, și câmpurile de arătat din tabelul relativ."
 
 #: ../data/ui/developer/window_data_layout.glade.h:21
 msgid "Add Related Calendar"
-msgstr ""
+msgstr "Adaugă calendarul asociat"
 
 #: ../data/ui/developer/window_data_layout.glade.h:22
 msgid ""
@@ -3832,6 +4166,10 @@ msgid ""
 "from a related table. Remember to edit this layout item to specify the "
 "relationship to use, and the fields to show from the related table."
 msgstr ""
+"Adaugă un portal relativ de calendar de înregistrări. Acesta este un "
+"calendar care arată înregistrări de la un tabel relativ. Nu uitați să "
+"editați acest element de aranjament pentru a specifica relația de utilizat, "
+"și câmpurile de arătat din tabelul relativ."
 
 #: ../data/ui/developer/window_data_layout.glade.h:26
 msgid ""
@@ -3839,142 +4177,149 @@ msgid ""
 "not remove the field from the table itself. It just will not be seen on the "
 "layout."
 msgstr ""
+"Elimină acest element din aranjament. Dacă eliminați un element dintr-un "
+"aranjament de câmp, nu va elimina câmpul din tabelul efectiv. Pur și simplu "
+"nu va fi văzut pe aranjament."
 
 #: ../data/ui/developer/window_data_layout.glade.h:30
 msgid ""
 "Clicking the row button takes the user to the table specified by this "
 "relationship:"
 msgstr ""
+"Dând clic pe butonul de rând trimite utilizatorul la tabelul specificat de "
+"această relație:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:31
 msgid "Automatic:"
-msgstr ""
+msgstr "Automat:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:32
 msgid "None"
-msgstr ""
+msgstr "Nimic"
 
 #: ../data/ui/developer/window_data_layout.glade.h:33
 msgid "<b>Navigation</b>"
-msgstr ""
+msgstr "<b>Navigație</b>"
 
 #: ../data/ui/developer/window_data_layout.glade.h:35
 msgid "Date Field:"
-msgstr ""
+msgstr "Câmp dată:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:36
 msgid "<b>Dates</b>"
-msgstr ""
+msgstr "<b>Date</b>"
 
 #: ../data/ui/developer/window_data_layout.glade.h:37
 msgid "Minimum number of rows:"
-msgstr ""
+msgstr "Numărul minim de rânduri:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:38
 msgid "Show at least this many rows."
-msgstr ""
+msgstr "Arată cel puțin atât de multe rânduri."
 
 #: ../data/ui/developer/window_data_layout.glade.h:39
 msgid "Maximum number of rows:"
-msgstr ""
+msgstr "Numărul maxim de rânduri:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:40
 msgid "Show no more than this many rows."
-msgstr ""
+msgstr "Arată nu mai multe de atâtea rânduri."
 
 #: ../data/ui/developer/window_data_layout.glade.h:41
 msgid "Row Line Width:"
-msgstr ""
+msgstr "Lățimea liniei rândului:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:42
 msgid "0.000"
-msgstr ""
+msgstr "0.000"
 
 #: ../data/ui/developer/window_data_layout.glade.h:43
 msgid "Column Line Width:"
-msgstr ""
+msgstr "Lățimea liniei coloanei:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:44
 msgid "Line Color:"
-msgstr ""
+msgstr "Culoare linie:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:45
 msgid "<b>Lines</b>"
-msgstr ""
+msgstr "<b>Linii</b>"
 
 #: ../data/ui/developer/window_default_formatting.glade.h:1
 msgid "Default Formatting"
-msgstr ""
+msgstr "Formatare implicită"
 
 #: ../data/ui/developer/window_design.glade.h:1
 msgid "Field Definitions"
-msgstr ""
+msgstr "Definiții câmp"
 
 #: ../data/ui/developer/window_field_calculation.glade.h:1
 msgid "Field Calculation"
-msgstr ""
+msgstr "Calculare de câmp"
 
 #: ../data/ui/developer/window_field_calculation.glade.h:5
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
 msgstr ""
+"Valoarea câmpului va fi valoarea de returnare a funcției python, pe care o "
+"implementați aici."
 
 #: ../data/ui/developer/window_field_calculation.glade.h:7
 msgid "Triggered by:"
-msgstr ""
+msgstr "Declanșat de:"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:1
 msgid "Field Definition"
-msgstr ""
+msgstr "Definiție câmp"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:2
 msgid "Typ_e:"
-msgstr ""
+msgstr "Ti_p:"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:4
 msgid "_Name:"
-msgstr ""
+msgstr "_Nume:"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:5
 msgid "_Primary Key"
-msgstr ""
+msgstr "Cheie _primară"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:6
 msgid "_Unique"
-msgstr ""
+msgstr "_Unic"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:7
 msgid "_Auto-increment"
-msgstr ""
+msgstr "_Auto-incrementare"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:9
 msgid "_Lookup value when a field changes."
-msgstr ""
+msgstr "Valoarea de _căutare când se schimbă un câmp."
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:10
 msgid "_Relationship:"
-msgstr ""
+msgstr "_Relație:"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:11
 msgid "_Field:"
-msgstr ""
+msgstr "_Câmp:"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:12
 msgid "_User Entry"
-msgstr ""
+msgstr "Intrare _utilizator"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:14
 msgid "_Calculate Value"
-msgstr ""
+msgstr "_Calculează valoarea"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:15
 msgid "Value"
-msgstr ""
+msgstr "Valoare"
 
 #: ../data/ui/developer/box_formatting.glade.h:1
 msgid "Use 1000s separator"
-msgstr ""
+msgstr "Utilizează separatori de 1000"
 
 #: ../data/ui/developer/box_formatting.glade.h:2
 msgid ""
@@ -3982,98 +4327,111 @@ msgid ""
 "your locale would normally use one. If it is selected then a thousands "
 "separator will be used only if your locale normally uses one."
 msgstr ""
+"Dacă nu este selectat atunci separatorul pentru mii nu va fi utilizat, chiar "
+"dacă localizarea de obicei utilizează unul. Dacă este selectat atunci un "
+"separator pentru mii va fi utilizat doar dacă localizarea utilizează în mod "
+"normal unul."
 
 #: ../data/ui/developer/box_formatting.glade.h:3
 msgid "Decimal Places:"
-msgstr ""
+msgstr "Zecimale:"
 
 #: ../data/ui/developer/box_formatting.glade.h:4
 msgid "Currency Symbol:"
-msgstr ""
+msgstr "Simbol valută:"
 
 #: ../data/ui/developer/box_formatting.glade.h:5
 msgid "Alternative Color for Negative Values"
-msgstr ""
+msgstr "Culoare alternativă pentru valorile negative"
 
 #: ../data/ui/developer/box_formatting.glade.h:6
 msgid ""
 "Click this check box to use a different foreground color to display negative "
 "values."
 msgstr ""
+"Dați clic pe această căsuță de bifare pentru a utiliza o culoare de prim "
+"plan diferită pentru a afișa valori negative."
 
 #: ../data/ui/developer/box_formatting.glade.h:7
 msgid "Numeric Formatting"
-msgstr ""
+msgstr "Formatare numerică"
 
 #: ../data/ui/developer/box_formatting.glade.h:8
 msgid "Horizontal Alignment:"
-msgstr ""
+msgstr "Aliniere orizontală:"
 
 #: ../data/ui/developer/box_formatting.glade.h:9
 msgid "Multi-line"
-msgstr ""
+msgstr "Multi-linie"
 
 #: ../data/ui/developer/box_formatting.glade.h:10
 msgid ""
 "If this is selected then the field value will be shown in a multi-line box "
 "with a scrollbar."
 msgstr ""
+"Dacă aceasta va fi selectată atunci valoarea câmpului va fi arătată într-o "
+"cutie cu mai multe linii cu o bară de derulare."
 
 #: ../data/ui/developer/box_formatting.glade.h:11
 msgid "Height (lines)"
-msgstr ""
+msgstr "Înălțime (linii)"
 
 #: ../data/ui/developer/box_formatting.glade.h:12
 msgid "Font:"
-msgstr ""
+msgstr "Font:"
 
 #: ../data/ui/developer/box_formatting.glade.h:13
 msgid "Click this check box to use a non-standard font."
 msgstr ""
+"Dați clic pe această căsuță de bifare pentru a utiliza un font non-standard."
 
 #: ../data/ui/developer/box_formatting.glade.h:14
 msgid "Foreground Color:"
-msgstr ""
+msgstr "Culoare prim plan:"
 
 #: ../data/ui/developer/box_formatting.glade.h:15
 msgid "Click this check box to use a non-standard foreground color."
 msgstr ""
+"Dați clic pe această căsuță de bifare pentru a utiliza o culoare de prim "
+"plan non-standard."
 
 #: ../data/ui/developer/box_formatting.glade.h:16
 msgid "Background Color:"
-msgstr ""
+msgstr "Culoare de fundal:"
 
 #: ../data/ui/developer/box_formatting.glade.h:17
 msgid "Click this check box to use a non-standard background color."
 msgstr ""
+"Dați clic pe această căsuță de bifare pentru a utiliza o culoare de fundal "
+"non-standard."
 
 #: ../data/ui/developer/box_formatting.glade.h:18
 msgid "Text Formatting"
-msgstr ""
+msgstr "Formatare text"
 
 #: ../data/ui/developer/box_formatting.glade.h:19
 msgid "No Choices"
-msgstr ""
+msgstr "Nicio alegere"
 
 #: ../data/ui/developer/box_formatting.glade.h:20
 msgid "Relationship:"
-msgstr ""
+msgstr "Relație:"
 
 #: ../data/ui/developer/box_formatting.glade.h:22
 msgid "Also show:"
-msgstr ""
+msgstr "Arată și:"
 
 #: ../data/ui/developer/box_formatting.glade.h:24
 msgid "Edit"
-msgstr ""
+msgstr "Editează"
 
 #: ../data/ui/developer/box_formatting.glade.h:25
 msgid "Sort Order:"
-msgstr ""
+msgstr "Ordine de sortare:"
 
 #: ../data/ui/developer/box_formatting.glade.h:26
 msgid "Show all records"
-msgstr ""
+msgstr "Arată toate înregistrările"
 
 #: ../data/ui/developer/box_formatting.glade.h:27
 msgid ""
@@ -4081,291 +4439,298 @@ msgid ""
 "records in the related table. If this option is not selected then the "
 "choices will list values only from related records."
 msgstr ""
+"Dacă această opțiune este selectată atunci alegerile vor lista valori din "
+"toate înregistrările în tabelul legat. Dacă această opțiune nu este "
+"selectată atunci alegerile vor lista valori doar din înregistrările legate."
 
 #: ../data/ui/developer/box_formatting.glade.h:28
 msgid "Choices From Related Records"
-msgstr ""
+msgstr "Alegeri din înregistrări asociate"
 
 #: ../data/ui/developer/box_formatting.glade.h:29
 msgid "Custom Choice List"
-msgstr ""
+msgstr "Listă de alegeri personalizată"
 
 #: ../data/ui/developer/box_formatting.glade.h:30
 msgid "Restrict data to these choices"
-msgstr ""
+msgstr "Restricționează datele la aceste alegeri"
 
 #: ../data/ui/developer/box_formatting.glade.h:31
 msgid "Display as radio buttons"
-msgstr ""
+msgstr "Afișează ca butoane radio"
 
 #: ../data/ui/developer/box_formatting.glade.h:32
 msgid "Choices"
-msgstr ""
+msgstr "Alegeri"
 
 #: ../data/ui/developer/window_groups.glade.h:1
 msgid "Groups"
-msgstr ""
+msgstr "Grupuri"
 
 #: ../data/ui/developer/window_groups.glade.h:6
 #: ../data/ui/developer/window_users.glade.h:1
 msgid "Users"
-msgstr ""
+msgstr "Utilizatori"
 
 #: ../data/ui/developer/window_groups.glade.h:7
 msgid "<b>Groups</b>"
-msgstr ""
+msgstr "<b>Grupuri</b>"
 
 #: ../data/ui/developer/window_groups.glade.h:8
 msgid "<b>Tables</b>"
-msgstr ""
+msgstr "<b>Tabele</b>"
 
 #: ../data/ui/developer/window_imageobject.glade.h:1
 msgid "Image Object"
-msgstr ""
+msgstr "Obiect imagine"
 
 #: ../data/ui/developer/window_imageobject.glade.h:6
 msgid "<b>Image:</b>"
-msgstr ""
+msgstr "<b>Imagine:</b>"
 
 #: ../data/ui/developer/window_imageobject.glade.h:7
 msgid "C_hoose Image"
-msgstr ""
+msgstr "A_legeți imaginea"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:2
 msgid "Page Set_up"
-msgstr ""
+msgstr "Config_urare pagină"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:3
 msgid "Print Pre_view"
-msgstr ""
+msgstr "Pre_vizualizare tipărire"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:9
 msgid "Select _All"
-msgstr ""
+msgstr "Selectează to_ate"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:10
 msgid "_Unselect All"
-msgstr ""
+msgstr "_Deselectează toate"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:11
 msgid "_Insert"
-msgstr ""
+msgstr "_Inserează"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:12
 msgid "Insert _Field"
-msgstr ""
+msgstr "Inserează _câmp"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:13
 msgid "Insert _Text"
-msgstr ""
+msgstr "Inserează _text"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:14
 msgid "Insert _Image"
-msgstr ""
+msgstr "Inserează _imagine"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:15
 msgid "Insert _Related Records"
-msgstr ""
+msgstr "Inserează înregistrări _asociate"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:16
 msgid "Insert _Horizontal Line"
-msgstr ""
+msgstr "Inserează linie _orizontală"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:17
 msgid "Insert _Vertical Line"
-msgstr ""
+msgstr "Inserează linie _verticală"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:18
 msgid "Create _Standard"
-msgstr ""
+msgstr "Creează _standard"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:19
 msgid "Add Page"
-msgstr ""
+msgstr "Adaugă o pagină"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:20
 msgid "Delete Page"
-msgstr ""
+msgstr "Șterge pagina"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:21
 msgid "_Align"
-msgstr ""
+msgstr "_Aliniază"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:22
 msgid "Align _Top"
-msgstr ""
+msgstr "Aliniază _sus"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:23
 msgid "Align _Bottom"
-msgstr ""
+msgstr "Aliniază _jos"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:24
 msgid "Align _Left"
-msgstr ""
+msgstr "Aliniază la _stânga"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:25
 msgid "Align _Right"
-msgstr ""
+msgstr "Aliniază la _dreapta"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:26
 #: ../data/ui/developer/window_relationships_overview.glade.h:4
 msgid "_View"
-msgstr ""
+msgstr "_Vizualizare"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:27
 #: ../data/ui/developer/window_relationships_overview.glade.h:5
 msgid "Show _Grid"
-msgstr ""
+msgstr "Arată _grila"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:28
 msgid "Show _Rules"
-msgstr ""
+msgstr "Arată _regulile"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:29
 msgid "Show _Outlines"
-msgstr ""
+msgstr "Arată conturul"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:30
 msgid "Fit Page _Width"
-msgstr ""
+msgstr "Potrivire la lăți_mea paginii"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:32
 #, no-c-format
 msgid "Zoom 200%"
-msgstr ""
+msgstr "Focalizare 200%"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:34
 #, no-c-format
 msgid "Zoom 100%"
-msgstr ""
+msgstr "Focalizare 100%"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:36
 #, no-c-format
 msgid "Zoom 50%"
-msgstr ""
+msgstr "Focalizare 50%"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:38
 #, no-c-format
 msgid "Zoom 25%"
-msgstr ""
+msgstr "Focalizare 25%"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:39
 msgid "Print Layout Editor"
-msgstr ""
+msgstr "Editor aranjament tipărire"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:40
 msgid "<b>Table Name</b>"
-msgstr ""
+msgstr "<b>Nume tabel</b>"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:41
 msgid "Layout name:"
-msgstr ""
+msgstr "Nume de aranjament:"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:43
 msgid "X:"
-msgstr ""
+msgstr "X:"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:44
 msgid "Y:"
-msgstr ""
+msgstr "Y:"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:45
 msgid "Width:"
-msgstr ""
+msgstr "Lățime:"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:46
 msgid "Height:"
-msgstr ""
+msgstr "Înălțime:"
 
 #: ../data/ui/developer/window_relationships_overview.glade.h:2
 msgid "Page _Setup"
-msgstr ""
+msgstr "Config_urare pagină"
 
 #: ../data/ui/developer/window_relationships_overview.glade.h:6
 msgid "Edit _Fields"
-msgstr ""
+msgstr "Editează _câmpurile"
 
 #: ../data/ui/developer/window_relationships_overview.glade.h:7
 msgid "Edit _Relationships"
-msgstr ""
+msgstr "Editează _relațiile"
 
 #: ../data/ui/developer/window_relationships_overview.glade.h:8
 msgid "Relationships Overview"
-msgstr ""
+msgstr "Prezentare generală a relațiilor"
 
 #: ../data/ui/developer/window_report_layout.glade.h:1
 msgid "Report Layout"
-msgstr ""
+msgstr "Aranjament raport"
 
 #: ../data/ui/developer/window_report_layout.glade.h:4
 msgid "_Show table title"
-msgstr ""
+msgstr "_Arată titlul tabelului"
 
 #: ../data/ui/developer/window_report_layout.glade.h:5
 msgid ""
 "When this is checked the table's title will be shown at the top of the "
 "report in addition to the report title."
 msgstr ""
+"Când acesta este bifat, titlul tabelului va fi arătat la vârful raportului "
+"în adiție cu titlul raportului."
 
 #: ../data/ui/developer/window_report_layout.glade.h:6
 msgid "_Report name:"
-msgstr ""
+msgstr "Nume _raport:"
 
 #: ../data/ui/developer/window_report_layout.glade.h:8
 msgid "<b>Available Parts</b>"
-msgstr ""
+msgstr "<b>Părți disponibile</b>"
 
 #. Translators: The Main part of the report (not the footer or header)
 #: ../data/ui/developer/window_report_layout.glade.h:12
 msgid "Main"
-msgstr ""
+msgstr "Principal"
 
 #: ../data/ui/developer/window_report_layout.glade.h:19
 msgid "<b>Parts</b>"
-msgstr ""
+msgstr "<b>Părți</b>"
 
 #: ../data/ui/developer/window_text_format.glade.h:1
 msgid "Text Format"
-msgstr ""
+msgstr "Format text"
 
 #: ../data/ui/developer/window_textobject.glade.h:6
 msgid "<b>Text:</b>"
-msgstr ""
+msgstr "<b>Text:</b>"
 
 #: ../data/ui/developer/window_translations.glade.h:1
 msgid "Translations"
-msgstr ""
+msgstr "Traduceri"
 
 #: ../data/ui/developer/window_translations.glade.h:2
 msgid "<b>Source Language:</b>"
-msgstr ""
+msgstr "<b>Limbă sursă:</b>"
 
 #: ../data/ui/developer/window_translations.glade.h:3
 msgid "English"
-msgstr ""
+msgstr "Engleză"
 
 #: ../data/ui/developer/window_translations.glade.h:4
 msgid "Identify Source"
-msgstr ""
+msgstr "Identifică sursa"
 
 #: ../data/ui/developer/window_translations.glade.h:5
 msgid "<b>Target Language:</b>"
-msgstr ""
+msgstr "<b>Limbă țintă:</b>"
 
 #: ../data/ui/developer/window_translations.glade.h:8
 msgid "Copy From Existing Translation"
-msgstr ""
+msgstr "Copiază din traducerea existentă"
 
 #: ../data/ui/developer/window_translations.glade.h:9
 msgid ""
 "Start a translation for this target locale by copying the strings from "
 "another target locale."
 msgstr ""
+"Începe o traducere pentru această localizare țintă prin copierea șirurilor "
+"de la altă localizare țintă."
 
 #: ../data/ui/developer/window_users.glade.h:4
 msgid "<b>Group:</b>"
-msgstr ""
+msgstr "<b>Grup:</b>"
 
 #: ../data/ui/developer/window_users.glade.h:10
 msgid "<b>Users</b>"
-msgstr ""
+msgstr "<b>Utilizatori</b>"
